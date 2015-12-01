@@ -2,6 +2,8 @@
 
 namespace App\Libs;
 
+use Exception;
+
 class Randomizer
 {
     public static function randomize(array $santas, array $targets = null)
