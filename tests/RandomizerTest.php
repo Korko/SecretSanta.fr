@@ -31,4 +31,17 @@ class RandomizerTest extends TestCase
                 2 => ['name' => 'C', 'partner' => null]
         ]));
     }
+
+    /**
+     * @expectedException              Exception
+     * @expectedExceptionMessageRegExp #^Cannot resolve \[[^]]+?\] with \[[^]]+\]$#
+     */
+    public function testFailRandomize()
+    {
+        $this->assertEquals([0 => 'C', 1 => 'A', 2 => 'B'], Randomizer::randomize([
+                0 => ['name' => 'A', 'partner' => 'B'],
+                1 => ['name' => 'B', 'partner' => 'A'],
+                2 => ['name' => 'C', 'partner' => null]
+        ]));
+    }
 }
