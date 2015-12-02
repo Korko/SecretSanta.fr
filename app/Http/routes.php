@@ -13,6 +13,3 @@
 
 Route::get('/', 'RandomFormController@view');
 Route::post('/', 'RandomFormController@handle');
-
-Route::get('/recovery', 'RecoveryFormController@view');
-Route::post('/recovery', 'RecoveryFormController@handle');
