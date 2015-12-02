@@ -76,6 +76,10 @@ return [
     'unique'               => 'The :attribute has already been taken.',
     'url'                  => 'The :attribute format is invalid.',
 
+    'arrayunique'          => 'The :attribute array contains duplicate values.',
+    'contains'             => 'The :attribute field must contains the following values: :values.',
+    'fieldin'              => 'The :attribute contains values which does not match with the :other field.',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

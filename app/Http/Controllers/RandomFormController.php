@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Korko\SecretSanta\Http\Controllers;
 
-use App\Libs\Randomizer;
+use Korko\SecretSanta\Http\Requests\RandomFormRequest;
+use Korko\SecretSanta\Libs\Randomizer;
 use Illuminate\Http\Request;
 use Mail;
 
@@ -26,12 +27,15 @@ class RandomFormController extends Controller
         }
 
         $hat = Randomizer::randomize($participants);
-dd($participants, $hat);
+
         foreach ($hat as $santaIdx => $targetName) {
-	    $santa = $participants[$santaIdx];
-//            Mail::send('emails.secretsanta', ['name' => $santa['name'], 'secret' => $targetName], function ($m) use ($santa) {
-//                $m->to($santa['email'], $santa['name'])->subject("Soirée 'Secret Santa' du dimanche 20 décembre (2ème essai)");
-//            });
+            $santa = $participants[$santaIdx];
+
+            $content = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $request->input('content'));
+
+            Mail::raw($content, function ($m) use ($santa, $request) {
+                $m->to($santa['email'], $santa['name'])->subject($request->input('title'));
+            });
         }
 
         return 'Envoyé !';

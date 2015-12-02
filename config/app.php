@@ -137,9 +137,9 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        KorkoSecretSanta\Providers\AppServiceProvider::class,
+        KorkoSecretSanta\Providers\EventServiceProvider::class,
+        KorkoSecretSanta\Providers\RouteServiceProvider::class,
 
     ],
 

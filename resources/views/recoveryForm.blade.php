@@ -6,7 +6,7 @@
 					Qui es-tu ?
 					<select name="from" required>
 						@foreach($users as $user => $numero)
-							<option value="{{ $user }}">{{ $user }} ({{ $numero }})</option>
+							<option value="{{ $user }}">{{ $user }}</option>
 						@endforeach
 					</select>
 				</label>
@@ -15,7 +15,7 @@
 					<select name="to" required>
 						<option>???</option>
 						@foreach($users as $user => $numero)
-							<option>{{ $user }}</option>
+							<option value="{{ $user }}">{{ $user }}</option>
 						@endforeach
 					</select>
 				</label>
