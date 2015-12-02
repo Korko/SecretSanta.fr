@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace Korko\SecretSanta\Events;
 
 abstract class Event
 {

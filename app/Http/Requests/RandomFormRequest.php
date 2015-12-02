@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Korko\SecretSanta\Http\Requests;
 
-use App\Http\Requests\Request;
+use Korko\SecretSanta\Http\Requests\Request;
 
 class RandomFormRequest extends Request
 {
@@ -23,22 +23,23 @@ class RandomFormRequest extends Request
      */
     public function rules()
     {
-// TODO: Add new rules: arrayunique and fieldin:fieldName (fieldin only if defined?)
-	$rules = [
-	    'name' => 'required|array|arrayunique',
-	    'email' => 'array',
-	    'number' => 'array',
-	    'partner' => 'array'
-	];
+        $rules = [
+            'name' => 'required|arrayunique',
+            'title' => 'required|string',
+            'content' => 'required|contains:{TARGET}',
+            'email' => 'array',
+            'number' => 'array',
+            'partner' => 'array'
+        ];
 
-	foreach ($this->request->get('name') as $key => $name) {
-	    $rules += [
-		'email.'.$key => 'required_unless:number.'.$key.'|email'
-		'number.'.$key => 'required_unless:email.'.$key.'|numeric|regex:#336\d{8}',
-		'partner.'.$key => 'string|fieldin:name'
-	    ];
-	}
+        foreach ($this->request->get('name') as $key => $name) {
+            $rules += [
+                'email.'.$key => 'required_if:number.'.$key.',null|email',
+                'number.'.$key => 'required_if:email.'.$key.',null|numeric|regex:#336\d{8}',
+                'partner.'.$key => 'sometimes|string|fieldin:name'
+            ];
+        }
 
-	return $rules;
+        return $rules;
     }
 }

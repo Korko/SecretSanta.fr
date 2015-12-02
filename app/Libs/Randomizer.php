@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Libs;
+namespace Korko\SecretSanta\Libs;
 
 use Exception;
 
