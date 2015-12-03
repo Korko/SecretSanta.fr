@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'model' => KorkoSecretSanta\User::class,
+    'model' => Korko\SecretSanta\User::class,
 
     /*
     |--------------------------------------------------------------------------

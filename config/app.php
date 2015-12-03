@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'url' => 'https://k0rko.fr/dev/secretsanta/',
+    'url' => 'http://secretsanta.fr',
 
     /*
     |--------------------------------------------------------------------------
@@ -137,9 +137,9 @@ return [
         /*
          * Application Service Providers...
          */
-        KorkoSecretSanta\Providers\AppServiceProvider::class,
-        KorkoSecretSanta\Providers\EventServiceProvider::class,
-        KorkoSecretSanta\Providers\RouteServiceProvider::class,
+        Korko\SecretSanta\Providers\AppServiceProvider::class,
+        Korko\SecretSanta\Providers\EventServiceProvider::class,
+        Korko\SecretSanta\Providers\RouteServiceProvider::class,
 
     ],
 

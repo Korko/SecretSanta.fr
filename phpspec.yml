@@ -1,5 +1,5 @@
 suites:
     main:
-        namespace: KorkoSecretSanta
-        psr4_prefix: KorkoSecretSanta
+        namespace: Korko\SecretSanta
+        psr4_prefix: Korko\SecretSanta
         src_path: app
