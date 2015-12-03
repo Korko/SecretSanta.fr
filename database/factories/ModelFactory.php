@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(KorkoSecretSanta\User::class, function (Faker\Generator $faker) {
+$factory->define(Korko\SecretSanta\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
