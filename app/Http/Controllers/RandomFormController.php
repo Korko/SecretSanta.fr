@@ -38,6 +38,6 @@ class RandomFormController extends Controller
             });
         }
 
-        return 'Envoyé !';
+        return redirect('/')->with('message', 'Envoyé avec succès !');
     }
 }
