@@ -13,11 +13,11 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-        \KorkoSecretSanta\Http\Middleware\EncryptCookies::class,
+        \Korko\SecretSanta\Http\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \KorkoSecretSanta\Http\Middleware\VerifyCsrfToken::class,
+        \Korko\SecretSanta\Http\Middleware\VerifyCsrfToken::class,
     ];
 
     /**
