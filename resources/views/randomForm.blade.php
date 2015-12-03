@@ -31,12 +31,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach(old('name', ['', '']) as $idx => $name)
                         <tr class="participant">
                             <td>
-                                <input type="text" name="name[]" required="required" placeholder="Name Surname" onblur="updateParticipant(event.target.parentNode.parentNode)" />
+                                <input type="text" name="name[]" required="required" placeholder="Name Surname" onblur="updateParticipant(event.target.parentNode.parentNode)" value="{{ $name }}" />
                             </td>
                             <td>
-                                <input type="email" name="email[]" required="required" placeholder="Email" />
+                                <input type="email" name="email[]" required="required" placeholder="Email" value="{{ array_get(old('email', []), $idx) }}" />
                             </td>
                             <td>
                                 <a href="" class="remove" onclick="removeParticipant(event.target.parentNode.parentNode);return false;">
@@ -45,34 +46,20 @@
                             </td>
                             <td>
                                 <select name="partner[]" onchange="updatePartner(event.target.parentNode.parentNode);">
-                                    <option value="" disabled="disabled" selected="selected">Partner</option>
+                                    <option value="" disabled="disabled" {{ !isset(old('partner')[$idx]) ? 'selected="selected"' : '' }}>Partner</option>
+                                    @foreach(array_diff_key(old('name', []), [$idx => null]) as $idx2 => $name)
+                                        <option value="{{ $idx2 }}" {{ array_get(old('partner'), $idx) === $idx2 ? 'selected="selected"' : '' }}>{{ $name }}</option>
+                                    @endforeach
                                 </select>
                             </td>
                         </tr>
-                        <tr class="participant">
-                            <td>
-                                <input type="text" name="name[]" required="required" placeholder="Name Surname" onblur="updateParticipant(event.target.parentNode.parentNode)" />
-                            </td>
-                            <td>
-                                <input type="email" name="email[]" required="required" placeholder="Email" />
-                            </td>
-                            <td>
-                                <a href="" class="remove" onclick="removeParticipant(event.target.parentNode.parentNode);return false;">
-                                    <img src="https://cdn1.iconfinder.com/data/icons/realistiK-new/16x16/actions/edit_remove.png" />
-                                </a>
-                            </td>
-                            <td>
-                                <select name="partner[]" onchange="updatePartner(event.target.parentNode);">
-                                    <option value="" disabled="disabled" selected="selected">Partner</option>
-                                </select>
-                            </td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
                 <a href="" onclick="addParticipant();return false;"><img src="https://cdn2.iconfinder.com/data/icons/splashyIcons/add_small.png" alt="+" title="Add new participant" /></a><br />
                 <br />
-                <p><label>Mail Title<br /><input type="text" name="title" required="required" /></label></p>
-                <p><label>Mail Content (use "{SANTA}" for santa's name and "{TARGET}" for the target's name)<br /><textarea name="content" required="required"></textarea></label></p>
+                <p><label>Mail Title<br /><input type="text" name="title" required="required" value="{{ old('title') }}" /></label></p>
+                <p><label>Mail Content (use "{SANTA}" for santa's name and "{TARGET}" for the target's name)<br /><textarea name="content" required="required">{{ old('content') }}</textarea></label></p>
                 <input type="submit" name="submit" value="Randomize" />
             </fieldset>
         </form>
