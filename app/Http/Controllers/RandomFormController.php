@@ -38,6 +38,7 @@ class RandomFormController extends Controller
             });
         }
 
-        return redirect('/')->with('message', 'Envoyé avec succès !');
+        $message = 'Envoyé avec succès !';
+        return $request->ajax() ? [$message] : redirect('/')->with('message', $message);
     }
 }
