@@ -7,10 +7,11 @@ TABLE OF CONTENTS
     01 - General and Typography
     02 - Header
     03 - Navigation
-    04 - Services
-    05 - Footer
-    06 - Responsive styles
-    07 - Ribbon
+    04 - Parallax
+    05 - What
+    06 - Footer
+    07 - Responsive styles
+    08 - Ribbon
 */
 
 /* ==========================================================================
@@ -70,7 +71,7 @@ img {
     02. Header
 ========================================================================== */
 #header {
-    background-image: url(../img/gift.jpg);
+    background-image: url(../img/gifts-1.jpg);
     -moz-background-size: cover;
     background-size: cover;
     background-position: center center;
@@ -127,19 +128,6 @@ img {
     position: relative;
     top: -5px;
 }
-.navbar-nav>li: nth-child(3) {
-    margin-right: 110px;
-}
-.navbar-nav {
-    float:none !important;
-    width: 100%;
-    text-align: center;
-    margin-left: 9px;
-}
-.navbar-nav>li {
-    display: inline-block;
-    float: none;
-}
 #logo {
     position: absolute;
     display: block !important;
@@ -178,7 +166,7 @@ img {
     color: white;
     font-weight: bold;
 }
-.navbar-inverse .navbar-nav>li>a: hover, .navbar-inverse .navbar-nav>.active>a {
+.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>.active>a {
     background: #ed0121;
     color: white;
     text-shadow: none;
@@ -186,7 +174,25 @@ img {
 
 
 /* ==========================================================================
-    04. Services
+    04. Parallax
+========================================================================== */
+.parallax {
+    background: url(../img/gifts-2.jpg) fixed no-repeat center center;
+    -moz-background-size: cover;
+    background-size: cover;
+    position: relative;
+    color: #FFF;
+}
+.parallax .inner {
+    padding-top: 130px;
+    padding-bottom: 130px;
+}
+.parallax.parallax2 {
+    background-image: url(../img/gifts-3.jpg);
+}
+
+/* ==========================================================================
+    05. What
 ========================================================================== */
 .light-wrapper {
     background: #fbfbfb;
@@ -214,7 +220,7 @@ img {
     color: #2e2e2e;
     position: relative;
 }
-.lead: after {
+.lead:after {
     position: absolute;
     content: ' ';
     background: #ed0121;
@@ -224,10 +230,10 @@ img {
     left: 50%;
     margin-left: -40px;
 }
-.story .col-wrapper {
+.what .col-wrapper {
     padding: 0 10px;
 }
-.story .icon-wrapper {
+.what .icon-wrapper {
     position: relative;
     height: 80px;
     margin-top: 40px;
@@ -235,7 +241,7 @@ img {
 
 
 /* ==========================================================================
-    05. Footer
+    06. Footer
 ========================================================================== */
 .dark-wrapper {
     background: #ed0121;
@@ -255,7 +261,7 @@ footer .inner {
     padding-bottom: 50px;
 }
 /* ==========================================================================
-    06. Responsive styles
+    07. Responsive styles
 ========================================================================== */
 
 @media (max-width: 767px) {
@@ -268,14 +274,28 @@ footer .inner {
 }
 
 /* ==========================================================================
-    07. Ribbon
+    08. Ribbon
 ========================================================================== */
 
-#forkongithub{
+#forkongithub {
     display: none;
 }
-@media screen and (min-width: 768px){
-    #forkongithub{
+@media screen and (min-width: 768px) {
+@media (min-width:768px) {
+    .navbar-nav {
+        float: none !important;
+        width: 100%;
+        text-align: center;
+        margin-left: -13px;
+    }
+    .navbar-nav>li {
+        display: inline-block;
+        float: none;
+    }
+    .navbar-nav>li:nth-child(2) {
+        margin-right: 110px;
+    }
+    #forkongithub {
         position: fixed;
         display: block;
         top: -30px;
@@ -285,7 +305,7 @@ footer .inner {
         height: 200px;
         z-index: 9999;
     }
-    #forkongithub a{
+    #forkongithub a {
         background: #A00;
         color: #fff;
         text-decoration: none;
@@ -307,11 +327,11 @@ footer .inner {
         -o-transform: rotate(45deg);
         box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
     }
-    #forkongithub a:hover{
+    #forkongithub a:hover {
         background: #C00;
         color: #fff;
     }
-    #forkongithub a::before,#forkongithub a::after{
+    #forkongithub a::before,#forkongithub a::after {
         content: "";
         width: 100%;
         display: block;
@@ -321,7 +341,7 @@ footer .inner {
         height: 1px;
         background: #fff;
     }
-    #forkongithub a::after{
+    #forkongithub a::after {
         bottom: 1px;
         top: auto;
     }

@@ -12,6 +12,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 
+    <link rel="image_src" href="media/img/logo_black.png" />
+
     <!-- css -->
     <link rel="stylesheet" href="media/css/bootstrap.min.css">
     <link rel="stylesheet" href="media/css/bootstrap-theme.min.css">
@@ -25,7 +27,15 @@
     <script src="media/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 
     <style>
-        .participant:nth-child(-n+2) a.remove {display: none}
+        .placeholder {display:none;}
+        .participant .participant-remove-wrapper {width:179px;}
+        .participant:nth-child(-n+2) .participant-remove {display:none;}
+
+        #mailContent { max-width: 100%; }
+
+        @-moz-document url-prefix() {
+          fieldset { display: table-cell; }
+        }
     </style>
     <link rel="stylesheet" href="media/css/alertify.core.css" />
     <link rel="stylesheet" href="media/css/alertify.default.css" />
@@ -39,11 +49,21 @@
     <div id="menu" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
         <div id="navbar">
-            <div class="hidden-xs" id="logo">
+            <div id="logo">
                 <a href="#header">
-                    <img src="media/img/logo.png" alt="">
+                    <img src="media/img/logo.png" alt="" />
                 </a>
             </div>
+            <ul class="nav navbar-nav hidden-xs">
+                <li><a href="#what">Quoi</a></li>
+                <li><a href="#how">Comment</a></li>
+
+
+                <li><a href="#form">Allez c'est parti</a></li>
+
+                <!--fix for scroll spy active menu element-->
+                <li style="display:none;"><a href="#header"></a></li>
+            </ul>
         </div><!--/.navbar-collapse -->
         </div><!-- container -->
     </div><!-- menu -->
@@ -54,7 +74,7 @@
             <div class="banner">
                 <h1 class="">Secret Santa</h1>
             </div>
-            <div class="subtitle"><h4>Offrez-vous des cadeaux... secretement !</h4></div>
+            <div class="subtitle"><h4>Offrez-vous des cadeaux... secrêtement !</h4></div>
         </div>
         <div class="bottom text-center">
             <a id="scrollDownArrow" href="#"><i class="fa fa-chevron-down"></i></a>
@@ -62,26 +82,53 @@
     </div>
     <!-- /#header -->
 
-    <div id="story" class="light-wrapper">
+    <div id="what" class="light-wrapper">
         <section class="ss-style-top"></section>
         <div class="container inner">
-            <h2 class="section-title text-center">Comment faire ?</h2>
-            <p class="lead main text-center">Vous allez voir, c'est simple !</p>
-            <div class="row text-center story">
+            <h2 class="section-title text-center">Qu'est-ce que c'est ?</h2>
+            <p class="lead main text-center">Description du Secret Santa</p>
+            <div class="row text-center what">
 
 
 
             </div>
-            <!-- /.services -->
         </div>
         <!-- /.container -->
         <section class="ss-style-bottom"></section>
-    </div><!-- #story -->
+    </div><!-- #what -->
+
+    <div class="parallax">
+        <div class="container inner">
+
+        </div>
+        <!-- /.container -->
+    </div><!-- #spacer1 -->
+
+
+    <div id="how" class="light-wrapper">
+        <section class="ss-style-top"></section>
+        <div class="container inner">
+            <h2 class="section-title text-center">Comment faire ?</h2>
+            <p class="lead main text-center">Vous allez voir, c'est simple !</p>
+            <div class="row text-center what">
+
+            </div>
+        </div>
+        <!-- /.container -->
+        <section class="ss-style-bottom"></section>
+    </div><!--/#how-->
+
+    <div class="parallax parallax2">
+        <div class="container inner">
+
+        </div>
+        <!-- /.container -->
+    </div><!-- #spacer1 -->
 
     <div id="form" class="light-wrapper">
         <section class="ss-style-top"></section>
         <div class="container inner">
-            <h2 class="section-title text-center">A vous de jouer !</h2>
+            <h2 class="section-title text-center">À vous de jouer !</h2>
             <p class="lead main text-center">Remplissez, cliquez et c'est parti !</p>
             <div class="row text-center story">
 
@@ -94,57 +141,60 @@
                     {{ csrf_field() }}
                     <fieldset>
                         <legend>Détails des participants</legend>
-                        <table id="participants">
-                            <thead>
-                                <tr>
-                                    <th>Nom ou pseudonyme</th>
-                                    <th>Adresse e-mail</th>
-                                    <th></th>
-                                    <th>Partenaire (ne pourra être sa cible)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{-- Default is two empty rows to have two entries at any time --}}
-                                @foreach(old('name', ['', '']) as $idx => $name)
-                                <tr class="participant">
-                                    <td>
-                                        <input type="text" name="name[]" required="required" placeholder="exemple : Paul ou Korko" onblur="updateParticipant(event.target.parentNode.parentNode)" value="{{ $name }}" />
-                                    </td>
-                                    <td>
-                                        <input type="email" name="email[]" required="required" placeholder="exemple : michel@aol.com" value="{{ array_get(old('email', []), $idx) }}" />
-                                    </td>
-                                    <td>
-                                        {{-- Don't add new lines between the <a> and the <img>, it will result in ugly space characters --}}
-                                        <a href="" class="remove" onclick="removeParticipant(event.target.parentNode.parentNode.parentNode);return false;" title="Supprimer ce participant"><img src="https://cdn1.iconfinder.com/data/icons/realistiK-new/16x16/actions/edit_remove.png" /></a>
-                                    </td>
-                                    <td>
-                                        <select name="partner[]" onchange="updatePartner(event.target.parentNode.parentNode);">
-                                            <option value="" {{ !array_get(old('partner'), $idx) ? 'selected="selected"' : '' }}>Aucun</option>
-                                            @foreach(array_diff_key(old('name', []), [$idx => false]) as $idx2 => $name)
-                                                {{ $selected = (array_get(old('partner'), $idx) !== '' && intval(array_get(old('partner'), $idx)) === $idx2) }}
-                                                <option value="{{ $idx2 }}" {{ $selected ? 'selected="selected"' : '' }}>{{ $name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        {{-- Don't add new lines between the <a> and the <img>, it will result in ugly space characters --}}
-                        <a href="" title="Ajouter un participant" onclick="addParticipant();return false;"><img src="https://cdn2.iconfinder.com/data/icons/splashyIcons/add_small.png" alt="+" /></a>
-                        <br />
-                        <br />
-                        <p>
-                            <label>Titre du mail<br />
-                                <input type="text" name="title" required="required" placeholder="exemple : Soirée secretsanta du 23 décembre" value="{{ old('title') }}" />
-                            </label>
-                        </p>
-                        <p>
-                            <label>Contenu du mail (utilisez "{SANTA}" pour le nom de celui qui recevra le mail et "{TARGET}" pour le nom de sa cible)<br />
-                                <textarea name="content" required="required" placeholder="exemple : Salut {SANTA}, pour la soirée secret santa, ta cible c'est {TARGET}.">{{ old('content') }}</textarea>
-                            </label>
-                        </p>
-                        <input type="submit" name="submit" value="Lancez l'aléatoire !" />
+                        <div class="table-responsive form-group">
+                            <table id="participants" class="table table-hover table-numbered">
+                                <thead>
+                                    <tr>
+                                        <th class="col-xs-4">Nom ou pseudonyme</th>
+                                        <th class="col-xs-4">Adresse e-mail</th>
+                                        <th class="col-xs-2">Partenaire (ne pourra être sa cible)</th>
+                                        <th class="col-xs-2"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- Default is two empty rows to have two entries at any time --}}
+                                    @foreach(old('name', ['', '']) as $idx => $name)
+                                    <tr class="participant">
+                                        <td class="row">
+                                            <label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon counter">{{ $idx+1 }}</span>
+                                                    <input type="text" name="name[]" required="required" placeholder="exemple : Paul ou Korko" value="{{ $name }}" class="form-control participant-name" />
+                                                </div>
+                                            </label>
+                                        </td>
+                                        <td class="row">
+                                            <input type="email" name="email[]" required="required" placeholder="exemple : michel@aol.com" value="{{ array_get(old('email', []), $idx) }}" class="form-control" />
+                                        </td>
+                                        <td class="row">
+                                            <select name="partner[]" class="form-control participant-partner">
+                                                <option value="" {{ !array_get(old('partner'), $idx) ? 'selected="selected"' : '' }}>Aucun</option>
+                                                @foreach(array_diff_key(old('name', []), [$idx => false]) as $idx2 => $name)
+                                                    {{ $selected = (array_get(old('partner'), $idx) !== '' && intval(array_get(old('partner'), $idx)) === $idx2) }}
+                                                    <option value="{{ $idx2 }}" {{ $selected ? 'selected="selected"' : '' }}>{{ ($idx2+1).". ".$name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td class="row participant-remove-wrapper">
+                                            <button type="button" class="btn btn-danger participant-remove"><span class="glyphicon glyphicon-minus"></span> Enlever ce participant</button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-success participant-add"><span class="glyphicon glyphicon-plus"></span> Ajouter un participant</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mailTitle">Titre du mail</label>
+                            <input id="mailTitle" type="text" name="title" required="required" placeholder="exemple : Soirée secretsanta du 23 décembre" value="{{ old('title') }}" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="mailContent">Contenu du mail</label>
+                            <textarea id="mailContent" name="content" required="required" placeholder="exemple : Salut {SANTA}, pour la soirée secret santa, ta cible c'est {TARGET}." class="form-control" rows="3">{{ old('content') }}</textarea>
+                            <p class="help-block">Utilisez "{SANTA}" pour le nom de celui qui recevra le mail et "{TARGET}" pour le nom de sa cible.</p>
+                        </div>
+                        <button type="submit" class="btn btn-default">Lancez l'aléatoire !</button>
                     </fieldset>
                 </form>
 
