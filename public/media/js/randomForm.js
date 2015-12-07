@@ -1,24 +1,21 @@
-function addParticipant () {
+$('.participant-add').on('click', function() {
 
-    var el = document.getElementsByClassName("participant")[0].cloneNode(true);
-    var inputs = el.getElementsByTagName("input");
-
-    for (i in inputs) {
-        inputs[i].value = "";
-    }
+    var el = newParticipant(0);
 
     document.getElementById("participants").getElementsByTagName("tbody")[0].appendChild(el);
 
-}
+});
 
-function removeParticipant (participant) {
+$(document.body).on('click', '.participant-remove', function(event) {
+
+    var participant = $(event.target).parents('.participant')[0];
 
     var index = Array.prototype.slice.call(document.getElementsByClassName("participant")).indexOf(participant);
     participant.parentNode.removeChild(participant);
 
     var parts = document.getElementsByClassName("participant"), select;
     for (var i = 0; i < parts.length; i++) {
-        select = parts[i].getElementsByTagName("select")[0];
+        select = parts[i].getElementsByClassName("participant-partner")[0];
         if (parseInt(select.options[select.selectedIndex].value, 10) === index) {
             select.selectedIndex = 0;
         }
@@ -31,21 +28,24 @@ function removeParticipant (participant) {
         }
     }
 
-}
+});
 
-function updateParticipant (participant) {
+$(document.body).on('blur', '.participant-name', function(event) {
 
+    var participant = $(event.target).parents('.participant')[0];
+
+    // Update for all participants the "participant-partner" so that the name is corrected or added
     var index = Array.prototype.slice.call(document.getElementsByClassName("participant")).indexOf(participant);
     var parts = document.getElementsByClassName("participant"), select, option, founded;
     for (var i = 0; i < parts.length; i++) {
         if (i === index) continue;
 
-        select = parts[i].getElementsByTagName("select")[0];
+        select = parts[i].getElementsByClassName("participant-partner")[0];
         founded = false;
 
         for (var j = 0; j < select.options.length; j++) {
             if (parseInt(select.options[j].value, 10) === index) {
-                select.options[j].text = participant.getElementsByTagName("input")[0].value;
+                select.options[j].text = (j+1)+'. '+participant.getElementsByClassName("participant-name")[0].value;
                 founded = true;
             }
         }
@@ -53,16 +53,12 @@ function updateParticipant (participant) {
         if (!founded) {
             option = document.createElement("option");
             option.value = index;
-            option.text = participant.getElementsByTagName("input")[0].value;
+            option.text = (index+1)+'. '+participant.getElementsByClassName("participant-name")[0].value;
             select.appendChild(option);
         }
     }
 
-}
-
-function updatePartner (participant) {
-
-}
+});
 
 // Validate a phone number field
 var locked = false;
@@ -97,4 +93,58 @@ $("#form form").submit(function(e) {
     }
     e.preventDefault(); //STOP default action
 
+    return false;
+
 });
+
+function newParticipant() {
+
+    // Clone the first participant
+    var el = document.getElementsByClassName("participant")[0].cloneNode(true);
+
+    // Reset inputs
+    var inputs = el.getElementsByTagName("input");
+    for (i in inputs) {
+        inputs[i].value = "";
+    }
+
+    // Get the max counter and refill the select "participant-partner" with correct values
+    var max = 0;
+    var select = el.getElementsByClassName("participant-partner")[0];
+    var parts = document.getElementsByClassName("participant");
+    for (var i = 0; i < parts.length; i++) {
+        max = Math.max(max, parts[i].getElementsByClassName('counter')[0].innerHTML);
+        if (parts[i].getElementsByClassName("participant-name")[0].value === '') continue;
+
+        founded = false;
+
+        for (var j = 0; j < select.options.length; j++) {
+            if (parseInt(select.options[j].value, 10) === i) {
+                select.options[j].text = (j+1)+'. '+parts[i].getElementsByClassName("participant-name")[0].value;
+                founded = true;
+            }
+        }
+
+        if (!founded) {
+            option = document.createElement("option");
+            option.value = i;
+            option.text = (i+1)+'. '+parts[i].getElementsByClassName("participant-name")[0].value;
+            select.appendChild(option);
+        }
+    }
+
+    // Sort the "participant-partner" select so that values are well ordered
+    var options = $(select.options);
+    options.sort(function(a,b) {
+        if (a.text.toUpperCase() > b.text.toUpperCase()) return 1;
+        else if (a.text.toUpperCase() < b.text.toUpperCase()) return -1;
+        else return 0;
+    });
+    $(select).empty().append(options);
+
+    // Set the counter
+    el.getElementsByClassName('counter')[0].innerHTML = max + 1;
+
+    return el;
+
+}
