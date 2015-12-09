@@ -8,10 +8,11 @@ TABLE OF CONTENTS
     02 - Header
     03 - Navigation
     04 - Parallax
-    05 - What
-    06 - Footer
-    07 - Responsive styles
-    08 - Ribbon
+    05 - What/How
+    06 - Form
+    07 - Footer
+    08 - Responsive styles
+    09 - Ribbon
 */
 
 /* ==========================================================================
@@ -37,7 +38,9 @@ img {
     position: absolute;
     content: '';
 }
-
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
 /* Separators Styles */
 .ss-style-top::before {
     left: 0;
@@ -191,8 +194,9 @@ img {
     background-image: url(../img/gifts-3.jpg);
 }
 
+
 /* ==========================================================================
-    05. What
+    05. What/How
 ========================================================================== */
 .light-wrapper {
     background: #fbfbfb;
@@ -230,18 +234,32 @@ img {
     left: 50%;
     margin-left: -40px;
 }
-.what .col-wrapper {
-    padding: 0 10px;
+.media-body {
+    width: auto;
+    text-align: left;
 }
-.what .icon-wrapper {
-    position: relative;
-    height: 80px;
-    margin-top: 40px;
+.media-heading {
+    font-weight: bold;
+}
+.media-body p::first-line {
+}
+
+/* ==========================================================================
+    06. Form
+========================================================================== */
+.participant .participant-remove-wrapper {
+    width:179px;
+}
+.participant:nth-child(-n+2) .participant-remove {
+    display:none;
+}
+#mailContent {
+    max-width: 100%;
 }
 
 
 /* ==========================================================================
-    06. Footer
+    07. Footer
 ========================================================================== */
 .dark-wrapper {
     background: #ed0121;
@@ -260,10 +278,11 @@ footer .inner {
     padding-top: 50px;
     padding-bottom: 50px;
 }
-/* ==========================================================================
-    07. Responsive styles
-========================================================================== */
 
+
+/* ==========================================================================
+    08. Responsive styles
+========================================================================== */
 @media (max-width: 767px) {
     #header .banner h1 {
         font-size: 60px;
@@ -272,21 +291,12 @@ footer .inner {
         font-size: 22px;
     }
 }
-
-/* ==========================================================================
-    08. Ribbon
-========================================================================== */
-
-#forkongithub {
-    display: none;
-}
 @media screen and (min-width: 768px) {
-@media (min-width:768px) {
     .navbar-nav {
         float: none !important;
         width: 100%;
         text-align: center;
-        margin-left: -13px;
+        margin-left: -73px;
     }
     .navbar-nav>li {
         display: inline-block;
@@ -295,6 +305,16 @@ footer .inner {
     .navbar-nav>li:nth-child(2) {
         margin-right: 110px;
     }
+}
+
+
+/* ==========================================================================
+    09. Ribbon
+========================================================================== */
+#forkongithub {
+    display: none;
+}
+@media screen and (min-width: 768px) {
     #forkongithub {
         position: fixed;
         display: block;
@@ -346,3 +366,5 @@ footer .inner {
         top: auto;
     }
 }
+
+

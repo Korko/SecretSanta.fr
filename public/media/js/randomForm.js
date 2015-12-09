@@ -75,6 +75,8 @@ $("#form form").submit(function(e) {
             success:function(data, textStatus, jqXHR) {
                 alertify.alert(jqXHR.responseJSON[0]);
                 $("#form form")[0].reset();
+                $("#form form .participant:nth-child(n+3)").remove();
+                $("#form form .participant-partner option:not(:first-child)").remove();
                 $('#errors-wrapper').hide();
                 locked = false;
             },
@@ -136,8 +138,8 @@ function newParticipant() {
     // Sort the "participant-partner" select so that values are well ordered
     var options = $(select.options);
     options.sort(function(a,b) {
-        if (a.text.toUpperCase() > b.text.toUpperCase()) return 1;
-        else if (a.text.toUpperCase() < b.text.toUpperCase()) return -1;
+        if (a.value > b.value) return 1;
+        else if (a.value < b.value) return -1;
         else return 0;
     });
     $(select).empty().append(options);
