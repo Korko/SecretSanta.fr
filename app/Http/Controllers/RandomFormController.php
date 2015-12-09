@@ -16,13 +16,16 @@ class RandomFormController extends Controller
 
     public function handle(RandomFormRequest $request)
     {
-        $participants = [];
+        $names = $request->input('name');
+        $emails = $request->input('email');
+        $partners = $request->input('partner', []);
 
-        for ($i = 0; $i < count($request->input('name')); $i++) {
+        $participants = [];
+        for ($i = 0; $i < count($names); $i++) {
             $participants[$i] = array(
-                'name' => $request->input('name')[$i],
-                'email' => $request->input('email')[$i],
-                'partner' => array_get($request->input('partner', []), $i)
+                'name' => $names[$i],
+                'email' => $emails[$i],
+                'partner' => !empty($partners[$i]) ? $names[$partners[$i]] : null
             );
         }
 
