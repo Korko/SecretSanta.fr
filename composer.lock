@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5c6026b96e6fa11a641b51a6ba976f5e",
-    "content-hash": "5bd58fd976f1ee3e9611bc37c006ec46",
+    "hash": "3b34e61c335c10ede2ffd7c979662736",
+    "content-hash": "0c37be7a8c36790182678d76ffc9a9ba",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -60,6 +60,45 @@
                 "preload"
             ],
             "time": "2015-11-09 22:51:51"
+        },
+        {
+            "name": "crazyinventor/laravel5-recaptcha2",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CrazyInventor/laravel5-recaptcha2.git",
+                "reference": "76a9754e228e236f268ab44a99599e3d563d57ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CrazyInventor/laravel5-recaptcha2/zipball/76a9754e228e236f268ab44a99599e3d563d57ad",
+                "reference": "76a9754e228e236f268ab44a99599e3d563d57ad",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.0.*|5.1.*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CrazyInventor\\Lacaptcha\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Schneider",
+                    "email": "david@crazyinventor.net",
+                    "homepage": "http://www.crazyinventor.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A package to use Google Recaptcha V2 with Laravel 5",
+            "time": "2015-09-26 13:59:20"
         },
         {
             "name": "danielstjules/stringy",

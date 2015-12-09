@@ -24,6 +24,7 @@ class RandomFormRequest extends Request
     public function rules()
     {
         $rules = [
+            'g-recaptcha-response' => 'required|recaptcha',
             'name' => 'required|arrayunique',
             'title' => 'required|string',
             'content' => 'required|contains:{TARGET}',
