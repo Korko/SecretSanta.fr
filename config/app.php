@@ -141,6 +141,11 @@ return [
         Korko\SecretSanta\Providers\EventServiceProvider::class,
         Korko\SecretSanta\Providers\RouteServiceProvider::class,
 
+        /*
+         * Vendors Service Providers...
+         */
+        CrazyInventor\Lacaptcha\LacaptchaServiceProvider::class,
+
     ],
 
     /*
@@ -176,6 +181,7 @@ return [
         'Log'       => Illuminate\Support\Facades\Log::class,
         'Mail'      => Illuminate\Support\Facades\Mail::class,
         'Queue'     => Illuminate\Support\Facades\Queue::class,
+        'Recaptcha' => CrazyInventor\Lacaptcha\Facades\Lacaptcha::class,
         'Redirect'  => Illuminate\Support\Facades\Redirect::class,
         'Redis'     => Illuminate\Support\Facades\Redis::class,
         'Request'   => Illuminate\Support\Facades\Request::class,

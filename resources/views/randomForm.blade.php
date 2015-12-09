@@ -226,8 +226,10 @@
                             <p class="help-block">Utilisez "{SANTA}" pour le nom de celui qui recevra le mail et "{TARGET}" pour le nom de sa cible.</p>
                             <p class="help-block">Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.</p>
                         </div>
-
-                        <button type="submit" class="btn btn-default">Lancez l'aléatoire !</button>
+                        <div class="form-group btn">
+                            {!! Recaptcha::render() !!}
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg">Lancez l'aléatoire !</button>
                     </fieldset>
                 </form>
 
