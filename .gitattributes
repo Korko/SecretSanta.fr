@@ -1,3 +1,10 @@
-* text=auto
+* text eol=lf
 *.css linguist-vendored
 *.less linguist-vendored
+*.png binary
+*.jpg binary
+*.ttf binary
+*.eot binary
+*.otf binary
+*.woff binary
+*.woff2 binary
