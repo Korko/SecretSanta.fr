@@ -121,8 +121,9 @@
                         <div class="media-body">
                             <h4 class="media-heading">Première étape : remplir les informations des participants</h4>
                             <p>
-                                Pour chaque personne, il faut indiquer un nom/prénom ou un pseudonyme. Deux participants ne peuvent avoir le même nom, sinon il est impossible de les différencier.<br />
-                                Grâce aux boutons "Ajouter un participant" et "Enlever un participant", ajustez le nombre de personnes.<br />
+                                Pour chaque personne, indiquez un nom/prénom ou un pseudonyme. Deux participants ne peuvent avoir le même nom, sinon il est impossible de les différencier.<br />
+                                Grâce aux boutons "Ajouter un participant" et "Enlever un participant", il est possible d'ajuster le nombre de personnes.<br />
+                                A noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se pioicher elle-même.<br />
                                 (Optionel) Ajoutez des exclusions. Si vous ne voulez pas que les conjoints puissent se piocher l'un l'autre, remplissez le champ "Partenaire".
                             </p>
                         </div>
@@ -131,9 +132,9 @@
                         <div class="media-body">
                             <h4 class="media-heading">Seconde étape : préparer le mail</h4>
                             <p>
-                            Il faut spécifier le titre ainsi que le corps du message que chaque participant recevra.<br />
+                            Spécifiez le titre ainsi que le corps du message que chaque participant recevra.<br />
                             Le mot clef "{TARGET}" est obligatoire dans le corps du mail afin de donner à chaque personne sa "cible".<br />
-                            (Optionel) Vous pouvez aussi utiliser le mot clef "{SANTA}" qui sera lui remplacé par le nom du destinataire du mail.
+                            (Optionel) Vous pouvez aussi utiliser le mot clef "{SANTA}" qui sera remplacé par le nom du destinataire du mail.
                             </p>
                         </div>
                         <div class="media-right media-middle">
@@ -141,7 +142,7 @@
                         </div>
                     </li>
                 </ul>
-                <div class="well well-lg">NB : Aucune donnée n'est sauvegardée ou utilisée à d'autres fins que pour ce script. Le code source est disponible sur <a href="https://github.com/Korko/SecretSanta">GitHub</a></div>
+                <div class="well well-lg">Pour votre information : secretsanta.fr ne sauvegarde aucune de vos données ni ne les utilise à d'autres fins. Le code source est disponible sur <a href="https://github.com/Korko/SecretSanta">GitHub</a></div>
             </div>
         </div>
         <!-- /.container -->
