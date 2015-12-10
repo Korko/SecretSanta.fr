@@ -74,11 +74,10 @@ $("#form form").submit(function(e) {
             data : postData,
             success:function(data, textStatus, jqXHR) {
                 alertify.alert(jqXHR.responseJSON[0]);
-                $("#form form")[0].reset();
-                $("#form form .participant:nth-child(n+3)").remove();
-                $("#form form .participant-partner option:not(:first-child)").remove();
+                $('#form form fieldset').prop('disabled', 'disabled');
                 $('#errors-wrapper').hide();
-                locked = false;
+                $('#success-wrapper').show();
+                $.scrollTo($('#success-wrapper'), 800, {offset: -120});
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 $('#errors').html('');

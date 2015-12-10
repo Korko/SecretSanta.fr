@@ -244,6 +244,7 @@ img {
 .media-body p::first-line {
 }
 
+
 /* ==========================================================================
     06. Form
 ========================================================================== */
@@ -255,6 +256,16 @@ img {
 }
 #mailContent {
     max-width: 100%;
+}
+#form .container {
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+    position: relative;
+}
+#form.success .success-wrapper {
+    display: block;
 }
 
 
