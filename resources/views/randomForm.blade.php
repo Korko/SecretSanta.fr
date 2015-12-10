@@ -30,7 +30,6 @@
 
     <!-- js -->
     <script src="media/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="120" >
     <!--[if lt IE 7]>
@@ -161,7 +160,10 @@
         <div class="container inner">
             <h2 class="section-title text-center">À vous de jouer !</h2>
             <p class="lead main text-center">Remplissez, cliquez et c'est parti !</p>
-            <div class="row text-center story">
+            <div class="row text-center form">
+                <div id="success-wrapper" class="alert alert-success" style="display: none">
+                    Envoyé avec succès !
+                </div>
 
                 <div id="errors-wrapper" class="alert alert-danger" style="display: none">
                     <ul id="errors">
@@ -169,7 +171,6 @@
                 </div>
 
                 <form action="{{ url('/') }}" method="post" autocomplete="off">
-                    {{ csrf_field() }}
                     <fieldset>
                         <legend>Détails des participants</legend>
                         <div class="table-responsive form-group">
@@ -229,6 +230,8 @@
                         <div class="form-group btn">
                             {!! Recaptcha::render() !!}
                         </div>
+
+                        {{ csrf_field() }}
                         <button type="submit" class="btn btn-primary btn-lg">Lancez l'aléatoire !</button>
                     </fieldset>
                 </form>
