@@ -19,11 +19,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('fieldin', function ($attribute, $value, $parameters, $validator) {
-            return (count($parameters) === 1 &&
+            return count($parameters) === 1 &&
                 isset($validator->getData()[$parameters[0]]) &&
                 is_array($validator->getData()[$parameters[0]]) &&
-                array_key_exists($value, $validator->getData()[$parameters[0]])
-            );
+                array_key_exists($value, $validator->getData()[$parameters[0]]);
         });
         Validator::replacer('fieldin', function ($message, $attribute, $rule, $parameters) {
             return str_replace(':other', $parameters[0], $message);

@@ -4,7 +4,6 @@ namespace Korko\SecretSanta\Http\Controllers;
 
 use Korko\SecretSanta\Http\Requests\RandomFormRequest;
 use Korko\SecretSanta\Libs\Randomizer;
-use Illuminate\Http\Request;
 use Mail;
 
 class RandomFormController extends Controller
@@ -22,11 +21,11 @@ class RandomFormController extends Controller
 
         $participants = [];
         for ($i = 0; $i < count($names); $i++) {
-            $participants[$i] = array(
-                'name' => $names[$i],
-                'email' => $emails[$i],
-                'partner' => !empty($partners[$i]) ? $names[$partners[$i]] : null
-            );
+            $participants[$i] = [
+                'name'    => $names[$i],
+                'email'   => $emails[$i],
+                'partner' => !empty($partners[$i]) ? $names[$partners[$i]] : null,
+            ];
         }
 
         $hat = Randomizer::randomize($participants);
@@ -42,6 +41,7 @@ class RandomFormController extends Controller
         }
 
         $message = 'Envoyé avec succès !';
+
         return $request->ajax() ? [$message] : redirect('/')->with('message', $message);
     }
 }
