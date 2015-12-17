@@ -2,8 +2,6 @@
 
 namespace Korko\SecretSanta\Http\Requests;
 
-use Korko\SecretSanta\Http\Requests\Request;
-
 class RandomFormRequest extends Request
 {
     /**
@@ -25,19 +23,19 @@ class RandomFormRequest extends Request
     {
         $rules = [
             'g-recaptcha-response' => 'required|recaptcha',
-            'name' => 'required|arrayunique',
-            'title' => 'required|string',
-            'content' => 'required|contains:{TARGET}',
-            'email' => 'array',
-            'number' => 'array',
-            'partner' => 'array'
+            'name'                 => 'required|arrayunique',
+            'title'                => 'required|string',
+            'content'              => 'required|contains:{TARGET}',
+            'email'                => 'array',
+            'number'               => 'array',
+            'partner'              => 'array',
         ];
 
         foreach ($this->request->get('name') as $key => $name) {
             $rules += [
-                'email.'.$key => 'required_if:number.'.$key.',null|email',
-                'number.'.$key => 'required_if:email.'.$key.',null|numeric|regex:#336\d{8}',
-                'partner.'.$key => 'sometimes|string|fieldin:name'
+                'email.'.$key   => 'required_if:number.'.$key.',null|email',
+                'number.'.$key  => 'required_if:email.'.$key.',null|numeric|regex:#336\d{8}',
+                'partner.'.$key => 'sometimes|string|fieldin:name',
             ];
         }
 
