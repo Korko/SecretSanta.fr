@@ -88,7 +88,7 @@
                                 Secret Santa est un moyen drôle et original de s'offrir anonymement des cadeaux entre amis, collègues...<br />
                                 Le déroulement est simple : chaque participant reçoit, de façon aléatoire, le nom de la personne à qui il devra faire un cadeau.<br />
                                 Le montant du cadeau est généralement fixé au préalable (2€, 5€, 10€...)<br />
-                                Le but n'est pas forcément de faire un beau cadeau mais de faire original. Soyez créatifs !
+                                Le but n'est pas forcément de faire un beau cadeau mais d'être créatif !
                             </p>
                         </div>
                     </li>
@@ -119,26 +119,38 @@
                             <img class="media-object" src="media/img/user-icon.png" />
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">Première étape : remplir les informations des participants</h4>
+                            <h4 class="media-heading">Première étape : spécifier le nombre et les noms des participants</h4>
                             <p>
-                                Pour chaque personne, indiquez un nom/prénom ou un pseudonyme. Deux participants ne peuvent avoir le même nom, sinon il est impossible de les différencier.<br />
                                 Grâce aux boutons "Ajouter un participant" et "Enlever un participant", il est possible d'ajuster le nombre de personnes.<br />
-                                A noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se pioicher elle-même.<br />
-                                (Optionel) Ajoutez des exclusions. Si vous ne voulez pas que les conjoints puissent se piocher l'un l'autre, remplissez le champ "Partenaire".
+                                Pour chaque personne, indiquez un nom/prénom ou un pseudonyme. Deux participants ne peuvent avoir le même nom, sinon il est impossible de les différencier.<br />
+                                A noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se piocher elle-même.
                             </p>
                         </div>
                     </li>
                     <li class="media">
                         <div class="media-body">
-                            <h4 class="media-heading">Seconde étape : préparer le mail</h4>
+                            <h4 class="media-heading">Deuxième étape : remplir les informations de contact et les exclusions</h4>
                             <p>
-                            Spécifiez le titre ainsi que le corps du message que chaque participant recevra.<br />
-                            Le mot clef "{TARGET}" est obligatoire dans le corps du mail afin de donner à chaque personne sa "cible".<br />
-                            (Optionel) Vous pouvez aussi utiliser le mot clef "{SANTA}" qui sera remplacé par le nom du destinataire du mail.
+                                Vous avez la possibilité de choisir si les participants recevront le nom de leur cible par e-mail, par sms, ou les deux.<br />
+                                Pour cela, précisez pour chacun une adresse e-mail et/ou un numéro de téléphone portable.
+                                (Optionel) Ajoutez des exclusions. Si vous ne voulez pas que les conjoints puissent se piocher l'un l'autre, remplissez le champ "Partenaire".<br />
                             </p>
                         </div>
                         <div class="media-right media-middle">
+                            <img class="media-object" src="media/img/paper-icon.png" />
+                        </div>
+                    </li>
+                    <li class="media">
+                        <div class="media-left media-middle">
                             <img class="media-object" src="media/img/mail-icon.png" />
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">Troisième étape : préparer le mail ou le sms</h4>
+                            <p>
+                            Il ne vous reste plus qu'à remplir le titre et le corps du courriel ou du SMS que les participants recevront.<br />
+                            Le mot clef "{TARGET}" est obligatoire dans le corps du message afin de donner à chaque personne sa "cible".<br />
+                            (Optionel) Vous pouvez aussi utiliser le mot clef "{SANTA}" qui sera remplacé par le nom du destinataire du message.
+                            </p>
                         </div>
                     </li>
                 </ul>
@@ -178,10 +190,12 @@
                             <table id="participants" class="table table-hover table-numbered">
                                 <thead>
                                     <tr>
-                                        <th class="col-xs-4">Nom ou pseudonyme</th>
-                                        <th class="col-xs-4">Adresse e-mail</th>
-                                        <th class="col-xs-2">Partenaire (ne pourra être sa cible)</th>
-                                        <th class="col-xs-2"></th>
+                                        <th class="col-xs-3">Nom ou pseudonyme</th>
+                                        <th class="col-xs-3">Adresse e-mail</th>
+                                        <th class="col-xs-0"></th>
+                                        <th class="col-xs-2 col-lg-1">Téléphone</th>
+                                        <th class="col-xs-2">Partenaire</th>
+                                        <th class="col-xs-1 col-lg-2"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -196,8 +210,14 @@
                                                 </div>
                                             </label>
                                         </td>
-                                        <td class="row">
-                                            <input type="email" name="email[]" required="required" placeholder="exemple : michel@aol.com" value="{{ array_get(old('email', []), $idx) }}" class="form-control" />
+                                        <td class="row border-left">
+                                            <input type="email" name="email[]" placeholder="exemple : michel@aol.com" value="{{ array_get(old('email', []), $idx) }}" class="form-control participant-email" />
+                                        </td>
+                                        <td>
+                                            et/ou
+                                        </td>
+                                        <td class="row border-right">
+                                            <input type='tel' pattern='0[67]\d{8}' maxlength="10" name="phone[]" placeholder="ex : 0612345678" value="{{ array_get(old('phone', []), $idx) }}" class="form-control participant-phone" />
                                         </td>
                                         <td class="row">
                                             <select name="partner[]" class="form-control participant-partner">
@@ -209,7 +229,7 @@
                                             </select>
                                         </td>
                                         <td class="row participant-remove-wrapper">
-                                            <button type="button" class="btn btn-danger participant-remove"><span class="glyphicon glyphicon-minus"></span> Enlever ce participant</button>
+                                            <button type="button" class="btn btn-danger participant-remove"><span class="glyphicon glyphicon-minus"></span><span> Enlever ce participant</span></button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -218,16 +238,30 @@
                             <button type="button" class="btn btn-success participant-add"><span class="glyphicon glyphicon-plus"></span> Ajouter un participant</button>
                         </div>
 
-                        <div class="form-group">
-                            <label for="mailTitle">Titre du mail</label>
-                            <input id="mailTitle" type="text" name="title" required="required" placeholder="exemple : Soirée secretsanta du 23 décembre chez Martin" value="{{ old('title') }}" class="form-control" />
+                        <div class="row" id="contact">
+                            <fieldset id="form-mail-group" class="col-md-6">
+                                <div class="form-group">
+                                    <label for="mailTitle">Titre du mail</label>
+                                    <input id="mailTitle" type="text" name="title" required="required" placeholder="ex : Soirée secretsanta du 23 décembre chez Martin" value="{{ old('title') }}" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="mailContent">Contenu du mail</label>
+                                    <textarea id="mailContent" name="contentMail" required="required" placeholder="ex : Salut {SANTA}, pour la soirée secret santa, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !" class="form-control" rows="3">{{ old('contentMail') }}</textarea>
+                                    <p class="help-block">Utilisez "{SANTA}" pour le nom de celui qui recevra le mail et "{TARGET}" pour le nom de sa cible.</p>
+                                    <p class="help-block">Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.</p>
+                                </div>
+                            </fieldset>
+
+                            <fieldset id="form-sms-group" class="col-md-6">
+                                <div class="form-group">
+                                    <label for="smsContent">Contenu du sms</label>
+                                    <textarea id="smsContent" name="contentSMS" required="required" placeholder="ex : Salut {SANTA}, pour la soirée secret santa du 23 décembre chez Martin, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !" class="form-control" rows="3">{{ old('contentSMS') }}</textarea>
+                                    <p class="help-block">Utilisez "{SANTA}" pour le nom de celui qui recevra le sms et "{TARGET}" pour le nom de sa cible.</p>
+                                    <p class="help-block">Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.</p>
+                                </div>
+                            </fieldset>
                         </div>
-                        <div class="form-group">
-                            <label for="mailContent">Contenu du mail</label>
-                            <textarea id="mailContent" name="content" required="required" placeholder="exemple : Salut {SANTA}, pour la soirée secret santa, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !" class="form-control" rows="3">{{ old('content') }}</textarea>
-                            <p class="help-block">Utilisez "{SANTA}" pour le nom de celui qui recevra le mail et "{TARGET}" pour le nom de sa cible.</p>
-                            <p class="help-block">Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.</p>
-                        </div>
+
                         <div class="form-group btn">
                             {!! Recaptcha::render() !!}
                         </div>
