@@ -3,6 +3,8 @@ Theme Name: MeatKing
 Version:    1.14.20
 Author:     ThemeWagon
 
+Tiny bug when width <780px, there an horizontal scrollbar
+
 TABLE OF CONTENTS
     01 - General and Typography
     02 - Header
@@ -243,7 +245,9 @@ img {
 }
 .media-body p::first-line {
 }
-
+#how div.well {
+    font-style: italic;
+}
 
 /* ==========================================================================
     06. Form
@@ -266,6 +270,15 @@ img {
 }
 #form.success .success-wrapper {
     display: block;
+}
+.col-xs-0 {
+    width: 1%;
+}
+.border-left {
+    border-left: 1px solid #ddd;
+}
+.border-right {
+    border-right: 1px solid #ddd;
 }
 
 
@@ -302,7 +315,7 @@ footer .inner {
         font-size: 22px;
     }
 }
-@media screen and (min-width: 768px) {
+@media (min-width: 768px) {
     .navbar-nav {
         float: none !important;
         width: 100%;
@@ -315,6 +328,19 @@ footer .inner {
     }
     .navbar-nav>li:nth-child(2) {
         margin-right: 110px;
+    }
+}
+@media (min-width: 992px) {
+    #contact > fieldset:first-child {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        border-right: 2px solid #ccc;
+    }
+}
+@media (max-width: 1199px) {
+    .participant-remove span:nth-child(2) {
+        display: none;
     }
 }
 

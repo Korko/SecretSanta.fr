@@ -5,6 +5,7 @@ namespace Korko\SecretSanta\Http\Controllers;
 use Korko\SecretSanta\Http\Requests\RandomFormRequest;
 use Korko\SecretSanta\Libs\Randomizer;
 use Mail;
+use SmsWave;
 use Statsd;
 
 class RandomFormController extends Controller
@@ -16,36 +17,66 @@ class RandomFormController extends Controller
 
     public function handle(RandomFormRequest $request)
     {
+        $participants = $this->getParticipants($request);
+
+        $hat = Randomizer::randomize($participants);
+
+        $this->sendMessages($request, $participants, $hat);
+
+        $message = 'Envoyé avec succès !';
+        return $request->ajax() ? [$message] : redirect('/')->with('message', $message);
+    }
+
+    protected function getParticipants(Request $request)
+    {
         $names = $request->input('name');
         $emails = $request->input('email');
+        $phones = $request->input('phone');
         $partners = $request->input('partner', []);
 
         $participants = [];
         for ($i = 0; $i < count($names); $i++) {
-            $participants[$i] = [
-                'name'    => $names[$i],
-                'email'   => $emails[$i],
-                'partner' => !empty($partners[$i]) ? $names[$partners[$i]] : null,
-            ];
+            $participants[$i] = array(
+                'name' => $names[$i],
+                'email' => $emails[$i],
+                'phone' => $phones[$i],
+                'partner' => !empty($partners[$i]) ? $names[$partners[$i]] : null
+            );
         }
 
         Statsd::gauge('draws', '+1');
         Statsd::gauge('participants', '+'.count($participants));
 
-        $hat = Randomizer::randomize($participants);
+        return $participants;
+    }
 
+    protected function sendMessages(Request $request, array $participants, array $hat)
+    {
         foreach ($hat as $santaIdx => $targetName) {
             $santa = $participants[$santaIdx];
 
-            $content = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $request->input('content'));
+            $this->sendMessage($request, $santa, $targetName);
+        }
+    }
 
-            Mail::raw($content, function ($m) use ($santa, $request) {
-                $m->to($santa['email'], $santa['name'])->subject($request->input('title'));
-            });
+    protected function sendMessages(Request $request, array $santa, $targetName)
+    {
+        if(!empty($santa['email'])) {
+            Statsd::gauge('email', '+1');
+            $this->sendMail($santa, $targetName, $request->input('title'), $request->input('contentMail'))
         }
 
-        $message = 'Envoyé avec succès !';
+        if(!empty($santa['phone'])) {
+            Statsd::gauge('phone', '+1');
+            $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $request->input('contentSMS'));
+            SmsWave::send($santa['phone'], $contentSms);
+        }
+    }
 
-        return $request->ajax() ? [$message] : redirect('/')->with('message', $message);
+    protected function sendMail($santa, $targetName, $title, $content) {
+        $contentMail = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $content);
+        Mail::raw($contentMail, function ($m) use ($santa, $title) {
+            $m->to($santa['email'], $santa['name'])->subject($title);
+        });
     }
 }

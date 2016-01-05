@@ -23,20 +23,26 @@ class RandomFormRequest extends Request
     {
         $rules = [
             'g-recaptcha-response' => 'required|recaptcha',
-            'name'                 => 'required|arrayunique',
-            'title'                => 'required|string',
-            'content'              => 'required|contains:{TARGET}',
-            'email'                => 'array',
-            'number'               => 'array',
-            'partner'              => 'array',
+            'name' => 'required|array|min:2|arrayunique',
+            'email' => 'array',
+            'phone' => 'array',
+            'partner' => 'array'
         ];
 
-        foreach ($this->request->get('name') as $key => $name) {
+        if(!empty($this->request->get('name'))) {
             $rules += [
-                'email.'.$key   => 'required_if:number.'.$key.',null|email',
-                'number.'.$key  => 'required_if:email.'.$key.',null|numeric|regex:#336\d{8}',
-                'partner.'.$key => 'sometimes|string|fieldin:name',
+                'title' => 'required_with:'.implode(',', array_map(function($key) { return 'email.'.$key; }, array_keys($this->request->get('name', [])))).'|string',
+                'contentMail' => 'required_with:'.implode(',', array_map(function($key) { return 'email.'.$key; }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}',
+                'contentSMS' => 'required_with:'.implode(',', array_map(function($key) { return 'phone.'.$key; }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}'
             ];
+
+            foreach ($this->request->get('name') as $key => $name) {
+                $rules += [
+                    'email.'.$key => 'required_without:phone.'.$key.'|email',
+                    'phone.'.$key => 'required_without:email.'.$key.'|numeric|regex:#0[67]\d{8}#',
+                    'partner.'.$key => 'sometimes|numeric|fieldinkeys:name,'.$key
+                ];
+            }
         }
 
         return $rules;

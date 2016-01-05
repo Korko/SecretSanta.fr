@@ -5,3 +5,4 @@ Homestead.json
 .env
 /app/Http/Controllers/RecoveryFormController.php
 /resources/views/recoveryForm.blade.php
+sftp-config.json
