@@ -80,6 +80,7 @@ $("#form form").submit(function(e) {
                 $.scrollTo($('#success-wrapper'), 800, {offset: -120});
             },
             error: function(jqXHR, textStatus, errorThrown) {
+                grecaptcha.reset();
                 $('#errors').html('');
                 $(jqXHR.responseJSON).each(function(field, errors) {
                     $.each(errors, function(k, err) {
