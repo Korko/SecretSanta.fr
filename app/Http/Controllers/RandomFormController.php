@@ -29,8 +29,8 @@ class RandomFormController extends Controller
             ];
         }
 
-        Statsd::increment('draws.total');
-        Statsd::increment('draws.participants', count($participants));
+        Statsd::gauge('draws', '+1');
+        Statsd::gauge('participants', '+'.count($participants));
 
         $hat = Randomizer::randomize($participants);
 
