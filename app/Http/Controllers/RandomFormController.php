@@ -5,6 +5,7 @@ namespace Korko\SecretSanta\Http\Controllers;
 use Korko\SecretSanta\Http\Requests\RandomFormRequest;
 use Korko\SecretSanta\Libs\Randomizer;
 use Mail;
+use Statsd;
 
 class RandomFormController extends Controller
 {
@@ -28,9 +29,8 @@ class RandomFormController extends Controller
             ];
         }
 
-        $statsd = new League\StatsD\Client();
-        $statsd->increment('draws.total');
-        $statsd->increment('draws.participants', count($participants));
+        Statsd::increment('draws.total');
+        Statsd::increment('draws.participants', count($participants));
 
         $hat = Randomizer::randomize($participants);
 
