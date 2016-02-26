@@ -28,9 +28,9 @@ class RandomFormController extends Controller
             ];
         }
 
-	$statsd = new League\StatsD\Client();
-	$statsd->increment('draws.total');
-	$statsd->increment('draws.participants', count($participants));
+        $statsd = new League\StatsD\Client();
+        $statsd->increment('draws.total');
+        $statsd->increment('draws.participants', count($participants));
 
         $hat = Randomizer::randomize($participants);
 
