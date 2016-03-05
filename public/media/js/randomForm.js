@@ -60,6 +60,34 @@ $(document.body).on('blur', '.participant-name', function(event) {
 
 });
 
+$('#form-mail-group').prop('disabled', 'disabled');
+$(document.body).on('blur', '.participant-email', function(event) {
+
+    $('#form-mail-group').prop('disabled', 'disabled');
+
+    $('.participant-email').each(function() {
+        if($(this).val()){
+           $('#form-mail-group').prop('disabled', false);
+           return false;
+        }
+    });
+
+});
+
+$('#form-sms-group').prop('disabled', 'disabled');
+$(document.body).on('blur', '.participant-phone', function(event) {
+
+    $('#form-sms-group').prop('disabled', 'disabled');
+
+    $('.participant-phone').each(function() {
+        if($(this).val()){
+           $('#form-sms-group').prop('disabled', false);
+           return false;
+        }
+    });
+
+});
+
 // Validate a phone number field
 var locked = false;
 $("#form form").submit(function(e) {
