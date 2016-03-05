@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class RequestTest extends TestCase
 {
@@ -13,6 +12,7 @@ class RequestTest extends TestCase
         $server = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
         $response = $this->call('POST', $url, $postArgs, [], [], $server);
         $this->assertEquals($code, $response->status());
+
         return json_decode($response->content(), true);
     }
 
@@ -20,7 +20,7 @@ class RequestTest extends TestCase
     {
         $arraykeys = array_keys($array);
 
-        foreach($keys as $key) {
+        foreach ($keys as $key) {
             $this->assertContains($key, $arraykeys);
         }
 
@@ -98,7 +98,7 @@ class RequestTest extends TestCase
 
         Mail::shouldReceive('raw')
             ->once()
-            ->with('test mail toto => tata', Mockery::on(function($closure) {
+            ->with('test mail toto => tata', Mockery::on(function ($closure) {
                 $message = Mockery::mock('Illuminate\Mailer\Message');
                 $message->shouldReceive('to')
                     ->with('test@test.com', 'toto')
@@ -107,6 +107,7 @@ class RequestTest extends TestCase
                     ->with('test mail title')
                     ->andReturn(Mockery::self());
                 $closure($message);
+
                 return true;
             }))
             ->andReturn(true);
@@ -117,12 +118,12 @@ class RequestTest extends TestCase
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
-            'name' => ['toto', 'tata'],
-            'email' => ['test@test.com', ''],
-            'phone' => ['', '0612345678'],
-            'partners' => ['', ''],
-            'title' => 'test mail title', 'contentMail' => 'test mail {SANTA} => {TARGET}',
-            'contentSMS' => 'test sms {SANTA} => {TARGET}'
+            'name'                 => ['toto', 'tata'],
+            'email'                => ['test@test.com', ''],
+            'phone'                => ['', '0612345678'],
+            'partners'             => ['', ''],
+            'title'                => 'test mail title', 'contentMail' => 'test mail {SANTA} => {TARGET}',
+            'contentSMS'           => 'test sms {SANTA} => {TARGET}',
         ], 200);
         $this->assertEquals(['Envoyé avec succès !'], $content);
     }
