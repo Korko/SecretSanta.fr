@@ -23,24 +23,24 @@ class RandomFormRequest extends Request
     {
         $rules = [
             'g-recaptcha-response' => 'required|recaptcha',
-            'name' => 'required|array|min:2|arrayunique',
-            'email' => 'array',
-            'phone' => 'array',
-            'partner' => 'array'
+            'name'                 => 'required|array|min:2|arrayunique',
+            'email'                => 'array',
+            'phone'                => 'array',
+            'partner'              => 'array',
         ];
 
-        if(!empty($this->request->get('name'))) {
+        if (!empty($this->request->get('name'))) {
             $rules += [
-                'title' => 'required_with:'.implode(',', array_map(function($key) { return 'email.'.$key; }, array_keys($this->request->get('name', [])))).'|string',
-                'contentMail' => 'required_with:'.implode(',', array_map(function($key) { return 'email.'.$key; }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}',
-                'contentSMS' => 'required_with:'.implode(',', array_map(function($key) { return 'phone.'.$key; }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}'
+                'title'       => 'required_with:'.implode(',', array_map(function ($key) { return 'email.'.$key; }, array_keys($this->request->get('name', [])))).'|string',
+                'contentMail' => 'required_with:'.implode(',', array_map(function ($key) { return 'email.'.$key; }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}',
+                'contentSMS'  => 'required_with:'.implode(',', array_map(function ($key) { return 'phone.'.$key; }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}',
             ];
 
             foreach ($this->request->get('name') as $key => $name) {
                 $rules += [
-                    'email.'.$key => 'required_without:phone.'.$key.'|email',
-                    'phone.'.$key => 'required_without:email.'.$key.'|numeric|regex:#0[67]\d{8}#',
-                    'partner.'.$key => 'sometimes|numeric|fieldinkeys:name,'.$key
+                    'email.'.$key   => 'required_without:phone.'.$key.'|email',
+                    'phone.'.$key   => 'required_without:email.'.$key.'|numeric|regex:#0[67]\d{8}#',
+                    'partner.'.$key => 'sometimes|numeric|fieldinkeys:name,'.$key,
                 ];
             }
         }
