@@ -59,7 +59,7 @@ class RandomFormController extends Controller
         }
     }
 
-    protected function sendMessages(Request $request, array $santa, $targetName)
+    protected function sendMessage(Request $request, array $santa, $targetName)
     {
         if(!empty($santa['email'])) {
             Statsd::gauge('email', '+1');
