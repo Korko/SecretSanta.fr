@@ -24,6 +24,7 @@ class RandomFormController extends Controller
         $this->sendMessages($request, $participants, $hat);
 
         $message = 'Envoyé avec succès !';
+
         return $request->ajax() ? [$message] : redirect('/')->with('message', $message);
     }
 
@@ -36,12 +37,12 @@ class RandomFormController extends Controller
 
         $participants = [];
         for ($i = 0; $i < count($names); $i++) {
-            $participants[$i] = array(
-                'name' => $names[$i],
-                'email' => $emails[$i],
-                'phone' => $phones[$i],
-                'partner' => !empty($partners[$i]) ? $names[$partners[$i]] : null
-            );
+            $participants[$i] = [
+                'name'    => $names[$i],
+                'email'   => $emails[$i],
+                'phone'   => $phones[$i],
+                'partner' => !empty($partners[$i]) ? $names[$partners[$i]] : null,
+            ];
         }
 
         Statsd::gauge('draws', '+1');
@@ -61,19 +62,20 @@ class RandomFormController extends Controller
 
     protected function sendMessage(Request $request, array $santa, $targetName)
     {
-        if(!empty($santa['email'])) {
+        if (!empty($santa['email'])) {
             Statsd::gauge('email', '+1');
             $this->sendMail($santa, $targetName, $request->input('title'), $request->input('contentMail'));
         }
 
-        if(!empty($santa['phone'])) {
+        if (!empty($santa['phone'])) {
             Statsd::gauge('phone', '+1');
             $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $request->input('contentSMS'));
             SmsWave::send($santa['phone'], $contentSms);
         }
     }
 
-    protected function sendMail($santa, $targetName, $title, $content) {
+    protected function sendMail($santa, $targetName, $title, $content)
+    {
         $contentMail = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $content);
         Mail::raw($contentMail, function ($m) use ($santa, $title) {
             $m->to($santa['email'], $santa['name'])->subject($title);
