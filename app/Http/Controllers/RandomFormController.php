@@ -63,7 +63,7 @@ class RandomFormController extends Controller
     {
         if(!empty($santa['email'])) {
             Statsd::gauge('email', '+1');
-            $this->sendMail($santa, $targetName, $request->input('title'), $request->input('contentMail'))
+            $this->sendMail($santa, $targetName, $request->input('title'), $request->input('contentMail'));
         }
 
         if(!empty($santa['phone'])) {
