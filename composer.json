@@ -8,7 +8,9 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
         "crazyinventor/laravel5-recaptcha2": "^1.0",
-        "league/statsd": "dev-master"
+        "league/statsd": "dev-master",
+        "korko/sms-wave": "dev-master",
+        "korko/validator": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
