@@ -1,6 +1,6 @@
 <?php
 
-use App\Libs\Randomizer;
+use Korko\SecretSanta\Libs\Randomizer;
 
 class RandomizerTest extends TestCase
 {
