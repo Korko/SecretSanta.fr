@@ -13,5 +13,5 @@ return [
     */
 
     'sitekey' => env('RECAPTCHA_SITEKEY', ''),
-    'secret' => env('RECAPTCHA_SECRET', '')
+    'secret'  => env('RECAPTCHA_SECRET', ''),
 ];
