@@ -7,14 +7,35 @@
 <head>
     <title>Secret Santa</title>
 
+    <link rel="canonical" href="{{ URL::to('/') }}">
+
     <!-- meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="description" content="Outils pour aider à organiser un secret-santa">
+    <meta name="keywords" content="soiree,organisation,secretsanta,noel,cadeau,secret">
+    <meta name="author" content="Korko <webmaster@secretsanta.fr>">
+
+    <!-- opengraph/facebook -->
+    <meta property="og:title" content="SecretSanta">
+    <meta property="og:site_name" content="SecretSanta">
+    <meta property="og:url" content="{{ URL::to('/') }}">
+    <meta property="og:image" content="{{ URL::asset('media/img/logo_black.png') }}">
+    <meta property="og:description" content="Outils pour aider à organiser un secret-santa">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr">
+
+    <!-- twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@korkof">
+    <meta name="twitter:creator" content="Korko">
+    <meta name="twitter:title" content="SecretSanta">
+    <meta name="twitter:description" content="Outils pour aider à organiser un secret-santa">
+    <meta name="twitter:image" content="{{ URL::asset('media/img/logo_black.png') }}">
 
     <!-- facebook image -->
-    <link rel="image_src" href="media/img/logo_black.png" />
+    <link rel="image_src" href="{{ URL::asset('media/img/logo_black.png') }}" />
 
     <!-- css -->
     <link rel="stylesheet" href="media/css/bootstrap.min.css" />
