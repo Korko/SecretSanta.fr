@@ -31,9 +31,15 @@ class RandomFormRequest extends Request
 
         if (!empty($this->request->get('name'))) {
             $rules += [
-                'title'       => 'required_with:'.implode(',', array_map(function ($key) { return 'email.'.$key; }, array_keys($this->request->get('name', [])))).'|string',
-                'contentMail' => 'required_with:'.implode(',', array_map(function ($key) { return 'email.'.$key; }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}',
-                'contentSMS'  => 'required_with:'.implode(',', array_map(function ($key) { return 'phone.'.$key; }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}',
+                'title'       => 'required_with:'.implode(',', array_map(function ($key) {
+                    return 'email.'.$key;
+                }, array_keys($this->request->get('name', [])))).'|string',
+                'contentMail' => 'required_with:'.implode(',', array_map(function ($key) {
+                    return 'email.'.$key;
+                }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}',
+                'contentSMS'  => 'required_with:'.implode(',', array_map(function ($key) {
+                    return 'phone.'.$key;
+                }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}',
             ];
 
             foreach ($this->request->get('name') as $key => $name) {
