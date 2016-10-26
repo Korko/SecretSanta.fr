@@ -145,6 +145,8 @@ return [
          * Vendors Service Providers...
          */
         CrazyInventor\Lacaptcha\LacaptchaServiceProvider::class,
+        Korko\Validator\ValidatorServiceProvider::class,
+        Korko\SmsWave\SmsWaveServiceProvider::class,
         League\StatsD\Laravel5\Provider\StatsdServiceProvider::class,
 
     ],
@@ -190,6 +192,7 @@ return [
         'Route'     => Illuminate\Support\Facades\Route::class,
         'Schema'    => Illuminate\Support\Facades\Schema::class,
         'Session'   => Illuminate\Support\Facades\Session::class,
+        'SmsWave'   => Korko\SmsWave\SmsWaveFacade::class,
         'Statsd'    => League\StatsD\Laravel5\Facade\StatsdFacade::class,
         'Storage'   => Illuminate\Support\Facades\Storage::class,
         'URL'       => Illuminate\Support\Facades\URL::class,
