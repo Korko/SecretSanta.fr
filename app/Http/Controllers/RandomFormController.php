@@ -2,6 +2,7 @@
 
 namespace Korko\SecretSanta\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Korko\SecretSanta\Http\Requests\RandomFormRequest;
 use Korko\SecretSanta\Libs\Randomizer;
 use Mail;
