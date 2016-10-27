@@ -8,6 +8,7 @@ use Korko\SecretSanta\Libs\Randomizer;
 use Mail;
 use SmsWave;
 use Statsd;
+use Twilio;
 
 class RandomFormController extends Controller
 {
@@ -71,7 +72,8 @@ class RandomFormController extends Controller
         if (!empty($santa['phone'])) {
             Statsd::gauge('phone', '+1');
             $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $request->input('contentSMS'));
-            SmsWave::send($santa['phone'], $contentSms);
+            $contentSms .= PHP_EOL."[via SecretSanta.fr]";
+            Twilio::message($santa['phone'], $contentSms);
         }
     }
 
