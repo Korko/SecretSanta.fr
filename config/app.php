@@ -144,9 +144,10 @@ return [
         /*
          * Vendors Service Providers...
          */
+
+        Aloha\Twilio\Support\Laravel\ServiceProvider::class,
         CrazyInventor\Lacaptcha\LacaptchaServiceProvider::class,
         Korko\Validator\ValidatorServiceProvider::class,
-        Korko\SmsWave\SmsWaveServiceProvider::class,
         League\StatsD\Laravel5\Provider\StatsdServiceProvider::class,
 
     ],
@@ -192,9 +193,9 @@ return [
         'Route'     => Illuminate\Support\Facades\Route::class,
         'Schema'    => Illuminate\Support\Facades\Schema::class,
         'Session'   => Illuminate\Support\Facades\Session::class,
-        'SmsWave'   => Korko\SmsWave\SmsWaveFacade::class,
         'Statsd'    => League\StatsD\Laravel5\Facade\StatsdFacade::class,
         'Storage'   => Illuminate\Support\Facades\Storage::class,
+        'Twilio'    => Aloha\Twilio\Support\Laravel\Facade::class,
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
