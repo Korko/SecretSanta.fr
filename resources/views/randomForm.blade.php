@@ -275,8 +275,8 @@
 
                             <fieldset id="form-sms-group" class="col-md-6">
                                 <div class="form-group">
-                                    <label for="smsContent">Contenu du sms</label>
-                                    <textarea id="smsContent" name="contentSMS" required="required" placeholder="ex : Salut {SANTA}, pour la soirée secret santa du 23 décembre chez Martin, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !" class="form-control" rows="3">{{ old('contentSMS') }}</textarea>
+                                    <label for="smsContent">Contenu du sms <span class="tip">(130 caractères max)</span></label>
+                                    <textarea id="smsContent" name="contentSMS" required="required" placeholder="ex : Salut {SANTA}, pour la soirée secret santa du 23 décembre chez Martin, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !" class="form-control" rows="3" maxlength="130">{{ old('contentSMS') }}</textarea>
                                     <p class="help-block">Utilisez "{SANTA}" pour le nom de celui qui recevra le sms et "{TARGET}" pour le nom de sa cible.</p>
                                     <p class="help-block">Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.</p>
                                 </div>
@@ -327,5 +327,23 @@
         alertify.alert("{{ session('message') }}");
     </script>
     @endif
+
+    <!-- Piwik -->
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+      _paq.push(["setDomains", ["*.secretsanta.fr"]]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//k0rko.fr/piwik/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', 3]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <noscript><p><img src="//k0rko.fr/piwik/piwik.php?idsite=3" style="border:0;" alt="" /></p></noscript>
+    <!-- End Piwik Code -->
 </body>
 </html>

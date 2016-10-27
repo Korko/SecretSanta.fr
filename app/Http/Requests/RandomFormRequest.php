@@ -39,7 +39,7 @@ class RandomFormRequest extends Request
                 }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}',
                 'contentSMS'  => 'required_with:'.implode(',', array_map(function ($key) {
                     return 'phone.'.$key;
-                }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}',
+                }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}|max:130',
             ];
 
             foreach ($this->request->get('name') as $key => $name) {

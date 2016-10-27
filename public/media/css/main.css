@@ -280,6 +280,10 @@ img {
 .border-right {
     border-right: 1px solid #ddd;
 }
+.tip {
+    font-style: italic;
+    font-size: 12px;
+}
 
 
 /* ==========================================================================
