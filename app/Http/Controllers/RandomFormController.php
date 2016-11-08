@@ -71,9 +71,7 @@ class RandomFormController extends Controller
 
         if (!empty($santa['phone'])) {
             Statsd::gauge('phone', '+1');
-            $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $request->input('contentSMS'));
-            $contentSms .= PHP_EOL."[via SecretSanta.fr]";
-            Twilio::message($santa['phone'], $contentSms);
+            $this->sendSms($santa, $targetName, $request->input('contentSMS'));
         }
     }
 
@@ -83,5 +81,12 @@ class RandomFormController extends Controller
         Mail::raw($contentMail, function ($m) use ($santa, $title) {
             $m->to($santa['email'], $santa['name'])->subject($title);
         });
+    }
+
+    protected function sendSms($santa, $targetName, $content)
+    {
+        $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $content);
+        $contentSms .= PHP_EOL."[via SecretSanta.fr]";
+        Twilio::message($santa['phone'], $contentSms);
     }
 }
