@@ -111,9 +111,10 @@ class RequestTest extends TestCase
                 return true;
             }))
             ->andReturn(true);
-        SmsWave::shouldReceive('send')
+
+        Twilio::shouldReceive('message')
             ->once()
-            ->with('0612345678', 'test sms tata => toto')
+            ->with('0612345678', '#^test sms "tata\' => &toto#')
             ->andReturn(true);
 
         $content = $this->ajaxPost('/', [
@@ -122,8 +123,9 @@ class RequestTest extends TestCase
             'email'                => ['test@test.com', ''],
             'phone'                => ['', '0612345678'],
             'partners'             => ['', ''],
-            'title'                => 'test mail title', 'contentMail' => 'test mail {SANTA} => {TARGET}',
-            'contentSMS'           => 'test sms {SANTA} => {TARGET}',
+            'title'                => 'test mail title',
+            'contentMail'          => 'test mail {SANTA} => {TARGET}',
+            'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
         ], 200);
         $this->assertEquals(['Envoyé avec succès !'], $content);
     }
