@@ -304,8 +304,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     &copy; Copyright SecretSanta.fr 2015
-                    <br/>Projet De <a class="themeBy" href="http://www.korko.fr">Korko</a>
-                    <br/>Theme Par <a class="themeBy" href="http://www.themewagon.com">ThemeWagon</a>
+                    <br/>Projet De <a class="themeBy" href="https://www.korko.fr">Korko</a>
+                    <br/>Theme Par <a class="themeBy" href="https://www.themewagon.com">ThemeWagon</a>
+                    <br/>Icones Par <a class="themeBy" href="https://www.iconfinder.com/iconsets/doublejdesign-free-icon-handy_color">Double-J Designs</a>
                 </div>
             </div>
         </div>
