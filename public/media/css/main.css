@@ -361,9 +361,9 @@ footer .inner {
         display: block;
         top: -30px;
         right: 0;
-        width: 200px;
-        overflow: hidden;
-        height: 200px;
+        width: 105px;
+        overflow: visible;
+        height: 135px;
         z-index: 9999;
     }
     #forkongithub a {

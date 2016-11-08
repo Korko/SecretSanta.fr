@@ -313,7 +313,7 @@
         <!-- /.container -->
     </footer>
 
-    <span id="forkongithub"><a href="https://github.com/Korko/SecretSanta" title="Fork me on GitHub">Fork me on GitHub</a></span>
+    <span id="forkongithub" class="hidden-sm"><a href="https://github.com/Korko/SecretSanta" title="Fork me on GitHub">Fork me on GitHub</a></span>
 
     <script type="text/javascript" src="media/js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="media/js/jquery.actual.min.js"></script>
