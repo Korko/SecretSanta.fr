@@ -3,7 +3,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js" lang="fr"> <!--<![endif]-->
+<html class="no-js" lang="{{ App::getLocale() }}"> <!--<![endif]-->
 <head>
     <title>Secret Santa</title>
 
@@ -13,8 +13,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="description" content="Outils pour aider à organiser un secret-santa">
-    <meta name="keywords" content="soiree,organisation,secretsanta,noel,cadeau,secret">
+    <meta name="description" content="@lang('headers.description')">
+    <meta name="keywords" content="@lang('headers.keywords')">
     <meta name="author" content="Korko <webmaster@secretsanta.fr>">
 
     <!-- opengraph/facebook -->
@@ -22,16 +22,16 @@
     <meta property="og:site_name" content="SecretSanta">
     <meta property="og:url" content="{{ URL::to('/') }}">
     <meta property="og:image" content="{{ URL::asset('media/img/logo_black.png') }}">
-    <meta property="og:description" content="Outils pour aider à organiser un secret-santa">
+    <meta property="og:description" content="@lang('headers.description')">
     <meta property="og:type" content="website">
-    <meta property="og:locale" content="fr">
+    <meta property="og:locale" content="{{ App::getLocale() }}">
 
     <!-- twitter -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@korkof">
     <meta name="twitter:creator" content="Korko">
     <meta name="twitter:title" content="SecretSanta">
-    <meta name="twitter:description" content="Outils pour aider à organiser un secret-santa">
+    <meta name="twitter:description" content="@lang('headers.description')">
     <meta name="twitter:image" content="{{ URL::asset('media/img/logo_black.png') }}">
 
     <!-- facebook image -->
@@ -66,10 +66,9 @@
                 </a>
             </div>
             <ul class="nav navbar-nav hidden-xs">
-                <li><a href="#what">Qu'est-ce que c'est ?</a></li>
-                <li><a href="#how">Comment faire ?</a></li>
-
-                <li><a href="#form">Allez, c'est parti !</a></li>
+                <li><a href="#what">@lang('form.nav.what')</a></li>
+                <li><a href="#how">@lang('form.nav.how')</a></li>
+                <li><a href="#form">@lang('form.nav.go')</a></li>
 
                 <!--fix for scroll spy active menu element-->
                 <li style="display:none;"><a href="#header"></a></li>
@@ -84,7 +83,7 @@
             <div class="banner">
                 <h1 class="">Secret Santa</h1>
             </div>
-            <div class="subtitle"><h4>Offrez-vous des cadeaux... secrètement !</h4></div>
+            <div class="subtitle"><h4>@lang('form.subtitle')</h4></div>
         </div>
         <div class="bottom text-center">
             <a id="scrollDownArrow" href="#"><i class="fa fa-chevron-down"></i></a>
@@ -95,8 +94,8 @@
     <div id="what" class="light-wrapper">
         <section class="ss-style-top"></section>
         <div class="container inner">
-            <h2 class="section-title text-center">Qu'est-ce que c'est ?</h2>
-            <p class="lead main text-center">Description du Secret Santa</p>
+            <h2 class="section-title text-center">@lang('form.section.what.title')</h2>
+            <p class="lead main text-center">@lang('form.section.what.subtitle')</p>
             <div class="row text-center what">
                 <ul class="media-list">
                     <li class="media">
@@ -104,13 +103,8 @@
                             <img class="media-object" src="media/img/calendar-icon.png" />
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">Le principe</h4>
-                            <p>
-                                Secret Santa est un moyen drôle et original de s'offrir anonymement des cadeaux entre amis, collègues...<br />
-                                Le déroulement est simple : chaque participant reçoit, de façon aléatoire, le nom de la personne à qui il devra faire un cadeau.<br />
-                                Le montant du cadeau est généralement fixé au préalable (2€, 5€, 10€...)<br />
-                                Le but n'est pas forcément de faire un beau cadeau mais d'être créatif !
-                            </p>
+                            <h4 class="media-heading">@lang('form.section.what.heading1')</h4>
+                            <p>{!! nl2br(trans('form.section.what.content1')) !!}</p>
                         </div>
                     </li>
                 </ul>
@@ -131,8 +125,8 @@
     <div id="how" class="light-wrapper">
         <section class="ss-style-top"></section>
         <div class="container inner">
-            <h2 class="section-title text-center">Comment faire ?</h2>
-            <p class="lead main text-center">Vous allez voir, c'est simple !</p>
+            <h2 class="section-title text-center">@lang('form.section.how.title')</h2>
+            <p class="lead main text-center">@lang('form.section.how.subtitle')</p>
             <div class="row text-center how">
                 <ul class="media-list">
                     <li class="media">
@@ -140,22 +134,14 @@
                             <img class="media-object" src="media/img/user-icon.png" />
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">Première étape : spécifier le nombre et les noms des participants</h4>
-                            <p>
-                                Grâce aux boutons "Ajouter un participant" et "Enlever un participant", il est possible d'ajuster le nombre de personnes.<br />
-                                Pour chaque personne, indiquez un nom/prénom ou un pseudonyme. Deux participants ne peuvent avoir le même nom, sinon il est impossible de les différencier.<br />
-                                A noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se piocher elle-même.
-                            </p>
+                            <h4 class="media-heading">@lang('form.section.how.heading1')</h4>
+                            <p>{!! nl2br(trans('form.section.how.content1')) !!}</p>
                         </div>
                     </li>
                     <li class="media">
                         <div class="media-body">
-                            <h4 class="media-heading">Deuxième étape : remplir les informations de contact et les exclusions</h4>
-                            <p>
-                                Vous avez la possibilité de choisir si les participants recevront le nom de leur cible par e-mail, par sms, ou les deux.<br />
-                                Pour cela, précisez pour chacun une adresse e-mail et/ou un numéro de téléphone portable.
-                                (Optionel) Ajoutez des exclusions. Si vous ne voulez pas que les conjoints puissent se piocher l'un l'autre, remplissez le champ "Partenaire".<br />
-                            </p>
+                            <h4 class="media-heading">@lang('form.section.how.heading2')</h4>
+                            <p>{!! nl2br(trans('form.section.how.content2')) !!}</p>
                         </div>
                         <div class="media-right media-middle">
                             <img class="media-object" src="media/img/paper-icon.png" />
@@ -166,16 +152,12 @@
                             <img class="media-object" src="media/img/mail-icon.png" />
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">Troisième étape : préparer le mail ou le sms</h4>
-                            <p>
-                            Il ne vous reste plus qu'à remplir le titre et le corps du courriel ou du SMS que les participants recevront.<br />
-                            Le mot clef "{TARGET}" est obligatoire dans le corps du message afin de donner à chaque personne sa "cible".<br />
-                            (Optionel) Vous pouvez aussi utiliser le mot clef "{SANTA}" qui sera remplacé par le nom du destinataire du message.
-                            </p>
+                            <h4 class="media-heading">@lang('form.section.how.heading3')</h4>
+                            <p>{!! nl2br(trans('form.section.how.content3')) !!}</p>
                         </div>
                     </li>
                 </ul>
-                <div class="well well-lg">Pour votre information : secretsanta.fr ne sauvegarde aucune de vos données ni ne les utilise à d'autres fins. Le code source est disponible sur <a href="https://github.com/Korko/SecretSanta">GitHub</a></div>
+                <div class="well well-lg">{!! trans('form.section.how.notice', ['link' => '<a href="https://github.com/Korko/SecretSanta">GitHub</a>']) !!}</div>
             </div>
         </div>
         <!-- /.container -->
@@ -192,11 +174,11 @@
     <div id="form" class="light-wrapper">
         <section class="ss-style-top"></section>
         <div class="container inner">
-            <h2 class="section-title text-center">À vous de jouer !</h2>
-            <p class="lead main text-center">Remplissez, cliquez et c'est parti !</p>
+            <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
+            <p class="lead main text-center">@lang('form.section.go.subtitle')</p>
             <div class="row text-center form">
                 <div id="success-wrapper" class="alert alert-success" style="display: none">
-                    Envoyé avec succès !
+                    @lang('form.success')
                 </div>
 
                 <div id="errors-wrapper" class="alert alert-danger" style="display: none">
@@ -206,16 +188,16 @@
 
                 <form action="{{ url('/') }}" method="post" autocomplete="off">
                     <fieldset>
-                        <legend>Détails des participants</legend>
+                        <legend>@lang('form.participants')</legend>
                         <div class="table-responsive form-group">
                             <table id="participants" class="table table-hover table-numbered">
                                 <thead>
                                     <tr>
-                                        <th class="col-xs-3">Nom ou pseudonyme</th>
-                                        <th class="col-xs-3">Adresse e-mail</th>
+                                        <th class="col-xs-3">@lang('form.participant.name')</th>
+                                        <th class="col-xs-3">@lang('form.participant.email')</th>
                                         <th class="col-xs-0"></th>
-                                        <th class="col-xs-2 col-lg-1">Téléphone</th>
-                                        <th class="col-xs-2">Partenaire</th>
+                                        <th class="col-xs-2 col-lg-1">@lang('form.participant.phone')</th>
+                                        <th class="col-xs-2">@lang('form.participant.partner')</th>
                                         <th class="col-xs-1 col-lg-2"></th>
                                     </tr>
                                 </thead>
@@ -227,22 +209,22 @@
                                             <label>
                                                 <div class="input-group">
                                                     <span class="input-group-addon counter">{{ $idx+1 }}</span>
-                                                    <input type="text" name="name[]" required="required" placeholder="exemple : Paul ou Korko" value="{{ $name }}" class="form-control participant-name" />
+                                                    <input type="text" name="name[]" required="required" placeholder="@lang('form.name.placeholder')" value="{{ $name }}" class="form-control participant-name" />
                                                 </div>
                                             </label>
                                         </td>
                                         <td class="row border-left">
-                                            <input type="email" name="email[]" placeholder="exemple : michel@aol.com" value="{{ array_get(old('email', []), $idx) }}" class="form-control participant-email" />
+                                            <input type="email" name="email[]" placeholder="@lang('form.email.placeholder')" value="{{ array_get(old('email', []), $idx) }}" class="form-control participant-email" />
                                         </td>
                                         <td>
                                             et/ou
                                         </td>
                                         <td class="row border-right">
-                                            <input type='tel' pattern='0[67]\d{8}' maxlength="10" name="phone[]" placeholder="ex : 0612345678" value="{{ array_get(old('phone', []), $idx) }}" class="form-control participant-phone" />
+                                            <input type='tel' pattern='0[67]\d{8}' maxlength="10" name="phone[]" placeholder="@lang('form.phone.placeholder')" value="{{ array_get(old('phone', []), $idx) }}" class="form-control participant-phone" />
                                         </td>
                                         <td class="row">
                                             <select name="partner[]" class="form-control participant-partner">
-                                                <option value="" {{ !array_get(old('partner'), $idx) ? 'selected="selected"' : '' }}>Aucun</option>
+                                                <option value="" {{ !array_get(old('partner'), $idx) ? 'selected="selected"' : '' }}>@lang('form.partner.none')</option>
                                                 @foreach(array_diff_key(old('name', []), [$idx => false]) as $idx2 => $name)
                                                     {{ $selected = (array_get(old('partner'), $idx) !== '' && intval(array_get(old('partner'), $idx)) === $idx2) }}
                                                     <option value="{{ $idx2 }}" {{ $selected ? 'selected="selected"' : '' }}>{{ ($idx2+1).". ".$name }}</option>
@@ -250,35 +232,35 @@
                                             </select>
                                         </td>
                                         <td class="row participant-remove-wrapper">
-                                            <button type="button" class="btn btn-danger participant-remove"><span class="glyphicon glyphicon-minus"></span><span> Enlever ce participant</span></button>
+                                            <button type="button" class="btn btn-danger participant-remove"><span class="glyphicon glyphicon-minus"></span><span> @lang('form.partner.remove')</span></button>
                                         </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-success participant-add"><span class="glyphicon glyphicon-plus"></span> Ajouter un participant</button>
+                            <button type="button" class="btn btn-success participant-add"><span class="glyphicon glyphicon-plus"></span> @lang('form.partner.add')</button>
                         </div>
 
                         <div class="row" id="contact">
                             <fieldset id="form-mail-group" class="col-md-6">
                                 <div class="form-group">
-                                    <label for="mailTitle">Titre du mail</label>
-                                    <input id="mailTitle" type="text" name="title" required="required" placeholder="ex : Soirée secretsanta du 23 décembre chez Martin" value="{{ old('title') }}" class="form-control" />
+                                    <label for="mailTitle">@lang('form.mail.title')</label>
+                                    <input id="mailTitle" type="text" name="title" required="required" placeholder="@lang('form.mail.title.placeholder')" value="{{ old('title') }}" class="form-control" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="mailContent">Contenu du mail</label>
-                                    <textarea id="mailContent" name="contentMail" required="required" placeholder="ex : Salut {SANTA}, pour la soirée secret santa, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !" class="form-control" rows="3">{{ old('contentMail') }}</textarea>
-                                    <p class="help-block">Utilisez "{SANTA}" pour le nom de celui qui recevra le mail et "{TARGET}" pour le nom de sa cible.</p>
-                                    <p class="help-block">Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.</p>
+                                    <label for="mailContent">@lang('form.mail.content')</label>
+                                    <textarea id="mailContent" name="contentMail" required="required" placeholder="@lang('form.mail.content.placeholder')" class="form-control" rows="3">{{ old('contentMail') }}</textarea>
+                                    <p class="help-block">@lang('form.mail.content.tip1')</p>
+                                    <p class="help-block">@lang('form.mail.content.tip2')</p>
                                 </div>
                             </fieldset>
 
                             <fieldset id="form-sms-group" class="col-md-6">
                                 <div class="form-group">
-                                    <label for="smsContent">Contenu du sms <span class="tip">(130 caractères max)</span></label>
-                                    <textarea id="smsContent" name="contentSMS" required="required" placeholder="ex : Salut {SANTA}, pour la soirée secret santa du 23 décembre chez Martin, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !" class="form-control" rows="3" maxlength="130">{{ old('contentSMS') }}</textarea>
-                                    <p class="help-block">Utilisez "{SANTA}" pour le nom de celui qui recevra le sms et "{TARGET}" pour le nom de sa cible.</p>
-                                    <p class="help-block">Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.</p>
+                                    <label for="smsContent">@lang('form.sms.content')</label>
+                                    <textarea id="smsContent" name="contentSMS" required="required" placeholder="@lang('form.sms.content.placeholder')" class="form-control" rows="3" maxlength="130">{{ old('contentSMS') }}</textarea>
+                                    <p class="help-block">@lang('form.sms.content.tip1')</p>
+                                    <p class="help-block">@lang('form.sms.content.tip2')</p>
                                 </div>
                             </fieldset>
                         </div>
@@ -288,7 +270,7 @@
                         </div>
 
                         {{ csrf_field() }}
-                        <button type="submit" class="btn btn-primary btn-lg">Lancez l'aléatoire !</button>
+                        <button type="submit" class="btn btn-primary btn-lg">@lang('form.submit')</button>
                     </fieldset>
                 </form>
 
@@ -304,9 +286,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     &copy; Copyright SecretSanta.fr 2015
-                    <br/>Projet De <a class="themeBy" href="https://www.korko.fr">Korko</a>
-                    <br/>Theme Par <a class="themeBy" href="https://www.themewagon.com">ThemeWagon</a>
-                    <br/>Icones Par <a class="themeBy" href="https://www.iconfinder.com/iconsets/doublejdesign-free-icon-handy_color">Double-J Designs</a>
+                    <br/>{!! trans('footer.project', ['author' => '<a class="themeBy" href="https://www.korko.fr">Korko</a>']) !!}
+                    <br/>{!! trans('footer.theme', ['author' => '<a class="themeBy" href="https://www.themewagon.com">ThemeWagon</a>']) !!}
+                    <br/>{!! trans('footer.icons', ['author' => '<a class="themeBy" href="https://www.iconfinder.com/iconsets/doublejdesign-free-icon-handy_color">Double-J Designs</a>']) !!}
                 </div>
             </div>
         </div>
