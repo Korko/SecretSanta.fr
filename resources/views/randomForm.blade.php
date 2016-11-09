@@ -40,6 +40,7 @@
     <!-- css -->
     <link rel="stylesheet" href="media/css/bootstrap.min.css" />
     <link rel="stylesheet" href="media/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="media/css/bootstrap-languages.min.css" />
     <link rel="stylesheet" href="media/css/font-awesome.min.css" />
     <link rel="stylesheet" href="media/css/alertify.core.css" />
     <link rel="stylesheet" href="media/css/alertify.default.css" />
@@ -66,8 +67,24 @@
                 <li><a href="#how">@lang('form.nav.how')</a></li>
                 <li><a href="#form">@lang('form.nav.go')</a></li>
 
+                <li class="btn-group btn-group-xs dropdown">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="lang-xs lang-lbl" lang="{{ App::getLocale() }}"></span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        @foreach(array_diff_key(config('app.domains'), [App::getLocale() => '']) as $locale => $domain)
+                            <li><a href="https://{{ $domain }}"><span class="lang-sm lang-lbl" lang="{{ $locale }}"></span></a></li>
+                        @endforeach
+                    </ul>
+                </li>
+
                 <!--fix for scroll spy active menu element-->
                 <li style="display:none;"><a href="#header"></a></li>
+            </ul>
+            <ul class="visible-xs list-inline">
+                @foreach(config('app.domains') as $locale => $domain)
+                <li><a href="https://{{ $domain }}"><span class="lang-lg" lang="{{ $locale }}"></span></a></li>
+                @endforeach
             </ul>
         </div><!--/.navbar-collapse -->
         </div><!-- container -->
