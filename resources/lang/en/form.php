@@ -48,7 +48,7 @@ The key word \"{TARGET}\" is mandatory in the message body to give each person h
     'phone.placeholder' => "e.g. 01632 960283",
 
     'partner.none' => "None",
-    'partner.remove' => "Remove this participant",
+    'partner.remove' => "Remove",
     'partner.add' => "Add a participant",
 
     'mail.title' => "Email title",
