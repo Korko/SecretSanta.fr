@@ -26,7 +26,6 @@
 }
 )(jQuery,'smartresize');
 
-
 $(document).ready(function() {
 	///////////////////////////////
 	// Set Home Slideshow Height
@@ -53,12 +52,11 @@ $(document).ready(function() {
 	});
 	
 	function scroll() {
-		if ($(window).scrollTop() == 0 ) {
-			//$('.nav > li').removeClass('active');
-			console.log($(window).scrollTop());
-		} else {
-			
-		}
+        	if ($(document).scrollTop() > 200) {
+                	$('body').addClass('scrolled');
+        	} else {
+                	$('body').removeClass('scrolled');
+        	}
 	}
 	document.onscroll = scroll;
 	var $scrollDownArrow = $('#scrollDownArrow');
@@ -93,6 +91,4 @@ $(document).ready(function() {
 		}
 		);
 	});
-
-
 });

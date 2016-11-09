@@ -318,6 +318,17 @@ footer .inner {
     #header .subtitle h4 {
         font-size: 22px;
     }
+    .navbar {
+        min-height: 30px;
+    }
+    #logo {
+        -webkit-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+    body.scrolled #logo {
+        width: 60px;
+        margin-left: -30px;
+    }
 }
 @media (min-width: 768px) {
     .navbar-nav {
