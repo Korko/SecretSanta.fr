@@ -329,13 +329,19 @@ footer .inner {
         width: 60px;
         margin-left: -30px;
     }
+    .navbar-nav>li.btn-group {
+        margin: 0 10px;
+    }
 }
 @media (min-width: 768px) {
-    .navbar-nav {
+    html .navbar-nav {
         float: none !important;
         width: 100%;
         text-align: center;
-        margin-left: -73px;
+        margin-left: -16px;
+    }
+    html:lang(en) .navbar-nav {
+        margin-left: 13px;
     }
     .navbar-nav>li {
         display: inline-block;
@@ -343,6 +349,9 @@ footer .inner {
     }
     .navbar-nav>li:nth-child(2) {
         margin-right: 110px;
+    }
+    .navbar-nav>li.btn-group {
+        margin: 0 15px;
     }
 }
 @media (min-width: 992px) {
