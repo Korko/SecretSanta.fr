@@ -18,6 +18,7 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \Korko\SecretSanta\Http\Middleware\VerifyCsrfToken::class,
+        \Korko\SecretSanta\Http\Middleware\Language::class,
     ];
 
     /**
