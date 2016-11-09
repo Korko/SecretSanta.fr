@@ -56,7 +56,7 @@
 <body data-spy="scroll" data-target="#navbar" data-offset="120" >
     <div id="menu" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
-        <div id="navbar">
+        <nav id="navbar">
             <div id="logo">
                 <a href="#header">
                     <img src="media/img/logo.png" alt="" />
@@ -86,7 +86,7 @@
                 <li><a href="https://{{ $domain }}"><span class="lang-lg" lang="{{ $locale }}"></span></a></li>
                 @endforeach
             </ul>
-        </div><!--/.navbar-collapse -->
+        </nav><!--/.navbar-collapse -->
         </div><!-- container -->
     </div><!-- menu -->
 
