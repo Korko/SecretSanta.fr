@@ -255,9 +255,6 @@ img {
 .participant .participant-remove-wrapper {
     width:179px;
 }
-.participant:nth-child(-n+2) .participant-remove {
-    display:none;
-}
 #mailContent {
     max-width: 100%;
 }
