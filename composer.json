@@ -4,10 +4,27 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "korko/laravel5-recaptcha2",
+                "version": "dev-Korko-patch-1",
+                "source": {
+                    "url": "https://github.com/Korko/laravel5-recaptcha2.git",
+                    "type": "git",
+                    "reference": "Korko-patch-1"
+                },
+                "autoload": {
+                    "classmap": [""]
+                }
+            }
+        }
+    ],
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
-        "crazyinventor/laravel5-recaptcha2": "^1.0",
+        "korko/laravel5-recaptcha2": "dev-Korko-patch-1",
         "league/statsd": "dev-master",
         "korko/validator": "dev-master",
         "aloha/twilio": "^3.0"

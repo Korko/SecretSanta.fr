@@ -53,7 +53,7 @@
     <!-- js -->
     <script src="media/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
-<body data-spy="scroll" data-target="#navbar" data-offset="120" >
+<body data-spy="scroll" data-target="#navbar" data-offset="120">
     <div id="menu" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
         <nav id="navbar">
@@ -190,17 +190,18 @@
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
             <p class="lead main text-center">@lang('form.section.go.subtitle')</p>
             <div class="row text-center form">
-                <div id="success-wrapper" class="alert alert-success" style="display: none">
+                <div id="success-wrapper" class="alert alert-success" v-show="sent">
                     @lang('form.success')
                 </div>
 
-                <div id="errors-wrapper" class="alert alert-danger" style="display: none">
+                <div id="errors-wrapper" class="alert alert-danger" v-show="errors.length && !sent">
                     <ul id="errors">
+                        <li v-for="error in errors">@{{ error }}</li>
                     </ul>
                 </div>
 
-                <form action="{{ url('/') }}" method="post" autocomplete="off">
-                    <fieldset>
+                <form action="{{ url('/') }}" @submit.prevent="submit" method="post" autocomplete="off">
+                    <fieldset :disabled="sending || sent">
                         <legend>@lang('form.participants')</legend>
                         <div class="table-responsive form-group">
                             <table id="participants" class="table table-hover table-numbered">
@@ -216,62 +217,57 @@
                                 </thead>
                                 <tbody>
                                     {{-- Default is two empty rows to have two entries at any time --}}
-                                    @foreach(old('name', ['', '']) as $idx => $name)
-                                    <tr class="participant">
+                                    <tr class="participant" v-for="(participant, idx) in participants">
                                         <td class="row">
                                             <label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon counter">{{ $idx+1 }}</span>
-                                                    <input type="text" name="name[]" required="required" placeholder="@lang('form.name.placeholder')" value="{{ $name }}" class="form-control participant-name" />
+                                                    <span class="input-group-addon counter">@{{ idx+1 }}</span>
+                                                    <input type="text" name="name[]" required="required" placeholder="@lang('form.name.placeholder')" v-model="participant.name" class="form-control participant-name" />
                                                 </div>
                                             </label>
                                         </td>
                                         <td class="row border-left">
-                                            <input type="email" name="email[]" placeholder="@lang('form.email.placeholder')" value="{{ array_get(old('email', []), $idx) }}" class="form-control participant-email" />
+                                            <input type="email" name="email[]" placeholder="@lang('form.email.placeholder')" v-model="participant.email" class="form-control participant-email" :required="!participant.phone" />
                                         </td>
                                         <td>
-                                            et/ou
+                                            @lang('form.mail-sms')
                                         </td>
                                         <td class="row border-right">
-                                            <input type='tel' pattern='0[67]\d{8}' maxlength="10" name="phone[]" placeholder="@lang('form.phone.placeholder')" value="{{ array_get(old('phone', []), $idx) }}" class="form-control participant-phone" />
+                                            <input type='tel' pattern='0[67]\d{8}' maxlength="10" name="phone[]" placeholder="@lang('form.phone.placeholder')" v-model="participant.phone" class="form-control participant-phone" :required="!participant.email" />
                                         </td>
                                         <td class="row">
                                             <select name="partner[]" class="form-control participant-partner">
-                                                <option value="" {{ !array_get(old('partner'), $idx) ? 'selected="selected"' : '' }}>@lang('form.partner.none')</option>
-                                                @foreach(array_diff_key(old('name', []), [$idx => false]) as $idx2 => $name)
-                                                    {{ $selected = (array_get(old('partner'), $idx) !== '' && intval(array_get(old('partner'), $idx)) === $idx2) }}
-                                                    <option value="{{ $idx2 }}" {{ $selected ? 'selected="selected"' : '' }}>{{ ($idx2+1).". ".$name }}</option>
-                                                @endforeach
+                                                <option value="" :selected="participant.partner === -1">@lang('form.partner.none')</option>
+                                                <option v-for="(partner, pidx) in participants" v-if="partner.name && idx !== pidx" :value="pidx" :selected="participant.partner === pidx">@{{ partner.name }}</option>
                                             </select>
                                         </td>
                                         <td class="row participant-remove-wrapper">
-                                            <button type="button" class="btn btn-danger participant-remove"><span class="glyphicon glyphicon-minus"></span><span> @lang('form.partner.remove')</span></button>
+                                            <button type="button" class="btn btn-danger participant-remove" :disabled="idx < 2" @click="removeParticipant(idx)"><span class="glyphicon glyphicon-minus"></span><span> @lang('form.partner.remove')</span></button>
                                         </td>
                                     </tr>
-                                    @endforeach
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-success participant-add"><span class="glyphicon glyphicon-plus"></span> @lang('form.partner.add')</button>
+                            <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><span class="glyphicon glyphicon-plus"></span> @lang('form.partner.add')</button>
                         </div>
 
                         <div class="row" id="contact">
-                            <fieldset id="form-mail-group" class="col-md-6">
+                            <fieldset id="form-mail-group" class="col-md-6" :disabled="!this.emailUsed">
                                 <div class="form-group">
                                     <label for="mailTitle">@lang('form.mail.title')</label>
-                                    <input id="mailTitle" type="text" name="title" required="required" placeholder="@lang('form.mail.title.placeholder')" value="{{ old('title') }}" class="form-control" />
+                                    <input id="mailTitle" type="text" name="title" :required="this.emailUsed" placeholder="@lang('form.mail.title.placeholder')" value="{{ old('title') }}" class="form-control" />
                                 </div>
                                 <div class="form-group">
                                     <label for="mailContent">@lang('form.mail.content')</label>
-                                    <textarea id="mailContent" name="contentMail" required="required" placeholder="@lang('form.mail.content.placeholder')" class="form-control" rows="3">{{ old('contentMail') }}</textarea>
+                                    <textarea id="mailContent" name="contentMail" :required="this.emailUsed" placeholder="@lang('form.mail.content.placeholder')" class="form-control" rows="3">{{ old('contentMail') }}</textarea>
                                     <p class="help-block">@lang('form.mail.content.tip1')</p>
                                     <p class="help-block">@lang('form.mail.content.tip2')</p>
                                 </div>
                             </fieldset>
 
-                            <fieldset id="form-sms-group" class="col-md-6">
+                            <fieldset id="form-sms-group" class="col-md-6" :disabled="!this.phoneUsed">
                                 <div class="form-group">
                                     <label for="smsContent">@lang('form.sms.content')</label>
-                                    <textarea id="smsContent" name="contentSMS" required="required" placeholder="@lang('form.sms.content.placeholder')" class="form-control" rows="3" maxlength="130">{{ old('contentSMS') }}</textarea>
+                                    <textarea id="smsContent" name="contentSMS" :required="this.phoneUsed" placeholder="@lang('form.sms.content.placeholder')" class="form-control" rows="3" maxlength="130">{{ old('contentSMS') }}</textarea>
                                     <p class="help-block">@lang('form.sms.content.tip1')</p>
                                     <p class="help-block">@lang('form.sms.content.tip2')</p>
                                 </div>
@@ -279,7 +275,7 @@
                         </div>
 
                         <div class="form-group btn">
-                            {!! Recaptcha::render() !!}
+                            {!! Recaptcha::renderElement(['data-theme' => 'light']) !!}
                         </div>
 
                         {{ csrf_field() }}
@@ -314,9 +310,12 @@
     <script type="text/javascript" src="media/js/jquery.actual.min.js"></script>
     <script type="text/javascript" src="media/js/jquery.scrollTo.min.js"></script>
     <script type="text/javascript" src="media/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="media/js/vue.min.js"></script>
+    <script type="text/javascript" src="media/js/app.js"></script>
     <script type="text/javascript" src="media/js/main.js"></script>
-    <script type="text/javascript" src="media/js/randomForm.js"></script>
     <script type="text/javascript" src="media/js/alertify.min.js"></script>
+
+    {!! Recaptcha::renderScript(App::getLocale()) !!}
 
     @if(Session::has('message'))
     <script type="text/javascript">
