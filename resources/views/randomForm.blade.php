@@ -236,9 +236,9 @@
                                             <input type='tel' pattern='0[67]\d{8}' maxlength="10" name="phone[]" placeholder="@lang('form.phone.placeholder')" v-model="participant.phone" class="form-control participant-phone" :required="!participant.email" />
                                         </td>
                                         <td class="row">
-                                            <select name="partner[]" class="form-control participant-partner">
-                                                <option value="" :selected="participant.partner === -1">@lang('form.partner.none')</option>
-                                                <option v-for="(partner, pidx) in participants" v-if="partner.name && idx !== pidx" :value="pidx" :selected="participant.partner === pidx">@{{ partner.name }}</option>
+                                            <select name="partner[]" class="form-control participant-partner" v-model="participant.partner">
+                                                <option value="-1">@lang('form.partner.none')</option>
+                                                <option v-for="(partner, pidx) in participants" v-if="partner.name && idx !== pidx" :value="pidx">@{{ partner.name }}</option>
                                             </select>
                                         </td>
                                         <td class="row participant-remove-wrapper">
