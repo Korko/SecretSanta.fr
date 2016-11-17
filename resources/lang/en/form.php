@@ -67,4 +67,5 @@ The key word \"{TARGET}\" is mandatory in the message body to give each person h
     'sms.content.tip2' => "Tip: Remember to remind the date, location and the amount of the gift.",
 
     'submit' => "Start randomizing!",
+    'sending' => "Processing",
 ];
