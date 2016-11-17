@@ -279,7 +279,10 @@
                         </div>
 
                         {{ csrf_field() }}
-                        <button type="submit" class="btn btn-primary btn-lg">@lang('form.submit')</button>
+                        <button type="submit" class="btn btn-primary btn-lg">
+				<span v-if="sending"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.sending')</span>
+				<span v-else>@lang('form.submit')</span>
+			</button>
                     </fieldset>
                 </form>
 

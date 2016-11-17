@@ -67,4 +67,5 @@ Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner
     'sms.content.tip2' => "Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.",
 
     'submit' => "Lancez l'aléatoire !",
+    'sending' => "Calcul en cours",
 ];
