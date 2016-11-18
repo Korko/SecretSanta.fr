@@ -1,10 +1,26 @@
 {
   "private": true,
   "devDependencies": {
-    "gulp": "^3.8.8"
-  },
-  "dependencies": {
+    "alertify.js": "^1.0.12",
+    "aliasify": "^2.1.0",
+    "bootstrap-sass": "^3.0.0",
+    "font-awesome": "^4.7.0",
+    "gulp": "^3.8.8",
+    "jquery": "^3.1.1",
+    "jquery.actual": "dreamerslab/jquery.actual#master",
+    "jquery.scrollto": "^2.1.2",
     "laravel-elixir": "^3.0.0",
-    "bootstrap-sass": "^3.0.0"
+    "vue": "^2.0.7"
+  },
+  "dependencies": {},
+  "browserify": {
+    "transform": [
+      "aliasify"
+    ]
+  },
+  "aliasify": {
+    "aliases": {
+      "vue": "vue/dist/vue"
+    }
   }
 }

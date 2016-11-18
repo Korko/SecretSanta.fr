@@ -1,3 +1,7 @@
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/font-awesome/scss/font-awesome.scss";
+@import "node_modules/alertify.js/src/sass/alertify.scss";
+
 /*
 Theme Name: MeatKing
 Version:    1.14.20
@@ -438,5 +442,3 @@ footer .inner {
         top: auto;
     }
 }
-
-
