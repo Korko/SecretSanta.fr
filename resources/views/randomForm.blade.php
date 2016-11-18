@@ -21,7 +21,7 @@
     <meta property="og:title" content="SecretSanta">
     <meta property="og:site_name" content="SecretSanta">
     <meta property="og:url" content="{{ URL::to('/') }}">
-    <meta property="og:image" content="{{ URL::asset('media/img/logo_black.png') }}">
+    <meta property="og:image" content="{{ URL::asset('img/logo_black.png') }}">
     <meta property="og:description" content="@lang('headers.description')">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="{{ App::getLocale() }}">
@@ -32,26 +32,16 @@
     <meta name="twitter:creator" content="Korko">
     <meta name="twitter:title" content="SecretSanta">
     <meta name="twitter:description" content="@lang('headers.description')">
-    <meta name="twitter:image" content="{{ URL::asset('media/img/logo_black.png') }}">
+    <meta name="twitter:image" content="{{ URL::asset('img/logo_black.png') }}">
 
     <!-- facebook image -->
-    <link rel="image_src" href="{{ URL::asset('media/img/logo_black.png') }}" />
+    <link rel="image_src" href="{{ URL::asset('img/logo_black.png') }}" />
 
     <!-- css -->
-    <link rel="stylesheet" href="media/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="media/css/bootstrap-theme.min.css" />
-    <link rel="stylesheet" href="media/css/bootstrap-languages.min.css" />
-    <link rel="stylesheet" href="media/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="media/css/alertify.core.css" />
-    <link rel="stylesheet" href="media/css/alertify.default.css" />
-    <link rel="stylesheet" href="media/css/alertify.bootstrap.css" />
-    <link rel="stylesheet" href="media/css/main.css" />
+    <link rel="stylesheet" href="css/app.css" />
 
     <!-- google font -->
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Kreon:300,400,700' />
-
-    <!-- js -->
-    <script src="media/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
     <div id="menu" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -59,7 +49,7 @@
         <nav id="navbar">
             <div id="logo">
                 <a href="#header">
-                    <img src="media/img/logo.png" alt="" />
+                    <img src="img/logo.png" alt="" />
                 </a>
             </div>
             <ul class="nav navbar-nav hidden-xs">
@@ -113,7 +103,7 @@
                 <ul class="media-list">
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="media/img/calendar-icon.png" />
+                            <img class="media-object" src="img/calendar-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.what.heading1')</h4>
@@ -144,7 +134,7 @@
                 <ul class="media-list">
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="media/img/user-icon.png" />
+                            <img class="media-object" src="img/user-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading1')</h4>
@@ -157,12 +147,12 @@
                             <p>{!! nl2br(trans('form.section.how.content2')) !!}</p>
                         </div>
                         <div class="media-right media-middle">
-                            <img class="media-object" src="media/img/paper-icon.png" />
+                            <img class="media-object" src="img/paper-icon.png" />
                         </div>
                     </li>
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="media/img/mail-icon.png" />
+                            <img class="media-object" src="img/mail-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading3')</h4>
@@ -309,14 +299,7 @@
 
     <span id="forkongithub" class="hidden-sm"><a href="https://github.com/Korko/SecretSanta" title="Fork me on GitHub">Fork me on GitHub</a></span>
 
-    <script type="text/javascript" src="media/js/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="media/js/jquery.actual.min.js"></script>
-    <script type="text/javascript" src="media/js/jquery.scrollTo.min.js"></script>
-    <script type="text/javascript" src="media/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="media/js/vue.min.js"></script>
-    <script type="text/javascript" src="media/js/app.js"></script>
-    <script type="text/javascript" src="media/js/main.js"></script>
-    <script type="text/javascript" src="media/js/alertify.min.js"></script>
+    <script type="text/javascript" src="js/bundle.js"></script>
 
     {!! Recaptcha::renderScript(App::getLocale()) !!}
 
