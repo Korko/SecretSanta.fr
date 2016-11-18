@@ -92,13 +92,13 @@ var app = new Vue({
     sent: function(newVal) {
       // If sent is a success, scroll to the message
       if(newVal) {
-        $.scrollTo($('#success-wrapper'), 800, {offset: -120});
+        $.scrollTo('#form .row', 800, {offset: -120});
       }
     },
     errors: function(newVal) {
       // If there's new errors, scroll to them
       if(newVal.length) {
-        $.scrollTo($('#errors-wrapper'), 800, {offset: -120});
+        $.scrollTo('#form .row', 800, {offset: -120});
       }
     }
   }
