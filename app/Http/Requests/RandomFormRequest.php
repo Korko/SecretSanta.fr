@@ -46,7 +46,7 @@ class RandomFormRequest extends Request
                 $rules += [
                     'email.'.$key   => 'required_without:phone.'.$key.'|email',
                     'phone.'.$key   => 'required_without:email.'.$key.'|numeric|regex:#0[67]\d{8}#',
-                    'partner.'.$key => 'sometimes|numeric|fieldinkeys:name,'.$key,
+                    'partner.'.$key => ($this->request->get('partner')[$key] !== '-1') ? 'sometimes|numeric|fieldinkeys:name,'.$key : '',
                 ];
             }
         }
