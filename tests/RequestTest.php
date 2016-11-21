@@ -82,6 +82,9 @@ class RequestTest extends TestCase
     // Names and partners
     public function testPartners()
     {
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => [87, -1]], 422);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'partner.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
+
         $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => [87]], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'partner.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
 
