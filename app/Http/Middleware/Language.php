@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Routing\Middleware;
 
-class Language implements Middleware {
+class Language implements Middleware
+{
 
     private $app;
     private $redirector;
@@ -30,13 +31,12 @@ class Language implements Middleware {
         $handledDomains = config('app.domains');
         $currentDomain = $request->getHost();
 
-        foreach($handledDomains as $locale => $domain) {
-            if(preg_match('#'.preg_quote($domain, '#').'$#', $currentDomain)) {
+        foreach ($handledDomains as $locale => $domain) {
+            if (preg_match('#'.preg_quote($domain, '#').'$#', $currentDomain)) {
                 $this->app->setLocale($locale);
             }
         }
 
         return $next($request);
     }
-
 }
