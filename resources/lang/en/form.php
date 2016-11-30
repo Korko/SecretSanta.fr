@@ -1,46 +1,48 @@
 <?php
 
 return [
-    'nav.what' => "What is it?",
+    'nav.what' => "What's this?",
     'nav.how'  => "How?",
     'nav.go'   => "Let's go!",
 
-    'subtitle'   => "Treat yourself gifts... secretly!",
+    'subtitle'   => "Offer gifts... Secretly!",
 
-    'section.what.title' => "What is it?",
-    'section.what.subtitle' => "Description of Secret Santa",
+    'section.what.title' => "What's this?",
+    'section.what.subtitle' => "Secret Santa Description",
     'section.what.heading1' => "The principle",
-    'section.what.content1' => "Secret Santa is a funny and original way to anonymously give gifts between friends, colleagues ...
-The process is simple: each participant receives, randomly, the name of the person to whom he will have a gift.
-The amount of the gift is usually set in advance (£2, £5, £10 ...)
-The goal is not necessarily to make a gift but to be creative!",
+    'section.what.content1' => "Secret Santa’s a fun and original way to share gifts between friends, family, colleagues…
+The process is quite simple: each participant randomly receives the name of the person which will be target for his gift.
+The amount for the gift is usually set in advance. (£2, £5, £10 ...) The goal isn’t necessarily to make a big gift but to be creative!",
 
     'section.how.title' => "How?",
     'section.how.subtitle' => "You'll see, it's really simple !",
-    'section.how.heading1' => "First step: specifying how many participants and their names",
-    'section.how.content1' => "With buttons \"Add Participant\" and \"Removing a participant\" it is possible to adjust the number of people.
-For each person, specify a name / first name or a pseudonym. Two participants may have the same name, otherwise it is impossible to differentiate them.
-Note that secretsanta.io is designed so that a person can not draw itself.",
-    'section.how.heading2' => "Second step: filling their contact and the exclusions",
-    'section.how.content2' => "You can choose whether participants will receive the name of their target email, text message, or both.
-To do this, specify for each e-mail address and / or mobile phone number.
-(Optional) Add exclusions. If you do not want spouses are able to draw each other, fill the \"partner\".",
-    'section.how.heading3' => "Third step: preparing the mail or the sms",
-    'section.how.content3' => "It'll just fill in the title and body of the email or SMS that participants receive.
-The key word \"{TARGET}\" is mandatory in the message body to give each person his \"target\".
-(Optional) You can also use the key word \"{SANTA}\" which will be replaced with the name of the message recipient.",
-    'section.how.notice' => "For your information : secretsanta.io doesn't save any of your data nor does it use them in other ways. The source code is available on :link",
+    'section.how.heading1' => "First step: Specify how many people will be taking part as well as their names",
+    'section.how.content1' => "Thanks to the buttons “add” and “remove” it’s possible to adjust the number of people who’ll be taking part in your Secret Santa party.
+For each person, specify their name / last name or nickname. It’s impossible for two people to share a same name, otherwise they won’t be distinguishable from one another.
+Please note that secretsanta.io is set up so that it’s impossible for a person to draw their own name.",
+
+    'section.how.heading2' => "Second step: Complete their contact details and any exceptions",
+    'section.how.content2' => "You can decide whether the participants will get the name of their target via mail or text message or even both.
+Simply specify the e-mail and/or phone number for each participant.
+(Optional) You can add exceptions if you don’t want spouses drawing each other fill the “partner” field.",
+
+    'section.how.heading3' => "Third step: Prepare the e-mail or SMS content",
+    'section.how.content3' => "It’ll just fill the title and body fields for the e-mail or SMS message that the participants will receive.
+You must use the keyword “{TARGET}”, it’s mandatory to give each person their “target”.
+(Optional) You can also use the keyword “{SANTA}”, it’ll be replaced by the name of the message recipient.",
+
+    'section.how.notice' => "For your information: secretsanta.io doesn't save any of your data, nor does it exploit or share them in any other way. The source code can be found on :link ",
 
     'section.go.title' => "Your turn!",
-    'section.go.subtitle' => "Fill, click and let's go!",
+    'section.go.subtitle' => "Complete, click and go!",
 
     'success' => "Successfully sent!",
 
     'participants' => "Participants details",
 
-    'participant.name' => "Name or alias",
-    'participant.email' => "Email adress",
-    'participant.phone' => "Phone",
+    'participant.name' => "Name or nickname",
+    'participant.email' => "E-mail adress",
+    'participant.phone' => "Participant phone number",
     'participant.partner' => "Partner",
 
     'name.placeholder' => "e.g. Paul or Korko",
@@ -56,17 +58,18 @@ The key word \"{TARGET}\" is mandatory in the message body to give each person h
 
     'mail.content' => "Email content",
     'mail.content.placeholder' => "e.g. Hi {SANTA}, for the secret santa party, your target is {TARGET}. As a reminder, the amount of the gift is £3!",
-    'mail.content.tip1' => "Use \"{SANTA}\" for the receiver of the email and \"{TARGET}\" for the name of the target.",
-    'mail.content.tip2' => "Tip: Remember to remind the date, location and the amount of the gift.",
+    'mail.post' => "In order to send an email to your secret santa, write to :email<br /><br />via SecretSanta.io",
+    'mail.content.tip1' => "Use “{SANTA}” for the e-mail recipient and “{TARGET}” for the name of the person who'll be the gift's recipient.",
+    'mail.content.tip2' => "Advice: Try to add a reminder inside your message with the date, location and amount for the gift.",
 
     'mail-sms' => "and/or",
 
     'sms.content' => "Content of the sms :span (:left chars left) :espan",
     'sms.content.multiple' => "Content of the :count sms :span (:left chars left) :espan",
     'sms.content.placeholder' => "e.g. Hi {SANTA}, for the secret santa party, your target is {TARGET}. As a reminder, the amount of the gift is £3!",
-    'sms.content.tip1' => "Use \"{SANTA}\" for the receiver of the sms and \"{TARGET}\" for the name of the target.",
-    'sms.content.tip2' => "Tip: Remember to remind the date, location and the amount of the gift.",
+    'sms.content.tip1' => "Use “{SANTA}” for the e-mail recipient and “{TARGET}” for the name of the person who'll be the gift's recipient.",
+    'sms.content.tip2' => "Advice: Try to add a reminder inside your message with the date, location and amount for the gift.",
 
-    'submit' => "Start randomizing!",
+    'submit' => "Start randomizing",
     'sending' => "Processing",
 ];
