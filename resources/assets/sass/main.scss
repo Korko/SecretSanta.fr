@@ -1,6 +1,14 @@
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "node_modules/font-awesome/scss/font-awesome.scss";
-@import "node_modules/alertify.js/src/sass/alertify.scss";
+@import url('https://fonts.googleapis.com/css?family=Kreon:300,400,700');
+
+$icon-font-path: "/assets/fonts/bootstrap/";
+@import "bootstrap";
+
+$fa-font-path: "/assets/fonts";
+@import "font-awesome";
+
+@import "alertify";
+
+@import "languages";
 
 /*
 Theme Name: MeatKing
@@ -25,7 +33,7 @@ TABLE OF CONTENTS
     01. General and Typography
 ========================================================================== */
 body {
-    font-family: 'Kreon',serif;
+    font-family: 'Kreon', serif;
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
 }
@@ -80,7 +88,7 @@ img {
     02. Header
 ========================================================================== */
 #header {
-    background-image: url(../img/gifts-1.jpg);
+    background-image: url(/assets/img/gifts-1.jpg);
     -moz-background-size: cover;
     background-size: cover;
     background-position: center center;
@@ -186,7 +194,7 @@ img {
     04. Parallax
 ========================================================================== */
 .parallax {
-    background: url(../img/gifts-2.jpg) fixed no-repeat center center;
+    background: url(/assets/img/gifts-2.jpg) fixed no-repeat center center;
     -moz-background-size: cover;
     background-size: cover;
     position: relative;
@@ -197,7 +205,7 @@ img {
     padding-bottom: 130px;
 }
 .parallax.parallax2 {
-    background-image: url(../img/gifts-3.jpg);
+    background-image: url(/assets/img/gifts-3.jpg);
 }
 
 

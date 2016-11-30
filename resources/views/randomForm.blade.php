@@ -21,7 +21,7 @@
     <meta property="og:title" content="SecretSanta">
     <meta property="og:site_name" content="SecretSanta">
     <meta property="og:url" content="{{ URL::to('/') }}">
-    <meta property="og:image" content="{{ URL::asset('img/logo_black.png') }}">
+    <meta property="og:image" content="{{ URL::asset('assets/img/logo_black.png') }}">
     <meta property="og:description" content="@lang('headers.description')">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="{{ App::getLocale() }}">
@@ -32,16 +32,13 @@
     <meta name="twitter:creator" content="Korko">
     <meta name="twitter:title" content="SecretSanta">
     <meta name="twitter:description" content="@lang('headers.description')">
-    <meta name="twitter:image" content="{{ URL::asset('img/logo_black.png') }}">
+    <meta name="twitter:image" content="{{ URL::asset('assets/img/logo_black.png') }}">
 
     <!-- facebook image -->
-    <link rel="image_src" href="{{ URL::asset('img/logo_black.png') }}" />
+    <link rel="image_src" href="{{ URL::asset('assets/img/logo_black.png') }}" />
 
     <!-- css -->
-    <link rel="stylesheet" href="css/app.css" />
-
-    <!-- google font -->
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Kreon:300,400,700' />
+    <link rel="stylesheet" href="assets/bundle.css" />
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
     <div id="menu" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -49,7 +46,7 @@
         <nav id="navbar">
             <div id="logo">
                 <a href="#header">
-                    <img src="img/logo.png" alt="" />
+                    <img src="assets/img/logo.png" alt="" />
                 </a>
             </div>
             <ul class="nav navbar-nav hidden-xs">
@@ -103,7 +100,7 @@
                 <ul class="media-list">
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="img/calendar-icon.png" />
+                            <img class="media-object" src="assets/img/calendar-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.what.heading1')</h4>
@@ -134,7 +131,7 @@
                 <ul class="media-list">
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="img/user-icon.png" />
+                            <img class="media-object" src="assets/img/user-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading1')</h4>
@@ -147,12 +144,12 @@
                             <p>{!! nl2br(trans('form.section.how.content2')) !!}</p>
                         </div>
                         <div class="media-right media-middle">
-                            <img class="media-object" src="img/paper-icon.png" />
+                            <img class="media-object" src="assets/img/paper-icon.png" />
                         </div>
                     </li>
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="img/mail-icon.png" />
+                            <img class="media-object" src="assets/img/mail-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading3')</h4>
@@ -299,7 +296,7 @@
 
     <span id="forkongithub" class="hidden-sm"><a href="https://github.com/Korko/SecretSanta" title="Fork me on GitHub">Fork me on GitHub</a></span>
 
-    <script type="text/javascript" src="js/bundle.js"></script>
+    <script type="text/javascript" src="assets/bundle.js"></script>
 
     {!! Recaptcha::renderScript(App::getLocale()) !!}
 
