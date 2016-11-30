@@ -241,11 +241,11 @@
                             <fieldset id="form-mail-group" class="col-md-6" :disabled="!this.emailUsed">
                                 <div class="form-group">
                                     <label for="mailTitle">@lang('form.mail.title')</label>
-                                    <input id="mailTitle" type="text" name="title" :required="this.emailUsed" placeholder="@lang('form.mail.title.placeholder')" value="{{ old('title') }}" class="form-control" />
+                                    <input id="mailTitle" type="text" name="title" :required="this.emailUsed" placeholder="@lang('form.mail.title.placeholder')" value="" class="form-control" />
                                 </div>
                                 <div class="form-group">
                                     <label for="mailContent">@lang('form.mail.content')</label>
-                                    <textarea id="mailContent" name="contentMail" :required="this.emailUsed" placeholder="@lang('form.mail.content.placeholder')" class="form-control" rows="3">{{ old('contentMail') }}</textarea>
+                                    <textarea id="mailContent" name="contentMail" :required="this.emailUsed" placeholder="@lang('form.mail.content.placeholder')" class="form-control" rows="3"></textarea>
                                     <p class="help-block">@lang('form.mail.content.tip1')</p>
                                     <p class="help-block">@lang('form.mail.content.tip2')</p>
                                 </div>
@@ -255,7 +255,7 @@
                                 <div class="form-group">
                                     <label for="smsContent" v-if="smsCount <= 1">@lang('form.sms.content', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
                                     <label for="smsContent" v-else>@lang('form.sms.content.multiple', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
-                                    <textarea id="smsContent" name="contentSMS" :required="this.phoneUsed" :maxlength="maxLength" placeholder="@lang('form.sms.content.placeholder')" class="form-control" rows="3" v-model="smsContent">{{ old('contentSMS') }}</textarea>
+                                    <textarea id="smsContent" name="contentSMS" :required="this.phoneUsed" :maxlength="maxLength" placeholder="@lang('form.sms.content.placeholder')" class="form-control" rows="3" v-model="smsContent"></textarea>
                                     <p class="help-block">@lang('form.sms.content.tip1')</p>
                                     <p class="help-block">@lang('form.sms.content.tip2')</p>
                                 </div>
