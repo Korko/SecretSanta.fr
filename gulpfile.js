@@ -14,13 +14,19 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
     mix.browserify([
         'main.js', 'app.js'
-    ]);
+    ], 'public/assets/bundle.js');
     mix.sass([
-        '../vendor/bootstrap-languages/languages.css',
         'main.scss'
-    ]);
+    ], 'public/assets/bundle.css', {
+        includePaths: [
+            './node_modules/bootstrap-sass/assets/stylesheets/',
+            './node_modules/font-awesome/scss/',
+            './node_modules/alertify.js/src/sass/',
+            './resources/assets/vendor/bootstrap-languages/'
+        ]
+    });
     mix.copy('resources/assets/img', 'public/img');
-    mix.copy('resources/assets/vendor/bootstrap-languages/languages.png', 'public/img');
-    mix.copy('node_modules/bootstrap-sass/assets/fonts', 'public/fonts');
-    mix.copy('node_modules/font-awesome/fonts', 'public/fonts');
+    mix.copy('resources/assets/vendor/bootstrap-languages/languages.png', 'public/assets/img');
+    mix.copy('node_modules/bootstrap-sass/assets/fonts', 'public/assets/fonts');
+    mix.copy('node_modules/font-awesome/fonts', 'public/assets/fonts');
 });
