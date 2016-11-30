@@ -61,7 +61,8 @@ The key word \"{TARGET}\" is mandatory in the message body to give each person h
 
     'mail-sms' => "and/or",
 
-    'sms.content' => "Sms content <span class=\"tip\">(max 130 chars)</span>",
+    'sms.content' => "Content of the sms :span (:left chars left) :espan",
+    'sms.content.multiple' => "Content of the :count sms :span (:left chars left) :espan",
     'sms.content.placeholder' => "e.g. Hi {SANTA}, for the secret santa party, your target is {TARGET}. As a reminder, the amount of the gift is £3!",
     'sms.content.tip1' => "Use \"{SANTA}\" for the receiver of the sms and \"{TARGET}\" for the name of the target.",
     'sms.content.tip2' => "Tip: Remember to remind the date, location and the amount of the gift.",
