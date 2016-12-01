@@ -1,6 +1,7 @@
 var Vue = require('vue');
 var $ = require('jquery');
 var alertify = require('alertify.js');
+var SmsTools = require('./smsTools.js');
 
 var app = new Vue({
   el: '#form',
@@ -9,7 +10,9 @@ var app = new Vue({
     sending: false,
     sent: false,
     participants: [],
-    fieldErrors: {}
+    fieldErrors: {},
+    smsContent: '',
+    maxSms: 3
   },
 
   computed: {
@@ -36,6 +39,18 @@ var app = new Vue({
         errors = errors.concat(this.fieldErrors[field]);
       }
       return errors;
+    },
+
+    smsCount: function() {
+      return Math.min(SmsTools.chunk(this.smsContent).length, this.maxSms);
+    },
+
+    charactersLeft: function() {
+      return SmsTools.chunkMaxLength(this.smsContent, this.smsCount, true) - this.smsContent.length;
+    },
+
+    maxLength: function() {
+      return SmsTools.chunkMaxLength(this.smsContent, this.maxSms, true);
     }
 
   },
@@ -43,6 +58,29 @@ var app = new Vue({
   created: function() {
     this.addParticipant();
     this.addParticipant();
+  },
+
+  watch: {
+    sending: function(newVal) {
+      // If we reset the sending status, reset the captcha
+      if(!newVal) {
+        grecaptcha.reset();
+      }
+    },
+
+    sent: function(newVal) {
+      // If sent is a success, scroll to the message
+      if(newVal) {
+        $.scrollTo('#form .row', 800, {offset: -120});
+      }
+    },
+
+    errors: function(newVal) {
+      // If there's new errors, scroll to them
+      if(newVal.length) {
+        $.scrollTo('#form .row', 800, {offset: -120});
+      }
+    }
   },
 
   methods: {
@@ -83,27 +121,5 @@ var app = new Vue({
       }
     }
 
-  },
-
-  watch: {
-    sending: function(newVal) {
-      // If we reset the sending status, reset the captcha
-      if(!newVal) {
-        grecaptcha.reset();
-      }
-    },
-
-    sent: function(newVal) {
-      // If sent is a success, scroll to the message
-      if(newVal) {
-        $.scrollTo('#form .row', 800, {offset: -120});
-      }
-    },
-    errors: function(newVal) {
-      // If there's new errors, scroll to them
-      if(newVal.length) {
-        $.scrollTo('#form .row', 800, {offset: -120});
-      }
-    }
   }
-})
+});
