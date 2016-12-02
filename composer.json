@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "korko/secretsanta",
+    "description": "An organsation tool for secret santa parties.",
+    "keywords": ["secretsanta", "tool"],
     "license": "MIT",
     "type": "project",
     "repositories": [
