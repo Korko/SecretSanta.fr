@@ -1,7 +1,10 @@
-var Vue = require('vue');
 var $ = require('jquery');
 var alertify = require('alertify.js');
 var SmsTools = require('./smsTools.js');
+
+var Vue = require('vue');
+var VueAutosize = require('vue-autosize')
+Vue.use(VueAutosize)
 
 var app = new Vue({
   el: '#form',
