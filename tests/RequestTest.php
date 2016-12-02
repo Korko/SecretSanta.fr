@@ -115,7 +115,7 @@ class RequestTest extends TestCase
             }))
             ->andReturn(true);
 
-        Twilio::shouldReceive('message')
+        Sms::shouldReceive('message')
             ->once()
             ->with('0612345678', '#test sms "tata\' => &toto#')
             ->andReturn(true);
