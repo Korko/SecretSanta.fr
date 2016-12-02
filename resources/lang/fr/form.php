@@ -57,7 +57,6 @@ Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner
     'mail.content' => "Contenu du mail",
     'mail.content.placeholder' => "ex : Salut {SANTA}, pour la soirée secret santa, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !",
     'mail.post' => "----
-Pour écrire à votre secret santa, envoyez un email à :email
 via SecretSanta.fr",
     'mail.content.tip1' => "Utilisez \"{SANTA}\" pour le nom de celui qui recevra le mail et \"{TARGET}\" pour le nom de sa cible.",
     'mail.content.tip2' => "Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.",
