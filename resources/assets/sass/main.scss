@@ -265,10 +265,30 @@ img {
     06. Form
 ========================================================================== */
 .participant .participant-remove-wrapper {
-    width:179px;
+    width: 179px;
 }
-#mailContent {
+#mailContent, #mailPost {
     max-width: 100%;
+    resize: none;
+}
+#mailPost {
+    height: 75px;
+}
+#smsContent, #mailContent {
+    border-bottom: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+#smsPost, #mailPost {
+    border-top: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+#smsContent, #smsPost {
+    resize: none;
+}
+#smsPost {
+    height: 35px;
 }
 #form .container {
     -webkit-transition: all 0.4s;
