@@ -101,7 +101,7 @@ class RequestTest extends TestCase
 
         Mail::shouldReceive('raw')
             ->once()
-            ->with('test mail toto => tata', Mockery::on(function ($closure) {
+            ->with('#test mail toto => tata#', Mockery::on(function ($closure) {
                 $message = Mockery::mock('Illuminate\Mailer\Message');
                 $message->shouldReceive('to')
                     ->with('test@test.com', 'toto')
@@ -117,7 +117,7 @@ class RequestTest extends TestCase
 
         Twilio::shouldReceive('message')
             ->once()
-            ->with('0612345678', '#^test sms "tata\' => &toto#')
+            ->with('0612345678', '#test sms "tata\' => &toto#')
             ->andReturn(true);
 
         $content = $this->ajaxPost('/', [
