@@ -27,7 +27,8 @@
         "korko/laravel5-recaptcha2": "dev-Korko-patch-1",
         "league/statsd": "dev-master",
         "korko/validator": "dev-master",
-        "aloha/twilio": "^3.0"
+        "aloha/twilio": "^3.0",
+        "spatie/laravel-blade-javascript": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

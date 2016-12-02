@@ -12,7 +12,7 @@ var app = new Vue({
     participants: [],
     fieldErrors: {},
     smsContent: '',
-    maxSms: 3
+    maxSms: global.maxSms
   },
 
   computed: {

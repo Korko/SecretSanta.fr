@@ -39,6 +39,9 @@
 
     <!-- css -->
     <link rel="stylesheet" href="assets/bundle.css" />
+
+    <!-- config js -->
+    @javascript('maxSms', config('sms.max'))
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
     <div id="menu" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
