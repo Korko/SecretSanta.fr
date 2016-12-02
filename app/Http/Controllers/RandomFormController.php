@@ -86,7 +86,7 @@ class RandomFormController extends Controller
     protected function sendSms($santa, $targetName, $content)
     {
         $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $content);
-        $contentSms .= PHP_EOL."[via SecretSanta.fr]";
+        $contentSms .= PHP_EOL."via SecretSanta.fr";
         Twilio::message($santa['phone'], $contentSms);
     }
 }
