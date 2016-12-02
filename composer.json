@@ -22,7 +22,7 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": "^7.0",
         "laravel/framework": "5.1.*",
         "korko/laravel5-recaptcha2": "dev-Korko-patch-1",
         "league/statsd": "dev-master",
