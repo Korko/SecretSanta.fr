@@ -58,7 +58,9 @@ You must use the keyword “{TARGET}”, it’s mandatory to give each person th
 
     'mail.content' => "Email content",
     'mail.content.placeholder' => "e.g. Hi {SANTA}, for the secret santa party, your target is {TARGET}. As a reminder, the amount of the gift is £3!",
-    'mail.post' => "In order to send an email to your secret santa, write to :email<br /><br />via SecretSanta.io",
+    'mail.post' => "----
+In order to send an email to your secret santa, write to :email
+via SecretSanta.io",
     'mail.content.tip1' => "Use “{SANTA}” for the e-mail recipient and “{TARGET}” for the name of the person who'll be the gift's recipient.",
     'mail.content.tip2' => "Advice: Try to add a reminder inside your message with the date, location and amount for the gift.",
 
@@ -67,6 +69,7 @@ You must use the keyword “{TARGET}”, it’s mandatory to give each person th
     'sms.content' => "Content of the sms :span (:left chars left) :espan",
     'sms.content.multiple' => "Content of the :count sms :span (:left chars left) :espan",
     'sms.content.placeholder' => "e.g. Hi {SANTA}, for the secret santa party, your target is {TARGET}. As a reminder, the amount of the gift is £3!",
+    'sms.post' => "- via SecretSanta.io",
     'sms.content.tip1' => "Use “{SANTA}” for the e-mail recipient and “{TARGET}” for the name of the person who'll be the gift's recipient.",
     'sms.content.tip2' => "Advice: Try to add a reminder inside your message with the date, location and amount for the gift.",
 
