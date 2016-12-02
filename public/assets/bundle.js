@@ -18664,11 +18664,13 @@ return Vue$3;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],6:[function(require,module,exports){
+(function (global){
 'use strict';
 
 var Vue = require('vue/dist/vue');
 var $ = require('jquery');
 var alertify = require('alertify.js');
+var SmsTools = require('./smsTools.js');
 
 var app = new Vue({
   el: '#form',
@@ -18677,7 +18679,9 @@ var app = new Vue({
     sending: false,
     sent: false,
     participants: [],
-    fieldErrors: {}
+    fieldErrors: {},
+    smsContent: '',
+    maxSms: global.maxSms
   },
 
   computed: {
@@ -18704,6 +18708,18 @@ var app = new Vue({
         errors = errors.concat(this.fieldErrors[field]);
       }
       return errors;
+    },
+
+    smsCount: function smsCount() {
+      return Math.min(SmsTools.chunk(this.smsContent).length, this.maxSms);
+    },
+
+    charactersLeft: function charactersLeft() {
+      return SmsTools.chunkMaxLength(this.smsContent, this.smsCount, true) - this.smsContent.length;
+    },
+
+    maxLength: function maxLength() {
+      return SmsTools.chunkMaxLength(this.smsContent, this.maxSms, true);
     }
 
   },
@@ -18711,6 +18727,29 @@ var app = new Vue({
   created: function created() {
     this.addParticipant();
     this.addParticipant();
+  },
+
+  watch: {
+    sending: function sending(newVal) {
+      // If we reset the sending status, reset the captcha
+      if (!newVal) {
+        grecaptcha.reset();
+      }
+    },
+
+    sent: function sent(newVal) {
+      // If sent is a success, scroll to the message
+      if (newVal) {
+        $.scrollTo('#form .row', 800, { offset: -120 });
+      }
+    },
+
+    errors: function errors(newVal) {
+      // If there's new errors, scroll to them
+      if (newVal.length) {
+        $.scrollTo('#form .row', 800, { offset: -120 });
+      }
+    }
   },
 
   methods: {
@@ -18751,32 +18790,11 @@ var app = new Vue({
       }
     }
 
-  },
-
-  watch: {
-    sending: function sending(newVal) {
-      // If we reset the sending status, reset the captcha
-      if (!newVal) {
-        grecaptcha.reset();
-      }
-    },
-
-    sent: function sent(newVal) {
-      // If sent is a success, scroll to the message
-      if (newVal) {
-        $.scrollTo('#form .row', 800, { offset: -120 });
-      }
-    },
-    errors: function errors(newVal) {
-      // If there's new errors, scroll to them
-      if (newVal.length) {
-        $.scrollTo('#form .row', 800, { offset: -120 });
-      }
-    }
   }
 });
 
-},{"alertify.js":1,"jquery":4,"vue/dist/vue":5}],7:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./smsTools.js":8,"alertify.js":1,"jquery":4,"vue/dist/vue":5}],7:[function(require,module,exports){
 'use strict';
 
 window.jQuery = require('jquery');
@@ -18870,6 +18888,92 @@ $(document).ready(function () {
 	});
 });
 
-},{"jquery":4,"jquery.actual":2,"jquery.scrollto":3}]},{},[7,6]);
+},{"jquery":4,"jquery.actual":2,"jquery.scrollto":3}],8:[function(require,module,exports){
+"use strict";
+
+module.exports = (function () {
+
+  var lengths = {
+    ascii: [160, 146, 153],
+    unicode: [70, 62, 66]
+  };
+
+  return {
+    isUnicode: function isUnicode(text) {
+      for (var charPos = 0; charPos < text.length; charPos++) {
+        if (text.charCodeAt(charPos) > 127 && text[charPos] != "€") {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    length: function length(text) {
+      var smsLength = 0;
+
+      for (var charPos = 0; charPos < text.length; charPos++) {
+        switch (text[charPos]) {
+          case "\n":
+          case "[":
+          case "]":
+          case "\\":
+          case "^":
+          case "{":
+          case "}":
+          case "|":
+          case "€":
+            smsLength += 2;
+            break;
+
+          default:
+            smsLength += 1;
+        }
+      }
+
+      return smsLength;
+    },
+
+    chunkMaxLength: function chunkMaxLength(text, chunkQuantity, adaptLength) {
+      var limits = this.isUnicode(text) ? lengths.unicode : lengths.ascii;
+      var limit = limits[0];
+      for (var i = 1; i < chunkQuantity; i++) {
+        limit += limits[Math.min(2, i)];
+      }
+      if (adaptLength) {
+        limit -= this.length(text) - text.length;
+      }
+      return limit;
+    },
+
+    chunkLengthLeft: function chunkLengthLeft(text) {
+      var chunks = this.chunk(text);
+      var maxLength = this.chunkMaxLength(text, chunks.length);
+      return maxLength - this.length(text);
+    },
+
+    chunk: function chunk(text) {
+      var chunks = [];
+      var limits = this.isUnicode(text) ? lengths.unicode : lengths.ascii;
+
+      var limit = limits[0];
+      var chunk = '';
+      while (text.length) {
+        if (this.length(chunk + text[0]) > limit) {
+          chunks.push(chunk);
+          chunk = '';
+          limit = limits[Math.min(2, chunks.length)];
+        }
+
+        chunk = chunk + text[0];
+        text = text.substr(1);
+      }
+
+      if (chunk) chunks.push(chunk);
+      return chunks;
+    }
+  };
+})();
+
+},{}]},{},[7,6]);
 
 //# sourceMappingURL=bundle.js.map
