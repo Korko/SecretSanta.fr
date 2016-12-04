@@ -36,10 +36,10 @@ class RandomFormRequest extends Request
                 }, array_keys($this->request->get('name', [])))).'|string',
                 'contentMail' => 'required_with:'.implode(',', array_map(function ($key) {
                     return 'email.'.$key;
-                }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}',
+                }, array_keys($this->request->get('name', [])))).'|string|contains:{TARGET}',
                 'contentSMS'  => 'required_with:'.implode(',', array_map(function ($key) {
                     return 'phone.'.$key;
-                }, array_keys($this->request->get('name', [])))).'|contains:{TARGET}|max:130',
+                }, array_keys($this->request->get('name', [])))).'|string|contains:{TARGET}|smsCount:'.config('sms.max'),
             ];
 
             foreach ($this->request->get('name') as $key => $name) {
