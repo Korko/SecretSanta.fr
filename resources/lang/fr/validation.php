@@ -92,8 +92,9 @@ return [
     */
 
     'custom'               => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'g-recaptcha-response' => [
+            'required' => 'Le captcha est obligatoire',
+            'recaptcha' => 'Le captcha est invalide',
         ],
     ],
 
@@ -138,6 +139,7 @@ return [
         'time'                  => 'Heure',
         'available'             => 'Disponible',
         'size'                  => 'Taille',
+        'g-recaptcha-response'  => 'Recaptcha',
     ],
 
 ];
