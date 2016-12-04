@@ -72,6 +72,7 @@ return [
         'string'  => 'Le texte de :attribute doit contenir :size caractères.',
         'array'   => 'Le tableau :attribute doit contenir :size éléments.',
     ],
+    'sms_count'            => 'Le contenu du sms ne respecte pas la limite de :size messages max',
     'string'               => 'Le champ :attribute doit être une chaîne de caractères.',
     'timezone'             => 'Le champ :attribute doit être un fuseau horaire valide.',
     'unique'               => 'La valeur du champ :attribute est déjà utilisée.',

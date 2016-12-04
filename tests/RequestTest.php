@@ -50,7 +50,15 @@ class RequestTest extends TestCase
         // Ok for names but no contact infos
         $content = $this->ajaxPost('/', ['name' => ['toto', 'tata']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.0', 'phone.0', 'email.1', 'phone.1'], $content);
-    }
+
+        // Ok for names but partial contact infos (sms)
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'phone' => ['0612345678', '']], 422);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.1', 'phone.1', 'contentSMS'], $content);
+
+        // Ok for names but partial contact infos (mail)
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'email' => ['', 'test@test.com']], 422);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.0', 'phone.0', 'title', 'contentMail'], $content);
+   }
 
     // Names and contact infos but no mail body nor sms body
     public function testContactBodiesMail()
@@ -93,6 +101,18 @@ class RequestTest extends TestCase
 
         $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => [1]], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
+    }
+
+    // Sms limit
+    public function testSmsLimit()
+    {
+        config(['sms.max' => 1]);
+        $content = $this->ajaxPost('/', [
+            'name'                 => ['toto', 'tata'],
+            'phone'                => ['0612345678', '0612345678'],
+            'contentSMS'           => '{TARGET}'.implode('', array_fill(0, 161, 'a')), // 2 sms long
+        ], 422);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS'], $content);
     }
 
     public function testOk()
