@@ -83,23 +83,23 @@ class RequestTest extends TestCase
     // Names and contact infos but no mail body nor sms body
     public function testContactBodiesBoth()
     {
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'email' => ['', 'test@test.com', 'test@test.com'], 'phone' => ['0612345678', '0612345678', ''], 'partners' => ['', '', '']], 422);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'email' => ['', 'test@test.com', 'test@test.com'], 'phone' => ['0612345678', '0612345678', ''], 'partner' => ['-1', '-1', '-1']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'title', 'contentMail', 'contentSMS'], $content);
     }
 
     // Names and partners
     public function testPartners()
     {
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => [87, -1]], 422);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => ['87', '-1']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'partner.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
 
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => [87]], 422);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => ['87']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'partner.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
 
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => [0]], 422);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => ['0']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'partner.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
 
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => [1]], 422);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => ['1']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
     }
 
@@ -115,7 +115,7 @@ class RequestTest extends TestCase
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS'], $content);
     }
 
-    public function testOk()
+    public function testOk_only_two()
     {
         Recaptcha::shouldReceive('verify')->once()->andReturn(true);
 
@@ -145,7 +145,66 @@ class RequestTest extends TestCase
             'name'                 => ['toto', 'tata'],
             'email'                => ['test@test.com', ''],
             'phone'                => ['', '0612345678'],
-            'partners'             => ['', ''],
+            'partner'              => ['-1', '-1'],
+            'title'                => 'test mail title',
+            'contentMail'          => 'test mail {SANTA} => {TARGET}',
+            'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
+        ], 200);
+        $this->assertEquals(['Envoyé avec succès !'], $content);
+    }
+
+    public function testOk_several()
+    {
+        Recaptcha::shouldReceive('verify')->once()->andReturn(true);
+
+        Mail::shouldReceive('raw')
+            ->once()
+            ->with('#test mail toto => tata#', Mockery::on(function ($closure) {
+                $message = Mockery::mock('Illuminate\Mailer\Message');
+                $message->shouldReceive('to')
+                    ->with('test@test.com', 'toto')
+                    ->andReturn(Mockery::self());
+                $message->shouldReceive('subject')
+                    ->with('test mail title')
+                    ->andReturn(Mockery::self());
+                $closure($message);
+
+                return true;
+            }))
+            ->andReturn(true);
+
+        Mail::shouldReceive('raw')
+            ->once()
+            ->with('#test mail tutu => toto#', Mockery::on(function ($closure) {
+                $message = Mockery::mock('Illuminate\Mailer\Message');
+                $message->shouldReceive('to')
+                    ->with('test2@test.com', 'tutu')
+                    ->andReturn(Mockery::self());
+                $message->shouldReceive('subject')
+                    ->with('test mail title')
+                    ->andReturn(Mockery::self());
+                $closure($message);
+
+                return true;
+            }))
+            ->andReturn(true);
+
+        Sms::shouldReceive('message')
+            ->once()
+            ->with('0612345678', '#test sms "tata\' => &tutu#')
+            ->andReturn(true);
+
+        Sms::shouldReceive('message')
+            ->once()
+            ->with('0712345678', '#test sms "tutu\' => &toto#')
+            ->andReturn(true);
+
+        $content = $this->ajaxPost('/', [
+            'g-recaptcha-response' => 'mocked',
+            'name'                 => ['toto', 'tata', 'tutu'],
+            'email'                => ['test@test.com', '', 'test2@test.com'],
+            'phone'                => ['', '0612345678', '0712345678'],
+            'partner'              => ['2', '0', '1'],
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
