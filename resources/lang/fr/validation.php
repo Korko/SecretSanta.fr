@@ -96,6 +96,12 @@ return [
             'required' => 'Le captcha est obligatoire',
             'recaptcha' => 'Le captcha est invalide',
         ],
+        'contentMail' => [
+            'contains' => 'Le contenu du mail doit inclure le mot clef :values',
+        ],
+        'contentSms' => [
+            'contains' => 'Le contenu du sms doit include le mot clef :values',
+        ]
     ],
 
     /*
