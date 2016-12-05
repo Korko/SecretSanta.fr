@@ -42,7 +42,7 @@ class RandomFormController extends Controller
                 'name'    => $names[$i],
                 'email'   => $emails[$i],
                 'phone'   => $phones[$i],
-                'partner' => (!empty($partners[$i]) && $partners[$i] !== -1) ? $names[$partners[$i]] : null,
+                'partner' => (!empty($partners[$i]) && $partners[$i] !== '-1') ? $names[$partners[$i]] : null,
             ];
         }
 
