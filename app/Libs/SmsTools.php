@@ -9,12 +9,13 @@ class SmsTools
 
     protected function isUnicode($text)
     {
-        for($i = 0; $i < mb_strlen($text); $i++) {
+        for ($i = 0; $i < mb_strlen($text); $i++) {
             $char = mb_substr($text, $i, 1);
-            if($char > 127 && $char != "€") {
+            if ($char > 127 && $char != '€') {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -26,10 +27,11 @@ class SmsTools
 
         $smsCount = 0;
         $charLeft = mb_strlen($text);
-        while($charLeft > 0) {
+        while ($charLeft > 0) {
             $charLeft -= $smsCount < 3 ? $smsLength[$smsCount] : $smsLength[2];
             $smsCount++;
         }
+
         return $smsCount;
     }
 }
