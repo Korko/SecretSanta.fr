@@ -93,7 +93,7 @@ return [
 
     'custom'               => [
         'g-recaptcha-response' => [
-            'required' => 'Le captcha est obligatoire',
+            'required'  => 'Le captcha est obligatoire',
             'recaptcha' => 'Le captcha est invalide',
         ],
         'contentMail' => [
@@ -101,7 +101,7 @@ return [
         ],
         'contentSms' => [
             'contains' => 'Le contenu du sms doit include le mot clef :values',
-        ]
+        ],
     ],
 
     /*

@@ -2,8 +2,8 @@
 
 namespace Korko\SecretSanta\Providers;
 
-use Korko\SecretSanta\Libs\SmsTools as LibSmsTools;
 use Illuminate\Support\ServiceProvider;
+use Korko\SecretSanta\Libs\SmsTools as LibSmsTools;
 use SmsTools;
 use Validator;
 
@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Validator::extend('smsCount', function($attribute, $value, $parameters, $validator) {
+        Validator::extend('smsCount', function ($attribute, $value, $parameters, $validator) {
             return SmsTools::count($value) <= intval($parameters[0]);
         });
 

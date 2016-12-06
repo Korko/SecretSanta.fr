@@ -12,4 +12,3 @@ class SmsTest extends TestCase
         $this->assertEquals(2, SmsTools::count(implode('', array_fill(0, 161, 'a'))));
     }
 }
-
