@@ -1,5 +1,5 @@
 <?php
 
 return [
-	'max' => 2
+    'max' => 2,
 ];

@@ -58,7 +58,7 @@ class RequestTest extends TestCase
         // Ok for names but partial contact infos (mail)
         $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'email' => ['', 'test@test.com']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.0', 'phone.0', 'title', 'contentMail'], $content);
-   }
+    }
 
     // Names and contact infos but no mail body nor sms body
     public function testContactBodiesMail()
