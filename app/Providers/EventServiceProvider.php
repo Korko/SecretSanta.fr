@@ -13,9 +13,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Korko\SecretSanta\Events\SomeEvent' => [
-            'Korko\SecretSanta\Listeners\EventListener',
-        ],
     ];
 
     /**
