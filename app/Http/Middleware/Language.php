@@ -12,7 +12,6 @@ class Language implements Middleware
 {
 
     private $app;
-    private $redirector;
 
     public function __construct(Application $app)
     {
