@@ -1,7 +1,6 @@
 {
   "private": true,
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
     "alertify.js": "^1.0.12",
     "aliasify": "^2.1.0",
@@ -12,8 +11,8 @@
     "jquery.actual": "dreamerslab/jquery.actual#master",
     "jquery.scrollto": "^2.1.2",
     "laravel-elixir": "^3.0.0",
-    "vue": "^2.0.7",
-    "vue-autosze": "korko/vue-autosize#master"
+    "vue": "^2.1.6",
+    "vue-autosize": "korko/vue-autosize#master"
   },
   "browserify": {
     "transform": [
