@@ -49,8 +49,8 @@ class RandomFormRequest extends Request
                     'exclusions.'.$key => 'sometimes|array',
                 ];
 
-                $exclusions = $this->request->get('exclusions') ?: array();
-                $exclusions = isset($exclusions[$key]) ? $exclusions[$key] : array();
+                $exclusions = $this->request->get('exclusions') ?: [];
+                $exclusions = isset($exclusions[$key]) ? $exclusions[$key] : [];
                 foreach ($exclusions as $key2 => $name2) {
                     $rules += [
                         'exclusions.'.$key.'.'.$key2 => 'integer|fieldinkeys:name,'.$key,
