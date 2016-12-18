@@ -3,10 +3,10 @@ var alertify = require('alertify.js');
 var SmsTools = require('./smsTools.js');
 
 var Vue = require('vue');
-var VueAutosize = require('vue-autosize')
-Vue.use(VueAutosize)
+var VueAutosize = require('vue-autosize');
+Vue.use(VueAutosize);
 
-var app = new Vue({
+window.app = new Vue({
   el: '#form',
 
   data: {
@@ -16,6 +16,42 @@ var app = new Vue({
     fieldErrors: {},
     smsContent: '',
     maxSms: global.maxSms
+  },
+
+  components: {
+    participant: {
+        template: '#participant-template',
+        props: ['idx', 'participants'],
+        data: function() {
+            return {
+                name: '',
+                email: '',
+                phone: '',
+            };
+        },
+        computed: {
+            participantNames: function() {
+                var names = [];
+                this.participants.forEach(function(participant, idx) {
+                    if(participant.name && idx !== this.idx) {
+                        names.push({id: participant.id, value: idx, text: participant.name});
+                    }
+                }.bind(this));
+                return names;
+            }
+        },
+        watch: {
+            name: function() {
+                this.$emit('changename', this.name);
+            },
+            email: function() {
+                this.$emit('changeemail', this.email);
+            },
+            phone: function() {
+                this.$emit('changephone', this.phone);
+            }
+        }
+    }
   },
 
   computed: {
@@ -93,12 +129,8 @@ var app = new Vue({
         name: '',
         email: '',
         phone: '',
-        partner: -1
+        id: 'id' + this.participants.length + (new Date()).getTime()
       });
-    },
-
-    removeParticipant: function(idx) {
-      this.participants.splice(idx, 1);
     },
 
     submit: function(event) {
