@@ -194,7 +194,7 @@
                     <fieldset :disabled="sending || sent">
                         <legend>@lang('form.participants')</legend>
                         <div class="table-responsive form-group">
-                            <table id="participants" class="table table-hover table-numbered">
+                            <table id="participants" class="table table-hover table-striped table-numbered">
                                 <thead>
                                     <tr>
                                         <th class="col-xs-3">@lang('form.participant.name')</th>
