@@ -48,8 +48,8 @@ Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner
     'phone.placeholder' => 'ex : 0612345678',
 
     'partner.none'   => 'Aucun',
-    'partner.remove' => 'Enlever',
-    'partner.add'    => 'Ajouter un participant',
+    'participant.remove' => 'Enlever',
+    'participant.add'    => 'Ajouter un participant',
 
     'mail.title'             => 'Titre du mail',
     'mail.title.placeholder' => 'ex : Soirée secretsanta du 23 décembre chez Martin',

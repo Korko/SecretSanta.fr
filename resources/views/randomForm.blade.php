@@ -207,37 +207,47 @@
                                 </thead>
                                 <tbody>
                                     {{-- Default is two empty rows to have two entries at any time --}}
-                                    <tr class="participant" v-for="(participant, idx) in participants">
-                                        <td class="row">
-                                            <label>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon counter">@{{ idx+1 }}</span>
-                                                    <input type="text" name="name[]" required="required" placeholder="@lang('form.name.placeholder')" v-model="participant.name" class="form-control participant-name" />
-                                                </div>
-                                            </label>
-                                        </td>
-                                        <td class="row border-left">
-                                            <input type="email" name="email[]" placeholder="@lang('form.email.placeholder')" v-model="participant.email" class="form-control participant-email" :required="!participant.phone" />
-                                        </td>
-                                        <td>
-                                            @lang('form.mail-sms')
-                                        </td>
-                                        <td class="row border-right">
-                                            <input type='tel' pattern='0[67]\d{8}' maxlength="10" name="phone[]" placeholder="@lang('form.phone.placeholder')" v-model="participant.phone" class="form-control participant-phone" :required="!participant.email" />
-                                        </td>
-                                        <td class="row">
-                                            <select name="partner[]" class="form-control participant-partner" v-model="participant.partner">
-                                                <option value="-1">@lang('form.partner.none')</option>
-                                                <option v-for="(partner, pidx) in participants" v-if="partner.name && idx !== pidx" :value="pidx">@{{ partner.name }}</option>
-                                            </select>
-                                        </td>
-                                        <td class="row participant-remove-wrapper">
-                                            <button type="button" class="btn btn-danger participant-remove" :disabled="idx < 2" @click="removeParticipant(idx)"><span class="glyphicon glyphicon-minus"></span><span> @lang('form.partner.remove')</span></button>
-                                        </td>
+                                    <script type="text/x-template" id="participant-template" v-pre>
+                                        <tr class="participant" :id="'participant_'+idx">
+                                            <td class="row">
+                                                <label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon counter">@{{ idx+1 }}</span>
+                                                        <input type="text" name="name[]" required="required" placeholder="@lang('form.name.placeholder')" v-model="name" class="form-control participant-name" />
+                                                    </div>
+                                                </label>
+                                            </td>
+                                            <td class="row border-left">
+                                                <input type="email" name="email[]" placeholder="@lang('form.email.placeholder')" v-model="email" class="form-control participant-email" :required="!phone" />
+                                            </td>
+                                            <td>
+                                                @lang('form.mail-sms')
+                                            </td>
+                                            <td class="row border-right">
+                                                <input type='tel' pattern='0[67]\d{8}' maxlength="10" name="phone[]" placeholder="@lang('form.phone.placeholder')" v-model="phone" class="form-control participant-phone" :required="!email" />
+                                            </td>
+                                            <td class="row border-right text-left">
+                                                <select name="partner[]" class="form-control participant-partner">
+                                                    <option value="-1">@lang('form.partner.none')</option>
+                                                    <option v-for="(partner, pidx) in participants" v-if="partner.name && idx !== pidx" :key="partner.id" :value="pidx">@{{ partner.name }}</option>
+                                                </select>
+                                            </td>
+                                            <td class="row participant-remove-wrapper">
+                                                <button type="button" class="btn btn-danger participant-remove" :disabled="participants.length <= 2" @click="$emit('delete')"><span class="glyphicon glyphicon-minus"></span><span> @lang('form.participant.remove')</span></button>
+                                            </td>
+                                        </tr>
+                                    </script>
+                                    <tr is="participant" v-for="(participant, idx) in participants" :key="participant.id"
+                                        :participants="participants"
+                                        :idx="idx"
+                                        @changename="participant.name = $event"
+                                        @changeemail="participant.email = $event"
+                                        @changephone="participant.phone = $event"
+                                        @delete="participants.splice(idx, 1)">
                                     </tr>
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><span class="glyphicon glyphicon-plus"></span> @lang('form.partner.add')</button>
+                            <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><span class="glyphicon glyphicon-plus"></span> @lang('form.participant.add')</button>
                         </div>
 
                         <div class="row" id="contact">
