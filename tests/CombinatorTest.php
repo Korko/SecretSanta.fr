@@ -6,7 +6,7 @@ class CombinatorTest extends TestCase
 {
     public function assertCombination($valid, $test)
     {
-        $test = array_map(function($el) {
+        $test = array_map(function ($el) {
             return implode('', $el);
         }, $test);
         $this->assertEquals(sort($valid), sort($test));
@@ -14,38 +14,45 @@ class CombinatorTest extends TestCase
 
     public function testNoFilter()
     {
-        $this->assertCombination(array(
-            'AB', 'BA'
-        ), Combinator::all(['A', 'B']));
+        $this->assertCombination([
+            'AB', 'BA',
+        ], Combinator::all(['A', 'B']));
     }
 
     public function testNoExclusion()
     {
-        $this->assertCombination(array(
-            'BA'
-        ), Combinator::all(['A', 'B'], function($a, $b) { return $a !== $b; }));
+        $this->assertCombination([
+            'BA',
+        ], Combinator::all(['A', 'B'], function ($a, $b) {
+            return $a !== $b;
+        }));
 
-        $this->assertCombination(array(
-            'BCA', 'CAB'
-        ), Combinator::all(['A', 'B', 'C'], function($a, $b) { return $a !== $b; }));
+        $this->assertCombination([
+            'BCA', 'CAB',
+        ], Combinator::all(['A', 'B', 'C'], function ($a, $b) {
+            return $a !== $b;
+        }));
 
-        $this->assertCombination(array(
+        $this->assertCombination([
             'BCDA', 'BDAC', 'BADC',
             'CDAB', 'CADB', 'CDBA',
-            'DABC', 'DCBA', 'DCAB'
-        ), Combinator::all(['A', 'B', 'C', 'D'], function($a, $b) { return $a !== $b; }));
+            'DABC', 'DCBA', 'DCAB',
+        ], Combinator::all(['A', 'B', 'C', 'D'], function ($a, $b) {
+            return $a !== $b;
+        }));
     }
 
     public function testSimpleExclusion()
     {
-        $exclusions = array('A' => ['C']);
+        $exclusions = ['A' => ['C']];
 
-        $this->assertCombination(array(
-            'BCA'
-        ), Combinator::all(['A', 'B', 'C'], function($elementA, $elementB) use($exclusions) {
+        $this->assertCombination([
+            'BCA',
+        ], Combinator::all(['A', 'B', 'C'], function ($elementA, $elementB) use ($exclusions) {
             return $elementA !== $elementB && (!isset($exclusions[$elementA]) || !in_array($elementB, $exclusions[$elementA]));
         }));
     }
+
 /*
     public function testComplexExclusion()
     {
@@ -59,16 +66,16 @@ class CombinatorTest extends TestCase
 */
     public function testInvalidExclusion()
     {
-        $this->assertEquals([], Combinator::all(['A', 'B', 'C'], function($elementA, $elementB) {
+        $this->assertEquals([], Combinator::all(['A', 'B', 'C'], function ($elementA, $elementB) {
             return false;
         }));
     }
 
     public function testImpossibleSolution()
     {
-        $exclusions = array('A' => ['B', 'C']);
+        $exclusions = ['A' => ['B', 'C']];
 
-        $this->assertEquals([], Combinator::all(['A', 'B', 'C'], function($elementA, $elementB) use($exclusions) {
+        $this->assertEquals([], Combinator::all(['A', 'B', 'C'], function ($elementA, $elementB) use ($exclusions) {
             return $elementA !== $elementB && (!isset($exclusions[$elementA]) || !in_array($elementB, $exclusions[$elementA]));
         }));
     }
