@@ -26,7 +26,7 @@ class RandomFormRequest extends Request
             'name'                 => 'required|array|min:2|arrayunique',
             'email'                => 'array',
             'phone'                => 'array',
-            'partner'              => 'array',
+            'exclusions'           => 'array',
         ];
 
         if (!empty($this->request->get('name'))) {
@@ -44,10 +44,18 @@ class RandomFormRequest extends Request
 
             foreach ($this->request->get('name') as $key => $name) {
                 $rules += [
-                    'email.'.$key   => 'required_without:phone.'.$key.'|email',
-                    'phone.'.$key   => 'required_without:email.'.$key.'|numeric|regex:#0[67]\d{8}#',
-                    'partner.'.$key => (isset($this->request->get('partner')[$key]) && $this->request->get('partner')[$key] != '-1') ? 'sometimes|integer|fieldinkeys:name,'.$key : 'sometimes|numeric',
+                    'email.'.$key      => 'required_without:phone.'.$key.'|email',
+                    'phone.'.$key      => 'required_without:email.'.$key.'|numeric|regex:#0[67]\d{8}#',
+                    'exclusions.'.$key => 'sometimes|array',
                 ];
+
+                $exclusions = $this->request->get('exclusions') ?: array();
+                $exclusions = isset($exclusions[$key]) ? $exclusions[$key] : array();
+                foreach ($exclusions as $key2 => $name2) {
+                    $rules += [
+                        'exclusions.'.$key.'.'.$key2 => 'integer|fieldinkeys:name,'.$key,
+                    ];
+                }
             }
         }
 

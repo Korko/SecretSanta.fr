@@ -27,7 +27,11 @@ window.app = new Vue({
                 name: '',
                 email: '',
                 phone: '',
+                exclusions: []
             };
+        },
+        components: {
+            select2: require('../vuejs/select2.vue')
         },
         computed: {
             participantNames: function() {
