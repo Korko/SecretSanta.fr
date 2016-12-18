@@ -6,38 +6,22 @@ use Exception;
 
 class Randomizer
 {
-    public static function randomize(array $santas, array $targets = null)
+    public static function randomize(array $participants) : array
     {
-        if ($targets === null) {
-            $targets = array_column($santas, 'name');
+        $combinations = Combinator::all(array_keys($participants), function($santa, $target) use($participants) {
+            return $santa !== $target && !in_array($target, $participants[$santa]['exclusions']);
+        });
+
+        if($combinations === array()) {
+            throw new Exception('Cannot resolve '.json_encode($participants));
         }
 
-        for ($i = 0; $i < 1000; $i++) {
-            $hat = $targets;
-            $matches = [];
+        $rnd = array_rand($combinations);
+        $combination = $combinations[$rnd];
 
-            foreach ($santas as $key => $santa) {
-                $target = self::getRandomTargetName($santa, $hat);
-                if ($target === null) {
-                    continue 2; // Nobody found, reroll
-                }
-                $matches[$key] = $target;
-                $hat = array_diff($hat, [$target]);
-            }
-
-            return $matches;
+        foreach($combination as $idx => $idx2) {
+            $combination[$idx] = $participants[$idx2]['name'];
         }
-
-        throw new Exception('Cannot resolve '.json_encode($santas).' with '.json_encode($targets));
-    }
-
-    private static function getRandomTargetName($santa, array $hat)
-    {
-        $santasHat = array_diff($hat, [$santa['name'], $santa['partner']]);
-        if ($santasHat === []) {
-            return;
-        }
-
-        return $santasHat[array_rand($santasHat)];
+        return $combination;
     }
 }

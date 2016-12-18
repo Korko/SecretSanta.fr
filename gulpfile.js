@@ -22,6 +22,7 @@ elixir(function(mix) {
             './node_modules/bootstrap-sass/assets/stylesheets/',
             './node_modules/font-awesome/scss/',
             './node_modules/alertify.js/src/sass/',
+            './node_modules/multiple-select/',
             './resources/assets/vendor/bootstrap-languages/'
         ]
     });
@@ -29,4 +30,5 @@ elixir(function(mix) {
     mix.copy('resources/assets/vendor/bootstrap-languages/languages.png', 'public/assets/img');
     mix.copy('node_modules/bootstrap-sass/assets/fonts', 'public/assets/fonts');
     mix.copy('node_modules/font-awesome/fonts', 'public/assets/fonts');
+    mix.copy('node_modules/multiple-select/multiple-select.png', 'public/assets');
 });

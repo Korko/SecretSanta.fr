@@ -38,16 +38,16 @@ Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner
 
     'participants' => 'Détails des participants',
 
-    'participant.name'    => 'Nom ou pseudonyme',
-    'participant.email'   => 'Adresse e-mail',
-    'participant.phone'   => 'Téléphone',
-    'participant.partner' => 'Partenaire',
+    'participant.name'       => 'Nom ou pseudonyme',
+    'participant.email'      => 'Adresse e-mail',
+    'participant.phone'      => 'Téléphone',
+    'participant.exclusions' => 'Exclusions',
 
-    'name.placeholder'  => 'exemple : Paul ou Korko',
-    'email.placeholder' => 'exemple : michel@aol.com',
-    'phone.placeholder' => 'ex : 0612345678',
+    'name.placeholder'       => 'exemple : Paul ou Korko',
+    'email.placeholder'      => 'exemple : michel@aol.com',
+    'phone.placeholder'      => 'ex : 0612345678',
+    'exclusions.placeholder' => 'Aucune exclusion',
 
-    'partner.none'   => 'Aucun',
     'participant.remove' => 'Enlever',
     'participant.add'    => 'Ajouter un participant',
 

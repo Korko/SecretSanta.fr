@@ -34,15 +34,15 @@ class RandomFormController extends Controller
         $names = $request->input('name');
         $emails = $request->input('email');
         $phones = $request->input('phone');
-        $partners = $request->input('partner', []);
+        $exclusions = $request->input('exclusions', []);
 
         $participants = [];
         for ($i = 0; $i < count($names); $i++) {
             $participants[$i] = [
-                'name'    => $names[$i],
-                'email'   => $emails[$i],
-                'phone'   => $phones[$i],
-                'partner' => (!empty($partners[$i]) && $partners[$i] !== '-1') ? $names[$partners[$i]] : null,
+                'name'       => $names[$i],
+                'email'      => $emails[$i],
+                'phone'      => $phones[$i],
+                'exclusions' => (isset($exclusions[$i])) ? array_map('intval', $exclusions[$i]) : [],
             ];
         }
 
