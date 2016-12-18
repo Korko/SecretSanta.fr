@@ -14,6 +14,7 @@
     "multiple-select": "^1.2.0",
     "vue": "^2.1.6",
     "vue-autosize": "korko/vue-autosize#master",
+    "vue-hot-reload-api": "^2.0.6",
     "vueify-insert-css": "^1.0.0"
   },
   "browserify": {
