@@ -3,7 +3,6 @@
 namespace Korko\SecretSanta\Libs;
 
 use Closure;
-use Exception;
 use Traversable;
 
 class Combinator
@@ -12,8 +11,8 @@ class Combinator
     {
         $combinations = [];
 
-        foreach(self::getGenerator($elements) as $combination) {
-            if(isset($validator) && !self::isCombinationValid($combination, $validator)) {
+        foreach (self::getGenerator($elements) as $combination) {
+            if (isset($validator) && !self::isCombinationValid($combination, $validator)) {
                 continue;
             }
 
@@ -25,24 +24,24 @@ class Combinator
 
     public static function getGenerator(array $elements) : Traversable
     {
-        if($elements === array()) {
+        if ($elements === []) {
             yield;
         }
 
         $rndElements = $elements;
         shuffle($rndElements);
 
-        foreach(self::getGenerator_internal($rndElements) as $combination) {
+        foreach (self::getGenerator_internal($rndElements) as $combination) {
             yield array_combine($elements, $combination);
         }
     }
 
-    private static function getGenerator_internal(array $elements, $combination = array()) : Traversable
+    private static function getGenerator_internal(array $elements, $combination = []) : Traversable
     {
-        if($elements === array()) {
+        if ($elements === []) {
             yield $combination;
         } else {
-            foreach($elements as $idx => $element) {
+            foreach ($elements as $idx => $element) {
                 // Take the first element
 
                 // Add it to the combination
@@ -60,11 +59,12 @@ class Combinator
 
     private static function isCombinationValid(array $combination, Closure $validator) : bool
     {
-        foreach($combination as $elementA => $elementB) {
-            if(!$validator($elementA, $elementB)) {
+        foreach ($combination as $elementA => $elementB) {
+            if (!$validator($elementA, $elementB)) {
                 return false;
             }
         }
+
         return true;
     }
 }
