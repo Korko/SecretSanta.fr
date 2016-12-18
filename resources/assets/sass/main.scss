@@ -266,6 +266,9 @@ img {
 /* ==========================================================================
     06. Form
 ========================================================================== */
+fieldset > div.form-group {
+    overflow: visible;
+}
 .participant .participant-remove-wrapper {
     width: 179px;
 }
