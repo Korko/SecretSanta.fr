@@ -83,23 +83,23 @@ class RequestTest extends TestCase
     // Names and contact infos but no mail body nor sms body
     public function testContactBodiesBoth()
     {
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'email' => ['', 'test@test.com', 'test@test.com'], 'phone' => ['0612345678', '0612345678', ''], 'partner' => ['-1', '-1', '-1']], 422);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'email' => ['', 'test@test.com', 'test@test.com'], 'phone' => ['0612345678', '0612345678', ''], 'exclusions' => []], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'title', 'contentMail', 'contentSMS'], $content);
     }
 
-    // Names and partners
-    public function testPartners()
+    // Names and exclusionss
+    public function testExclusionss()
     {
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => ['87', '-1']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'partner.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'exclusions' => [['87']]], 422);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'exclusions.0.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
 
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => ['87']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'partner.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'exclusions' => [['87']]], 422);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'exclusions.0.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
 
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => ['0']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'partner.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'exclusions' => [['0']]], 422);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'exclusions.0.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
 
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'partner' => ['1']], 422);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'exclusions' => [['1']]], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
     }
 
@@ -145,7 +145,7 @@ class RequestTest extends TestCase
             'name'                 => ['toto', 'tata'],
             'email'                => ['test@test.com', ''],
             'phone'                => ['', '0612345678'],
-            'partner'              => ['-1', '-1'],
+            'exclusions'           => [],
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
@@ -204,7 +204,7 @@ class RequestTest extends TestCase
             'name'                 => ['toto', 'tata', 'tutu'],
             'email'                => ['test@test.com', '', 'test2@test.com'],
             'phone'                => ['', '0612345678', '0712345678'],
-            'partner'              => ['2', '0', '1'],
+            'exclusions'           => [['2'], ['0'], ['1']],
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',

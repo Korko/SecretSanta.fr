@@ -201,7 +201,7 @@
                                         <th class="col-xs-3">@lang('form.participant.email')</th>
                                         <th class="col-xs-0"></th>
                                         <th class="col-xs-2 col-lg-2">@lang('form.participant.phone')</th>
-                                        <th class="col-xs-2">@lang('form.participant.partner')</th>
+                                        <th class="col-xs-2">@lang('form.participant.exclusions')</th>
                                         <th class="col-xs-1 col-lg-1"></th>
                                     </tr>
                                 </thead>
@@ -227,10 +227,7 @@
                                                 <input type='tel' pattern='0[67]\d{8}' maxlength="10" name="phone[]" placeholder="@lang('form.phone.placeholder')" v-model="phone" class="form-control participant-phone" :required="!email" />
                                             </td>
                                             <td class="row border-right text-left">
-                                                <select name="partner[]" class="form-control participant-partner">
-                                                    <option value="-1">@lang('form.partner.none')</option>
-                                                    <option v-for="(partner, pidx) in participants" v-if="partner.name && idx !== pidx" :key="partner.id" :value="pidx">@{{ partner.name }}</option>
-                                                </select>
+                                                <select2 :options="participantNames" v-model="exclusions" placeholder="@lang('form.exclusions.placeholder')"></select2>
                                             </td>
                                             <td class="row participant-remove-wrapper">
                                                 <button type="button" class="btn btn-danger participant-remove" :disabled="participants.length <= 2" @click="$emit('delete')"><span class="glyphicon glyphicon-minus"></span><span> @lang('form.participant.remove')</span></button>

@@ -11,6 +11,7 @@
     "jquery.actual": "dreamerslab/jquery.actual#master",
     "jquery.scrollto": "^2.1.2",
     "laravel-elixir": "^3.0.0",
+    "multiple-select": "^1.2.0",
     "vue": "^2.1.6",
     "vue-autosize": "korko/vue-autosize#master",
     "vueify-insert-css": "^1.0.0"
