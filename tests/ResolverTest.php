@@ -1,31 +1,31 @@
 <?php
 
-use Korko\SecretSanta\Libs\Randomizer;
+use Korko\SecretSanta\Libs\Resolver;
 
-class RandomizerTest extends TestCase
+class ResolverTest extends TestCase
 {
-    public function testDuoRandomize()
+    public function testDuoResolve()
     {
-        $this->assertEquals([0 => 'B', 1 => 'A'], Randomizer::randomize([
+        $this->assertEquals([0 => 'B', 1 => 'A'], Resolver::resolve([
             0 => ['name' => 'A', 'exclusions' => []],
             1 => ['name' => 'B', 'exclusions' => []],
         ]));
 
-        $this->assertEquals([0 => 'A', 1 => 'B'], Randomizer::randomize([
+        $this->assertEquals([0 => 'A', 1 => 'B'], Resolver::resolve([
             0 => ['name' => 'B', 'exclusions' => []],
             1 => ['name' => 'A', 'exclusions' => []],
         ]));
     }
 
-    public function testTrioRandomize()
+    public function testTrioResolve()
     {
-        $this->assertEquals([0 => 'B', 1 => 'C', 2 => 'A'], Randomizer::randomize([
+        $this->assertEquals([0 => 'B', 1 => 'C', 2 => 'A'], Resolver::resolve([
             0 => ['name' => 'A', 'exclusions' => []],
             1 => ['name' => 'B', 'exclusions' => ['0']],
             2 => ['name' => 'C', 'exclusions' => ['1']],
         ]));
 
-        $this->assertEquals([0 => 'C', 1 => 'A', 2 => 'B'], Randomizer::randomize([
+        $this->assertEquals([0 => 'C', 1 => 'A', 2 => 'B'], Resolver::resolve([
             0 => ['name' => 'A', 'exclusions' => ['1']],
             1 => ['name' => 'B', 'exclusions' => ['2']],
             2 => ['name' => 'C', 'exclusions' => []],
@@ -36,9 +36,9 @@ class RandomizerTest extends TestCase
      * @expectedException              Exception
      * @expectedExceptionMessageRegExp #^Cannot resolve#
      */
-    public function testFailRandomize()
+    public function testFailResolve()
     {
-        Randomizer::randomize([
+        Resolver::resolve([
             0 => ['name' => 'A', 'exclusions' => ['1', '2']],
             1 => ['name' => 'B', 'exclusions' => []],
             2 => ['name' => 'C', 'exclusions' => []],
