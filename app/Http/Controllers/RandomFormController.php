@@ -4,7 +4,7 @@ namespace Korko\SecretSanta\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Korko\SecretSanta\Http\Requests\RandomFormRequest;
-use Korko\SecretSanta\Libs\Randomizer;
+use Korko\SecretSanta\Libs\Resolver;
 use Mail;
 use Sms;
 use Statsd;
@@ -20,7 +20,7 @@ class RandomFormController extends Controller
     {
         $participants = $this->getParticipants($request);
 
-        $hat = Randomizer::randomize($participants);
+        $hat = Resolver::resolve($participants);
 
         $this->sendMessages($request, $participants, $hat);
 

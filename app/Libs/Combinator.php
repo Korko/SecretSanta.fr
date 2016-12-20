@@ -12,6 +12,8 @@ class Combinator
         $combinations = [];
 
         foreach (self::getGenerator($elements) as $combination) {
+            $combination = array_combine($elements, $combination);
+
             if (isset($validator) && !self::isCombinationValid($combination, $validator)) {
                 continue;
             }
@@ -22,17 +24,33 @@ class Combinator
         return $combinations;
     }
 
-    public static function getGenerator(array $elements) : Traversable
+    // With php7.1, return should be "?array" to return null in case of error
+    public static function one(array $elements, Closure $validator = null) : array
     {
-        if ($elements === []) {
-            yield;
-        }
-
         $rndElements = $elements;
         shuffle($rndElements);
 
-        foreach (self::getGenerator_internal($rndElements) as $combination) {
-            yield array_combine($elements, $combination);
+        foreach (self::getGenerator($rndElements) as $combination) {
+            $combination = array_combine($elements, $combination);
+
+            if (isset($validator) && !self::isCombinationValid($combination, $validator)) {
+                continue;
+            }
+
+            return $combination;
+        }
+
+        return [];
+    }
+
+    protected static function getGenerator(array $elements) : Traversable
+    {
+        if ($elements === []) {
+            return;
+        }
+
+        foreach (self::getGenerator_internal($elements) as $combination) {
+            yield $combination;
         }
     }
 

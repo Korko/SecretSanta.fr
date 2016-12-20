@@ -4,20 +4,17 @@ namespace Korko\SecretSanta\Libs;
 
 use Exception;
 
-class Randomizer
+class Resolver
 {
-    public static function randomize(array $participants) : array
+    public static function resolve(array $participants) : array
     {
-        $combinations = Combinator::all(array_keys($participants), function ($santa, $target) use ($participants) {
+        $combination = Combinator::one(array_keys($participants), function ($santa, $target) use ($participants) {
             return $santa !== $target && !in_array($target, $participants[$santa]['exclusions']);
         });
 
-        if ($combinations === []) {
+        if ($combination === []) {
             throw new Exception('Cannot resolve '.json_encode($participants));
         }
-
-        $rnd = array_rand($combinations);
-        $combination = $combinations[$rnd];
 
         foreach ($combination as $idx => $idx2) {
             $combination[$idx] = $participants[$idx2]['name'];
