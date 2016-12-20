@@ -24,7 +24,7 @@ A noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse 
     'section.how.heading2' => 'Deuxième étape : remplir les informations de contact et les exclusions',
     'section.how.content2' => "Vous avez la possibilité de choisir si les participants recevront le nom de leur cible par e-mail, par sms, ou les deux.
 Pour cela, précisez pour chacun une adresse e-mail et/ou un numéro de téléphone portable.
-(Optionel) Ajoutez des exclusions. Si vous ne voulez pas que les conjoints puissent se piocher l'un l'autre, remplissez le champ \"Partenaire\".",
+(Optionel) Ajoutez des exclusions. Si vous ne voulez pas que deux participants puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
     'section.how.heading3' => 'Troisième étape : préparer le mail ou le sms',
     'section.how.content3' => "Il ne vous reste plus qu'à remplir le titre et le corps du courriel ou du SMS que les participants recevront.
 Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".
