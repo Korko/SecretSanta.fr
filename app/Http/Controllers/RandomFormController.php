@@ -24,7 +24,7 @@ class RandomFormController extends Controller
 
         $this->sendMessages($request, $participants, $hat);
 
-        $message = 'Envoyé avec succès !';
+        $message = trans('message.sent');
 
         return $request->ajax() ? [$message] : redirect('/')->with('message', $message);
     }
