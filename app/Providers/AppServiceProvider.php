@@ -3,6 +3,7 @@
 namespace Korko\SecretSanta\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Korko\SecretSanta\Libs\HatSolver as LibHatSolver;
 use Korko\SecretSanta\Libs\SmsTools as LibSmsTools;
 use SmsTools;
 use Validator;
@@ -34,6 +35,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind('smstools', function ($app) {
             return new LibSmsTools();
+        });
+        $this->app->bind('solver', function ($app) {
+            return new LibHatSolver();
         });
     }
 }

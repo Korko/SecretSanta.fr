@@ -206,6 +206,7 @@ return [
         'Route'        => Illuminate\Support\Facades\Route::class,
         'Schema'       => Illuminate\Support\Facades\Schema::class,
         'Session'      => Illuminate\Support\Facades\Session::class,
+        'Solver'       => Korko\SecretSanta\Facades\Solver::class,
         'Sms'          => Aloha\Twilio\Support\Laravel\Facade::class,
         'SmsTools'     => Korko\SecretSanta\Facades\SmsTools::class,
         'Statsd'       => League\StatsD\Laravel5\Facade\StatsdFacade::class,
