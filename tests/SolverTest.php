@@ -58,6 +58,15 @@ class SolverTest extends TestCase
     public function testOne()
     {
         srand(1);
+        $rand1 = rand(0, 10);
+        srand(1);
+        $rand2 = rand(0, 10);
+        if ($rand1 !== $rand2) {
+            $this->markTestSkipped('srand disabled');
+            return;
+        }
+
+        srand(1);
         $this->assertEquals([0 => 1, 1 => 2, 2 => 0], Solver::one(['A', 'B', 'C']));
 
         srand(123);
