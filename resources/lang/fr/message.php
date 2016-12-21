@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'sent' => 'Envoyé avec succès !'
+    'sent' => 'Envoyé avec succès !',
 ];
