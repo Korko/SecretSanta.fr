@@ -13,9 +13,10 @@ class HatSolver
         shuffle($hat);
 
         $generator = $this->getGenerator($participants, $exclusions, $hat);
-        if(!$generator->valid()) {
+        if (!$generator->valid()) {
             throw new Exception('Cannot solve');
         }
+
         return $generator->current();
     }
 
@@ -24,7 +25,7 @@ class HatSolver
         $combinations = [];
 
         $generator = $this->getGenerator($participants, $exclusions, array_keys($participants));
-        foreach($generator as $combination) {
+        foreach ($generator as $combination) {
             $combinations[] = $combination;
         }
 
@@ -41,12 +42,12 @@ class HatSolver
         $actualExclusions = array_key_exists($i, $exclusions) ? $exclusions[$i] : [];
         $actualHat = array_diff($hat, $actualExclusions, [$i]);
 
-        if($actualHat !== []) {
-            foreach($actualHat as $possibility) {
+        if ($actualHat !== []) {
+            foreach ($actualHat as $possibility) {
                 $possibilityCombination = $combination + [$i => $possibility];
                 $possibilityHat = array_diff($hat, [$possibility]);
 
-                if($possibilityHat === []) {
+                if ($possibilityHat === []) {
                     yield $possibilityCombination;
                 } else {
                     yield from $this->_solve($i + 1, $possibilityCombination, $exclusions, $possibilityHat);
