@@ -4,8 +4,8 @@ namespace Korko\SecretSanta\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Korko\SecretSanta\Http\Requests\RandomFormRequest;
-use Korko\SecretSanta\Libs\Resolver;
 use Mail;
+use Solver;
 use Sms;
 use Statsd;
 
@@ -20,7 +20,7 @@ class RandomFormController extends Controller
     {
         $participants = $this->getParticipants($request);
 
-        $hat = Resolver::resolve($participants);
+        $hat = Solver::one($participants, array_column($participants, 'exclusions'));
 
         $this->sendMessages($request, $participants, $hat);
 
@@ -54,38 +54,39 @@ class RandomFormController extends Controller
 
     protected function sendMessages(Request $request, array $participants, array $hat)
     {
-        foreach ($hat as $santaIdx => $targetName) {
+        foreach ($hat as $santaIdx => $targetIdx) {
             $santa = $participants[$santaIdx];
+            $target = $participants[$targetIdx];
 
-            $this->sendMessage($request, $santa, $targetName);
+            $this->sendMessage($request, $santa, $target);
         }
     }
 
-    protected function sendMessage(Request $request, array $santa, $targetName)
+    protected function sendMessage(Request $request, array $santa, array $target)
     {
         if (!empty($santa['email'])) {
             Statsd::gauge('email', '+1');
-            $this->sendMail($santa, $targetName, $request->input('title'), $request->input('contentMail'));
+            $this->sendMail($santa, $target, $request->input('title'), $request->input('contentMail'));
         }
 
         if (!empty($santa['phone'])) {
             Statsd::gauge('phone', '+1');
-            $this->sendSms($santa, $targetName, $request->input('contentSMS'));
+            $this->sendSms($santa, $target, $request->input('contentSMS'));
         }
     }
 
-    protected function sendMail($santa, $targetName, $title, $content)
+    protected function sendMail(array $santa, array $target, $title, $content)
     {
-        $contentMail = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $content);
+        $contentMail = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $content);
         $contentMail .= PHP_EOL.trans('form.mail.post');
         Mail::raw($contentMail, function ($m) use ($santa, $title) {
             $m->to($santa['email'], $santa['name'])->subject($title);
         });
     }
 
-    protected function sendSms($santa, $targetName, $content)
+    protected function sendSms(array $santa, array $target, $content)
     {
-        $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $targetName], $content);
+        $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $content);
         $contentSms .= PHP_EOL.trans('form.sms.post');
         Sms::message($santa['phone'], $contentSms);
     }
