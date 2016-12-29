@@ -118,7 +118,8 @@
         <!-- /.container -->
     </div><!-- #spacer1 -->
 
-    <div id="form" class="light-wrapper">
+    @include('templates/participant')
+    <div id="form" class="light-wrapper" v-cloak>
         <section class="ss-style-top"></section>
         <div class="container inner">
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
