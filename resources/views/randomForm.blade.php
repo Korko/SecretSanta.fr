@@ -1,58 +1,13 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="{{ App::getLocale() }}"> <!--<![endif]-->
-<head>
-    <title>Secret Santa</title>
+@extends('templates/layout', ['styles' => '/assets/randomForm.css'])
 
-    <link rel="canonical" href="{{ URL::to('/') }}">
-
-    <!-- meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="description" content="@lang('headers.description')">
-    <meta name="keywords" content="@lang('headers.keywords')">
-    <meta name="author" content="Korko <webmaster@secretsanta.fr>">
-
-    <!-- opengraph/facebook -->
-    <meta property="og:title" content="SecretSanta">
-    <meta property="og:site_name" content="SecretSanta">
-    <meta property="og:url" content="{{ URL::to('/') }}">
-    <meta property="og:image" content="{{ URL::asset('assets/img/logo_black.png') }}">
-    <meta property="og:description" content="@lang('headers.description')">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="{{ App::getLocale() }}">
-
-    <!-- twitter -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@korkof">
-    <meta name="twitter:creator" content="Korko">
-    <meta name="twitter:title" content="SecretSanta">
-    <meta name="twitter:description" content="@lang('headers.description')">
-    <meta name="twitter:image" content="{{ URL::asset('assets/img/logo_black.png') }}">
-
-    <!-- facebook image -->
-    <link rel="image_src" href="{{ URL::asset('assets/img/logo_black.png') }}" />
-
-    <!-- css -->
-    <link rel="stylesheet" href="assets/bundle.css" />
+@section('header')
+    @parent
 
     <!-- config js -->
     @javascript('maxSms', config('sms.max'))
-</head>
-<body data-spy="scroll" data-target="#navbar" data-offset="120">
-    <div id="menu" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-        <nav id="navbar">
-            <div id="logo">
-                <a href="#header">
-                    <img src="assets/img/logo.png" alt="" />
-                </a>
-            </div>
-            <ul class="nav navbar-nav hidden-xs">
+@stop
+
+@section('navbar')
                 <li><a href="#what">@lang('form.nav.what')</a></li>
                 <li><a href="#how">@lang('form.nav.how')</a></li>
                 <li><a href="#form">@lang('form.nav.go')</a></li>
@@ -67,19 +22,9 @@
                         @endforeach
                     </ul>
                 </li>
+@stop
 
-                <!--fix for scroll spy active menu element-->
-                <li style="display:none;"><a href="#header"></a></li>
-            </ul>
-            <ul class="visible-xs list-inline">
-                @foreach(config('app.domains') as $locale => $domain)
-                <li><a href="https://{{ $domain }}"><span class="lang-lg" lang="{{ $locale }}"></span></a></li>
-                @endforeach
-            </ul>
-        </nav><!--/.navbar-collapse -->
-        </div><!-- container -->
-    </div><!-- menu -->
-
+@section('body')
     <div id="header">
         <div class="bg-overlay"></div>
         <div class="center text-center">
@@ -123,7 +68,6 @@
         </div>
         <!-- /.container -->
     </div><!-- #spacer1 -->
-
 
     <div id="how" class="light-wrapper">
         <section class="ss-style-top"></section>
@@ -291,26 +235,17 @@
             <!-- /.services -->
         </div>
         <!-- /.container -->
-        <section class="ss-style-bottom"></section>
     </div>
+@stop
 
-    <footer id="footer" class="dark-wrapper">
-        <div class="container inner">
-            <div class="row">
-                <div class="col-sm-6">
-                    &copy; Copyright SecretSanta.fr 2015
-                    <br/>{!! trans('footer.project', ['author' => '<a class="themeBy" href="https://www.korko.fr">Korko</a>']) !!}
-                    <br/>{!! trans('footer.theme', ['author' => '<a class="themeBy" href="https://www.themewagon.com">ThemeWagon</a>']) !!}
-                    <br/>{!! trans('footer.icons', ['author' => '<a class="themeBy" href="https://www.iconfinder.com/iconsets/doublejdesign-free-icon-handy_color">Double-J Designs</a>']) !!}
-                </div>
-            </div>
-        </div>
-        <!-- /.container -->
-    </footer>
+@section('copyright')
+    @parent
 
-    <span id="forkongithub" class="hidden-sm"><a href="https://github.com/Korko/SecretSanta" title="Fork me on GitHub">Fork me on GitHub</a></span>
+    <br/>{!! trans('footer.icons', ['author' => '<a class="themeBy" href="https://www.iconfinder.com/iconsets/doublejdesign-free-icon-handy_color">Double-J Designs</a>']) !!}
+@stop
 
-    <script type="text/javascript" src="assets/bundle.js"></script>
+@section('script')
+    <script type="text/javascript" src="{{ URL::asset('assets/randomForm.js') }}"></script>
 
     {!! Recaptcha::renderScript(App::getLocale()) !!}
 
@@ -319,5 +254,4 @@
         alertify.alert("{{ session('message') }}");
     </script>
     @endif
-</body>
-</html>
+@stop
