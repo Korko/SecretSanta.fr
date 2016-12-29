@@ -6,11 +6,58 @@ $icon-font-path: "/assets/fonts/bootstrap/";
 $fa-font-path: "/assets/fonts";
 @import "font-awesome";
 
-@import "alertify";
-
 @import "languages";
 
-@import "multiple-select";
+/*  
+Sticky Footer Solution
+by Steve Hatcher 
+http://stever.ca
+http://www.cssstickyfooter.com
+*/
+
+* {margin:0;padding:0;} 
+
+/* must declare 0 margins on everything, also for main layout components use padding, not 
+vertical margins (top and bottom) to add spacing, else those margins get added to total height 
+and your footer gets pushed down a bit more, creating vertical scroll bars in the browser */
+
+html, body {height: 100%;}
+
+#wrap {min-height: 100%;}
+
+$footer-height: 100px !default;
+
+#main {overflow:auto;
+	padding-bottom: $footer-height + 15px;}  /* must be same height as the footer */
+
+footer {position: relative;
+	margin-top: -$footer-height - 15px; /* negative value of footer height */
+	height: $footer-height + 15px;
+	clear:both;}
+
+footer .inner {padding-bottom: 15px;}
+footer .row {height: $footer-height;}
+
+/*Opera Fix*/
+body:before {/* thanks to Maleika (Kohoutec)*/
+    content:"";
+    height:100%;
+    float:left;
+    width:0;
+    margin-top:-32767px;/* thank you Erik J - negate effect of float*/
+}
+
+/* IMPORTANT
+
+You also need to include this conditional style in the <head> of your HTML file to feed this style to IE 6 and lower and 8 and higher.
+
+<!--[if !IE 7]>
+	<style type="text/css">
+		#wrap {display:table;height:100%}
+	</style>
+<![endif]-->
+
+*/
 
 /*
 Theme Name: MeatKing
@@ -34,6 +81,7 @@ TABLE OF CONTENTS
 /* ==========================================================================
     01. General and Typography
 ========================================================================== */
+
 body {
     font-family: 'Kreon', serif;
     -webkit-font-smoothing: antialiased;
@@ -50,7 +98,7 @@ img {
     color: #FFF;
     text-align: center;
 }
-.light-wrapper section::before, .light-wrapper section::after {
+.light-wrapper section::before, .light-wrapper section::after, .dark-wrapper section::before, .dark-wrapper section::after {
     position: absolute;
     content: '';
 }
@@ -160,7 +208,6 @@ img {
     padding: 12px;
 }
 
-
 /* ==========================================================================
     03. Navigation
 ========================================================================== */
@@ -191,149 +238,6 @@ img {
     text-shadow: none;
 }
 
-
-/* ==========================================================================
-    04. Parallax
-========================================================================== */
-.parallax {
-    background: url(/assets/img/gifts-2.jpg) fixed no-repeat center center;
-    -moz-background-size: cover;
-    background-size: cover;
-    position: relative;
-    color: #FFF;
-}
-.parallax .inner {
-    padding-top: 130px;
-    padding-bottom: 130px;
-}
-.parallax.parallax2 {
-    background-image: url(/assets/img/gifts-3.jpg);
-}
-
-
-/* ==========================================================================
-    05. What/How
-========================================================================== */
-.light-wrapper {
-    background: #fbfbfb;
-}
-.inner {
-    padding-top: 100px;
-    padding-bottom: 100px;
-}
-.section-title {
-    font-size: 36px;
-    line-height: 40px;
-    text-transform: uppercase;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-.main.lead {
-    margin-bottom: 80px;
-}
-.lead {
-    font-size: 17px;
-    line-height: 24px;
-    font-weight: normal;
-    text-transform: uppercase;
-    margin-bottom: 15px;
-    color: #2e2e2e;
-    position: relative;
-}
-.lead:after {
-    position: absolute;
-    content: ' ';
-    background: #ed0121;
-    width: 80px;
-    height: 3px;
-    bottom: -22px;
-    left: 50%;
-    margin-left: -40px;
-}
-.media-body {
-    width: auto;
-    text-align: left;
-}
-.media-heading {
-    font-weight: bold;
-}
-.media-body p::first-line {
-}
-#how div.well {
-    font-style: italic;
-}
-
-/* ==========================================================================
-    06. Form
-========================================================================== */
-fieldset > div.form-group {
-    overflow: visible;
-}
-.participant .participant-remove-wrapper {
-    width: 179px;
-}
-#mailContent, #mailPost {
-    max-width: 100%;
-    resize: none;
-}
-#mailPost {
-    height: 75px;
-}
-#smsContent, #mailContent {
-    border-bottom: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-#smsPost, #mailPost {
-    border-top: 0;
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
-}
-#smsContent, #smsPost {
-    resize: none;
-}
-#smsPost {
-    height: 35px;
-}
-#form .container {
-    -webkit-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    transition: all 0.4s;
-    position: relative;
-}
-#form.success .success-wrapper {
-    display: block;
-}
-.col-xs-0 {
-    width: 1%;
-}
-.border-left {
-    border-left: 1px solid #ddd;
-}
-.border-right {
-    border-right: 1px solid #ddd;
-}
-.tip {
-    font-style: italic;
-    font-size: 12px;
-}
-.glyphicon.spinning {
-    animation: spin 1s infinite linear;
-    -webkit-animation: spin2 1s infinite linear;
-}
-button .glyphicon.spinning {
-    margin-right: 10px;
-}
-@keyframes spin {
-    from { transform: scale(1) rotate(0deg); }
-    to { transform: scale(1) rotate(360deg); }
-}
-@-webkit-keyframes spin2 {
-    from { -webkit-transform: rotate(0deg); }
-    to { -webkit-transform: rotate(360deg); }
-}
-
 /* ==========================================================================
     07. Footer
 ========================================================================== */
@@ -350,11 +254,10 @@ button .glyphicon.spinning {
     color: #ed0121;
     background: white;
 }
-footer .inner {
-    padding-top: 50px;
-    padding-bottom: 50px;
+footer .row {
+    display: flex;
+    align-items: center;
 }
-
 
 /* ==========================================================================
     08. Responsive styles
@@ -402,20 +305,6 @@ footer .inner {
         margin: 0 15px;
     }
 }
-@media (min-width: 992px) {
-    #contact > fieldset:first-child {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        border-right: 2px solid #ccc;
-    }
-}
-@media (max-width: 1199px) {
-    .participant-remove span:nth-child(2) {
-        display: none;
-    }
-}
-
 
 /* ==========================================================================
     09. Ribbon
@@ -423,6 +312,7 @@ footer .inner {
 #forkongithub {
     display: none;
 }
+
 @media screen and (min-width: 768px) {
     #forkongithub {
         position: fixed;

@@ -13,11 +13,10 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     mix.browserify([
-        'main.js', 'app.js'
-    ], 'public/assets/bundle.js');
-    mix.sass([
-        'main.scss'
-    ], 'public/assets/bundle.css', {
+        'main.js', 'randomForm.js'
+    ], 'public/assets/randomForm.js');
+
+    var sassOptions = {
         includePaths: [
             './node_modules/bootstrap-sass/assets/stylesheets/',
             './node_modules/font-awesome/scss/',
@@ -25,7 +24,12 @@ elixir(function(mix) {
             './node_modules/multiple-select/',
             './resources/assets/vendor/bootstrap-languages/'
         ]
-    });
+    };
+
+    mix.sass([
+        'randomForm.scss'
+    ], 'public/assets/randomForm.css', sassOptions);
+
     mix.copy('resources/assets/img', 'public/img');
     mix.copy('resources/assets/vendor/bootstrap-languages/languages.png', 'public/assets/img');
     mix.copy('node_modules/bootstrap-sass/assets/fonts', 'public/assets/fonts');
