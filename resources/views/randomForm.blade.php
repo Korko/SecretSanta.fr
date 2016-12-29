@@ -118,7 +118,8 @@
         <!-- /.container -->
     </div><!-- #spacer1 -->
 
-    <div id="form" class="light-wrapper">
+    @include('templates/participant')
+    <div id="form" class="light-wrapper" v-cloak>
         <section class="ss-style-top"></section>
         <div class="container inner">
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
@@ -151,36 +152,6 @@
                                 </thead>
                                 <tbody>
                                     {{-- Default is two empty rows to have two entries at any time --}}
-                                    <script type="text/x-template" id="participant-template" v-pre>
-                                        <tr class="participant" :id="'participant_'+idx">
-                                            <td class="row">
-                                                <label>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon counter">@{{ idx+1 }}</span>
-                                                        <input type="text" name="name[]" required="required" placeholder="@lang('form.name.placeholder')" v-model="name" class="form-control participant-name" />
-                                                    </div>
-                                                </label>
-                                            </td>
-                                            <td class="row border-left">
-                                                <input type="email" name="email[]" placeholder="@lang('form.email.placeholder')" v-model="email" class="form-control participant-email" :required="!phone" />
-                                            </td>
-                                            <td>
-                                                @lang('form.mail-sms')
-                                            </td>
-                                            <td class="row border-right">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon lang" lang="fr">(+33)</span>
-                                                    <input type='tel' pattern='0?[67]\d{8}' :maxlength="(phone[0] === undefined || phone[0] === '0') ? 10 : 9" name="phone[]" placeholder="@lang('form.phone.placeholder')" v-model="phone" class="form-control participant-phone" :required="!email" />
-                                                </div>
-                                            </td>
-                                            <td class="row border-right text-left">
-                                                <select2 :options="participantNames" v-model="exclusions" placeholder="@lang('form.exclusions.placeholder')"></select2>
-                                            </td>
-                                            <td class="row participant-remove-wrapper">
-                                                <button type="button" class="btn btn-danger participant-remove" :disabled="participants.length <= 2" @click="$emit('delete')"><span class="glyphicon glyphicon-minus"></span><span> @lang('form.participant.remove')</span></button>
-                                            </td>
-                                        </tr>
-                                    </script>
                                     <tr is="participant" v-for="(participant, idx) in participants" :key="participant.id"
                                         :participants="participants"
                                         :idx="idx"
