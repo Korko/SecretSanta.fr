@@ -16,6 +16,10 @@ elixir(function(mix) {
         'main.js', 'randomForm.js'
     ], 'public/assets/randomForm.js');
 
+    mix.browserify([
+        'dearSanta.js'
+    ], 'public/assets/dearSanta.js');
+
     var sassOptions = {
         includePaths: [
             './node_modules/bootstrap-sass/assets/stylesheets/',
@@ -27,8 +31,16 @@ elixir(function(mix) {
     };
 
     mix.sass([
+        'layout.scss'
+    ], 'public/assets/layout.css', sassOptions);
+
+    mix.sass([
         'randomForm.scss'
     ], 'public/assets/randomForm.css', sassOptions);
+
+    mix.sass([
+        'dearSanta.scss'
+    ], 'public/assets/dearSanta.css', sassOptions);
 
     mix.copy('resources/assets/img', 'public/img');
     mix.copy('resources/assets/vendor/bootstrap-languages/languages.png', 'public/assets/img');

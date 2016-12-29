@@ -101,6 +101,7 @@ window.app = new Vue({
   created: function() {
     this.addParticipant();
     this.addParticipant();
+    this.addParticipant();
   },
 
   watch: {
