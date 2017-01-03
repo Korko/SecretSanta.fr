@@ -1,6 +1,6 @@
 <?php
 
-require_once('RequestCase.php');
+require_once 'RequestCase.php';
 
 use Korko\SecretSanta\Draw;
 use Korko\SecretSanta\Participant;
@@ -181,7 +181,7 @@ class RequestTest extends RequestCase
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
-            'dearsanta'            => '1'
+            'dearsanta'            => '1',
         ], 200);
         $this->assertEquals(['Envoyé avec succès !'], $content);
 

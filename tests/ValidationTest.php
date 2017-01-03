@@ -1,6 +1,6 @@
 <?php
 
-require_once('RequestCase.php');
+require_once 'RequestCase.php';
 
 class ValidationTest extends RequestCase
 {
@@ -72,7 +72,7 @@ class ValidationTest extends RequestCase
     public function testContactBodiesBoth()
     {
         $content = $this->ajaxPost('/', [
-            'name' => ['toto', 'tata', 'tutu'], 'email' => ['', 'test@test.com', 'test@test.com'], 'phone' => ['0612345678', '0612345678', ''], 'exclusions' => []
+            'name' => ['toto', 'tata', 'tutu'], 'email' => ['', 'test@test.com', 'test@test.com'], 'phone' => ['0612345678', '0612345678', ''], 'exclusions' => [],
         ], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'title', 'contentMail', 'contentSMS'], $content);
     }

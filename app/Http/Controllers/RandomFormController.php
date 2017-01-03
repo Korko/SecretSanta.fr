@@ -66,7 +66,7 @@ class RandomFormController extends Controller
 
     protected function sendMessage(Request $request, array $santa, array $target)
     {
-        $dearSantaLink = NULL;
+        $dearSantaLink = null;
         if ($request->input('dearsanta')) {
             $dearSantaLink = $this->getDearSantaLink($santa['email']);
         }
@@ -92,7 +92,7 @@ class RandomFormController extends Controller
 
     private function getDraw()
     {
-        if(!isset($this->draw)) {
+        if (!isset($this->draw)) {
             $this->draw = new Draw();
             $this->draw->save();
         }
