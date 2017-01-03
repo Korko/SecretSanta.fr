@@ -81,6 +81,9 @@ $footer-height: 120px;
 fieldset > div.form-group {
     overflow: visible;
 }
+.participant .participant-exclusions-wrapper {
+    padding-top: 11px;
+}
 .participant .participant-remove-wrapper {
     width: 179px;
 }
@@ -89,6 +92,9 @@ fieldset > div.form-group {
     resize: none;
 }
 #mailPost {
+    height: 55px;
+}
+#mailPost.extended {
     height: 75px;
 }
 #smsContent, #mailContent {

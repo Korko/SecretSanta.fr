@@ -20,8 +20,8 @@
         </div>
         <form v-else>
             <fieldset :disabled="!verified">
-                <input type="text" name="title" />
-                <textarea name="content"></textarea>
+                <label>Titre du mail : <input type="text" name="title" placeholder="Ma liste de Noël" /></label>
+                <label>Contenu du mail : <textarea name="content" placeholder="Cher Papa Noël..."></textarea></label>
             </fieldset>
         </form>
     </div>

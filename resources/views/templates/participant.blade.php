@@ -17,7 +17,7 @@
         <td class="row border-right">
             <input type='tel' pattern='0[67]\d{8}' maxlength="10" name="phone[]" placeholder="@lang('form.phone.placeholder')" v-model="phone" class="form-control participant-phone" :required="!email" />
         </td>
-        <td class="row border-right text-left">
+        <td class="row border-right text-left participant-exclusions-wrapper">
             <select2 :options="participantNames" v-model="exclusions" placeholder="@lang('form.exclusions.placeholder')"></select2>
         </td>
         <td class="row participant-remove-wrapper">
