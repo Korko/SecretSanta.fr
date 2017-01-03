@@ -58,21 +58,26 @@ class SolverTest extends TestCase
 
     public function testOne()
     {
-        srand(1);
-        $rand1 = rand(0, 10);
-        srand(1);
-        $rand2 = rand(0, 10);
-        if ($rand1 !== $rand2) {
-            $this->markTestSkipped('srand disabled');
+        $this->assertTrue((function() {
+            $solutions = [
+                [0 => 1, 1 => 2, 2 => 0],
+                [0 => 2, 1 => 0, 2 => 1]
+            ];
+            $valid = [];
 
-            return;
-        }
+            for($i = 0; $i < 100; $i++) {
+                $solution = Solver::one(['A', 'B', 'C']);
 
-        srand(1);
-        $this->assertEquals([0 => 1, 1 => 2, 2 => 0], Solver::one(['A', 'B', 'C']));
+                $solution_position = array_search($solution, $solutions);
+                $valid[$solution_position] = TRUE;
 
-        srand(123);
-        $this->assertEquals([0 => 2, 1 => 0, 2 => 1], Solver::one(['A', 'B', 'C']));
+                if(count($valid) === count($solutions)) {
+                    return true;
+                }
+            }
+
+            return false;
+        })());
     }
 
     public function testMass()
