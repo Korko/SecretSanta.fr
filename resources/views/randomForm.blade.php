@@ -243,6 +243,7 @@
                                 <span v-if="sent"><span class="glyphicon glyphicon-ok"></span> @lang('form.sent')</span>
                                 <span v-else>@lang('form.submit')</span>
                             </button>
+                        </fieldset>
                     </fieldset>
                 </form>
 
