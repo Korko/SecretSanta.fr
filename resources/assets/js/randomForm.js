@@ -6,14 +6,13 @@ var Vue = require('vue');
 var VueAutosize = require('vue-autosize');
 Vue.use(VueAutosize);
 
-window.app = new Vue({
+var VueAjax = require('./ajaxVue.js');
+
+window.app = new VueAjax({
   el: '#form',
 
   data: {
-    sending: false,
-    sent: false,
     participants: [],
-    fieldErrors: {},
     smsContent: '',
     maxSms: global.maxSms
   },
@@ -76,14 +75,6 @@ window.app = new Vue({
       return used;
     },
 
-    errors: function() {
-      var errors = [];
-      for(var field in this.fieldErrors) {
-        errors = errors.concat(this.fieldErrors[field]);
-      }
-      return errors;
-    },
-
     smsCount: function() {
       return Math.min(SmsTools.chunk(this.smsContent).length, this.maxSms);
     },
@@ -135,29 +126,6 @@ window.app = new Vue({
         phone: '',
         id: 'id' + this.participants.length + (new Date()).getTime()
       });
-    },
-
-    submit: function(event) {
-      var postData = $(event.target).serializeArray();
-      var formURL = $(event.target).attr("action");
-      if(!this.sending && !this.sent) {
-        this.sending = true;
-
-        var app = this;
-        $.ajax({
-          url : formURL,
-          type: "POST",
-          data : postData,
-          success: function(data, textStatus, jqXHR) {
-            alertify.alert(jqXHR.responseJSON[0]);
-            app.sent = true;
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            app.fieldErrors = jqXHR.responseJSON;
-            app.sending = false;
-          }
-        });
-      }
     }
 
   }
