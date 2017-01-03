@@ -1,121 +1,25 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+require_once('RequestCase.php');
 
-class RequestTest extends TestCase
+use Korko\SecretSanta\Draw;
+use Korko\SecretSanta\Participant;
+
+class RequestTest extends RequestCase
 {
-    // Ignore CSRF Validation
-    use WithoutMiddleware;
-
-    protected function ajaxPost($url, $postArgs, $code = 200)
+    public function setUp()
     {
-        $server = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
-        $response = $this->call('POST', $url, $postArgs, [], [], $server);
-        $this->assertEquals($code, $response->status());
-
-        return json_decode($response->content(), true);
+        parent::setUp();
+        Artisan::call('migrate');
     }
 
-    protected function assertArrayKeysEquals(array $keys, array $array)
+    public function tearDown()
     {
-        $arraykeys = array_keys($array);
-
-        foreach ($keys as $key) {
-            $this->assertContains($key, $arraykeys);
-        }
-
-        // Use the whole array to keep the value in the error message
-        // Use json_encode so that the value is displayed (if not, you'll only have "Array ()" as value)
-        $this->assertEquals('[]', json_encode(array_diff_key($array, array_flip($keys))), 'Unexpected keys');
+        Artisan::call('migrate:reset');
+        parent::tearDown();
     }
 
-    // Nothing sent, recaptcha needed, at least a name
-    public function testEmpty()
-    {
-        $content = $this->ajaxPost('/', ['a' => 'b'], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'name'], $content);
-    }
-
-    // Just names, need recaptcha and contact informations
-    public function testContactInfo()
-    {
-        // At least 2 names!
-        $content = $this->ajaxPost('/', ['name' => ['toto']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'name', 'email.0', 'phone.0'], $content);
-
-        // Ok for names but duplicates this time but no contact infos
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'toto']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'name', 'email.0', 'phone.0', 'email.1', 'phone.1'], $content);
-
-        // Ok for names but no contact infos
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.0', 'phone.0', 'email.1', 'phone.1'], $content);
-
-        // Ok for names but partial contact infos (sms)
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'phone' => ['0612345678', '']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.1', 'phone.1', 'contentSMS'], $content);
-
-        // Ok for names but partial contact infos (mail)
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'email' => ['', 'test@test.com']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.0', 'phone.0', 'title', 'contentMail'], $content);
-    }
-
-    // Names and contact infos but no mail body nor sms body
-    public function testContactBodiesMail()
-    {
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'email' => ['invalid@invalidformat', 'test@test.com']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.0', 'title', 'contentMail'], $content);
-
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'email' => ['test@test.com', 'test@test.com']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'title', 'contentMail'], $content);
-    }
-
-    // Names and contact infos but no mail body nor sms body
-    public function testContactBodiesSms()
-    {
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'phone' => ['0612345678', '55213249jgh']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'phone.1', 'contentSMS'], $content);
-
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'phone' => ['0612345678', '0612345678']], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS'], $content);
-    }
-
-    // Names and contact infos but no mail body nor sms body
-    public function testContactBodiesBoth()
-    {
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'email' => ['', 'test@test.com', 'test@test.com'], 'phone' => ['0612345678', '0612345678', ''], 'exclusions' => []], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'title', 'contentMail', 'contentSMS'], $content);
-    }
-
-    // Names and exclusionss
-    public function testExclusionss()
-    {
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'exclusions' => [['87']]], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'exclusions.0.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
-
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'exclusions' => [['87']]], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'exclusions.0.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
-
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'exclusions' => [['0']]], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'exclusions.0.0', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
-
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'exclusions' => [['1']]], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'phone.0', 'phone.1', 'email.0', 'email.1'], $content);
-    }
-
-    // Sms limit
-    public function testSmsLimit()
-    {
-        config(['sms.max' => 1]);
-        $content = $this->ajaxPost('/', [
-            'name'                 => ['toto', 'tata'],
-            'phone'                => ['0612345678', '0612345678'],
-            'contentSMS'           => '{TARGET}'.implode('', array_fill(0, 161, 'a')), // 2 sms long
-        ], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS'], $content);
-    }
-
-    public function testOk_only_two()
+    public function testOnly_two()
     {
         Recaptcha::shouldReceive('verify')->once()->andReturn(true);
 
@@ -140,6 +44,9 @@ class RequestTest extends TestCase
             ->with('0612345678', '#test sms "tata\' => &toto#')
             ->andReturn(true);
 
+        $this->assertEquals(0, Draw::count());
+        $this->assertEquals(0, Participant::count());
+
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
             'name'                 => ['toto', 'tata'],
@@ -149,11 +56,15 @@ class RequestTest extends TestCase
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
+            'dearsanta'            => '0',
         ], 200);
         $this->assertEquals(['Envoyé avec succès !'], $content);
+
+        $this->assertEquals(0, Draw::count());
+        $this->assertEquals(0, Participant::count());
     }
 
-    public function testOk_several()
+    public function testSeveral()
     {
         Recaptcha::shouldReceive('verify')->once()->andReturn(true);
 
@@ -199,6 +110,9 @@ class RequestTest extends TestCase
             ->with('0712345678', '#test sms "tutu\' => &toto#')
             ->andReturn(true);
 
+        $this->assertEquals(0, Draw::count());
+        $this->assertEquals(0, Participant::count());
+
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
             'name'                 => ['toto', 'tata', 'tutu'],
@@ -208,7 +122,70 @@ class RequestTest extends TestCase
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
+            'dearsanta'            => '0',
         ], 200);
         $this->assertEquals(['Envoyé avec succès !'], $content);
+
+        $this->assertEquals(0, Draw::count());
+        $this->assertEquals(0, Participant::count());
+    }
+
+    public function testDearsanta()
+    {
+        Recaptcha::shouldReceive('verify')->once()->andReturn(true);
+
+        Mail::shouldReceive('raw')
+            ->once()
+            ->with('#test mail toto => tata.+/dearsanta/[0-9]+\#[a-f0-9]+#s', Mockery::on(function ($closure) {
+                $message = Mockery::mock('Illuminate\Mailer\Message');
+                $message->shouldReceive('to')
+                    ->with('test@test.com', 'toto')
+                    ->andReturn(Mockery::self());
+                $message->shouldReceive('subject')
+                    ->with('test mail title')
+                    ->andReturn(Mockery::self());
+                $closure($message);
+
+                return true;
+            }))
+            ->andReturn(true);
+
+        Mail::shouldReceive('raw')
+            ->once()
+            ->with('#test mail tata => toto.+/dearsanta/[0-9]+\#[a-f0-9]+#s', Mockery::on(function ($closure) {
+                $message = Mockery::mock('Illuminate\Mailer\Message');
+                $message->shouldReceive('to')
+                    ->with('test2@test.com', 'tata')
+                    ->andReturn(Mockery::self());
+                $message->shouldReceive('subject')
+                    ->with('test mail title')
+                    ->andReturn(Mockery::self());
+                $closure($message);
+
+                return true;
+            }))
+            ->andReturn(true);
+
+        Sms::shouldReceive('message')
+            ->never();
+
+        $this->assertEquals(0, Draw::count());
+        $this->assertEquals(0, Participant::count());
+
+        $content = $this->ajaxPost('/', [
+            'g-recaptcha-response' => 'mocked',
+            'name'                 => ['toto', 'tata'],
+            'email'                => ['test@test.com', 'test2@test.com'],
+            'phone'                => ['', ''],
+            'exclusions'           => [],
+            'title'                => 'test mail title',
+            'contentMail'          => 'test mail {SANTA} => {TARGET}',
+            'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
+            'dearsanta'            => '1'
+        ], 200);
+        $this->assertEquals(['Envoyé avec succès !'], $content);
+
+        $this->assertEquals(1, Draw::count());
+        $this->assertEquals(2, Participant::count());
     }
 }
