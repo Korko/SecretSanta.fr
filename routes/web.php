@@ -15,3 +15,4 @@ Route::get('/', 'RandomFormController@view');
 Route::post('/', 'RandomFormController@handle');
 
 Route::get('/dearsanta/{santa}', 'DearSantaController@view')->name('dearsanta');
+Route::post('/dearsanta/{santa}', 'DearSantaController@handle');
