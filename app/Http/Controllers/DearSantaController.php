@@ -14,7 +14,8 @@ class DearSantaController extends Controller
 
         return view('dearSanta', [
             'challenge' => substr($santa->challenge, $ivLength),
-            'iv' => substr($santa->challenge, 0, $ivLength)
+            'iv' => substr($santa->challenge, 0, $ivLength),
+            'santa' => $santa->id
         ]);
     }
 }
