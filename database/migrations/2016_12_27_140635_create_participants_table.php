@@ -16,7 +16,6 @@ class CreateParticipantsTable extends Migration
         Schema::create('participants', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('draw_id');
-            $table->text('iv');
             $table->text('email');
             $table->text('challenge');
 
