@@ -15,7 +15,8 @@ window.app = new Vue({
     participants: [],
     fieldErrors: {},
     smsContent: '',
-    maxSms: global.maxSms
+    maxSms: global.maxSms,
+    dearsanta: false
   },
 
   components: {
@@ -76,6 +77,14 @@ window.app = new Vue({
       return used;
     },
 
+    allMails: function() {
+      var allMails = true;
+      this.participants.forEach(function(participant) {
+        allMails = (allMails && (participant.name === '' || participant.email !== ''));
+      });
+      return allMails;
+    },
+
     errors: function() {
       var errors = [];
       for(var field in this.fieldErrors) {
@@ -124,6 +133,10 @@ window.app = new Vue({
       if(newVal.length) {
         $.scrollTo('#form .row', 800, {offset: -120});
       }
+    },
+
+    allMails: function(newVal) {
+      this.dearsanta = this.dearsanta && newVal;
     }
   },
 

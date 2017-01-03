@@ -155,7 +155,9 @@
                                         <tr is="participant" :key="participants[0].id"
                                             :participants="participants"
                                             :idx="0"
-                                            @changename="participants[0].name = $event">
+                                            @changename="participants[0].name = $event"
+                                            @changeemail="participants[0].email = $event"
+                                            @changephone="participants[0].phone = $event">
                                         </tr>
                                     </tbody>
                                 </table>
@@ -173,60 +175,74 @@
                                             <th class="col-xs-2 col-lg-2">@lang('form.participant.phone')</th>
                                             <th class="col-xs-2">@lang('form.participant.exclusions')</th>
                                             <th class="col-xs-1 col-lg-1"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- Default is two empty rows to have two entries at any time --}}
-                                    <tr is="participant" v-for="(participant, idx) in participants.slice(1)" :key="participant.id"
-                                        :participants="participants"
-                                        :idx="idx + 1"
-                                        @changename="participant.name = $event"
-                                        @changeemail="participant.email = $event"
-                                        @changephone="participant.phone = $event"
-                                        @delete="participants.splice(idx, 1)">
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><span class="glyphicon glyphicon-plus"></span> @lang('form.participant.add')</button>
-                        </div>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{-- Default is two empty rows to have two entries at any time --}}
+                                        <tr is="participant" v-for="(participant, idx) in participants.slice(1)" :key="participant.id"
+                                            :participants="participants"
+                                            :idx="idx + 1"
+                                            @changename="participant.name = $event"
+                                            @changeemail="participant.email = $event"
+                                            @changephone="participant.phone = $event"
+                                            @delete="participants.splice(idx, 1)">
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><span class="glyphicon glyphicon-plus"></span> @lang('form.participant.add')</button>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Messages</legend>
+                            <div class="row form-group" id="contact">
+                                <fieldset id="form-mail-group" class="col-md-6" :disabled="!this.emailUsed">
+                                    <div class="form-group">
+                                        <label for="mailTitle">@lang('form.mail.title')</label>
+                                        <input id="mailTitle" type="text" name="title" :required="this.emailUsed" placeholder="@lang('form.mail.title.placeholder')" value="" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mailContent">@lang('form.mail.content')</label>
+                                        <textarea id="mailContent" name="contentMail" :required="this.emailUsed" placeholder="@lang('form.mail.content.placeholder')" class="form-control" rows="3" v-autosize></textarea>
+                                        <textarea id="mailPost" class="form-control" read-only disabled v-if="!dearsanta">@lang('form.mail.post')</textarea>
+                                        <textarea id="mailPost" class="form-control extended" read-only disabled v-else>@lang('form.mail.post2')</textarea>
+                                        <p class="help-block">@lang('form.mail.content.tip1')</p>
+                                        <p class="help-block">@lang('form.mail.content.tip2')</p>
+                                    </div>
+                                </fieldset>
 
-                        <div class="row" id="contact">
-                            <fieldset id="form-mail-group" class="col-md-6" :disabled="!this.emailUsed">
-                                <div class="form-group">
-                                    <label for="mailTitle">@lang('form.mail.title')</label>
-                                    <input id="mailTitle" type="text" name="title" :required="this.emailUsed" placeholder="@lang('form.mail.title.placeholder')" value="" class="form-control" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="mailContent">@lang('form.mail.content')</label>
-                                    <textarea id="mailContent" name="contentMail" :required="this.emailUsed" placeholder="@lang('form.mail.content.placeholder')" class="form-control" rows="3" v-autosize></textarea>
-                                    <textarea id="mailPost" class="form-control" read-only disabled>@lang('form.mail.post')</textarea>
-                                    <p class="help-block">@lang('form.mail.content.tip1')</p>
-                                    <p class="help-block">@lang('form.mail.content.tip2')</p>
-                                </div>
-                            </fieldset>
+                                <fieldset id="form-sms-group" class="col-md-6" :disabled="!this.phoneUsed">
+                                    <div class="form-group">
+                                        <label for="smsContent" v-if="smsCount <= 1">@lang('form.sms.content', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
+                                        <label for="smsContent" v-else>@lang('form.sms.content.multiple', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
+                                        <textarea id="smsContent" name="contentSMS" :required="this.phoneUsed" :maxlength="maxLength" placeholder="@lang('form.sms.content.placeholder')" class="form-control" rows="3" v-model="smsContent" v-autosize></textarea>
+                                        <textarea id="smsPost" class="form-control" read-only disabled>@lang('form.sms.post')</textarea>
+                                        <p class="help-block">@lang('form.sms.content.tip1')</p>
+                                        <p class="help-block">@lang('form.sms.content.tip2')</p>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Options</legend>
+                            <div id="form-options" class="form-group">
+                                <label><input type="checkbox" name="dearsanta" :disabled="!allMails" v-model="dearsanta" value="1"/> Autoriser les participants à écrire un mail à leur secret santa</label>
+                                <p v-if="!allMails" class="tip" role="alert">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    Cette option n'est disponible que si chaque participant dispose d'une adresse mail remplie
+                                </p>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group btn">
+                                {!! Recaptcha::renderElement(['data-theme' => 'light']) !!}
+                            </div>
 
-                            <fieldset id="form-sms-group" class="col-md-6" :disabled="!this.phoneUsed">
-                                <div class="form-group">
-                                    <label for="smsContent" v-if="smsCount <= 1">@lang('form.sms.content', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
-                                    <label for="smsContent" v-else>@lang('form.sms.content.multiple', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
-                                    <textarea id="smsContent" name="contentSMS" :required="this.phoneUsed" :maxlength="maxLength" placeholder="@lang('form.sms.content.placeholder')" class="form-control" rows="3" v-model="smsContent" v-autosize></textarea>
-                                    <textarea id="smsPost" class="form-control" read-only disabled>@lang('form.sms.post')</textarea>
-                                    <p class="help-block">@lang('form.sms.content.tip1')</p>
-                                    <p class="help-block">@lang('form.sms.content.tip2')</p>
-                                </div>
-                            </fieldset>
-                        </div>
-
-                        <div class="form-group btn">
-                            {!! Recaptcha::renderElement(['data-theme' => 'light']) !!}
-                        </div>
-
-                        {{ csrf_field() }}
-                        <button type="submit" class="btn btn-primary btn-lg">
-				<span v-if="sending"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.sending')</span>
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <span v-if="sending"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.sending')</span>
                                 <span v-if="sent"><span class="glyphicon glyphicon-ok"></span> @lang('form.sent')</span>
-				<span v-else>@lang('form.submit')</span>
-			</button>
+                                <span v-else>@lang('form.submit')</span>
+                            </button>
                     </fieldset>
                 </form>
 
