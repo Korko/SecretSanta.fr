@@ -58,20 +58,20 @@ class SolverTest extends TestCase
 
     public function testOne()
     {
-        $this->assertTrue((function() {
+        $this->assertTrue((function () {
             $solutions = [
                 [0 => 1, 1 => 2, 2 => 0],
-                [0 => 2, 1 => 0, 2 => 1]
+                [0 => 2, 1 => 0, 2 => 1],
             ];
             $valid = [];
 
-            for($i = 0; $i < 100; $i++) {
+            for ($i = 0; $i < 100; $i++) {
                 $solution = Solver::one(['A', 'B', 'C']);
 
                 $solution_position = array_search($solution, $solutions);
-                $valid[$solution_position] = TRUE;
+                $valid[$solution_position] = true;
 
-                if(count($valid) === count($solutions)) {
+                if (count($valid) === count($solutions)) {
                     return true;
                 }
             }
