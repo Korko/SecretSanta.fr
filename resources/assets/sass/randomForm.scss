@@ -84,6 +84,21 @@ fieldset > div.form-group {
 .participant .participant-remove-wrapper {
     width: 179px;
 }
+.input-group-addon.lang {
+    padding: 6px 8px;
+}
+.input-group-addon.lang:before {
+    background-repeat: no-repeat;
+    background-image: url(../img/languages.png);
+    height: 11px;
+    width: 14px;
+    content: '';
+    display: inline-block;
+    margin-right: 8px;
+}
+.input-group-addon.lang[lang=fr]:before {
+    background-position: 0px -121px;
+}
 #mailContent, #mailPost {
     max-width: 100%;
     resize: none;

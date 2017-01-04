@@ -141,12 +141,12 @@
                             <table id="participants" class="table table-hover table-striped table-numbered">
                                 <thead>
                                     <tr>
-                                        <th class="col-xs-3">@lang('form.participant.name')</th>
-                                        <th class="col-xs-3">@lang('form.participant.email')</th>
-                                        <th class="col-xs-0"></th>
-                                        <th class="col-xs-2 col-lg-2">@lang('form.participant.phone')</th>
-                                        <th class="col-xs-2">@lang('form.participant.exclusions')</th>
-                                        <th class="col-xs-1 col-lg-1"></th>
+                                        <th class="col-lg-3">@lang('form.participant.name')</th>
+                                        <th class="col-lg-3">@lang('form.participant.email')</th>
+                                        <th class="col-lg-0"></th>
+                                        <th class="col-lg-3">@lang('form.participant.phone')</th>
+                                        <th class="col-lg-2">@lang('form.participant.exclusions')</th>
+                                        <th class="col-lg-1"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -168,7 +168,10 @@
                                                 @lang('form.mail-sms')
                                             </td>
                                             <td class="row border-right">
-                                                <input type='tel' pattern='0[67]\d{8}' maxlength="10" name="phone[]" placeholder="@lang('form.phone.placeholder')" v-model="phone" class="form-control participant-phone" :required="!email" />
+                                                <div class="input-group">
+                                                    <span class="input-group-addon lang" lang="fr">(+33)</span>
+                                                    <input type='tel' pattern='0?[67]\d{8}' :maxlength="(phone[0] === undefined || phone[0] === '0') ? 10 : 9" name="phone[]" placeholder="@lang('form.phone.placeholder')" v-model="phone" class="form-control participant-phone" :required="!email" />
+                                                </div>
                                             </td>
                                             <td class="row border-right text-left">
                                                 <select2 :options="participantNames" v-model="exclusions" placeholder="@lang('form.exclusions.placeholder')"></select2>
