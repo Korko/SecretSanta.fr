@@ -76,7 +76,7 @@ class RequestTest extends TestCase
         $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'phone' => ['0612345678', '55213249jgh']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'phone.1', 'contentSMS'], $content);
 
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'phone' => ['0612345678', '0612345678']], 422);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata'], 'phone' => ['0612345678', '612345678']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS'], $content);
     }
 
@@ -203,7 +203,7 @@ class RequestTest extends TestCase
             'g-recaptcha-response' => 'mocked',
             'name'                 => ['toto', 'tata', 'tutu'],
             'email'                => ['test@test.com', '', 'test2@test.com'],
-            'phone'                => ['', '0612345678', '0712345678'],
+            'phone'                => ['', '0612345678', '712345678'],
             'exclusions'           => [['2'], ['0'], ['1']],
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
