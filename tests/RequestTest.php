@@ -1,6 +1,6 @@
 <?php
 
-require_once('RequestCase.php');
+require_once 'RequestCase.php';
 
 class RequestTest extends RequestCase
 {
