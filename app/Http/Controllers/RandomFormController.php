@@ -46,8 +46,8 @@ class RandomFormController extends Controller
             ];
         }
 
-        Statsd::gauge('draws', '+1');
-        Statsd::gauge('participants', '+'.count($participants));
+        Statsd::increment('draws');
+        Statsd::increment('participants', count($participants));
 
         return $participants;
     }
@@ -65,12 +65,12 @@ class RandomFormController extends Controller
     protected function sendMessage(Request $request, array $santa, array $target)
     {
         if (!empty($santa['email'])) {
-            Statsd::gauge('email', '+1');
+            Statsd::increment('email');
             $this->sendMail($santa, $target, $request->input('title'), $request->input('contentMail'));
         }
 
         if (!empty($santa['phone'])) {
-            Statsd::gauge('phone', '+1');
+            Statsd::increment('phone');
             $this->sendSms($santa, $target, $request->input('contentSMS'));
         }
     }
