@@ -41,7 +41,7 @@ class RandomFormController extends Controller
             $participants[$i] = [
                 'name'       => $names[$i],
                 'email'      => $emails[$i],
-                'phone'      => $phones[$i],
+                'phone'      => $phones[$i] ? str_pad($phones[$i], 10, '0', STR_PAD_LEFT) : $phones[$i],
                 'exclusions' => (isset($exclusions[$i])) ? array_map('intval', $exclusions[$i]) : [],
             ];
         }

@@ -45,7 +45,7 @@ class RandomFormRequest extends Request
             foreach ($this->request->get('name') as $key => $name) {
                 $rules += [
                     'email.'.$key      => 'required_without:phone.'.$key.'|email',
-                    'phone.'.$key      => 'required_without:email.'.$key.'|numeric|regex:#0[67]\d{8}#',
+                    'phone.'.$key      => 'required_without:email.'.$key.'|numeric|regex:#0?[67]\d{8}#',
                     'exclusions.'.$key => 'sometimes|array',
                 ];
 
