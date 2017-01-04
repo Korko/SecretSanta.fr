@@ -8,6 +8,7 @@ class SolverTest extends TestCase
             array_walk($el, function (&$idx) use ($participants) {
                 $idx = $participants[$idx];
             });
+
             return implode('', $el);
         }, $test);
         $this->assertEquals(sort($valid), sort($test));

@@ -5,8 +5,8 @@ namespace Korko\SecretSanta\Http\Controllers;
 use Illuminate\Http\Request;
 use Korko\SecretSanta\Http\Requests\RandomFormRequest;
 use Mail;
-use Solver;
 use Sms;
+use Solver;
 use Statsd;
 
 class RandomFormController extends Controller
