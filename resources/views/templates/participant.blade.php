@@ -17,7 +17,7 @@
         <td class="row border-right">
             <div class="input-group">
                 <span class="input-group-addon lang" lang="fr">(+33)</span>
-                <input type='tel' pattern='0?[67]\d{8}' :maxlength="(phone[0] === undefined || phone[0] === '0') ? 10 : 9" name="phone[]" placeholder="@lang('form.phone.placeholder')" v-model="phone" class="form-control participant-phone" :required="!email" />
+                <input type='tel' pattern='0?[67]\d{8}' :maxlength="(phone[0] === undefined || phone[0] === '0') ? 10 : 9" name="phone[]" placeholder="@lang('form.phone.placeholder')" v-model="phone" @focus="$event.target.value = phone" @blur="$event.target.value = phoneNumber" class="form-control participant-phone" :required="!email" />
             </div>
         </td>
         <td class="row border-right text-left participant-exclusions-wrapper">
