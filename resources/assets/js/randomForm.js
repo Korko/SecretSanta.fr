@@ -19,41 +19,50 @@ window.app = new VueAjax({
 
   components: {
     participant: {
-        template: '#participant-template',
-        props: ['idx', 'participants'],
-        data: function() {
-            return {
-                name: '',
-                email: '',
-                phone: '',
-                exclusions: []
-            };
-        },
-        components: {
-            select2: require('../vuejs/select2.vue')
-        },
-        computed: {
-            participantNames: function() {
-                var names = [];
-                this.participants.forEach(function(participant, idx) {
-                    if(participant.name && idx !== this.idx) {
-                        names.push({id: participant.id, value: idx, text: participant.name});
-                    }
-                }.bind(this));
-                return names;
+      template: '#participant-template',
+      props: ['idx', 'participants'],
+      data: function() {
+        return {
+          name: '',
+          email: '',
+          phone: '',
+          exclusions: []
+        };
+      },
+      components: {
+        select2: require('../vuejs/select2.vue')
+      },
+      computed: {
+        participantNames: function() {
+          var names = [];
+          this.participants.forEach(function(participant, idx) {
+            if(participant.name && idx !== this.idx) {
+              names.push({id: participant.id, value: idx, text: participant.name});
             }
+          }.bind(this));
+          return names;
         },
-        watch: {
-            name: function() {
-                this.$emit('changename', this.name);
-            },
-            email: function() {
-                this.$emit('changeemail', this.email);
-            },
-            phone: function() {
-                this.$emit('changephone', this.phone);
-            }
+        phoneNumber: function() {
+          if(this.phone.length) {
+            return this.phone[0] === '0' ?
+              this.phone.match(/[0-9]{1,2}/g).join(' ') :
+              [this.phone[0]].concat(this.phone.slice(1).match(/[0-9]{1,2}/g)).join(' ');
+          } else {
+            return this.phone;
+          }
         }
+      },
+      watch: {
+        name: function() {
+          this.$emit('changename', this.name);
+        },
+        email: function() {
+          this.$emit('changeemail', this.email);
+        },
+        phone: function() {
+          this.$emit('changephone', this.phone);
+        }
+      }
     }
   },
 
