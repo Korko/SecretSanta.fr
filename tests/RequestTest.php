@@ -153,7 +153,7 @@ class RequestTest extends RequestCase
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
             'dearsanta'            => '1',
-            'dearsanta-limit'      => date('Y-m-d', strtotime('+2 days'))
+            'dearsanta-limit'      => date('Y-m-d', strtotime('+2 days')),
         ], 200);
         $this->assertEquals(['Envoyé avec succès !'], $content);
 
