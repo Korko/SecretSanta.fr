@@ -117,7 +117,7 @@ img {
     top: 0;
     background-image: linear-gradient(315deg, #FFF 50%, transparent 50%), linear-gradient(45deg, #FFF 50%, transparent 50%);
     margin-top: -30px;
-    z-index: 100;
+    z-index: 1;
 }
 .ss-style-bottom::before {
     left: 0;
@@ -130,7 +130,7 @@ img {
     top: 0;
     background-image: linear-gradient(583deg, #FFF 50%, transparent 50%), linear-gradient(136deg, #FFF 50%, transparent 50%);
     margin-top: 0px;
-    z-index: 100;
+    z-index: 1;
 }
 [v-cloak] {
     display: none;

@@ -29,7 +29,11 @@ Pour cela, précisez pour chacun une adresse e-mail et/ou un numéro de téléph
     'section.how.content3' => "Il ne vous reste plus qu'à remplir le titre et le corps du courriel ou du SMS que les participants recevront.
 Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".
 (Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
-    'section.how.notice' => 'Pour votre information : secretsanta.fr ne sauvegarde aucune de vos données ni ne les utilise à d\'autres fins. Le code source est disponible sur :link',
+    'section.how.notice' => 'Pour votre information
+secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.
+Celles-ci sont chiffrées pour être inutilisables sans action de votre part.
+Aucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.
+Le code source est disponible sur :link',
 
     'section.go.title'    => 'À vous de jouer !',
     'section.go.subtitle' => 'Remplissez, cliquez et c\'est parti !',
@@ -57,6 +61,9 @@ Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner
     'mail.content'             => 'Contenu du mail',
     'mail.content.placeholder' => 'ex : Salut {SANTA}, pour la soirée secret santa, ta cible c\'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !',
     'mail.post'                => '----
+via SecretSanta.fr',
+    'mail.post2'               => '----
+Pour écrire à votre Secret Santa, allez sur la page suivante : :link
 via SecretSanta.fr',
     'mail.content.tip1' => 'Utilisez "{SANTA}" pour le nom de celui qui recevra le mail et "{TARGET}" pour le nom de sa cible.',
     'mail.content.tip2' => 'Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.',
