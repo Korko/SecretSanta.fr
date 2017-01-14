@@ -3,7 +3,9 @@
 namespace Korko\SecretSanta\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Korko\SecretSanta\Draw;
 use Korko\SecretSanta\Http\Requests\RandomFormRequest;
+use Korko\SecretSanta\Participant;
 use Mail;
 use Sms;
 use Solver;
@@ -64,9 +66,14 @@ class RandomFormController extends Controller
 
     protected function sendMessage(Request $request, array $santa, array $target)
     {
+        $dearSantaLink = null;
+        if ($request->input('dearsanta')) {
+            $dearSantaLink = $this->getDearSantaLink($santa, $request->input('dearsanta-limit'));
+        }
+
         if (!empty($santa['email'])) {
             Statsd::increment('email');
-            $this->sendMail($santa, $target, $request->input('title'), $request->input('contentMail'));
+            $this->sendMail($santa, $target, $request->input('title'), $request->input('contentMail'), $dearSantaLink);
         }
 
         if (!empty($santa['phone'])) {
@@ -75,10 +82,50 @@ class RandomFormController extends Controller
         }
     }
 
-    protected function sendMail(array $santa, array $target, $title, $content)
+    protected function getDearSantaLink(array $santa, $expirationDate)
+    {
+        $key = openssl_random_pseudo_bytes(32);
+        $participant = $this->addParticipant($santa, $key, $expirationDate);
+
+        return route('dearsanta', ['santa' => $participant->id]).'#'.bin2hex($key);
+    }
+
+    private function getDraw($expirationDate)
+    {
+        if (!isset($this->draw)) {
+            $this->draw = new Draw();
+            $this->draw->expiration = $expirationDate;
+            $this->draw->save();
+        }
+
+        return $this->draw;
+    }
+
+    private function addParticipant(array $santa, $key, $expirationDate)
+    {
+        $draw = $this->getDraw($expirationDate);
+
+        $participant = new Participant();
+        $participant->draw_id = $draw->id;
+
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes256'));
+        $participant->santa = bin2hex($iv).openssl_encrypt(serialize($santa), 'aes256', $key, 0, $iv);
+
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes256'));
+        $participant->challenge = bin2hex($iv).openssl_encrypt(Participant::CHALLENGE, 'aes256', $key, 0, $iv);
+
+        $participant->save();
+
+        return $participant;
+    }
+
+    protected function sendMail(array $santa, array $target, $title, $content, $dearSantaLink)
     {
         $contentMail = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $content);
-        $contentMail .= PHP_EOL.trans('form.mail.post');
+        $contentMail .= !empty($dearSantaLink) ?
+            PHP_EOL.trans('form.mail.post2', ['link' => $dearSantaLink]) :
+            PHP_EOL.trans('form.mail.post');
+
         Mail::raw($contentMail, function ($m) use ($santa, $title) {
             $m->to($santa['email'], $santa['name'])->subject($title);
         });
@@ -88,6 +135,7 @@ class RandomFormController extends Controller
     {
         $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $content);
         $contentSms .= PHP_EOL.trans('form.sms.post');
+
         Sms::message($santa['phone'], $contentSms);
     }
 }

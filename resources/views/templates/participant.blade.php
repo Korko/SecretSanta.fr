@@ -9,7 +9,7 @@
             </label>
         </td>
         <td class="row border-left">
-            <input type="email" name="email[]" placeholder="@lang('form.email.placeholder')" v-model="email" class="form-control participant-email" :required="!phone" />
+            <input type="email" name="email[]" placeholder="@lang('form.email.placeholder')" v-model="email" class="form-control participant-email" :required="!phone || dearsanta" />
         </td>
         <td>
             @lang('form.mail-sms')

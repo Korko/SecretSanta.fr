@@ -1,4 +1,6 @@
 var $ = require('jquery');
+require('jquery-ui-browserify');
+
 var alertify = require('alertify.js');
 var SmsTools = require('./smsTools.js');
 
@@ -6,21 +8,26 @@ var Vue = require('vue');
 var VueAutosize = require('vue-autosize');
 Vue.use(VueAutosize);
 
-var VueAjax = require('./ajaxVue.js');
+require('browsernizr/test/inputtypes');
+var Modernizr = require('browsernizr');
+var Moment = require('moment');
 
+var VueAjax = require('./ajaxVue.js');
 window.app = new VueAjax({
   el: '#form',
 
   data: {
     participants: [],
     smsContent: '',
-    maxSms: global.maxSms
+    maxSms: global.maxSms,
+    dearsanta: false,
+    date: window.now
   },
 
   components: {
     participant: {
       template: '#participant-template',
-      props: ['idx', 'participants'],
+      props: ['idx', 'participants', 'dearsanta'],
       data: function() {
         return {
           name: '',
@@ -84,6 +91,14 @@ window.app = new VueAjax({
       return used;
     },
 
+    allMails: function() {
+      var allMails = true;
+      this.participants.forEach(function(participant) {
+        allMails = (allMails && (participant.name === '' || participant.email !== ''));
+      });
+      return allMails;
+    },
+
     smsCount: function() {
       return Math.min(SmsTools.chunk(this.smsContent).length, this.maxSms);
     },
@@ -101,6 +116,24 @@ window.app = new VueAjax({
   created: function() {
     this.addParticipant();
     this.addParticipant();
+    this.addParticipant();
+
+    Vue.nextTick(function() {
+      if (!Modernizr.inputtypes.date) {
+        $('input[type=date]', this.$el).datepicker({
+          // Consistent format with the HTML5 picker
+          dateFormat: 'yy-mm-dd',
+          minDate: Moment(this.now).add(1, 'day').toDate(),
+          maxDate: Moment(this.now).add(1, 'year').toDate()
+        });
+      }
+    }.bind(this));
+  },
+
+  filters: {
+    moment: function (date, amount, unit) {
+      return Moment(date).add(amount, unit).format("YYYY-MM-DD");
+    }
   },
 
   watch: {
@@ -123,6 +156,10 @@ window.app = new VueAjax({
       if(newVal.length) {
         $.scrollTo('#form .row', 800, {offset: -120});
       }
+    },
+
+    allMails: function(newVal) {
+      this.dearsanta = this.dearsanta && newVal;
     }
   },
 
