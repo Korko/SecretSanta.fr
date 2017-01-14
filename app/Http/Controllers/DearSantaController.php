@@ -59,5 +59,4 @@ class DearSantaController extends Controller
             $m->to($santa['email'], $santa['name'])->subject($title);
         });
     }
-
 }
