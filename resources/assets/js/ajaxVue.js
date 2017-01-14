@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var alertify = require('alertify.js');
 
 var Vue = require('vue');
