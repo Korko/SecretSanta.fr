@@ -1,5 +1,9 @@
-
 <?php
+
+namespace Tests\Unit;
+
+use Facades\Korko\SecretSanta\Libs\SmsTools as SmsTools;
+use Tests\TestCase;
 
 class SmsTest extends TestCase
 {

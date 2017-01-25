@@ -1,5 +1,10 @@
 <?php
 
+namespace Tests\Unit;
+
+use Facades\Korko\SecretSanta\Libs\HatSolver as Solver;
+use Tests\TestCase;
+
 class SolverTest extends TestCase
 {
     public function assertCombination($valid, $test, $participants)

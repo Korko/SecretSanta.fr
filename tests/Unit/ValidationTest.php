@@ -1,6 +1,6 @@
 <?php
 
-require_once 'RequestCase.php';
+namespace Tests\Unit;
 
 class ValidationTest extends RequestCase
 {
