@@ -1,9 +1,14 @@
 <?php
 
-require_once 'RequestCase.php';
+namespace Tests\Unit;
 
+use Artisan;
 use Korko\SecretSanta\Draw;
 use Korko\SecretSanta\Participant;
+use Mail;
+use Mockery;
+use Recaptcha;
+use Sms;
 
 class RequestTest extends RequestCase
 {
