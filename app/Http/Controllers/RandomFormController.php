@@ -8,7 +8,7 @@ use Korko\SecretSanta\Http\Requests\RandomFormRequest;
 use Korko\SecretSanta\Participant;
 use Mail;
 use Sms;
-use Solver;
+use Facades\Korko\SecretSanta\Libs\HatSolver as Solver;
 use Statsd;
 
 class RandomFormController extends Controller
