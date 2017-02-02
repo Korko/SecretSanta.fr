@@ -110,14 +110,14 @@ class ValidationTest extends RequestCase
 
         // dearsanta enabled, need emails and limit
         $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'phone' => ['0612345678', '0612345678', '0612345678'], 'dearsanta' => '1'], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'email.0', 'email.1', 'email.2', 'dearsanta-limit'], $content);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'email.0', 'email.1', 'email.2', 'dearsanta-expiration'], $content);
 
         // dearsanta enabled, invalid limit (too soon)
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'phone' => ['0612345678', '0612345678', '0612345678'], 'dearsanta' => '1', 'dearsanta-limit' => date('Y-m-d')], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'email.0', 'email.1', 'email.2', 'dearsanta-limit'], $content);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'phone' => ['0612345678', '0612345678', '0612345678'], 'dearsanta' => '1', 'dearsanta-expiration' => date('Y-m-d')], 422);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'email.0', 'email.1', 'email.2', 'dearsanta-expiration'], $content);
 
         // dearsanta enabled, limit valid
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'phone' => ['0612345678', '0612345678', '0612345678'], 'dearsanta' => '1', 'dearsanta-limit' => date('Y-m-d', strtotime('+3 day'))], 422);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'phone' => ['0612345678', '0612345678', '0612345678'], 'dearsanta' => '1', 'dearsanta-expiration' => date('Y-m-d', strtotime('+3 day'))], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'email.0', 'email.1', 'email.2'], $content);
     }
 

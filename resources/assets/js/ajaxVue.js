@@ -33,7 +33,7 @@ module.exports = Vue.extend({
           type: "POST",
           data : postData,
           success: function(data, textStatus, jqXHR) {
-            alertify.alert(jqXHR.responseJSON[0]);
+            alertify.alert(jqXHR.responseJSON.message);
             app.sent = true;
           },
           error: function(jqXHR, textStatus, errorThrown) {
