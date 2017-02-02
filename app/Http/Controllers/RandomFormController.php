@@ -20,15 +20,24 @@ class RandomFormController extends Controller
 
     public function handle(RandomFormRequest $request)
     {
+        try {
+            $this->draw($request);
+
+            $message = trans('message.sent');
+            return $request->ajax() ? response()->json(['message' => $message]) : redirect('/')->with('message', $message);
+        } catch(SolverException $e) {
+            $error = trans('error.solution');
+            return $request->ajax() ? response()->json(['error' => $error], 500) : redirect('/')->with('error', $error);
+        }
+    }
+
+    protected function draw(Request $request)
+    {
         $participants = $this->getParticipants($request);
 
         $hat = Solver::one($participants, array_column($participants, 'exclusions'));
 
         $this->sendMessages($request, $participants, $hat);
-
-        $message = trans('message.sent');
-
-        return $request->ajax() ? [$message] : redirect('/')->with('message', $message);
     }
 
     protected function getParticipants(Request $request)
@@ -68,7 +77,7 @@ class RandomFormController extends Controller
     {
         $dearSantaLink = null;
         if ($request->input('dearsanta')) {
-            $dearSantaLink = $this->getDearSantaLink($santa, $request->input('dearsanta-limit'));
+            $dearSantaLink = $this->getDearSantaLink($santa, $request->input('dearsanta-expiration'));
         }
 
         if (!empty($santa['email'])) {
