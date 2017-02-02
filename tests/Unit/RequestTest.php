@@ -84,8 +84,9 @@ class RequestTest extends RequestCase
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
             'dearsanta'            => '0',
         ], 200);
-        $this->assertEquals(['Envoyé avec succès !'], $content);
+        $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
+        // Nothing, no record, no dearsanta
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
     }
@@ -158,9 +159,9 @@ class RequestTest extends RequestCase
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
             'dearsanta'            => '1',
-            'dearsanta-limit'      => date('Y-m-d', strtotime('+2 days')),
+            'dearsanta-expiration' => date('Y-m-d', strtotime('+2 days')),
         ], 200);
-        $this->assertEquals(['Envoyé avec succès !'], $content);
+        $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());

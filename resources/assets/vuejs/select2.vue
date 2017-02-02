@@ -1,5 +1,5 @@
 <template>
-  <select multiple="multiple">
+  <select multiple="multiple" :name="name">
     <option v-for="option in options" :value="option.value" :key="option.id || option.value">{{ option.text }}</option>
   </select>
 </template>
@@ -9,7 +9,7 @@
   require('multiple-select');
 
   export default {
-    props: ['options', 'value', 'placeholder'],
+    props: ['name', 'options', 'value', 'placeholder'],
     mounted: function() {
       jQuery(this.$el).multipleSelect({selectAll: false, filter: true, placeholder: this.placeholder, ellipsis: true});
     },
