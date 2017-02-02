@@ -4,6 +4,7 @@ namespace Korko\SecretSanta\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Korko\SecretSanta\Draw;
+use Korko\SecretSanta\Exceptions\SolverException;
 use Korko\SecretSanta\Http\Requests\RandomFormRequest;
 use Korko\SecretSanta\Participant;
 use Mail;
