@@ -24,41 +24,56 @@ class RequestTest extends RequestCase
         parent::tearDown();
     }
 
+    public function testInvalid()
+    {
+        Recaptcha::shouldReceive('verify')->once()->andReturn(true);
+
+        Mail::shouldReceive('to')
+            ->never();
+
+        Sms::shouldReceive('message')
+            ->never();
+
+        $this->assertEquals(0, Draw::count());
+        $this->assertEquals(0, Participant::count());
+
+        $content = $this->ajaxPost('/', [
+            'g-recaptcha-response' => 'mocked',
+            'name'                 => ['toto', 'tata', 'tutu'],
+            'email'                => ['test@test.com', '', 'test2@test.com'],
+            'phone'                => ['', '0612345678', '712345678'],
+            'exclusions'           => [['2'], ['0', '2'], ['1']],
+            'title'                => 'test mail title',
+            'contentMail'          => 'test mail {SANTA} => {TARGET}',
+            'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
+            'dearsanta'            => '0',
+        ], 500);
+        $this->assertEquals(['error' => 'Aucune solution possible'], $content);
+
+        $this->assertEquals(0, Draw::count());
+        $this->assertEquals(0, Participant::count());
+    }
+
     public function testClassic()
     {
         Recaptcha::shouldReceive('verify')->once()->andReturn(true);
 
-        Mail::shouldReceive('raw')
+        Mail::shouldReceive('to')
             ->once()
-            ->with('#test mail toto => tata#', Mockery::on(function ($closure) {
-                $message = Mockery::mock('Illuminate\Mailer\Message');
-                $message->shouldReceive('to')
-                    ->with('test@test.com', 'toto')
-                    ->andReturn(Mockery::self());
-                $message->shouldReceive('subject')
-                    ->with('test mail title')
-                    ->andReturn(Mockery::self());
-                $closure($message);
+            ->with('test@test.com', 'toto')
+            ->andReturn(Mockery::self());
 
-                return true;
-            }))
-            ->andReturn(true);
-
-        Mail::shouldReceive('raw')
+        Mail::shouldReceive('to')
             ->once()
-            ->with('#test mail tutu => toto#', Mockery::on(function ($closure) {
-                $message = Mockery::mock('Illuminate\Mailer\Message');
-                $message->shouldReceive('to')
-                    ->with('test2@test.com', 'tutu')
-                    ->andReturn(Mockery::self());
-                $message->shouldReceive('subject')
-                    ->with('test mail title')
-                    ->andReturn(Mockery::self());
-                $closure($message);
+            ->with('test2@test.com', 'tutu')
+            ->andReturn(Mockery::self());
 
-                return true;
-            }))
-            ->andReturn(true);
+        Mail::shouldReceive('send')
+            ->times(2)
+            ->with(\Mockery::type(\Korko\SecretSanta\Mail\TargetDrawn::class))
+            ->andReturn(Mockery::self());
+
+        // TODO: also test mail content
 
         Sms::shouldReceive('message')
             ->once()
@@ -95,53 +110,27 @@ class RequestTest extends RequestCase
     {
         Recaptcha::shouldReceive('verify')->once()->andReturn(true);
 
-        Mail::shouldReceive('raw')
+        Mail::shouldReceive('to')
             ->once()
-            ->with('#test mail toto => tata.+/dearsanta/[0-9]+\#[a-f0-9]+#s', Mockery::on(function ($closure) {
-                $message = Mockery::mock('Illuminate\Mailer\Message');
-                $message->shouldReceive('to')
-                    ->with('test@test.com', 'toto')
-                    ->andReturn(Mockery::self());
-                $message->shouldReceive('subject')
-                    ->with('test mail title')
-                    ->andReturn(Mockery::self());
-                $closure($message);
+            ->with('test@test.com', 'toto')
+            ->andReturn(Mockery::self());
 
-                return true;
-            }))
-            ->andReturn(true);
-
-        Mail::shouldReceive('raw')
+        Mail::shouldReceive('to')
             ->once()
-            ->with('#test mail tata => tutu.+/dearsanta/[0-9]+\#[a-f0-9]+#s', Mockery::on(function ($closure) {
-                $message = Mockery::mock('Illuminate\Mailer\Message');
-                $message->shouldReceive('to')
-                    ->with('test2@test.com', 'tata')
-                    ->andReturn(Mockery::self());
-                $message->shouldReceive('subject')
-                    ->with('test mail title')
-                    ->andReturn(Mockery::self());
-                $closure($message);
+            ->with('test2@test.com', 'tata')
+            ->andReturn(Mockery::self());
 
-                return true;
-            }))
-            ->andReturn(true);
-
-        Mail::shouldReceive('raw')
+        Mail::shouldReceive('to')
             ->once()
-            ->with('#test mail tutu => toto.+/dearsanta/[0-9]+\#[a-f0-9]+#s', Mockery::on(function ($closure) {
-                $message = Mockery::mock('Illuminate\Mailer\Message');
-                $message->shouldReceive('to')
-                    ->with('test3@test.com', 'tutu')
-                    ->andReturn(Mockery::self());
-                $message->shouldReceive('subject')
-                    ->with('test mail title')
-                    ->andReturn(Mockery::self());
-                $closure($message);
+            ->with('test3@test.com', 'tutu')
+            ->andReturn(Mockery::self());
 
-                return true;
-            }))
-            ->andReturn(true);
+        Mail::shouldReceive('send')
+            ->times(3)
+            ->with(\Mockery::type(\Korko\SecretSanta\Mail\TargetDrawn::class))
+            ->andReturn(Mockery::self());
+
+        // TODO: also test mail content
 
         Sms::shouldReceive('message')
             ->never();

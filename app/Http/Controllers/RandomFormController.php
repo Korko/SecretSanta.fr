@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Korko\SecretSanta\Draw;
 use Korko\SecretSanta\Exceptions\SolverException;
 use Korko\SecretSanta\Http\Requests\RandomFormRequest;
+use Korko\SecretSanta\Mail\TargetDrawn;
 use Korko\SecretSanta\Participant;
 use Mail;
 use Sms;
@@ -136,9 +137,7 @@ class RandomFormController extends Controller
             PHP_EOL.trans('form.mail.post2', ['link' => $dearSantaLink]) :
             PHP_EOL.trans('form.mail.post');
 
-        Mail::raw($contentMail, function ($m) use ($santa, $title) {
-            $m->to($santa['email'], $santa['name'])->subject($title);
-        });
+        Mail::to($santa['email'], $santa['name'])->send(new TargetDrawn($santa, $target, $title, $content, $dearSantaLink));
     }
 
     protected function sendSms(array $santa, array $target, $content)
