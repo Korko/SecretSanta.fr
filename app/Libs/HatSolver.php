@@ -2,8 +2,8 @@
 
 namespace Korko\SecretSanta\Libs;
 
-use Korko\SecretSanta\Exceptions\SolverException;
 use Generator;
+use Korko\SecretSanta\Exceptions\SolverException;
 
 class HatSolver
 {
