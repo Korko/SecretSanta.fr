@@ -2,6 +2,7 @@
 
 namespace Korko\SecretSanta\Http\Controllers;
 
+use Facades\Korko\SecretSanta\Libs\HatSolver as Solver;
 use Illuminate\Http\Request;
 use Korko\SecretSanta\Draw;
 use Korko\SecretSanta\Exceptions\SolverException;
@@ -10,7 +11,6 @@ use Korko\SecretSanta\Mail\TargetDrawn;
 use Korko\SecretSanta\Participant;
 use Mail;
 use Sms;
-use Facades\Korko\SecretSanta\Libs\HatSolver as Solver;
 use Statsd;
 
 class RandomFormController extends Controller
@@ -26,9 +26,11 @@ class RandomFormController extends Controller
             $this->draw($request);
 
             $message = trans('message.sent');
+
             return $request->ajax() ? response()->json(['message' => $message]) : redirect('/')->with('message', $message);
-        } catch(SolverException $e) {
+        } catch (SolverException $e) {
             $error = trans('error.solution');
+
             return $request->ajax() ? response()->json(['error' => $error], 500) : redirect('/')->with('error', $error);
         }
     }

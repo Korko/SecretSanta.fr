@@ -2,8 +2,8 @@
 
 namespace Korko\SecretSanta\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Facades\Korko\SecretSanta\Libs\SmsTools as SmsTools;
+use Illuminate\Support\ServiceProvider;
 use Validator;
 
 class AppServiceProvider extends ServiceProvider

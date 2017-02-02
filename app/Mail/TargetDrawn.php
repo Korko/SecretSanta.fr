@@ -5,7 +5,6 @@ namespace Korko\SecretSanta\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class TargetDrawn extends Mailable
 {
@@ -24,7 +23,7 @@ class TargetDrawn extends Mailable
      *
      * @return void
      */
-    public function __construct($santa, $target, $subject, $content, $dearSantaLink = NULL)
+    public function __construct($santa, $target, $subject, $content, $dearSantaLink = null)
     {
         $this->santa = $santa;
         $this->target = $target;
