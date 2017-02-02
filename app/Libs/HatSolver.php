@@ -2,7 +2,7 @@
 
 namespace Korko\SecretSanta\Libs;
 
-use Exception;
+use Korko\SecretSanta\Exceptions\SolverException;
 use Generator;
 
 class HatSolver
@@ -14,7 +14,7 @@ class HatSolver
 
         $generator = $this->getGenerator($participants, $exclusions, $hat);
         if (!$generator->valid()) {
-            throw new Exception('Cannot solve');
+            throw new SolverException('Cannot solve');
         }
 
         return $generator->current();
