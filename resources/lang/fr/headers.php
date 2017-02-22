@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'description' => 'Outil pour aider à organiser un secret-santa',
-    'keywords'    => 'soiree,organisation,secretsanta,noel,cadeau,secret',
+    'description' => 'SecretSanta.fr est un outil simple, gratuit et sans inscription pour aider à organiser une remise de cadeau en secret entre amis ou collègues (appelée secret santa).',
+    'keywords'    => 'soiree,organisation,secretsanta,noel,cadeau,secret,gratuit,libre,santa,secret-santa,collegues,amis',
 ];
