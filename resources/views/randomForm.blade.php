@@ -32,7 +32,7 @@
         <div class="bg-overlay"></div>
         <div class="center text-center">
             <div class="banner">
-                <h1 class="">Secret Santa</h1>
+                <h1 class="">@lang('form.title')</h1>
             </div>
             <div class="subtitle"><h4>@lang('form.subtitle')</h4></div>
         </div>

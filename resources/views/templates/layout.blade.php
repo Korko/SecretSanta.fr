@@ -6,7 +6,7 @@
 <html class="no-js" lang="{{ App::getLocale() }}"> <!--<![endif]-->
 <head>
     @section('header')
-        <title>Secret Santa</title>
+        <title>@lang('headers.title')</title>
 
         <link rel="canonical" href="{{ URL::to('/') }}">
 
