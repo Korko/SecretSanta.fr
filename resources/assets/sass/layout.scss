@@ -136,6 +136,13 @@ img {
     display: none;
 }
 
+.v-rcloak {
+    display: none;
+}
+[v-cloak] ~ .v-rcloak {
+    display: block
+}
+
 /* ==========================================================================
     02. Header
 ========================================================================== */
@@ -161,6 +168,7 @@ img {
     position: relative;
     z-index: 1;
     color: white;
+    padding: 100px 0;
 }
 #header .bottom {
     color: white;

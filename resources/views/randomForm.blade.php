@@ -122,12 +122,12 @@
     </div><!-- #spacer1 -->
 
     @include('templates/participant')
-    <div id="form" class="light-wrapper" v-cloak>
+    <div id="form" class="light-wrapper">
         <section class="ss-style-top"></section>
         <div class="container inner">
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
             <p class="lead main text-center">@lang('form.section.go.subtitle')</p>
-            <div class="row text-center form">
+            <div class="row text-center form" v-cloak>
                 <div id="success-wrapper" class="alert alert-success" v-show="sent">
                     @lang('form.success')
                 </div>
@@ -230,6 +230,10 @@
 
             </div>
             <!-- /.services -->
+
+            <div id="errors-wrapper" class="alert alert-danger v-rcloak">
+                @lang('form.waiting')
+            </div>
         </div>
         <!-- /.container -->
     </div>
