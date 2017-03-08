@@ -4,6 +4,7 @@ namespace Korko\SecretSanta\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Korko\SecretSanta\Http\Requests\DearSantaRequest;
+use Korko\SecretSanta\Mail\DearSanta;
 use Korko\SecretSanta\Participant;
 use Mail;
 use Statsd;
@@ -51,12 +52,8 @@ class DearSantaController extends Controller
         return $santa;
     }
 
-    protected function sendMail(array $santa, $title, $contentMail)
+    protected function sendMail(array $santa, $title, $content)
     {
-        $contentMail .= PHP_EOL.trans('form.mail.post');
-
-        Mail::raw($contentMail, function ($m) use ($santa, $title) {
-            $m->to($santa['email'], $santa['name'])->subject($title);
-        });
+        Mail::to($santa['email'], $santa['name'])->send(new DearSanta($title, $content));
     }
 }

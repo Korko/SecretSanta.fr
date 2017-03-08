@@ -134,11 +134,6 @@ class RandomFormController extends Controller
 
     protected function sendMail(array $santa, array $target, $title, $content, $dearSantaLink)
     {
-        $contentMail = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $content);
-        $contentMail .= !empty($dearSantaLink) ?
-            PHP_EOL.trans('form.mail.post2', ['link' => $dearSantaLink]) :
-            PHP_EOL.trans('form.mail.post');
-
         Mail::to($santa['email'], $santa['name'])->send(new TargetDrawn($santa, $target, $title, $content, $dearSantaLink));
     }
 
