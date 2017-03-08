@@ -19,28 +19,30 @@
             This link is invalid, please try again
         </div>
         <form v-else action="{{ url('/dearsanta/'.$santa) }}" @submit.prevent="submit" method="post" autocomplete="off">
-            <fieldset>
-                <div class="form-group">
-                    <label for="mailTitle">Titre du mail</label>
-                    <input id="mailTitle" type="text" name="title" required placeholder="Ma liste de Noël" value="" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label for="mailContent">Contenu du mail</label>
-                    <textarea id="mailContent" name="content" required placeholder="Cher Papa Noël..." class="form-control"></textarea>
-                </div>
-            </fieldset>
-            <fieldset>
-                <div class="form-group btn">
-                    {!! Recaptcha::renderElement(['data-theme' => 'light']) !!}
-                </div>
+            <fieldset :disabled="sending || sent">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="mailTitle">Titre du mail</label>
+                        <input id="mailTitle" type="text" name="title" required placeholder="Ma liste de Noël" value="" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="mailContent">Contenu du mail</label>
+                        <textarea id="mailContent" name="content" required placeholder="Cher Papa Noël..." class="form-control"></textarea>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group btn">
+                        {!! Recaptcha::renderElement(['data-theme' => 'light']) !!}
+                    </div>
 
-                {{ csrf_field() }}
-                <input type="hidden" name="key" :value="key" />
-                <button type="submit" class="btn btn-primary btn-lg">
-                    <span v-if="sent"><span class="glyphicon glyphicon-ok"></span> @lang('form.sent')</span>
-                    <span v-else-if="sending"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.sending')</span>
-                    <span v-else>Envoyer</span>
-                </button>
+                    {{ csrf_field() }}
+                    <input type="hidden" name="key" :value="key" />
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <span v-if="sent"><span class="glyphicon glyphicon-ok"></span> @lang('form.sent')</span>
+                        <span v-else-if="sending"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.sending')</span>
+                        <span v-else>Envoyer</span>
+                    </button>
+                </fieldset>
             </fieldset>
         </form>
     </div>
