@@ -28,7 +28,6 @@
                     <label for="mailContent">Contenu du mail</label>
                     <textarea id="mailContent" name="content" required placeholder="Cher Papa Noël..." class="form-control"></textarea>
                 </div>
-                <input type="button" />
             </fieldset>
             <fieldset>
                 <div class="form-group btn">
@@ -38,8 +37,8 @@
                 {{ csrf_field() }}
                 <input type="hidden" name="key" :value="key" />
                 <button type="submit" class="btn btn-primary btn-lg">
-                    <span v-if="sending"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.sending')</span>
                     <span v-if="sent"><span class="glyphicon glyphicon-ok"></span> @lang('form.sent')</span>
+                    <span v-else-if="sending"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.sending')</span>
                     <span v-else>Envoyer</span>
                 </button>
             </fieldset>
