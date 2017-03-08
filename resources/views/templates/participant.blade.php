@@ -22,7 +22,7 @@
             <select2 :name="'exclusions['+idx+'][]'" :options="participantNames" v-model="exclusions" placeholder="@lang('form.exclusions.placeholder')"></select2>
         </td>
         <td class="row participant-remove-wrapper">
-            <button type="button" class="btn btn-danger participant-remove" :disabled="participants.length <= 2" @click="$emit('delete')">
+            <button type="button" class="btn btn-danger participant-remove" :disabled="participants.length <= 3" @click="$emit('delete')">
                 <span class="glyphicon glyphicon-minus"></span><span> @lang('form.participant.remove')</span>
             </button>
         </td>
