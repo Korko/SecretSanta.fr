@@ -50,6 +50,7 @@
         "laravel/tinker": "~1.0",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~5.0",
+        "rap2hpoutre/laravel-log-viewer": "^0.8.0",
         "symfony/css-selector": "3.2.*",
         "symfony/dom-crawler": "3.2.*"
     },
