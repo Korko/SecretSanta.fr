@@ -12,7 +12,7 @@ $footer-height: 120px;
     04. Parallax
 ========================================================================== */
 .parallax {
-    background: url(/assets/img/gifts-2.jpg) fixed no-repeat center center;
+    background: url(/assets/images/gifts-2.jpg) fixed no-repeat center center;
     -moz-background-size: cover;
     background-size: cover;
     position: relative;
@@ -23,7 +23,7 @@ $footer-height: 120px;
     padding-bottom: 130px;
 }
 .parallax.parallax2 {
-    background-image: url(/assets/img/gifts-3.jpg);
+    background-image: url(/assets/images/gifts-3.jpg);
 }
 
 
@@ -101,7 +101,7 @@ fieldset > div.form-group {
 }
 .input-group-addon.lang:before {
     background-repeat: no-repeat;
-    background-image: url(../img/languages.png);
+    background-image: url(/assets/images/languages.png);
     height: 11px;
     width: 14px;
     content: '';

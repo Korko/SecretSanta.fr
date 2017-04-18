@@ -8,6 +8,10 @@ $fa-font-path: "/assets/fonts";
 
 @import "languages";
 
+.lang-xs { background-image: url('/assets/images/languages.png') !important; }
+.lang-sm { background-image: url('/assets/images/languages.png') !important; }
+.lang-lg { background-image: url('/assets/images/languages.png') !important; }
+
 /*  
 Sticky Footer Solution
 by Steve Hatcher 
@@ -147,7 +151,7 @@ img {
     02. Header
 ========================================================================== */
 #header {
-    background-image: url(/assets/img/gifts-1.jpg);
+    background-image: url(/assets/images/gifts-1.jpg);
     -moz-background-size: cover;
     background-size: cover;
     background-position: center center;
