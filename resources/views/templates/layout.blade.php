@@ -22,7 +22,7 @@
         <meta property="og:title" content="SecretSanta">
         <meta property="og:site_name" content="SecretSanta">
         <meta property="og:url" content="{{ URL::to('/') }}">
-        <meta property="og:image" content="{{ URL::asset('/assets/img/logo_black.png') }}">
+        <meta property="og:image" content="{{ URL::asset('/assets/images/logo_black.png') }}">
         <meta property="og:description" content="@lang('headers.description')">
         <meta property="og:type" content="website">
         <meta property="og:locale" content="{{ App::getLocale() }}">
@@ -33,10 +33,10 @@
         <meta name="twitter:creator" content="Korko">
         <meta name="twitter:title" content="SecretSanta">
         <meta name="twitter:description" content="@lang('headers.description')">
-        <meta name="twitter:image" content="{{ URL::asset('/assets/img/logo_black.png') }}">
+        <meta name="twitter:image" content="{{ URL::asset('/assets/images/logo_black.png') }}">
 
         <!-- facebook image -->
-        <link rel="image_src" href="{{ URL::asset('/assets/img/logo_black.png') }}" />
+        <link rel="image_src" href="{{ URL::asset('/assets/images/logo_black.png') }}" />
 
         <!-- css -->
         @php
@@ -55,7 +55,7 @@
                 <nav id="navbar">
                     <div id="logo">
                         <a href="#header">
-                            <img src="{{ URL::asset('/assets/img/logo.png') }}" alt="" />
+                            <img src="{{ URL::asset('/assets/images/logo.png') }}" alt="" />
                         </a>
                     </div>
                     <ul class="nav navbar-nav hidden-xs">

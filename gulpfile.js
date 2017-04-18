@@ -43,8 +43,8 @@ elixir(function(mix) {
         'dearSanta.scss'
     ], 'public/assets/dearSanta.css', sassOptions);
 
-    mix.copy('resources/assets/img', 'public/assets/img');
-    mix.copy('resources/assets/vendor/bootstrap-languages/languages.png', 'public/assets/img');
+    mix.copy('resources/assets/img', 'public/assets/images');
+    mix.copy('resources/assets/vendor/bootstrap-languages/languages.png', 'public/assets/images');
     mix.copy('node_modules/bootstrap-sass/assets/fonts', 'public/assets/fonts');
     mix.copy('node_modules/font-awesome/fonts', 'public/assets/fonts');
     mix.copy('node_modules/multiple-select/multiple-select.png', 'public/assets');
