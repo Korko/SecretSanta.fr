@@ -238,6 +238,7 @@ img {
     padding-top: 8px;
     padding-bottom: 0;
 }
+
 .navbar-inverse .navbar-nav>li>a {
     -webkit-transition: all 0.4s;
     -moz-transition: all 0.4s;
@@ -299,23 +300,35 @@ footer .row {
     }
 }
 @media (min-width: 768px) {
+    html #navbar {
+        float: right;
+        position: relative;
+        left: -50%;
+    }
+    #logo {
+        left: 100%;
+    }
     html .navbar-nav {
-        float: none !important;
         width: 100%;
         text-align: center;
-        margin-left: -16px;
+        margin-left: 22px;
+        position: relative;
+        left: 50%;
+    }
+    html .navbar-nav::after {
+        content: '';
+        clear: both;
     }
     html:lang(en) .navbar-nav {
         margin-left: 13px;
     }
-    .navbar-nav>li {
-        display: inline-block;
-        float: none;
+    .navbar-nav > li:nth-child(2) {
+        margin-right: 55px;
     }
-    .navbar-nav>li:nth-child(2) {
-        margin-right: 110px;
+    .navbar-nav > li:nth-child(3) {
+        margin-left: 55px;
     }
-    .navbar-nav>li.btn-group {
+    .navbar-nav > li.btn-group {
         margin: 0 15px;
     }
 }

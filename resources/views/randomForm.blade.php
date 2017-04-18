@@ -16,6 +16,7 @@
                 <li><a href="#what">@lang('form.nav.what')</a></li>
                 <li><a href="#how">@lang('form.nav.how')</a></li>
                 <li><a href="#form">@lang('form.nav.go')</a></li>
+		<li><a href="#faq">@lang('form.nav.faq')</a></li>
 
                 <li class="btn-group btn-group-xs dropdown">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -260,7 +261,30 @@
             <csv v-if="showModal" @import="importParticipants" @close="showModal = false"></csv>
         </div>
         <!-- /.container -->
+        <section class="ss-style-bottom"></section>
     </div>
+
+    <div class="parallax parallax3">
+        <div class="container inner">
+
+        </div>
+        <!-- /.container -->
+    </div><!-- #spacer1 -->
+
+    <div id="faq" class="light-wrapper">
+        <section class="ss-style-top"></section>
+        <div class="container inner">
+            <h2 class="section-title text-center">@lang('form.section.faq.title')</h2>
+            <p class="lead main text-center">@lang('form.section.faq.subtitle')</p>
+            <div class="row text-center how">
+                <dl class="media-list">
+                    <dt>@lang('form.section.faq.1.question')</dt>
+                    <dd>@lang('form.section.faq.1.answer')</dd>
+                </ul>
+            </div>
+        </div>
+        <!-- /.container -->
+    </div><!--/#faq-->
 @stop
 
 @section('copyright')

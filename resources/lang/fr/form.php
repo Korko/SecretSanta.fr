@@ -4,6 +4,7 @@ return [
     'nav.what' => 'Qu\'est-ce que c\'est ?',
     'nav.how'  => 'Comment faire ?',
     'nav.go'   => 'Allez, c\'est parti !',
+    'nav.faq'  => 'FAQ',
 
     'title'    => 'Secret Santa . fr',
     'subtitle' => 'Offrez-vous des cadeaux... secrètement !',
@@ -106,4 +107,10 @@ via SecretSanta.fr',
     'sent'    => 'Envoyé',
 
     'paypal.alt' => 'PayPal, le réflexe sécurité pour payer en ligne',
+
+    'section.faq.title'    => 'FAQ - Foire Aux Questions',
+    'section.faq.subtitle' => 'Questions fréquemment posées',
+
+    'section.faq.1.question' => 'Pourquoi ?',
+    'section.faq.1.answer'   => 'Parce que !',
 ];
