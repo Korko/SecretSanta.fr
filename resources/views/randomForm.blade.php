@@ -51,7 +51,7 @@
                 <ul class="media-list">
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="assets/img/calendar-icon.png" />
+                            <img class="media-object" src="assets/images/calendar-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.what.heading1')</h4>
@@ -81,7 +81,7 @@
                 <ul class="media-list">
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="assets/img/user-icon.png" />
+                            <img class="media-object" src="assets/images/user-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading1')</h4>
@@ -94,12 +94,12 @@
                             <p>{!! nl2br(trans('form.section.how.content2')) !!}</p>
                         </div>
                         <div class="media-right media-middle">
-                            <img class="media-object" src="assets/img/paper-icon.png" />
+                            <img class="media-object" src="assets/images/paper-icon.png" />
                         </div>
                     </li>
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="assets/img/mail-icon.png" />
+                            <img class="media-object" src="assets/images/mail-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading3')</h4>
