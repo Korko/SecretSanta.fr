@@ -16,3 +16,7 @@ Route::post('/', 'RandomFormController@handle');
 
 Route::get('/dearsanta/{participant}', 'DearSantaController@view')->name('dearsanta');
 Route::post('/dearsanta/{participant}', 'DearSantaController@handle');
+
+if ($this->app->environment('local', 'dev', 'testing')) {
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+}
