@@ -185,6 +185,7 @@ return [
         CrazyInventor\Lacaptcha\LacaptchaServiceProvider::class,
         Korko\Validator\ValidatorServiceProvider::class,
         League\StatsD\Laravel5\Provider\StatsdServiceProvider::class,
+        Mariuzzo\LaravelJsLocalization\LaravelJsLocalizationServiceProvider::class,
         Spatie\BladeJavaScript\BladeJavaScriptServiceProvider::class,
 
     ],

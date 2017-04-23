@@ -138,9 +138,6 @@ fieldset > div.form-group {
     height: 35px;
 }
 #form .container {
-    -webkit-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    -o-transition: all 0.4s;
     transition: all 0.4s;
     position: relative;
 }
@@ -165,7 +162,6 @@ fieldset > div.form-group {
 }
 .glyphicon.spinning {
     animation: spin 1s infinite linear;
-    -webkit-animation: spin2 1s infinite linear;
 }
 button .glyphicon.spinning {
     margin-right: 10px;
@@ -174,18 +170,12 @@ button .glyphicon.spinning {
     from { transform: scale(1) rotate(0deg); }
     to { transform: scale(1) rotate(360deg); }
 }
-@-webkit-keyframes spin2 {
-    from { -webkit-transform: rotate(0deg); }
-    to { -webkit-transform: rotate(360deg); }
-}
 
 /* ==========================================================================
     08. Responsive styles
 ========================================================================== */
 @media (min-width: 992px) {
     #contact > fieldset:first-child {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
         box-sizing: border-box;
         border-right: 2px solid #ccc;
     }

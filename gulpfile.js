@@ -1,4 +1,13 @@
-var elixir = require('laravel-elixir');
+var gulp = require('gulp'),
+    shell = require('gulp-shell'),
+    elixir = require('laravel-elixir');
+
+var Task = elixir.Task;
+elixir.extend('langjs', function(path) {
+    new Task('langjs', function() {
+        gulp.src('').pipe(shell('php artisan lang:js --no-lib ' + (path || 'public/js/messages.js')));
+    });
+});
 
 /*
  |--------------------------------------------------------------------------
@@ -12,6 +21,8 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
+    mix.langjs('resources/assets/js/messages.js');
+
     mix.browserify([
         'main.js', 'randomForm.js'
     ], 'public/assets/randomForm.js');

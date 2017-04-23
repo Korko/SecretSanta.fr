@@ -8,9 +8,14 @@ var Vue = require('vue');
 var VueAutosize = require('vue-autosize');
 Vue.use(VueAutosize);
 
+require('browsernizr/test/file/filesystem');
 require('browsernizr/test/inputtypes');
 var Modernizr = require('browsernizr');
 var Moment = require('moment');
+
+var Papa = require('papaparse');
+
+var Lang = require('./lang.js');
 
 var VueAjax = require('./ajaxVue.js');
 window.app = new VueAjax({
@@ -21,18 +26,59 @@ window.app = new VueAjax({
     smsContent: '',
     maxSms: global.maxSms,
     dearsanta: false,
-    date: window.now
+    date: window.now,
+    showModal: false,
+    importing: false
   },
 
   components: {
+    csv: {
+      template: '#csv-template',
+      components: {
+        modal: {
+          template: '#modal-template'
+        }
+      },
+      methods: {
+        emitSubmit: function() {
+          this.$emit('import', $('#uploadCsv input[type=file]')[0].files[0]);
+          this.$emit('close');
+        },
+        emitCancel: function() {
+          this.$emit('close');
+        }
+      }
+    },
     participant: {
       template: '#participant-template',
-      props: ['idx', 'participants', 'dearsanta'],
+      props: {
+          idx: {
+              type: Number,
+              required: true
+          },
+          name: {
+              type: String,
+              default: ''
+          },
+          email: {
+              type: String,
+              default: ''
+          },
+          phone: {
+              type: String,
+              default: ''
+          },
+          participants: {
+              type: Array,
+              required: true
+          },
+          dearsanta: {
+              type: Boolean,
+              default: false
+          }
+      },
       data: function() {
         return {
-          name: '',
-          email: '',
-          phone: '',
           exclusions: []
         };
       },
@@ -127,6 +173,10 @@ window.app = new VueAjax({
           maxDate: Moment(this.now).add(1, 'year').toDate()
         });
       }
+
+      if (!Modernizr.filereader) {
+        $('.participants-imports').remove();
+      }
     }.bind(this));
   },
 
@@ -165,12 +215,34 @@ window.app = new VueAjax({
 
   methods: {
 
-    addParticipant: function() {
+    resetParticipants: function() {
+      this.participants = [];
+    },
+
+    addParticipant: function(name, email, phone) {
       this.participants.push({
-        name: '',
-        email: '',
-        phone: '',
+        name: name,
+        email: email,
+        phone: phone,
         id: 'id' + this.participants.length + (new Date()).getTime()
+      });
+    },
+
+    importParticipants: function(file) {
+      this.importing = true;
+      var test = Papa.parse(file, {
+        error: function() {
+          this.importing = false;
+          alertify.alert(Lang.get('importError'));
+        },
+        complete: function(file) {
+          this.importing = false;
+          this.resetParticipants();
+          file.data.forEach(function(participant) {
+            this.addParticipant(participant[0], participant[1], participant[2]);
+          }.bind(this));
+          alertify.alert(Lang.get('importSuccess'));
+        }.bind(this)
       });
     }
 
