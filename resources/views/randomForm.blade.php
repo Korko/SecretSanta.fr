@@ -6,7 +6,8 @@
     <!-- config js -->
     @javascript([
         'maxSms' => config('sms.max'),
-        'now'    => time()
+        'now'    => time(),
+        'lang'   => App::getLocale()
     ])
 @stop
 

@@ -16,6 +16,7 @@ var Moment = require('moment');
 var Papa = require('papaparse');
 
 var Lang = require('./lang.js');
+Lang.setLocale(window.global.lang);
 
 var VueAjax = require('./ajaxVue.js');
 window.app = new VueAjax({
@@ -233,7 +234,7 @@ window.app = new VueAjax({
       var test = Papa.parse(file, {
         error: function() {
           this.importing = false;
-          alertify.alert(Lang.get('importError'));
+          alertify.alert(Lang.get('csv.importError'));
         },
         complete: function(file) {
           this.importing = false;
@@ -241,7 +242,12 @@ window.app = new VueAjax({
           file.data.forEach(function(participant) {
             this.addParticipant(participant[0], participant[1], participant[2]);
           }.bind(this));
-          alertify.alert(Lang.get('importSuccess'));
+          if(file.data.length < 3) {
+            for(var i = 0; i < 3 - file.data.length; i++) {
+              this.addParticipant();
+            }
+          }
+          alertify.alert(Lang.get('csv.importSuccess'));
         }.bind(this)
       });
     }
