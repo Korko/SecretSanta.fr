@@ -122,6 +122,7 @@
     </div><!-- #spacer1 -->
 
     @include('templates/participant')
+    @include('templates/csv')
     <div id="form" class="light-wrapper">
         <section class="ss-style-top"></section>
         <div class="container inner">
@@ -156,7 +157,12 @@
                                     </thead>
                                     <tbody>
                                         {{-- Default is three empty rows to have three entries at any time --}}
-                                        <tr is="participant" v-for="(participant, idx) in participants" :key="participant.id"
+                                        <tr is="participant" v-for="(participant, idx) in participants"
+                                            :key="participant.id"
+                                            :name="participant.name"
+                                            :email="participant.email"
+                                            :phone="participant.phone"
+
                                             :participants="participants"
                                             :dearsanta="dearsanta"
                                             :idx="idx"
@@ -168,6 +174,10 @@
                                     </tbody>
                                 </table>
                                 <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><span class="glyphicon glyphicon-plus"></span> @lang('form.participant.add')</button>
+                                <button type="button" class="btn btn-warning participants-import" @click="showModal = true" :disabled="importing">
+                                    <span v-if="importing"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.participants.importing')</span>
+                                    <span v-else><span class="glyphicon glyphicon-list-alt"></span> @lang('form.participants.import')</span>
+                                </button>
                             </div>
                         </fieldset>
 
@@ -205,12 +215,12 @@
                         <fieldset>
                             <legend>Options</legend>
                             <div id="form-options" class="form-group">
-                                <label><input type="checkbox" name="dearsanta" v-model="dearsanta" value="1"/> Autoriser les participants à écrire un mail à leur secret santa</label>
+                                <label><input type="checkbox" name="dearsanta" v-model="dearsanta" value="1"/> @lang('form.dearsanta')</label>
                                 <p class="tip" role="alert">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                    Cette option implique que chaque participant dispose d'une adresse mail remplie
+                                    @lang('form.dearsanta.warning')
                                 </p>
-                                <label><input type="date" name="dearsanta-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" :disabled="!dearsanta" /> Date limite de stockage des emails</label>
+                                <label><input type="date" name="dearsanta-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" :disabled="!dearsanta" /> @lang('form.dearsanta.limit')</label>
                             </div>
                         </fieldset>
                         <fieldset>
@@ -234,6 +244,8 @@
             <div id="errors-wrapper" class="alert alert-danger v-rcloak">
                 @lang('form.waiting')
             </div>
+
+            <csv v-if="showModal" @import="importParticipants" @close="showModal = false"></csv>
         </div>
         <!-- /.container -->
     </div>
