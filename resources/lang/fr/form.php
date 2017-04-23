@@ -58,6 +58,18 @@ Le code source est disponible sur :link',
     'participant.remove' => 'Enlever',
     'participant.add'    => 'Ajouter un participant',
 
+    'participants.import'    => 'Importer depuis un fichier',
+    'participants.importing' => 'Import en cours',
+
+    'csv.title'   => 'Importer une liste de participants depuis un fichier CSV',
+    'csv.format'  => 'Afin que votre fichier CSV fonctionne, voici le format attendu :',
+    'csv.column1' => 'Nom du participant',
+    'csv.column2' => 'Adresse e-mail',
+    'csv.column3' => 'Numéro de téléphone',
+    'csv.warning' => 'Attention, l\'import de ces données supprimera les participants déjà renseignés.',
+    'csv.cancel'  => 'Annuler',
+    'csv.import'  => 'Importer',
+
     'mail.title'             => 'Titre du mail',
     'mail.title.placeholder' => 'ex : Soirée secretsanta du 23 décembre chez Martin',
 
@@ -79,6 +91,10 @@ via SecretSanta.fr',
     'sms.post'                => '- via SecretSanta.fr',
     'sms.content.tip1'        => 'Utilisez "{SANTA}" pour le nom de celui qui recevra le sms et "{TARGET}" pour le nom de sa cible.',
     'sms.content.tip2'        => 'Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.',
+
+    'dearsanta'         => 'Autoriser les participants à écrire un mail à leur secret santa',
+    'dearsanta.warning' => 'Cette option implique que chaque participant dispose d\'une adresse mail remplie',
+    'dearsanta.limit'   => 'Date limite de stockage des emails',
 
     'submit'  => 'Lancez l\'aléatoire !',
     'sending' => 'Calcul en cours',
