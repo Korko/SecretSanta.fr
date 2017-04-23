@@ -12,7 +12,7 @@ return [
      * ],
      */
     'messages' => [
-        'csv'
+        'csv',
     ],
 
     /*
