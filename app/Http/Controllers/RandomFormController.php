@@ -53,10 +53,13 @@ class RandomFormController extends Controller
 
         $participants = [];
         for ($i = 0; $i < count($names); $i++) {
+            if($phones[$i] && substr($phones[$i], 0, 1) === '0') {
+                $phones[$i] = substr($phones[$i], 1);
+            }
             $participants[$i] = [
                 'name'       => $names[$i],
                 'email'      => $emails[$i],
-                'phone'      => $phones[$i] ? str_pad($phones[$i], 10, '0', STR_PAD_LEFT) : $phones[$i],
+                'phone'      => $phones[$i] ? '+33'.$phones[$i] : $phones[$i],
                 'exclusions' => (isset($exclusions[$i])) ? array_map('intval', $exclusions[$i]) : [],
             ];
         }
