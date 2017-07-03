@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "515ac57783cb33c366fce74235fa91e6",
-    "content-hash": "7d94092a307d969c133832fd06db4e64",
+    "hash": "eed2ac9bb0eed1c9c6041a5d396444b4",
+    "content-hash": "4572898495ffc1ac9224676fe24a2e7c",
     "packages": [
         {
             "name": "callr/sdk-php",
-            "version": "0.10.1",
+            "version": "v0.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/THECALLR/sdk-php.git",
-                "reference": "b6c9c08ea0caf03883a945ed2ac196d5f022a112"
+                "reference": "f6ebf768d69d90237dace07e818999ce42e80cc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/THECALLR/sdk-php/zipball/b6c9c08ea0caf03883a945ed2ac196d5f022a112",
-                "reference": "b6c9c08ea0caf03883a945ed2ac196d5f022a112",
+                "url": "https://api.github.com/repos/THECALLR/sdk-php/zipball/f6ebf768d69d90237dace07e818999ce42e80cc6",
+                "reference": "f6ebf768d69d90237dace07e818999ce42e80cc6",
                 "shasum": ""
             },
             "require": {
@@ -55,7 +55,7 @@
                 "sdk",
                 "thecallr"
             ],
-            "time": "2017-02-14 10:27:00"
+            "time": "2017-05-10 12:29:24"
         },
         {
             "name": "doctrine/inflector",
@@ -168,20 +168,20 @@
         },
         {
             "name": "korko/callr",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Korko/callr.git",
-                "reference": "6e151b223057fdd922ca092c7752d3b36ab309dc"
+                "reference": "f9d5f3fa0a00990ab754690da92cfa0a1b97207e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Korko/callr/zipball/6e151b223057fdd922ca092c7752d3b36ab309dc",
-                "reference": "6e151b223057fdd922ca092c7752d3b36ab309dc",
+                "url": "https://api.github.com/repos/Korko/callr/zipball/f9d5f3fa0a00990ab754690da92cfa0a1b97207e",
+                "reference": "f9d5f3fa0a00990ab754690da92cfa0a1b97207e",
                 "shasum": ""
             },
             "require": {
-                "callr/sdk-php": "^0.10"
+                "callr/sdk-php": "^0.11"
             },
             "type": "library",
             "autoload": {
@@ -207,14 +207,14 @@
                 "CALLR",
                 "laravel"
             ],
-            "time": "2017-06-28 17:42:21"
+            "time": "2017-07-03 09:08:20"
         },
         {
             "name": "korko/laravel5-recaptcha2",
             "version": "dev-Korko-patch-1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Korko/laravel5-recaptcha2.git",
+                "url": "https://github.com/korko/laravel5-recaptcha2.git",
                 "reference": "Korko-patch-1"
             },
             "type": "library",
@@ -230,7 +230,7 @@
             "version": "dev-laravel-5.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Korko/statsd.git",
+                "url": "https://github.com/korko/statsd.git",
                 "reference": "laravel-5.4"
             },
             "type": "library",
@@ -3815,7 +3815,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "korko/callr": 20,
         "korko/laravel5-recaptcha2": 20,
         "korko/statsd": 20,
         "korko/validator": 20
