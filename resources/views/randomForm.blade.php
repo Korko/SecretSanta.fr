@@ -225,12 +225,8 @@
                             </div>
                         </fieldset>
                         <fieldset>
-                            <div class="form-group btn">
-                                {!! Recaptcha::renderElement(['data-theme' => 'light']) !!}
-                            </div>
-
                             {{ csrf_field() }}
-                            <button type="submit" class="btn btn-primary btn-lg">
+                            <button class="g-recaptcha btn btn-primary btn-lg" data-sitekey="{{ config('recaptcha.sitekey') }}" data-callback="submit">
                                 <span v-if="sending"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.sending')</span>
                                 <span v-if="sent"><span class="glyphicon glyphicon-ok"></span> @lang('form.sent')</span>
                                 <span v-else>@lang('form.submit')</span>
