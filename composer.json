@@ -38,7 +38,7 @@
     ],
     "require": {
         "php": "^7.0",
-        "aloha/twilio": "^3.0",
+        "korko/callr": "dev-master",
         "korko/laravel5-recaptcha2": "dev-Korko-patch-1",
         "korko/statsd": "dev-laravel-5.4",
         "korko/validator": "dev-master",
