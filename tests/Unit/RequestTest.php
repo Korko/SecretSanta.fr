@@ -77,12 +77,12 @@ class RequestTest extends RequestCase
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('0612345678', '#test sms "tata\' => &tutu#')
+            ->with('+33612345678', '#test sms "tata\' => &tutu#')
             ->andReturn(true);
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('0712345678', '#test sms "tutu\' => &toto#')
+            ->with('+33712345678', '#test sms "tutu\' => &toto#')
             ->andReturn(true);
 
         $this->assertEquals(0, Draw::count());
