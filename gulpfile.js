@@ -24,11 +24,11 @@ elixir(function(mix) {
     mix.langjs('resources/assets/js/messages.js');
 
     mix.browserify([
-        'main.js', 'randomForm.js'
+        'main.js', 'randomForm.js', 'script.js'
     ], 'public/assets/randomForm.js');
 
     mix.browserify([
-        'main.js', 'dearSanta.js'
+        'main.js', 'dearSanta.js', 'script.js'
     ], 'public/assets/dearSanta.js');
 
     var sassOptions = {
