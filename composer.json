@@ -11,7 +11,7 @@
                 "name": "korko/laravel5-recaptcha2",
                 "version": "dev-Korko-patch-1",
                 "source": {
-                    "url": "https://github.com/Korko/laravel5-recaptcha2.git",
+                    "url": "https://github.com/korko/laravel5-recaptcha2.git",
                     "type": "git",
                     "reference": "Korko-patch-1"
                 },
@@ -26,7 +26,7 @@
                 "name": "korko/statsd",
                 "version": "dev-laravel-5.4",
                 "source": {
-                    "url": "https://github.com/Korko/statsd.git",
+                    "url": "https://github.com/korko/statsd.git",
                     "type": "git",
                     "reference": "laravel-5.4"
                 },
@@ -38,7 +38,7 @@
     ],
     "require": {
         "php": "^7.0",
-        "korko/callr": "dev-master",
+        "korko/callr": "^1.0",
         "korko/laravel5-recaptcha2": "dev-Korko-patch-1",
         "korko/statsd": "dev-laravel-5.4",
         "korko/validator": "dev-master",
