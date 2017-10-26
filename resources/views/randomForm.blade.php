@@ -205,7 +205,6 @@
                                         <label for="smsContent" v-if="smsCount <= 1">@lang('form.sms.content', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
                                         <label for="smsContent" v-else>@lang('form.sms.content.multiple', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
                                         <textarea id="smsContent" name="contentSMS" :required="this.phoneUsed" :maxlength="maxLength" placeholder="@lang('form.sms.content.placeholder')" class="form-control" rows="3" v-model="smsContent" v-autosize></textarea>
-                                        <textarea id="smsPost" class="form-control" read-only disabled>@lang('form.sms.post')</textarea>
 
                                         <p class="help-block">@lang('form.sms.content.tip1')</p>
                                         <p class="help-block">@lang('form.sms.content.tip2')</p>
