@@ -125,7 +125,7 @@ window.app = new VueAjax({
     emailUsed: function() {
       var used = false;
       for(var i in this.participants) {
-        used = used || (this.participants[i].email !== '');
+        used = used || this.participants[i].email;
       }
       return used;
     },
@@ -133,7 +133,7 @@ window.app = new VueAjax({
     phoneUsed: function() {
       var used = false;
       for(var i in this.participants) {
-        used = used || (this.participants[i].phone !== '');
+        used = used || this.participants[i].phone;
       }
       return used;
     },
