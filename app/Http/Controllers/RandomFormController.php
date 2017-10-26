@@ -143,7 +143,6 @@ class RandomFormController extends Controller
     protected function sendSms(array $santa, array $target, $content)
     {
         $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $content);
-        $contentSms .= PHP_EOL.trans('form.sms.post');
 
         Sms::message($santa['phone'], $contentSms);
     }

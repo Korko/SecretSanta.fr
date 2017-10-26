@@ -121,21 +121,18 @@ fieldset > div.form-group {
 #mailPost.extended {
     height: 75px;
 }
-#smsContent, #mailContent {
+#mailContent {
     border-bottom: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
-#smsPost, #mailPost {
+#mailPost {
     border-top: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
 }
-#smsContent, #smsPost {
+#smsContent {
     resize: none;
-}
-#smsPost {
-    height: 35px;
 }
 #form .container {
     transition: all 0.4s;
