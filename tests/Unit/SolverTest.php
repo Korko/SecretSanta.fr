@@ -44,17 +44,17 @@ class SolverTest extends TestCase
         ], Solver::all(['A', 'B', 'C'], [0 => [2]]), ['A', 'B', 'C']);
     }
 
-/*
-    public function testComplexExclusion()
-    {
-        $participants = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', L'];
-        $exclusions = [0 => [1, 2, 3]];
-
-        $this->assertEquals(array(['A' => 'B', 'B' => 'C', 'C' => 'A']), Solver::all($participants, function($elementA, $elementB) use($exclusions) {
-            return !isset($exclusions[$elementA]) || !in_array($elementB, $exclusions[$elementA]);
-        }));
-    }
-*/
+    /*
+        public function testComplexExclusion()
+        {
+            $participants = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', L'];
+            $exclusions = [0 => [1, 2, 3]];
+    
+            $this->assertEquals(array(['A' => 'B', 'B' => 'C', 'C' => 'A']), Solver::all($participants, function($elementA, $elementB) use($exclusions) {
+                return !isset($exclusions[$elementA]) || !in_array($elementB, $exclusions[$elementA]);
+            }));
+        }
+    */
 
     public function testImpossibleSolution()
     {
