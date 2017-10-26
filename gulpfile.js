@@ -2,6 +2,8 @@ var gulp = require('gulp'),
     shell = require('gulp-shell'),
     elixir = require('laravel-elixir');
 
+require('laravel-elixir-vueify');
+
 var Task = elixir.Task;
 elixir.extend('langjs', function(path) {
     new Task('langjs', function() {
