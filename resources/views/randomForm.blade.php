@@ -7,7 +7,8 @@
     @javascript([
         'maxSms' => config('sms.max'),
         'now'    => time(),
-        'lang'   => App::getLocale()
+        'lang'   => App::getLocale(),
+        'alert'  => session('message', '')
     ])
 @stop
 
@@ -140,7 +141,7 @@
                     </ul>
                 </div>
 
-                <form action="{{ url('/') }}" @submit.prevent="submit" method="post" autocomplete="off">
+                <form id="randomForm" action="/" @submit.prevent="submit" method="post" autocomplete="off">
                     <fieldset :disabled="sending || sent">
                         <fieldset>
                             <legend>@lang('form.participants')</legend>
@@ -225,11 +226,12 @@
                         </fieldset>
                         <fieldset>
                             {{ csrf_field() }}
-                            <button class="g-recaptcha btn btn-primary btn-lg" data-sitekey="{{ config('recaptcha.sitekey') }}" data-callback="submit">
+                            <button class="g-recaptcha btn btn-primary btn-lg" data-sitekey="{{ config('recaptcha.sitekey') }}" data-callback="submitForm">
                                 <span v-if="sending"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.sending')</span>
                                 <span v-if="sent"><span class="glyphicon glyphicon-ok"></span> @lang('form.sent')</span>
                                 <span v-else>@lang('form.submit')</span>
                             </button>
+                            <input class="submitform" type="submit" style="display:none;" />
                         </fieldset>
                     </fieldset>
                 </form>
@@ -257,10 +259,4 @@
     <script type="text/javascript" src="{{ URL::asset('assets/randomForm.js') }}"></script>
 
     {!! Recaptcha::renderScript(App::getLocale()) !!}
-
-    @if(Session::has('message'))
-    <script type="text/javascript">
-        alertify.alert("{{ session('message') }}");
-    </script>
-    @endif
 @stop
