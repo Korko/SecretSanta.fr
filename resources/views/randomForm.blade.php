@@ -186,7 +186,7 @@
                         <fieldset>
                             <legend>Messages</legend>
                             <div class="row" id="contact">
-                                <fieldset id="form-mail-group" class="col-md-6" :disabled="!this.emailUsed">
+                                <fieldset id="form-mail-group" class="col-md-6">
                                     <div class="form-group">
                                         <label for="mailTitle">@lang('form.mail.title')</label>
                                         <input id="mailTitle" type="text" name="title" :required="this.emailUsed" placeholder="@lang('form.mail.title.placeholder')" value="" class="form-control" />
@@ -201,7 +201,7 @@
                                     </div>
                                 </fieldset>
 
-                                <fieldset id="form-sms-group" class="col-md-6" :disabled="!this.phoneUsed">
+                                <fieldset id="form-sms-group" class="col-md-6">
                                     <div class="form-group">
                                         <label for="smsContent" v-if="smsCount <= 1">@lang('form.sms.content', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
                                         <label for="smsContent" v-else>@lang('form.sms.content.multiple', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
