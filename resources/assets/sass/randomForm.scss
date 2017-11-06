@@ -167,6 +167,9 @@ button .glyphicon.spinning {
     from { transform: scale(1) rotate(0deg); }
     to { transform: scale(1) rotate(360deg); }
 }
+.table-bordered.heavy-borders, .table-bordered.heavy-borders > tbody > tr > td, .table-bordered.heavy-borders > tbody > tr > th, .table-bordered.heavy-borders > tfoot > tr > td, .table-bordered.heavy-borders > tfoot > tr > th, .table-bordered.heavy-borders > thead > tr > td, .table-bordered.heavy-borders > thead > tr > th {
+    border-width: 3px;
+}
 
 /* ==========================================================================
     08. Responsive styles
