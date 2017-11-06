@@ -5,8 +5,8 @@ return [
     'nav.how'  => 'Comment faire ?',
     'nav.go'   => 'Allez, c\'est parti !',
 
-    'title'      => 'Secret Santa . fr',
-    'subtitle'   => 'Offrez-vous des cadeaux... secrètement !',
+    'title'    => 'Secret Santa . fr',
+    'subtitle' => 'Offrez-vous des cadeaux... secrètement !',
 
     'section.what.title'    => 'Qu\'est-ce que c\'est ?',
     'section.what.subtitle' => 'Description du Secret Santa',
@@ -78,7 +78,7 @@ Le code source est disponible sur :link',
     'mail.content.placeholder' => 'ex : Salut {SANTA}, pour la soirée secret santa, ta cible c\'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !',
     'mail.post'                => '----
 via SecretSanta.fr',
-    'mail.post2'               => '----
+    'mail.post2' => '----
 Pour écrire à votre Secret Santa, allez sur la page suivante : :link
 via SecretSanta.fr',
     'mail.content.tip1' => 'Utilisez "{SANTA}" pour le nom de celui qui recevra le mail et "{TARGET}" pour le nom de sa cible.',
