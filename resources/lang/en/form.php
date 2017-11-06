@@ -5,7 +5,7 @@ return [
     'nav.how'  => 'How?',
     'nav.go'   => "Let's go!",
 
-    'subtitle'   => 'Offer gifts... Secretly!',
+    'subtitle' => 'Offer gifts... Secretly!',
 
     'section.what.title'    => "What's this?",
     'section.what.subtitle' => 'Secret Santa Description',
