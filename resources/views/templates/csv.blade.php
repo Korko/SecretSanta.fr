@@ -4,9 +4,18 @@
         <span slot="header"><h3>@lang('form.csv.title')</h3></span>
 
         <div slot="body">
+
+            <div class="alert alert-info" role="alert">
+                <span class="glyphicon glyphicon-question-sign"></span> @lang('form.csv.help', [
+                        'excel' => '<a href="https://support.office.com/fr-fr/article/Importer-ou-exporter-des-fichiers-texte-txt-ou-csv-5250ac4c-663c-47ce-937b-339e391393ba" class="alert-link">',
+                        'calc' => '<a href="https://help.libreoffice.org/Calc/Importing_and_Exporting_CSV_Files/fr" class="alert-link">',
+                        'elink' => '</a>'
+                    ])
+            </div>
+
             @lang('form.csv.format')
-            <table class="table table-bordered">
-                <tbody><tr class="info"><td>@lang('form.csv.column1')</td><td>@lang('form.csv.column2')</td><td>@lang('form.csv.column3')</td></tr></tbody>
+            <table class="table table-bordered heavy-borders">
+                <tbody><tr><td>@lang('form.csv.column1')</td><td>@lang('form.csv.column2')</td><td>@lang('form.csv.column3')</td></tr></tbody>
             </table>
 
             <div class="alert alert-danger" role="alert">
