@@ -62,6 +62,7 @@ Le code source est disponible sur :link',
     'participants.importing' => 'Import en cours',
 
     'csv.title'   => 'Importer une liste de participants depuis un fichier CSV',
+    'csv.help'    => 'Comment créer un fichier CSV avec :excel Microsoft Office Excel :elink ou :calc Libre Office Calc :elink',
     'csv.format'  => 'Afin que votre fichier CSV fonctionne, voici le format attendu :',
     'csv.column1' => 'Nom du participant',
     'csv.column2' => 'Adresse e-mail',
