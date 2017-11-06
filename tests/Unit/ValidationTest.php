@@ -126,9 +126,9 @@ class ValidationTest extends RequestCase
     {
         config(['sms.max' => 1]);
         $content = $this->ajaxPost('/', [
-            'name'                 => ['toto', 'tata', 'tutu'],
-            'phone'                => ['0612345678', '0612345678', '0612345678'],
-            'contentSMS'           => '{TARGET}'.implode('', array_fill(0, 161, 'a')), // 2 sms long
+            'name'       => ['toto', 'tata', 'tutu'],
+            'phone'      => ['0612345678', '0612345678', '0612345678'],
+            'contentSMS' => '{TARGET}'.implode('', array_fill(0, 161, 'a')), // 2 sms long
         ], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS'], $content);
     }
