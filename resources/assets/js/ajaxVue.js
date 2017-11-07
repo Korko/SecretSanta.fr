@@ -34,6 +34,7 @@ module.exports = Vue.extend({
           data : postData,
           success: function(data, textStatus, jqXHR) {
             alertify.alert(jqXHR.responseJSON.message);
+            app.sending = false;
             app.sent = true;
           },
           error: function(jqXHR, textStatus, errorThrown) {
