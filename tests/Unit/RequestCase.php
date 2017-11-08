@@ -14,7 +14,7 @@ class RequestCase extends TestCase
     {
         $server = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
         $response = $this->call('POST', $url, $postArgs, [], [], $server);
-        $this->assertEquals($code, $response->status(), $response);
+        $this->assertEquals($code, $response->status(), $response->getContent());
 
         return json_decode($response->content(), true);
     }
