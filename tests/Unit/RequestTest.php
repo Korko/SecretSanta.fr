@@ -64,23 +64,28 @@ class RequestTest extends RequestCase
 
         Metrics::shouldReceive('increment')
             ->once()
-            ->with('draws');
+            ->with('draws')
+            ->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->once()
-            ->with('participants', 3);
+            ->with('participants', 3)
+            ->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->times(2)
-            ->with('email');
+            ->with('email')
+            ->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->times(2)
-            ->with('phone');
+            ->with('phone')
+            ->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->times(2)
-            ->with('sms', 1);
+            ->with('sms', 1)
+            ->andReturn(true);
 
         Mail::shouldReceive('to')
             ->once()
@@ -136,23 +141,28 @@ class RequestTest extends RequestCase
 
         Metrics::shouldReceive('increment')
             ->once()
-            ->with('draws');
+            ->with('draws')
+            ->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->once()
-            ->with('participants', 3);
+            ->with('participants', 3)
+            ->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->never()
-            ->with('email');
+            ->with('email')
+            ->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->times(3)
-            ->with('phone');
+            ->with('phone')
+            ->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->times(3)
-            ->with('sms', 2);
+            ->with('sms', 2)
+            ->andReturn(true);
 
         Mail::shouldReceive('send')
             ->never();
@@ -199,15 +209,18 @@ class RequestTest extends RequestCase
 
         Metrics::shouldReceive('increment')
             ->once()
-            ->with('draws');
+            ->with('draws')
+            ->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->once()
-            ->with('participants', 3);
+            ->with('participants', 3)
+            ->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->times(3)
-            ->with('email');
+            ->with('email')
+            ->andReturn(true);
 
         Mail::shouldReceive('to')
             ->once()
