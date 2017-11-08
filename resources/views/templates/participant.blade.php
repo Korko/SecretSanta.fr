@@ -3,11 +3,11 @@
         <td class="row">
             <div class="input-group">
                 <span class="input-group-addon counter">@{{ idx+1 }}</span>
-                <input type="text" :name="'name['+idx+']'" required="required" placeholder="@lang('form.name.placeholder')" v-model="name" class="form-control participant-name" />
+                <input type="text" :name="'name['+idx+']'" :required="idx < 3" placeholder="@lang('form.name.placeholder')" v-model="name" class="form-control participant-name" />
             </div>
         </td>
         <td class="row border-left">
-            <input type="email" :name="'email['+idx+']'" placeholder="@lang('form.email.placeholder')" v-model="email" class="form-control participant-email" :required="!phone || dearsanta" />
+            <input type="email" :name="'email['+idx+']'" placeholder="@lang('form.email.placeholder')" v-model="email" class="form-control participant-email" :required="(idx < 3 || name !== '') && (!phone || dearsanta)" />
         </td>
         <td>
             @lang('form.mail-sms')
@@ -15,7 +15,7 @@
         <td class="row border-right">
             <div class="input-group">
                 <span class="input-group-addon lang" lang="fr">(+33)</span>
-                <input type='tel' pattern='0?[67]\d{8}' :maxlength="(phone[0] === undefined || phone[0] === '0') ? 10 : 9" :name="'phone['+idx+']'" placeholder="@lang('form.phone.placeholder')" v-model="phone" @focus="$event.target.value = phone" @blur="$event.target.value = phoneNumber" class="form-control participant-phone" :required="!email" />
+                <input type='tel' pattern='0?[67]\s?(\d\s?){8}' :maxlength="(phone[0] === undefined || phone[0] === '0') ? 10 : 9" :name="'phone['+idx+']'" placeholder="@lang('form.phone.placeholder')" v-model="phone" @focus="$event.target.value = phone" @blur="$event.target.value = phoneNumber" class="form-control participant-phone" :required="(idx < 3 || name !== '') && !email" />
             </div>
         </td>
         <td class="row border-right text-left participant-exclusions-wrapper">
