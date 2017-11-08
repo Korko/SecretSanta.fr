@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'host'      => '127.0.0.1',
-    'port'      => 8125,
-    'namespace' => 'secretsanta',
+    'host'      => env('STATSD_HOST'),
+    'port'      => env('STATSD_PORT'),
+    'namespace' => env('STATSD_NAMESPACE', 'secretsanta'),
 ];

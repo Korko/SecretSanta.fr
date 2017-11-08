@@ -3,6 +3,7 @@
 namespace Korko\SecretSanta\Http\Controllers;
 
 use Facades\Korko\SecretSanta\Libs\HatSolver as Solver;
+use Facades\Korko\SecretSanta\Libs\SmsTools as SmsTools;
 use Illuminate\Http\Request;
 use Korko\SecretSanta\Draw;
 use Korko\SecretSanta\Exceptions\SolverException;
@@ -94,6 +95,7 @@ class RandomFormController extends Controller
 
         if (!empty($santa['phone'])) {
             Statsd::increment('phone');
+            Statsd::increment('sms', SmsTools::count($request->input('contentSMS')));
             $this->sendSms($santa, $target, $request->input('contentSMS'));
         }
     }
