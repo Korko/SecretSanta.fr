@@ -6,6 +6,7 @@ use Artisan;
 use Korko\SecretSanta\Draw;
 use Korko\SecretSanta\Participant;
 use Mail;
+use Metrics;
 use Mockery;
 use Recaptcha;
 use Sms;
@@ -34,6 +35,9 @@ class RequestTest extends RequestCase
         Sms::shouldReceive('message')
             ->never();
 
+        Metrics::shouldReceive('increment')
+            ->never();
+
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
 
@@ -57,6 +61,26 @@ class RequestTest extends RequestCase
     public function testClassic()
     {
         Recaptcha::shouldReceive('verify')->once()->andReturn(true);
+
+        Metrics::shouldReceive('increment')
+            ->once()
+            ->with('draws');
+
+        Metrics::shouldReceive('increment')
+            ->once()
+            ->with('participants', 3);
+
+        Metrics::shouldReceive('increment')
+            ->times(2)
+            ->with('email');
+
+        Metrics::shouldReceive('increment')
+            ->times(2)
+            ->with('phone');
+
+        Metrics::shouldReceive('increment')
+            ->times(2)
+            ->with('sms', 1);
 
         Mail::shouldReceive('to')
             ->once()
@@ -106,9 +130,84 @@ class RequestTest extends RequestCase
         $this->assertEquals(0, Participant::count());
     }
 
+    public function testLongSmsOnly()
+    {
+        Recaptcha::shouldReceive('verify')->once()->andReturn(true);
+
+        Metrics::shouldReceive('increment')
+            ->once()
+            ->with('draws');
+
+        Metrics::shouldReceive('increment')
+            ->once()
+            ->with('participants', 3);
+
+        Metrics::shouldReceive('increment')
+            ->never()
+            ->with('email');
+
+        Metrics::shouldReceive('increment')
+            ->times(3)
+            ->with('phone');
+
+        Metrics::shouldReceive('increment')
+            ->times(3)
+            ->with('sms', 2);
+
+        Mail::shouldReceive('send')
+            ->never();
+
+        Sms::shouldReceive('message')
+            ->once()
+            ->with('+33612345678', '#test sms "toto\' => &tata#')
+            ->andReturn(true);
+
+        Sms::shouldReceive('message')
+            ->once()
+            ->with('+33612345679', '#test sms "tata\' => &tutu#')
+            ->andReturn(true);
+
+        Sms::shouldReceive('message')
+            ->once()
+            ->with('+33712345670', '#test sms "tutu\' => &toto#')
+            ->andReturn(true);
+
+        $this->assertEquals(0, Draw::count());
+        $this->assertEquals(0, Participant::count());
+
+        $content = $this->ajaxPost('/', [
+            'g-recaptcha-response' => 'mocked',
+            'name'                 => ['toto', 'tata', 'tutu'],
+            'email'                => ['', '', ''],
+            'phone'                => ['0612345678', '0612345679', '712345670'],
+            'exclusions'           => [['2'], ['0'], ['1']],
+            'title'                => 'test mail title',
+            'contentMail'          => '',
+            'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}'.implode('', array_fill(0, 160, 'a')),
+            'dearsanta'            => '0',
+        ], 200);
+        $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
+
+        // Nothing, no record, no dearsanta
+        $this->assertEquals(0, Draw::count());
+        $this->assertEquals(0, Participant::count());
+    }
+
     public function testDearsanta()
     {
         Recaptcha::shouldReceive('verify')->once()->andReturn(true);
+
+        Metrics::shouldReceive('increment')
+            ->once()
+            ->with('draws');
+
+        Metrics::shouldReceive('increment')
+            ->once()
+            ->with('participants', 3);
+
+        Metrics::shouldReceive('increment')
+            ->times(3)
+            ->with('email');
 
         Mail::shouldReceive('to')
             ->once()

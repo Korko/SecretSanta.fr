@@ -7,7 +7,7 @@ use Korko\SecretSanta\Http\Requests\DearSantaRequest;
 use Korko\SecretSanta\Mail\DearSanta;
 use Korko\SecretSanta\Participant;
 use Mail;
-use Statsd;
+use Metrics;
 
 class DearSantaController extends Controller
 {
@@ -27,7 +27,7 @@ class DearSantaController extends Controller
     {
         $santa = $this->getSanta($participant, $request);
 
-        Statsd::increment('dearsanta');
+        Metrics::increment('dearsanta');
 
         $this->sendMail($santa, $request->input('title'), $request->input('content'));
 

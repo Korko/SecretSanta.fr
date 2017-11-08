@@ -11,8 +11,8 @@ use Korko\SecretSanta\Http\Requests\RandomFormRequest;
 use Korko\SecretSanta\Mail\TargetDrawn;
 use Korko\SecretSanta\Participant;
 use Mail;
+use Metrics;
 use Sms;
-use Statsd;
 
 class RandomFormController extends Controller
 {
@@ -65,14 +65,14 @@ class RandomFormController extends Controller
             ];
         }
 
-        Statsd::increment('draws');
-        Statsd::increment('participants', count($participants));
-
         return $participants;
     }
 
     protected function sendMessages(Request $request, array $participants, array $hat)
     {
+        Metrics::increment('draws');
+        Metrics::increment('participants', count($participants));
+
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = $participants[$santaIdx];
             $target = $participants[$targetIdx];
@@ -89,13 +89,13 @@ class RandomFormController extends Controller
         }
 
         if (!empty($santa['email'])) {
-            Statsd::increment('email');
+            Metrics::increment('email');
             $this->sendMail($santa, $target, $request->input('title'), $request->input('contentMail'), $dearSantaLink);
         }
 
         if (!empty($santa['phone'])) {
-            Statsd::increment('phone');
-            Statsd::increment('sms', SmsTools::count($request->input('contentSMS')));
+            Metrics::increment('phone');
+            Metrics::increment('sms', SmsTools::count($request->input('contentSMS')));
             $this->sendSms($santa, $target, $request->input('contentSMS'));
         }
     }
