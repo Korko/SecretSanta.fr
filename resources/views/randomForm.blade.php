@@ -233,7 +233,7 @@
 
                             <button type="submit" class="btn btn-primary btn-lg">
                                 <span v-if="sending"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.sending')</span>
-                                <span v-if="sent"><span class="glyphicon glyphicon-ok"></span> @lang('form.sent')</span>
+                                <span v-else-if="sent"><span class="glyphicon glyphicon-ok"></span> @lang('form.sent')</span>
                                 <span v-else>@lang('form.submit')</span>
                             </button>
                         </fieldset>
