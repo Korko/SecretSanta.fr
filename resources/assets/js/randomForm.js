@@ -240,10 +240,12 @@ window.app = new VueAjax({
           this.importing = false;
           this.resetParticipants();
           file.data.forEach(function(participant) {
-            this.addParticipant(participant[0], participant[1], participant[2]);
+            if(participant[0] !== '') {
+                this.addParticipant(participant[0], participant[1], participant[2]);
+            }
           }.bind(this));
-          if(file.data.length < 3) {
-            for(var i = 0; i < 3 - file.data.length; i++) {
+          if(this.participants.length < 3) {
+            for(var i = 0; i < 3 - this.participants.length; i++) {
               this.addParticipant();
             }
           }
