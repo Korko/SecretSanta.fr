@@ -174,6 +174,7 @@ return [
          * Application Service Providers...
          */
         Korko\SecretSanta\Providers\AppServiceProvider::class,
+        Korko\SecretSanta\Providers\ComposerServiceProvider::class,
         Korko\SecretSanta\Providers\EventServiceProvider::class,
         Korko\SecretSanta\Providers\RouteServiceProvider::class,
 
