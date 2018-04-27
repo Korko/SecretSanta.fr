@@ -8,7 +8,7 @@ use Korko\SecretSanta\Participant;
 use Mail;
 use Metrics;
 use Mockery;
-use Recaptcha;
+use NoCaptcha;
 use Sms;
 
 class RequestTest extends RequestCase
@@ -27,7 +27,7 @@ class RequestTest extends RequestCase
 
     public function testInvalid()
     {
-        Recaptcha::shouldReceive('verify')->once()->andReturn(true);
+        NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
 
         Mail::shouldReceive('to')
             ->never();
@@ -60,7 +60,7 @@ class RequestTest extends RequestCase
 
     public function testClassic()
     {
-        Recaptcha::shouldReceive('verify')->once()->andReturn(true);
+        NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->once()
@@ -137,7 +137,7 @@ class RequestTest extends RequestCase
 
     public function testLongSmsOnly()
     {
-        Recaptcha::shouldReceive('verify')->once()->andReturn(true);
+        NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->once()
@@ -205,7 +205,7 @@ class RequestTest extends RequestCase
 
     public function testDearsanta()
     {
-        Recaptcha::shouldReceive('verify')->once()->andReturn(true);
+        NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
 
         Metrics::shouldReceive('increment')
             ->once()

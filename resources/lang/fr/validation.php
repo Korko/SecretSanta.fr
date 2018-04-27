@@ -78,7 +78,7 @@ return [
     'unique'    => 'La valeur du champ :attribute est déjà utilisée.',
     'url'       => "Le format de l'URL de :attribute n'est pas valide.",
 
-    'recaptcha' => 'Le ReCaptcha n\'a pas pu être validé.',
+    'recaptcha' => 'Le captcha n\'a pas pu être validé.',
 
     /*
     |--------------------------------------------------------------------------
