@@ -22,7 +22,7 @@ class RandomFormRequest extends Request
     public function rules()
     {
         $rules = [
-            'g-recaptcha-response' => 'required|recaptcha',
+            'g-recaptcha-response' => 'required|captcha',
             'name'                 => 'required|array|min:3|arrayunique',
             'email'                => 'array',
             'phone'                => 'array',

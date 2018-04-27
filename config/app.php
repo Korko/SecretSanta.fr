@@ -181,7 +181,7 @@ return [
         /*
          * Vendors Service Providers...
          */
-        CrazyInventor\Lacaptcha\LacaptchaServiceProvider::class,
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         Korko\Callr\CallrServiceProvider::class,
         Korko\Validator\ValidatorServiceProvider::class,
         League\StatsD\Laravel5\Provider\StatsdServiceProvider::class,
@@ -222,10 +222,10 @@ return [
         'Log'          => Illuminate\Support\Facades\Log::class,
         'Mail'         => Illuminate\Support\Facades\Mail::class,
         'Metrics'      => Facades\League\StatsD\Client::class,
+        'NoCaptcha'    => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,
         'Password'     => Illuminate\Support\Facades\Password::class,
         'Queue'        => Illuminate\Support\Facades\Queue::class,
-        'Recaptcha'    => CrazyInventor\Lacaptcha\Facades\Lacaptcha::class,
         'Redirect'     => Illuminate\Support\Facades\Redirect::class,
         'Redis'        => Illuminate\Support\Facades\Redis::class,
         'Request'      => Illuminate\Support\Facades\Request::class,
