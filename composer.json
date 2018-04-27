@@ -45,7 +45,8 @@
         "korko/validator": "dev-master",
         "laravel/framework": "5.4.*",
         "mariuzzo/laravel-js-localization": "^1.4",
-        "spatie/laravel-blade-javascript": "^1.0"
+        "spatie/laravel-blade-javascript": "^1.0",
+        "vinkla/hashids": "^3.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
