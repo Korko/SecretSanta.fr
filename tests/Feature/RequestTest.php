@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Artisan;
 use Korko\SecretSanta\Draw;
