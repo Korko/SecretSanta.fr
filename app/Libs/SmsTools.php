@@ -4,6 +4,8 @@ namespace Korko\SecretSanta\Libs;
 
 class SmsTools
 {
+    const LIMIT_UNICODE_CHAR = 127;
+
     private $smsAsciiLength = [160, 146, 153];
     private $smsUnicodeLength = [70, 62, 66];
 
@@ -11,7 +13,7 @@ class SmsTools
     {
         for ($i = 0; $i < mb_strlen($text); $i++) {
             $char = mb_substr($text, $i, 1);
-            if (ord($char) > 127 && $char != '€') {
+            if (ord($char) > self::LIMIT_UNICODE_CHAR && $char != '€') {
                 return true;
             }
         }
@@ -28,7 +30,8 @@ class SmsTools
         $smsCount = 0;
         $charLeft = mb_strlen($text);
         while ($charLeft > 0) {
-            $charLeft -= $smsCount < 3 ? $smsLength[$smsCount] : $smsLength[2];
+            $index = min($smsCount, count($smsLength) - 1);
+            $charLeft -= $smsLength[$index];
             $smsCount++;
         }
 

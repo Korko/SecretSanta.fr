@@ -7,6 +7,8 @@ use Tests\TestCase;
 
 class SolverTest extends TestCase
 {
+    const LOOP_NUMBER = 100;
+
     public function assertCombination($valid, $test, $participants)
     {
         $test = array_map(function ($el) use ($participants) {
@@ -70,7 +72,7 @@ class SolverTest extends TestCase
             ];
             $valid = [];
 
-            for ($i = 0; $i < 100; $i++) {
+            for ($i = 0; $i < self::LOOP_NUMBER; $i++) {
                 $solution = Solver::one(['A', 'B', 'C']);
 
                 $solution_position = array_search($solution, $solutions);
