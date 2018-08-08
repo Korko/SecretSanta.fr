@@ -1,0 +1,11 @@
+parameters:
+    git_dir: .
+    bin_dir: vendor/bin
+    tasks:
+        composer: ~
+        file_size: ~
+        git_commit_message: ~
+        phplint: ~
+        phpmnd:
+            exclude: ['node_modules']
+        phpunit: ~
