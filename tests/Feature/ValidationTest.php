@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 class ValidationTest extends RequestCase
 {
@@ -50,6 +50,10 @@ class ValidationTest extends RequestCase
         // Ok for names but partial contact infos (mail)
         $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'email' => ['', 'test@test.com', '']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.0', 'phone.0', 'email.2', 'phone.2', 'title', 'contentMail'], $content);
+
+        // Ok for names but partial contact infos (both)
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'phone' => ['0612345678', '', ''], 'email' => ['', 'test@test.com', '']], 422);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.2', 'phone.2', 'title', 'contentMail', 'contentSMS'], $content);
     }
 
     // Names and contact infos but no mail body nor sms body
