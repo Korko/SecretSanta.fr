@@ -61,6 +61,7 @@
                         </div>
                     </li>
                 </ul>
+                <div class="well well-lg">{!! nl2br(trans('form.section.what.notice', ['button' => str_replace("\n", '', view('partials.paypalButton'))])) !!}</div>
             </div>
         </div>
         <!-- /.container -->

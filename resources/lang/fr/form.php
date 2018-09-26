@@ -15,6 +15,11 @@ return [
 Le déroulement est simple : chaque participant reçoit, de façon aléatoire, le nom de la personne à qui il devra faire un cadeau.
 Le montant du cadeau est généralement fixé au préalable (2€, 5€, 10€...)
 Le but n'est pas forcément de faire un beau cadeau mais d'être créatif !",
+    'section.what.notice' => 'Pour votre information
+secretsanta.fr est entièrement gratuit et sans publicité.
+Tout est payé par le développeur lui-même.
+Si cet outil vous plait, pensez à faire un don.
+:button',
 
     'section.how.title'    => 'Comment faire ?',
     'section.how.subtitle' => 'Vous allez voir, c\'est simple !',
@@ -99,4 +104,6 @@ via SecretSanta.fr',
     'submit'  => 'Lancez l\'aléatoire !',
     'sending' => 'Calcul en cours',
     'sent'    => 'Envoyé',
+
+    'paypal.alt' => 'PayPal, le réflexe sécurité pour payer en ligne',
 ];
