@@ -15,7 +15,7 @@
         <td class="row border-right">
             <div class="input-group">
                 <span class="input-group-addon lang" lang="fr">(+33)</span>
-                <input type='tel' pattern='0?[67]\s?(\d\s?){8}' :maxlength="(phone[0] === undefined || phone[0] === '0') ? 10 : 9" :name="'phone['+idx+']'" placeholder="@lang('form.phone.placeholder')" v-model="phone" class="form-control participant-phone" :required="(idx < 3 || name !== '') && !email" />
+                <input type='tel' disabled="disabled" pattern='0?[67]\s?(\d\s?){8}' :maxlength="(phone[0] === undefined || phone[0] === '0') ? 10 : 9" :name="'phone['+idx+']'" placeholder="@lang('form.phone.placeholder')" v-model="phone" class="form-control participant-phone" :required="(idx < 3 || name !== '') && !email" />
             </div>
         </td>
         <td class="row border-right text-left participant-exclusions-wrapper">
