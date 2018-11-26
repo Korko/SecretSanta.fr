@@ -97,7 +97,7 @@
         <!-- /.container -->
     </footer>
 
-    <span id="forkongithub" class="hidden-sm"><a href="https://github.com/Korko/SecretSanta" title="Fork me on GitHub">Fork me on GitHub</a></span>
+    <span id="forkongithub" class="hidden-sm"><a href="https://framagit.org/Korko/SecretSanta" title="Fork me on GitLab">Fork me on GitLab</a></span>
 
     @yield('script')
 </body>
