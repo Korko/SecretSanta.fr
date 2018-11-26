@@ -184,6 +184,10 @@
                             </div>
                         </fieldset>
 
+                        <div class="alert alert-info" role="alert">
+                            L'envoi de SMS a été temporairement désactivé car cette fonctionnalité coûte cher au développeur (environ 15€/jour fin novembre 2018).
+                        </div>
+
                         <fieldset>
                             <legend>Messages</legend>
                             <div class="row" id="contact">
