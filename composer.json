@@ -38,6 +38,8 @@
     ],
     "require": {
         "php": "^7.0",
+        "ext-mcrypt": "^7.1",
+        "ext-openssl": "^7.1",
         "korko/callr": "^1.0",
         "anhskohbo/no-captcha": "^3.0",
         "korko/statsd": "dev-laravel-5.4",
