@@ -22,7 +22,7 @@ class DearSantaRequest extends Request
     public function rules()
     {
         $rules = [
-            'g-recaptcha-response' => 'required|recaptcha',
+            'g-recaptcha-response' => 'required|captcha',
             'title'                => 'required|string',
             'content'              => 'required|string',
             'key'                  => 'required|string',

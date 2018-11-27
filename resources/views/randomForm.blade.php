@@ -231,7 +231,7 @@
                         </fieldset>
                         <fieldset>
                             <div class="form-group btn">
-                                {!! Recaptcha::renderElement(['data-theme' => 'light']) !!}
+                                {!! NoCaptcha::display(['data-theme' => 'light']) !!}
                             </div>
 
                             {{ csrf_field() }}
@@ -267,5 +267,5 @@
 @section('script')
     <script type="text/javascript" src="{{ URL::asset('assets/randomForm.js') }}"></script>
 
-    {!! Recaptcha::renderScript(App::getLocale()) !!}
+    {!! NoCaptcha::renderJs(App::getLocale()) !!}
 @stop

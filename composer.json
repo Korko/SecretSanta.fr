@@ -39,7 +39,7 @@
     "require": {
         "php": "^7.0",
         "korko/callr": "^1.0",
-        "korko/laravel5-recaptcha2": "dev-Korko-patch-1",
+        "anhskohbo/no-captcha": "^3.0",
         "korko/statsd": "dev-laravel-5.4",
         "korko/validator": "dev-master",
         "laravel/framework": "5.4.*",
