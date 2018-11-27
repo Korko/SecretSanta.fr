@@ -130,11 +130,16 @@ class RandomFormController extends Controller
         $participant = new Participant();
         $participant->draw_id = $draw->id;
 
-        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes256'));
-        $participant->santa = bin2hex($iv).openssl_encrypt(serialize($santa), 'aes256', $key, 0, $iv);
+        $cipher = config('app.cipher');
+        $ivLength = openssl_cipher_iv_length($cipher);
 
-        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes256'));
-        $participant->challenge = bin2hex($iv).openssl_encrypt(Participant::CHALLENGE, 'aes256', $key, 0, $iv);
+        $iv = openssl_random_pseudo_bytes($ivLength);
+        $participant->santa = bin2hex($iv).
+            openssl_encrypt(serialize($santa), $cipher, $key, 0, $iv);
+
+        $iv = openssl_random_pseudo_bytes($ivLength);
+        $participant->challenge = bin2hex($iv).
+            openssl_encrypt(Participant::CHALLENGE, $cipher, $key, 0, $iv);
 
         $participant->save();
 
