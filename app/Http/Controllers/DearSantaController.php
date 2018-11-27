@@ -33,7 +33,9 @@ class DearSantaController extends Controller
 
         $message = trans('message.sent');
 
-        return $request->ajax() ? ['message' => $message] : redirect('/dearsanta/'.$participant->id)->with('message', $message);
+        return $request->ajax() ?
+            ['message' => $message] :
+            redirect('/dearsanta/'.$participant->id)->with('message', $message);
     }
 
     private function getSanta(Participant $participant, Request $request)
