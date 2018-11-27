@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'button_id' => env('PAYPAL_BUTTON_ID')
+    'button_id' => env('PAYPAL_BUTTON_ID'),
 ];

@@ -50,6 +50,7 @@ class RequestDearSantaTest extends RequestCase
         $link = null;
         Mail::assertSent(\Korko\SecretSanta\Mail\TargetDrawn::class, function($mail) use(&$link) {
             $link = $mail->dearSantaLink;
+
             return true;
         });
         $this->assertNotNull($link);
@@ -64,9 +65,9 @@ class RequestDearSantaTest extends RequestCase
         // Try to contact santa
         $content = $this->ajaxPost($path, [
             'g-recaptcha-response' => 'mocked',
-            'key' => $key,
-            'title' => 'test dearsanta mail title',
-            'content' => 'test dearsanta mail content'
+            'key'                  => $key,
+            'title'                => 'test dearsanta mail title',
+            'content'              => 'test dearsanta mail content'
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
