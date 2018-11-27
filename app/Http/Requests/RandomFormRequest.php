@@ -32,16 +32,17 @@ class RandomFormRequest extends Request
         ];
 
         if (!empty($this->request->get('name'))) {
+            $keys = array_keys($this->request->get('name', []));
             $rules += [
                 'title' => 'required_with:'.implode(',', array_map(function ($key) {
                     return 'email.'.$key;
-                }, array_keys($this->request->get('name', [])))).'|string',
+                }, $keys)).'|string',
                 'contentMail' => 'required_with:'.implode(',', array_map(function ($key) {
                     return 'email.'.$key;
-                }, array_keys($this->request->get('name', [])))).'|string|contains:{TARGET}',
+                }, $keys)).'|string|contains:{TARGET}',
                 'contentSMS' => 'required_with:'.implode(',', array_map(function ($key) {
                     return 'phone.'.$key;
-                }, array_keys($this->request->get('name', [])))).'|string|contains:{TARGET}|smsCount:'.config('sms.max'),
+                }, $keys)).'|string|contains:{TARGET}|smsCount:'.config('sms.max'),
             ];
 
             foreach ($this->request->get('name') as $key => $name) {

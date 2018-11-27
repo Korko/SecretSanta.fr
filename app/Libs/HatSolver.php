@@ -34,10 +34,10 @@ class HatSolver
 
     private function getGenerator(array $participants, array $exclusions, array $hat) : Generator
     {
-        return $this->_solve(0, [], $exclusions, $hat);
+        return $this->solve(0, [], $exclusions, $hat);
     }
 
-    private function _solve($i, array $combination, array $exclusions, array $hat) : Generator
+    private function solve($i, array $combination, array $exclusions, array $hat) : Generator
     {
         $actualExclusions = array_key_exists($i, $exclusions) ? $exclusions[$i] : [];
         $actualHat = array_diff($hat, $actualExclusions, [$i]);
@@ -50,7 +50,7 @@ class HatSolver
                 if ($possibilityHat === []) {
                     yield $possibilityCombination;
                 } else {
-                    yield from $this->_solve($i + 1, $possibilityCombination, $exclusions, $possibilityHat);
+                    yield from $this->solve($i + 1, $possibilityCombination, $exclusions, $possibilityHat);
                 }
             }
         } else {
