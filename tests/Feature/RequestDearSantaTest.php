@@ -3,11 +3,7 @@
 namespace Tests\Feature;
 
 use Artisan;
-use Korko\SecretSanta\Draw;
-use Korko\SecretSanta\Participant;
 use Mail;
-use Metrics;
-use Mockery;
 use NoCaptcha;
 
 class RequestDearSantaTest extends RequestCase
@@ -48,7 +44,7 @@ class RequestDearSantaTest extends RequestCase
         // For security issues, the key is only sent by mail and never stored
         // So fetch it from the mail
         $link = null;
-        Mail::assertSent(\Korko\SecretSanta\Mail\TargetDrawn::class, function($mail) use(&$link) {
+        Mail::assertSent(\Korko\SecretSanta\Mail\TargetDrawn::class, function ($mail) use (&$link) {
             $link = $mail->dearSantaLink;
 
             return true;
@@ -67,11 +63,10 @@ class RequestDearSantaTest extends RequestCase
             'g-recaptcha-response' => 'mocked',
             'key'                  => $key,
             'title'                => 'test dearsanta mail title',
-            'content'              => 'test dearsanta mail content'
+            'content'              => 'test dearsanta mail content',
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
         Mail::assertSent(\Korko\SecretSanta\Mail\DearSanta::class);
-
     }
 }

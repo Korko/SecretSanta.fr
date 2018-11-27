@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Korko\SecretSanta\Http\Middleware\VerifyCsrfToken;
 use Tests\TestCase;
 
 class RequestCase extends TestCase
