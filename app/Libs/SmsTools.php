@@ -7,11 +7,11 @@ class SmsTools
     private $smsAsciiLength = [160, 146, 153];
     private $smsUnicodeLength = [70, 62, 66];
 
-    protected function isUnicode($text)
+    public function isUnicode($text)
     {
         for ($i = 0; $i < mb_strlen($text); $i++) {
             $char = mb_substr($text, $i, 1);
-            if ($char > 127 && $char != '€') {
+            if (ord($char) > 127 && $char != '€') {
                 return true;
             }
         }

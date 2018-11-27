@@ -1,15 +1,12 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Korko\SecretSanta\Http\Middleware\VerifyCsrfToken;
 use Tests\TestCase;
 
 class RequestCase extends TestCase
 {
-    // Ignore CSRF Validation
-    use WithoutMiddleware;
-
     public function ajaxPost($url, $postArgs, $code = 200)
     {
         $server = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];

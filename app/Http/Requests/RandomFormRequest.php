@@ -36,19 +36,19 @@ class RandomFormRequest extends Request
             $rules += [
                 'title' => 'required_with:'.implode(',', array_map(function ($key) {
                     return 'email.'.$key;
-                }, $keys)).'|string',
+                }, $keys)).'|nullable|string',
                 'contentMail' => 'required_with:'.implode(',', array_map(function ($key) {
                     return 'email.'.$key;
-                }, $keys)).'|string|contains:{TARGET}',
+                }, $keys)).'|nullable|string|contains:{TARGET}',
                 'contentSMS' => 'required_with:'.implode(',', array_map(function ($key) {
                     return 'phone.'.$key;
-                }, $keys)).'|string|contains:{TARGET}|smsCount:'.config('sms.max'),
+                }, $keys)).'|nullable|string|contains:{TARGET}|smsCount:'.config('sms.max'),
             ];
 
             foreach ($this->request->get('name') as $key => $name) {
                 $rules += [
-                    'email.'.$key      => 'required_without:phone.'.$key.'|required_if:dearsanta,1|email',
-                    'phone.'.$key      => 'required_without:email.'.$key.'|numeric|regex:#0?[67]\d{8}#',
+                    'email.'.$key      => 'required_without:phone.'.$key.'|required_if:dearsanta,1|nullable|email',
+                    'phone.'.$key      => 'required_without:email.'.$key.'|nullable|numeric|regex:#0?[67]\d{8}#',
                     'exclusions.'.$key => 'sometimes|array',
                 ];
 
