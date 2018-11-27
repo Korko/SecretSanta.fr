@@ -28,11 +28,15 @@ class RandomFormController extends Controller
 
             $message = trans('message.sent');
 
-            return $request->ajax() ? response()->json(['message' => $message]) : redirect('/')->with('message', $message);
+            return $request->ajax() ?
+                response()->json(['message' => $message]) :
+                redirect('/')->with('message', $message);
         } catch (SolverException $e) {
             $error = trans('error.solution');
 
-            return $request->ajax() ? response()->json(['error' => $error], 500) : redirect('/')->with('error', $error);
+            return $request->ajax() ?
+                response()->json(['error' => $error], 500) :
+                redirect('/')->with('error', $error);
         }
     }
 
@@ -139,7 +143,8 @@ class RandomFormController extends Controller
 
     protected function sendMail(array $santa, array $target, $title, $content, $dearSantaLink)
     {
-        Mail::to($santa['email'], $santa['name'])->send(new TargetDrawn($santa, $target, $title, $content, $dearSantaLink));
+        Mail::to($santa['email'], $santa['name'])
+            ->send(new TargetDrawn($santa, $target, $title, $content, $dearSantaLink));
     }
 
     protected function sendSms(array $santa, array $target, $content)
