@@ -76,6 +76,10 @@ window.app = new VueAjax({
           dearsanta: {
               type: Boolean,
               default: false
+          },
+          smsdisabled: {
+              type: Boolean,
+              default: false
           }
       },
       data: function() {
