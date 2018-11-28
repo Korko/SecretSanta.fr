@@ -164,7 +164,6 @@ window.app = new VueAjax({
     },
 
     smsCount: function() {
-console.debug(SmsTools.chunk(this.maxSmsContent));
       return Math.min(SmsTools.chunk(this.maxSmsContent).length, this.maxSms);
     },
 
