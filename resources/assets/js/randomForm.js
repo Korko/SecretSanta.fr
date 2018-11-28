@@ -150,16 +150,30 @@ window.app = new VueAjax({
       return allMails;
     },
 
+    longuestName: function() {
+      var name = '';
+      this.participants.forEach(function(participant) {
+        name = (participant.name && SmsTools.length(participant.name) > SmsTools.length(name)) ? participant.name : name;
+      });
+      return name;
+    },
+
+    maxSmsContent: function() {
+      return this.smsContent.replace('{SANTA}', this.longuestName)
+                            .replace('{TARGET}', this.longuestName);
+    },
+
     smsCount: function() {
-      return Math.min(SmsTools.chunk(this.smsContent).length, this.maxSms);
+console.debug(SmsTools.chunk(this.maxSmsContent));
+      return Math.min(SmsTools.chunk(this.maxSmsContent).length, this.maxSms);
     },
 
     charactersLeft: function() {
-      return SmsTools.chunkMaxLength(this.smsContent, this.smsCount, true) - this.smsContent.length;
+      return SmsTools.chunkMaxLength(this.maxSmsContent, this.smsCount, true) - this.maxSmsContent.length;
     },
 
     maxLength: function() {
-      return SmsTools.chunkMaxLength(this.smsContent, this.maxSms, true);
+      return SmsTools.chunkMaxLength(this.maxSmsContent, this.maxSms, true);
     }
 
   },
