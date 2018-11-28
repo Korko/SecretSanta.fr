@@ -81,15 +81,18 @@ class RandomFormController extends Controller
             $santa = $participants[$santaIdx];
             $target = $participants[$targetIdx];
 
-            $this->sendMessage($request, $santa, $target);
+            // Santa of that santa
+            $superSanta = $participants[array_search($santaIdx, $hat)];
+
+            $this->sendMessage($request, $santa, $target, $superSanta);
         }
     }
 
-    protected function sendMessage(Request $request, array $santa, array $target)
+    protected function sendMessage(Request $request, array $santa, array $target, array $superSanta)
     {
         $dearSantaLink = null;
         if ($request->input('dearsanta')) {
-            $dearSantaLink = $this->getDearSantaLink($santa, $request->input('dearsanta-expiration'));
+            $dearSantaLink = $this->getDearSantaLink($superSanta, $request->input('dearsanta-expiration'));
         }
 
         if (!empty($santa['email'])) {
