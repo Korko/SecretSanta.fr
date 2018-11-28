@@ -29,19 +29,19 @@ class RequestDearSantaTest extends RequestCase
         // Participants can only select one person, all the others will be excluded
         $participants = [
             [
-                'name' => 'toto',
-                'email' => 'test@test.com',
-                'target' => 1
+                'name'   => 'toto',
+                'email'  => 'test@test.com',
+                'target' => 1,
             ],
             [
-                'name' => 'tata',
-                'email' => 'test2@test.com',
-                'target' => 2
+                'name'   => 'tata',
+                'email'  => 'test2@test.com',
+                'target' => 2,
             ],
             [
-                'name' => 'tutu',
-                'email' => 'test3@test.com',
-                'target' => 0
+                'name'   => 'tutu',
+                'email'  => 'test3@test.com',
+                'target' => 0,
             ],
         ];
 
