@@ -2,8 +2,10 @@
 
 namespace Korko\SecretSanta\Providers;
 
+use Hashids;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Korko\SecretSanta\Participant;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -23,7 +25,12 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Route::bind('participant', function($value) {
+            if (($ids = Hashids::decode($value)) && ($participant = Participant::find($ids[0]))) {
+                return $participant;
+            }
+            abort(404);
+        });
 
         parent::boot();
     }
