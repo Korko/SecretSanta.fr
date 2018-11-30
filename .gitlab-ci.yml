@@ -39,17 +39,6 @@ phpcs:
 
 # Run our tests
 # If Xdebug was installed you can generate a coverage report and see code coverage metrics.
-php-7.0:
-  type: test
-  image: php:7.0
-  allow_failure: true
-  only:
-    - /^\d\.\d\.x$/
-  script:
-  - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --colors=never
-
-# Run our tests
-# If Xdebug was installed you can generate a coverage report and see code coverage metrics.
 php-7.1:
   type: test
   image: php:7.1
