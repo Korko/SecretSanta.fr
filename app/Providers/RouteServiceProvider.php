@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Route::bind('participant', function($value) {
+        Route::bind('participant', function ($value) {
             if (($ids = Hashids::decode($value)) && ($participant = Participant::find($ids[0]))) {
                 return $participant;
             }
