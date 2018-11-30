@@ -9,9 +9,9 @@ cache:
 
 before_script:
 - apt-get update -yqq
-- apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
+- apt-get install -yqq git libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
 # Install PHP extensions
-- docker-php-ext-install mbstring mcrypt pdo_pgsql curl json intl gd xml zip bz2 opcache bcmath
+- docker-php-ext-install mbstring pdo_pgsql curl json intl gd xml zip bz2 opcache bcmath
 # Install & enable Xdebug for code coverage reports
 - pecl install xdebug
 - docker-php-ext-enable xdebug
@@ -39,19 +39,8 @@ phpcs:
 
 # Run our tests
 # If Xdebug was installed you can generate a coverage report and see code coverage metrics.
-php-7.0:
-  type: tests
-  image: php:7.0
-  allow_failure: true
-  only:
-    - /^\d\.\d\.x$/
-  script:
-  - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --colors=never
-
-# Run our tests
-# If Xdebug was installed you can generate a coverage report and see code coverage metrics.
 php-7.1:
-  type: tests
+  type: test
   image: php:7.1
   allow_failure: true
   only:
@@ -62,7 +51,7 @@ php-7.1:
 # Run our tests
 # If Xdebug was installed you can generate a coverage report and see code coverage metrics.
 php-7.2:
-  type: tests
+  type: test
   image: php:7.2
   only:
     - /^\d\.\d\.x$/
