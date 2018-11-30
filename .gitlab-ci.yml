@@ -1,6 +1,6 @@
 # This file is a template, and might need editing before it works on your project.
 # Select image from https://hub.docker.com/_/php/
-image: php:7.1.12
+image: php:7.2
 
 # Select what we should cache between builds
 cache:
@@ -32,15 +32,40 @@ variables:
   MYSQL_DATABASE: mysql_database
   MYSQL_ROOT_PASSWORD: mysql_strong_password
 
+phpcs:
+  script:
+  - vendor/bin/phpcs --standard=PSR2 -w --colors app/
+  allow_failure: true
+
 # Run our tests
 # If Xdebug was installed you can generate a coverage report and see code coverage metrics.
-test:
+php-7.0:
+  type: tests
+  image: php:7.0
+  allow_failure: true
+  only:
+    - /^\d\.\d\.x$/
+  script:
+  - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --colors=never
+
+# Run our tests
+# If Xdebug was installed you can generate a coverage report and see code coverage metrics.
+php-7.1:
+  type: tests
+  image: php:7.1
+  allow_failure: true
   only:
     - /^\d\.\d\.x$/
   script:
   - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --colors=never
   
-phpcs:
+# Run our tests
+# If Xdebug was installed you can generate a coverage report and see code coverage metrics.
+php-7.2:
+  type: tests
+  image: php:7.2
+  only:
+    - /^\d\.\d\.x$/
   script:
-  - vendor/bin/phpcs --standard=PSR2 -w --colors app/
-  allow_failure: true
+  - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --colors=never
+
