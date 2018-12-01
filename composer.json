@@ -50,10 +50,10 @@
         "anhskohbo/no-captcha": "^3.0",
         "korko/statsd": "dev-laravel-5.4",
         "korko/validator": "dev-master",
-        "laravel/framework": "5.5.*",
+        "laravel/framework": "5.6.*",
         "mariuzzo/laravel-js-localization": "^1.4",
         "spatie/laravel-blade-javascript": "^2.0",
-        "fideloper/proxy": "~3.3"
+        "fideloper/proxy": "~4.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -67,7 +67,8 @@
         "squizlabs/PHP_CodeSniffer": "^3.2",
         "symfony/css-selector": "3.2.*",
         "symfony/dom-crawler": "3.2.*",
-        "filp/whoops": "~2.0"
+        "filp/whoops": "~2.0",
+        "nunomaduro/collision": "~1.1"
     },
     "autoload": {
         "classmap": [
