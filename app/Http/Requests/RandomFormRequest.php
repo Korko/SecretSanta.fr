@@ -1,6 +1,6 @@
 <?php
 
-namespace Korko\SecretSanta\Http\Requests;
+namespace App\Http\Requests;
 
 class RandomFormRequest extends Request
 {

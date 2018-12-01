@@ -1,6 +1,6 @@
 <?php
 
-namespace Korko\SecretSanta\Http;
+namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -12,8 +12,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \Korko\SecretSanta\Http\Middleware\CheckForMaintenanceMode::class,
-        \Korko\SecretSanta\Http\Middleware\TrustProxies::class,
+        \App\Http\Middleware\CheckForMaintenanceMode::class,
+        \App\Http\Middleware\TrustProxies::class,
     ];
 
     /**
@@ -23,13 +23,13 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \Korko\SecretSanta\Http\Middleware\EncryptCookies::class,
+            \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \Korko\SecretSanta\Http\Middleware\VerifyCsrfToken::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Korko\SecretSanta\Http\Middleware\Language::class,
+            \App\Http\Middleware\Language::class,
         ],
 
         'api' => [

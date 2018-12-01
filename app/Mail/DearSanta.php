@@ -1,6 +1,6 @@
 <?php
 
-namespace Korko\SecretSanta\Mail;
+namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;

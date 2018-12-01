@@ -76,7 +76,7 @@
             "database"
         ],
         "psr-4": {
-            "Korko\\SecretSanta\\": "app/"
+            "App\\": "app/"
         }
     },
     "autoload-dev": {

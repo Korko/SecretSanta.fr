@@ -1,6 +1,6 @@
 <?php
 
-namespace Korko\SecretSanta\Jobs;
+namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
 
