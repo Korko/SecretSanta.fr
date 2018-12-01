@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Facades\App\Libs\HatSolver as Solver;
-use Facades\App\Libs\SmsTools as SmsTools;
-use Illuminate\Http\Request;
 use App\Draw;
 use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
 use App\Mail\TargetDrawn;
 use App\Participant;
+use Facades\App\Libs\HatSolver as Solver;
+use Facades\App\Libs\SmsTools as SmsTools;
+use Illuminate\Http\Request;
 use Mail;
 use Metrics;
 use Sms;
