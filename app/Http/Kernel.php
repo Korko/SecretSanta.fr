@@ -13,6 +13,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \Korko\SecretSanta\Http\Middleware\TrustProxies::class,
     ];
 
     /**
