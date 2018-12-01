@@ -1,7 +1,10 @@
 {
     "name": "korko/secretsanta",
     "description": "An organsation tool for secret santa parties.",
-    "keywords": ["secretsanta", "tool"],
+    "keywords": [
+        "secretsanta",
+        "tool"
+    ],
     "license": "MIT",
     "type": "project",
     "repositories": [
@@ -16,7 +19,9 @@
                     "reference": "Korko-patch-1"
                 },
                 "autoload": {
-                    "classmap": [""]
+                    "classmap": [
+                        ""
+                    ]
                 }
             }
         },
@@ -31,7 +36,9 @@
                     "reference": "laravel-5.4"
                 },
                 "autoload": {
-                    "classmap": [""]
+                    "classmap": [
+                        ""
+                    ]
                 }
             }
         }
@@ -43,9 +50,10 @@
         "anhskohbo/no-captcha": "^3.0",
         "korko/statsd": "dev-laravel-5.4",
         "korko/validator": "dev-master",
-        "laravel/framework": "5.4.*",
+        "laravel/framework": "5.5.*",
         "mariuzzo/laravel-js-localization": "^1.4",
-        "spatie/laravel-blade-javascript": "^1.0"
+        "spatie/laravel-blade-javascript": "^1.0",
+        "fideloper/proxy": "~3.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -58,7 +66,8 @@
         "rap2hpoutre/laravel-log-viewer": "^0.8.0",
         "squizlabs/PHP_CodeSniffer": "^3.2",
         "symfony/css-selector": "3.2.*",
-        "symfony/dom-crawler": "3.2.*"
+        "symfony/dom-crawler": "3.2.*",
+        "filp/whoops": "~2.0"
     },
     "autoload": {
         "classmap": [
@@ -80,17 +89,18 @@
         "post-create-project-cmd": [
             "php artisan key:generate"
         ],
-        "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
-        ],
-        "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
         ]
     },
     "config": {
         "preferred-install": "dist",
         "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
     }
 }
