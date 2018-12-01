@@ -6,7 +6,8 @@ class ValidationTest extends RequestCase
 {
     public function assertArrayKeysEquals(array $keys, array $array)
     {
-        $arraykeys = array_keys($array);
+        $errors = array_get($array, 'errors', []);
+        $arraykeys = array_keys($errors);
 
         foreach ($keys as $key) {
             $this->assertContains($key, $arraykeys);
@@ -14,7 +15,7 @@ class ValidationTest extends RequestCase
 
         // Use the whole array to keep the value in the error message
         // Use json_encode so that the value is displayed (if not, you'll only have "Array ()" as value)
-        $this->assertEquals('[]', json_encode(array_diff_key($array, array_flip($keys))), 'Unexpected keys');
+        $this->assertEquals('[]', json_encode(array_diff_key($errors, array_flip($keys))), 'Unexpected keys');
     }
 
     // Nothing sent, recaptcha needed, at least a name
