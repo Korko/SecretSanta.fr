@@ -10,7 +10,7 @@ class RequestCase extends TestCase
     {
         $headers = [
             'Accept'           => 'application/json',
-            'X-Requested-With' => 'XMLHttpRequest'
+            'X-Requested-With' => 'XMLHttpRequest',
         ];
         $response = $this->post($url, $postArgs, $headers);
         $this->assertEquals($code, $response->status(), $response->getContent());
