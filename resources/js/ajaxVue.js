@@ -38,7 +38,7 @@ module.exports = Vue.extend({
             app.sent = true;
           },
           error: function(jqXHR, textStatus, errorThrown) {
-            app.fieldErrors = jqXHR.responseJSON;
+            app.fieldErrors = jqXHR.responseJSON.errors;
             app.sending = false;
           }
         });

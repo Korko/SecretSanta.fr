@@ -11,6 +11,8 @@ elixir.extend('langjs', function(path) {
     });
 });
 
+elixir.config.assetsPath = './resources/';
+
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -23,7 +25,7 @@ elixir.extend('langjs', function(path) {
  */
 
 elixir(function(mix) {
-    mix.langjs('resources/assets/js/messages.js');
+    mix.langjs('resources/js/messages.js');
 
     mix.browserify([
         'main.js', 'randomForm.js', 'script.js'
@@ -40,7 +42,7 @@ elixir(function(mix) {
             './node_modules/alertify.js/src/sass/',
             './node_modules/multiple-select/',
             './node_modules/jquery-ui-browserify/themes/base/',
-            './resources/assets/vendor/bootstrap-languages/'
+            './resources/vendor/bootstrap-languages/'
         ]
     };
 
@@ -56,8 +58,8 @@ elixir(function(mix) {
         'dearSanta.scss'
     ], 'public/assets/dearSanta.css', sassOptions);
 
-    mix.copy('resources/assets/img', 'public/assets/images');
-    mix.copy('resources/assets/vendor/bootstrap-languages/languages.png', 'public/assets/images');
+    mix.copy('resources/img', 'public/assets/images');
+    mix.copy('resources/vendor/bootstrap-languages/languages.png', 'public/assets/images');
     mix.copy('node_modules/bootstrap-sass/assets/fonts', 'public/assets/fonts');
     mix.copy('node_modules/font-awesome/fonts', 'public/assets/fonts');
     mix.copy('node_modules/multiple-select/multiple-select.png', 'public/assets');
