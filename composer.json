@@ -52,7 +52,7 @@
         "korko/validator": "dev-master",
         "laravel/framework": "5.5.*",
         "mariuzzo/laravel-js-localization": "^1.4",
-        "spatie/laravel-blade-javascript": "^1.0",
+        "spatie/laravel-blade-javascript": "^2.0",
         "fideloper/proxy": "~3.3"
     },
     "require-dev": {
