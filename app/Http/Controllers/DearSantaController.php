@@ -1,11 +1,11 @@
 <?php
 
-namespace Korko\SecretSanta\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Korko\SecretSanta\Http\Requests\DearSantaRequest;
-use Korko\SecretSanta\Mail\DearSanta;
-use Korko\SecretSanta\Participant;
+use App\Http\Requests\DearSantaRequest;
+use App\Mail\DearSanta;
+use App\Participant;
 use Mail;
 use Metrics;
 

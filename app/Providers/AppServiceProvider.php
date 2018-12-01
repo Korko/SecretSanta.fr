@@ -1,8 +1,8 @@
 <?php
 
-namespace Korko\SecretSanta\Providers;
+namespace App\Providers;
 
-use Facades\Korko\SecretSanta\Libs\SmsTools as SmsTools;
+use Facades\App\Libs\SmsTools as SmsTools;
 use Illuminate\Support\ServiceProvider;
 use Validator;
 

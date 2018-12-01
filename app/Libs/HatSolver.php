@@ -1,9 +1,9 @@
 <?php
 
-namespace Korko\SecretSanta\Libs;
+namespace App\Libs;
 
 use Generator;
-use Korko\SecretSanta\Exceptions\SolverException;
+use App\Exceptions\SolverException;
 
 class HatSolver
 {

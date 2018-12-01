@@ -30,7 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'model'  => Korko\SecretSanta\User::class,
+        'model'  => App\User::class,
         'key'    => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
