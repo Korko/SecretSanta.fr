@@ -61,7 +61,7 @@
         "mockery/mockery": "0.9.*",
         "jakub-onderka/php-parallel-lint": "^1.0",
         "phpro/grumphp": "^0.14.1",
-        "phpunit/phpunit": "~5.0",
+        "phpunit/phpunit": "~6.0",
         "povils/phpmnd": "^2.0",
         "rap2hpoutre/laravel-log-viewer": "^0.8.0",
         "squizlabs/PHP_CodeSniffer": "^3.2",
