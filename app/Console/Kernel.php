@@ -1,6 +1,6 @@
 <?php
 
-namespace Korko\SecretSanta\Console;
+namespace App\Console;
 
 use Draw;
 use Illuminate\Console\Scheduling\Schedule;

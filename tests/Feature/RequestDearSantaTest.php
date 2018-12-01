@@ -65,7 +65,7 @@ class RequestDearSantaTest extends RequestCase
         // For security issues, the key is only sent by mail and never stored
         // So fetch it from the mail
         $links = [];
-        Mail::assertSent(\Korko\SecretSanta\Mail\TargetDrawn::class, function ($mail) use (&$links) {
+        Mail::assertSent(\App\Mail\TargetDrawn::class, function ($mail) use (&$links) {
             $links[] = $mail->dearSantaLink;
 
             return true;
@@ -89,7 +89,7 @@ class RequestDearSantaTest extends RequestCase
             ], 200);
             $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-            Mail::assertSent(\Korko\SecretSanta\Mail\DearSanta::class, function ($mail) use ($id, $participants) {
+            Mail::assertSent(\App\Mail\DearSanta::class, function ($mail) use ($id, $participants) {
                 $santaId = array_search($id, array_column($participants, 'target'));
                 $santa = $participants[$santaId];
 

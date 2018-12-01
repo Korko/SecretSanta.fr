@@ -1,6 +1,6 @@
 <?php
 
-namespace Korko\SecretSanta\Providers;
+namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use View;

@@ -171,15 +171,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
-         * Application Service Providers...
-         */
-        Korko\SecretSanta\Providers\AppServiceProvider::class,
-        Korko\SecretSanta\Providers\ComposerServiceProvider::class,
-        Korko\SecretSanta\Providers\EventServiceProvider::class,
-        Korko\SecretSanta\Providers\RouteServiceProvider::class,
-
-        /*
-         * Vendors Service Providers...
+         * Package Service Providers...
          */
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         Korko\Callr\CallrServiceProvider::class,
@@ -187,6 +179,15 @@ return [
         League\StatsD\Laravel5\Provider\StatsdServiceProvider::class,
         Mariuzzo\LaravelJsLocalization\LaravelJsLocalizationServiceProvider::class,
         Spatie\BladeJavaScript\BladeJavaScriptServiceProvider::class,
+
+        /*
+         * Application Service Providers...
+         */
+        App\Providers\AppServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
 
     ],
 

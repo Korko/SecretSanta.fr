@@ -1,6 +1,6 @@
 <?php
 
-namespace Korko\SecretSanta\Libs;
+namespace App\Libs;
 
 class SmsTools
 {

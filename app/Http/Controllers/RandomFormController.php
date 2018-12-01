@@ -1,15 +1,15 @@
 <?php
 
-namespace Korko\SecretSanta\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Facades\Korko\SecretSanta\Libs\HatSolver as Solver;
-use Facades\Korko\SecretSanta\Libs\SmsTools as SmsTools;
+use Facades\App\Libs\HatSolver as Solver;
+use Facades\App\Libs\SmsTools as SmsTools;
 use Illuminate\Http\Request;
-use Korko\SecretSanta\Draw;
-use Korko\SecretSanta\Exceptions\SolverException;
-use Korko\SecretSanta\Http\Requests\RandomFormRequest;
-use Korko\SecretSanta\Mail\TargetDrawn;
-use Korko\SecretSanta\Participant;
+use App\Draw;
+use App\Exceptions\SolverException;
+use App\Http\Requests\RandomFormRequest;
+use App\Mail\TargetDrawn;
+use App\Participant;
 use Mail;
 use Metrics;
 use Sms;

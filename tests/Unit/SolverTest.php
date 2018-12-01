@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use Facades\Korko\SecretSanta\Libs\HatSolver as Solver;
+use Facades\App\Libs\HatSolver as Solver;
 use Tests\TestCase;
 
 class SolverTest extends TestCase

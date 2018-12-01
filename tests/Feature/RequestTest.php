@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Draw;
+use App\Participant;
 use Artisan;
-use Korko\SecretSanta\Draw;
-use Korko\SecretSanta\Participant;
 use Mail;
 use Metrics;
 use Mockery;
@@ -99,7 +99,7 @@ class RequestTest extends RequestCase
 
         Mail::shouldReceive('send')
             ->times(2)
-            ->with(\Mockery::type(\Korko\SecretSanta\Mail\TargetDrawn::class))
+            ->with(\Mockery::type(\App\Mail\TargetDrawn::class))
             ->andReturn(Mockery::self());
 
         // TODO: also test mail content
@@ -239,7 +239,7 @@ class RequestTest extends RequestCase
 
         Mail::shouldReceive('send')
             ->times(3)
-            ->with(\Mockery::type(\Korko\SecretSanta\Mail\TargetDrawn::class))
+            ->with(\Mockery::type(\App\Mail\TargetDrawn::class))
             ->andReturn(Mockery::self());
 
         // TODO: also test mail content
