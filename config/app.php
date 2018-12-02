@@ -175,12 +175,8 @@ return [
         /*
          * Package Service Providers...
          */
-        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
-        Korko\Callr\CallrServiceProvider::class,
         Korko\Validator\ValidatorServiceProvider::class,
         League\StatsD\Laravel5\Provider\StatsdServiceProvider::class,
-        Mariuzzo\LaravelJsLocalization\LaravelJsLocalizationServiceProvider::class,
-        Spatie\BladeJavaScript\BladeJavaScriptServiceProvider::class,
 
         /*
          * Application Service Providers...
