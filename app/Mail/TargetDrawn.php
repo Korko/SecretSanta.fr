@@ -61,6 +61,5 @@ class TargetDrawn extends Mailable
                             ]),
                         ],
                     ]);
-
     }
 }

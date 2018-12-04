@@ -6,14 +6,14 @@ use Tests\TestCase;
 
 class RequestCase extends TestCase
 {
-    public function ajaxPost($url, array $postArgs = [], $code = 200, $rawJSONContent = FALSE)
+    public function ajaxPost($url, array $postArgs = [], $code = 200, $rawJSONContent = false)
     {
         $headers = [
             'Accept'           => 'application/json',
             'X-Requested-With' => 'XMLHttpRequest',
         ];
 
-        if (! $rawJSONContent) {
+        if (!$rawJSONContent) {
             $response = $this->post($url, $postArgs, $headers);
         } else {
             $headers['Content-Type'] = 'application/json';
