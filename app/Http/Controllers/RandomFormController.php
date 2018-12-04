@@ -6,6 +6,7 @@ use App\Draw;
 use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
 use App\Mail\TargetDrawn;
+use App\MailBody;
 use App\Participant;
 use Facades\App\Libs\HatSolver as Solver;
 use Facades\App\Libs\SmsTools as SmsTools;
@@ -84,6 +85,11 @@ class RandomFormController extends Controller
 
     protected function sendMails(Request $request, array $participants, array $hat)
     {
+        $mailBody = new MailBody();
+        $mailBody->title = $request->input('title');
+        $mailBody->body = $request->input('contentMail');
+        $mailBody->save();
+
         $organizer = $participants[0];
 
         foreach ($hat as $santaIdx => $targetIdx) {
@@ -108,6 +114,7 @@ class RandomFormController extends Controller
                         $request->input('contentMail'),
                         $organizer,
                         $dearSantaLink,
+                        ['mailBody' => strval($mailBody->id)]
                     ));
             }
         }
