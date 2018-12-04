@@ -40,7 +40,7 @@ return [
     'connections' => [
 
         'main' => [
-            'salt' => 'secretsanta',
+            'salt'   => 'secretsanta',
             'length' => '5',
         ],
 
