@@ -47,7 +47,16 @@ class RandomFormController extends Controller
 
         $hat = Solver::one($participants, array_column($participants, 'exclusions'));
 
-        $this->sendMessages($request, $participants, $hat);
+        Metrics::increment('draws');
+        Metrics::increment('participants', count($participants));
+
+        if ($request->input('contentMail')) {
+            $this->sendMails($request, $participants, $hat);
+        }
+
+        if ($request->input('contentSMS')) {
+            $this->sendSMSs($request, $participants, $hat);
+        }
     }
 
     protected function getParticipants(Request $request)
@@ -73,38 +82,50 @@ class RandomFormController extends Controller
         return $participants;
     }
 
-    protected function sendMessages(Request $request, array $participants, array $hat)
+    protected function sendMails(Request $request, array $participants, array $hat)
     {
-        Metrics::increment('draws');
-        Metrics::increment('participants', count($participants));
+        $organizer = $participants[0];
 
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = $participants[$santaIdx];
             $target = $participants[$targetIdx];
 
-            // Santa of that santa
-            $superSanta = $participants[array_search($santaIdx, $hat)];
+            if (!empty($santa['email'])) {
+                // Santa of that santa
+                $superSanta = $participants[array_search($santaIdx, $hat)];
 
-            $this->sendMessage($request, $santa, $target, $superSanta);
+                $dearSantaLink = null;
+                if ($request->input('dearsanta')) {
+                    $dearSantaLink = $this->getDearSantaLink($superSanta, $request->input('dearsanta-expiration'));
+                }
+
+                Metrics::increment('email');
+                Mail::to($santa['email'], $santa['name'])
+                    ->send(new TargetDrawn(
+                        $santa,
+                        $target,
+                        $request->input('title'),
+                        $request->input('contentMail'),
+                        $organizer,
+                        $dearSantaLink,
+                    ));
+            }
         }
     }
 
-    protected function sendMessage(Request $request, array $santa, array $target, array $superSanta)
+    protected function sendSMSs(Request $request, array $participants, array $hat)
     {
-        $dearSantaLink = null;
-        if ($request->input('dearsanta')) {
-            $dearSantaLink = $this->getDearSantaLink($superSanta, $request->input('dearsanta-expiration'));
-        }
+        foreach ($hat as $santaIdx => $targetIdx) {
+            $santa = $participants[$santaIdx];
+            $target = $participants[$targetIdx];
 
-        if (!empty($santa['email'])) {
-            Metrics::increment('email');
-            $this->sendMail($santa, $target, $request->input('title'), $request->input('contentMail'), $dearSantaLink);
-        }
+            if (!empty($santa['phone'])) {
+                Metrics::increment('phone');
+                Metrics::increment('sms', SmsTools::count($request->input('contentSMS')));
 
-        if (!empty($santa['phone'])) {
-            Metrics::increment('phone');
-            Metrics::increment('sms', SmsTools::count($request->input('contentSMS')));
-            $this->sendSms($santa, $target, $request->input('contentSMS'));
+                $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $request->input('contentSMS'));
+                Sms::message($santa['phone'], $contentSms);
+            }
         }
     }
 
@@ -148,18 +169,5 @@ class RandomFormController extends Controller
         $participant->save();
 
         return $participant;
-    }
-
-    protected function sendMail(array $santa, array $target, $title, $content, $dearSantaLink)
-    {
-        Mail::to($santa['email'], $santa['name'])
-            ->send(new TargetDrawn($santa, $target, $title, $content, $dearSantaLink));
-    }
-
-    protected function sendSms(array $santa, array $target, $content)
-    {
-        $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $content);
-
-        Sms::message($santa['phone'], $contentSms);
     }
 }
