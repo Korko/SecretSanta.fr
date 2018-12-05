@@ -8,7 +8,6 @@ use App\Http\Requests\RandomFormRequest;
 use App\Mail\TargetDrawn;
 use App\MailBody;
 use App\Participant;
-use Facades\App\Services\Crypt;
 use Facades\App\Services\HatSolver as Solver;
 use Facades\App\Services\SmsTools as SmsTools;
 use Hashids;
@@ -19,9 +18,11 @@ use Sms;
 
 class RandomFormController extends Controller
 {
-    public function view()
+    private $crypter;
+
+    public function __construct(App\Services\Crypt $crypt)
     {
-        return view('randomForm');
+        $this->crypter = $crypt;
     }
 
     public function handle(RandomFormRequest $request)
@@ -87,13 +88,13 @@ class RandomFormController extends Controller
     protected function sendMails(Request $request, array $participants, array $hat)
     {
         $mailBody = new MailBody();
-        $mailBody->title = $request->input('title');
-        $mailBody->body = $request->input('contentMail');
+        $mailBody->title = $this->crypter->crypt($request->input('title'));
+        $mailBody->body = $this->crypter->crypt($request->input('contentMail'));
         $mailBody->save();
 
         $organizer = $participants[0];
 
-        $key = Crypt::generateKey();
+        $key = $this->crypter->getKey();
 
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = $participants[$santaIdx];
@@ -105,7 +106,7 @@ class RandomFormController extends Controller
 
                 $dearSantaLink = null;
                 if ($request->input('dearsanta')) {
-                    $dearSantaLink = $this->getDearSantaLink($superSanta, $request->input('dearsanta-expiration'), $key);
+                    $dearSantaLink = $this->getDearSantaLink($superSanta, $request->input('dearsanta-expiration'));
                 }
 
                 Metrics::increment('email');
@@ -139,11 +140,11 @@ class RandomFormController extends Controller
         }
     }
 
-    protected function getDearSantaLink(array $santa, $expirationDate, $key)
+    protected function getDearSantaLink(array $santa, $expirationDate)
     {
-        $participant = $this->addParticipant($santa, $key, $expirationDate);
+        $participant = $this->addParticipant($santa, $expirationDate);
 
-        return route('dearsanta', ['santa' => Hashids::encode($participant->id)]).'#'.bin2hex($key);
+        return route('dearsanta', ['santa' => Hashids::encode($participant->id)]).'#'.bin2hex($this->crypter->key);
     }
 
     private function getDraw($expirationDate)
@@ -157,14 +158,14 @@ class RandomFormController extends Controller
         return $this->draw;
     }
 
-    private function addParticipant(array $santa, $key, $expirationDate)
+    private function addParticipant(array $santa, $expirationDate)
     {
         $draw = $this->getDraw($expirationDate);
 
         $participant = new Participant();
         $participant->draw_id = $draw->id;
-        list($participant->santa) = Crypt::crypt($santa, $key);
-        list($participant->challenge) = Crypt::crypt(Participant::CHALLENGE, $key);
+        list($participant->santa) = $this->crypter->crypt($santa);
+        list($participant->challenge) = $this->crypter->crypt(Participant::CHALLENGE);
 
         $participant->save();
 
