@@ -20,7 +20,7 @@ class RandomFormController extends Controller
 {
     private $crypter;
 
-    public function __construct(App\Services\Crypt $crypt)
+    public function __construct(\App\Services\Crypt $crypt)
     {
         $this->crypter = $crypt;
     }
@@ -94,8 +94,6 @@ class RandomFormController extends Controller
 
         $organizer = $participants[0];
 
-        $key = $this->crypter->getKey();
-
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = $participants[$santaIdx];
             $target = $participants[$targetIdx];
@@ -164,8 +162,8 @@ class RandomFormController extends Controller
 
         $participant = new Participant();
         $participant->draw_id = $draw->id;
-        list($participant->santa) = $this->crypter->crypt($santa);
-        list($participant->challenge) = $this->crypter->crypt(Participant::CHALLENGE);
+        $participant->santa = $this->crypter->crypt($santa);
+        $participant->challenge = $this->crypter->crypt(Participant::CHALLENGE);
 
         $participant->save();
 
