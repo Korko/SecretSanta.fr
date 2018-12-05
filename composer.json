@@ -48,7 +48,7 @@
         "ext-openssl": "^7.1",
         "korko/callr": "^1.0",
         "anhskohbo/no-captcha": "^3.0",
-        "korko/statsd": "dev-laravel-5.4",
+        "league/statsd": "1.4.*",
         "korko/validator": "dev-master",
         "laravel/framework": "5.7.*",
         "mariuzzo/laravel-js-localization": "^1.4",
