@@ -14,17 +14,7 @@ use Sms;
 
 class RequestTest extends RequestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-        Artisan::call('migrate');
-    }
-
-    public function tearDown()
-    {
-        Artisan::call('migrate:reset');
-        parent::tearDown();
-    }
+    use \Illuminate\Foundation\Testing\DatabaseMigrations;
 
     public function testInvalid()
     {
@@ -134,10 +124,10 @@ class RequestTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        // Nothing, no record, no dearsanta but 1 mailbody
+        // Nothing, no record, no dearsanta, no mailbody (as email events are disabled with Mail::fake)
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
-        $this->assertEquals(1, MailBody::count());
+        $this->assertEquals(0, MailBody::count());
     }
 
     public function testLongSmsOnly()
@@ -204,10 +194,10 @@ class RequestTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        // Nothing, no record, no dearsanta but 1 mailbody
+        // Nothing, no record, no dearsanta, no mailbody (as email events are disabled with Mail::fake)
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
-        $this->assertEquals(1, MailBody::count());
+        $this->assertEquals(0, MailBody::count());
     }
 
     public function testDearsanta()
@@ -274,6 +264,8 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
-        $this->assertEquals(1, MailBody::count());
+
+        // No mailbody (as email events are disabled with Mail::fake)
+        $this->assertEquals(0, MailBody::count());
     }
 }
