@@ -119,9 +119,9 @@ class RandomFormController extends Controller
                         'name'  => $santa['name'],
                     ],
                     'substitutions' => [
-                        '{SANTA}' => $santa['name'],
+                        '{SANTA}'  => $santa['name'],
                         '{TARGET}' => $target['name'],
-                        ':link' => $dearSantaLink
+                        ':link'    => $dearSantaLink,
                     ],
                 ];
             }

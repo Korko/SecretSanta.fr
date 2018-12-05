@@ -14,8 +14,8 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'Illuminate\Mail\Events\MessageSent' => [
-            'App\Listeners\SaveEmailData'
-        ]
+            'App\Listeners\SaveEmailData',
+        ],
     ];
 
     /**
