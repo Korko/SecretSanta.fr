@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Artisan;
 use Mail;
 use NoCaptcha;
 
