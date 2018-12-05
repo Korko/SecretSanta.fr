@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Draw;
 use App\MailBody;
 use App\Participant;
-use Artisan;
 use Config;
 use Mail;
 use Metrics;
