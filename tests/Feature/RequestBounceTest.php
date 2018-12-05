@@ -6,6 +6,7 @@ use App\Draw;
 use App\MailBody;
 use App\Participant;
 use Artisan;
+use Config;
 use Mail;
 use Metrics;
 use Mockery;
@@ -13,56 +14,13 @@ use NoCaptcha;
 
 class RequestBounceTest extends RequestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-        Artisan::call('migrate');
-    }
-
-    public function tearDown()
-    {
-        Artisan::call('migrate:reset');
-        parent::tearDown();
-    }
+    use \Illuminate\Foundation\Testing\DatabaseMigrations;
 
     public function testBounce()
     {
+        Config::set('mail.driver', 'sendgrid');
+
         NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
-
-        Metrics::shouldReceive('increment')
-            ->once()
-            ->with('draws')
-            ->andReturn(true);
-
-        Metrics::shouldReceive('increment')
-            ->once()
-            ->with('participants', 3)
-            ->andReturn(true);
-
-        Metrics::shouldReceive('increment')
-            ->times(3)
-            ->with('email')
-            ->andReturn(true);
-
-        Mail::shouldReceive('to')
-            ->once()
-            ->with('test@test.com', 'toto')
-            ->andReturn(Mockery::self());
-
-        Mail::shouldReceive('to')
-            ->once()
-            ->with('test2@test.com', 'tata')
-            ->andReturn(Mockery::self());
-
-        Mail::shouldReceive('to')
-            ->once()
-            ->with('test3@test.com', 'tutu')
-            ->andReturn(Mockery::self());
-
-        Mail::shouldReceive('send')
-            ->times(3)
-            ->with(\Mockery::type(\App\Mail\TargetDrawn::class))
-            ->andReturn(Mockery::self());
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
@@ -71,7 +29,7 @@ class RequestBounceTest extends RequestCase
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
             'name'                 => ['toto', 'tata', 'tutu'],
-            'email'                => ['test@test.com', 'test2@test.com', 'test3@test.com'],
+            'email'                => ['success@simulator.amazonses.com', 'bounce@simulator.amazonses.com', 'bounce@simulator.amazonses.com'],
             'phone'                => ['', '', ''],
             'exclusions'           => [['2'], ['0'], ['1']],
             'title'                => 'test mail title',
@@ -81,8 +39,9 @@ class RequestBounceTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
+        // No dearsanta, nothing recorded except mailBody (as mails are not faked)
         $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
+        $this->assertEquals(3, Participant::count());
         $this->assertEquals(1, MailBody::count());
 
         // Simulate a bounce, note which mail should be sent
