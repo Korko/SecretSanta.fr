@@ -27,12 +27,8 @@ class Crypt
     public function crypt($value)
     {
         $cipher = config('app.cipher');
-
         $iv = $this->generateIv();
 
-        return [
-            bin2hex($iv).openssl_encrypt(serialize($value), $cipher, $this->key, 0, $iv),
-            $this->key,
-        ];
+        return bin2hex($iv).openssl_encrypt(serialize($value), $cipher, $this->key, 0, $iv);
     }
 }
