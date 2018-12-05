@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "116a10ef351c3143a819c681fc7c0272",
+    "content-hash": "be5e46177801bc4b9786d7680dfad8a6",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -796,22 +796,6 @@
             "time": "2017-12-29T09:59:18+00:00"
         },
         {
-            "name": "korko/statsd",
-            "version": "dev-laravel-5.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/korko/statsd.git",
-                "reference": "laravel-5.4"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    ""
-                ]
-            },
-            "time": "2017-01-24T17:51:10+00:00"
-        },
-        {
             "name": "korko/validator",
             "version": "dev-master",
             "source": {
@@ -1248,6 +1232,52 @@
                 "storage"
             ],
             "time": "2018-11-23T23:41:29+00:00"
+        },
+        {
+            "name": "league/statsd",
+            "version": "1.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/statsd.git",
+                "reference": "bee97e7ab60f0342f1f7b71748c012a04fcdbbb2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/statsd/zipball/bee97e7ab60f0342f1f7b71748c012a04fcdbbb2",
+                "reference": "bee97e7ab60f0342f1f7b71748c012a04fcdbbb2",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "silex/silex": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\StatsD\\": "src",
+                    "League\\StatsD\\Test\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marc Qualie",
+                    "email": "marc@marcqualie.com",
+                    "homepage": "http://marcqualie.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library for working with StatsD in PHP.",
+            "homepage": "https://github.com/thephpleague/statsd",
+            "keywords": [
+                "graphite",
+                "library",
+                "statsd"
+            ],
+            "time": "2017-07-17T17:01:13+00:00"
         },
         {
             "name": "mariuzzo/laravel-js-localization",
@@ -6812,7 +6842,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "korko/statsd": 20,
         "korko/validator": 20
     },
     "prefer-stable": false,
