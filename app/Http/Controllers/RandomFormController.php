@@ -8,8 +8,9 @@ use App\Http\Requests\RandomFormRequest;
 use App\Mail\TargetDrawn;
 use App\MailBody;
 use App\Participant;
-use Facades\App\Libs\HatSolver as Solver;
-use Facades\App\Libs\SmsTools as SmsTools;
+use Facades\App\Services\Crypt;
+use Facades\App\Services\HatSolver as Solver;
+use Facades\App\Services\SmsTools as SmsTools;
 use Hashids;
 use Illuminate\Http\Request;
 use Mail;
@@ -92,6 +93,8 @@ class RandomFormController extends Controller
 
         $organizer = $participants[0];
 
+        $key = Crypt::generateKey();
+
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = $participants[$santaIdx];
             $target = $participants[$targetIdx];
@@ -102,7 +105,7 @@ class RandomFormController extends Controller
 
                 $dearSantaLink = null;
                 if ($request->input('dearsanta')) {
-                    $dearSantaLink = $this->getDearSantaLink($superSanta, $request->input('dearsanta-expiration'));
+                    $dearSantaLink = $this->getDearSantaLink($superSanta, $request->input('dearsanta-expiration'), $key);
                 }
 
                 Metrics::increment('email');
@@ -136,9 +139,8 @@ class RandomFormController extends Controller
         }
     }
 
-    protected function getDearSantaLink(array $santa, $expirationDate)
+    protected function getDearSantaLink(array $santa, $expirationDate, $key)
     {
-        $key = openssl_random_pseudo_bytes(32);
         $participant = $this->addParticipant($santa, $key, $expirationDate);
 
         return route('dearsanta', ['santa' => Hashids::encode($participant->id)]).'#'.bin2hex($key);
@@ -161,17 +163,8 @@ class RandomFormController extends Controller
 
         $participant = new Participant();
         $participant->draw_id = $draw->id;
-
-        $cipher = config('app.cipher');
-        $ivLength = openssl_cipher_iv_length($cipher);
-
-        $iv = openssl_random_pseudo_bytes($ivLength);
-        $participant->santa = bin2hex($iv).
-            openssl_encrypt(serialize($santa), $cipher, $key, 0, $iv);
-
-        $iv = openssl_random_pseudo_bytes($ivLength);
-        $participant->challenge = bin2hex($iv).
-            openssl_encrypt(Participant::CHALLENGE, $cipher, $key, 0, $iv);
+        list($participant->santa,) = Crypt::crypt($santa, $key);
+        list($participant->challenge,) = Crypt::crypt(Participant::CHALLENGE, $key);
 
         $participant->save();
 
