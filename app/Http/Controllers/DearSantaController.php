@@ -43,6 +43,7 @@ class DearSantaController extends Controller
         $key = hex2bin($request->input('key'));
 
         $encrypter = new Encrypter($key);
+
         return [
             'name'  => $encrypter->decrypt($participant->santa_name),
             'email' => $encrypter->decrypt($participant->santa_email),

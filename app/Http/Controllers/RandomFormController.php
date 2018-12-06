@@ -6,7 +6,6 @@ use App\Draw;
 use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
 use App\Mail\TargetDrawn;
-use App\MailBody;
 use App\Participant;
 use App\Services\AsymmetricalEncrypter;
 use App\Services\SymmetricalEncrypter;
