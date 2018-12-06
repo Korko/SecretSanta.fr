@@ -21,4 +21,3 @@ class SymmetricalEncrypter extends Encrypter
         return $this->getJsonPayload($payload);
     }
 }
-
