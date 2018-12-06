@@ -187,10 +187,8 @@
                         </fieldset>
 
                         <div class="alert alert-info" role="alert">
-                            @if(!env('SMS_ENABLED'))L'envoi de SMS a été temporairement désactivé car cette fonctionnalité coûte cher au développeur (environ 15€/jour fin novembre 2018).<br />@endif
-                            Pour information, un tirage au sort classique pour 10 personnes coûte environ 1€.<br />
-                            Pour que ce service continue à vivre gratuitement et sans aucune exploitation de vos données personnelles, penser à faire un don.<br />
-                            {!! str_replace("\n", '', view('partials.paypalButton')) !!}
+                            @if(!env('SMS_ENABLED'))@lang('form.warning.sms_disabled')<br />@endif
+                            {!! nl2br(trans('form.warning.give', ['button' => str_replace("\n", '', view('partials.paypalButton'))])) !!}
                         </div>
 
                         <fieldset>
