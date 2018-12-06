@@ -8,7 +8,8 @@ use App\Http\Requests\RandomFormRequest;
 use App\Mail\TargetDrawn;
 use App\MailBody;
 use App\Participant;
-use App\Services\Crypt;
+use App\Services\AsymmetricalEncrypter;
+use App\Services\SymmetricalEncrypter;
 use Facades\App\Services\HatSolver as Solver;
 use Facades\App\Services\SmsTools as SmsTools;
 use Hashids;
@@ -19,11 +20,13 @@ use Sms;
 
 class RandomFormController extends Controller
 {
-    private $crypter;
+    private $symmetricalEncrypter;
+    private $asymmetricalEncrypter;
 
-    public function __construct(Crypt $crypter)
+    public function __construct()
     {
-        $this->crypter = $crypter;
+        $this->symmetricalEncrypter = new SymmetricalEncrypter();
+        $this->asymmetricalEncrypter = new AsymmetricalEncrypter();
     }
 
     public function handle(RandomFormRequest $request)
@@ -92,12 +95,16 @@ class RandomFormController extends Controller
         $body = $request->input('contentMail');
         $dearSantaExpiration = $request->input('dearsanta-expiration');
 
-        $mailBody = new MailBody();
-        $mailBody->title = $this->crypter->crypt($title);
-        $mailBody->body = $this->crypter->crypt($body);
-        $mailBody->save();
-
         $organizer = $participants[0];
+
+        $this->draw = new Draw();
+        $this->draw->expiration = $dearSantaExpiration;
+        $this->draw->title = $this->symmetricalEncrypter->encrypt($title);
+        $this->draw->body = $this->symmetricalEncrypter->encrypt($body);
+        $this->draw->organizer_name = $this->symmetricalEncrypter->encrypt($organizer['name']);
+        $this->draw->organizer_email = $this->symmetricalEncrypter->encrypt($organizer['email']);
+        $this->draw->save();
+
         $personalizations = [];
 
         foreach ($hat as $santaIdx => $targetIdx) {
@@ -158,25 +165,14 @@ class RandomFormController extends Controller
         return route('dearsanta', ['santa' => Hashids::encode($participant->id)]).'#'.bin2hex($this->crypter->key);
     }
 
-    private function getDraw($expirationDate)
-    {
-        if (!isset($this->draw)) {
-            $this->draw = new Draw();
-            $this->draw->expiration = $expirationDate;
-            $this->draw->save();
-        }
-
-        return $this->draw;
-    }
-
     private function addParticipant(array $santa, $expirationDate)
     {
-        $draw = $this->getDraw($expirationDate);
-
         $participant = new Participant();
-        $participant->draw_id = $draw->id;
-        $participant->santa = $this->crypter->crypt($santa);
+        $participant->draw_id = $this->draw->id;
+        $participant->santa_name = $this->asymmetricalEncrypter->encrypt($santa['name']);
+        $participant->santa_email = $this->asymmetricalEncrypter->encrypt($santa['email']);
         $participant->challenge = $this->crypter->crypt(Participant::CHALLENGE);
+        $participant->public_key = $this->asymmetricalEncrypter->getPublicKey();
 
         $participant->save();
 

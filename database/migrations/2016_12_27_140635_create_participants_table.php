@@ -16,8 +16,10 @@ class CreateParticipantsTable extends Migration
         Schema::create('participants', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('draw_id')->unsigned();
-            $table->text('santa');
-            $table->text('challenge');
+            $table->string('santa_name');
+            $table->string('santa_email');
+            $table->string('challenge');
+            $table->string('public_key');
 
             $table->foreign('draw_id')->references('id')->on('draws')->onDelete('cascade');
         });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\SymmetricalEncrypter as Encrypter;
 use Illuminate\Http\Request;
 use Log;
 use Metrics;
