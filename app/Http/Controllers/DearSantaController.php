@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DearSantaRequest;
 use App\Mail\DearSanta;
 use App\Participant;
-use Facades\App\Services\Decrypt;
+use App\Services\AsymmetricalEncrypter as Encrypter;
 use Illuminate\Http\Request;
 use Mail;
 use Metrics;
@@ -14,7 +14,7 @@ class DearSantaController extends Controller
 {
     public function view(Participant $participant)
     {
-        list($iv, $challenge) = Decrypt::splitIv($participant->challenge);
+        list($iv, $challenge) = Encrypter::splitIv($participant->challenge);
 
         return view('dearSanta', [
             'challenge' => $challenge,
@@ -42,7 +42,11 @@ class DearSantaController extends Controller
     {
         $key = hex2bin($request->input('key'));
 
-        return Decrypt::decrypt($participant->santa, $key);
+        $encrypter = new Encrypter($key);
+        return [
+            'name'  => $encrypter->decrypt($participant->santa_name),
+            'email' => $encrypter->decrypt($participant->santa_email),
+        ];
     }
 
     protected function sendMail(array $santa, $title, $content)
