@@ -14,7 +14,7 @@ class DearSantaController extends Controller
 {
     public function view(Participant $participant)
     {
-        list($iv, $challenge) = Encrypter::splitIv($participant->challenge);
+        list('iv' => $iv, 'value' => $challenge) = Encrypter::split($participant->challenge);
 
         return view('dearSanta', [
             'challenge' => $challenge,

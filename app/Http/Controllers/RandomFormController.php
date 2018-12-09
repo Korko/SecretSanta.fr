@@ -7,7 +7,7 @@ use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
 use App\Mail\TargetDrawn;
 use App\Participant;
-use App\Services\AsymmetricalEncrypter;
+use App\Services\AsymmetricalPublicEncrypter as AsymmetricalEncrypter;
 use App\Services\SymmetricalEncrypter;
 use Facades\App\Services\HatSolver as Solver;
 use Facades\App\Services\SmsTools as SmsTools;
@@ -19,13 +19,19 @@ use Sms;
 
 class RandomFormController extends Controller
 {
-    private $symmetricalEncrypter;
-    private $asymmetricalEncrypter;
+    private $symKey;
+    private $encrypter;
+
+    private $asymKeys;
+    private $aEncrypter;
 
     public function __construct()
     {
-        $this->symmetricalEncrypter = new SymmetricalEncrypter();
-        $this->asymmetricalEncrypter = new AsymmetricalEncrypter();
+        $this->symKey = SymmetricalEncrypter::generateKey();
+        $this->encrypter = new SymmetricalEncrypter($this->symKey);
+
+        $this->asymKeys = AsymmetricalEncrypter::generateKeys();
+        $this->aEncrypter = new AsymmetricalEncrypter($this->asymKeys['public']);
     }
 
     public function handle(RandomFormRequest $request)
@@ -96,12 +102,13 @@ class RandomFormController extends Controller
 
         $organizer = $participants[0];
 
+        // Use symmetrical encryption, we don't need to hide it from each other
         $this->draw = new Draw();
         $this->draw->expiration = $dearSantaExpiration;
-        $this->draw->title = $this->symmetricalEncrypter->encrypt($title);
-        $this->draw->body = $this->symmetricalEncrypter->encrypt($body);
-        $this->draw->organizer_name = $this->symmetricalEncrypter->encrypt($organizer['name']);
-        $this->draw->organizer_email = $this->symmetricalEncrypter->encrypt($organizer['email']);
+        $this->draw->title = $this->encrypter->encrypt($title);
+        $this->draw->body = $this->encrypter->encrypt($body);
+        $this->draw->organizer_name = $this->encrypter->encrypt($organizer['name']);
+        $this->draw->organizer_email = $this->encrypter->encrypt($organizer['email']);
         $this->draw->save();
 
         $personalizations = [];
@@ -161,17 +168,18 @@ class RandomFormController extends Controller
     {
         $participant = $this->addParticipant($santa, $expirationDate);
 
-        return route('dearsanta', ['santa' => Hashids::encode($participant->id)]).'#'.bin2hex($this->crypter->key);
+        return route('dearsanta', ['santa' => Hashids::encode($participant->id)]).'#'.bin2hex($this->asymKeys['private']);
     }
 
     private function addParticipant(array $santa, $expirationDate)
     {
+        // Use Asymmetrical encrypter, only the reciptient should be able to decrypt!
         $participant = new Participant();
         $participant->draw_id = $this->draw->id;
-        $participant->santa_name = $this->asymmetricalEncrypter->encrypt($santa['name']);
-        $participant->santa_email = $this->asymmetricalEncrypter->encrypt($santa['email']);
-        $participant->challenge = $this->crypter->crypt(Participant::CHALLENGE);
-        $participant->public_key = $this->asymmetricalEncrypter->getPublicKey();
+        $participant->santa_name = $this->aEncrypter->encrypt($santa['name']);
+        $participant->santa_email = $this->aEncrypter->encrypt($santa['email']);
+        $participant->challenge = $this->aEncrypter->encrypt(Participant::CHALLENGE, false); // tested by JS so no serializing
+        $participant->public_key = $this->asymKeys['public'];
 
         $participant->save();
 

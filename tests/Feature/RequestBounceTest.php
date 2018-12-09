@@ -23,7 +23,6 @@ class RequestBounceTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
-        $this->assertEquals(0, MailBody::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -38,10 +37,8 @@ class RequestBounceTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        // No dearsanta, nothing recorded except mailBody (as mails are not faked)
-        $this->assertEquals(0, Draw::count());
+        $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
-        $this->assertEquals(1, MailBody::count());
 
         // Simulate a bounce, note which mail should be sent
         Mail::shouldReceive('to')
@@ -83,9 +80,7 @@ class RequestBounceTest extends RequestCase
              'timestamp'     => 1543868476,
         ], 200, true);
 
-        // No change
-        $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
-        $this->assertEquals(1, MailBody::count());
+        $this->assertEquals(1, Draw::count());
+        $this->assertEquals(3, Participant::count());
     }
 }

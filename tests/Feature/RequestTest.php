@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Draw;
-use App\MailBody;
 use App\Participant;
 use Mail;
 use Metrics;
@@ -30,7 +29,6 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
-        $this->assertEquals(0, MailBody::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -47,7 +45,6 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
-        $this->assertEquals(0, MailBody::count());
     }
 
     public function testClassic()
@@ -108,7 +105,6 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
-        $this->assertEquals(0, MailBody::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -123,10 +119,8 @@ class RequestTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        // Nothing, no record, no dearsanta, no mailbody (as email events are disabled with Mail::fake)
-        $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
-        $this->assertEquals(0, MailBody::count());
+        $this->assertEquals(1, Draw::count());
+        $this->assertEquals(3, Participant::count());
     }
 
     public function testLongSmsOnly()
@@ -178,7 +172,6 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
-        $this->assertEquals(0, MailBody::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -193,10 +186,8 @@ class RequestTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        // Nothing, no record, no dearsanta, no mailbody (as email events are disabled with Mail::fake)
-        $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
-        $this->assertEquals(0, MailBody::count());
+        $this->assertEquals(1, Draw::count());
+        $this->assertEquals(3, Participant::count());
     }
 
     public function testDearsanta()
@@ -214,8 +205,8 @@ class RequestTest extends RequestCase
             ->andReturn(true);
 
         Metrics::shouldReceive('increment')
-            ->times(3)
-            ->with('email')
+            ->once()
+            ->with('email', 3)
             ->andReturn(true);
 
         Mail::shouldReceive('to')
@@ -245,7 +236,6 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
-        $this->assertEquals(0, MailBody::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -263,8 +253,5 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
-
-        // No mailbody (as email events are disabled with Mail::fake)
-        $this->assertEquals(0, MailBody::count());
     }
 }
