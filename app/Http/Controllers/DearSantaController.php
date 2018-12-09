@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DearSantaRequest;
 use App\Mail\DearSanta;
 use App\Participant;
-use Facades\App\Services\Crypt;
+use Facades\App\Services\Decrypt;
 use Illuminate\Http\Request;
 use Mail;
 use Metrics;
@@ -14,7 +14,7 @@ class DearSantaController extends Controller
 {
     public function view(Participant $participant)
     {
-        list($iv, $challenge) = Crypt::splitIv($participant->challenge);
+        list($iv, $challenge) = Decrypt::splitIv($participant->challenge);
 
         return view('dearSanta', [
             'challenge' => $challenge,
@@ -42,7 +42,7 @@ class DearSantaController extends Controller
     {
         $key = hex2bin($request->input('key'));
 
-        return Crypt::decrypt($participant->santa, $key);
+        return Decrypt::decrypt($participant->santa, $key);
     }
 
     protected function sendMail(array $santa, $title, $content)
