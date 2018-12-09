@@ -12,7 +12,7 @@ class HatSolver
         $hat = array_keys($participants);
         shuffle($hat);
 
-        $generator = $this->getGenerator($participants, $exclusions, $hat);
+        $generator = $this->yieldCombinations($exclusions, $hat);
         if (!$generator->valid()) {
             throw new SolverException('Cannot solve');
         }
@@ -20,37 +20,30 @@ class HatSolver
         return $generator->current();
     }
 
-    public function all(array $participants, array $exclusions = []) : array
+    public function all(array $participants, array $exclusions = []) : Generator
     {
-        $combinations = [];
-
-        $generator = $this->getGenerator($participants, $exclusions, array_keys($participants));
-        foreach ($generator as $combination) {
-            $combinations[] = $combination;
-        }
-
-        return $combinations;
+        return $this->yieldCombinations($exclusions, array_keys($participants));
     }
 
-    private function getGenerator(array $participants, array $exclusions, array $hat) : Generator
+    private function yieldCombinations(array $exclusions, array $hat) : Generator
     {
         return $this->solve(0, [], $exclusions, $hat);
     }
 
-    private function solve($i, array $combination, array $exclusions, array $hat) : Generator
+    private function solve($participantIdx, array $combination, array $exclusions, array $hat) : Generator
     {
-        $actualExclusions = array_key_exists($i, $exclusions) ? $exclusions[$i] : [];
-        $actualHat = array_diff($hat, $actualExclusions, [$i]);
+        $actualExclusions = array_key_exists($participantIdx, $exclusions) ? $exclusions[$participantIdx] : [];
+        $actualHat = array_diff($hat, $actualExclusions, [$participantIdx]);
 
         if ($actualHat !== []) {
-            foreach ($actualHat as $possibility) {
-                $possibilityCombination = $combination + [$i => $possibility];
-                $possibilityHat = array_diff($hat, [$possibility]);
+            foreach ($actualHat as $possibleParticipant) {
+                $possibilityCombination = $combination + [$participantIdx => $possibleParticipant];
+                $possibilityHat = array_diff($hat, [$possibleParticipant]);
 
                 if ($possibilityHat === []) {
                     yield $possibilityCombination;
                 } else {
-                    yield from $this->solve($i + 1, $possibilityCombination, $exclusions, $possibilityHat);
+                    yield from $this->solve($participantIdx + 1, $possibilityCombination, $exclusions, $possibilityHat);
                 }
             }
         } else {

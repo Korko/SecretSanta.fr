@@ -9,41 +9,50 @@ class SolverTest extends TestCase
 {
     const LOOP_NUMBER = 100;
 
-    public function assertCombination($valid, $test, $participants)
+    public function assertCombination($expected, $combinations, $participants)
     {
-        $test = array_map(function ($el) use ($participants) {
-            array_walk($el, function (&$idx) use ($participants) {
+        $actual = [];
+        foreach ($combinations as $combination) {
+            array_walk($combination, function (&$idx) use ($participants) {
                 $idx = $participants[$idx];
             });
 
-            return implode('', $el);
-        }, $test);
-        $this->assertEquals(sort($valid), sort($test));
+            $actual[] = implode('', $combination);
+        }
+
+        sort($actual);
+        sort($expected);
+
+        $this->assertEquals(serialize($actual), serialize($expected));
     }
 
     public function testNoExclusion()
     {
+        $participants = ['A', 'B'];
         $this->assertCombination([
             'BA',
-        ], Solver::all(['A', 'B']), ['A', 'B']);
+        ], Solver::all($participants), $participants);
 
+        $participants = ['A', 'B', 'C'];
         $this->assertCombination([
             'BCA', 'CAB',
-        ], Solver::all(['A', 'B', 'C']), ['A', 'B', 'C']);
+        ], Solver::all($participants), $participants);
 
+        $participants = ['A', 'B', 'C', 'D'];
         $this->assertCombination([
             'BCDA', 'BDAC', 'BADC',
             'CDAB', 'CADB', 'CDBA',
             'DABC', 'DCBA', 'DCAB',
-        ], Solver::all(['A', 'B', 'C', 'D']), ['A', 'B', 'C', 'D']);
+        ], Solver::all($participants), $participants);
     }
 
     public function testSimpleExclusion()
     {
         // A => C
+        $participants = ['A', 'B', 'C'];
         $this->assertCombination([
             'BCA',
-        ], Solver::all(['A', 'B', 'C'], [0 => [2]]), ['A', 'B', 'C']);
+        ], Solver::all($participants, [0 => [2]]), $participants);
     }
 
     /*
@@ -60,7 +69,8 @@ class SolverTest extends TestCase
 
     public function testImpossibleSolution()
     {
-        $this->assertEquals([], Solver::all(['A', 'B', 'C'], [0 => [1, 2]]), ['A', 'B', 'C']);
+        $participants = ['A', 'B', 'C'];
+        $this->assertCombination([], Solver::all($participants, [0 => [1, 2]]), $participants);
     }
 
     public function testOne()
