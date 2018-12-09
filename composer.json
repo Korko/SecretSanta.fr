@@ -53,7 +53,8 @@
         "laravel/framework": "5.7.*",
         "mariuzzo/laravel-js-localization": "^1.4",
         "spatie/laravel-blade-javascript": "^2.0",
-        "fideloper/proxy": "~4.0"
+        "fideloper/proxy": "~4.0",
+        "vinkla/hashids": "^5.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
