@@ -2,9 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\Encrypter;
-use Illuminate\Contracts\Encryption\EncryptException;
 
 abstract class AsymmetricalEncrypter implements Encrypter
 {
@@ -12,9 +10,9 @@ abstract class AsymmetricalEncrypter implements Encrypter
     {
         // Create the private and public key
         $res = openssl_pkey_new([
-            "digest_alg" => "sha512",
-            "private_key_bits" => 4096,
-            "private_key_type" => OPENSSL_KEYTYPE_RSA,
+            'digest_alg'       => 'sha512',
+            'private_key_bits' => 4096,
+            'private_key_type' => OPENSSL_KEYTYPE_RSA,
         ]);
 
         // Extract the private key from $res to $privKey
@@ -22,11 +20,11 @@ abstract class AsymmetricalEncrypter implements Encrypter
 
         // Extract the public key from $res to $pubKey
         $pubKey = openssl_pkey_get_details($res);
-        $pubKey = $pubKey["key"];
+        $pubKey = $pubKey['key'];
 
         return [
             'private' => $privKey,
-            'public' => $pubKey
+            'public'  => $pubKey,
         ];
     }
 }
