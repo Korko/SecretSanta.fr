@@ -163,8 +163,8 @@ class RandomFormController extends Controller
 
         $participant = new Participant();
         $participant->draw_id = $draw->id;
-        list($participant->santa,) = Crypt::crypt($santa, $key);
-        list($participant->challenge,) = Crypt::crypt(Participant::CHALLENGE, $key);
+        list($participant->santa) = Crypt::crypt($santa, $key);
+        list($participant->challenge) = Crypt::crypt(Participant::CHALLENGE, $key);
 
         $participant->save();
 
