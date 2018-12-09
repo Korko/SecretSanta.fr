@@ -16,7 +16,7 @@ class SymmetricalEncrypter extends Encrypter
         return parent::generateKey(config('app.cipher'));
     }
 
-    public function splitPayload($payload)
+    public function split($payload)
     {
         return $this->getJsonPayload($payload);
     }
