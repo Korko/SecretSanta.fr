@@ -8,17 +8,7 @@ use NoCaptcha;
 
 class RequestDearSantaTest extends RequestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-        Artisan::call('migrate');
-    }
-
-    public function tearDown()
-    {
-        Artisan::call('migrate:reset');
-        parent::tearDown();
-    }
+    use \Illuminate\Foundation\Testing\DatabaseMigrations;
 
     public function testDearsanta()
     {

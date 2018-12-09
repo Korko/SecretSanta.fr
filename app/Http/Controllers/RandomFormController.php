@@ -8,6 +8,7 @@ use App\Http\Requests\RandomFormRequest;
 use App\Mail\TargetDrawn;
 use App\MailBody;
 use App\Participant;
+use App\Services\Crypt;
 use Facades\App\Services\HatSolver as Solver;
 use Facades\App\Services\SmsTools as SmsTools;
 use Hashids;
@@ -20,9 +21,9 @@ class RandomFormController extends Controller
 {
     private $crypter;
 
-    public function __construct(\App\Services\Crypt $crypt)
+    public function __construct(Crypt $crypter)
     {
-        $this->crypter = $crypt;
+        $this->crypter = $crypter;
     }
 
     public function handle(RandomFormRequest $request)
@@ -87,12 +88,17 @@ class RandomFormController extends Controller
 
     protected function sendMails(Request $request, array $participants, array $hat)
     {
+        $title = $request->input('title');
+        $body = $request->input('contentMail');
+        $dearSantaExpiration = $request->input('dearsanta-expiration');
+
         $mailBody = new MailBody();
-        $mailBody->title = $this->crypter->crypt($request->input('title'));
-        $mailBody->body = $this->crypter->crypt($request->input('contentMail'));
+        $mailBody->title = $this->crypter->crypt($title);
+        $mailBody->body = $this->crypter->crypt($body);
         $mailBody->save();
 
         $organizer = $participants[0];
+        $personalizations = [];
 
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = $participants[$santaIdx];
@@ -104,21 +110,28 @@ class RandomFormController extends Controller
 
                 $dearSantaLink = null;
                 if ($request->input('dearsanta')) {
-                    $dearSantaLink = $this->getDearSantaLink($superSanta, $request->input('dearsanta-expiration'));
+                    $dearSantaLink = $this->getDearSantaLink($superSanta, $dearSantaExpiration);
                 }
 
-                Metrics::increment('email');
-                Mail::to($santa['email'], $santa['name'])
-                    ->send(new TargetDrawn(
-                        $santa,
-                        $target,
-                        $request->input('title'),
-                        $request->input('contentMail'),
-                        $organizer,
-                        $dearSantaLink,
-                        ['mailBody' => strval($mailBody->id)]
-                    ));
+                $personalizations[] = [
+                    'to' => [
+                        'email' => $santa['email'],
+                        'name'  => $santa['name'],
+                    ],
+                    'substitutions' => [
+                        '{SANTA}' => $santa['name'],
+                        '{TARGET}' => $target['name'],
+                        ':link' => $dearSantaLink
+                    ],
+                ];
             }
+        }
+
+        if (!empty($personalizations)) {
+            Metrics::increment('email', count($personalizations));
+
+            Mail::to($organizer['email'])
+                ->send(new TargetDrawn($title, $body, $personalizations));
         }
     }
 
