@@ -2,43 +2,31 @@
 
 namespace App\Services;
 
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\Encrypter;
+use Illuminate\Contracts\Encryption\EncryptException;
 
-class AsymmetricalEncrypter implements Encrypter
+abstract class AsymmetricalEncrypter implements Encrypter
 {
-    public $key;
-
-    public function __construct(string $key)
+    public static function generateKeys()
     {
-        $this->key = $key;
-    }
+        // Create the private and public key
+        $res = openssl_pkey_new([
+            "digest_alg" => "sha512",
+            "private_key_bits" => 4096,
+            "private_key_type" => OPENSSL_KEYTYPE_RSA,
+        ]);
 
-    public static function generateKey()
-    {
-        return openssl_random_pseudo_bytes(32);
-    }
+        // Extract the private key from $res to $privKey
+        openssl_pkey_export($res, $privKey);
 
-    public static function generateIv()
-    {
-        $cipher = config('app.cipher');
-        $ivLength = openssl_cipher_iv_length($cipher);
+        // Extract the public key from $res to $pubKey
+        $pubKey = openssl_pkey_get_details($res);
+        $pubKey = $pubKey["key"];
 
-        return openssl_random_pseudo_bytes($ivLength);
-    }
-
-    public function encrypt(string $value)
-    {
-    }
-
-    public function sign(string $value)
-    {
-    }
-
-    public function decrypt(string $payload)
-    {
-    }
-
-    public function checkSignature(string $payload)
-    {
+        return [
+            'private' => $privKey,
+            'public' => $pubKey
+        ];
     }
 }
