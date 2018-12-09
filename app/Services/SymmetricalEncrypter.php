@@ -8,7 +8,7 @@ class SymmetricalEncrypter extends Encrypter
 {
     public function __construct(string $key)
     {
-        parent::__construct($key, config('app.cipher));
+        parent::__construct($key, config('app.cipher'));
     }
 
     public static function generateKey()
