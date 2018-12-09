@@ -1,6 +1,6 @@
 <?php
 
-namespace Korko\SecretSanta\Http\Middleware;
+namespace App\Http\Middleware;
 
 use Hashids;
 use Illuminate\Foundation\Http\Middleware\TransformsRequest as Middleware;
