@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
+use App\Participant;
 use Hashids;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use App\Participant;
 
 class RouteServiceProvider extends ServiceProvider
 {
