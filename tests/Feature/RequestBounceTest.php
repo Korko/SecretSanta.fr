@@ -10,7 +10,6 @@ use Mail;
 use Metrics;
 use Mockery;
 use NoCaptcha;
-use Sms;
 
 class RequestBounceTest extends RequestCase
 {
@@ -113,17 +112,17 @@ class RequestBounceTest extends RequestCase
                      'email' => 'test@test.com',
                      'name'  => 'toto',
                  ],
-                 'target' => 'tutu',
+                 'target'        => 'tutu',
                  'dearSantaLink' => null,
-                 'mailBody' => '1',
+                 'mailBody'      => '1',
              ]),
-             'email' => 'test2@test.com',
-             'event' => 'dropped',
-             'reason' => 'Unsubscribed Address',
-             'sg_event_id' => 'wu3pyy4hQ4qo4TUGJ-E5KA',
+             'email'         => 'test2@test.com',
+             'event'         => 'dropped',
+             'reason'        => 'Unsubscribed Address',
+             'sg_event_id'   => 'wu3pyy4hQ4qo4TUGJ-E5KA',
              'sg_message_id' => 'QygG4vV9TL2uRMEPLh1mlg.filter0002p2iad2-29875-5C05903B-1D',
-             'smtp-id' => '<QygG4vV9TL2uRMEPLh1mlg@ismtpd0001p1lon1.sendgrid.net>',
-             'timestamp' => 1543868476,
+             'smtp-id'       => '<QygG4vV9TL2uRMEPLh1mlg@ismtpd0001p1lon1.sendgrid.net>',
+             'timestamp'     => 1543868476,
         ], 200, true);
 
         // No change

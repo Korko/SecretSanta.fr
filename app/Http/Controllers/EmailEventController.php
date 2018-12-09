@@ -13,8 +13,8 @@ class EmailEventController extends Controller
         Metrics::increment('email_bounced');
 
         $events = json_decode($request->getContent(), true);
-Log::debug($events);
-Log::debug($request->json()->all());
+        Log::debug($events);
+        Log::debug($request->json()->all());
 //        dump($request->getContent(), ((object) $request->json()->all())->name);
     }
 }
