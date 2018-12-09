@@ -3,9 +3,6 @@
 namespace Tests\Feature;
 
 use App\Participant;
-use App\Services\SymmetricalEncrypter;
-use App\Services\AsymmetricalPublicEncrypter;
-use App\Services\AsymmetricalPrivateEncrypter;
 
 class EncryptionTest extends RequestCase
 {
@@ -19,6 +16,5 @@ class EncryptionTest extends RequestCase
 
         $challenge = Participant::CHALLENGE;
         $challenge = $encrypter->encrypt($challenge);
-
     }
 }
