@@ -9,6 +9,7 @@ use App\Mail\TargetDrawn;
 use App\Participant;
 use Facades\App\Libs\HatSolver as Solver;
 use Facades\App\Libs\SmsTools as SmsTools;
+use Hashids;
 use Illuminate\Http\Request;
 use Mail;
 use Metrics;
@@ -112,7 +113,7 @@ class RandomFormController extends Controller
         $key = openssl_random_pseudo_bytes(32);
         $participant = $this->addParticipant($santa, $key, $expirationDate);
 
-        return route('dearsanta', ['santa' => $participant->id]).'#'.bin2hex($key);
+        return route('dearsanta', ['santa' => Hashids::encode($participant->id)]).'#'.bin2hex($key);
     }
 
     private function getDraw($expirationDate)
