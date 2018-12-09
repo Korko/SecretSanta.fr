@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Draw;
+use App\MailBody;
 use App\Participant;
 use Artisan;
 use Mail;
@@ -40,6 +41,7 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, MailBody::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -56,6 +58,7 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, MailBody::count());
     }
 
     public function testClassic()
@@ -116,6 +119,7 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, MailBody::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -130,9 +134,10 @@ class RequestTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        // Nothing, no record, no dearsanta
+        // Nothing, no record, no dearsanta but 1 mailbody
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
+        $this->assertEquals(1, MailBody::count());
     }
 
     public function testLongSmsOnly()
@@ -184,6 +189,7 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, MailBody::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -198,9 +204,10 @@ class RequestTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        // Nothing, no record, no dearsanta
+        // Nothing, no record, no dearsanta but 1 mailbody
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
+        $this->assertEquals(1, MailBody::count());
     }
 
     public function testDearsanta()
@@ -249,6 +256,7 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, MailBody::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -266,5 +274,6 @@ class RequestTest extends RequestCase
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
+        $this->assertEquals(1, MailBody::count());
     }
 }
