@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Participant;
 use App\Services\AsymmetricalEncrypter;
-use App\Services\AsymmetricalPublicEncrypter;
 use App\Services\AsymmetricalPrivateEncrypter;
+use App\Services\AsymmetricalPublicEncrypter;
 
 class EncryptionTest extends RequestCase
 {
