@@ -120,7 +120,7 @@ class RequestTest extends RequestCase
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
         $this->assertEquals(1, Draw::count());
-        $this->assertEquals(3, Participant::count());
+        $this->assertEquals(0, Participant::count()); // No dearsanta, no participant
     }
 
     public function testLongSmsOnly()
@@ -187,7 +187,7 @@ class RequestTest extends RequestCase
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
         $this->assertEquals(1, Draw::count());
-        $this->assertEquals(3, Participant::count());
+        $this->assertEquals(0, Participant::count()); // No dearsanta so no Participant
     }
 
     public function testDearsanta()
@@ -205,8 +205,8 @@ class RequestTest extends RequestCase
             ->andReturn(true);
 
         Metrics::shouldReceive('increment')
-            ->once()
-            ->with('email', 3)
+            ->times(3)
+            ->with('email')
             ->andReturn(true);
 
         Mail::shouldReceive('to')
