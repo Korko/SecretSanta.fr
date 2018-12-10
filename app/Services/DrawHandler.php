@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Draw;
 use App\Mail\TargetDrawn;
 use App\Participant;
-use App\Services\AsymmetricalEncrypter;
-use App\Services\SymmetricalEncrypter;
 use Facades\App\Services\SmsTools as SmsTools;
 use Hashids;
 use Mail;
@@ -99,4 +97,3 @@ class DrawHandler
         return route('dearsanta', ['santa' => Hashids::encode($participant->id)]).'#'.base64_encode($this->asymKeys['private']);
     }
 }
-
