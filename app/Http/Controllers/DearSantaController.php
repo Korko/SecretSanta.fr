@@ -40,7 +40,7 @@ class DearSantaController extends Controller
 
     private function getSanta(Participant $participant, Request $request)
     {
-        $key = hex2bin($request->input('key'));
+        $key = base64_decode($request->input('key'));
 
         $encrypter = new Encrypter($key);
 
