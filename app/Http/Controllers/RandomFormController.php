@@ -45,7 +45,7 @@ class RandomFormController extends Controller
 
         $mailContent = [
             'title' => $request->input('title'),
-            'body' => $request->input('contentMail'),
+            'body'  => $request->input('contentMail'),
         ];
 
         $smsContent = [

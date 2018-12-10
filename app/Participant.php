@@ -20,7 +20,7 @@ class Participant extends Model
         $participant->draw_id = $draw->id;
         $participant->santa_name = $encrypter->encrypt($santa['name']);
         $participant->santa_email = $encrypter->encrypt($santa['email']);
-        $participant->challenge = $encrypter->encrypt(Participant::CHALLENGE, false); // tested by JS so no serializing
+        $participant->challenge = $encrypter->encrypt(self::CHALLENGE, false); // tested by JS so no serializing
         $participant->public_key = $publicEncryptionKey;
 
         $participant->save();
