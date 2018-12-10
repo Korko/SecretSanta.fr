@@ -3,6 +3,9 @@
 namespace Tests\Feature;
 
 use App\Participant;
+use App\Services\AsymmetricalEncrypter;
+use App\Services\AsymmetricalPublicEncrypter;
+use App\Services\AsymmetricalPrivateEncrypter;
 
 class EncryptionTest extends RequestCase
 {
@@ -12,9 +15,14 @@ class EncryptionTest extends RequestCase
         // pubKey is kept in database but privKey is sent to the user
         list('private' => $privKey, 'public' => $pubKey) = AsymmetricalEncrypter::generateKeys();
 
-        $encrypter = new AsymmetricalEncrypter($privKey, $pubKey);
+        $challengeRaw = Participant::CHALLENGE;
 
-        $challenge = Participant::CHALLENGE;
-        $challenge = $encrypter->encrypt($challenge);
+        $encrypter = new AsymmetricalPublicEncrypter($pubKey);
+        $challenge = $encrypter->encrypt($challengeRaw);
+        $this->assertNotEquals($challenge, $challengeRaw);
+
+        $decrypter = new AsymmetricalPrivateEncrypter($privKey);
+        $challenge = $decrypter->decrypt($challenge);
+        $this->assertEquals($challenge, $challengeRaw);
     }
 }

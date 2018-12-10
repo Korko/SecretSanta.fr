@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DearSantaRequest;
 use App\Mail\DearSanta;
 use App\Participant;
-use App\Services\AsymmetricalEncrypter as Encrypter;
+use App\Services\AsymmetricalPrivateEncrypter as Encrypter;
 use Illuminate\Http\Request;
 use Mail;
 use Metrics;
@@ -14,11 +14,8 @@ class DearSantaController extends Controller
 {
     public function view(Participant $participant)
     {
-        list('iv' => $iv, 'value' => $challenge) = Encrypter::split($participant->challenge);
-
         return view('dearSanta', [
-            'challenge' => $challenge,
-            'iv'        => $iv,
+            'challenge' => $participant->challenge,
             'santa'     => $participant->id,
         ]);
     }

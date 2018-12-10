@@ -6,7 +6,6 @@
     <!-- config js -->
     @javascript([
         'challenge' => $challenge,
-        'iv' => $iv,
         'text' => 'Ping?'
     ])
 @stop
