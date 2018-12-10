@@ -22,6 +22,11 @@
             <directory suffix=".php">./app</directory>
         </whitelist>
     </filter>
+    <groups>
+        <exclude>
+            <group>large</group>
+        </exclude>
+    </groups>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:y7VgjUNCsFyuU0uOtHd9FsLy3zYPIQ2YBbYvar71fIw="/>
