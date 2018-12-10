@@ -15,6 +15,9 @@ class RequestBounceTest extends RequestCase
 {
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
 
+    /**
+     * @group large
+     */
     public function testBounce()
     {
         Config::set('mail.driver', 'sendgrid');
