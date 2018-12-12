@@ -20,11 +20,18 @@ class TargetDrawn extends Mailable
      *
      * @return void
      */
-    public function __construct($subject, $content, $personalizations)
+    public function __construct($subject, $content, array $personalizations = [])
     {
         $this->subject = $subject;
         $this->content = $content;
         $this->personalizations = $personalizations;
+    }
+
+    public function withSubstitutions(array $substitutions)
+    {
+        $this->personalizations = [['substitutions' => $substitutions]];
+
+        return $this;
     }
 
     /**

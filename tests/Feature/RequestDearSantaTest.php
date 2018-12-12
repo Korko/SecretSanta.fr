@@ -55,7 +55,7 @@ class RequestDearSantaTest extends RequestCase
         // So fetch it from the mail
         $links = [];
         Mail::assertSent(\App\Mail\TargetDrawn::class, function ($mail) use (&$links) {
-            $links[] = $mail->personalizations['substitutions'][':link'];
+            $links[] = $mail->personalizations[0]['substitutions'][':link'];
 
             return true;
         });
