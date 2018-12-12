@@ -16,9 +16,9 @@ Route::get('/', function () {
 });
 Route::post('/', 'RandomFormController@handle');
 
-Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections')[config('hashids.default')]['length'].'}');
-Route::get('/dearsanta/{participant}', 'DearSantaController@view')->name('dearsanta');
-Route::post('/dearsanta/{participant}', 'DearSantaController@handle');
+Route::pattern('santa', '[0-9a-zA-Z]{'.config('hashids.connections')[config('hashids.default')]['length'].'}');
+Route::get('/dearsanta/{santa}', 'DearSantaController@view')->name('dearsanta');
+Route::post('/dearsanta/{santa}', 'DearSantaController@handle');
 
 Route::post('/event', 'EmailEventController@handle');
 

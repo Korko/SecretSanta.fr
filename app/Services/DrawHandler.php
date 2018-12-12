@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Draw;
+use App\DearSanta;
+use App\DearSantaDraw;
 use App\Mail\TargetDrawn;
-use App\Participant;
 use Facades\App\Services\SmsTools as SmsTools;
 use Hashids;
 use Mail;
@@ -15,6 +15,8 @@ class DrawHandler
 {
     private $symKey;
     private $asymKeys;
+
+    private $dearSantaDraw;
 
     public function __construct()
     {
@@ -35,7 +37,7 @@ class DrawHandler
 
     protected function sendMails(array $participants, array $hat, array $mailContent, $dearSantaExpiration = null)
     {
-        $this->draw = Draw::prepareAndSave($mailContent, $dearSantaExpiration, $participants[0], $this->symKey);
+        $this->dearSantaDraw = DearSantaDraw::prepareAndSave($mailContent, $dearSantaExpiration, $participants[0], $this->symKey);
 
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = $participants[$santaIdx];
@@ -92,8 +94,8 @@ class DrawHandler
 
     protected function getDearSantaLink(array $santa)
     {
-        $participant = Participant::prepareAndSave($this->draw, $santa, $this->asymKeys['public']);
+        $dearSanta = DearSanta::prepareAndSave($this->dearSantaDraw, $santa, $this->asymKeys['public']);
 
-        return route('dearsanta', ['santa' => Hashids::encode($participant->id)]).'#'.base64_encode($this->asymKeys['private']);
+        return route('dearsanta', ['santa' => Hashids::encode($dearSanta->id)]).'#'.base64_encode($this->asymKeys['private']);
     }
 }

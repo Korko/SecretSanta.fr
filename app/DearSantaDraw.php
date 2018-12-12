@@ -7,7 +7,7 @@ use DateInterval;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
-class Draw extends Model
+class DearSantaDraw extends Model
 {
     public static function prepareAndSave(array $mailContent, $expiration, array $organizer, $encryptionKey)
     {
