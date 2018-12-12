@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App;
+
 class DearSantaRequest extends Request
 {
     /**
@@ -21,8 +23,12 @@ class DearSantaRequest extends Request
      */
     public function rules()
     {
+        $rules = [];
+        if (!App::environment('local', 'dev')) {
+            $rules['g-recaptcha-response'] = 'required|captcha';
+        }
+
         $rules = [
-            'g-recaptcha-response' => 'required|captcha',
             'title'                => 'required|string',
             'content'              => 'required|string',
             'key'                  => 'required|string',
