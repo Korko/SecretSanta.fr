@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Participant;
+use App\DearSanta;
 use Hashids;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -25,9 +25,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Route::bind('participant', function ($value) {
-            if (($ids = Hashids::decode($value)) && ($participant = Participant::find($ids[0]))) {
-                return $participant;
+        Route::bind('santa', function ($value) {
+            if (($ids = Hashids::decode($value)) && ($santa = DearSanta::find($ids[0]))) {
+                return $santa;
             }
             abort(404);
         });
