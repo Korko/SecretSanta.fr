@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\Crypt;
 use Facades\App\Services\SmsTools as SmsTools;
 use Illuminate\Support\ServiceProvider;
 use Validator;
@@ -35,9 +34,5 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('local', 'dev', 'testing')) {
             $this->app->register(\Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class);
         }
-
-        $this->app->singleton(Crypt::class, function ($app) {
-            return new Crypt();
-        });
     }
 }
