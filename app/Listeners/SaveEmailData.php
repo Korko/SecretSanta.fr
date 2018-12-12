@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Services\Crypt;
 use Illuminate\Mail\Events\MessageSent;
 
 class SaveEmailData
@@ -14,9 +13,9 @@ class SaveEmailData
      *
      * @return void
      */
-    public function __construct(Crypt $crypter)
+    public function __construct()
     {
-        $this->crypter = $crypter;
+
     }
 
     /**
