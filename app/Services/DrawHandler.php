@@ -66,7 +66,7 @@ class DrawHandler
         Metrics::increment('email');
 
         Mail::to($santa['email'], $santa['name'])
-            ->send(new TargetDrawn($mailContent['title'], $mailContent['body'], ['substitutions' => $substitutions]));
+            ->send((new TargetDrawn($mailContent['title'], $mailContent['body']))->withSubstitutions($substitutions));
     }
 
     protected function sendSMSs(array $participants, array $hat, $smsBody)
