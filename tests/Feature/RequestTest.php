@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Draw;
-use App\Participant;
+use App\DearSanta;
+use App\DearSantaDraw;
 use Mail;
 use Metrics;
 use Mockery;
@@ -27,8 +27,8 @@ class RequestTest extends RequestCase
         Metrics::shouldReceive('increment')
             ->never();
 
-        $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, DearSantaDraw::count());
+        $this->assertEquals(0, DearSanta::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -43,8 +43,8 @@ class RequestTest extends RequestCase
         ], 500);
         $this->assertEquals(['error' => 'Aucune solution possible'], $content);
 
-        $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, DearSantaDraw::count());
+        $this->assertEquals(0, DearSanta::count());
     }
 
     public function testClassic()
@@ -103,8 +103,8 @@ class RequestTest extends RequestCase
             ->with('+33712345678', '#test sms "tutu\' => &toto#')
             ->andReturn(true);
 
-        $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, DearSantaDraw::count());
+        $this->assertEquals(0, DearSanta::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -119,8 +119,8 @@ class RequestTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        $this->assertEquals(1, Draw::count());
-        $this->assertEquals(0, Participant::count()); // No dearsanta, no participant
+        $this->assertEquals(1, DearSantaDraw::count());
+        $this->assertEquals(0, DearSanta::count());
     }
 
     public function testLongSmsOnly()
@@ -170,8 +170,8 @@ class RequestTest extends RequestCase
             ->with('+33712345670', '#test sms "tutu\' => &toto#')
             ->andReturn(true);
 
-        $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, DearSantaDraw::count());
+        $this->assertEquals(0, DearSanta::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -186,8 +186,8 @@ class RequestTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        $this->assertEquals(1, Draw::count());
-        $this->assertEquals(0, Participant::count()); // No dearsanta so no Participant
+        $this->assertEquals(1, DearSantaDraw::count());
+        $this->assertEquals(0, DearSanta::count());
     }
 
     public function testDearsanta()
@@ -234,8 +234,8 @@ class RequestTest extends RequestCase
         Sms::shouldReceive('message')
             ->never();
 
-        $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, DearSantaDraw::count());
+        $this->assertEquals(0, DearSanta::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -251,7 +251,7 @@ class RequestTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        $this->assertEquals(1, Draw::count());
-        $this->assertEquals(3, Participant::count());
+        $this->assertEquals(1, DearSantaDraw::count());
+        $this->assertEquals(3, DearSanta::count());
     }
 }

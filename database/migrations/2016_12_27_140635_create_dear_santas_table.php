@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateParticipantsTable extends Migration
+class CreateDearSantasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateParticipantsTable extends Migration
      */
     public function up()
     {
-        Schema::create('participants', function (Blueprint $table) {
+        Schema::create('dear_santas', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('draw_id')->unsigned();
             $table->string('santa_name');
@@ -21,7 +21,7 @@ class CreateParticipantsTable extends Migration
             $table->string('challenge');
             $table->string('public_key');
 
-            $table->foreign('draw_id')->references('id')->on('draws')->onDelete('cascade');
+            $table->foreign('draw_id')->references('id')->on('dear_santa_draws')->onDelete('cascade');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateParticipantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('participants');
+        Schema::dropIfExists('dear_santas');
     }
 }

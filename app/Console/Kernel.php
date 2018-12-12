@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Draw;
+use App\DearSantaDraw;
 use App\MailBody;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            Draw::where('expiration', '<=', DB::raw('CURRENT_TIMESTAMP'))->delete();
+            DearSantaDraw::where('expiration', '<=', DB::raw('CURRENT_TIMESTAMP'))->delete();
             MailBody::where('created_at', '<=', DB::raw('DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 DAY)'))->delete();
         })->daily();
     }

@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Draw;
+use App\DearSanta;
+use App\DearSantaDraw;
 use App\MailBody;
-use App\Participant;
 use Config;
 use Mail;
 use Metrics;
@@ -24,8 +24,8 @@ class RequestBounceTest extends RequestCase
 
         NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
 
-        $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, DearSantaDraw::count());
+        $this->assertEquals(0, DearSanta::count());
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
@@ -40,8 +40,8 @@ class RequestBounceTest extends RequestCase
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        $this->assertEquals(1, Draw::count());
-        $this->assertEquals(3, Participant::count());
+        $this->assertEquals(1, DearSantaDraw::count());
+        $this->assertEquals(3, DearSanta::count());
 
         // Simulate a bounce, note which mail should be sent
         Mail::shouldReceive('to')
@@ -83,7 +83,7 @@ class RequestBounceTest extends RequestCase
              'timestamp'     => 1543868476,
         ], 200, true);
 
-        $this->assertEquals(1, Draw::count());
-        $this->assertEquals(3, Participant::count());
+        $this->assertEquals(1, DearSantaDraw::count());
+        $this->assertEquals(3, DearSanta::count());
     }
 }
