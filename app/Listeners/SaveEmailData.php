@@ -6,8 +6,6 @@ use Illuminate\Mail\Events\MessageSent;
 
 class SaveEmailData
 {
-    protected $crypter;
-
     /**
      * Create the event listener.
      *
@@ -15,6 +13,7 @@ class SaveEmailData
      */
     public function __construct()
     {
+        //
     }
 
     /**
@@ -26,7 +25,8 @@ class SaveEmailData
      */
     public function handle(MessageSent $event)
     {
-        // Update Participant to add message_id
-//        $mailBody->mail_id = $event->message->getHeaders()->get('X-Message-Id')->getValue(); // TODO, get sendgrid id, needed in case of bounce event
+        $participant = $event->data->participant;dump($event->data);
+        $participant->email_id = $event->message->getHeaders()->get('X-Message-Id')->getValue();
+        $participant->save();
     }
 }

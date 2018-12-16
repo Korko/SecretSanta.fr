@@ -15,10 +15,6 @@ class CreateDearSantaDrawsTable extends Migration
     {
         Schema::create('dear_santa_draws', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
-            $table->longText('body');
-            $table->string('organizer_name')->nullable();
-            $table->string('organizer_email')->nullable();
             $table->date('expiration');
             $table->timestamps();
         });
