@@ -34,10 +34,9 @@ class SendMailCommand extends Command
         $body = $this->argument('text');
 
         Mail::send([], [], function (Message $message) use ($to, $subject, $body) {
-                $message->to($to)
+            $message->to($to)
                         ->subject($subject)
                         ->setBody($body, 'text/html');
-            });
+        });
     }
-
 }
