@@ -92,6 +92,8 @@ return [
 
     'fallback_locale' => 'fr',
 
+    'faker_locale ' => 'fr',
+
     /*
     |--------------------------------------------------------------------------
     | Application Domain Locales
