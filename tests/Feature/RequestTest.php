@@ -36,10 +36,26 @@ class RequestTest extends RequestCase
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
-            'name'                 => ['toto', 'tata', 'tutu'],
-            'email'                => ['test@test.com', '', 'test2@test.com'],
-            'phone'                => ['', '0612345678', '712345678'],
-            'exclusions'           => [['2'], ['0', '2'], ['1']],
+            'participants'         => [
+                [
+                    'name'       => 'toto',
+                    'email'      => 'test@test.com',
+                    'phone'      => '',
+                    'exclusions' => ['2'],
+                ],
+                [
+                    'name'       => 'tata',
+                    'email'      => '',
+                    'phone'      => '0612345678',
+                    'exclusions' => ['0', '2'],
+                ],
+                [
+                    'name'       => 'tutu',
+                    'email'      => 'test2@test.com',
+                    'phone'      => '712345678',
+                    'exclusions' => ['1'],
+                ],
+            ],
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
@@ -116,10 +132,26 @@ class RequestTest extends RequestCase
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
-            'name'                 => ['toto', 'tata', 'tutu'],
-            'email'                => ['test@test.com', '', 'test2@test.com'],
-            'phone'                => ['', '0612345678', '712345678'],
-            'exclusions'           => [['2'], ['0'], ['1']],
+            'participants'         => [
+                [
+                    'name'       => 'toto',
+                    'email'      => 'test@test.com',
+                    'phone'      => '',
+                    'exclusions' => ['2'],
+                ],
+                [
+                    'name'       => 'tata',
+                    'email'      => '',
+                    'phone'      => '0612345678',
+                    'exclusions' => ['0'],
+                ],
+                [
+                    'name'       => 'tutu',
+                    'email'      => 'test2@test.com',
+                    'phone'      => '712345678',
+                    'exclusions' => ['1'],
+                ],
+            ],
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
@@ -187,10 +219,26 @@ class RequestTest extends RequestCase
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
-            'name'                 => ['toto', 'tata', 'tutu'],
-            'email'                => ['', '', ''],
-            'phone'                => ['0612345678', '0612345679', '712345670'],
-            'exclusions'           => [['2'], ['0'], ['1']],
+            'participants'         => [
+                [
+                    'name'       => 'toto',
+                    'email'      => '',
+                    'phone'      => '0612345678',
+                    'exclusions' => ['2'],
+                ],
+                [
+                    'name'       => 'tata',
+                    'email'      => '',
+                    'phone'      => '0612345679',
+                    'exclusions' => ['0'],
+                ],
+                [
+                    'name'       => 'tutu',
+                    'email'      => '',
+                    'phone'      => '712345670',
+                    'exclusions' => ['1'],
+                ],
+            ],
             'title'                => 'test mail title',
             'contentMail'          => '',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}'.implode('', array_fill(0, 160, 'a')),
@@ -255,10 +303,24 @@ class RequestTest extends RequestCase
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
-            'name'                 => ['toto', 'tata', 'tutu'],
-            'email'                => ['test@test.com', 'test2@test.com', 'test3@test.com'],
-            'phone'                => ['', '', ''],
-            'exclusions'           => [['2']],
+            'participants'         => [
+                [
+                    'name'       => 'toto',
+                    'email'      => 'test@test.com',
+                    'phone'      => '',
+                    'exclusions' => ['2'],
+                ],
+                [
+                    'name'       => 'tata',
+                    'email'      => 'test2@test.com',
+                    'phone'      => '',
+                ],
+                [
+                    'name'       => 'tutu',
+                    'email'      => 'test3@test.com',
+                    'phone'      => '',
+                ],
+            ],
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',

@@ -29,39 +29,21 @@ class RandomFormRequest extends Request
         }
 
         $rules += [
-            'name'                 => 'required|array|min:3|distinct',
-            'title'                => 'required_with:email|nullable|string',
-            'contentMail'          => 'required_with:email|nullable|string|contains:{TARGET}',
-            'contentSMS'           => 'required_with:phone|nullable|string|contains:{TARGET}|smsCount:'.config('sms.max'),
-            'email'                => 'array',
-            'phone'                => 'array',
-            'exclusions'           => 'array',
-            'dearsanta'            => 'boolean|in:"0","1"',
-            'dearsanta-expiration' => 'required_if:dearsanta,"1"|date|after:tomorrow|before:+1year',
+            'participants'                => 'required|array|min:3',
+
+            'participants.0.email'        => 'required_with:participant.*.email',
+            'participants.*.name'         => 'required|distinct',
+            'participants.*.email'        => 'required_without:participants.*.phone|required_if:dearsanta,1|email',
+            'participants.*.phone'        => 'required_without:participants.*.email|numeric|regex:#0?[67]\d{8}#',
+            'participants.*.exclusions'   => 'sometimes|array',
+            'participants.*.exclusions.*' => 'integer|in_keys:participants',
+
+            'title'                       => 'required_with_any:participants.*.email|string',
+            'contentMail'                 => 'required_with_any:participants.*.email|string|contains:{TARGET}',
+            'contentSMS'                  => 'required_with_any:participants.*.phone|string|contains:{TARGET}|smsCount:'.config('sms.max'),
+            'dearsanta'                   => 'boolean|in:"0","1"',
+            'dearsanta-expiration'        => 'required_if:dearsanta,"1"|date|after:tomorrow|before:+1year',
         ];
-
-        if (!empty($this->request->get('name'))) {
-            foreach ($this->request->get('name', []) as $key => $name) {
-                $emailCondition = '';
-                if ($key === 0) {
-                    $emailCondition = 'required_with:email|';
-                }
-
-                $rules += [
-                    'email.'.$key      => $emailCondition.'required_without:phone.'.$key.'|required_if:dearsanta,1|nullable|email',
-                    'phone.'.$key      => 'required_without:email.'.$key.'|nullable|numeric|regex:#0?[67]\d{8}#',
-                    'exclusions.'.$key => 'sometimes|array',
-                ];
-
-                $exclusions = $this->request->get('exclusions') ?: [];
-                $exclusions = isset($exclusions[$key]) ? (array) $exclusions[$key] : [];
-                foreach ($exclusions as $key2 => $name2) {
-                    $rules += [
-                        'exclusions.'.$key.'.'.$key2 => 'integer|fieldinkeys:name,'.$key,
-                    ];
-                }
-            }
-        }
 
         return $rules;
     }
