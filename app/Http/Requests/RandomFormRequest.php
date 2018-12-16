@@ -29,7 +29,10 @@ class RandomFormRequest extends Request
         }
 
         $rules += [
-            'name'                 => 'required|array|min:3|arrayunique',
+            'name'                 => 'required|array|min:3|distinct',
+            'title'                => 'required_with:email|nullable|string',
+            'contentMail'          => 'required_with:email|nullable|string|contains:{TARGET}',
+            'contentSMS'           => 'required_with:phone|nullable|string|contains:{TARGET}|smsCount:'.config('sms.max'),
             'email'                => 'array',
             'phone'                => 'array',
             'exclusions'           => 'array',
@@ -38,22 +41,14 @@ class RandomFormRequest extends Request
         ];
 
         if (!empty($this->request->get('name'))) {
-            $keys = array_keys($this->request->get('name', []));
-            $rules += [
-                'title' => 'required_with:'.implode(',', array_map(function ($key) {
-                    return 'email.'.$key;
-                }, $keys)).'|nullable|string',
-                'contentMail' => 'required_with:'.implode(',', array_map(function ($key) {
-                    return 'email.'.$key;
-                }, $keys)).'|nullable|string|contains:{TARGET}',
-                'contentSMS' => 'required_with:'.implode(',', array_map(function ($key) {
-                    return 'phone.'.$key;
-                }, $keys)).'|nullable|string|contains:{TARGET}|smsCount:'.config('sms.max'),
-            ];
+            foreach ($this->request->get('name', []) as $key => $name) {
+                $emailCondition = '';
+                if ($key === 0) {
+                    $emailCondition = 'required_with:email|';
+                }
 
-            foreach ($this->request->get('name') as $key => $name) {
                 $rules += [
-                    'email.'.$key      => 'required_without:phone.'.$key.'|required_if:dearsanta,1|nullable|email',
+                    'email.'.$key      => $emailCondition.'required_without:phone.'.$key.'|required_if:dearsanta,1|nullable|email',
                     'phone.'.$key      => 'required_without:email.'.$key.'|nullable|numeric|regex:#0?[67]\d{8}#',
                     'exclusions.'.$key => 'sometimes|array',
                 ];

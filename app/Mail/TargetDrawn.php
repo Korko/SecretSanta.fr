@@ -13,6 +13,7 @@ class TargetDrawn extends Mailable
 
     public $subject;
     public $content;
+    public $dearSantaLink;
     public $personalizations;
 
     /**
@@ -20,10 +21,11 @@ class TargetDrawn extends Mailable
      *
      * @return void
      */
-    public function __construct($subject, $content, array $personalizations = [])
+    public function __construct($subject, $content, $dearSantaLink = null, array $personalizations = [])
     {
         $this->subject = $subject;
         $this->content = $content;
+        $this->dearSantaLink = $dearSantaLink;
         $this->personalizations = $personalizations;
     }
 
