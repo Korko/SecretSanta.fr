@@ -53,7 +53,7 @@ class ValidationTest extends RequestCase
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.0', 'phone.0', 'email.2', 'phone.2', 'title', 'contentMail'], $content);
 
         // Ok for names but partial contact infos (both)
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'phone' => ['0612345678', '', ''], 'email' => ['', 'test@test.com', '']], 422);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'phone' => ['', '0612345678', ''], 'email' => ['test@test.com', '', '']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.2', 'phone.2', 'title', 'contentMail', 'contentSMS'], $content);
     }
 
@@ -81,7 +81,7 @@ class ValidationTest extends RequestCase
     public function testContactBodiesBoth()
     {
         $content = $this->ajaxPost('/', [
-            'name' => ['toto', 'tata', 'tutu'], 'email' => ['', 'test@test.com', 'test@test.com'], 'phone' => ['0612345678', '0612345678', ''], 'exclusions' => [],
+            'name' => ['toto', 'tata', 'tutu'], 'email' => ['test@test.com', '', 'test@test.com'], 'phone' => ['0612345678', '0612345678', ''], 'exclusions' => [],
         ], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'title', 'contentMail', 'contentSMS'], $content);
     }
@@ -136,5 +136,11 @@ class ValidationTest extends RequestCase
             'contentSMS' => '{TARGET}'.implode('', array_fill(0, 161, 'a')), // 2 sms long
         ], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS'], $content);
+    }
+
+    public function testOrganizerEmailRequired()
+    {
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'email' => ['', 'test@test.com', 'test2@test.com'], 'phone' => ['0612345678', '0612345678', '0612345678'], 'dearsanta' => '0'], 422);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'title', 'contentMail', 'contentSMS', 'email.0'], $content);
     }
 }
