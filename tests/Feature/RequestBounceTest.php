@@ -29,10 +29,26 @@ class RequestBounceTest extends RequestCase
 
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
-            'name'                 => ['toto', 'tata', 'tutu'],
-            'email'                => ['success@simulator.amazonses.com', 'bounce@simulator.amazonses.com', 'bounce@simulator.amazonses.com'],
-            'phone'                => ['', '', ''],
-            'exclusions'           => [['2'], ['0'], ['1']],
+            'participants'         => [
+                [
+                    'name'       => 'toto',
+                    'email'      => 'success@simulator.amazonses.com',
+                    'phone'      => '',
+                    'exclusions' => ['2'],
+                ],
+                [
+                    'name'       => 'tata',
+                    'email'      => 'bounce@simulator.amazonses.com',
+                    'phone'      => '',
+                    'exclusions' => ['0'],
+                ],
+                [
+                    'name'       => 'tutu',
+                    'email'      => 'bounce@simulator.amazonses.com',
+                    'phone'      => '',
+                    'exclusions' => ['1'],
+                ],
+            ],
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => '',

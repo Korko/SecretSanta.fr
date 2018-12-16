@@ -34,15 +34,16 @@ class RequestDearSantaTest extends RequestCase
             ],
         ];
 
+        $participants = array_map(function ($id) use ($participants) {
+            return $participants[$id] + [
+                'exclusions' => array_values(array_map('strval', array_diff(array_keys($participants), [$id], [$participants[$id]['target']]))),
+            ];
+        }, array_keys($participants));
+
         // Initiate DearSanta
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
-            'name'                 => array_column($participants, 'name'),
-            'email'                => array_column($participants, 'email'),
-            'phone'                => ['', '', ''],
-            'exclusions'           => array_map(function ($id) use ($participants) {
-                return array_values(array_map('strval', array_diff(array_keys($participants), [$id], [$participants[$id]['target']])));
-            }, array_keys($participants)),
+            'participants'         => $participants,
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => '',
