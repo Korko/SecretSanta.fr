@@ -59,7 +59,7 @@ class RandomFormController extends Controller
     {
         $participants = $request->input('participants');
         for ($i = 0; $i < count($participants); $i++) {
-            $participant =& $participants[$i];
+            $participant = &$participants[$i];
 
             if (!empty($participant['phone'])) {
                 if (substr($participant['phone'], 0, 1) === '0') {

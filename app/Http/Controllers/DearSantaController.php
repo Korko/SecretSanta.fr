@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\DearSanta;
 use App\Http\Requests\DearSantaRequest;
 use App\Mail\DearSanta as DearSantaMail;
-use App\DearSanta;
 use App\Services\AsymmetricalPrivateEncrypter as Encrypter;
 use Illuminate\Http\Request;
 use Mail;

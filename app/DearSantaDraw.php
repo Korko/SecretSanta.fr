@@ -2,9 +2,6 @@
 
 namespace App;
 
-use App\Services\SymmetricalEncrypter;
-use DateInterval;
-use DateTime;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 

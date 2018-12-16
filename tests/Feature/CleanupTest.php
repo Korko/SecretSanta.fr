@@ -59,4 +59,3 @@ class CleanupTest extends RequestCase
         $this->assertEquals(0, DearSantaDraw::count());
     }
 }
-
