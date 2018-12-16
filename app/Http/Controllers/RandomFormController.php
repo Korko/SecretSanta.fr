@@ -57,23 +57,20 @@ class RandomFormController extends Controller
 
     protected function getParticipants(Request $request)
     {
-        $names = $request->input('name');
-        $emails = $request->input('email');
-        $phones = $request->input('phone');
-        $exclusions = $request->input('exclusions', []);
+        $participants = $request->input('participants');
+        for ($i = 0; $i < count($participants); $i++) {
+            $participant =& $participants[$i];
 
-        $participants = [];
-        for ($i = 0; $i < count($names); $i++) {
-            if ($phones[$i] && substr($phones[$i], 0, 1) === '0') {
-                $phones[$i] = substr($phones[$i], 1);
+            if (!empty($participant['phone'])) {
+                if (substr($participant['phone'], 0, 1) === '0') {
+                    $participant['phone'] = substr($participant['phone'], 1);
+                }
+                $participant['phone'] = '+33'.$participant['phone'];
             }
-            $participants[$i] = [
-                'name'       => $names[$i],
-                'email'      => $emails[$i],
-                'phone'      => $phones[$i] ? '+33'.$phones[$i] : $phones[$i],
-                'exclusions' => (isset($exclusions[$i])) ? array_map('intval', $exclusions[$i]) : [],
-            ];
+
+            $participant['exclusions'] = array_map('intval', array_get($participant, 'exclusions', []));
         }
+        unset($participant);
 
         return $participants;
     }
