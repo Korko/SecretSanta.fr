@@ -48,6 +48,8 @@ class DrawHandler
 
         $draw = Draw::prepareAndSave($mailContent, $dearSantaExpiration, $participants[0], $this->symKey, $dearSantaDraw);
 
+        $organizerLink = $this->getOrganizerLink($draw, $this->symKey);
+
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = $participants[$santaIdx];
             $target = $participants[$targetIdx];
@@ -63,12 +65,12 @@ class DrawHandler
 
                 $participant = Participant::prepareAndSave($draw, $santa, $this->symKey, $dearSantaLink);
 
-                $this->sendSingleMail($mailContent, $santa, $target, $participant, $dearSantaLink);
+                $this->sendSingleMail($mailContent, $santa, $target, $participant, $dearSantaLink, ($santaIdx === 0 ? $organizerLink : null));
             }
         }
     }
 
-    protected function sendSingleMail(array $mailContent, array $santa, array $target, Participant $participant, $dearSantaLink = null)
+    protected function sendSingleMail(array $mailContent, array $santa, array $target, Participant $participant, $dearSantaLink = null, $organizerLink = null)
     {
         $substitutions = [
             '{SANTA}'  => $santa['name'],
@@ -79,7 +81,7 @@ class DrawHandler
 
         Mail::to($santa['email'], $santa['name'])
             ->send(
-                (new TargetDrawn($mailContent['title'], $mailContent['body'], $dearSantaLink))
+                (new TargetDrawn($mailContent['title'], $mailContent['body'], $dearSantaLink, $organizerLink))
                     ->withSubstitutions($substitutions)
                     ->withEventData([
                         'participant' => $participant,
@@ -106,6 +108,11 @@ class DrawHandler
 
         $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $smsBody);
         Sms::message($santa['phone'], $contentSms);
+    }
+
+    protected function getOrganizerLink(Draw $draw)
+    {
+        return route('organizer', ['draw' => Hashids::encode($draw->id)]).'#'.base64_encode($this->symKey);
     }
 
     protected function getDearSantaLink(DearSantaDraw $dearSantaDraw, array $santa, $dearSantaExpiration)

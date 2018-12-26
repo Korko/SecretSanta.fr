@@ -120,6 +120,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'challenge' => 'Ping?',
+
     /*
     |--------------------------------------------------------------------------
     | Logging Configuration
