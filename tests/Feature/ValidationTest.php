@@ -62,7 +62,6 @@ class ValidationTest extends RequestCase
             ['name' => 'tata', 'phone' => ''],
             ['name' => 'tutu', 'phone' => ''],
         ]], 422);
-        dd($content);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'participants.1.email', 'participants.1.phone', 'participants.2.email', 'participants.2.phone', 'contentSMS'], $content);
 
         // Ok for names but partial contact infos (mail)
