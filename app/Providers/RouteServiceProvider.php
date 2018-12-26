@@ -32,6 +32,13 @@ class RouteServiceProvider extends ServiceProvider
             abort(404);
         });
 
+        Route::bind('draw', function ($value) {
+            if (($ids = Hashids::decode($value)) && ($draw = Draw::find($ids[0]))) {
+                return $draw;
+            }
+            abort(404);
+        });
+
         parent::boot();
     }
 

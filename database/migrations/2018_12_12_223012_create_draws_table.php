@@ -21,6 +21,7 @@ class CreateDrawsTable extends Migration
             $table->string('organizer_email')->nullable();
             $table->date('expiration');
             $table->integer('dear_santa_draw_id')->unsigned()->nullable();
+            $table->string('challenge');
             $table->timestamps();
 
             $table->foreign('dear_santa_draw_id')

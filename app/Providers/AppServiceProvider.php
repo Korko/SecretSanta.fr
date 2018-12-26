@@ -29,10 +29,6 @@ class AppServiceProvider extends ServiceProvider
                 return array_key_exists($value, array_get($validator->getData(), $parameter));
             });
         });
-
-        Validator::extend('required_with_any', function ($attribute, $value, $parameters, $validator) {
-            dd($attribute, $value, $parameters, $validator);
-        });
     }
 
     /**

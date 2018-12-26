@@ -25,6 +25,7 @@ class Draw extends Model
         $draw->organizer_name = $encrypter->encrypt($organizer['name']);
         $draw->organizer_email = $encrypter->encrypt($organizer['email']);
         $draw->dear_santa_draw_id = $dearSantaDraw ? $dearSantaDraw->id : null;
+        $draw->challenge = $encrypter->encrypt(config('app.challenge'), false); // tested by JS so no serializing
         $draw->save();
 
         return $draw;

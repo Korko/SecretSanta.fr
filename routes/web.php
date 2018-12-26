@@ -20,6 +20,10 @@ Route::pattern('santa', '[0-9a-zA-Z]{'.config('hashids.connections')[config('has
 Route::get('/dearsanta/{santa}', 'DearSantaController@view')->name('dearsanta');
 Route::post('/dearsanta/{santa}', 'DearSantaController@handle');
 
+Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections')[config('hashids.default')]['length'].'}');
+Route::get('/admin/{draw}', 'OrganizerController@view')->name('organizer');
+Route::post('/admin/{draw}', 'OrganizerConroller@handle');
+
 Route::post('/event', 'EmailEventController@handle');
 
 if ($this->app->environment('local', 'dev', 'testing')) {
