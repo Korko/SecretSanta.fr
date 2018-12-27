@@ -17,7 +17,7 @@ var Papa = require('papaparse');
 var Lang = require('./lang.js');
 Lang.setLocale(window.global.lang);
 
-var Select2 = require('../vuejs/select2.vue');
+var Select2 = require('./components/select2.vue');
 
 var VueAjax = require('./ajaxVue.js');
 window.app = new VueAjax({
