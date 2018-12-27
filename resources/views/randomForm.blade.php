@@ -1,4 +1,4 @@
-@extends('templates/layout', ['styles' => '/assets/randomForm.css'])
+@extends('templates/layout', ['styles' => '/css/randomForm.css'])
 
 @section('header')
     @parent
@@ -53,7 +53,7 @@
                 <ul class="media-list">
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="assets/images/calendar-icon.png" />
+                            <img class="media-object" src="/images/calendar-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.what.heading1')</h4>
@@ -84,7 +84,7 @@
                 <ul class="media-list">
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="assets/images/user-icon.png" />
+                            <img class="media-object" src="/images/user-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading1')</h4>
@@ -97,12 +97,12 @@
                             <p>{!! nl2br(trans('form.section.how.content2')) !!}</p>
                         </div>
                         <div class="media-right media-middle">
-                            <img class="media-object" src="assets/images/paper-icon.png" />
+                            <img class="media-object" src="/images/paper-icon.png" />
                         </div>
                     </li>
                     <li class="media">
                         <div class="media-left media-middle">
-                            <img class="media-object" src="assets/images/mail-icon.png" />
+                            <img class="media-object" src="/images/mail-icon.png" />
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading3')</h4>
@@ -178,10 +178,10 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><span class="glyphicon glyphicon-plus"></span> @lang('form.participant.add')</button>
+                                <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><span class="fas fa-plus"></span> @lang('form.participant.add')</button>
                                 <button type="button" class="btn btn-warning participants-import" @click="showModal = true" :disabled="importing">
-                                    <span v-if="importing"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.participants.importing')</span>
-                                    <span v-else><span class="glyphicon glyphicon-list-alt"></span> @lang('form.participants.import')</span>
+                                    <span v-if="importing"><span class="fas fa-spinner"></span> @lang('form.participants.importing')</span>
+                                    <span v-else><span class="fas fa-list-alt"></span> @lang('form.participants.import')</span>
                                 </button>
                             </div>
                         </fieldset>
@@ -226,7 +226,7 @@
                             <div id="form-options" class="form-group">
                                 <label><input type="checkbox" name="dearsanta" v-model="dearsanta" value="1"/> @lang('form.dearsanta')</label>
                                 <p class="tip" role="alert">
-                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    <span class="fas fa-exclamation-triangle" aria-hidden="true"></span>
                                     @lang('form.dearsanta.warning')
                                 </p>
                                 <label><input type="date" name="dearsanta-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" :disabled="!dearsanta" /> @lang('form.dearsanta.limit')</label>
@@ -240,8 +240,8 @@
                             {{ csrf_field() }}
 
                             <button type="submit" class="btn btn-primary btn-lg">
-                                <span v-if="sending"><span class="glyphicon glyphicon-refresh spinning"></span> @lang('form.sending')</span>
-                                <span v-else-if="sent"><span class="glyphicon glyphicon-ok"></span> @lang('form.sent')</span>
+                                <span v-if="sending"><span class="fas fa-spinner"></span> @lang('form.sending')</span>
+                                <span v-else-if="sent"><span class="fas fa-check-circle"></span> @lang('form.sent')</span>
                                 <span v-else>@lang('form.submit')</span>
                             </button>
                         </fieldset>
@@ -268,7 +268,10 @@
 @stop
 
 @section('script')
-    <script type="text/javascript" src="{{ URL::asset('assets/randomForm.js') }}"></script>
+    @parent
+
+    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/randomForm.js') }}"></script>
 
     {!! NoCaptcha::renderJs(App::getLocale()) !!}
 @stop

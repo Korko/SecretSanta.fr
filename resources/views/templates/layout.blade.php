@@ -8,7 +8,7 @@
     @section('header')
         <title>@lang('headers.title')</title>
 
-        <link rel="canonical" href="{{ URL::to('/') }}">
+        <link rel="canonical" href="{{ url('/') }}">
 
         <!-- meta -->
         <meta charset="utf-8">
@@ -21,8 +21,8 @@
         <!-- opengraph/facebook -->
         <meta property="og:title" content="SecretSanta">
         <meta property="og:site_name" content="SecretSanta">
-        <meta property="og:url" content="{{ URL::to('/') }}">
-        <meta property="og:image" content="{{ URL::asset('/assets/images/logo_black.png') }}">
+        <meta property="og:url" content="{{ url('/') }}">
+        <meta property="og:image" content="{{ url('/images/logo_black.png') }}">
         <meta property="og:description" content="@lang('headers.description')">
         <meta property="og:type" content="website">
         <meta property="og:locale" content="{{ App::getLocale() }}">
@@ -33,17 +33,17 @@
         <meta name="twitter:creator" content="Korko">
         <meta name="twitter:title" content="SecretSanta">
         <meta name="twitter:description" content="@lang('headers.description')">
-        <meta name="twitter:image" content="{{ URL::asset('/assets/images/logo_black.png') }}">
+        <meta name="twitter:image" content="{{ url('/images/logo_black.png') }}">
 
         <!-- facebook image -->
-        <link rel="image_src" href="{{ URL::asset('/assets/images/logo_black.png') }}" />
+        <link rel="image_src" href="{{ url('/images/logo_black.png') }}" />
 
         <!-- css -->
         @php
-            $styles = (array) (isset($styles) ? $styles : '/assets/layout.css');
+            $styles = (array) (isset($styles) ? $styles : '/css/layout.css');
         @endphp
         @foreach($styles as $style)
-            <link rel="stylesheet" href="{{ URL::asset($style) }}" />
+            <link rel="stylesheet" href="{{ mix($style) }}" />
         @endforeach
     @show
 </head>
@@ -55,7 +55,7 @@
                 <nav id="navbar">
                     <div id="logo">
                         <a href="#header">
-                            <img src="{{ URL::asset('/assets/images/logo.png') }}" alt="" />
+                            <img src="/images/logo.png" alt="" />
                         </a>
                     </div>
                     <ul class="nav navbar-nav hidden-xs">
@@ -99,7 +99,10 @@
 
     <span id="forkongithub" class="hidden-sm"><a href="https://framagit.org/Korko/SecretSanta" title="Fork me on GitLab">Fork me on GitLab<br/>Current version {{ $version }}</a></span>
 
-    @yield('script')
+    @section('script')
+        <script src="{{ mix('/js/manifest.js') }}"></script>
+        <script src="{{ mix('/js/vendor.js') }}"></script>
+    @show
 </body>
 </html>
 
