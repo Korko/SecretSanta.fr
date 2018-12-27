@@ -50,23 +50,23 @@
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
     <div id="wrap">
     <div id="main">
-        <div id="menu" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div id="menu" class="navbar navbar-dark bg-dark fixed-top navbar-expand-md" role="navigation">
             <div class="container">
                 <nav id="navbar">
                     <div id="logo">
                         <a href="#header">
-                            <img src="/images/logo.png" alt="" />
+                            <img src="/images/logo.png" />
                         </a>
                     </div>
-                    <ul class="nav navbar-nav hidden-xs">
+                    <ul class="nav navbar-nav hidden-xsd-none d-sm-block">
                         @yield('navbar')
 
                         <!--fix for scroll spy active menu element-->
-                        <li style="display:none;"><a href="#header"></a></li>
+                        <li style="display:none;" class="nav-item"><a href="#header" class="nav-link"></a></li>
                     </ul>
-                    <ul class="visible-xs list-inline">
+                    <ul class="d-block d-sm-none list-inline">
                         @foreach(config('app.domains') as $locale => $domain)
-                            <li><a href="https://{{ $domain }}"><span class="lang-lg" lang="{{ $locale }}"></span></a></li>
+                            <li class="list-inline-item"><a href="https://{{ $domain }}"><span class="lang-lg" lang="{{ $locale }}"></span></a></li>
                         @endforeach
                     </ul>
                 </nav><!--/.navbar-collapse -->
@@ -85,11 +85,11 @@
         <section class="ss-style-top"></section>
         <div class="container inner">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-md-6">
                     @section('copyright')
                         &copy; Copyright SecretSanta.fr 2015
-                        <br/>{!! trans('footer.project', ['author' => '<a class="themeBy" href="https://www.korko.fr">Korko</a>']) !!}
-                        <br/>{!! trans('footer.theme', ['author' => '<a class="themeBy" href="https://www.themewagon.com">ThemeWagon</a>']) !!}
+                        <br />{!! trans('footer.project', ['author' => '<a class="themeBy" href="https://www.korko.fr">Korko</a>']) !!}
+                        <br />{!! trans('footer.theme', ['author' => '<a class="themeBy" href="https://www.themewagon.com">ThemeWagon</a>']) !!}
                     @show
                 </div>
             </div>
@@ -105,4 +105,3 @@
     @show
 </body>
 </html>
-

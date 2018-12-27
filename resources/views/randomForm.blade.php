@@ -13,20 +13,22 @@
 @stop
 
 @section('navbar')
-                <li><a href="#what">@lang('form.nav.what')</a></li>
-                <li><a href="#how">@lang('form.nav.how')</a></li>
-                <li><a href="#form">@lang('form.nav.go')</a></li>
+    <li><a href="#what">@lang('form.nav.what')</a></li>
+    <li><a href="#how">@lang('form.nav.how')</a></li>
+    <li><a href="#form">@lang('form.nav.go')</a></li>
 
-                <li class="btn-group btn-group-xs dropdown">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <span class="lang-xs lang-lbl" lang="{{ App::getLocale() }}"></span> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        @foreach(array_diff_key(config('app.domains'), [App::getLocale() => '']) as $locale => $domain)
-                            <li><a href="https://{{ $domain }}"><span class="lang-sm lang-lbl" lang="{{ $locale }}"></span></a></li>
-                        @endforeach
-                    </ul>
+    <li class="btn-group btn-group-xs dropdown">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <span class="lang-xs lang-lbl" lang="{{ App::getLocale() }}"></span> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            @foreach(array_diff_key(config('app.domains'), [App::getLocale() => '']) as $locale => $domain)
+                <li class="dropdown-item">
+                    <a href="https://{{ $domain }}"><span class="lang-sm lang-lbl" lang="{{ $locale }}"></span></a>
                 </li>
+            @endforeach
+        </ul>
+    </li>
 @stop
 
 @section('body')
@@ -34,15 +36,16 @@
         <div class="bg-overlay"></div>
         <div class="center text-center">
             <div class="banner">
-                <h1 class="">@lang('form.title')</h1>
+                <h1>@lang('form.title')</h1>
             </div>
-            <div class="subtitle"><h4>@lang('form.subtitle')</h4></div>
+            <div class="subtitle">
+                <h4>@lang('form.subtitle')</h4>
+            </div>
         </div>
         <div class="bottom text-center">
             <a id="scrollDownArrow" href="#"><i class="fa fa-chevron-down"></i></a>
         </div>
-    </div>
-    <!-- /#header -->
+    </div><!-- /#header -->
 
     <div id="what" class="light-wrapper">
         <section class="ss-style-top"></section>
@@ -61,18 +64,14 @@
                         </div>
                     </li>
                 </ul>
-                <div class="well well-lg">{!! nl2br(trans('form.section.what.notice', ['button' => str_replace("\n", '', view('partials.paypalButton'))])) !!}</div>
+                <div class="card bg-light card-body mb-3 well-lg">{!! nl2br(trans('form.section.what.notice', ['button' => str_replace("\n", '', view('partials.paypalButton'))])) !!}</div>
             </div>
-        </div>
-        <!-- /.container -->
+        </div><!-- /.container -->
         <section class="ss-style-bottom"></section>
     </div><!-- #what -->
 
     <div class="parallax">
-        <div class="container inner">
-
-        </div>
-        <!-- /.container -->
+        <div class="container inner"></div><!-- /.container -->
     </div><!-- #spacer1 -->
 
     <div id="how" class="light-wrapper">
@@ -110,18 +109,14 @@
                         </div>
                     </li>
                 </ul>
-                <div class="well well-lg">{!! nl2br(trans('form.section.how.notice', ['link' => '<a href="https://github.com/Korko/SecretSanta">GitHub</a>'])) !!}</div>
+                <div class="card bg-light card-body mb-3 well-lg">{!! nl2br(trans('form.section.how.notice', ['link' => '<a href="https://github.com/Korko/SecretSanta">GitHub</a>'])) !!}</div>
             </div>
-        </div>
-        <!-- /.container -->
+        </div><!-- /.container -->
         <section class="ss-style-bottom"></section>
     </div><!--/#how-->
 
     <div class="parallax parallax2">
-        <div class="container inner">
-
-        </div>
-        <!-- /.container -->
+        <div class="container inner"></div><!-- /.container -->
     </div><!-- #spacer1 -->
 
     @include('templates/participant')
@@ -150,12 +145,12 @@
                                 <table id="participants" class="table table-hover table-striped table-numbered">
                                     <thead>
                                         <tr>
-                                            <th class="col-lg-3">@lang('form.participant.name')</th>
-                                            <th class="col-lg-3">@lang('form.participant.email')</th>
-                                            <th class="col-lg-0"></th>
-                                            <th class="col-lg-3">@lang('form.participant.phone')</th>
-                                            <th class="col-lg-2">@lang('form.participant.exclusions')</th>
-                                            <th class="col-lg-1"></th>
+                                            <th class="col-xl-3">@lang('form.participant.name')</th>
+                                            <th class="col-xl-3">@lang('form.participant.email')</th>
+                                            <th class="col-xl-0"></th>
+                                            <th class="col-xl-3">@lang('form.participant.phone')</th>
+                                            <th class="col-xl-2">@lang('form.participant.exclusions')</th>
+                                            <th class="col-xl-1"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -194,7 +189,7 @@
                         <fieldset>
                             <legend>Messages</legend>
                             <div class="row" id="contact">
-                                <fieldset id="form-mail-group" class="col-md-6">
+                                <fieldset id="form-mail-group" class="col-lg-6">
                                     <div class="form-group">
                                         <label for="mailTitle">@lang('form.mail.title')</label>
                                         <input id="mailTitle" type="text" name="title" :required="this.emailUsed" placeholder="@lang('form.mail.title.placeholder')" value="" class="form-control" />
@@ -204,19 +199,19 @@
                                         <textarea id="mailContent" name="contentMail" :required="this.emailUsed" placeholder="@lang('form.mail.content.placeholder')" class="form-control" rows="3" v-autosize></textarea>
                                         <textarea id="mailPost" class="form-control" read-only disabled v-if="!dearsanta">@lang('form.mail.post')</textarea>
                                         <textarea id="mailPost" class="form-control extended" read-only disabled v-else>@lang('form.mail.post2')</textarea>
-                                        <p class="help-block">@lang('form.mail.content.tip1')</p>
-                                        <p class="help-block">@lang('form.mail.content.tip2')</p>
+
+                                        <p class="form-text">@lang('form.mail.content.tip1')</p>
+                                        <p class="form-text">@lang('form.mail.content.tip2')</p>
                                     </div>
                                 </fieldset>
-
-                                <fieldset id="form-sms-group" class="col-md-6">
+                                <fieldset id="form-sms-group" class="col-lg-6">
                                     <div class="form-group">
                                         <label for="smsContent" v-if="smsCount <= 1">@lang('form.sms.content', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
                                         <label for="smsContent" v-else>@lang('form.sms.content.multiple', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
                                         <textarea id="smsContent" name="contentSMS" :required="this.phoneUsed" :maxlength="maxLength" placeholder="@lang('form.sms.content.placeholder')" class="form-control" rows="3" v-model="smsContent" v-autosize></textarea>
 
-                                        <p class="help-block">@lang('form.sms.content.tip1')</p>
-                                        <p class="help-block">@lang('form.sms.content.tip2')</p>
+                                        <p class="form-text">@lang('form.sms.content.tip1')</p>
+                                        <p class="form-text">@lang('form.sms.content.tip2')</p>
                                     </div>
                                 </fieldset>
                             </div>
@@ -224,12 +219,12 @@
                         <fieldset>
                             <legend>Options</legend>
                             <div id="form-options" class="form-group">
-                                <label><input type="checkbox" name="dearsanta" v-model="dearsanta" value="1"/> @lang('form.dearsanta')</label>
+                                <label><input type="checkbox" name="dearsanta" v-model="dearsanta" value="1" />@lang('form.dearsanta')</label>
                                 <p class="tip" role="alert">
                                     <span class="fas fa-exclamation-triangle" aria-hidden="true"></span>
                                     @lang('form.dearsanta.warning')
                                 </p>
-                                <label><input type="date" name="dearsanta-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" :disabled="!dearsanta" /> @lang('form.dearsanta.limit')</label>
+                                <label><input type="date" name="dearsanta-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" :disabled="!dearsanta" />@lang('form.dearsanta.limit')</label>
                             </div>
                         </fieldset>
                         <fieldset>
@@ -247,24 +242,19 @@
                         </fieldset>
                     </fieldset>
                 </form>
+            </div><!-- /.services -->
 
-            </div>
-            <!-- /.services -->
-
-            <div id="errors-wrapper" class="alert alert-danger v-rcloak">
-                @lang('form.waiting')
-            </div>
-
+            <div id="errors-wrapper" class="alert alert-danger v-rcloak">@lang('form.waiting')</div>
             <csv v-if="showModal" @import="importParticipants" @close="showModal = false"></csv>
-        </div>
-        <!-- /.container -->
+        </div><!-- /.container -->
+
     </div>
 @stop
 
 @section('copyright')
     @parent
 
-    <br/>{!! trans('footer.icons', ['author' => '<a class="themeBy" href="https://www.iconfinder.com/iconsets/doublejdesign-free-icon-handy_color">Double-J Designs</a>']) !!}
+    <br />{!! trans('footer.icons', ['author' => '<a class="themeBy" href="https://www.iconfinder.com/iconsets/doublejdesign-free-icon-handy_color">Double-J Designs</a>']) !!}
 @stop
 
 @section('script')
