@@ -1,18 +1,18 @@
 $footer-height: 120px;
 @import "layout";
 
-@import "alertify";
-@import "multiple-select";
+@import "~alertify.js/src/sass/alertify";
+@import "~multiple-select/multiple-select";
 
-@import "jquery.ui.core";
-@import "jquery.ui.theme";
-@import "jquery.ui.datepicker";
+/*@import "~jquery-ui/themes/base/core";
+@import "~jquery-ui/themes/base/theme";*/
+@import "~jquery-ui/themes/base/datepicker";
 
 /* ==========================================================================
     04. Parallax
 ========================================================================== */
 .parallax {
-    background: url(/assets/images/gifts-2.jpg) fixed no-repeat center center;
+    background: url(/images/gifts-2.jpg) fixed no-repeat center center;
     -moz-background-size: cover;
     background-size: cover;
     position: relative;
@@ -23,7 +23,7 @@ $footer-height: 120px;
     padding-bottom: 130px;
 }
 .parallax.parallax2 {
-    background-image: url(/assets/images/gifts-3.jpg);
+    background-image: url(/images/gifts-3.jpg);
 }
 
 
@@ -101,7 +101,7 @@ fieldset > div.form-group {
 }
 .input-group-addon.lang:before {
     background-repeat: no-repeat;
-    background-image: url(/assets/images/languages.png);
+    background-image: url(/images/languages.png);
     height: 11px;
     width: 14px;
     content: '';
@@ -157,10 +157,10 @@ fieldset > div.form-group {
     font-style: italic;
     font-size: 12px;
 }
-.glyphicon.spinning {
+.fas.fa-spinner {
     animation: spin 1s infinite linear;
 }
-button .glyphicon.spinning {
+button .fa-spinner {
     margin-right: 10px;
 }
 @keyframes spin {

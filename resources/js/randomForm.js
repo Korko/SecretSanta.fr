@@ -1,5 +1,4 @@
 var $ = require('jquery');
-require('jquery-ui-browserify');
 
 var alertify = require('alertify.js');
 var SmsTools = require('./smsTools.js');
@@ -17,6 +16,8 @@ var Papa = require('papaparse');
 
 var Lang = require('./lang.js');
 Lang.setLocale(window.global.lang);
+
+var Select2 = require('../vuejs/select2.vue');
 
 var VueAjax = require('./ajaxVue.js');
 window.app = new VueAjax({
@@ -88,7 +89,7 @@ window.app = new VueAjax({
         };
       },
       components: {
-        select2: require('../vuejs/select2.vue')
+        select2: Select2
       },
       computed: {
         participantNames: function() {
