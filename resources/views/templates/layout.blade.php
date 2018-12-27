@@ -50,7 +50,7 @@
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
     <div id="wrap">
     <div id="main">
-        <div id="menu" class="navbar navbar-dark bg-dark fixed-top navbar-expand-md" role="navigation">
+        <div id="menu" class="navbar navbar-dark fixed-top navbar-expand-md" role="navigation">
             <div class="container">
                 <nav id="navbar">
                     <div id="logo">
@@ -64,11 +64,13 @@
                         <!--fix for scroll spy active menu element-->
                         <li style="display:none;" class="nav-item"><a href="#header" class="nav-link"></a></li>
                     </ul>
+<!--
                     <ul class="d-block d-sm-none list-inline">
                         @foreach(config('app.domains') as $locale => $domain)
                             <li class="list-inline-item"><a href="https://{{ $domain }}"><span class="lang-lg" lang="{{ $locale }}"></span></a></li>
                         @endforeach
                     </ul>
+-->
                 </nav><!--/.navbar-collapse -->
             </div><!-- container -->
         </div><!-- menu -->
