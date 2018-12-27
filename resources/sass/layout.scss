@@ -1,16 +1,19 @@
+// Fonts
 @import url('https://fonts.googleapis.com/css?family=Kreon:300,400,700');
 
-$icon-font-path: "/assets/fonts/bootstrap/";
-@import "bootstrap";
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
 
-$fa-font-path: "/assets/fonts";
-@import "font-awesome";
+// Font Awesome
+$fa-font-path: "~font-awesome/fonts/";
+@import "~font-awesome/scss/font-awesome";
 
-@import "languages";
+// Bootstrap Languages
+@import "../vendor/bootstrap-languages/languages";
 
-.lang-xs { background-image: url('/assets/images/languages.png') !important; }
-.lang-sm { background-image: url('/assets/images/languages.png') !important; }
-.lang-lg { background-image: url('/assets/images/languages.png') !important; }
+.lang-xs { background-image: url('../vendor/bootstrap-languages/languages.png') !important; }
+.lang-sm { background-image: url('../vendor/bootstrap-languages/languages.png') !important; }
+.lang-lg { background-image: url('../vendor/bootstrap-languages/languages.png') !important; }
 
 /*  
 Sticky Footer Solution
@@ -151,7 +154,7 @@ img {
     02. Header
 ========================================================================== */
 #header {
-    background-image: url(/assets/images/gifts-1.jpg);
+    background-image: url(/images/gifts-1.jpg);
     -moz-background-size: cover;
     background-size: cover;
     background-position: center center;
