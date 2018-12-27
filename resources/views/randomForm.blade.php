@@ -17,6 +17,7 @@
     <li><a href="#how">@lang('form.nav.how')</a></li>
     <li><a href="#form">@lang('form.nav.go')</a></li>
 
+<!--
     <li class="btn-group btn-group-xs dropdown">
         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="lang-xs lang-lbl" lang="{{ App::getLocale() }}"></span> <span class="caret"></span>
@@ -29,6 +30,7 @@
             @endforeach
         </ul>
     </li>
+-->
 @stop
 
 @section('body')

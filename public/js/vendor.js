@@ -13,6 +13,110 @@
 
 /***/ }),
 
+/***/ "./node_modules/autosize-input/autosize-input.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/autosize-input/autosize-input.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function () {
+  // Compile and cache the needed regular expressions.
+  var SPACE = /\s/g
+  var LESS_THAN = />/g
+  var MORE_THAN = /</g
+
+  // We need to swap out these characters with their character-entity
+  // equivalents because we're assigning the resulting string to
+  // `ghost.innerHTML`.
+  function escape (str) {
+    return str.replace(SPACE, '&nbsp;')
+              .replace(LESS_THAN, '&lt;')
+              .replace(MORE_THAN, '&gt;')
+  }
+
+  // Create the `ghost` element, with inline styles to hide it and ensure
+  // that the text is all on a single line.
+  var GHOST_ELEMENT_ID = '__autosizeInputGhost'
+  function createGhostElement () {
+    var ghost = document.createElement('div')
+    ghost.id = GHOST_ELEMENT_ID
+    ghost.style.cssText = 'display:inline-block;height:0;overflow:hidden;position:absolute;top:0;visibility:hidden;white-space:nowrap;'
+    document.body.appendChild(ghost)
+    return ghost
+  }
+
+  // Create the `ghost` element.
+  var ghost = createGhostElement()
+
+  function autosizeInput (element, options) {
+    // Copy all width-affecting styles to the ghost element
+    var elementStyle = window.getComputedStyle(element)
+    var elementCssText = 'box-sizing:' + elementStyle.boxSizing +
+                        ';border-left:' + elementStyle.borderLeftWidth + ' solid black' +
+                        ';border-right:' + elementStyle.borderRightWidth + ' solid black' +
+                        ';font-family:' + elementStyle.fontFamily +
+                        ';font-feature-settings:' + elementStyle.fontFeatureSettings +
+                        ';font-kerning:' + elementStyle.fontKerning +
+                        ';font-size:' + elementStyle.fontSize +
+                        ';font-stretch:' + elementStyle.fontStretch +
+                        ';font-style:' + elementStyle.fontStyle +
+                        ';font-variant:' + elementStyle.fontVariant +
+                        ';font-variant-caps:' + elementStyle.fontVariantCaps +
+                        ';font-variant-ligatures:' + elementStyle.fontVariantLigatures +
+                        ';font-variant-numeric:' + elementStyle.fontVariantNumeric +
+                        ';font-weight:' + elementStyle.fontWeight +
+                        ';letter-spacing:' + elementStyle.letterSpacing +
+                        ';margin-left:' + elementStyle.marginLeft +
+                        ';margin-right:' + elementStyle.marginRight +
+                        ';padding-left:' + elementStyle.paddingLeft +
+                        ';padding-right:' + elementStyle.paddingRight +
+                        ';text-indent:' + elementStyle.textIndent +
+                        ';text-transform:' + elementStyle.textTransform
+
+    // Helper function that:
+    // 1. Copies `font-family`, `font-size` and other styles of our `element` onto `ghost`.
+    // 2. Sets the contents of `ghost` to the specified `str`.
+    // 3. Copies the width of `ghost` onto our `element`.
+    function set (str) {
+      str = str || element.value || element.getAttribute('placeholder') || ''
+      // Check if the `ghost` element still exists. If no, create it.
+      if (document.getElementById(GHOST_ELEMENT_ID) === null) {
+        ghost = createGhostElement()
+      }
+      ghost.style.cssText += elementCssText
+      ghost.innerHTML = escape(str)
+      var width = window.getComputedStyle(ghost).width
+      element.style.width = width
+      return width
+    }
+
+    // Call `set` on every `input` event (IE9+).
+    element.addEventListener('input', function () {
+      set()
+    })
+
+    // Initialise the `element` width.
+    var width = set()
+
+    // Set `min-width` if `options.minWidth` was set, and only if the initial
+    // width is non-zero.
+    if (options && options.minWidth && width !== '0px') {
+      element.style.minWidth = width
+    }
+
+    // Return the `set` function.
+    return set
+  }
+
+  if (true) {
+    module.exports = autosizeInput
+  } else {}
+})()
+
+
+/***/ }),
+
 /***/ "./node_modules/autosize/dist/autosize.js":
 /*!************************************************!*\
   !*** ./node_modules/autosize/dist/autosize.js ***!
@@ -21,21 +125,21 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	Autosize 3.0.21
+	autosize 4.0.2
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
 (function (global, factory) {
 	if (true) {
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [module, exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else { var mod; }
-})(this, function (exports, module) {
+})(this, function (module, exports) {
 	'use strict';
 
-	var map = typeof Map === "function" ? new Map() : (function () {
+	var map = typeof Map === "function" ? new Map() : function () {
 		var keys = [];
 		var values = [];
 
@@ -52,7 +156,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 					values.push(value);
 				}
 			},
-			'delete': function _delete(key) {
+			delete: function _delete(key) {
 				var index = keys.indexOf(key);
 				if (index > -1) {
 					keys.splice(index, 1);
@@ -60,7 +164,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 				}
 			}
 		};
-	})();
+	}();
 
 	var createEvent = function createEvent(name) {
 		return new Event(name, { bubbles: true });
@@ -69,7 +173,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		new Event('test');
 	} catch (e) {
 		// IE does not support `new Event()`
-		createEvent = function (name) {
+		createEvent = function createEvent(name) {
 			var evt = document.createEvent('Event');
 			evt.initEvent(name, true, false);
 			return evt;
@@ -80,7 +184,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || map.has(ta)) return;
 
 		var heightOffset = null;
-		var clientWidth = ta.clientWidth;
+		var clientWidth = null;
 		var cachedHeight = null;
 
 		function init() {
@@ -139,21 +243,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		}
 
 		function resize() {
-			var originalHeight = ta.style.height;
-			var overflows = getParentOverflows(ta);
-			var docTop = document.documentElement && document.documentElement.scrollTop; // Needed for Mobile IE (ticket #240)
-
-			ta.style.height = 'auto';
-
-			var endHeight = ta.scrollHeight + heightOffset;
-
 			if (ta.scrollHeight === 0) {
 				// If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
-				ta.style.height = originalHeight;
 				return;
 			}
 
-			ta.style.height = endHeight + 'px';
+			var overflows = getParentOverflows(ta);
+			var docTop = document.documentElement && document.documentElement.scrollTop; // Needed for Mobile IE (ticket #240)
+
+			ta.style.height = '';
+			ta.style.height = ta.scrollHeight + heightOffset + 'px';
 
 			// used to check if an update is actually necessary on window.resize
 			clientWidth = ta.clientWidth;
@@ -177,9 +276,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 			// Using offsetHeight as a replacement for computed.height in IE, because IE does not account use of border-box
 			var actualHeight = computed.boxSizing === 'content-box' ? Math.round(parseFloat(computed.height)) : ta.offsetHeight;
 
-			// The actual height not matching the style height (set via the resize method) indicates that
+			// The actual height not matching the style height (set via the resize method) indicates that 
 			// the max-height has been exceeded, in which case the overflow should be allowed.
-			if (actualHeight !== styleHeight) {
+			if (actualHeight < styleHeight) {
 				if (computed.overflowY === 'hidden') {
 					changeOverflow('scroll');
 					resize();
@@ -212,7 +311,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 			}
 		};
 
-		var destroy = (function (style) {
+		var destroy = function (style) {
 			window.removeEventListener('resize', pageResize, false);
 			ta.removeEventListener('input', update, false);
 			ta.removeEventListener('keyup', update, false);
@@ -223,8 +322,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 				ta.style[key] = style[key];
 			});
 
-			map['delete'](ta);
-		}).bind(ta, {
+			map.delete(ta);
+		}.bind(ta, {
 			height: ta.style.height,
 			resize: ta.style.resize,
 			overflowY: ta.style.overflowY,
@@ -273,7 +372,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 	// Do nothing in Node.js environment and IE8 (or lower)
 	if (typeof window === 'undefined' || typeof window.getComputedStyle !== 'function') {
-		autosize = function (el) {
+		autosize = function autosize(el) {
 			return el;
 		};
 		autosize.destroy = function (el) {
@@ -283,7 +382,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 			return el;
 		};
 	} else {
-		autosize = function (el, options) {
+		autosize = function autosize(el, options) {
 			if (el) {
 				Array.prototype.forEach.call(el.length ? el : [el], function (x) {
 					return assign(x, options);
@@ -305,7 +404,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		};
 	}
 
-	module.exports = autosize;
+	exports.default = autosize;
+	module.exports = exports['default'];
 });
 
 /***/ }),
@@ -38715,27 +38815,41 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ "./node_modules/vue-autosize/index.js":
-/*!********************************************!*\
-  !*** ./node_modules/vue-autosize/index.js ***!
-  \********************************************/
+/***/ "./node_modules/vue-autosize/src/index.js":
+/*!************************************************!*\
+  !*** ./node_modules/vue-autosize/src/index.js ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var autosize = __webpack_require__(/*! autosize */ "./node_modules/autosize/dist/autosize.js");
+var autosize = __webpack_require__(/*! autosize */ "./node_modules/autosize/dist/autosize.js")
+var autoSizeInput = __webpack_require__(/*! autosize-input */ "./node_modules/autosize-input/autosize-input.js")
+
 exports.install = function(Vue) {
   Vue.directive('autosize', {
-    bind: function(el) {
-      autosize(el)
+    bind: function(el, binding) {
+      var tagName = el.tagName
+      if (tagName == 'TEXTAREA') {
+        autosize(el)
+      } else if (tagName == 'INPUT' && el.type == 'text') {
+        autoSizeInput(el)
+      }
     },
-    update: function(el) {
-      autosize.update(el)
+
+    componentUpdated: function(el, binding, vnode) {
+      var tagName = el.tagName
+      if (tagName == 'TEXTAREA') {
+        autosize.update(el)
+      } else if (tagName == 'INPUT' && el.type == 'text') {
+        autoSizeInput(el)
+      }
     },
+
     unbind: function(el) {
       autosize.destroy(el)
     }
   })
-};
+}
 
 
 /***/ }),
