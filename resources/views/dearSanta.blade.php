@@ -18,6 +18,7 @@
             <span class="sr-only">Error:</span>
             This link is invalid, please try again
         </div>
+
         <form v-else action="{{ url('/dearsanta/'.$santa) }}" @submit.prevent="submit" method="post" autocomplete="off">
             <fieldset :disabled="sending || sent">
                 <fieldset>
