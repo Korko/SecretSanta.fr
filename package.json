@@ -33,7 +33,7 @@
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
         "vue": "^2.5.17",
-        "vue-autosize": "github:korko/vue-autosize#master",
+        "vue-autosize": "^1.0.2",
         "vue-template-compiler": "^2.5.21"
     }
 }
