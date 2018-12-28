@@ -1,25 +1,22 @@
-var $ = require('jquery');
+import jQuery from 'jquery';
 
-var alertify = require('alertify.js');
-var SmsTools = require('./smsTools.js');
+import alertify from 'alertify.js';
+import SmsTools from './smsTools.js';
 
-var Vue = require('vue');
-var VueAutosize = require('vue-autosize');
+import Vue from 'vue';
+import VueAutosize from 'vue-autosize';
 Vue.use(VueAutosize);
 
-require('browsernizr/test/file/filesystem');
-require('browsernizr/test/inputtypes');
-var Modernizr = require('browsernizr');
-var Moment = require('moment');
+import Modernizr from './modernizr.js';
+import Moment from 'moment';
+import Papa from 'papaparse';
 
-var Papa = require('papaparse');
-
-var Lang = require('./lang.js');
+import Lang from './lang.js';
 Lang.setLocale(window.global.lang);
 
-var Select2 = require('./components/select2.vue');
+import Select2 from './components/select2.vue';
 
-var VueAjax = require('./ajaxVue.js');
+import VueAjax from './ajaxVue.js';
 window.app = new VueAjax({
   el: '#form',
 

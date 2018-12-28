@@ -4,16 +4,18 @@
 /*!*********************************!*\
   !*** ./resources/js/ajaxVue.js ***!
   \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
 
 var Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
-module.exports = Vue.extend({
+/* harmony default export */ __webpack_exports__["default"] = (Vue.extend({
   data: function data() {
     return {
       fieldErrors: [],
@@ -57,7 +59,7 @@ module.exports = Vue.extend({
       }
     }
   }
-});
+}));
 
 /***/ }),
 
