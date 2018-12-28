@@ -13,24 +13,14 @@
 @stop
 
 @section('navbar')
-    <li><a href="#what">@lang('form.nav.what')</a></li>
-    <li><a href="#how">@lang('form.nav.how')</a></li>
-    <li><a href="#form">@lang('form.nav.go')</a></li>
-
-<!--
-    <li class="btn-group btn-group-xs dropdown">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-            <span class="lang-xs lang-lbl" lang="{{ App::getLocale() }}"></span> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            @foreach(array_diff_key(config('app.domains'), [App::getLocale() => '']) as $locale => $domain)
-                <li class="dropdown-item">
-                    <a href="https://{{ $domain }}"><span class="lang-sm lang-lbl" lang="{{ $locale }}"></span></a>
-                </li>
-            @endforeach
-        </ul>
-    </li>
--->
+    <ul class="nav navbar-nav d-inline-flex justify-content-end" style="flex: 1">
+        <li><a href="#what">@lang('form.nav.what')</a></li>
+        <li><a href="#how">@lang('form.nav.how')</a></li>
+    </ul>
+    <ul class="nav navbar-nav d-inline-flex justify-content-start" style="flex: 1">
+        <li><a href="#form">@lang('form.nav.go')</a></li>
+        <li><a href="#faq">@lang('form.nav.faq')</a></li>
+    </ul>
 @stop
 
 @section('body')
