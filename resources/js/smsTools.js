@@ -1,4 +1,4 @@
-module.exports = (function() {
+export default (function() {
 
   var lengths = {
     ascii: [160, 146, 153],
