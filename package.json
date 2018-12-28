@@ -13,14 +13,13 @@
         "alertify.js": "^1.0.12",
         "axios": "^0.18",
         "bootstrap": "^4.0.0",
-        "browsernizr": "^2.1.0",
         "cross-env": "^5.1",
         "crypto-js": "^3.1.9-1",
         "font-awesome": "^4.7.0",
         "jquery": "^3.2",
+        "jquery-ui": "^1.12.1",
         "jquery.actual": "github:dreamerslab/jquery.actual#master",
         "jquery.scrollto": "^2.1.2",
-        "jquery-ui": "^1.12.1",
         "lang.js": "^1.1.8",
         "laravel-localization-loader": "^1.0.5",
         "laravel-mix": "^4.0.7",
@@ -34,6 +33,7 @@
         "sass-loader": "^7.1.0",
         "vue": "^2.5.17",
         "vue-autosize": "^1.0.2",
-        "vue-template-compiler": "^2.5.21"
+        "vue-template-compiler": "^2.5.21",
+        "webpack-modernizr-loader": "^4.0.1"
     }
 }

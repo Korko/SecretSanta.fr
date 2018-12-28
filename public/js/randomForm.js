@@ -405,16 +405,18 @@ render._withStripped = true
 /*!*********************************!*\
   !*** ./resources/js/ajaxVue.js ***!
   \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
 
 var Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
-module.exports = Vue.extend({
+/* harmony default export */ __webpack_exports__["default"] = (Vue.extend({
   data: function data() {
     return {
       fieldErrors: [],
@@ -458,7 +460,7 @@ module.exports = Vue.extend({
       }
     }
   }
-});
+}));
 
 /***/ }),
 
@@ -553,16 +555,18 @@ __webpack_require__.r(__webpack_exports__);
 /*!******************************!*\
   !*** ./resources/js/lang.js ***!
   \******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 var Lang = __webpack_require__(/*! lang.js */ "./node_modules/lang.js/src/lang.js");
 
 var messages = __webpack_require__(/*! ./messages.js */ "./resources/js/messages.js");
 
-module.exports = new Lang({
+/* harmony default export */ __webpack_exports__["default"] = (new Lang({
   messages: messages
-});
+}));
 
 /***/ }),
 
@@ -581,44 +585,58 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/modernizr.js":
+/*!***********************************!*\
+  !*** ./resources/js/modernizr.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed (from (webpack)-modernizr-loader/index.js):\n/var/www/secretsanta.fr/dev/resources/js/modernizr.js:1\n(function (exports, require, module, __filename, __dirname) { export default {\n                                                              ^^^^^^\n\nSyntaxError: Unexpected token export\n    at NativeCompileCache._moduleCompile (/var/www/secretsanta.fr/dev/node_modules/v8-compile-cache/v8-compile-cache.js:226:18)\n    at Module._compile (/var/www/secretsanta.fr/dev/node_modules/v8-compile-cache/v8-compile-cache.js:172:36)\n    at Object.Module._extensions..js (module.js:664:10)\n    at Module.load (module.js:566:32)\n    at tryModuleLoad (module.js:506:12)\n    at Function.Module._load (module.js:498:3)\n    at Module.require (module.js:597:17)\n    at require (/var/www/secretsanta.fr/dev/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.module.exports (/var/www/secretsanta.fr/dev/node_modules/webpack-modernizr-loader/index.js:20:20)");
+
+/***/ }),
+
 /***/ "./resources/js/randomForm.js":
 /*!************************************!*\
   !*** ./resources/js/randomForm.js ***!
   \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global, $) {/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
+/* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(alertify_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _smsTools_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./smsTools.js */ "./resources/js/smsTools.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var vue_autosize__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-autosize */ "./node_modules/vue-autosize/src/index.js");
+/* harmony import */ var vue_autosize__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_autosize__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _modernizr_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modernizr.js */ "./resources/js/modernizr.js");
+/* harmony import */ var _modernizr_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_modernizr_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! papaparse */ "./node_modules/papaparse/papaparse.min.js");
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _lang_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./lang.js */ "./resources/js/lang.js");
+/* harmony import */ var _components_select2_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/select2.vue */ "./resources/js/components/select2.vue");
+/* harmony import */ var _ajaxVue_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ajaxVue.js */ "./resources/js/ajaxVue.js");
 
-var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
 
-var SmsTools = __webpack_require__(/*! ./smsTools.js */ "./resources/js/smsTools.js");
 
-var Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
-var VueAutosize = __webpack_require__(/*! vue-autosize */ "./node_modules/vue-autosize/src/index.js");
 
-Vue.use(VueAutosize);
+vue__WEBPACK_IMPORTED_MODULE_3___default.a.use(vue_autosize__WEBPACK_IMPORTED_MODULE_4___default.a);
 
-__webpack_require__(/*! browsernizr/test/file/filesystem */ "./node_modules/browsernizr/test/file/filesystem.js");
 
-__webpack_require__(/*! browsernizr/test/inputtypes */ "./node_modules/browsernizr/test/inputtypes.js");
 
-var Modernizr = __webpack_require__(/*! browsernizr */ "./node_modules/browsernizr/index.js");
 
-var Moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+_lang_js__WEBPACK_IMPORTED_MODULE_8__["default"].setLocale(window.global.lang);
 
-var Papa = __webpack_require__(/*! papaparse */ "./node_modules/papaparse/papaparse.min.js");
 
-var Lang = __webpack_require__(/*! ./lang.js */ "./resources/js/lang.js");
-
-Lang.setLocale(window.global.lang);
-
-var Select2 = __webpack_require__(/*! ./components/select2.vue */ "./resources/js/components/select2.vue");
-
-var VueAjax = __webpack_require__(/*! ./ajaxVue.js */ "./resources/js/ajaxVue.js");
-
-window.app = new VueAjax({
+window.app = new _ajaxVue_js__WEBPACK_IMPORTED_MODULE_10__["default"]({
   el: '#form',
   data: {
     participants: [],
@@ -685,7 +703,7 @@ window.app = new VueAjax({
         };
       },
       components: {
-        select2: Select2
+        select2: _components_select2_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
       },
       computed: {
         participantNames: function participantNames() {
@@ -751,7 +769,7 @@ window.app = new VueAjax({
     longuestName: function longuestName() {
       var name = '';
       this.participants.forEach(function (participant) {
-        name = participant.name && SmsTools.length(participant.name) > SmsTools.length(name) ? participant.name : name;
+        name = participant.name && _smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].length(participant.name) > _smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].length(name) ? participant.name : name;
       });
       return name;
     },
@@ -759,37 +777,37 @@ window.app = new VueAjax({
       return this.smsContent.replace('{SANTA}', this.longuestName).replace('{TARGET}', this.longuestName);
     },
     smsCount: function smsCount() {
-      return Math.min(SmsTools.chunk(this.maxSmsContent).length, this.maxSms);
+      return Math.min(_smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].chunk(this.maxSmsContent).length, this.maxSms);
     },
     charactersLeft: function charactersLeft() {
-      return SmsTools.chunkMaxLength(this.maxSmsContent, this.smsCount, true) - this.maxSmsContent.length;
+      return _smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].chunkMaxLength(this.maxSmsContent, this.smsCount, true) - this.maxSmsContent.length;
     },
     maxLength: function maxLength() {
-      return SmsTools.chunkMaxLength(this.maxSmsContent, this.maxSms, true);
+      return _smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].chunkMaxLength(this.maxSmsContent, this.maxSms, true);
     }
   },
   created: function created() {
     this.addParticipant();
     this.addParticipant();
     this.addParticipant();
-    Vue.nextTick(function () {
-      if (!Modernizr.inputtypes.date) {
+    vue__WEBPACK_IMPORTED_MODULE_3___default.a.nextTick(function () {
+      if (!_modernizr_js__WEBPACK_IMPORTED_MODULE_5___default.a.inputtypes.date) {
         $('input[type=date]', this.$el).datepicker({
           // Consistent format with the HTML5 picker
           dateFormat: 'yy-mm-dd',
-          minDate: Moment(this.now).add(1, 'day').toDate(),
-          maxDate: Moment(this.now).add(1, 'year').toDate()
+          minDate: moment__WEBPACK_IMPORTED_MODULE_6___default()(this.now).add(1, 'day').toDate(),
+          maxDate: moment__WEBPACK_IMPORTED_MODULE_6___default()(this.now).add(1, 'year').toDate()
         });
       }
 
-      if (!Modernizr.filereader) {
+      if (!_modernizr_js__WEBPACK_IMPORTED_MODULE_5___default.a.filereader) {
         $('.participants-imports').remove();
       }
     }.bind(this));
   },
   filters: {
     moment: function moment(date, amount, unit) {
-      return Moment(date).add(amount, unit).format("YYYY-MM-DD");
+      return moment__WEBPACK_IMPORTED_MODULE_6___default()(date).add(amount, unit).format("YYYY-MM-DD");
     }
   },
   watch: {
@@ -833,10 +851,10 @@ window.app = new VueAjax({
     },
     importParticipants: function importParticipants(file) {
       this.importing = true;
-      var test = Papa.parse(file, {
+      var test = papaparse__WEBPACK_IMPORTED_MODULE_7___default.a.parse(file, {
         error: function error() {
           this.importing = false;
-          alertify.alert(Lang.get('csv.importError'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(_lang_js__WEBPACK_IMPORTED_MODULE_8__["default"].get('csv.importError'));
         },
         complete: function (file) {
           this.importing = false;
@@ -853,13 +871,13 @@ window.app = new VueAjax({
             }
           }
 
-          alertify.alert(Lang.get('csv.importSuccess'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(_lang_js__WEBPACK_IMPORTED_MODULE_8__["default"].get('csv.importSuccess'));
         }.bind(this)
       });
     }
   }
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
 
@@ -867,10 +885,12 @@ window.app = new VueAjax({
 /*!**********************************!*\
   !*** ./resources/js/smsTools.js ***!
   \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = function () {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ((function () {
   var lengths = {
     ascii: [160, 146, 153],
     unicode: [70, 62, 66]
@@ -949,7 +969,7 @@ module.exports = function () {
       return chunks;
     }
   };
-}();
+})());
 
 /***/ }),
 

@@ -1,0 +1,10 @@
+export default {
+  // Full list of supported options can be found in [config-all.json](https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json).
+  options: [
+    "setClasses"
+  ],
+  "feature-detects": [
+    "test/file/filesystem",
+    "test/inputtypes"
+  ]
+};
