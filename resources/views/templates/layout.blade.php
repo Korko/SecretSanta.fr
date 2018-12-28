@@ -51,28 +51,12 @@
     <div id="wrap">
     <div id="main">
         <div id="menu" class="navbar navbar-dark fixed-top navbar-expand-md" role="navigation">
-            <div class="container">
-                <nav id="navbar">
-                    <div id="logo">
-                        <a href="#header">
-                            <img src="/images/logo.png" />
-                        </a>
-                    </div>
-                    <ul class="nav navbar-nav hidden-xsd-none d-sm-block">
-                        @yield('navbar')
-
-                        <!--fix for scroll spy active menu element-->
-                        <li style="display:none;" class="nav-item"><a href="#header" class="nav-link"></a></li>
-                    </ul>
-<!--
-                    <ul class="d-block d-sm-none list-inline">
-                        @foreach(config('app.domains') as $locale => $domain)
-                            <li class="list-inline-item"><a href="https://{{ $domain }}"><span class="lang-lg" lang="{{ $locale }}"></span></a></li>
-                        @endforeach
-                    </ul>
--->
-                </nav><!--/.navbar-collapse -->
-            </div><!-- container -->
+            <nav id="navbar">
+                <div id="logo">
+                    <a href="#header"><img src="/images/logo.png" /></a>
+                </div>
+                @yield('navbar')
+            </nav><!--/.navbar-collapse -->
         </div><!-- menu -->
 
         @section('body')

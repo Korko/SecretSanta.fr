@@ -15218,6 +15218,7 @@ img {
   background: black;
   border-radius: 0 0 100% 100%;
   padding: 12px;
+  top: 0;
 }
 
 /* ==========================================================================
@@ -15227,6 +15228,10 @@ img {
 #menu {
   background: rgba(33, 45, 57, 0.8);
   margin-bottom: 0;
+}
+
+nav#navbar {
+  width: 100%;
 }
 
 .navbar-brand h2 {
@@ -15240,14 +15245,17 @@ img {
   padding-bottom: 0;
 }
 
-.navbar-inverse .navbar-nav > li > a {
+.navbar .navbar-nav > li > a {
   transition: all 0.4s;
   color: white;
   font-weight: bold;
+  padding: 15px;
+  line-height: 20px;
+  display: block;
 }
 
-.navbar-inverse .navbar-nav > li > a:hover,
-.navbar-inverse .navbar-nav > .active > a {
+.navbar .navbar-nav > li > a:hover,
+.narbar .navbar-nav > .active > a {
   background: #ed0121;
   color: white;
   text-shadow: none;
@@ -15324,10 +15332,6 @@ footer .row {
   .navbar-nav > li {
     display: inline-block;
     float: none;
-  }
-
-  .navbar-nav > li:nth-child(2) {
-    margin-right: 110px;
   }
 
   .navbar-nav > li.btn-group {
