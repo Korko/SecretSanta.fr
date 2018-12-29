@@ -37,7 +37,7 @@
         <div class="bottom text-center">
             <a id="scrollDownArrow" href="#"><i class="fa fa-chevron-down"></i></a>
         </div>
-    </div><!-- /#header -->
+    </div>
 
     <div id="what" class="light-wrapper">
         <section class="ss-style-top"></section>
@@ -63,8 +63,8 @@
     </div><!-- #what -->
 
     <div class="parallax">
-        <div class="container inner"></div><!-- /.container -->
-    </div><!-- #spacer1 -->
+        <div class="container inner"></div>
+    </div>
 
     <div id="how" class="light-wrapper">
         <section class="ss-style-top"></section>
@@ -108,8 +108,8 @@
     </div><!--/#how-->
 
     <div class="parallax parallax2">
-        <div class="container inner"></div><!-- /.container -->
-    </div><!-- #spacer1 -->
+        <div class="container inner"></div>
+    </div>
 
     @include('templates/participant')
     @include('templates/csv')
@@ -239,7 +239,25 @@
             <div id="errors-wrapper" class="alert alert-danger v-rcloak">@lang('form.waiting')</div>
             <csv v-if="showModal" @import="importParticipants" @close="showModal = false"></csv>
         </div><!-- /.container -->
+        <section class="ss-style-bottom"></section>
+    </div>
 
+    <div class="parallax parallax3">
+        <div class="container inner"></div>
+    </div>
+
+    <div id="faq" class="light-wrapper">
+        <section class="ss-style-top"></section>
+        <div class="container inner">
+            <h2 class="section-title text-center">@lang('form.section.faq.title')</h2>
+            <p class="lead main text-center">@lang('form.section.faq.subtitle')</p>
+            <div class="row text-center how">
+                <dl class="media-list">
+                    <dt>@lang('form.section.faq.1.question')</dt>
+                    <dd>@lang('form.section.faq.1.answer')</dd>
+                </ul>
+            </div>
+        </div>
     </div>
 @stop
 
