@@ -137,12 +137,12 @@
                                 <table id="participants" class="table table-hover table-striped table-numbered">
                                     <thead>
                                         <tr>
-                                            <th class="col-xl-3">@lang('form.participant.name')</th>
-                                            <th class="col-xl-3">@lang('form.participant.email')</th>
-                                            <th class="col-xl-0"></th>
-                                            <th class="col-xl-3">@lang('form.participant.phone')</th>
-                                            <th class="col-xl-2">@lang('form.participant.exclusions')</th>
-                                            <th class="col-xl-1"></th>
+                                            <th class="col-xl-3" scope="col">@lang('form.participant.name')</th>
+                                            <th class="col-xl-3" scope="col">@lang('form.participant.email')</th>
+                                            <th class="col-xl-0" scope="col"></th>
+                                            <th class="col-xl-3" scope="col">@lang('form.participant.phone')</th>
+                                            <th class="col-xl-2" scope="col">@lang('form.participant.exclusions')</th>
+                                            <th class="col-xl-1" scope="col"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -165,10 +165,10 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><span class="fas fa-plus"></span> @lang('form.participant.add')</button>
+                                <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><i class="fas fa-plus"></i> @lang('form.participant.add')</button>
                                 <button type="button" class="btn btn-warning participants-import" @click="showModal = true" :disabled="importing">
-                                    <span v-if="importing"><span class="fas fa-spinner"></span> @lang('form.participants.importing')</span>
-                                    <span v-else><span class="fas fa-list-alt"></span> @lang('form.participants.import')</span>
+                                    <span v-if="importing"><i class="fas fa-spinner"></i> @lang('form.participants.importing')</span>
+                                    <span v-else><i class="fas fa-list-alt"></i> @lang('form.participants.import')</span>
                                 </button>
                             </div>
                         </fieldset>
@@ -213,7 +213,7 @@
                             <div id="form-options" class="form-group">
                                 <label><input type="checkbox" name="dearsanta" v-model="dearsanta" value="1" />@lang('form.dearsanta')</label>
                                 <p class="tip" role="alert">
-                                    <span class="fas fa-exclamation-triangle" aria-hidden="true"></span>
+                                    <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
                                     @lang('form.dearsanta.warning')
                                 </p>
                                 <label><input type="date" name="dearsanta-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" :disabled="!dearsanta" />@lang('form.dearsanta.limit')</label>
@@ -227,8 +227,8 @@
                             {{ csrf_field() }}
 
                             <button type="submit" class="btn btn-primary btn-lg">
-                                <span v-if="sending"><span class="fas fa-spinner"></span> @lang('form.sending')</span>
-                                <span v-else-if="sent"><span class="fas fa-check-circle"></span> @lang('form.sent')</span>
+                                <span v-if="sending"><i class="fas fa-spinner"></i> @lang('form.sending')</span>
+                                <span v-else-if="sent"><i class="fas fa-check-circle"></i> @lang('form.sent')</span>
                                 <span v-else>@lang('form.submit')</span>
                             </button>
                         </fieldset>
