@@ -42,6 +42,7 @@ jQuery(document).ready(function() {
     function centerHomeBannerText() {
         var bannerText = jQuery('#header > .center');
         var bannerTextTop = (jQuery('#header').actual('height')/2) - (jQuery('#header > .center').actual('height')/2) - 20;
+        //var bannerTextTop = Math.min(jQuery('#header').actual('height'), (jQuery('#header').actual('height')/2) - (jQuery('#header > .center').actual('height')/2) - 20 + jQuery('html').scrollTop());
         bannerText.css('padding-top', bannerTextTop+'px');
         bannerText.show();
     }
@@ -54,10 +55,11 @@ jQuery(document).ready(function() {
     });
     
     function scroll() {
+        centerHomeBannerText();
         if ($(document).scrollTop() > 200) {
-        $('body').addClass('scrolled');
+            $('body').addClass('scrolled');
         } else {
-        $('body').removeClass('scrolled');
+            $('body').removeClass('scrolled');
         }
     }
     document.onscroll = scroll;
