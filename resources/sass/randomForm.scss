@@ -9,6 +9,22 @@ $footer-height: 120px;
 @import "~jquery-ui/themes/base/datepicker";
 
 /* ==========================================================================
+    03. Navigation
+========================================================================== */
+.nav.navbar-nav-left {
+    display: inline-flex;
+    justify-content: flex-end;
+    flex: 1;
+    margin-right: 60px;
+}
+.nav.navbar-nav-right {
+    display: inline-flex;
+    justify-content: flex-start;
+    flex: 1;
+    margin-left: 60px;
+}
+
+/* ==========================================================================
     04. Parallax
 ========================================================================== */
 .parallax {
@@ -77,10 +93,10 @@ $footer-height: 120px;
 }
 .media-body p::first-line {
 }
-div.well {
+div.card-body {
     font-style: italic;
 }
-div.well:first-line {
+div.card-body:first-line {
     font-weight: bold;
     font-style: normal;
     text-transform: uppercase;
