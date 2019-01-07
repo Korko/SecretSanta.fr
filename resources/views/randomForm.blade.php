@@ -13,11 +13,11 @@
 @stop
 
 @section('navbar')
-    <ul class="nav navbar-nav d-inline-flex justify-content-end" style="flex: 1">
+    <ul class="nav navbar-nav navbar-nav-left">
         <li><a href="#what">@lang('form.nav.what')</a></li>
         <li><a href="#how">@lang('form.nav.how')</a></li>
     </ul>
-    <ul class="nav navbar-nav d-inline-flex justify-content-start" style="flex: 1">
+    <ul class="nav navbar-nav navbar-nav-right">
         <li><a href="#form">@lang('form.nav.go')</a></li>
         <li><a href="#faq">@lang('form.nav.faq')</a></li>
     </ul>

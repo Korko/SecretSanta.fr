@@ -89,6 +89,9 @@ TABLE OF CONTENTS
     01. General and Typography
 ========================================================================== */
 
+html {
+    font-size: 14px;
+}
 body {
     font-family: 'Kreon', serif;
     -webkit-font-smoothing: antialiased;
@@ -217,7 +220,7 @@ img {
     display: block !important;
     width: 110px;
     left: 50%;
-    margin-left: -55px;
+    margin-left: calc(-55px - .5rem);/* Don't forget half the padding of .navbar */ 
     background: black;
     -webkit-border-radius: 0 0 100% 100%;
     -moz-border-radius: 0 0 100% 100%;
@@ -235,6 +238,7 @@ img {
 }
 nav#navbar {
     width: 100%;
+    display: flex;
 }
 .navbar-brand h2 {
     margin-top: 0;
@@ -353,8 +357,8 @@ footer .row {
         text-align: center;
         font-weight: bold;
         padding: 5px 40px;
-        font-size: 1rem;
-        line-height: 2rem;
+        font-size: 10px;
+        line-height: 20px;
         transition: 0.5s;
         width: 200px;
         position: absolute;
