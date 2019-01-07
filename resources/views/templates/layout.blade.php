@@ -86,6 +86,7 @@
     <span id="forkongithub" class="hidden-sm"><a href="https://framagit.org/Korko/SecretSanta" title="Fork me on GitLab">Fork me on GitLab<br/>Current version {{ $version }}</a></span>
 
     @section('script')
+        <script src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" data-auto-replace-svg="nest"></script>
         <script src="{{ mix('/js/manifest.js') }}"></script>
         <script src="{{ mix('/js/vendor.js') }}"></script>
     @show

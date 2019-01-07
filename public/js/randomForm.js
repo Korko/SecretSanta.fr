@@ -1782,7 +1782,8 @@ window.app = new _ajaxVue_js__WEBPACK_IMPORTED_MODULE_10__["default"]({
       return this.smsContent.replace('{SANTA}', this.longuestName).replace('{TARGET}', this.longuestName);
     },
     smsCount: function smsCount() {
-      return Math.min(_smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].chunk(this.maxSmsContent).length, this.maxSms);
+      var smsCount = _smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].chunk(this.maxSmsContent).length;
+      return this.maxSms ? Math.min(smsCount, this.maxSms) : smsCount;
     },
     charactersLeft: function charactersLeft() {
       return _smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].chunkMaxLength(this.maxSmsContent, this.smsCount, true) - this.maxSmsContent.length;
