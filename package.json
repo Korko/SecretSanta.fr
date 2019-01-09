@@ -1,38 +1,38 @@
 {
-  "private": true,
-  "devDependencies": {},
-  "dependencies": {
-    "alertify.js": "^1.0.12",
-    "aliasify": "^2.1.0",
-    "bootstrap-sass": "^3.3.7",
-    "browsernizr": "^2.1.0",
-    "crypto-js": "^3.1.9-1",
-    "font-awesome": "^4.7.0",
-    "gulp": "^3.9.1",
-    "gulp-shell": "^0.6.3",
-    "jquery": "^3.1.1",
-    "jquery-ui-browserify": "^1.11.0-pre-seelio",
-    "jquery.actual": "dreamerslab/jquery.actual#master",
-    "jquery.scrollto": "^2.1.2",
-    "lang.js": "^1.1.8",
-    "laravel-elixir": "^5.0.0",
-    "laravel-elixir-vueify": "^1.0.6",
-    "moment": "^2.17.1",
-    "multiple-select": "^1.2.0",
-    "papaparse": "^4.2.0",
-    "vue": "^2.5.2",
-    "vue-autosize": "korko/vue-autosize#master",
-    "vueify": "^9.4.0",
-    "vueify-insert-css": "^1.0.0"
-  },
-  "browserify": {
-    "transform": [
-      "aliasify"
-    ]
-  },
-  "aliasify": {
-    "aliases": {
-      "vue": "vue/dist/vue"
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "devDependencies": {
+        "alertify.js": "^1.0.12",
+        "axios": "^0.18",
+        "bootstrap": "^4.0.0",
+        "cross-env": "^5.1",
+        "crypto-js": "^3.1.9-1",
+        "jquery": "^3.2",
+        "jquery-ui": "^1.12.1",
+        "jquery.actual": "github:dreamerslab/jquery.actual#master",
+        "jquery.scrollto": "^2.1.2",
+        "lang.js": "^1.1.8",
+        "laravel-localization-loader": "^1.0.5",
+        "laravel-mix": "^4.0.7",
+        "lodash": "^4.17.5",
+        "moment": "^2.17.1",
+        "multiple-select": "^1.2.0",
+        "papaparse": "^4.2.0",
+        "popper.js": "^1.12",
+        "resolve-url-loader": "^2.3.1",
+        "sass": "^1.15.2",
+        "sass-loader": "^7.1.0",
+        "vue": "^2.5.17",
+        "vue-autosize": "^1.0.2",
+        "vue-template-compiler": "^2.5.21",
+        "webpack-modernizr-loader": "^4.0.1"
     }
-  }
 }

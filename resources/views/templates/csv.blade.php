@@ -6,7 +6,7 @@
         <div slot="body">
 
             <div class="alert alert-info" role="alert">
-                <span class="glyphicon glyphicon-question-sign"></span> @lang('form.csv.help', [
+                <span class="fas fa-question-cirle"></span> @lang('form.csv.help', [
                         'excel' => '<a href="https://support.office.com/fr-fr/article/Importer-ou-exporter-des-fichiers-texte-txt-ou-csv-5250ac4c-663c-47ce-937b-339e391393ba" class="alert-link">',
                         'calc' => '<a href="https://help.libreoffice.org/Calc/Importing_and_Exporting_CSV_Files/fr" class="alert-link">',
                         'elink' => '</a>'
@@ -28,8 +28,8 @@
         </div>
 
         <div slot="footer">
-            <button type="reset" form="uploadCsv" class="btn btn-warning"><span class="glyphicon glyphicon-cancel"></span> @lang('form.csv.cancel')</button>
-            <button type="submit" form="uploadCsv" class="btn btn-primary"><span class="glyphicon glyphicon-upload"></span> @lang('form.csv.import')</button>
+            <button type="reset" form="uploadCsv" class="btn btn-warning"><span class="fas fa-stop-circle"></span> @lang('form.csv.cancel')</button>
+            <button type="submit" form="uploadCsv" class="btn btn-primary"><span class="fas fa-upload"></span> @lang('form.csv.import')</button>
         </div>
     </modal>
 </script>
