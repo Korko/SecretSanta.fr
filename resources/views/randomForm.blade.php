@@ -19,7 +19,6 @@
     </ul>
     <ul class="nav navbar-nav navbar-nav-right">
         <li><a href="#form">@lang('form.nav.go')</a></li>
-        <li><a href="#faq">@lang('form.nav.faq')</a></li>
     </ul>
 @stop
 
@@ -240,24 +239,6 @@
             <csv v-if="showModal" @import="importParticipants" @close="showModal = false"></csv>
         </div><!-- /.container -->
         <section class="ss-style-bottom"></section>
-    </div>
-
-    <div class="parallax parallax3">
-        <div class="container inner"></div>
-    </div>
-
-    <div id="faq" class="light-wrapper">
-        <section class="ss-style-top"></section>
-        <div class="container inner">
-            <h2 class="section-title text-center">@lang('form.section.faq.title')</h2>
-            <p class="lead main text-center">@lang('form.section.faq.subtitle')</p>
-            <div class="row text-center how">
-                <dl class="media-list">
-                    <dt>@lang('form.section.faq.1.question')</dt>
-                    <dd>@lang('form.section.faq.1.answer')</dd>
-                </ul>
-            </div>
-        </div>
     </div>
 @stop
 

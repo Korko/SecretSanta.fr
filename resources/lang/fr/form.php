@@ -112,10 +112,4 @@ Pour que ce service continue à vivre gratuitement et sans aucune exploitation d
 :button',
 
     'paypal.alt' => 'PayPal, le réflexe sécurité pour payer en ligne',
-
-    'section.faq.title'    => 'FAQ - Foire Aux Questions',
-    'section.faq.subtitle' => 'Questions fréquemment posées',
-
-    'section.faq.1.question' => 'Pourquoi ?',
-    'section.faq.1.answer'   => 'Parce que !',
 ];
