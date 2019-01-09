@@ -1,16 +1,15 @@
+// Fonts
 @import url('https://fonts.googleapis.com/css?family=Kreon:300,400,700');
 
-$icon-font-path: "/assets/fonts/bootstrap/";
-@import "bootstrap";
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
 
-$fa-font-path: "/assets/fonts";
-@import "font-awesome";
+// Bootstrap Languages
+@import "../vendor/bootstrap-languages/languages";
 
-@import "languages";
-
-.lang-xs { background-image: url('/assets/images/languages.png') !important; }
-.lang-sm { background-image: url('/assets/images/languages.png') !important; }
-.lang-lg { background-image: url('/assets/images/languages.png') !important; }
+.lang-xs { background-image: url('../vendor/bootstrap-languages/languages.png') !important; }
+.lang-sm { background-image: url('../vendor/bootstrap-languages/languages.png') !important; }
+.lang-lg { background-image: url('../vendor/bootstrap-languages/languages.png') !important; }
 
 /*  
 Sticky Footer Solution
@@ -86,6 +85,9 @@ TABLE OF CONTENTS
     01. General and Typography
 ========================================================================== */
 
+html {
+    font-size: 14px;
+}
 body {
     font-family: 'Kreon', serif;
     -webkit-font-smoothing: antialiased;
@@ -151,7 +153,7 @@ img {
     02. Header
 ========================================================================== */
 #header {
-    background-image: url(/assets/images/gifts-1.jpg);
+    background-image: url(/images/gifts-1.jpg);
     -moz-background-size: cover;
     background-size: cover;
     background-position: center center;
@@ -214,12 +216,13 @@ img {
     display: block !important;
     width: 110px;
     left: 50%;
-    margin-left: -55px;
+    margin-left: calc(-55px - .5rem);/* Don't forget half the padding of .navbar */ 
     background: black;
     -webkit-border-radius: 0 0 100% 100%;
     -moz-border-radius: 0 0 100% 100%;
     border-radius: 0 0 100% 100%;
     padding: 12px;
+    top: 0;
 }
 
 /* ==========================================================================
@@ -228,6 +231,10 @@ img {
 #menu {
     background: rgba(33,45,57,0.8);
     margin-bottom: 0;
+}
+nav#navbar {
+    width: 100%;
+    display: flex;
 }
 .navbar-brand h2 {
     margin-top: 0;
@@ -238,15 +245,18 @@ img {
     padding-top: 8px;
     padding-bottom: 0;
 }
-.navbar-inverse .navbar-nav>li>a {
+.navbar .navbar-nav>li>a {
     -webkit-transition: all 0.4s;
     -moz-transition: all 0.4s;
     -o-transition: all 0.4s;
     transition: all 0.4s;
     color: white;
     font-weight: bold;
+    padding: 15px;
+    line-height: 20px;
+    display: block;
 }
-.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>.active>a {
+.navbar .navbar-nav>li>a:hover, .narbar .navbar-nav>.active>a {
     background: #ed0121;
     color: white;
     text-shadow: none;
@@ -312,9 +322,6 @@ footer .row {
         display: inline-block;
         float: none;
     }
-    .navbar-nav>li:nth-child(2) {
-        margin-right: 110px;
-    }
     .navbar-nav>li.btn-group {
         margin: 0 15px;
     }
@@ -346,8 +353,8 @@ footer .row {
         text-align: center;
         font-weight: bold;
         padding: 5px 40px;
-        font-size: 1rem;
-        line-height: 2rem;
+        font-size: 10px;
+        line-height: 20px;
         transition: 0.5s;
         width: 200px;
         position: absolute;

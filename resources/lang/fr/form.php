@@ -4,6 +4,7 @@ return [
     'nav.what' => 'Qu\'est-ce que c\'est ?',
     'nav.how'  => 'Comment faire ?',
     'nav.go'   => 'Allez, c\'est parti !',
+    'nav.faq'  => 'FAQ',
 
     'title'    => 'Secret Santa . fr',
     'subtitle' => 'Offrez-vous des cadeaux... secrètement !',
