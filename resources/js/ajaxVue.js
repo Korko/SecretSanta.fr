@@ -3,7 +3,7 @@ var alertify = require('alertify.js');
 
 var Vue = require('vue');
 
-module.exports = Vue.extend({
+export default Vue.extend({
   data: function() {
     return {
       fieldErrors: [],
