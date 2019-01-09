@@ -1,1 +1,3 @@
-module.exports = {"fr.csv":{"importError":"Une erreur est survenue lors de l'import.","importSuccess":"L'import a \u00e9t\u00e9 effectu\u00e9 avec succ\u00e8s."}};
+export default {
+    'fr.csv': require('../lang/fr/csv.php')
+}
