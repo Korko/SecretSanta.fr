@@ -52,7 +52,6 @@
         "korko/validator": "dev-master",
         "laravel/framework": "5.7.*",
         "league/statsd": "1.4.*",
-        "mariuzzo/laravel-js-localization": "^1.4",
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
         "spatie/laravel-blade-javascript": "^2.0",
         "vinkla/hashids": "^5.1"
