@@ -98,20 +98,20 @@ class RequestTest extends RequestCase
             ->with('sms', 1)
             ->andReturn(true);
 
-        Mail::shouldReceive('to')
-            ->once()
-            ->with('test@test.com', 'toto')
-            ->andReturn(Mockery::self());
+        Mail::fake();
+        Mail::assertNothingSent();
 
-        Mail::shouldReceive('to')
-            ->once()
-            ->with('test2@test.com', 'tutu')
-            ->andReturn(Mockery::self());
+        Mail::assertSent(\App\Mail\Organizer::class, function ($mail) {
+            return $mail->hasTo('test@test.com', 'toto');
+        });
 
-        Mail::shouldReceive('send')
-            ->times(2)
-            ->with(\Mockery::type(\App\Mail\TargetDrawn::class))
-            ->andReturn(Mockery::self());
+        Mail::assertSent(\App\Mail\TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test@test.com', 'toto');
+        });
+
+        Mail::assertSent(\App\Mail\TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test2@test.com', 'tutu');
+        });
 
         // TODO: also test mail content
 
@@ -325,7 +325,7 @@ class RequestTest extends RequestCase
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
             'dearsanta'            => '1',
-            'dearsanta-expiration' => date('Y-m-d', strtotime('+2 days')),
+            'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 

@@ -100,7 +100,8 @@ via SecretSanta.fr',
 
     'dearsanta'         => 'Autoriser les participants à écrire un mail à leur secret santa',
     'dearsanta.warning' => 'Cette option implique que chaque participant dispose d\'une adresse mail remplie',
-    'dearsanta.limit'   => 'Date limite de stockage des emails',
+
+    'data-expiration'   => 'Date limite de stockage des emails',
 
     'submit'  => 'Lancez l\'aléatoire !',
     'sending' => 'Calcul en cours',
