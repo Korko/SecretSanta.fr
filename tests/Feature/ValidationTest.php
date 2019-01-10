@@ -178,22 +178,22 @@ class ValidationTest extends RequestCase
             ['name' => 'tata', 'phone' => '0612345678'],
             ['name' => 'tutu', 'phone' => '0612345678'],
         ], 'dearsanta' => '1'], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'participants.1.email', 'participants.2.email', 'dearsanta-expiration'], $content);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'participants.1.email', 'participants.2.email', 'data-expiration'], $content);
 
         // dearsanta enabled, invalid limit (too soon)
         $content = $this->ajaxPost('/', ['participants' => [
             ['name' => 'toto', 'phone' => '0612345678'],
             ['name' => 'tata', 'phone' => '0612345678'],
             ['name' => 'tutu', 'phone' => '0612345678'],
-        ], 'dearsanta' => '1', 'dearsanta-expiration' => date('Y-m-d')], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'participants.1.email', 'participants.2.email', 'dearsanta-expiration'], $content);
+        ], 'dearsanta' => '1', 'data-expiration' => date('Y-m-d')], 422);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'participants.1.email', 'participants.2.email', 'data-expiration'], $content);
 
         // dearsanta enabled, limit valid
         $content = $this->ajaxPost('/', ['participants' => [
             ['name' => 'toto', 'phone' => '0612345678'],
             ['name' => 'tata', 'phone' => '0612345678'],
             ['name' => 'tutu', 'phone' => '0612345678'],
-        ], 'dearsanta' => '1', 'dearsanta-expiration' => date('Y-m-d', strtotime('+3 day'))], 422);
+        ], 'dearsanta' => '1', 'data-expiration' => date('Y-m-d', strtotime('+3 day'))], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'participants.1.email', 'participants.2.email'], $content);
     }
 
