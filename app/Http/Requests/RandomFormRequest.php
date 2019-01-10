@@ -38,11 +38,27 @@ class RandomFormRequest extends Request
             'participants.*.exclusions'   => 'sometimes|array',
             'participants.*.exclusions.*' => 'integer|in_keys:participants',
 
-            'title'                       => 'required_with_any:participants.*.email|string',
-            'contentMail'                 => 'required_with_any:participants.*.email|string|contains:{TARGET}',
-            'contentSMS'                  => 'required_with_any:participants.*.phone|string|contains:{TARGET}|smsCount:'.config('sms.max'),
+//            'title'                       => 'required_with:participants.*.email|string',
+//            'contentMail'                 => 'required_with:participants.*.email|string|contains:{TARGET}',
+//            'contentSMS'                  => 'required_with:participants.*.phone|string|contains:{TARGET}|smsCount:'.config('sms.max'),
             'dearsanta'                   => 'boolean|in:"0","1"',
-            'dearsanta-expiration'        => 'required_if:dearsanta,"1"|date|after:tomorrow|before:+1year',
+
+            'data-expiration'             => 'required|date|after:tomorrow|before:+1year',
+        ];
+
+        // Until the bug with required_with in array is not fixed
+        // Here's a hotfix (https://github.com/laravel/framework/issues/26957)
+        $keys = array_keys($this->request->get('participants', []));
+        $rules += [
+	    'title' => 'required_with:'.implode(',', array_map(function ($key) {
+	        return 'participants.'.$key.'.email';
+	    }, $keys)).'|string',
+            'contentMail' => 'required_with:'.implode(',', array_map(function ($key) {
+                return 'participants.'.$key.'.email';
+            }, $keys)).'|string|contains:{TARGET}',
+            'contentSMS' => 'required_with:'.implode(',', array_map(function ($key) {
+                return 'participants.'.$key.'.phone';
+            }, $keys)).'|string|contains:{TARGET}|smsCount:'.config('sms.max'),
         ];
 
         return $rules;
