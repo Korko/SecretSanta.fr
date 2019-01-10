@@ -50,9 +50,9 @@ class RandomFormRequest extends Request
         // Here's a hotfix (https://github.com/laravel/framework/issues/26957)
         $keys = array_keys($this->request->get('participants', []));
         $rules += [
-	    'title' => 'required_with:'.implode(',', array_map(function ($key) {
-	        return 'participants.'.$key.'.email';
-	    }, $keys)).'|string',
+        'title' => 'required_with:'.implode(',', array_map(function ($key) {
+            return 'participants.'.$key.'.email';
+        }, $keys)).'|string',
             'contentMail' => 'required_with:'.implode(',', array_map(function ($key) {
                 return 'participants.'.$key.'.email';
             }, $keys)).'|string|contains:{TARGET}',
