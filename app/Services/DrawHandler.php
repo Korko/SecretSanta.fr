@@ -26,10 +26,16 @@ class DrawHandler
         $this->asymKeys = AsymmetricalEncrypter::generateKeys(1024);
     }
 
-    public function contactParticipants(array $participants, array $hat, array $mailContent, array $smsContent, $dearSantaExpiration = null)
+    public function contactParticipants(array $participants, array $hat, array $mailContent, array $smsContent, $dataExpiration = null)
     {
+        $dearSantaDraw = new DearSantaDraw();
+        $dearSantaDraw->expiration = $dataExpiration;
+        $dearSantaDraw->save();
+
+        $this->informOrganizer($dearSantaDraw, $participants[0], $mailContent['title']);
+
         if (!empty($mailContent) and !empty(array_filter(array_column($participants, 'email')))) {
-            $this->sendMails($participants, $hat, $mailContent, $dearSantaExpiration);
+            $this->sendMails($participants, $hat, $mailContent, $dataExpiration);
         }
 
         if (!empty($smsContent) and !empty(array_filter(array_column($participants, 'phone')))) {
@@ -37,18 +43,31 @@ class DrawHandler
         }
     }
 
-    protected function sendMails(array $participants, array $hat, array $mailContent, $dearSantaExpiration = null)
+    public function informOrganizer(Draw $draw, $organizer, $title)
+    {
+        $organizerPanelLink = $this->getOrganizerLink($draw);
+
+        Mail::to($organizer['email'], $organizer['name'])
+            ->send(
+                (new Organizer($title, $organizerPanelLink))
+            );
+    }
+
+    protected function getOrganizerPanelLink(Draw $draw)
+    {
+        return route('organizerPanel', ['draw' => Hashids::encode($draw->id)]).'#'.base64_encode($this->symKey);
+    }
+
+    protected function sendMails(array $participants, array $hat, array $mailContent, $dataExpiration = null)
     {
         $dearSantaDraw = null;
-        if ($dearSantaExpiration !== null) {
+        if ($dataExpiration !== null) {
             $dearSantaDraw = new DearSantaDraw();
-            $dearSantaDraw->expiration = $dearSantaExpiration;
+            $dearSantaDraw->expiration = $dataExpiration;
             $dearSantaDraw->save();
         }
 
-        $draw = Draw::prepareAndSave($mailContent, $dearSantaExpiration, $participants[0], $this->symKey, $dearSantaDraw);
-
-        $organizerLink = $this->getOrganizerLink($draw, $this->symKey);
+        $draw = Draw::prepareAndSave($mailContent, $dataExpiration, $participants[0], $this->symKey, $dearSantaDraw);
 
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = $participants[$santaIdx];
@@ -59,18 +78,18 @@ class DrawHandler
                 $superSanta = $participants[array_search($santaIdx, $hat)];
 
                 $dearSantaLink = null;
-                if ($dearSantaExpiration !== null) {
-                    $dearSantaLink = $this->getDearSantaLink($dearSantaDraw, $superSanta, $dearSantaExpiration);
+                if ($dearSantaDraw !== null) {
+                    $dearSantaLink = $this->getDearSantaLink($dearSantaDraw, $superSanta);
                 }
 
                 $participant = Participant::prepareAndSave($draw, $santa, $this->symKey, $dearSantaLink);
 
-                $this->sendSingleMail($mailContent, $santa, $target, $participant, $dearSantaLink, ($santaIdx === 0 ? $organizerLink : null));
+                $this->sendSingleMail($mailContent, $santa, $target, $participant, $dearSantaLink);
             }
         }
     }
 
-    protected function sendSingleMail(array $mailContent, array $santa, array $target, Participant $participant, $dearSantaLink = null, $organizerLink = null)
+    protected function sendSingleMail(array $mailContent, array $santa, array $target, Participant $participant, $dearSantaLink = null)
     {
         $substitutions = [
             '{SANTA}'  => $santa['name'],
@@ -81,7 +100,7 @@ class DrawHandler
 
         Mail::to($santa['email'], $santa['name'])
             ->send(
-                (new TargetDrawn($mailContent['title'], $mailContent['body'], $dearSantaLink, $organizerLink))
+                (new TargetDrawn($mailContent['title'], $mailContent['body'], $dearSantaLink))
                     ->withSubstitutions($substitutions)
                     ->withEventData([
                         'participant' => $participant,
@@ -110,12 +129,7 @@ class DrawHandler
         Sms::message($santa['phone'], $contentSms);
     }
 
-    protected function getOrganizerLink(Draw $draw)
-    {
-        return route('organizer', ['draw' => Hashids::encode($draw->id)]).'#'.base64_encode($this->symKey);
-    }
-
-    protected function getDearSantaLink(DearSantaDraw $dearSantaDraw, array $santa, $dearSantaExpiration)
+    protected function getDearSantaLink(DearSantaDraw $dearSantaDraw, array $santa)
     {
         $dearSanta = DearSanta::prepareAndSave($dearSantaDraw, $santa, $this->asymKeys['public']);
 

@@ -48,7 +48,7 @@ class RequestDearSantaTest extends RequestCase
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => '',
             'dearsanta'            => '1',
-            'dearsanta-expiration' => date('Y-m-d', strtotime('+2 days')),
+            'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 

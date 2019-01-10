@@ -21,8 +21,8 @@ Route::get('/dearsanta/{santa}', 'DearSantaController@view')->name('dearsanta');
 Route::post('/dearsanta/{santa}', 'DearSantaController@handle');
 
 Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections')[config('hashids.default')]['length'].'}');
-Route::get('/admin/{draw}', 'OrganizerController@view')->name('organizer');
-Route::post('/admin/{draw}', 'OrganizerConroller@handle');
+Route::get('/org/{draw}', 'OrganizerController@view')->name('organizerPanel');
+Route::post('/org/{draw}', 'OrganizerConroller@handle');
 
 Route::post('/event', 'EmailEventController@handle');
 

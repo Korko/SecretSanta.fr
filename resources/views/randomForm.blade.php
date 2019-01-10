@@ -215,7 +215,7 @@
                                     <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
                                     @lang('form.dearsanta.warning')
                                 </p>
-                                <label><input type="date" name="dearsanta-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" :disabled="!dearsanta" />@lang('form.dearsanta.limit')</label>
+                                <label><input type="date" name="data-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" />@lang('form.data-expiration')</label>
                             </div>
                         </fieldset>
                         <fieldset>
