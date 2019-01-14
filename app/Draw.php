@@ -35,4 +35,14 @@ class Draw extends Model
     {
         self::where('expiration', '<=', DB::raw('CURRENT_TIMESTAMP'))->delete();
     }
+
+    public function participants()
+    {
+        return $this->hasMany(Participant::class);
+    }
+
+    public function dearSanta()
+    {
+        return $this->hasMany(DearSanta::class);
+    }
 }
