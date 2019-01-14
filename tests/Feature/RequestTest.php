@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\DearSanta;
 use App\Draw;
+use App\Mail\Organizer as OrganizerEmail;
+use App\Mail\TargetDrawn;
 use App\Participant;
 use Mail;
 use Metrics;
@@ -15,10 +17,19 @@ class RequestTest extends RequestCase
 {
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
 
-    public function testInvalid()
+    protected function validateForm($parameters, $httpCode)
     {
         NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
 
+        return $this->ajaxPost('/', array_merge([
+            'g-recaptcha-response' => 'mocked',
+            'dearsanta'            => '0',
+            'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
+        ], $parameters), $httpCode);
+    }
+
+    public function testInvalid()
+    {
         Mail::shouldReceive('to')
             ->never();
 
@@ -28,13 +39,11 @@ class RequestTest extends RequestCase
         Metrics::shouldReceive('increment')
             ->never();
 
-        $this->assertEquals(0, DearSantaDraw::count());
         $this->assertEquals(0, DearSanta::count());
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
 
-        $content = $this->ajaxPost('/', [
-            'g-recaptcha-response' => 'mocked',
+        $content = $this->validateForm([
             'participants'         => [
                 [
                     'name'       => 'toto',
@@ -58,11 +67,9 @@ class RequestTest extends RequestCase
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
-            'dearsanta'            => '0',
         ], 500);
         $this->assertEquals(['error' => 'Aucune solution possible'], $content);
 
-        $this->assertEquals(0, DearSantaDraw::count());
         $this->assertEquals(0, DearSanta::count());
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
@@ -70,8 +77,6 @@ class RequestTest extends RequestCase
 
     public function testClassic()
     {
-        NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
-
         Metrics::shouldReceive('increment')
             ->once()
             ->with('draws')
@@ -100,18 +105,6 @@ class RequestTest extends RequestCase
         Mail::fake();
         Mail::assertNothingSent();
 
-        Mail::assertSent(\App\Mail\Organizer::class, function ($mail) {
-            return $mail->hasTo('test@test.com', 'toto');
-        });
-
-        Mail::assertSent(\App\Mail\TargetDrawn::class, function ($mail) {
-            return $mail->hasTo('test@test.com', 'toto');
-        });
-
-        Mail::assertSent(\App\Mail\TargetDrawn::class, function ($mail) {
-            return $mail->hasTo('test2@test.com', 'tutu');
-        });
-
         // TODO: also test mail content
 
         Sms::shouldReceive('message')
@@ -124,13 +117,11 @@ class RequestTest extends RequestCase
             ->with('+33712345678', '#test sms "tutu\' => &toto#')
             ->andReturn(true);
 
-        $this->assertEquals(0, DearSantaDraw::count());
         $this->assertEquals(0, DearSanta::count());
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
 
-        $content = $this->ajaxPost('/', [
-            'g-recaptcha-response' => 'mocked',
+        $content = $this->validateForm([
             'participants'         => [
                 [
                     'name'       => 'toto',
@@ -154,20 +145,28 @@ class RequestTest extends RequestCase
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
-            'dearsanta'            => '0',
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        $this->assertEquals(0, DearSantaDraw::count());
+        Mail::assertSent(OrganizerEmail::class, function ($mail) {
+            return $mail->hasTo('test@test.com', 'toto');
+        });
+
+        Mail::assertSent(TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test@test.com', 'toto');
+        });
+
+        Mail::assertSent(TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test2@test.com', 'tutu');
+        });
+
         $this->assertEquals(0, DearSanta::count());
         $this->assertEquals(1, Draw::count());
-        $this->assertEquals(2, Participant::count());
+        $this->assertEquals(3, Participant::count());
     }
 
     public function testLongSmsOnly()
     {
-        NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
-
         Metrics::shouldReceive('increment')
             ->once()
             ->with('draws')
@@ -193,8 +192,8 @@ class RequestTest extends RequestCase
             ->with('sms', 2)
             ->andReturn(true);
 
-        Mail::shouldReceive('send')
-            ->never();
+        Mail::fake();
+        Mail::assertNothingSent();
 
         Sms::shouldReceive('message')
             ->once()
@@ -211,17 +210,15 @@ class RequestTest extends RequestCase
             ->with('+33712345670', '#test sms "tutu\' => &toto#')
             ->andReturn(true);
 
-        $this->assertEquals(0, DearSantaDraw::count());
         $this->assertEquals(0, DearSanta::count());
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
 
-        $content = $this->ajaxPost('/', [
-            'g-recaptcha-response' => 'mocked',
+        $content = $this->validateForm([
             'participants'         => [
                 [
                     'name'       => 'toto',
-                    'email'      => '',
+                    'email'      => 'test@test.com',
                     'phone'      => '0612345678',
                     'exclusions' => ['2'],
                 ],
@@ -239,22 +236,26 @@ class RequestTest extends RequestCase
                 ],
             ],
             'title'                => 'test mail title',
-            'contentMail'          => '',
+            'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}'.implode('', array_fill(0, 160, 'a')),
-            'dearsanta'            => '0',
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        $this->assertEquals(0, DearSantaDraw::count());
+        Mail::assertSent(OrganizerEmail::class, function ($mail) {
+            return $mail->hasTo('test@test.com', 'toto');
+        });
+
+        Mail::assertSent(TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test@test.com', 'toto');
+        });
+
         $this->assertEquals(0, DearSanta::count());
-        $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
+        $this->assertEquals(1, Draw::count());
+        $this->assertEquals(3, Participant::count());
     }
 
     public function testDearsanta()
     {
-        NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
-
         Metrics::shouldReceive('increment')
             ->once()
             ->with('draws')
@@ -270,38 +271,17 @@ class RequestTest extends RequestCase
             ->with('email')
             ->andReturn(true);
 
-        Mail::shouldReceive('to')
-            ->once()
-            ->with('test@test.com', 'toto')
-            ->andReturn(Mockery::self());
-
-        Mail::shouldReceive('to')
-            ->once()
-            ->with('test2@test.com', 'tata')
-            ->andReturn(Mockery::self());
-
-        Mail::shouldReceive('to')
-            ->once()
-            ->with('test3@test.com', 'tutu')
-            ->andReturn(Mockery::self());
-
-        Mail::shouldReceive('send')
-            ->times(3)
-            ->with(\Mockery::type(\App\Mail\TargetDrawn::class))
-            ->andReturn(Mockery::self());
-
-        // TODO: also test mail content
+        Mail::fake();
+        Mail::assertNothingSent();
 
         Sms::shouldReceive('message')
             ->never();
 
-        $this->assertEquals(0, DearSantaDraw::count());
         $this->assertEquals(0, DearSanta::count());
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
 
-        $content = $this->ajaxPost('/', [
-            'g-recaptcha-response' => 'mocked',
+        $content = $this->validateForm([
             'participants'         => [
                 [
                     'name'       => 'toto',
@@ -323,12 +303,25 @@ class RequestTest extends RequestCase
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
-            'dearsanta'            => '1',
-            'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        $this->assertEquals(1, DearSantaDraw::count());
+        Mail::assertSent(OrganizerEmail::class, function ($mail) {
+            return $mail->hasTo('test@test.com', 'toto');
+        });
+
+        Mail::assertSent(TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test@test.com', 'toto');
+        });
+
+        Mail::assertSent(TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test2@test.com', 'toto');
+        });
+
+        Mail::assertSent(TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test3@test.com', 'toto');
+        });
+
         $this->assertEquals(3, DearSanta::count());
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
