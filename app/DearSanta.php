@@ -25,4 +25,9 @@ class DearSanta extends Model
 
         return $dearSanta;
     }
+
+    public function draw()
+    {
+        return $this->belongsTo(Draw::class);
+    }
 }
