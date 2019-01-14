@@ -28,7 +28,7 @@ class Participant extends Model
          self::ERROR,
     ];
 
-    public static function prepareAndSave(Draw $draw, array $participant, $encryptionKey, $dearSantaLink = null)
+    public static function prepareAndSave(Draw $draw, array $participant, array $target, $encryptionKey)
     {
         $encrypter = new SymmetricalEncrypter($encryptionKey);
 
@@ -36,9 +36,14 @@ class Participant extends Model
         $participant->draw_id = $draw->id;
         $participant->name = $encrypter->encrypt($participant['name']);
         $participant->email_address = $encrypter->encrypt($participant['email']);
-        $participant->dear_santa_link = $dearSantaLink;
+        $participant->target = $encrypter->encrypt(json_encode($target));
         $participant->save();
 
         return $participant;
+    }
+
+    public function draw()
+    {
+        return $this->belongsTo(Draw::class);
     }
 }

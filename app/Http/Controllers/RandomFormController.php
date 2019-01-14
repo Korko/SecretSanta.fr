@@ -38,6 +38,8 @@ class RandomFormController extends Controller
         Metrics::increment('draws');
         Metrics::increment('participants', count($participants));
 
+        $dearSanta = ($request->input('dearsanta') === '1');
+
         $dataExpiration = $request->input('data-expiration');
 
         $mailContent = [
@@ -49,20 +51,7 @@ class RandomFormController extends Controller
             'body' => $request->input('contentSMS'),
         ];
 
-        return (new DrawHandler())->contactParticipants($participants, $hat, $mailContent, $smsContent, $dataExpiration);
-    }
-
-    protected function informOrganizer($organizer, $title)
-    {
-        Mail::to($organizer['email'], $organizer['name'])
-            ->send(
-                (new Organizer($title, $dearSantaLink))
-            );
-    }
-
-    protected function getOrganizerLink(Draw $draw)
-    {
-        return route('organizer', ['draw' => Hashids::encode($draw->id)]).'#'.base64_encode($this->symKey);
+        return (new DrawHandler())->contactParticipants($participants, $hat, $mailContent, $smsContent, $dataExpiration, $dearSanta);
     }
 
     protected function getParticipants(Request $request)
