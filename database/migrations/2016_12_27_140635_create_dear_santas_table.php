@@ -21,7 +21,7 @@ class CreateDearSantasTable extends Migration
             $table->string('challenge');
             $table->string('public_key');
 
-            $table->foreign('draw_id')->references('id')->on('dear_santa_draws')->onDelete('cascade');
+            $table->foreign('draw_id')->references('id')->on('draws')->onDelete('cascade');
         });
     }
 

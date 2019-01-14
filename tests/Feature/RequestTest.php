@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\DearSanta;
-use App\DearSantaDraw;
 use App\Draw;
 use App\Participant;
 use Mail;

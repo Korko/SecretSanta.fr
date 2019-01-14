@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\DearSanta;
-use App\DearSantaDraw;
 use App\Draw;
 use App\Mail\TargetDrawn;
 use App\Participant;
@@ -129,9 +128,9 @@ class DrawHandler
         Sms::message($santa['phone'], $contentSms);
     }
 
-    protected function getDearSantaLink(DearSantaDraw $dearSantaDraw, array $santa)
+    protected function getDearSantaLink(Draw $draw, array $santa)
     {
-        $dearSanta = DearSanta::prepareAndSave($dearSantaDraw, $santa, $this->asymKeys['public']);
+        $dearSanta = DearSanta::prepareAndSave($draw, $santa, $this->asymKeys['public']);
 
         return route('dearsanta', ['santa' => Hashids::encode($dearSanta->id)]).'#'.base64_encode($this->asymKeys['private']);
     }

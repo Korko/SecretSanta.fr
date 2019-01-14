@@ -20,12 +20,9 @@ class CreateDrawsTable extends Migration
             $table->string('organizer_name')->nullable();
             $table->string('organizer_email')->nullable();
             $table->date('expiration');
-            $table->integer('dear_santa_draw_id')->unsigned()->nullable();
+            $table->integer('dear_santa')->boolean()->default(false);
             $table->string('challenge');
             $table->timestamps();
-
-            $table->foreign('dear_santa_draw_id')
-                ->references('id')->on('dear_santa_draws')->onDelete('cascade');
         });
     }
 
