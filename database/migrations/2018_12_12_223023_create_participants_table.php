@@ -21,7 +21,7 @@ class CreateParticipantsTable extends Migration
             $table->string('email_address');
             $table->string('email_id')->nullable();
             $table->enum('delivery_status', Participant::$deliveryStatuses);
-            $table->string('dear_santa_link')->nullable();
+            $table->string('target');
             $table->timestamps();
 
             $table->foreign('draw_id')
