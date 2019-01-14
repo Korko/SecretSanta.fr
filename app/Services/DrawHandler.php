@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DearSanta;
 use App\Draw;
+use App\Mail\Organizer as OrganizerEmail;
 use App\Mail\TargetDrawn;
 use App\Participant;
 use Facades\App\Services\SmsTools as SmsTools;
@@ -17,39 +18,40 @@ class DrawHandler
     private $symKey;
     private $asymKeys;
 
-    private $dearSantaDraw;
-
     public function __construct()
     {
         $this->symKey = SymmetricalEncrypter::generateKey(config('app.cipher'));
         $this->asymKeys = AsymmetricalEncrypter::generateKeys(1024);
     }
 
-    public function contactParticipants(array $participants, array $hat, array $mailContent, array $smsContent, $dataExpiration = null)
+    public function contactParticipants(array $participants, array $hat, array $mailContent, array $smsContent, $dataExpiration, $dearSanta = false)
     {
-        $dearSantaDraw = new DearSantaDraw();
-        $dearSantaDraw->expiration = $dataExpiration;
-        $dearSantaDraw->save();
+        $draw = Draw::prepareAndSave($mailContent, $dataExpiration, $participants[0], $this->symKey, $dearSanta);
 
-        $this->informOrganizer($dearSantaDraw, $participants[0], $mailContent['title']);
+        $this->informOrganizer($draw, $participants[0], $mailContent['title']);
 
-        if (!empty($mailContent) and !empty(array_filter(array_column($participants, 'email')))) {
-            $this->sendMails($participants, $hat, $mailContent, $dataExpiration);
-        }
+        foreach ($hat as $santaIdx => $targetIdx) {
+            $santa = ['id' => $santaIdx] + $participants[$santaIdx];
+            $target = ['id' => $targetIdx] + $participants[$targetIdx];
 
-        if (!empty($smsContent) and !empty(array_filter(array_column($participants, 'phone')))) {
-            $this->sendSMSs($participants, $hat, $smsContent['body']);
+            $participant = Participant::prepareAndSave($draw, $santa, $target, $this->symKey);
+
+            if (!empty($mailContent) and !empty($santa['email'])) {
+                $this->sendMail($santa, $hat, $participant, $participants, $mailContent, $dearSanta);
+            }
+
+            if (!empty($smsContent) and !empty($santa['phone'])) {
+                $this->sendSMS($santa, $hat, $participants, $smsContent['body']);
+            }
         }
     }
 
     public function informOrganizer(Draw $draw, $organizer, $title)
     {
-        $organizerPanelLink = $this->getOrganizerLink($draw);
+        $organizerPanelLink = $this->getOrganizerPanelLink($draw);
 
-        Mail::to($organizer['email'], $organizer['name'])
-            ->send(
-                (new Organizer($title, $organizerPanelLink))
-            );
+        Mail::to([$organizer])
+            ->send(new OrganizerEmail($title, $organizerPanelLink));
     }
 
     protected function getOrganizerPanelLink(Draw $draw)
@@ -57,39 +59,18 @@ class DrawHandler
         return route('organizerPanel', ['draw' => Hashids::encode($draw->id)]).'#'.base64_encode($this->symKey);
     }
 
-    protected function sendMails(array $participants, array $hat, array $mailContent, $dataExpiration = null)
+    protected function sendMail(array $santa, array $hat, Participant $participant, array $participants, array $mailContent, $dearSanta = false)
     {
-        $dearSantaDraw = null;
-        if ($dataExpiration !== null) {
-            $dearSantaDraw = new DearSantaDraw();
-            $dearSantaDraw->expiration = $dataExpiration;
-            $dearSantaDraw->save();
+        $target = $participants[$hat[$santa['id']]];
+
+        // Santa of that santa
+        $superSanta = $participants[array_search($santa['id'], $hat)];
+
+        $dearSantaLink = null;
+        if ($dearSanta !== null) {
+            $dearSantaLink = $this->getDearSantaLink($participant->draw, $superSanta);
         }
 
-        $draw = Draw::prepareAndSave($mailContent, $dataExpiration, $participants[0], $this->symKey, $dearSantaDraw);
-
-        foreach ($hat as $santaIdx => $targetIdx) {
-            $santa = $participants[$santaIdx];
-            $target = $participants[$targetIdx];
-
-            if (!empty($santa['email'])) {
-                // Santa of that santa
-                $superSanta = $participants[array_search($santaIdx, $hat)];
-
-                $dearSantaLink = null;
-                if ($dearSantaDraw !== null) {
-                    $dearSantaLink = $this->getDearSantaLink($dearSantaDraw, $superSanta);
-                }
-
-                $participant = Participant::prepareAndSave($draw, $santa, $this->symKey, $dearSantaLink);
-
-                $this->sendSingleMail($mailContent, $santa, $target, $participant, $dearSantaLink);
-            }
-        }
-    }
-
-    protected function sendSingleMail(array $mailContent, array $santa, array $target, Participant $participant, $dearSantaLink = null)
-    {
         $substitutions = [
             '{SANTA}'  => $santa['name'],
             '{TARGET}' => $target['name'],
@@ -97,7 +78,7 @@ class DrawHandler
 
         Metrics::increment('email');
 
-        Mail::to($santa['email'], $santa['name'])
+        Mail::to([$santa])
             ->send(
                 (new TargetDrawn($mailContent['title'], $mailContent['body'], $dearSantaLink))
                     ->withSubstitutions($substitutions)
@@ -107,22 +88,12 @@ class DrawHandler
             );
     }
 
-    protected function sendSMSs(array $participants, array $hat, $smsBody)
-    {
-        foreach ($hat as $santaIdx => $targetIdx) {
-            $santa = $participants[$santaIdx];
-            $target = $participants[$targetIdx];
-
-            if (!empty($santa['phone'])) {
-                $this->sendSingleSms($smsBody, $santa, $target);
-            }
-        }
-    }
-
-    protected function sendSingleSms($smsBody, array $santa, array $target)
+    protected function sendSMS(array $santa, array $hat, array $participants, $smsBody)
     {
         Metrics::increment('phone');
         Metrics::increment('sms', SmsTools::count($smsBody));
+
+        $target = $participants[$hat[$santa['id']]];
 
         $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $smsBody);
         Sms::message($santa['phone'], $contentSms);
