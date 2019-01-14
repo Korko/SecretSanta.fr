@@ -9,7 +9,7 @@ class DearSanta extends Model
 {
     public $timestamps = false;
 
-    public static function prepareAndSave(DearSantaDraw $draw, array $santa, $publicEncryptionKey)
+    public static function prepareAndSave(Draw $draw, array $santa, $publicEncryptionKey)
     {
         $encrypter = new AsymmetricalEncrypter($publicEncryptionKey);
 
