@@ -8,6 +8,7 @@ use App\Draw;
 class CleanupTest extends RequestCase
 {
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
+    use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
     public function testDrawNotExpired()
     {

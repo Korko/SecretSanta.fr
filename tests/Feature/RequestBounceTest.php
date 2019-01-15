@@ -14,6 +14,7 @@ use NoCaptcha;
 class RequestBounceTest extends RequestCase
 {
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
+    use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
     /**
      * @group large

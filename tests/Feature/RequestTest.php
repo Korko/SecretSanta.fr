@@ -15,6 +15,7 @@ use Sms;
 class RequestTest extends RequestCase
 {
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
+    use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
     protected function validateForm($parameters, $httpCode)
     {
