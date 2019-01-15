@@ -8,6 +8,7 @@ use NoCaptcha;
 class RequestDearSantaTest extends RequestCase
 {
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
+    use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
     public function testDearsanta()
     {
