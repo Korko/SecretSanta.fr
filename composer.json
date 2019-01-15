@@ -58,19 +58,20 @@
         "laravel/tinker": "~1.0"
     },
     "require-dev": {
+        "beyondcode/laravel-dump-server": "^1.0",
+        "brianium/paratest": "^2.1",
+        "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
-        "mockery/mockery": "^1.0",
         "jakub-onderka/php-parallel-lint": "^1.0",
+        "mockery/mockery": "^1.0",
+        "nunomaduro/collision": "^2.0",
         "phpro/grumphp": "^0.14.1",
         "phpunit/phpunit": "^7.0",
         "povils/phpmnd": "^2.0",
         "rap2hpoutre/laravel-log-viewer": "^0.8.0",
         "squizlabs/PHP_CodeSniffer": "^3.2",
         "symfony/css-selector": "3.2.*",
-        "symfony/dom-crawler": "3.2.*",
-        "filp/whoops": "^2.0",
-        "nunomaduro/collision": "^2.0",
-        "beyondcode/laravel-dump-server": "^1.0"
+        "symfony/dom-crawler": "3.2.*"
     },
     "autoload": {
         "classmap": [
