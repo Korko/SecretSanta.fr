@@ -65,7 +65,7 @@ class DrawHandler
     protected function sendMail(array $santa, array $target, array $superSanta, Participant $participant, array $participants, array $mailContent, $dearSanta = false)
     {
         $dearSantaLink = null;
-        if ($dearSanta !== null) {
+        if ($dearSanta) {
             $dearSantaLink = $this->getDearSantaLink($participant->draw, $superSanta);
         }
 
@@ -92,6 +92,7 @@ class DrawHandler
         Metrics::increment('sms', SmsTools::count($smsBody));
 
         $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $smsBody);
+
         Sms::message($santa['phone'], $contentSms);
     }
 
