@@ -109,12 +109,12 @@ class RequestTest extends RequestCase
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('+33612345678', '#test sms "tata\' => &tutu#')
+            ->with('+33612345678', 'test sms "tata\' => &tutu')
             ->andReturn(true);
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('+33712345678', '#test sms "tutu\' => &toto#')
+            ->with('+33712345678', 'test sms "tutu\' => &toto')
             ->andReturn(true);
 
         $this->assertEquals(0, DearSanta::count());
@@ -178,7 +178,7 @@ class RequestTest extends RequestCase
             ->andReturn(true);
 
         Metrics::shouldReceive('increment')
-            ->never()
+            ->once()
             ->with('email')
             ->andReturn(true);
 
@@ -197,17 +197,17 @@ class RequestTest extends RequestCase
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('+33612345678', '#test sms "toto\' => &tata#')
+            ->with('+33612345678', \Mockery::pattern('#test sms "toto\' => &tata#'))
             ->andReturn(true);
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('+33612345679', '#test sms "tata\' => &tutu#')
+            ->with('+33612345679', \Mockery::pattern('#test sms "tata\' => &tutu#'))
             ->andReturn(true);
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('+33712345670', '#test sms "tutu\' => &toto#')
+            ->with('+33712345670', \Mockery::pattern('#test sms "tutu\' => &toto#'))
             ->andReturn(true);
 
         $this->assertEquals(0, DearSanta::count());
@@ -303,6 +303,7 @@ class RequestTest extends RequestCase
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
+            'dearsanta'            => '1',
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
@@ -315,11 +316,11 @@ class RequestTest extends RequestCase
         });
 
         Mail::assertSent(TargetDrawn::class, function ($mail) {
-            return $mail->hasTo('test2@test.com', 'toto');
+            return $mail->hasTo('test2@test.com', 'tata');
         });
 
         Mail::assertSent(TargetDrawn::class, function ($mail) {
-            return $mail->hasTo('test3@test.com', 'toto');
+            return $mail->hasTo('test3@test.com', 'tutu');
         });
 
         $this->assertEquals(3, DearSanta::count());
