@@ -60,7 +60,7 @@ class SolverTest extends TestCase
 
     public function testImpossibleSolution()
     {
-        $this->assertEquals([], Solver::all(['A', 'B', 'C'], [0 => [1, 2]]), ['A', 'B', 'C']);
+        $this->assertCombination([], Solver::all(['A', 'B', 'C'], [0 => [1, 2]]), ['A', 'B', 'C']);
     }
 
     public function testOne()
