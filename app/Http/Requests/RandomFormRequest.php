@@ -37,6 +37,8 @@ class RandomFormRequest extends Request
             'participants.*.exclusions'   => 'sometimes|array',
             'participants.*.exclusions.*' => 'integer|in_keys:participants',
 
+            'participants.0.email'        => 'required_with:participants.0.name|email',
+
 //            'title'                       => 'required_with:participants.*.email|string',
 //            'contentMail'                 => 'required_with:participants.*.email|string|contains:{TARGET}',
 //            'contentSMS'                  => 'required_with:participants.*.phone|string|contains:{TARGET}|smsCount:'.config('sms.max'),
@@ -48,19 +50,17 @@ class RandomFormRequest extends Request
         // Until the bug with required_with in array is not fixed
         // Here's a hotfix (https://github.com/laravel/framework/issues/26957)
         $keys = array_keys($this->request->get('participants', []));
+        $keysOthers = array_diff($keys, [0]);
         $rules += [
-            'participants.0.email' => 'required_with:'.implode(',', array_map(function ($key) {
+            'title'       => ($keysOthers ? 'required_with:'.implode(',', array_map(function ($key) {
                 return 'participants.'.$key.'.email';
-            }, $keys)).'|required_without:participants.0.phone|required_if:dearsanta,1|email',
-            'title' => 'required_with:'.implode(',', array_map(function ($key) {
+            }, $keysOthers)).'|' : '').'required_with:participants.0.email|required_without:participants.0.phone|string',
+            'contentMail' => ($keysOthers ? 'required_with:'.implode(',', array_map(function ($key) {
                 return 'participants.'.$key.'.email';
-            }, $keys)).'|string',
-            'contentMail' => 'required_with:'.implode(',', array_map(function ($key) {
-                return 'participants.'.$key.'.email';
-            }, $keys)).'|string|contains:{TARGET}',
-            'contentSMS' => 'required_with:'.implode(',', array_map(function ($key) {
+            }, $keysOthers)).'|' : '').'required_with:participants.0.email|required_without:participants.0.phone|string|contains:{TARGET}',
+            'contentSMS'  => ($keys ? 'required_with:'.implode(',', array_map(function ($key) {
                 return 'participants.'.$key.'.phone';
-            }, $keys)).'|string|contains:{TARGET}|smsCount:'.config('sms.max'),
+            }, $keys)).'|' : '').'string|contains:{TARGET}|smsCount:'.config('sms.max'),
         ];
 
         return $rules;
