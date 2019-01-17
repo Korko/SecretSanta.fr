@@ -31,7 +31,6 @@ class RandomFormRequest extends Request
         $rules += [
             'participants'                => 'required|array|min:3',
 
-            'participants.0.email'        => 'required_with:participant.*.email',
             'participants.*.name'         => 'required|distinct',
             'participants.*.email'        => 'required_without:participants.*.phone|required_if:dearsanta,1|email',
             'participants.*.phone'        => 'required_without:participants.*.email|numeric|regex:#0?[67]\d{8}#',
@@ -50,9 +49,12 @@ class RandomFormRequest extends Request
         // Here's a hotfix (https://github.com/laravel/framework/issues/26957)
         $keys = array_keys($this->request->get('participants', []));
         $rules += [
-        'title' => 'required_with:'.implode(',', array_map(function ($key) {
-            return 'participants.'.$key.'.email';
-        }, $keys)).'|string',
+            'participants.0.email' => 'required_with:'.implode(',', array_map(function ($key) {
+                return 'participants.'.$key.'.email';
+            }, $keys)).'|required_without:participants.0.phone|required_if:dearsanta,1|email',
+            'title' => 'required_with:'.implode(',', array_map(function ($key) {
+                return 'participants.'.$key.'.email';
+            }, $keys)).'|string',
             'contentMail' => 'required_with:'.implode(',', array_map(function ($key) {
                 return 'participants.'.$key.'.email';
             }, $keys)).'|string|contains:{TARGET}',
