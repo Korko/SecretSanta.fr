@@ -22,11 +22,21 @@ class DearSantaController extends Controller
 
     public function handle(DearSanta $dearSanta, DearSantaRequest $request)
     {
-        $santa = $this->getSanta($dearSanta, $request);
+        $key = base64_decode($request->input('key'));
+        $encrypter = new Encrypter($key);
+
+        if ($encrypter->decrypt($dearSanta->challenge) !== config('app.challenge')) {
+            abort(400);
+        }
 
         Metrics::increment('dearsanta');
 
-        $this->sendMail($santa, $request->input('title'), $request->input('content'));
+        $this->sendMail(
+            $encrypter->decrypt($dearSanta->santa_name),
+            $encrypter->decrypt($dearSanta->santa_email),
+            $request->input('title'),
+            $request->input('content')
+        );
 
         $message = trans('message.sent');
 
@@ -35,20 +45,8 @@ class DearSantaController extends Controller
             redirect('/dearsanta/'.$dearSanta->id)->with('message', $message);
     }
 
-    private function getSanta(DearSanta $dearSanta, Request $request)
+    protected function sendMail($santaName, $santaEmail, $title, $content)
     {
-        $key = base64_decode($request->input('key'));
-
-        $encrypter = new Encrypter($key);
-
-        return [
-            'name'  => $encrypter->decrypt($dearSanta->santa_name),
-            'email' => $encrypter->decrypt($dearSanta->santa_email),
-        ];
-    }
-
-    protected function sendMail(array $santa, $title, $content)
-    {
-        Mail::to($santa['email'], $santa['name'])->send(new DearSantaMail($title, $content));
+        Mail::to($santaEmail, $santaName)->send(new DearSantaMail($title, $content));
     }
 }
