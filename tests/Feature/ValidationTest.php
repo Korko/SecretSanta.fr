@@ -22,7 +22,7 @@ class ValidationTest extends RequestCase
     public function testEmpty()
     {
         $content = $this->ajaxPost('/', ['a' => 'b'], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'participants', 'data-expiration'], $content);
+        $this->assertArrayKeysEquals(['g-recaptcha-response', 'participants', 'data-expiration', 'title', 'contentMail'], $content);
     }
 
     // Just names, need recaptcha and contact informations
@@ -133,13 +133,6 @@ class ValidationTest extends RequestCase
     {
         $content = $this->ajaxPost('/', ['participants' => [
             ['name' => 'toto', 'exclusions' => ['87']],
-            ['name' => 'tata'],
-            ['name' => 'tutu'],
-        ]], 422);
-        $this->assertArrayKeysEquals(['g-recaptcha-response', 'participants.0.exclusions.0', 'participants.0.phone', 'participants.1.phone', 'participants.2.phone', 'participants.0.email', 'participants.1.email', 'participants.2.email', 'title', 'contentMail', 'data-expiration'], $content);
-
-        $content = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'exclusions' => ['0']],
             ['name' => 'tata'],
             ['name' => 'tutu'],
         ]], 422);
