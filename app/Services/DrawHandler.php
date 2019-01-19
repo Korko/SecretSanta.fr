@@ -15,24 +15,19 @@ use Sms;
 
 class DrawHandler
 {
-    private $symKey;
-
-    public function __construct()
-    {
-        $this->symKey = SymmetricalEncrypter::generateKey(config('app.cipher'));
-    }
-
     public function contactParticipants(array $participants, array $hat, array $mailContent, array $smsContent, $dataExpiration, $dearSanta = false)
     {
-        $draw = Draw::prepareAndSave($mailContent, $dataExpiration, $participants[0], $this->symKey, $dearSanta);
+        $orgaSymKey = SymmetricalEncrypter::generateKey(config('app.cipher'));
 
-        $this->informOrganizer($draw, $participants[0], $mailContent['title']);
+        $draw = Draw::prepareAndSave($mailContent, $dataExpiration, $participants[0], $orgaSymKey, $dearSanta);
+
+        $this->informOrganizer($draw, $participants[0], $mailContent['title'], $orgaSymKey);
 
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = ['id' => $santaIdx] + $participants[$santaIdx];
             $target = ['id' => $targetIdx] + $participants[$targetIdx];
 
-            $participant = Participant::prepareAndSave($draw, $santa, $target, $this->symKey);
+            $participant = Participant::prepareAndSave($draw, $santa, $target, $orgaSymKey);
 
             if (!empty($mailContent) and !empty($santa['email'])) {
                 // Santa of that santa
@@ -47,17 +42,17 @@ class DrawHandler
         }
     }
 
-    public function informOrganizer(Draw $draw, $organizer, $title)
+    public function informOrganizer(Draw $draw, $organizer, $title, $orgaSymKey)
     {
-        $organizerPanelLink = $this->getOrganizerPanelLink($draw);
+        $organizerPanelLink = $this->getOrganizerPanelLink($draw, $orgaSymKey);
 
         Mail::to([$organizer])
             ->send(new OrganizerEmail($title, $organizerPanelLink));
     }
 
-    protected function getOrganizerPanelLink(Draw $draw)
+    protected function getOrganizerPanelLink(Draw $draw, $orgaSymKey)
     {
-        return route('organizerPanel', ['draw' => Hashids::encode($draw->id)]).'#'.base64_encode($this->symKey);
+        return route('organizerPanel', ['draw' => Hashids::encode($draw->id)]).'#'.base64_encode($orgaSymKey);
     }
 
     protected function sendMail(array $santa, array $target, array $superSanta, Participant $participant, array $participants, array $mailContent, $dearSanta = false)
@@ -96,8 +91,10 @@ class DrawHandler
 
     protected function getDearSantaLink(Draw $draw, array $santa)
     {
-        $dearSanta = DearSanta::prepareAndSave($draw, $santa, $this->symKey);
+        $santaSymKey = SymmetricalEncrypter::generateKey(config('app.cipher'));
 
-        return route('dearsanta', ['santa' => Hashids::encode($dearSanta->id)]).'#'.base64_encode($this->symKey);
+        $dearSanta = DearSanta::prepareAndSave($draw, $santa, $santaSymKey);
+
+        return route('dearsanta', ['santa' => Hashids::encode($dearSanta->id)]).'#'.base64_encode($santaSymKey);
     }
 }
