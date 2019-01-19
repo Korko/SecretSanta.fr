@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\DearSantaDraw;
 use App\Draw;
 
 class CleanupTest extends RequestCase
