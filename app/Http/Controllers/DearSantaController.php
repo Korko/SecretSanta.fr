@@ -25,7 +25,7 @@ class DearSantaController extends Controller
         $key = base64_decode($request->input('key'));
         $encrypter = new Encrypter($key);
 
-        if ($encrypter->decrypt($dearSanta->challenge) !== config('app.challenge')) {
+        if ($encrypter->decrypt($dearSanta->challenge, false) !== config('app.challenge')) {
             abort(400);
         }
 
