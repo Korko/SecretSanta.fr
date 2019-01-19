@@ -12,10 +12,10 @@ window.app = new VueAjax({
   },
 
   created: function() {
-      //var key = CryptoJS.enc.Hex.parse(this.key);
+      var key = CryptoJS.enc.Hex.parse(this.key);
 
-      //var text = CryptoJS.AES.decrypt(this.challenge, key, {iv: iv}).toString(CryptoJS.enc.Utf8);
-      this.verified = false;//(text === this.text);
+      var text = CryptoJS.AES.decrypt(this.challenge, key, {iv: iv}).toString(CryptoJS.enc.Utf8);
+      this.verified = (text === this.text);
   }
 });
 
