@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\DearSanta;
 use App\Services\AsymmetricalEncrypter;
 use App\Services\AsymmetricalPrivateEncrypter;
 use App\Services\AsymmetricalPublicEncrypter;

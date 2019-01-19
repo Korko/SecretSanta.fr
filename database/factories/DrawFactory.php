@@ -8,7 +8,7 @@ $factory->define(App\Draw::class, function (Faker\Generator $faker) {
         'organizer_email' => $faker->unique()->safeEmail,
         'expiration'      => $faker->dateTimeBetween('+1 day', '+1 month'),
         'dear_santa'      => $faker->boolean,
-        'challenge'       => $faker->text
+        'challenge'       => $faker->text,
     ];
 });
 
