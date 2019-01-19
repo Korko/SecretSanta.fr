@@ -2,24 +2,22 @@
 
 namespace App;
 
-use App\Services\AsymmetricalPublicEncrypter as AsymmetricalEncrypter;
+use App\Services\SymmetricalEncrypter;
 use Illuminate\Database\Eloquent\Model;
 
 class DearSanta extends Model
 {
     public $timestamps = false;
 
-    public static function prepareAndSave(Draw $draw, array $santa, $publicEncryptionKey)
+    public static function prepareAndSave(Draw $draw, array $santa, $encryptionKey)
     {
-        $encrypter = new AsymmetricalEncrypter($publicEncryptionKey);
+        $encrypter = new SymmetricalEncrypter($encryptionKey);
 
-        // Use Asymmetrical encrypter, only the reciptient should be able to decrypt!
         $dearSanta = new self();
         $dearSanta->draw_id = $draw->id;
         $dearSanta->santa_name = $encrypter->encrypt($santa['name']);
         $dearSanta->santa_email = $encrypter->encrypt($santa['email']);
         $dearSanta->challenge = $encrypter->encrypt(config('app.challenge'), false); // tested by JS so no serializing
-        $dearSanta->public_key = $publicEncryptionKey;
 
         $dearSanta->save();
 

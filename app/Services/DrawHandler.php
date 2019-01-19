@@ -16,12 +16,10 @@ use Sms;
 class DrawHandler
 {
     private $symKey;
-    private $asymKeys;
 
     public function __construct()
     {
         $this->symKey = SymmetricalEncrypter::generateKey(config('app.cipher'));
-        $this->asymKeys = AsymmetricalEncrypter::generateKeys(1024);
     }
 
     public function contactParticipants(array $participants, array $hat, array $mailContent, array $smsContent, $dataExpiration, $dearSanta = false)
@@ -98,8 +96,8 @@ class DrawHandler
 
     protected function getDearSantaLink(Draw $draw, array $santa)
     {
-        $dearSanta = DearSanta::prepareAndSave($draw, $santa, $this->asymKeys['public']);
+        $dearSanta = DearSanta::prepareAndSave($draw, $santa, $this->symKey);
 
-        return route('dearsanta', ['santa' => Hashids::encode($dearSanta->id)]).'#'.base64_encode($this->asymKeys['private']);
+        return route('dearsanta', ['santa' => Hashids::encode($dearSanta->id)]).'#'.base64_encode($this->symKey);
     }
 }
