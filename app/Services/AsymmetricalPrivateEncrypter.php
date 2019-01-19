@@ -26,7 +26,7 @@ class AsymmetricalPrivateEncrypter extends AsymmetricalEncrypter
             throw new EncryptException('Could not encrypt the data.');
         }
 
-        return $encrypted;
+        return $value;
     }
 
     public function decrypt($value, $unserialize = true)
