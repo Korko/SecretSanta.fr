@@ -138,6 +138,11 @@ img {
     margin-top: 0px;
     z-index: 1;
 }
+
+#main .light-wrapper:last-of-type .ss-style-bottom {
+    display: none;
+}
+
 [v-cloak] {
     display: none;
 }
