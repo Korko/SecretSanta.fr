@@ -64,11 +64,12 @@ class RequestOrganizerTest extends RequestCase
 
         $path = parse_url($link, PHP_URL_PATH);
         $key = parse_url($link, PHP_URL_FRAGMENT);
-        /*
-                // Get the form page (just to check http code)
-                $response = $this->get($path);
-                $this->assertEquals(200, $response->status(), $response->__toString());
-        
+
+        // Get the form page (just to check http code)
+        $response = $this->get($path);
+        $this->assertEquals(200, $response->status(), $response->__toString());
+
+/*
                 // Try to contact santa
                 $content = $this->ajaxPost($path, [
                     'g-recaptcha-response' => 'mocked',
@@ -77,13 +78,13 @@ class RequestOrganizerTest extends RequestCase
                     'content'              => 'test dearsanta mail content',
                 ], 200);
                 $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
-        
+
                 Mail::assertSent(\App\Mail\DearSanta::class, function ($mail) use ($id, $participants) {
                     $santaId = array_search($id, array_column($participants, 'target'));
                     $santa = $participants[$santaId];
-        
+
                     return $mail->hasTo($santa['email']);
                 });
-        */
+*/
     }
 }
