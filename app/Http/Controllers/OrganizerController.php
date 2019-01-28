@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DearSanta;
+use App\Draw;
 use App\Http\Requests\DearSantaRequest;
 use App\Mail\DearSanta as DearSantaMail;
 use App\Services\SymmetricalEncrypter as Encrypter;
