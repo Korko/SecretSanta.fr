@@ -47,7 +47,7 @@ class DrawHandler
         $organizerPanelLink = $this->getOrganizerPanelLink($draw, $orgaSymKey);
 
         Mail::to([$organizer])
-            ->send(new OrganizerEmail($title, $organizerPanelLink));
+            ->send(new OrganizerEmail($organizerPanelLink));
     }
 
     protected function getOrganizerPanelLink(Draw $draw, $orgaSymKey)
