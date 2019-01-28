@@ -21,7 +21,7 @@ class RequestBounceTest extends RequestCase
      */
     public function testBounce()
     {
-        Config::set('mail.driver', 'sendgrid');
+        Config::set('mail.driver', 'smtp');
 
         NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
 
@@ -62,6 +62,7 @@ class RequestBounceTest extends RequestCase
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
         $this->assertEquals(0, DearSanta::count());
+
         /*
                 // Simulate a bounce, note which mail should be sent
                 Mail::shouldReceive('to')
