@@ -2,9 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Draw;
 use App\DearSanta;
-use App\DearSantaDraw;
 use App\MailBody;
+use App\Participant;
 use Config;
 use Mail;
 use Metrics;
@@ -25,7 +26,8 @@ class RequestBounceTest extends RequestCase
 
         NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
 
-        $this->assertEquals(0, DearSantaDraw::count());
+        $this->assertEquals(0, Draw::count());
+        $this->assertEquals(0, Participant::count());
         $this->assertEquals(0, DearSanta::count());
 
         $content = $this->ajaxPost('/', [
@@ -54,12 +56,14 @@ class RequestBounceTest extends RequestCase
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => '',
             'dearsanta'            => '0',
+            'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
         ], 200);
         $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-        $this->assertEquals(1, DearSantaDraw::count());
-        $this->assertEquals(3, DearSanta::count());
-
+        $this->assertEquals(1, Draw::count());
+        $this->assertEquals(3, Participant::count());
+        $this->assertEquals(0, DearSanta::count());
+/*
         // Simulate a bounce, note which mail should be sent
         Mail::shouldReceive('to')
             ->once()
@@ -80,17 +84,9 @@ class RequestBounceTest extends RequestCase
             ->once()
             ->with('email')
             ->andReturn(true);
-
+*/
         $content = $this->ajaxPost('/event', [
-             'data' => json_encode([
-                 'organizer' => [
-                     'email' => 'test@test.com',
-                     'name'  => 'toto',
-                 ],
-                 'target'        => 'tutu',
-                 'dearSantaLink' => null,
-                 'mailBody'      => '1',
-             ]),
+             'data'          => '{}',
              'email'         => 'test2@test.com',
              'event'         => 'dropped',
              'reason'        => 'Unsubscribed Address',
@@ -100,7 +96,8 @@ class RequestBounceTest extends RequestCase
              'timestamp'     => 1543868476,
         ], 200, true);
 
-        $this->assertEquals(1, DearSantaDraw::count());
-        $this->assertEquals(3, DearSanta::count());
+        $this->assertEquals(1, Draw::count());
+        $this->assertEquals(3, Participant::count());
+        $this->assertEquals(0, DearSanta::count());
     }
 }

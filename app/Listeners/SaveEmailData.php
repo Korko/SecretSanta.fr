@@ -25,9 +25,12 @@ class SaveEmailData
      */
     public function handle(MessageSent $event)
     {
-        $participant = $event->data->participant;
-        dump($event->data);
-        $participant->email_id = $event->message->getHeaders()->get('X-Message-Id')->getValue();
-        $participant->save();
+        if (isset($event->data->participant)) {
+            $participant = $event->data->participant;
+dump($event->data);
+            $participant->email_id = $event->message->getHeaders()->get('X-Message-Id')->getValue();
+            $participant->save();
+dump($participant);
+        }
     }
 }

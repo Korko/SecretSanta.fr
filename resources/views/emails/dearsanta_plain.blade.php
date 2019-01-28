@@ -1,4 +1,3 @@
 {{ $content }}
 
-{!! nl2br(htmlentities( trans('form.mail.post') )) !!}
-
+{!! trans('form.mail.post') !!}
