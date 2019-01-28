@@ -52,7 +52,7 @@ class DrawHandler
 
     protected function getOrganizerPanelLink(Draw $draw, $orgaSymKey)
     {
-        return route('organizerPanel', ['draw' => Hashids::encode($draw->id)]).'#'.base64_encode($orgaSymKey);
+        return route('organizerPanel', ['draw' => $draw->id]).'#'.base64_encode($orgaSymKey);
     }
 
     protected function sendMail(array $santa, array $target, array $superSanta, Participant $participant, array $participants, array $mailContent, $dearSanta = false)
