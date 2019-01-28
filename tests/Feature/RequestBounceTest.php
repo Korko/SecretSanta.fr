@@ -69,17 +69,17 @@ class RequestBounceTest extends RequestCase
                     ->once()
                     ->with('test@test.com', 'toto')
                     ->andReturn(Mockery::self());
-        
+
                 Mail::shouldReceive('send')
                     ->once()
                     ->with(\Mockery::type(\App\Mail\MailBounced::class))
                     ->andReturn(Mockery::self());
-        
+
                 Metrics::shouldReceive('increment')
                     ->once()
                     ->with('email_bounced')
                     ->andReturn(true);
-        
+
                 Metrics::shouldReceive('increment')
                     ->once()
                     ->with('email')
