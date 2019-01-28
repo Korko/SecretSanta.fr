@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Exceptions\SolverException;
 use Facades\App\Services\HatSolver as Solver;
 use Tests\TestCase;
 
@@ -97,6 +98,9 @@ class SolverTest extends TestCase
         })());
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testMass()
     {
         // 702 characters from 'A' to 'ZZ'
@@ -105,6 +109,10 @@ class SolverTest extends TestCase
             $participants[] = $n;
         }
 
-        Solver::one($participants);
+        try {
+            Solver::one($participants);
+        } catch (SolverException $e) {
+            $this->fail('No exception expected');
+        }
     }
 }
