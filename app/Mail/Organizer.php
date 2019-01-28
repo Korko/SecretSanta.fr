@@ -10,14 +10,16 @@ class Organizer extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $panelLink;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($panelLink)
     {
-        //
+        $this->panelLink = $panelLink;
     }
 
     /**
