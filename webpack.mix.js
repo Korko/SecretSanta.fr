@@ -38,6 +38,7 @@ mix.js('resources/js/common.js', 'public/js')
    .sass('resources/sass/layout.scss', 'public/css')
    .sass('resources/sass/randomForm.scss', 'public/css')
    .sass('resources/sass/dearSanta.scss', 'public/css')
+   .sass('resources/sass/organizer.scss', 'public/css')
    .copy('resources/img', 'public/images');
 
 if (mix.inProduction()) {

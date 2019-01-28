@@ -1,10 +1,11 @@
 {
     "/js/manifest.js": "/js/manifest.js?id=01c8731923a46c30aaed",
     "/js/vendor.js": "/js/vendor.js?id=3be3eb17b5f2ab770096",
-    "/js/common.js": "/js/common.js?id=6f5837789a908de481d6",
+    "/js/common.js": "/js/common.js?id=04dd0b218a663b316c98",
     "/css/layout.css": "/css/layout.css?id=6e85fbc499421c5229bf",
     "/css/randomForm.css": "/css/randomForm.css?id=75ea109f31c5eee7e3e1",
     "/css/dearSanta.css": "/css/dearSanta.css?id=d17e2f8e63d605452a61",
+    "/css/organizer.css": "/css/organizer.css?id=6e85fbc499421c5229bf",
     "/js/dearSanta.js": "/js/dearSanta.js?id=5afc93e754171877ae87",
     "/js/randomForm.js": "/js/randomForm.js?id=b24ab3bf0add195ac62b"
 }
