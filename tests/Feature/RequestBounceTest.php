@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Draw;
 use App\DearSanta;
-use App\MailBody;
+use App\Draw;
 use App\Participant;
 use Config;
 use Mail;
@@ -63,28 +62,28 @@ class RequestBounceTest extends RequestCase
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
         $this->assertEquals(0, DearSanta::count());
-/*
-        // Simulate a bounce, note which mail should be sent
-        Mail::shouldReceive('to')
-            ->once()
-            ->with('test@test.com', 'toto')
-            ->andReturn(Mockery::self());
-
-        Mail::shouldReceive('send')
-            ->once()
-            ->with(\Mockery::type(\App\Mail\MailBounced::class))
-            ->andReturn(Mockery::self());
-
-        Metrics::shouldReceive('increment')
-            ->once()
-            ->with('email_bounced')
-            ->andReturn(true);
-
-        Metrics::shouldReceive('increment')
-            ->once()
-            ->with('email')
-            ->andReturn(true);
-*/
+        /*
+                // Simulate a bounce, note which mail should be sent
+                Mail::shouldReceive('to')
+                    ->once()
+                    ->with('test@test.com', 'toto')
+                    ->andReturn(Mockery::self());
+        
+                Mail::shouldReceive('send')
+                    ->once()
+                    ->with(\Mockery::type(\App\Mail\MailBounced::class))
+                    ->andReturn(Mockery::self());
+        
+                Metrics::shouldReceive('increment')
+                    ->once()
+                    ->with('email_bounced')
+                    ->andReturn(true);
+        
+                Metrics::shouldReceive('increment')
+                    ->once()
+                    ->with('email')
+                    ->andReturn(true);
+        */
         $content = $this->ajaxPost('/event', [
              'data'          => '{}',
              'email'         => 'test2@test.com',
