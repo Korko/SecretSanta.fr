@@ -27,10 +27,10 @@ class SaveEmailData
     {
         if (isset($event->data->participant)) {
             $participant = $event->data->participant;
-dump($event->data);
+            dump($event->data);
             $participant->email_id = $event->message->getHeaders()->get('X-Message-Id')->getValue();
             $participant->save();
-dump($participant);
+            dump($participant);
         }
     }
 }
