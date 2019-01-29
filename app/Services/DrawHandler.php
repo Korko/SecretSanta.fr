@@ -62,17 +62,11 @@ class DrawHandler
             $dearSantaLink = $this->getDearSantaLink($participant->draw, $superSanta);
         }
 
-        $substitutions = [
-            '{SANTA}'  => $santa['name'],
-            '{TARGET}' => $target['name'],
-        ];
-
         Metrics::increment('email');
 
         Mail::to([$santa])
             ->send(
-                (new TargetDrawn($mailContent['title'], $mailContent['body'], $dearSantaLink))
-                    ->withSubstitutions($substitutions)
+                (new TargetDrawn($mailContent['title'], $mailContent['body'], $santa['name'], $target['name'], $dearSantaLink))
                     ->withEventData([
                         'participant' => $participant,
                     ])
