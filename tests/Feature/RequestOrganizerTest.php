@@ -69,22 +69,22 @@ class RequestOrganizerTest extends RequestCase
         $response = $this->get($path);
         $this->assertEquals(200, $response->status(), $response->__toString());
 
-/*
-                // Try to contact santa
-                $content = $this->ajaxPost($path, [
-                    'g-recaptcha-response' => 'mocked',
-                    'key'                  => $key,
-                    'title'                => 'test dearsanta mail title',
-                    'content'              => 'test dearsanta mail content',
-                ], 200);
-                $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
-
-                Mail::assertSent(\App\Mail\DearSanta::class, function ($mail) use ($id, $participants) {
-                    $santaId = array_search($id, array_column($participants, 'target'));
-                    $santa = $participants[$santaId];
-
-                    return $mail->hasTo($santa['email']);
-                });
-*/
+        /*
+                        // Try to contact santa
+                        $content = $this->ajaxPost($path, [
+                            'g-recaptcha-response' => 'mocked',
+                            'key'                  => $key,
+                            'title'                => 'test dearsanta mail title',
+                            'content'              => 'test dearsanta mail content',
+                        ], 200);
+                        $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
+        
+                        Mail::assertSent(\App\Mail\DearSanta::class, function ($mail) use ($id, $participants) {
+                            $santaId = array_search($id, array_column($participants, 'target'));
+                            $santa = $participants[$santaId];
+        
+                            return $mail->hasTo($santa['email']);
+                        });
+        */
     }
 }
