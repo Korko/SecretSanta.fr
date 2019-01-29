@@ -14,26 +14,17 @@ class TargetDrawn extends Mailable
     public $subject;
     public $content;
     public $dearSantaLink;
-    public $personalizations;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($subject, $content, $dearSantaLink = null, array $personalizations = [])
+    public function __construct($subject, $content, $santaName, $targetName, $dearSantaLink = null)
     {
         $this->subject = $subject;
-        $this->content = $content;
+        $this->content = str_replace('{SANTA}', $santaName, str_replace('{TARGET}', $targetName, $content));
         $this->dearSantaLink = $dearSantaLink;
-        $this->personalizations = $personalizations;
-    }
-
-    public function withSubstitutions(array $substitutions)
-    {
-        $this->personalizations = [['substitutions' => $substitutions]];
-
-        return $this;
     }
 
     /**
@@ -44,9 +35,6 @@ class TargetDrawn extends Mailable
     public function build()
     {
         return $this->subject($this->subject)
-                    ->sendgrid([
-                        'personalizations' => $this->personalizations,
-                    ])
                     ->view('emails.target_drawn')
                     ->text('emails.target_drawn_plain');
     }

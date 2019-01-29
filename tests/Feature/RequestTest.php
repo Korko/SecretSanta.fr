@@ -152,13 +152,27 @@ class RequestTest extends RequestCase
             return $mail->hasTo('test@test.com', 'toto');
         });
 
-        Mail::assertSent(TargetDrawn::class, function ($mail) {
-            return $mail->hasTo('test@test.com', 'toto');
-        });
+        $body = null;
+        Mail::assertSent(TargetDrawn::class, function ($mail) use (&$body) {
+            if ($mail->hasTo('test@test.com', 'toto')) {
+                $m = $mail->build();
+                $body = view($m->view, $m->buildViewData())->render();
 
-        Mail::assertSent(TargetDrawn::class, function ($mail) {
-            return $mail->hasTo('test2@test.com', 'tutu');
+                return true;
+            }
         });
+        $this->assertContains('test mail toto => tata', html_entity_decode($body));
+
+        $body = null;
+        Mail::assertSent(TargetDrawn::class, function ($mail) use (&$body) {
+            if ($mail->hasTo('test2@test.com', 'tutu')) {
+                $m = $mail->build();
+                $body = view($m->view, $m->buildViewData())->render();
+
+                return true;
+            }
+        });
+        $this->assertContains('test mail tutu => toto', html_entity_decode($body));
 
         $this->assertEquals(0, DearSanta::count());
         $this->assertEquals(1, Draw::count());
