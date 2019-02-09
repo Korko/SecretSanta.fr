@@ -29,7 +29,6 @@ class DearSantaRequest extends Request
         }
 
         $rules = [
-            'title'                => 'required|string',
             'content'              => 'required|string',
             'key'                  => 'required|string',
         ];

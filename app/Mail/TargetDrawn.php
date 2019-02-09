@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Draw;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -20,9 +21,9 @@ class TargetDrawn extends Mailable
      *
      * @return void
      */
-    public function __construct($subject, $content, $santaName, $targetName, $dearSantaLink = null)
+    public function __construct(Draw $draw, $subject, $content, $santaName, $targetName, $dearSantaLink = null)
     {
-        $this->subject = $subject;
+        $this->subject = __('emails.target_draw.title', ['draw' => $draw->id, 'subject' => $subject]);
         $this->content = str_replace('{SANTA}', $santaName, str_replace('{TARGET}', $targetName, $content));
         $this->dearSantaLink = $dearSantaLink;
     }

@@ -1,5 +1,8 @@
 <?php
 
 return [
-    'organizer' => 'Voici le lien vers votre panneau d\'organisation : :link',
+    'organizer.content' => 'Pour consulter votre panneau d\'organisation, vous pouvez vous rendre sur la page suivante : :link',
+    'organizer.title'   => 'SecretSanta #:draw - Suivi d\'organisation',
+    'target_draw.title' => 'SecretSanta #:draw - :subject',
+    'dear_santa.title'  => 'SecretSanta #:draw - Message de votre cible',
 ];
