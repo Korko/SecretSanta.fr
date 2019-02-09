@@ -61,6 +61,34 @@ var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.j
 
 /***/ }),
 
+/***/ "./resources/js/decrypterVue.js":
+/*!**************************************!*\
+  !*** ./resources/js/decrypterVue.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var crypto_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! crypto-js */ "./node_modules/crypto-js/index.js");
+/* harmony import */ var crypto_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(crypto_js__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: {
+    key: window.location.hash.substr(1)
+  },
+  methods: {
+    decrypt: function decrypt(data) {
+      var datab = JSON.parse(atob(data));
+      return crypto_js__WEBPACK_IMPORTED_MODULE_0___default.a.AES.decrypt(datab.value, crypto_js__WEBPACK_IMPORTED_MODULE_0___default.a.enc.Base64.parse(this.key), {
+        iv: crypto_js__WEBPACK_IMPORTED_MODULE_0___default.a.enc.Base64.parse(datab.iv)
+      }).toString(crypto_js__WEBPACK_IMPORTED_MODULE_0___default.a.enc.Utf8);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/organizer.js":
 /*!***********************************!*\
   !*** ./resources/js/organizer.js ***!
@@ -70,29 +98,37 @@ var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.j
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var crypto_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! crypto-js */ "./node_modules/crypto-js/index.js");
-/* harmony import */ var crypto_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(crypto_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ajaxVue_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ajaxVue.js */ "./resources/js/ajaxVue.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ajaxVue_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ajaxVue.js */ "./resources/js/ajaxVue.js");
+/* harmony import */ var _decrypterVue_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./decrypterVue.js */ "./resources/js/decrypterVue.js");
 
 
 
-window.app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
-  mixins: [_ajaxVue_js__WEBPACK_IMPORTED_MODULE_2__["default"]],
+window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  mixins: [_ajaxVue_js__WEBPACK_IMPORTED_MODULE_1__["default"], _decrypterVue_js__WEBPACK_IMPORTED_MODULE_2__["default"]],
   el: '#form',
   data: {
     challenge: window.global.challenge,
-    key: window.location.hash.substr(1),
     text: window.global.text,
-    verified: false
+    verified: false,
+    raw_participants: window.global.participants,
+    participants: []
   },
   created: function created() {
-    var challenge = JSON.parse(atob(this.challenge));
-    var text = crypto_js__WEBPACK_IMPORTED_MODULE_0___default.a.AES.decrypt(challenge.value, crypto_js__WEBPACK_IMPORTED_MODULE_0___default.a.enc.Base64.parse(this.key), {
-      iv: crypto_js__WEBPACK_IMPORTED_MODULE_0___default.a.enc.Base64.parse(challenge.iv)
-    }).toString(crypto_js__WEBPACK_IMPORTED_MODULE_0___default.a.enc.Utf8);
-    this.verified = text === this.text;
+    var _this = this;
+
+    this.verified = this.decrypt(this.challenge) === this.text;
+
+    if (this.verified) {
+      this.raw_participants.forEach(function (participant) {
+        _this.participants.push({
+          name: _this.decrypt(participant.name),
+          email_address: _this.decrypt(participant.email_address),
+          delivery_status: participant.delivery_status
+        });
+      });
+    }
   }
 });
 
