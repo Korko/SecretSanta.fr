@@ -6,6 +6,7 @@ use App\DearSanta;
 use App\Http\Requests\DearSantaRequest;
 use App\Mail\DearSanta as DearSantaMail;
 use App\Services\SymmetricalEncrypter as Encrypter;
+use Hashids;
 use Mail;
 use Metrics;
 
@@ -15,7 +16,7 @@ class DearSantaController extends Controller
     {
         return view('dearSanta', [
             'challenge' => $dearSanta->challenge,
-            'santa'     => $dearSanta->id,
+            'santa'     => Hashids::encode($dearSanta->id),
         ]);
     }
 
