@@ -104,7 +104,7 @@ return [
         ],
         'data-expiration' => [
             'required' => 'La date limite de stockage des emails est requise',
-        ]
+        ],
     ],
 
     /*
