@@ -71,16 +71,19 @@
 		<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="width:100% !important;" >
 			<tr>
 				<td width="100%" valign="top" bgcolor="#ffffff">
-					<table class="tableWrapperTemplateWidth" width="720" border="0" cellpadding="0" cellspacing="0" align="center" style="width:720px;min-width:720px;margin:0 auto;">
+					<table class="tableWrapperTemplateWidth" width="720" border="0" cellpadding="0" cellspacing="0" align="center" style="width:720px;min-width:720px;margin:0 auto;position:relative">
 						<tr>
 							<td valign="top">
-								<table class="tableTemplateWidth" width="720" style="width:720px;" border="0" cellpadding="0" cellspacing="0" align="center">
+								<table class="tableTemplateWidth" width="720" style="width:720px;" border="0" cellpadding="0" cellspacing="0" align="center" style="position:relative">
 									<tr>
 										<td width="100%">
                                                                                         <table class="tableTemplateWidth" width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin-bottom:45px">
                                                                                                 <tr>
-                                                                                                        <td style="background:rgba(33,45,57,0.8);height:64px">
-														<div id="logo"><img src="/images/logo.png" height="75" style="width:75px"/></div>
+                                                                                                        <td style="background:url({{ asset('/images/gifts-1-2.jpg') }});height:64px;width:100%;position:absolute;z-index:0"></td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                        <td style="background:rgba(33,45,57,0.6);height:64px;position:relative;z-index:1">
+														<div id="logo"><img src="{{ asset('/images/logo.png') }}" height="75" style="width:75px"/></div>
 													</td>
                                                                                                 </tr>
                                                                                         </table>
@@ -93,7 +96,7 @@
 
 											<table class="tableTemplateWidth" width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
 												<tr>
-													<td style="background:url(/images/mail-bottom-bg.png);background-position-x:-10px;height:14px"></td>
+													<td style="background:url({{ asset('/images/mail-bottom-bg.png') }});height:12px"></td>
 												</tr>
 												<tr>
 													<td style="background:red">&nbsp;</td>

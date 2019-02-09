@@ -1,4 +1,7 @@
-<p>{{ $content }}</p>
+@extends('emails/layout')
 
-{!! nl2br(htmlentities( trans('form.mail.post') )) !!}
+@section('main')
+    <p>{{ $content }}</p>
 
+    {!! nl2br(htmlentities( trans('form.mail.post') )) !!}
+@endsection

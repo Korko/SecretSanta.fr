@@ -1,1 +1,1 @@
-{!! trans('emails.organizer', ['link' => $panelLink]) !!}
+{!! trans('emails.organizer.content', ['link' => $panelLink]) !!}
