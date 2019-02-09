@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Draw;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -10,6 +11,7 @@ class Organizer extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $draw;
     public $panelLink;
 
     /**
@@ -17,8 +19,9 @@ class Organizer extends Mailable
      *
      * @return void
      */
-    public function __construct($panelLink)
+    public function __construct(Draw $draw, $panelLink)
     {
+        $this->draw = $draw;
         $this->panelLink = $panelLink;
     }
 
@@ -29,7 +32,7 @@ class Organizer extends Mailable
      */
     public function build()
     {
-        return $this->subject('todo')
+        return $this->subject(__('emails.organizer.title', ['draw' => $this->draw->id]))
                     ->view('emails.organizer')
                     ->text('emails.organizer_plain');
     }

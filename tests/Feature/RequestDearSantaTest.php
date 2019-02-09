@@ -45,7 +45,6 @@ class RequestDearSantaTest extends RequestCase
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
             'participants'         => $participants,
-            'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => '',
             'dearsanta'            => '1',
@@ -75,7 +74,6 @@ class RequestDearSantaTest extends RequestCase
             $content = $this->ajaxPost($path, [
                 'g-recaptcha-response' => 'mocked',
                 'key'                  => $key,
-                'title'                => 'test dearsanta mail title',
                 'content'              => 'test dearsanta mail content',
             ], 200);
             $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);

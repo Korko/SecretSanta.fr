@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DearSanta;
+use App\Draw;
 use App\Http\Requests\DearSantaRequest;
 use App\Mail\DearSanta as DearSantaMail;
 use App\Services\SymmetricalEncrypter as Encrypter;
@@ -32,9 +33,9 @@ class DearSantaController extends Controller
         Metrics::increment('dearsanta');
 
         $this->sendMail(
+            $dearSanta->draw,
             $encrypter->decrypt($dearSanta->santa_name),
             $encrypter->decrypt($dearSanta->santa_email),
-            $request->input('title'),
             $request->input('content')
         );
 
@@ -45,8 +46,8 @@ class DearSantaController extends Controller
             redirect('/dearsanta/'.$dearSanta->id)->with('message', $message);
     }
 
-    protected function sendMail($santaName, $santaEmail, $title, $content)
+    protected function sendMail(Draw $draw, $santaName, $santaEmail, $content)
     {
-        Mail::to($santaEmail, $santaName)->send(new DearSantaMail($title, $content));
+        Mail::to($santaEmail, $santaName)->send(new DearSantaMail($draw, $content));
     }
 }
