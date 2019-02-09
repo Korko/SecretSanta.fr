@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/dearSanta"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/organizer"],{
 
 /***/ "./resources/js/ajaxVue.js":
 /*!*********************************!*\
@@ -61,9 +61,9 @@ var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.j
 
 /***/ }),
 
-/***/ "./resources/js/dearSanta.js":
+/***/ "./resources/js/organizer.js":
 /*!***********************************!*\
-  !*** ./resources/js/dearSanta.js ***!
+  !*** ./resources/js/organizer.js ***!
   \***********************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -98,16 +98,16 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
 
 /***/ }),
 
-/***/ 2:
+/***/ 3:
 /*!*****************************************!*\
-  !*** multi ./resources/js/dearSanta.js ***!
+  !*** multi ./resources/js/organizer.js ***!
   \*****************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/js/dearSanta.js */"./resources/js/dearSanta.js");
+module.exports = __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/js/organizer.js */"./resources/js/organizer.js");
 
 
 /***/ })
 
-},[[2,"/js/manifest","/js/vendor"]]]);
+},[[3,"/js/manifest","/js/vendor"]]]);
