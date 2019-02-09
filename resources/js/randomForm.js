@@ -17,7 +17,10 @@ Lang.setLocale(window.global.lang);
 import Select2 from './components/select2.vue';
 
 import VueAjax from './ajaxVue.js';
-window.app = new VueAjax({
+
+window.app = new Vue({
+  mixins: [VueAjax],
+
   el: '#form',
 
   data: {
