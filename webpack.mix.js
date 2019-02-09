@@ -34,6 +34,7 @@ mix.webpackConfig({
 mix.js('resources/js/common.js', 'public/js')
    .js('resources/js/randomForm.js', 'public/js')
    .js('resources/js/dearSanta.js', 'public/js')
+   .js('resources/js/organizer.js', 'public/js')
    .extract()
    .sass('resources/sass/layout.scss', 'public/css')
    .sass('resources/sass/randomForm.scss', 'public/css')
