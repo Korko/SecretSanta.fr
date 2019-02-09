@@ -102,6 +102,9 @@ return [
         'contentSms' => [
             'contains' => 'Le contenu du sms doit include le mot clef :values',
         ],
+        'data-expiration' => [
+            'required' => 'La date limite de stockage des emails est requise',
+        ]
     ],
 
     /*
