@@ -1,27 +1,33 @@
-import CryptoJS from 'crypto-js';
-
 import Vue from 'vue';
 import VueAjax from './ajaxVue.js';
+import VueDecrypt from './decrypterVue.js';
 
 window.app = new Vue({
-  mixins: [VueAjax],
+  mixins: [VueAjax, VueDecrypt],
 
   el: '#form',
 
   data: {
     challenge: window.global.challenge,
-    key: window.location.hash.substr(1),
     text: window.global.text,
-    verified: false
+    verified: false,
+    raw_participants: window.global.participants,
+    participants: []
   },
 
   created: function() {
-      var challenge = JSON.parse(atob(this.challenge));
-      var text = CryptoJS.AES.decrypt(challenge.value, CryptoJS.enc.Base64.parse(this.key), {
-        iv : CryptoJS.enc.Base64.parse(challenge.iv)
-      }).toString(CryptoJS.enc.Utf8);
+    this.verified = (this.decrypt(this.challenge) === this.text);
 
-      this.verified = (text === this.text);
+    if (this.verified) {
+      this.raw_participants.forEach((participant) => {
+        this.participants.push({
+          name: this.decrypt(participant.name),
+          email_address: this.decrypt(participant.email_address),
+          delivery_status: participant.delivery_status
+        });
+      });
+    }
   }
+
 });
 

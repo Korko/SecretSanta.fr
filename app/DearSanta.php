@@ -15,9 +15,9 @@ class DearSanta extends Model
 
         $dearSanta = new self();
         $dearSanta->draw_id = $draw->id;
-        $dearSanta->santa_name = $encrypter->encrypt($santa['name']);
-        $dearSanta->santa_email = $encrypter->encrypt($santa['email']);
-        $dearSanta->challenge = $encrypter->encrypt(config('app.challenge'), false); // tested by JS so no serializing
+        $dearSanta->santa_name = $encrypter->encrypt($santa['name'], false);
+        $dearSanta->santa_email = $encrypter->encrypt($santa['email'], false);
+        $dearSanta->challenge = $encrypter->encrypt(config('app.challenge'), false);
 
         $dearSanta->save();
 

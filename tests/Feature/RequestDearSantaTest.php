@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\DearSanta;
+use App\Services\SymmetricalEncrypter;
+use Hashids;
 use Mail;
 use NoCaptcha;
 
@@ -45,6 +48,7 @@ class RequestDearSantaTest extends RequestCase
         $content = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
             'participants'         => $participants,
+            'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => '',
             'dearsanta'            => '1',
@@ -70,6 +74,19 @@ class RequestDearSantaTest extends RequestCase
             $response = $this->get($path);
             $this->assertEquals(200, $response->status(), $response->__toString());
 
+            $santaId = array_search($id, array_column($participants, 'target'));
+            $santa = $participants[$santaId];
+
+            // Check data stored are decryptable
+            $pathTheorical = parse_url(route('dearsanta', ['santa' => '%s']), PHP_URL_PATH);
+            $data = sscanf($path, $pathTheorical);
+            $id = Hashids::decode($data[0]);
+            $dearSanta = DearSanta::find($id[0]);
+
+            $encrypter = new SymmetricalEncrypter(base64_decode($key));
+            $this->assertEquals($santa['name'], $encrypter->decrypt($dearSanta->santa_name, false));
+            $this->assertEquals($santa['email'], $encrypter->decrypt($dearSanta->santa_email, false));
+
             // Try to contact santa
             $content = $this->ajaxPost($path, [
                 'g-recaptcha-response' => 'mocked',
@@ -78,11 +95,8 @@ class RequestDearSantaTest extends RequestCase
             ], 200);
             $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
 
-            Mail::assertSent(\App\Mail\DearSanta::class, function ($mail) use ($id, $participants) {
-                $santaId = array_search($id, array_column($participants, 'target'));
-                $santa = $participants[$santaId];
-
-                return $mail->hasTo($santa['email']);
+            Mail::assertSent(\App\Mail\DearSanta::class, function ($mail) use ($santa) {
+                return $mail->hasTo($santa['email'], $santa['name']);
             });
         }
     }

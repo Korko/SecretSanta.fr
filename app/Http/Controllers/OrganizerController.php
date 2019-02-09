@@ -16,8 +16,11 @@ class OrganizerController extends Controller
     public function view(Draw $draw)
     {
         return view('organizer', [
-            'challenge' => $draw->challenge,
-            'draw'      => $draw->id,
+            'challenge'    => $draw->challenge,
+            'draw'         => $draw->id,
+            'participants' => $draw->participants->map(function ($participant) {
+                return $participant->only(['name', 'email_address', 'delivery_status']);
+            }),
         ]);
     }
 
@@ -44,8 +47,8 @@ class OrganizerController extends Controller
             $encrypter = new Encrypter($key);
 
             return [
-                'name'  => $encrypter->decrypt($dearSanta->santa_name),
-                'email' => $encrypter->decrypt($dearSanta->santa_email),
+                'name'  => $encrypter->decrypt($dearSanta->santa_name, false),
+                'email' => $encrypter->decrypt($dearSanta->santa_email, false),
             ];
         }
 
