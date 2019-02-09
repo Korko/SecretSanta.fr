@@ -1,9 +1,7 @@
 var $ = require('jquery');
 var alertify = require('alertify.js');
 
-var Vue = require('vue');
-
-export default Vue.extend({
+export default {
   data: function() {
     return {
       fieldErrors: [],
@@ -45,4 +43,4 @@ export default Vue.extend({
       }
     }
   }
-});
+};
