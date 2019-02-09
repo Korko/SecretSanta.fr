@@ -34,8 +34,10 @@ class DearSantaController extends Controller
 
         $this->sendMail(
             $dearSanta->draw,
-            $encrypter->decrypt($dearSanta->santa_name),
-            $encrypter->decrypt($dearSanta->santa_email),
+            [
+                'name'  => $encrypter->decrypt($dearSanta->santa_name, false),
+                'email' => $encrypter->decrypt($dearSanta->santa_email, false),
+            ],
             $request->input('content')
         );
 
@@ -46,8 +48,8 @@ class DearSantaController extends Controller
             redirect('/dearsanta/'.$dearSanta->id)->with('message', $message);
     }
 
-    protected function sendMail(Draw $draw, $santaName, $santaEmail, $content)
+    protected function sendMail(Draw $draw, $santa, $content)
     {
-        Mail::to($santaEmail, $santaName)->send(new DearSantaMail($draw, $content));
+        Mail::to([$santa])->send(new DearSantaMail($draw, $content));
     }
 }

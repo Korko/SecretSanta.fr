@@ -28,15 +28,15 @@ class Participant extends Model
          self::ERROR,
     ];
 
-    public static function prepareAndSave(Draw $draw, array $participant, array $target, $encryptionKey)
+    public static function prepareAndSave(Draw $draw, array $data, array $target, $encryptionKey)
     {
         $encrypter = new SymmetricalEncrypter($encryptionKey);
 
         $participant = new self();
         $participant->draw_id = $draw->id;
-        $participant->name = $encrypter->encrypt($participant['name']);
-        $participant->email_address = $encrypter->encrypt($participant['email']);
-        $participant->target = $encrypter->encrypt(json_encode($target));
+        $participant->name = $encrypter->encrypt($data['name'], false);
+        $participant->email_address = $encrypter->encrypt($data['email'], false);
+        $participant->target = $encrypter->encrypt(json_encode($target), false);
         $participant->save();
 
         return $participant;

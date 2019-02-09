@@ -1,10 +1,9 @@
-import CryptoJS from 'crypto-js';
-
 import Vue from 'vue';
 import VueAjax from './ajaxVue.js';
+import VueDecrypt from './decrypterVue.js';
 
 window.app = new Vue({
-  mixins: [VueAjax],
+  mixins: [VueAjax, VueDecrypt],
 
   el: '#form',
 
@@ -16,12 +15,7 @@ window.app = new Vue({
   },
 
   created: function() {
-      var challenge = JSON.parse(atob(this.challenge));
-      var text = CryptoJS.AES.decrypt(challenge.value, CryptoJS.enc.Base64.parse(this.key), {
-        iv : CryptoJS.enc.Base64.parse(challenge.iv)
-      }).toString(CryptoJS.enc.Utf8);
-
-      this.verified = (text === this.text);
+      this.verified = (this.decrypt(this.challenge) === this.text);
   }
 });
 

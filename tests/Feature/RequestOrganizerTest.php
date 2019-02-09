@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Draw;
+use App\Services\SymmetricalEncrypter;
 use Mail;
 use NoCaptcha;
 
@@ -69,22 +71,16 @@ class RequestOrganizerTest extends RequestCase
         $response = $this->get($path);
         $this->assertEquals(200, $response->status(), $response->__toString());
 
-        /*
-                        // Try to contact santa
-                        $content = $this->ajaxPost($path, [
-                            'g-recaptcha-response' => 'mocked',
-                            'key'                  => $key,
-                            'title'                => 'test dearsanta mail title',
-                            'content'              => 'test dearsanta mail content',
-                        ], 200);
-                        $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
-        
-                        Mail::assertSent(\App\Mail\DearSanta::class, function ($mail) use ($id, $participants) {
-                            $santaId = array_search($id, array_column($participants, 'target'));
-                            $santa = $participants[$santaId];
-        
-                            return $mail->hasTo($santa['email']);
-                        });
-        */
+        // Check data stored are decryptable
+        $pathTheorical = parse_url(route('organizerPanel', ['santa' => '%d']), PHP_URL_PATH);
+        $data = sscanf($path, $pathTheorical);
+        $draw = Draw::find($data[0]);
+
+        $encrypter = new SymmetricalEncrypter(base64_decode($key));
+
+        foreach ($draw->participants as $participant) {
+            $this->assertContains($encrypter->decrypt($participant->name, false), array_column($participants, 'name'));
+            $this->assertContains($encrypter->decrypt($participant->email_address, false), array_column($participants, 'email'));
+        }
     }
 }
