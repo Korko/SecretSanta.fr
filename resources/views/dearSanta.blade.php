@@ -22,10 +22,6 @@
             <fieldset :disabled="sending || sent">
                 <fieldset>
                     <div class="form-group">
-                        <label for="mailTitle">Titre du mail</label>
-                        <input id="mailTitle" type="text" name="title" required placeholder="Ma liste de Noël" value="" class="form-control" />
-                    </div>
-                    <div class="form-group">
                         <label for="mailContent">Contenu du mail</label>
                         <textarea id="mailContent" name="content" required placeholder="Cher Papa Noël..." class="form-control"></textarea>
                     </div>

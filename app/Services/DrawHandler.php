@@ -47,7 +47,7 @@ class DrawHandler
         $organizerPanelLink = $this->getOrganizerPanelLink($draw, $orgaSymKey);
 
         Mail::to([$organizer])
-            ->send(new OrganizerEmail($organizerPanelLink));
+            ->send(new OrganizerEmail($draw, $organizerPanelLink));
     }
 
     protected function getOrganizerPanelLink(Draw $draw, $orgaSymKey)
@@ -66,7 +66,7 @@ class DrawHandler
 
         Mail::to([$santa])
             ->send(
-                (new TargetDrawn($mailContent['title'], $mailContent['body'], $santa['name'], $target['name'], $dearSantaLink))
+                (new TargetDrawn($participant->draw, $mailContent['title'], $mailContent['body'], $santa['name'], $target['name'], $dearSantaLink))
                     ->withEventData([
                         'participant' => $participant,
                     ])
