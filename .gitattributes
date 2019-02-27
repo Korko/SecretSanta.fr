@@ -1,5 +1,6 @@
 * text eol=lf
 *.css linguist-vendored
+*.scss linguist-vendored
 *.less linguist-vendored
 *.png binary
 *.jpg binary
@@ -8,3 +9,5 @@
 *.otf binary
 *.woff binary
 *.woff2 binary
+*.js linguist-vendored
+CHANGELOG.md export-ignore

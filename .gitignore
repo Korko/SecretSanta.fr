@@ -5,3 +5,9 @@ Homestead.json
 .env
 storage/database.sqlite
 public/assets/*.map
+/public/hot
+/public/storage
+/storage/*.key
+.phpunit.result.cache
+npm-debug.log
+yarn-error.log
