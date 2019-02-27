@@ -50,12 +50,12 @@
         "fideloper/proxy": "^4.0",
         "korko/callr": "^1.0",
         "korko/validator": "dev-master",
-        "laravel/framework": "5.7.*",
+        "laravel/framework": "5.8.*",
         "league/statsd": "1.4.*",
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
         "spatie/laravel-blade-javascript": "^2.0",
         "vinkla/hashids": "^5.1",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "^1.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -66,7 +66,7 @@
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^2.0",
         "phpro/grumphp": "^0.14.1",
-        "phpunit/phpunit": "^7.0",
+        "phpunit/phpunit": "^7.5",
         "povils/phpmnd": "^2.0",
         "rap2hpoutre/laravel-log-viewer": "^0.8.0",
         "squizlabs/PHP_CodeSniffer": "^3.2",
@@ -74,13 +74,13 @@
         "symfony/dom-crawler": "3.2.*"
     },
     "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
         "classmap": [
             "database/seeds",
             "database/factories"
         ],
-        "psr-4": {
-            "App\\": "app/"
-        },
         "files": [
         ]
     },
@@ -88,18 +88,6 @@
         "psr-4": {
             "Tests\\": "tests/"
         }
-    },
-    "scripts": {
-        "post-root-package-install": [
-            "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "php artisan key:generate --ansi"
-        ],
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
-        ]
     },
     "config": {
         "optimize-autoloader": true,
@@ -110,5 +98,19 @@
         "laravel": {
             "dont-discover": []
         }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ]
     }
 }
