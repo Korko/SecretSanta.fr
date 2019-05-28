@@ -35,8 +35,8 @@ return [
 
     'channels' => [
         'stack' => [
-            'driver'   => 'stack',
-            'channels' => ['daily'],
+            'driver'            => 'stack',
+            'channels'          => ['daily'],
             'ignore_exceptions' => false,
         ],
 
@@ -54,9 +54,9 @@ return [
         ],
 
         'papertrail' => [
-            'driver' => 'monolog',
-            'level' => 'debug',
-            'handler' => SyslogUdpHandler::class,
+            'driver'       => 'monolog',
+            'level'        => 'debug',
+            'handler'      => SyslogUdpHandler::class,
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
@@ -72,10 +72,10 @@ return [
         ],
 
         'stderr' => [
-            'driver'  => 'monolog',
-            'handler' => StreamHandler::class,
+            'driver'    => 'monolog',
+            'handler'   => StreamHandler::class,
             'formatter' => env('LOG_STDERR_FORMATTER'),
-            'with' => [
+            'with'      => [
                 'stream' => 'php://stderr',
             ],
         ],
@@ -87,7 +87,7 @@ return [
 
         'errorlog' => [
             'driver' => 'errorlog',
-            'level' => 'debug',
+            'level'  => 'debug',
         ],
     ],
 
