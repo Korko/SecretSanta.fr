@@ -7,42 +7,6 @@
     ],
     "license": "MIT",
     "type": "project",
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "korko/laravel5-recaptcha2",
-                "version": "dev-Korko-patch-1",
-                "source": {
-                    "url": "https://github.com/korko/laravel5-recaptcha2.git",
-                    "type": "git",
-                    "reference": "Korko-patch-1"
-                },
-                "autoload": {
-                    "classmap": [
-                        ""
-                    ]
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "korko/statsd",
-                "version": "dev-laravel-5.4",
-                "source": {
-                    "url": "https://github.com/korko/statsd.git",
-                    "type": "git",
-                    "reference": "laravel-5.4"
-                },
-                "autoload": {
-                    "classmap": [
-                        ""
-                    ]
-                }
-            }
-        }
-    ],
     "require": {
         "php": "^7.1",
         "ext-openssl": "^7.1",
