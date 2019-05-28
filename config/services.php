@@ -24,9 +24,9 @@ return [
     ],
 
     'ses' => [
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_REGION', 'us-east-1'),
+        'key'      => env('AWS_ACCESS_KEY_ID'),
+        'secret'   => env('AWS_SECRET_ACCESS_KEY'),
+        'region'   => env('AWS_REGION', 'us-east-1'),
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
@@ -35,11 +35,11 @@ return [
     ],
 
     'stripe' => [
-        'model'  => App\User::class,
-        'key'    => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET'),
+        'model'   => App\User::class,
+        'key'     => env('STRIPE_KEY'),
+        'secret'  => env('STRIPE_SECRET'),
         'webhook' => [
-            'secret' => env('STRIPE_WEBHOOK_SECRET'),
+            'secret'    => env('STRIPE_WEBHOOK_SECRET'),
             'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
         ],
     ],
