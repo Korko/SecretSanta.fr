@@ -25,6 +25,6 @@ Route::post('/org/{draw}', 'OrganizerConroller@handle');
 
 Route::post('/event', 'EmailEventController@handle');
 
-if ($this->app->environment('local', 'dev', 'testing')) {
+if (App::environment('local', 'dev', 'testing')) {
     Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 }
