@@ -13,13 +13,12 @@ class RequestCase extends TestCase
             'X-Requested-With' => 'XMLHttpRequest',
         ];
 
-        if (!$rawJSONContent) {
-            $response = $this->post($url, $postArgs, $headers);
-        } else {
+        if ($rawJSONContent) {
             $headers['Content-Type'] = 'application/json';
-            $response = $this->call('POST', $url, [], [], [], $headers, json_encode($postArgs));
+            $postArgs = json_encode($postArgs);
         }
 
+        $response = $this->call('POST', $url, [], [], [], $headers, $postArgs);
         $this->assertEquals($code, $response->status(), $response->getContent());
 
         return json_decode($response->content(), true);
