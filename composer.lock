@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df05858c9138dd2d84245f8a6ec225da",
+    "content-hash": "11d020f76b084fc779ca9ab89af88956",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -5782,23 +5782,34 @@
         },
         {
             "name": "rap2hpoutre/laravel-log-viewer",
-            "version": "v0.8.1",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rap2hpoutre/laravel-log-viewer.git",
-                "reference": "1a4d1905fd3835d946ca51e6e4d62c77fa19dc9c"
+                "reference": "f6acf9779669568e8afce1182e1a5579d5a0ffe5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rap2hpoutre/laravel-log-viewer/zipball/1a4d1905fd3835d946ca51e6e4d62c77fa19dc9c",
-                "reference": "1a4d1905fd3835d946ca51e6e4d62c77fa19dc9c",
+                "url": "https://api.github.com/repos/rap2hpoutre/laravel-log-viewer/zipball/f6acf9779669568e8afce1182e1a5579d5a0ffe5",
+                "reference": "f6acf9779669568e8afce1182e1a5579d5a0ffe5",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "4.2.*|5.*",
                 "php": ">=5.4.0"
             },
-            "type": "library",
+            "require-dev": {
+                "orchestra/testbench": "3.7.*",
+                "phpunit/phpunit": "^7"
+            },
+            "type": "laravel-package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Rap2hpoutre\\LaravelLogViewer\\LaravelLogViewerServiceProvider"
+                    ]
+                }
+            },
             "autoload": {
                 "classmap": [
                     "src/controllers"
@@ -5826,7 +5837,7 @@
                 "logging",
                 "lumen"
             ],
-            "time": "2017-03-13T07:50:58+00:00"
+            "time": "2019-03-02T15:10:46+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

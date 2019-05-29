@@ -28,7 +28,7 @@
         "phpro/grumphp": "^0.15.2",
         "phpunit/phpunit": "~6.0",
         "povils/phpmnd": "^2.0",
-        "rap2hpoutre/laravel-log-viewer": "^0.8.0",
+        "rap2hpoutre/laravel-log-viewer": "^1.1.1",
         "squizlabs/PHP_CodeSniffer": "^3.2",
         "symfony/css-selector": "3.2.*",
         "symfony/dom-crawler": "3.2.*",
