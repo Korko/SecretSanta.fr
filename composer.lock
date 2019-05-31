@@ -2615,16 +2615,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.2.9",
+            "version": "v4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "e0ff582c4b038567a7c6630f136488b1d793e6a9"
+                "reference": "b3d4f4c0e4eadfdd8b296af9ca637cfbf51d8176"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/e0ff582c4b038567a7c6630f136488b1d793e6a9",
-                "reference": "e0ff582c4b038567a7c6630f136488b1d793e6a9",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/b3d4f4c0e4eadfdd8b296af9ca637cfbf51d8176",
+                "reference": "b3d4f4c0e4eadfdd8b296af9ca637cfbf51d8176",
                 "shasum": ""
             },
             "require": {
@@ -2633,7 +2633,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.2-dev"
+                    "dev-master": "4.3-dev"
                 }
             },
             "autoload": {
@@ -2660,7 +2660,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2019-05-26T20:47:34+00:00"
+            "time": "2019-05-26T20:47:49+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -5599,28 +5599,28 @@
         },
         {
             "name": "povils/phpmnd",
-            "version": "v2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/povils/phpmnd.git",
-                "reference": "7b0a25315d7ce98fb0e4b05d1cc9e5d0e5a0aad1"
+                "reference": "6b726e55662b84ebec007818a306eb761799407e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/povils/phpmnd/zipball/7b0a25315d7ce98fb0e4b05d1cc9e5d0e5a0aad1",
-                "reference": "7b0a25315d7ce98fb0e4b05d1cc9e5d0e5a0aad1",
+                "url": "https://api.github.com/repos/povils/phpmnd/zipball/6b726e55662b84ebec007818a306eb761799407e",
+                "reference": "6b726e55662b84ebec007818a306eb761799407e",
                 "shasum": ""
             },
             "require": {
                 "jakub-onderka/php-console-highlighter": "^0.3.2",
-                "nikic/php-parser": "^3.0 || ^4.0",
+                "nikic/php-parser": "^4.0",
                 "php": "^7.1",
-                "phpunit/php-timer": "^1.0 || ^2.0",
-                "symfony/console": "^2.4 || ^3.0 || ^4.0",
-                "symfony/finder": "^2.2 || ^3.0 || ^4.0"
+                "phpunit/php-timer": "^2.0",
+                "symfony/console": "^4.0",
+                "symfony/finder": "^4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.7.10 || ^6.0 || ^7.0",
+                "phpunit/phpunit": "^7.0",
                 "squizlabs/php_codesniffer": "^2.8.1"
             },
             "bin": [
@@ -5629,7 +5629,7 @@
             "type": "application",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "2.1-dev"
                 }
             },
             "autoload": {
@@ -5648,7 +5648,7 @@
                 }
             ],
             "description": "A tool to detect Magic numbers in codebase",
-            "time": "2018-03-17T22:50:44+00:00"
+            "time": "2019-01-27T17:18:25+00:00"
         },
         {
             "name": "psy/psysh",
