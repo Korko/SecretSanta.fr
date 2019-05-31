@@ -31,7 +31,7 @@
         "rap2hpoutre/laravel-log-viewer": "^1.1.1",
         "squizlabs/PHP_CodeSniffer": "^3.2",
         "symfony/css-selector": "3.2.*",
-        "symfony/dom-crawler": "4.2.*",
+        "symfony/dom-crawler": "4.3.*",
         "filp/whoops": "~2.0",
         "nunomaduro/collision": "~3.0",
         "beyondcode/laravel-dump-server": "~1.0"
