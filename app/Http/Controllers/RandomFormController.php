@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Sms;
-use Mail;
-use Hashids;
-use Metrics;
 use App\Draw;
-use App\Participant;
-use App\Mail\TargetDrawn;
-use Illuminate\Http\Request;
 use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
+use App\Mail\TargetDrawn;
+use App\Participant;
 use Facades\App\Libs\HatSolver as Solver;
 use Facades\App\Libs\SmsTools as SmsTools;
+use Hashids;
+use Illuminate\Http\Request;
+use Mail;
+use Metrics;
+use Sms;
 
 class RandomFormController extends Controller
 {
@@ -96,12 +96,12 @@ class RandomFormController extends Controller
             $dearSantaLink = $this->getDearSantaLink($superSanta, $request->input('dearsanta-expiration'));
         }
 
-        if (! empty($santa['email'])) {
+        if (!empty($santa['email'])) {
             Metrics::increment('email');
             $this->sendMail($santa, $target, $request->input('title'), $request->input('contentMail'), $dearSantaLink);
         }
 
-        if (! empty($santa['phone'])) {
+        if (!empty($santa['phone'])) {
             Metrics::increment('phone');
             Metrics::increment('sms', SmsTools::count($request->input('contentSMS')));
             $this->sendSms($santa, $target, $request->input('contentSMS'));
@@ -118,7 +118,7 @@ class RandomFormController extends Controller
 
     private function getDraw($expirationDate)
     {
-        if (! isset($this->draw)) {
+        if (!isset($this->draw)) {
             $this->draw = new Draw();
             $this->draw->expiration = $expirationDate;
             $this->draw->save();
