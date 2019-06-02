@@ -18,6 +18,6 @@ Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections')[confi
 Route::get('/dearsanta/{participant}', 'DearSantaController@view')->name('dearsanta');
 Route::post('/dearsanta/{participant}', 'DearSantaController@handle');
 
-if ($this->app->environment('local', 'dev', 'testing')) {
+if (App::environment('local', 'dev', 'testing')) {
     Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 }
