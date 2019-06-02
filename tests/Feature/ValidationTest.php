@@ -19,14 +19,14 @@ class ValidationTest extends RequestCase
     }
 
     // Nothing sent, recaptcha needed, at least a name
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $content = $this->ajaxPost('/', ['a' => 'b'], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'participants', 'data-expiration', 'title', 'contentMail'], $content);
     }
 
     // Just names, need recaptcha and contact informations
-    public function testContactInfo()
+    public function testContactInfo(): void
     {
         // At least 2 names!
         $content = $this->ajaxPost('/', ['participants' => [
@@ -82,7 +82,7 @@ class ValidationTest extends RequestCase
     }
 
     // Names and contact infos but no mail body nor sms body
-    public function testContactBodiesMail()
+    public function testContactBodiesMail(): void
     {
         $content = $this->ajaxPost('/', ['participants' => [
             ['name' => 'toto', 'email' => 'invalid@invalidformat'],
@@ -100,7 +100,7 @@ class ValidationTest extends RequestCase
     }
 
     // Names and contact infos but no mail body nor sms body
-    public function testContactBodiesSms()
+    public function testContactBodiesSms(): void
     {
         $content = $this->ajaxPost('/', ['participants' => [
             ['name' => 'toto', 'phone' => '0612345678'],
@@ -118,7 +118,7 @@ class ValidationTest extends RequestCase
     }
 
     // Names and contact infos but no mail body nor sms body
-    public function testContactBodiesBoth()
+    public function testContactBodiesBoth(): void
     {
         $content = $this->ajaxPost('/', ['participants' => [
             ['name' => 'toto', 'phone' => '0612345678', 'email' => 'test@test.com'],
@@ -129,7 +129,7 @@ class ValidationTest extends RequestCase
     }
 
     // Names and exclusionss
-    public function testExclusionss()
+    public function testExclusionss(): void
     {
         $content = $this->ajaxPost('/', ['participants' => [
             ['name' => 'toto', 'exclusions' => ['87']],
@@ -147,7 +147,7 @@ class ValidationTest extends RequestCase
     }
 
     // Dear Santa
-    public function testDearSanta()
+    public function testDearSanta(): void
     {
         // dearsanta at false, no problem
         $content = $this->ajaxPost('/', ['participants' => [
@@ -174,7 +174,7 @@ class ValidationTest extends RequestCase
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'participants.1.email', 'participants.2.email', 'data-expiration'], $content);
     }
 
-    public function testDataLimit()
+    public function testDataLimit(): void
     {
         // invalid limit (too soon)
         $content = $this->ajaxPost('/', ['participants' => [
@@ -193,7 +193,7 @@ class ValidationTest extends RequestCase
     }
 
     // Sms limit
-    public function testSmsLimit()
+    public function testSmsLimit(): void
     {
         config(['sms.max' => 1]);
         $content = $this->ajaxPost('/', [
@@ -207,7 +207,7 @@ class ValidationTest extends RequestCase
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'data-expiration'], $content);
     }
 
-    public function testOrganizerEmailRequired()
+    public function testOrganizerEmailRequired(): void
     {
         $content = $this->ajaxPost('/', [
             'participants' => [

@@ -28,7 +28,7 @@ class RequestTest extends RequestCase
         ], $parameters), $httpCode);
     }
 
-    public function testInvalid()
+    public function testInvalid(): void
     {
         Mail::shouldReceive('to')
             ->never();
@@ -75,7 +75,7 @@ class RequestTest extends RequestCase
         $this->assertEquals(0, Participant::count());
     }
 
-    public function testClassic()
+    public function testClassic(): void
     {
         Metrics::shouldReceive('increment')
             ->once()
@@ -179,7 +179,7 @@ class RequestTest extends RequestCase
         $this->assertEquals(3, Participant::count());
     }
 
-    public function testLongSmsOnly()
+    public function testLongSmsOnly(): void
     {
         Metrics::shouldReceive('increment')
             ->once()
@@ -268,7 +268,7 @@ class RequestTest extends RequestCase
         $this->assertEquals(3, Participant::count());
     }
 
-    public function testDearsanta()
+    public function testDearsanta(): void
     {
         Metrics::shouldReceive('increment')
             ->once()

@@ -12,7 +12,7 @@ class RequestOrganizerTest extends RequestCase
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
     use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
-    public function testOrganizer()
+    public function testOrganizer(): void
     {
         Mail::fake();
         NoCaptcha::shouldReceive('verifyResponse')->andReturn(true);

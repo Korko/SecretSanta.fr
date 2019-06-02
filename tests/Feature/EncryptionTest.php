@@ -9,7 +9,7 @@ use App\Services\SymmetricalEncrypter;
 
 class EncryptionTest extends RequestCase
 {
-    public function testAsymmetricalEncryption()
+    public function testAsymmetricalEncryption(): void
     {
         list('private' => $privKey, 'public' => $pubKey) = AsymmetricalEncrypter::generateKeys();
 
@@ -34,7 +34,7 @@ class EncryptionTest extends RequestCase
         $this->assertEquals($challenge, $challengeRaw);
     }
 
-    public function testSymmetricalEncryption()
+    public function testSymmetricalEncryption(): void
     {
         $key = SymmetricalEncrypter::generateKey(config('app.cipher'));
 
