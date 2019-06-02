@@ -106,12 +106,12 @@ class RequestTest extends RequestCase
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('+33612345678', '#test sms "tata\' => &tutu#')
+            ->with('+33612345678', 'test sms "tata\' => &tutu')
             ->andReturn(true);
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('+33712345678', '#test sms "tutu\' => &toto#')
+            ->with('+33712345678', 'test sms "tutu\' => &toto')
             ->andReturn(true);
 
         $this->assertEquals(0, Draw::count());
@@ -169,17 +169,17 @@ class RequestTest extends RequestCase
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('+33612345678', '#test sms "toto\' => &tata#')
+            ->with('+33612345678', \Mockery::pattern('#test sms "toto\' => &tata#'))
             ->andReturn(true);
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('+33612345679', '#test sms "tata\' => &tutu#')
+            ->with('+33612345679', \Mockery::pattern('#test sms "tata\' => &tutu#'))
             ->andReturn(true);
 
         Sms::shouldReceive('message')
             ->once()
-            ->with('+33712345670', '#test sms "tutu\' => &toto#')
+            ->with('+33712345670', \Mockery::pattern('#test sms "tutu\' => &toto#'))
             ->andReturn(true);
 
         $this->assertEquals(0, Draw::count());
