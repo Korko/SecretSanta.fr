@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Validator;
-use Illuminate\Support\ServiceProvider;
 use Facades\App\Libs\SmsTools as SmsTools;
+use Illuminate\Support\ServiceProvider;
+use Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
