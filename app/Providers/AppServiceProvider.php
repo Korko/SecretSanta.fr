@@ -9,6 +9,18 @@ use Validator;
 class AppServiceProvider extends ServiceProvider
 {
     /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        if ($this->app->environment('local', 'dev', 'testing')) {
+            $this->app->register(\Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class);
+        }
+    }
+
+    /**
      * Bootstrap any application services.
      *
      * @return void
@@ -22,17 +34,5 @@ class AppServiceProvider extends ServiceProvider
         Validator::replacer('smsCount', function ($message, $attribute, $rule, $parameters) {
             return str_replace(':size', $parameters[0], $message);
         });
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        if ($this->app->environment('local', 'dev', 'testing')) {
-            $this->app->register(\Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class);
-        }
     }
 }
