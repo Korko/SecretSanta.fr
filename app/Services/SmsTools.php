@@ -7,6 +7,7 @@ class SmsTools
     const LIMIT_UNICODE_CHAR = 127;
 
     private $smsAsciiLength = [160, 146, 153];
+
     private $smsUnicodeLength = [70, 62, 66];
 
     public function isUnicode($text)
