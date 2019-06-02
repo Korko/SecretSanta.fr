@@ -17,10 +17,11 @@ before_script:
 - docker-php-ext-enable xdebug
 # Install and run Composer
 - curl -sS https://getcomposer.org/installer | php
-- php composer.phar install
+- php composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+- cp .env.example .env
+- php artisan key:generate
 
-# Bring in any services we need http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
-# See http://docs.gitlab.com/ce/ci/services/README.html for examples.
+# Bring in any services we need http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service See http://docs.gitlab.com/ce/ci/services/README.html for examples.
 services:
   - mysql:5.7
 
@@ -32,7 +33,7 @@ variables:
 
 phpcs:
   script:
-  - vendor/bin/phpcs --standard=PSR2 -w --colors app/
+  - vendor/bin/phpcs --standard="./phpcs.xml" -w --colors app/
   allow_failure: true
 
 # Run our tests
@@ -45,3 +46,11 @@ php-7.2:
   script:
   - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --colors=never
 
+cache:
+
+    # We key the cache using the branch's unique identifier.
+    key: ${CI_COMMIT_REF_SLUG}
+    
+    paths:
+        # We only want to cache the vendor folder.
+        - vendor/
