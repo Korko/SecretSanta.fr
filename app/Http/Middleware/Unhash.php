@@ -17,7 +17,7 @@ class Unhash extends Middleware
      */
     protected function transform($key, $value)
     {
-        if (!array_key_exists($key, config('hashids.parameters'))) {
+        if (! array_key_exists($key, config('hashids.parameters'))) {
             return $value;
         }
 

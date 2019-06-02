@@ -2,8 +2,8 @@
 
 namespace App\Libs;
 
-use App\Exceptions\SolverException;
 use Generator;
+use App\Exceptions\SolverException;
 
 class HatSolver
 {
@@ -13,7 +13,7 @@ class HatSolver
         shuffle($hat);
 
         $generator = $this->getGenerator($participants, $exclusions, $hat);
-        if (!$generator->valid()) {
+        if (! $generator->valid()) {
             throw new SolverException('Cannot solve');
         }
 

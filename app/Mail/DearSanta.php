@@ -11,6 +11,7 @@ class DearSanta extends Mailable
     use Queueable, SerializesModels;
 
     public $subject;
+
     public $content;
 
     /**

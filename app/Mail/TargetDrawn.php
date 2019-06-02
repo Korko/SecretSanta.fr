@@ -11,9 +11,11 @@ class TargetDrawn extends Mailable
     use Queueable, SerializesModels;
 
     public $santa;
+
     public $target;
 
     public $subject;
+
     public $content;
 
     public $dearSantaLink;

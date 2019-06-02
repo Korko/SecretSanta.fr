@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Facades\App\Libs\HatSolver as Solver;
 use Tests\TestCase;
+use Facades\App\Libs\HatSolver as Solver;
 
 class SolverTest extends TestCase
 {
