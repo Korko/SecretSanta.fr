@@ -8,13 +8,13 @@ use NoCaptcha;
 
 class RequestDearSantaTest extends RequestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Artisan::call('migrate');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Artisan::call('migrate:reset');
         parent::tearDown();

@@ -52,7 +52,7 @@ class SolverTest extends TestCase
             $participants = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', L'];
             $exclusions = [0 => [1, 2, 3]];
 
-            $this->assertEquals(array(['A' => 'B', 'B' => 'C', 'C' => 'A']), Solver::all($participants, function($elementA, $elementB) use($exclusions) {
+            $this->assertEquals([['A' => 'B', 'B' => 'C', 'C' => 'A']], Solver::all($participants, function($elementA, $elementB) use($exclusions) {
                 return !isset($exclusions[$elementA]) || !in_array($elementB, $exclusions[$elementA]);
             }));
         }
@@ -60,7 +60,7 @@ class SolverTest extends TestCase
 
     public function testImpossibleSolution()
     {
-        $this->assertEquals([], Solver::all(['A', 'B', 'C'], [0 => [1, 2]]), ['A', 'B', 'C']);
+        $this->assertCombination([], Solver::all(['A', 'B', 'C'], [0 => [1, 2]]), ['A', 'B', 'C']);
     }
 
     public function testOne()
