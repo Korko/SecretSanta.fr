@@ -7,13 +7,13 @@ use Tests\TestCase;
 
 class SmsTest extends TestCase
 {
-    public function testUnicode()
+    public function testUnicode(): void
     {
         $this->assertFalse(SmsTools::isUnicode('a'));
         $this->assertTrue(SmsTools::isUnicode('ñ'));
     }
 
-    public function testCount()
+    public function testCount(): void
     {
         $this->assertEquals(0, SmsTools::count(''));
         $this->assertEquals(1, SmsTools::count('e'));

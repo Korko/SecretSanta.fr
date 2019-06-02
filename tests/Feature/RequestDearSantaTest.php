@@ -13,7 +13,7 @@ class RequestDearSantaTest extends RequestCase
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
     use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
-    public function testDearsanta()
+    public function testDearsanta(): void
     {
         Mail::fake();
         NoCaptcha::shouldReceive('verifyResponse')->andReturn(true);
