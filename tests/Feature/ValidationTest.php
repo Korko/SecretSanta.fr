@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Feature;
+
 use Illuminate\Support\Arr;
 
 class ValidationTest extends RequestCase

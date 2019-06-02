@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Support\Arr;
 use Hashids;
+use Illuminate\Support\Arr;
 use Illuminate\Foundation\Http\Middleware\TransformsRequest as Middleware;
 
 class Unhash extends Middleware
