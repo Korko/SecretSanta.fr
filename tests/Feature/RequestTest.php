@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use Sms;
-use Mail;
+use App\Draw;
+use App\Participant;
 use Artisan;
+use Mail;
 use Metrics;
 use Mockery;
-use App\Draw;
 use NoCaptcha;
-use App\Participant;
+use Sms;
 
 class RequestTest extends RequestCase
 {

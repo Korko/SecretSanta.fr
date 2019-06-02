@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Mail;
 use Artisan;
+use Mail;
 use NoCaptcha;
 
 class RequestDearSantaTest extends RequestCase

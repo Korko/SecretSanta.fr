@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use Facades\App\Libs\SmsTools as SmsTools;
+use Tests\TestCase;
 
 class SmsTest extends TestCase
 {
