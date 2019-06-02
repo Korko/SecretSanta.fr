@@ -10,7 +10,7 @@ class SolverTest extends TestCase
 {
     const LOOP_NUMBER = 100;
 
-    public function assertCombination($expected, $combinations, $participants)
+    public function assertCombination($expected, $combinations, $participants): void
     {
         $actual = [];
         foreach ($combinations as $combination) {
@@ -27,7 +27,7 @@ class SolverTest extends TestCase
         $this->assertEquals(serialize($actual), serialize($expected));
     }
 
-    public function testNoExclusion()
+    public function testNoExclusion(): void
     {
         $participants = ['A', 'B'];
         $this->assertCombination([
@@ -47,7 +47,7 @@ class SolverTest extends TestCase
         ], Solver::all($participants), $participants);
     }
 
-    public function testSimpleExclusion()
+    public function testSimpleExclusion(): void
     {
         // A => C
         $participants = ['A', 'B', 'C'];
@@ -57,7 +57,7 @@ class SolverTest extends TestCase
     }
 
     /*
-        public function testComplexExclusion()
+        public function testComplexExclusion(): void
         {
             $participants = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', L'];
             $exclusions = [0 => [1, 2, 3]];
@@ -68,13 +68,13 @@ class SolverTest extends TestCase
         }
     */
 
-    public function testImpossibleSolution()
+    public function testImpossibleSolution(): void
     {
         $participants = ['A', 'B', 'C'];
         $this->assertCombination([], Solver::all($participants, [0 => [1, 2]]), $participants);
     }
 
-    public function testOne()
+    public function testOne(): void
     {
         $this->assertTrue((function () {
             $solutions = [
@@ -101,7 +101,7 @@ class SolverTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testMass()
+    public function testMass(): void
     {
         // 702 characters from 'A' to 'ZZ'
         $participants = [];

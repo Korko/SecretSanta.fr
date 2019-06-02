@@ -19,7 +19,7 @@ class RequestBounceTest extends RequestCase
     /**
      * @group large
      */
-    public function testBounce()
+    public function testBounce(): void
     {
         Config::set('mail.driver', 'smtp');
 

@@ -9,7 +9,7 @@ class CleanupTest extends RequestCase
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
     use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
-    public function testDrawNotExpired()
+    public function testDrawNotExpired(): void
     {
         $this->assertEquals(0, Draw::count());
         $draw = factory(Draw::class)->create();
@@ -22,7 +22,7 @@ class CleanupTest extends RequestCase
         $this->assertDatabaseHas('draws', ['id' => $draw->id]);
     }
 
-    public function testDrawExpired()
+    public function testDrawExpired(): void
     {
         $this->assertEquals(0, Draw::count());
         $draw = factory(Draw::class)->states('expired')->create();
