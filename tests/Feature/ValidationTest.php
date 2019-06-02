@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Arr;
+
 class ValidationTest extends RequestCase
 {
     public function assertArrayKeysEquals(array $keys, array $array)
     {
-        $errors = array_get($array, 'errors', []);
+        $errors = Arr::get($array, 'errors', []);
         $arraykeys = array_keys($errors);
 
         foreach ($keys as $key) {
@@ -60,7 +62,7 @@ class ValidationTest extends RequestCase
     // Names and contact infos but no mail body nor sms body
     public function testContactBodiesMail()
     {
-        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'email' => ['invalid@invalidformat', 'test@test.com', 'tata@test.com']], 422);
+        $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'email' => ['invalidformat', 'test@test.com', 'tata@test.com']], 422);
         $this->assertArrayKeysEquals(['g-recaptcha-response', 'email.0', 'title', 'contentMail'], $content);
 
         $content = $this->ajaxPost('/', ['name' => ['toto', 'tata', 'tutu'], 'email' => ['test@test.com', 'test@test.com', 'test@test.com']], 422);

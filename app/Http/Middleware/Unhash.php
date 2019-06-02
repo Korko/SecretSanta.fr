@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Hashids;
 use Illuminate\Foundation\Http\Middleware\TransformsRequest as Middleware;
+use Illuminate\Support\Arr;
 
 class Unhash extends Middleware
 {
@@ -23,6 +24,6 @@ class Unhash extends Middleware
 
         $connection = config('hashids.parameters')[$key];
 
-        return array_get(Hashids::connection($connection)->decode($value), 0, $value);
+        return Arr::get(Hashids::connection($connection)->decode($value), 0, $value);
     }
 }
