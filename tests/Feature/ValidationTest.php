@@ -1,12 +1,13 @@
 <?php
 
 namespace Tests\Feature;
+use Illuminate\Support\Arr;
 
 class ValidationTest extends RequestCase
 {
     public function assertArrayKeysEquals(array $keys, array $array)
     {
-        $errors = array_get($array, 'errors', []);
+        $errors = Arr::get($array, 'errors', []);
         $arraykeys = array_keys($errors);
 
         foreach ($keys as $key) {
