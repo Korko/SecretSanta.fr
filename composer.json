@@ -8,7 +8,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "ext-openssl": "^7.1",
         "anhskohbo/no-captcha": "^3.0",
         "fideloper/proxy": "~4.0",
@@ -29,7 +29,7 @@
         "phpunit/phpunit": "~8.1",
         "povils/phpmnd": "^2.0",
         "rap2hpoutre/laravel-log-viewer": "^1.1.1",
-        "squizlabs/PHP_CodeSniffer": "^3.2",
+        "squizlabs/php_codesniffer": "^3.2",
         "symfony/css-selector": "3.2.*",
         "symfony/dom-crawler": "4.3.*",
         "filp/whoops": "~2.0",
