@@ -44,7 +44,7 @@ class RequestOrganizerTest extends RequestCase
         }, array_keys($participants));
 
         // Initiate DearSanta
-        $content = $this->ajaxPost('/', [
+        $response = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
             'participants'         => $participants,
             'title'                => 'test mail title',
@@ -52,8 +52,13 @@ class RequestOrganizerTest extends RequestCase
             'contentSMS'           => '',
             'dearsanta'            => '1',
             'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
-        ], 200);
-        $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Envoyé avec succès !'
+            ]);
 
         // So fetch it from the mail
         $link = null;

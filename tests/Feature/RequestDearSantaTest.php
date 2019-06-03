@@ -45,7 +45,7 @@ class RequestDearSantaTest extends RequestCase
         }, array_keys($participants));
 
         // Initiate DearSanta
-        $content = $this->ajaxPost('/', [
+        $response = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
             'participants'         => $participants,
             'title'                => 'test mail title',
@@ -53,8 +53,13 @@ class RequestDearSantaTest extends RequestCase
             'contentSMS'           => '',
             'dearsanta'            => '1',
             'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
-        ], 200);
-        $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Envoyé avec succès !'
+            ]);
 
         // For security issues, the key is only sent by mail and never stored
         // So fetch it from the mail
@@ -88,12 +93,17 @@ class RequestDearSantaTest extends RequestCase
             $this->assertEquals($santa['email'], $encrypter->decrypt($dearSanta->santa_email, false));
 
             // Try to contact santa
-            $content = $this->ajaxPost($path, [
+            $response = $this->ajaxPost($path, [
                 'g-recaptcha-response' => 'mocked',
                 'key'                  => $key,
                 'content'              => 'test dearsanta mail content',
-            ], 200);
-            $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
+            ]);
+
+            $response
+                ->assertStatus(200)
+                ->assertJson([
+                    'message' => 'Envoyé avec succès !'
+                ]);
 
             Mail::assertSent(\App\Mail\DearSanta::class, function ($mail) use ($santa) {
                 return $mail->hasTo($santa['email'], $santa['name']);

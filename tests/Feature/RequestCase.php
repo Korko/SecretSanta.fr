@@ -6,21 +6,24 @@ use Tests\TestCase;
 
 class RequestCase extends TestCase
 {
-    public function ajaxPost($url, array $postArgs = [], $code = 200, $rawJSONContent = false)
+    public function rawAjaxPost($url, array $postArgs = [], $headers = [])
     {
-        $headers = [
+        $headers = $headers + [
+            'Content-Type' => 'application/json',
+        ];
+
+        $postArgs = json_encode($postArgs);
+
+        return $this->ajaxPost($url, $postArgs, $headers);
+    }
+
+    public function ajaxPost($url, array $postArgs = [], $headers = [])
+    {
+        $headers = $headers + [
             'Accept'           => 'application/json',
             'X-Requested-With' => 'XMLHttpRequest',
         ];
 
-        if ($rawJSONContent) {
-            $headers['Content-Type'] = 'application/json';
-            $postArgs = json_encode($postArgs);
-        }
-
-        $response = $this->call('POST', $url, [], [], [], $headers, $postArgs);
-        $this->assertEquals($code, $response->status(), $response->getContent());
-
-        return json_decode($response->content(), true);
+        return $this->withHeaders($headers)->json('POST', $url, $postArgs);
     }
 }

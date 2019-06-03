@@ -17,7 +17,7 @@ class RequestTest extends RequestCase
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
     use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
-    protected function validateForm($parameters, $httpCode)
+    protected function validateForm($parameters)
     {
         NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
 
@@ -25,7 +25,7 @@ class RequestTest extends RequestCase
             'g-recaptcha-response' => 'mocked',
             'dearsanta'            => '0',
             'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
-        ], $parameters), $httpCode);
+        ], $parameters));
     }
 
     public function testInvalid(): void
@@ -43,7 +43,7 @@ class RequestTest extends RequestCase
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
 
-        $content = $this->validateForm([
+        $response = $this->validateForm([
             'participants'         => [
                 [
                     'name'       => 'toto',
@@ -67,8 +67,13 @@ class RequestTest extends RequestCase
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
-        ], 500);
-        $this->assertEquals(['error' => 'Aucune solution possible'], $content);
+        ]);
+
+        $response
+            ->assertStatus(500)
+            ->assertJson([
+                'error' => 'Aucune solution possible'
+            ]);
 
         $this->assertEquals(0, DearSanta::count());
         $this->assertEquals(0, Draw::count());
@@ -121,7 +126,7 @@ class RequestTest extends RequestCase
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
 
-        $content = $this->validateForm([
+        $response = $this->validateForm([
             'participants'         => [
                 [
                     'name'       => 'toto',
@@ -145,8 +150,13 @@ class RequestTest extends RequestCase
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
-        ], 200);
-        $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Envoyé avec succès !'
+            ]);
 
         Mail::assertSent(OrganizerEmail::class, function ($mail) {
             return $mail->hasTo('test@test.com', 'toto');
@@ -228,7 +238,7 @@ class RequestTest extends RequestCase
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
 
-        $content = $this->validateForm([
+        $response = $this->validateForm([
             'participants'         => [
                 [
                     'name'       => 'toto',
@@ -252,8 +262,13 @@ class RequestTest extends RequestCase
             'title'                => 'test mail title',
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}'.implode('', array_fill(0, 160, 'a')),
-        ], 200);
-        $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Envoyé avec succès !'
+            ]);
 
         Mail::assertSent(OrganizerEmail::class, function ($mail) {
             return $mail->hasTo('test@test.com', 'toto');
@@ -295,7 +310,7 @@ class RequestTest extends RequestCase
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
 
-        $content = $this->validateForm([
+        $response = $this->validateForm([
             'participants'         => [
                 [
                     'name'       => 'toto',
@@ -318,8 +333,13 @@ class RequestTest extends RequestCase
             'contentMail'          => 'test mail {SANTA} => {TARGET}',
             'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
             'dearsanta'            => '1',
-        ], 200);
-        $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Envoyé avec succès !'
+            ]);
 
         Mail::assertSent(OrganizerEmail::class, function ($mail) {
             return $mail->hasTo('test@test.com', 'toto');
