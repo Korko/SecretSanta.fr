@@ -29,7 +29,7 @@ class RequestBounceTest extends RequestCase
         $this->assertEquals(0, Participant::count());
         $this->assertEquals(0, DearSanta::count());
 
-        $content = $this->ajaxPost('/', [
+        $response = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
             'participants'         => [
                 [
@@ -56,8 +56,13 @@ class RequestBounceTest extends RequestCase
             'contentSMS'           => '',
             'dearsanta'            => '0',
             'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
-        ], 200);
-        $this->assertEquals(['message' => 'Envoyé avec succès !'], $content);
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Envoyé avec succès !'
+            ]);
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
@@ -85,7 +90,7 @@ class RequestBounceTest extends RequestCase
                     ->with('email')
                     ->andReturn(true);
         */
-        $content = $this->ajaxPost('/event', [
+        $response = $this->rawAjaxPost('/event', [
              'data'          => '{}',
              'email'         => 'test2@test.com',
              'event'         => 'dropped',
@@ -94,7 +99,9 @@ class RequestBounceTest extends RequestCase
              'sg_message_id' => 'QygG4vV9TL2uRMEPLh1mlg.filter0002p2iad2-29875-5C05903B-1D',
              'smtp-id'       => '<QygG4vV9TL2uRMEPLh1mlg@ismtpd0001p1lon1.sendgrid.net>',
              'timestamp'     => 1543868476,
-        ], 200, true);
+        ]);
+
+        $response->assertStatus(200);
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
