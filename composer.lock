@@ -5506,16 +5506,16 @@
         },
         {
             "name": "rap2hpoutre/laravel-log-viewer",
-            "version": "v1.1.1",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rap2hpoutre/laravel-log-viewer.git",
-                "reference": "f6acf9779669568e8afce1182e1a5579d5a0ffe5"
+                "reference": "ba8e645dda959c9cc679f3bbb3f1bd271cc02e56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rap2hpoutre/laravel-log-viewer/zipball/f6acf9779669568e8afce1182e1a5579d5a0ffe5",
-                "reference": "f6acf9779669568e8afce1182e1a5579d5a0ffe5",
+                "url": "https://api.github.com/repos/rap2hpoutre/laravel-log-viewer/zipball/ba8e645dda959c9cc679f3bbb3f1bd271cc02e56",
+                "reference": "ba8e645dda959c9cc679f3bbb3f1bd271cc02e56",
                 "shasum": ""
             },
             "require": {
@@ -5561,7 +5561,7 @@
                 "logging",
                 "lumen"
             ],
-            "time": "2019-03-02T15:10:46+00:00"
+            "time": "2019-06-12T15:22:58+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
