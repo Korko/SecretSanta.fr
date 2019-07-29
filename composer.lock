@@ -913,9 +913,9 @@
             "authors": [
                 {
                     "name": "Jérémy Lemesle",
+                    "role": "Developer",
                     "email": "jeremy.lemesle@korko.fr",
-                    "homepage": "http://korko.fr",
-                    "role": "Developer"
+                    "homepage": "http://korko.fr"
                 }
             ],
             "description": "A simple library for working with Callr in Laravel.",
@@ -5179,8 +5179,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
@@ -5451,8 +5451,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "The PHP Unit Testing framework.",
@@ -6474,7 +6474,7 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v4.3.2",
+            "version": "v4.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
