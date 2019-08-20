@@ -97,13 +97,13 @@
             "authors": [
                 {
                     "name": "Florent CHAUVEAU",
-                    "email": "fc@callr.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "fc@callr.com"
                 },
                 {
                     "name": "Michael JACQUIN",
-                    "email": "mj@callr.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "mj@callr.com"
                 }
             ],
             "description": "CALLR PHP SDK for JSON-RPC API",
@@ -5522,16 +5522,16 @@
         },
         {
             "name": "rap2hpoutre/laravel-log-viewer",
-            "version": "v1.2.1",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rap2hpoutre/laravel-log-viewer.git",
-                "reference": "ba8e645dda959c9cc679f3bbb3f1bd271cc02e56"
+                "reference": "1271590443cc173d0f9316f78ca81a9acf5b630c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rap2hpoutre/laravel-log-viewer/zipball/ba8e645dda959c9cc679f3bbb3f1bd271cc02e56",
-                "reference": "ba8e645dda959c9cc679f3bbb3f1bd271cc02e56",
+                "url": "https://api.github.com/repos/rap2hpoutre/laravel-log-viewer/zipball/1271590443cc173d0f9316f78ca81a9acf5b630c",
+                "reference": "1271590443cc173d0f9316f78ca81a9acf5b630c",
                 "shasum": ""
             },
             "require": {
@@ -5577,7 +5577,7 @@
                 "logging",
                 "lumen"
             ],
-            "time": "2019-06-12T15:22:58+00:00"
+            "time": "2019-08-19T13:05:27+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -6732,8 +6732,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "arne@blankerts.de"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
