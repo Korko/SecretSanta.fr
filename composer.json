@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2",
         "ext-openssl": "^7.1",
+        "ext-bcmath": "*",
         "anhskohbo/no-captcha": "^3.0",
         "fideloper/proxy": "^4.0",
         "korko/callr": "^1.0",
