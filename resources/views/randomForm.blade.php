@@ -195,7 +195,7 @@
                                         <p class="form-text">@lang('form.mail.content.tip2')</p>
                                     </div>
                                 </fieldset>
-                                <fieldset id="form-sms-group" class="col-lg-6">
+                                <fieldset id="form-sms-group" class="col-lg-6" @if(!env('SMS_ENABLED')):disabled="true"@endif >
                                     <div class="form-group">
                                         <label for="smsContent" v-if="smsCount <= 1">@lang('form.sms.content', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
                                         <label for="smsContent" v-else>@lang('form.sms.content.multiple', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>

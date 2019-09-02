@@ -16,12 +16,12 @@ class CreateParticipantsTable extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('draw_id')->unsigned();
-            $table->string('name');
-            $table->string('email_address')->nullable();
+            $table->unsignedInteger('draw_id');
+            $table->mediumText('name');
+            $table->mediumText('email_address')->nullable();
             $table->string('email_id')->nullable();
             $table->enum('delivery_status', Participant::$deliveryStatuses);
-            $table->string('target');
+            $table->mediumText('target');
             $table->timestamps();
 
             $table->foreign('draw_id')
