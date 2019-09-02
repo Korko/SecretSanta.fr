@@ -33,7 +33,7 @@ class ValidatorServiceProvider extends ServiceProvider {
                 $data = array_column($data, $parts[$i]);
             }
 
-            return !empty($validator->getData()[$attribute]) || empty(array_filter($data));
+            return (!empty($validator->getData()[$attribute]) || empty(array_filter($data)));
         });
     }
 

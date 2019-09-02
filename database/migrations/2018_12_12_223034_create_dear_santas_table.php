@@ -15,7 +15,7 @@ class CreateDearSantasTable extends Migration
     {
         Schema::create('dear_santas', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('draw_id')->unsigned();
+            $table->unsignedInteger('draw_id');
             $table->string('santa_name');
             $table->string('santa_email');
             $table->string('challenge');
