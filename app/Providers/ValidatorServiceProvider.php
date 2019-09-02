@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Arr;
 use Facades\App\Services\SmsTools as SmsTools;
 use Illuminate\Support\ServiceProvider;
 use Validator;
@@ -20,7 +21,7 @@ class ValidatorServiceProvider extends ServiceProvider {
 
         Validator::extend('in_keys', function ($attribute, $value, $parameters, $validator) {
             return collect($parameters)->contains(function ($parameter) use ($value, $validator) {
-                return array_key_exists($value, array_get($validator->getData(), $parameter));
+                return array_key_exists($value, Arr::get($validator->getData(), $parameter));
             });
         });
 
@@ -28,7 +29,7 @@ class ValidatorServiceProvider extends ServiceProvider {
             $data = $validator->getData();
 
             $parts = explode('.*.', $parameters[0]);
-            $data = (array) array_get($data, $parts[0]);
+            $data = (array) Arr::get($data, $parts[0]);
             for ($i=1; $i<count($parts); $i++) {
                 $data = array_column($data, $parts[$i]);
             }

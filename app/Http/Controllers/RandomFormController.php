@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
 use App\Services\DrawHandler;
+use Arr;
 use Facades\App\Services\HatSolver as Solver;
 use Illuminate\Http\Request;
 use Metrics;
@@ -67,7 +68,7 @@ class RandomFormController extends Controller
                 $participant['phone'] = '+33'.$participant['phone'];
             }
 
-            $participant['exclusions'] = array_map('intval', array_get($participant, 'exclusions', []));
+            $participant['exclusions'] = array_map('intval', Arr::get($participant, 'exclusions', []));
         }
         unset($participant);
 
