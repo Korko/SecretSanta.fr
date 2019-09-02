@@ -32,8 +32,8 @@ class RandomFormRequest extends Request
             'participants'                => 'required|array|min:3',
 
             'participants.*.name'         => 'required|distinct',
-            'participants.*.email'        => 'required_without:participants.*.phone|required_if:dearsanta,1|email',
-            'participants.*.phone'        => 'required_without:participants.*.email|numeric|regex:#0?[67]\d{8}#',
+            'participants.*.email'        => 'required_without:participants.*.phone|required_if:dearsanta,1|nullable|email',
+            'participants.*.phone'        => 'required_without:participants.*.email|nullable|numeric|regex:#0?[67]\d{8}#',
             'participants.*.exclusions'   => 'sometimes|array',
             'participants.*.exclusions.*' => 'integer|in_keys:participants',
 
@@ -42,7 +42,7 @@ class RandomFormRequest extends Request
             'title'                       => 'required|string',
             'content-email'               => 'required|string|contains:{TARGET}',
 
-            'content-sms'                 => 'required_with_any:participants.*.phone|string|contains:{TARGET}|max_sms_count:'.config('sms.max'),
+            'content-sms'                 => 'required_with_any:participants.*.phone|nullable|string|contains:{TARGET}|max_sms_count:'.config('sms.max'),
             'dearsanta'                   => 'boolean|in:"0","1"',
 
             'data-expiration'             => 'required|date|after:tomorrow|before:+1year',
