@@ -10,25 +10,60 @@ use Illuminate\Database\Eloquent\Model;
 
 class Draw extends Model
 {
-    public static function prepareAndSave(array $mailContent, $expiration, array $organizer, $encryptionKey, $dearSanta = false)
+    private $encrypter;
+
+    public function __construct($attributes = array())
     {
-        $encrypter = new SymmetricalEncrypter($encryptionKey);
+        parent::__construct($attributes);
+        $this->encrypter = new SymmetricalEncrypter(SymmetricalEncrypter::generateKey(config('app.cipher')));
+    }
 
-        $date = new DateTime('now');
-        $date->add(new DateInterval('P7D'));
+    public function setEncryptionKeyAttribute($value)
+    {
+        $this->encrypter = new SymmetricalEncrypter($value);
+    }
 
-        // Use symmetrical encryption, we don't need to hide it from each other
-        $draw = new self();
-        $draw->expiration = $expiration ?: $date->format('Y-m-d H:i:s'); // Default expiration date is 7 days
-        $draw->email_title = $encrypter->encrypt($mailContent['title'], false);
-        $draw->email_body = $encrypter->encrypt($mailContent['body'], false);
-        $draw->organizer_name = $encrypter->encrypt($organizer['name'], false);
-        $draw->organizer_email = $encrypter->encrypt($organizer['email'], false);
-        $draw->challenge = $encrypter->encrypt(config('app.challenge'), false);
-        $draw->dear_santa = $dearSanta;
-        $draw->save();
+    public function getEncryptionKeyAttribute()
+    {
+        return $this->encrypter->getKey();
+    }
 
-        return $draw;
+    public function setEmailTitleAttribute($value)
+    {
+        $this->attributes['email_title'] = $this->encrypter->encrypt($value, false);
+    }
+
+    public function getEmailTitleAttribute()
+    {
+        return $this->encrypter->decrypt($this->attributes['email_title'], false);
+    }
+
+    public function setEmailBodyAttribute($value)
+    {
+        $this->attributes['email_body'] = $this->encrypter->encrypt($value, false);
+    }
+
+    public function setOrganizerNameAttribute($value)
+    {
+        $this->attributes['organizer_name'] = $this->encrypter->encrypt($value, false);
+    }
+
+    public function setOrganizerEmailAttribute($value)
+    {
+        $this->attributes['organizer_email'] = $this->encrypter->encrypt($value, false);
+    }
+
+    public function setChallengeAttribute($value)
+    {
+        $this->attributes['challenge'] = $this->encrypter->encrypt($value, false);
+    }
+
+    public function save(array $options = [])
+    {
+        $this->challenge = config('app.challenge');
+        $this->expiration = $this->expiration ?: (new DateTime('now'))->add(new DateInterval('P7D'));
+
+        return parent::save($options);
     }
 
     public static function cleanup()
