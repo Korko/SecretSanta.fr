@@ -18,7 +18,7 @@ class CreateParticipantsTable extends Migration
             $table->increments('id');
             $table->integer('draw_id')->unsigned();
             $table->string('name');
-            $table->string('email_address');
+            $table->string('email_address')->nullable();
             $table->string('email_id')->nullable();
             $table->enum('delivery_status', Participant::$deliveryStatuses);
             $table->string('target');

@@ -48,12 +48,10 @@ class RequestTest extends RequestCase
                 [
                     'name'       => 'toto',
                     'email'      => 'test@test.com',
-                    'phone'      => '',
                     'exclusions' => ['2'],
                 ],
                 [
                     'name'       => 'tata',
-                    'email'      => '',
                     'phone'      => '0612345678',
                     'exclusions' => ['0', '2'],
                 ],
@@ -65,8 +63,8 @@ class RequestTest extends RequestCase
                 ],
             ],
             'title'                => 'test mail title',
-            'contentMail'          => 'test mail {SANTA} => {TARGET}',
-            'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
+            'content-email'        => 'test mail {SANTA} => {TARGET}',
+            'content-sms'          => 'test sms "{SANTA}\' => &{TARGET}',
         ]);
 
         $response
@@ -131,12 +129,10 @@ class RequestTest extends RequestCase
                 [
                     'name'       => 'toto',
                     'email'      => 'test@test.com',
-                    'phone'      => '',
                     'exclusions' => ['2'],
                 ],
                 [
                     'name'       => 'tata',
-                    'email'      => '',
                     'phone'      => '0612345678',
                     'exclusions' => ['0'],
                 ],
@@ -148,8 +144,8 @@ class RequestTest extends RequestCase
                 ],
             ],
             'title'                => 'test mail title',
-            'contentMail'          => 'test mail {SANTA} => {TARGET}',
-            'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
+            'content-email'        => 'test mail {SANTA} => {TARGET}',
+            'content-sms'          => 'test sms "{SANTA}\' => &{TARGET}',
         ]);
 
         $response
@@ -171,7 +167,7 @@ class RequestTest extends RequestCase
                 return true;
             }
         });
-        $this->assertContains('test mail toto => tata', html_entity_decode($body));
+        $this->assertStringContainsString('test mail toto => tata', html_entity_decode($body));
 
         $body = null;
         Mail::assertSent(TargetDrawn::class, function ($mail) use (&$body) {
@@ -182,7 +178,7 @@ class RequestTest extends RequestCase
                 return true;
             }
         });
-        $this->assertContains('test mail tutu => toto', html_entity_decode($body));
+        $this->assertStringContainsString('test mail tutu => toto', html_entity_decode($body));
 
         $this->assertEquals(0, DearSanta::count());
         $this->assertEquals(1, Draw::count());
@@ -248,20 +244,18 @@ class RequestTest extends RequestCase
                 ],
                 [
                     'name'       => 'tata',
-                    'email'      => '',
                     'phone'      => '0612345679',
                     'exclusions' => ['0'],
                 ],
                 [
                     'name'       => 'tutu',
-                    'email'      => '',
                     'phone'      => '712345670',
                     'exclusions' => ['1'],
                 ],
             ],
             'title'                => 'test mail title',
-            'contentMail'          => 'test mail {SANTA} => {TARGET}',
-            'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}'.implode('', array_fill(0, 160, 'a')),
+            'content-email'        => 'test mail {SANTA} => {TARGET}',
+            'content-sms'          => 'test sms "{SANTA}\' => &{TARGET}'.implode('', array_fill(0, 160, 'a')),
         ]);
 
         $response
@@ -315,23 +309,20 @@ class RequestTest extends RequestCase
                 [
                     'name'       => 'toto',
                     'email'      => 'test@test.com',
-                    'phone'      => '',
                     'exclusions' => ['2'],
                 ],
                 [
                     'name'       => 'tata',
                     'email'      => 'test2@test.com',
-                    'phone'      => '',
                 ],
                 [
                     'name'       => 'tutu',
                     'email'      => 'test3@test.com',
-                    'phone'      => '',
                 ],
             ],
             'title'                => 'test mail title',
-            'contentMail'          => 'test mail {SANTA} => {TARGET}',
-            'contentSMS'           => 'test sms "{SANTA}\' => &{TARGET}',
+            'content-email'        => 'test mail {SANTA} => {TARGET}',
+            'content-sms'          => 'test sms "{SANTA}\' => &{TARGET}',
             'dearsanta'            => '1',
         ]);
 
