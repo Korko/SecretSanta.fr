@@ -3,16 +3,52 @@
 namespace Tests\Feature;
 
 use Illuminate\Support\Arr;
+use Validator;
 
 class ValidationTest extends RequestCase
 {
+    public function testRuleSmsCount(): void
+    {
+        $validator = Validator::make([
+            'content' => ''
+        ], ['content' => 'max_sms_count:1']);
+        $this->assertTrue($validator->passes());
+
+        $validator = Validator::make([
+            'content' => implode('', array_fill(0, 160, 'a'))
+        ], ['content' => 'max_sms_count:1']);
+        $this->assertTrue($validator->passes());
+
+        $validator = Validator::make([
+            'content' => implode('', array_fill(0, 161, 'a'))
+        ], ['content' => 'max_sms_count:1']);
+        $this->assertFalse($validator->passes());
+    }
+
+    public function testRuleRequiredWithAny(): void
+    {
+        $validator = Validator::make([
+            'users' => []
+        ], ['content' => 'required_with_any:users.*.name']);
+        $this->assertTrue($validator->passes());
+
+        $validator = Validator::make([
+        ], ['content' => 'required_with_any:users.*.name']);
+        $this->assertTrue($validator->passes());
+
+        $validator = Validator::make([
+            'users' => [['name' => 'Foo']],
+        ], ['content' => 'required_with_any:users.*.name']);
+        $this->assertFalse($validator->passes());
+    }
+
     // Nothing sent, recaptcha needed, at least a name
     public function testEmpty(): void
     {
         $this->ajaxPost('/', ['a' => 'b'])
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'g-recaptcha-response', 'participants', 'data-expiration', 'title', 'contentMail'
+                'g-recaptcha-response', 'participants', 'data-expiration', 'title', 'content-email'
             ]);
     }
 
@@ -27,7 +63,7 @@ class ValidationTest extends RequestCase
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'g-recaptcha-response', 'participants', 'participants.0.email', 'participants.0.phone', 'title', 'contentMail', 'data-expiration'
+                'g-recaptcha-response', 'participants', 'participants.0.email', 'participants.0.phone', 'title', 'content-email', 'data-expiration'
             ]);
 
         // Ok for names but duplicates this time but no contact infos
@@ -41,7 +77,7 @@ class ValidationTest extends RequestCase
             ->assertJsonValidationErrors([
                 'g-recaptcha-response',
                 'participants', 'participants.0.name', 'participants.0.email', 'participants.0.phone', 'participants.1.name', 'participants.1.email', 'participants.1.phone',
-                'title', 'contentMail', 'data-expiration'
+                'title', 'content-email', 'data-expiration'
             ]);
 
         // Ok for names but not enough participants and no contact infos
@@ -55,7 +91,7 @@ class ValidationTest extends RequestCase
             ->assertJsonValidationErrors([
                 'g-recaptcha-response',
                 'participants', 'participants.0.email', 'participants.0.phone', 'participants.1.email', 'participants.1.phone',
-                'title', 'contentMail', 'data-expiration'
+                'title', 'content-email', 'data-expiration'
             ]);
 
         // Ok for names but no contact infos
@@ -70,14 +106,14 @@ class ValidationTest extends RequestCase
             ->assertJsonValidationErrors([
                 'g-recaptcha-response',
                 'participants.0.email', 'participants.0.phone', 'participants.1.email', 'participants.1.phone', 'participants.2.email', 'participants.2.phone',
-                'title', 'contentMail', 'data-expiration'
+                'title', 'content-email', 'data-expiration'
             ]);
 
         // Ok for names but partial contact infos (sms)
         $response = $this->ajaxPost('/', ['participants' => [
             ['name' => 'toto', 'phone' => '0612345678'],
-            ['name' => 'tata', 'phone' => ''],
-            ['name' => 'tutu', 'phone' => ''],
+            ['name' => 'tata'],
+            ['name' => 'tutu'],
         ]]);
 
         $response
@@ -85,14 +121,14 @@ class ValidationTest extends RequestCase
             ->assertJsonValidationErrors([
                 'g-recaptcha-response',
                 'participants.0.email', 'participants.1.email', 'participants.1.phone', 'participants.2.email', 'participants.2.phone',
-                'title', 'contentMail', 'contentSMS', 'data-expiration'
+                'title', 'content-email', 'content-sms', 'data-expiration'
             ]);
 
         // Ok for names but partial contact infos (mail)
         $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'email' => ''],
+            ['name' => 'toto'],
             ['name' => 'tata', 'email' => 'test@test.com'],
-            ['name' => 'tutu', 'email' => ''],
+            ['name' => 'tutu'],
         ]]);
 
         $response
@@ -100,14 +136,14 @@ class ValidationTest extends RequestCase
             ->assertJsonValidationErrors([
                 'g-recaptcha-response',
                 'participants.0.email', 'participants.0.phone', 'participants.2.email', 'participants.2.phone',
-                'title', 'contentMail', 'contentSMS', 'data-expiration'
+                'title', 'content-email', 'data-expiration'
             ]);
 
         // Ok for names but partial contact infos (both)
         $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'phone' => '', 'email' => 'test@test.com'],
-            ['name' => 'tata', 'phone' => '0612345678', 'email' => ''],
-            ['name' => 'tutu', 'phone' => '', 'email' => ''],
+            ['name' => 'toto', 'email' => 'test@test.com'],
+            ['name' => 'tata', 'phone' => '0612345678'],
+            ['name' => 'tutu'],
         ]]);
 
         $response
@@ -115,7 +151,7 @@ class ValidationTest extends RequestCase
             ->assertJsonValidationErrors([
                 'g-recaptcha-response',
                 'participants.2.email', 'participants.2.phone',
-                'title', 'contentMail', 'contentSMS', 'data-expiration'
+                'title', 'content-email', 'content-sms', 'data-expiration'
             ]);
     }
 
@@ -133,7 +169,7 @@ class ValidationTest extends RequestCase
             ->assertJsonValidationErrors([
                 'g-recaptcha-response',
                 'participants.0.email',
-                'title', 'contentMail', 'data-expiration'
+                'title', 'content-email', 'data-expiration'
             ]);
 
         $response = $this->ajaxPost('/', ['participants' => [
@@ -145,7 +181,7 @@ class ValidationTest extends RequestCase
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'g-recaptcha-response', 'title', 'contentMail', 'data-expiration'
+                'g-recaptcha-response', 'title', 'content-email', 'data-expiration'
             ]);
     }
 
@@ -161,7 +197,7 @@ class ValidationTest extends RequestCase
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'g-recaptcha-response', 'participants.0.email', 'participants.1.phone', 'contentSMS', 'data-expiration'
+                'g-recaptcha-response', 'participants.0.email', 'participants.1.phone', 'content-sms', 'data-expiration'
             ]);
 
         $response = $this->ajaxPost('/', ['participants' => [
@@ -173,7 +209,7 @@ class ValidationTest extends RequestCase
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'g-recaptcha-response', 'participants.0.email', 'contentSMS', 'data-expiration'
+                'g-recaptcha-response', 'participants.0.email', 'content-sms', 'data-expiration'
             ]);
     }
 
@@ -182,14 +218,14 @@ class ValidationTest extends RequestCase
     {
         $response = $this->ajaxPost('/', ['participants' => [
             ['name' => 'toto', 'phone' => '0612345678', 'email' => 'test@test.com'],
-            ['name' => 'tata', 'phone' => '0612345678', 'email' => ''],
-            ['name' => 'tutu', 'phone' => '', 'email' => 'test@test.com'],
+            ['name' => 'tata', 'phone' => '0612345678'],
+            ['name' => 'tutu', 'email' => 'test@test.com'],
         ]]);
 
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'g-recaptcha-response', 'title', 'contentMail', 'contentSMS', 'data-expiration'
+                'g-recaptcha-response', 'title', 'content-email', 'content-sms', 'data-expiration'
             ]);
     }
 
@@ -224,7 +260,7 @@ class ValidationTest extends RequestCase
                 'participants.0.phone', 'participants.0.email',
                 'participants.1.phone', 'participants.1.email',
                 'participants.2.phone', 'participants.2.email',
-                'title', 'contentMail', 'data-expiration',
+                'title', 'content-email', 'data-expiration',
             ]);
     }
 
@@ -240,7 +276,7 @@ class ValidationTest extends RequestCase
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'data-expiration']);
+            ->assertJsonValidationErrors(['g-recaptcha-response', 'content-sms', 'participants.0.email', 'data-expiration']);
 
         // dearsanta invalid value
         $response = $this->ajaxPost('/', ['participants' => [
@@ -251,7 +287,7 @@ class ValidationTest extends RequestCase
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'dearsanta', 'data-expiration']);
+            ->assertJsonValidationErrors(['g-recaptcha-response', 'content-sms', 'participants.0.email', 'dearsanta', 'data-expiration']);
 
         // dearsanta enabled, need emails
         $response = $this->ajaxPost('/', ['participants' => [
@@ -262,7 +298,7 @@ class ValidationTest extends RequestCase
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'participants.1.email', 'participants.2.email', 'data-expiration']);
+            ->assertJsonValidationErrors(['g-recaptcha-response', 'content-sms', 'participants.0.email', 'participants.1.email', 'participants.2.email', 'data-expiration']);
     }
 
     public function testDataLimit(): void
@@ -276,7 +312,7 @@ class ValidationTest extends RequestCase
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'data-expiration']);
+            ->assertJsonValidationErrors(['g-recaptcha-response', 'content-sms', 'participants.0.email', 'data-expiration']);
 
         $response = $this->ajaxPost('/', ['participants' => [
             ['name' => 'toto', 'phone' => '0612345678'],
@@ -286,7 +322,7 @@ class ValidationTest extends RequestCase
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['g-recaptcha-response', 'contentSMS', 'participants.0.email']);
+            ->assertJsonValidationErrors(['g-recaptcha-response', 'content-sms', 'participants.0.email']);
     }
 
     // Sms limit
@@ -299,19 +335,19 @@ class ValidationTest extends RequestCase
                 ['name' => 'tata', 'phone' => '0612345678'],
                 ['name' => 'tutu', 'phone' => '0612345678'],
             ],
-            'contentSMS' => '{TARGET}'.implode('', array_fill(0, 161, 'a')), // 2 sms long
+            'content-sms' => '{TARGET}'.implode('', array_fill(0, 161, 'a')), // 2 sms long
         ]);
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['g-recaptcha-response', 'contentSMS', 'participants.0.email', 'data-expiration']);
+            ->assertJsonValidationErrors(['g-recaptcha-response', 'content-sms', 'participants.0.email', 'data-expiration']);
     }
 
     public function testOrganizerEmailRequired(): void
     {
         $response = $this->ajaxPost('/', [
             'participants' => [
-                ['name' => 'toto', 'phone' => '0612345678', 'email' => ''],
+                ['name' => 'toto', 'phone' => '0612345678'],
                 ['name' => 'tata', 'phone' => '0612345678', 'email' => 'test@test.com'],
                 ['name' => 'tutu', 'phone' => '0612345678', 'email' => 'test2@test.com'],
             ],
@@ -319,6 +355,6 @@ class ValidationTest extends RequestCase
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['g-recaptcha-response', 'title', 'contentMail', 'contentSMS', 'participants.0.email', 'data-expiration']);
+            ->assertJsonValidationErrors(['g-recaptcha-response', 'title', 'content-email', 'content-sms', 'participants.0.email', 'data-expiration']);
     }
 }

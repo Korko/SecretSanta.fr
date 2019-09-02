@@ -49,8 +49,7 @@ class RequestDearSantaTest extends RequestCase
             'g-recaptcha-response' => 'mocked',
             'participants'         => $participants,
             'title'                => 'test mail title',
-            'contentMail'          => 'test mail {SANTA} => {TARGET}',
-            'contentSMS'           => '',
+            'content-email'        => 'test mail {SANTA} => {TARGET}',
             'dearsanta'            => '1',
             'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
         ]);
