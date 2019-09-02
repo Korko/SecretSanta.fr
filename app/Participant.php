@@ -35,7 +35,7 @@ class Participant extends Model
         $participant = new self();
         $participant->draw_id = $draw->id;
         $participant->name = $encrypter->encrypt($data['name'], false);
-        $participant->email_address = $encrypter->encrypt($data['email'], false);
+        $participant->email_address = !empty($data['email']) ? $encrypter->encrypt($data['email'], false) : null;
         $participant->target = $encrypter->encrypt(json_encode($target), false);
         $participant->save();
 

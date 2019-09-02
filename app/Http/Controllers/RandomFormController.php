@@ -44,11 +44,11 @@ class RandomFormController extends Controller
 
         $mailContent = [
             'title' => $request->input('title'),
-            'body'  => $request->input('contentMail'),
+            'body'  => $request->input('content-email'),
         ];
 
         $smsContent = [
-            'body' => $request->input('contentSMS'),
+            'body' => $request->input('content-sms'),
         ];
 
         return (new DrawHandler())->contactParticipants($participants, $hat, $mailContent, $smsContent, $dataExpiration, $dearSanta);

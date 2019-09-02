@@ -35,25 +35,21 @@ class RequestBounceTest extends RequestCase
                 [
                     'name'       => 'toto',
                     'email'      => 'success@simulator.amazonses.com',
-                    'phone'      => '',
                     'exclusions' => ['2'],
                 ],
                 [
                     'name'       => 'tata',
                     'email'      => 'bounce@simulator.amazonses.com',
-                    'phone'      => '',
                     'exclusions' => ['0'],
                 ],
                 [
                     'name'       => 'tutu',
                     'email'      => 'bounce@simulator.amazonses.com',
-                    'phone'      => '',
                     'exclusions' => ['1'],
                 ],
             ],
             'title'                => 'test mail title',
-            'contentMail'          => 'test mail {SANTA} => {TARGET}',
-            'contentSMS'           => '',
+            'content-email'        => 'test mail {SANTA} => {TARGET}',
             'dearsanta'            => '0',
             'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
         ]);
