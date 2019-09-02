@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\SolverException;
+use App\Notifications\DrawCreated;
+use App\Notifications\TargetDrawn;
 use App\Http\Requests\RandomFormRequest;
-use App\Services\DrawHandler;
+use App\Services\SymmetricalEncrypter;
+use App\Draw;
+use App\Participant;
 use Arr;
 use Facades\App\Services\HatSolver as Solver;
 use Illuminate\Http\Request;
 use Metrics;
+use Notification;
 
 class RandomFormController extends Controller
 {
@@ -33,7 +38,7 @@ class RandomFormController extends Controller
 
     protected function drawAndInform(Request $request)
     {
-        $participants = $this->getParticipants($request);
+        $participants = $this->formatParticipants($request->input('participants'));
         $hat = Solver::one($participants, array_column($participants, 'exclusions'));
 
         Metrics::increment('draws');
@@ -52,12 +57,11 @@ class RandomFormController extends Controller
             'body' => $request->input('content-sms'),
         ];
 
-        return (new DrawHandler())->contactParticipants($participants, $hat, $mailContent, $smsContent, $dataExpiration, $dearSanta);
+        return $this->contactParticipants($participants, $hat, $mailContent, $smsContent, $dataExpiration, $dearSanta);
     }
 
-    protected function getParticipants(Request $request)
+    protected function formatParticipants(array $participants): array
     {
-        $participants = $request->input('participants');
         for ($i = 0; $i < count($participants); $i++) {
             $participant = &$participants[$i];
 
@@ -73,5 +77,35 @@ class RandomFormController extends Controller
         unset($participant);
 
         return $participants;
+    }
+
+    public function contactParticipants(array $participants, array $hat, array $mailContent, array $smsContent, $dataExpiration, $dearSanta = false)
+    {
+        $orgaSymKey = SymmetricalEncrypter::generateKey(config('app.cipher'));
+
+        $draw = new Draw();
+        $draw->encryptionKey = $orgaSymKey; // Have to be very first attribute set
+        $draw->expiration = $dataExpiration;
+        $draw->email_title = $mailContent['title'];
+        $draw->email_body = $mailContent['body'];
+        $draw->organizer_name = $participants[0]['name'];
+        $draw->organizer_email = $participants[0]['email'];
+        $draw->dear_santa = $dearSanta;
+        $draw->save();
+
+        Notification::route('mail', $participants[0])->notify(new DrawCreated($draw));
+
+        foreach ($hat as $santaIdx => $targetIdx) {
+            $santa = ['id' => $santaIdx] + $participants[$santaIdx];
+            $target = ['id' => $targetIdx] + $participants[$targetIdx];
+
+            $participant = Participant::prepareAndSave($draw, $santa, $target, $orgaSymKey);
+
+            $superSanta = $participants[array_search($santa['id'], $hat)];
+
+            Notification::route('mail', $santa)
+                ->route('sms', $santa)
+                ->notify(new TargetDrawn($santa, $target, $superSanta, $participants, $participant, $mailContent, $smsContent, $dearSanta));
+        }
     }
 }
