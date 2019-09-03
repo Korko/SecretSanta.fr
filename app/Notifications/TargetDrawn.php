@@ -12,7 +12,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
-use Mail;
 use Metrics;
 use Sms;
 
@@ -20,53 +19,42 @@ class TargetDrawn extends Notification
 {
     use Queueable;
 
-    private $santa;
-    private $target;
+    private $draw;
     private $superSanta;
-    private $participants;
-    private $participant;
-    private $mailContent;
-    private $dearSanta;
 
-    public function __construct(array $santa, array $target, array $superSanta, array $participants, Participant $participant, array $mailContent, array $smsContent, $dearSanta = false)
+    public function __construct(Draw $draw, array $superSanta)
     {
-        $this->santa = $santa;
-        $this->target = $target;
+        $this->draw = $draw;
         $this->superSanta = $superSanta;
-        $this->participants = $participants;
-        $this->participant = $participant;
-        $this->mailContent = $mailContent;
-        $this->smsContent = $smsContent;
-        $this->dearSanta = $dearSanta;
     }
 
-    public function via(): array
+    public function via(Participant $participant): array
     {
         $channels = [];
 
-        if (!empty($this->mailContent) and !empty($this->santa['email'])) {
+        if (!empty($this->draw->email_body) and !empty($participant->email_address)) {
             $channels[] = 'mail';
         }
 
-        if (!empty($this->smsContent) and !empty($this->santa['phone'])) {
+        if (!empty($this->draw->sms_body) and !empty($participant->phone_number)) {
             $channels[] = 'sms';
         }
 
         return $channels;
     }
 
-    public function toMail(): Mailable
+    public function toMail(Participant $participant): Mailable
     {
         $dearSantaLink = null;
-        if ($this->dearSanta) {
-            $dearSantaLink = $this->getDearSantaLink($this->participant->draw, $this->superSanta);
+        if ($this->draw->dear_santa) {
+            $dearSantaLink = $this->getDearSantaLink($this->draw, $this->superSanta);
         }
 
         Metrics::increment('email');
 
-        return (new TargetDrawnEmail($this->participant->draw, $this->mailContent['title'], $this->mailContent['body'], $this->santa['name'], $this->target['name'], $dearSantaLink))
+        return (new TargetDrawnEmail($this->draw, $participant, $dearSantaLink))
             ->withEventData([
-                'participant' => $this->participant,
+                'participant' => $participant,
             ]);
     }
 
@@ -79,13 +67,13 @@ class TargetDrawn extends Notification
         return route('dearsanta', ['santa' => Hashids::encode($dearSanta->id)]).'#'.base64_encode($santaSymKey);
     }
 
-    public function toSMS()
+    public function toSMS(Participant $participant)
     {
         Metrics::increment('phone');
-        Metrics::increment('sms', SmsTools::count($this->smsBody));
+        Metrics::increment('sms', SmsTools::count($this->draw->sms_body));
 
-        $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$this->santa['name'], $this->target['name']], $this->smsBody);
+        $contentSms = str_replace(['{SANTA}', '{TARGET}'], [$participant->name, $participant->target->name], $this->draw->sms_body);
 
-        Sms::message($this->santa['phone'], $contentSms);
+        Sms::message($participant->phone_number, $contentSms);
     }
 }

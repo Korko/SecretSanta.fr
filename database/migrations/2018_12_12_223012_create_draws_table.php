@@ -17,8 +17,6 @@ class CreateDrawsTable extends Migration
             $table->increments('id');
             $table->string('email_title');
             $table->longText('email_body');
-            $table->string('organizer_name')->nullable();
-            $table->string('organizer_email')->nullable();
             $table->date('expiration');
             $table->integer('dear_santa')->boolean()->default(false);
             $table->string('challenge');

@@ -10,6 +10,7 @@ use App\Participant;
 use Mail;
 use Metrics;
 use NoCaptcha;
+use Notification;
 use Sms;
 
 class RequestTest extends RequestCase
@@ -294,15 +295,15 @@ class RequestTest extends RequestCase
             ->with('email')
             ->andReturn(true);
 
-        Mail::fake();
-        Mail::assertNothingSent();
-
-        Sms::shouldReceive('message')
-            ->never();
+        Notification::fake();
+        Notification::assertNothingSent();
 
         $this->assertEquals(0, DearSanta::count());
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
+
+        SymmetricalEncrypter::shouldReceive('generateKeys')
+            ->andReturn('');
 
         $response = $this->validateForm([
             'participants'         => [
@@ -332,10 +333,16 @@ class RequestTest extends RequestCase
                 'message' => 'Envoyé avec succès !'
             ]);
 
-        Mail::assertSent(OrganizerEmail::class, function ($mail) {
-            return $mail->hasTo('test@test.com', 'toto');
-        });
-
+        $draw = Draw::first();
+        Notification::assertSentTo(
+            $draw->organizer,
+            \App\Notification\DrawCreated::class,
+            function($notification, $channels) use ($draw) {
+                $mail = $notification->toMail($draw->organizer)->build();
+                return $mail->hasTo('test@test.com', 'toto');
+            }
+        );
+/*
         Mail::assertSent(TargetDrawn::class, function ($mail) {
             return $mail->hasTo('test@test.com', 'toto');
         });
@@ -347,7 +354,7 @@ class RequestTest extends RequestCase
         Mail::assertSent(TargetDrawn::class, function ($mail) {
             return $mail->hasTo('test3@test.com', 'tutu');
         });
-
+*/
         $this->assertEquals(3, DearSanta::count());
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());

@@ -88,24 +88,30 @@ class RandomFormController extends Controller
         $draw->expiration = $dataExpiration;
         $draw->email_title = $mailContent['title'];
         $draw->email_body = $mailContent['body'];
-        $draw->organizer_name = $participants[0]['name'];
-        $draw->organizer_email = $participants[0]['email'];
+        $draw->sms_body = $smsContent['body'];
         $draw->dear_santa = $dearSanta;
         $draw->save();
-
-        Notification::route('mail', $participants[0])->notify(new DrawCreated($draw));
 
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = ['id' => $santaIdx] + $participants[$santaIdx];
             $target = ['id' => $targetIdx] + $participants[$targetIdx];
 
-            $participant = Participant::prepareAndSave($draw, $santa, $target, $orgaSymKey);
+            $participant = new Participant();
+            $participant->encryptionKey = $orgaSymKey; // Have to be very first attribute set
+            $participant->draw_id = $draw->id;
+            $participant->name = $santa['name'];
+            $participant->email_address = Arr::get($santa, 'email');
+            $participant->phone_number = Arr::get($santa, 'phone');
+            $participant->target = $target;
+            $participant->save();
 
             $superSanta = $participants[array_search($santa['id'], $hat)];
 
-            Notification::route('mail', $santa)
-                ->route('sms', $santa)
-                ->notify(new TargetDrawn($santa, $target, $superSanta, $participants, $participant, $mailContent, $smsContent, $dearSanta));
+            if($santaIdx === 0) {
+                $participant->notify(new DrawCreated($draw));
+            }
+
+            $participant->notify(new TargetDrawn($draw, $superSanta));
         }
     }
 }
