@@ -2,34 +2,26 @@
 
 namespace App\Notifications;
 
-use App\Draw;
 use App\Mail\Organizer as OrganizerEmail;
+use App\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
-use Mail;
 
 class DrawCreated extends Notification
 {
     use Queueable;
-
-    private $draw;
-
-    public function __construct(Draw $draw)
-    {
-        $this->draw = $draw;
-    }
 
     public function via(): array
     {
         return ['mail'];
     }
 
-    public function toMail(): Mailable
+    public function toMail(Participant $organizer): Mailable
     {
-        $panelLink = route('organizerPanel', ['draw' => $this->draw->id]).'#'.base64_encode($this->draw->encryptionKey);
+        $panelLink = route('organizerPanel', ['draw' => $organizer->draw_id]).'#'.base64_encode($organizer->encryptionKey);
 
-        return (new OrganizerEmail($this->draw, $panelLink));
+        return (new OrganizerEmail($organizer->draw, $panelLink));
     }
 }
