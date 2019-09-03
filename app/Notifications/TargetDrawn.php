@@ -2,18 +2,17 @@
 
 namespace App\Notifications;
 
-use App\DearSanta;
-use App\Draw;
-use App\Mail\TargetDrawn as TargetDrawnEmail;
-use App\Participant;
-use App\Services\SymmetricalEncrypter;
-use Hashids;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailable;
-use Illuminate\Notifications\Notification;
-use Metrics;
 use Sms;
+use Hashids;
+use Metrics;
+use App\Draw;
+use App\DearSanta;
+use App\Participant;
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use App\Services\SymmetricalEncrypter;
+use Illuminate\Notifications\Notification;
+use App\Mail\TargetDrawn as TargetDrawnEmail;
 
 class TargetDrawn extends Notification
 {
@@ -32,11 +31,11 @@ class TargetDrawn extends Notification
     {
         $channels = [];
 
-        if (!empty($this->draw->email_body) and !empty($participant->email_address)) {
+        if (! empty($this->draw->email_body) and ! empty($participant->email_address)) {
             $channels[] = 'mail';
         }
 
-        if (!empty($this->draw->sms_body) and !empty($participant->phone_number)) {
+        if (! empty($this->draw->sms_body) and ! empty($participant->phone_number)) {
             $channels[] = 'sms';
         }
 

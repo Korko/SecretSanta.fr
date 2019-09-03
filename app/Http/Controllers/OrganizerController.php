@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\DearSanta;
+use Mail;
+use Metrics;
 use App\Draw;
+use App\DearSanta;
+use Illuminate\Http\Request;
 use App\Http\Requests\DearSantaRequest;
 use App\Mail\DearSanta as DearSantaMail;
 use App\Services\SymmetricalEncrypter as Encrypter;
-use Illuminate\Http\Request;
-use Mail;
-use Metrics;
 
 class OrganizerController extends Controller
 {

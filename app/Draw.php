@@ -2,10 +2,10 @@
 
 namespace App;
 
-use App\Services\SymmetricalEncrypter;
-use DateInterval;
-use DateTime;
 use DB;
+use DateTime;
+use DateInterval;
+use App\Services\SymmetricalEncrypter;
 use Illuminate\Database\Eloquent\Model;
 
 class Draw extends Model
@@ -15,7 +15,7 @@ class Draw extends Model
     // Fake attributes
     public $sms_body;
 
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
         parent::__construct($attributes);
         $this->encrypter = new SymmetricalEncrypter(SymmetricalEncrypter::generateKey(config('app.cipher')));
@@ -45,7 +45,7 @@ class Draw extends Model
     }
 
     /**
-     * Organizer attribute
+     * Organizer attribute.
      */
     public function getOrganizerAttribute()
     {
@@ -53,12 +53,11 @@ class Draw extends Model
     }
 
     /**
-     * Encryption Key attribute
+     * Encryption Key attribute.
      *
      * Fake one to define the encrypter to
      * encrypt/decrypt the other attributes
      */
-
     public function setEncryptionKeyAttribute($value)
     {
         $this->encrypter = new SymmetricalEncrypter($value);
@@ -70,9 +69,8 @@ class Draw extends Model
     }
 
     /**
-     * Email Title attribute
+     * Email Title attribute.
      */
-
     public function setEmailTitleAttribute($value)
     {
         $this->attributes['email_title'] = $this->encrypter->encrypt($value, false);
@@ -84,9 +82,8 @@ class Draw extends Model
     }
 
     /**
-     * Email Body attribute
+     * Email Body attribute.
      */
-
     public function setEmailBodyAttribute($value)
     {
         $this->attributes['email_body'] = $this->encrypter->encrypt($value, false);
@@ -98,9 +95,8 @@ class Draw extends Model
     }
 
     /**
-     * Challenge attribute
+     * Challenge attribute.
      */
-
     public function setChallengeAttribute($value)
     {
         $this->attributes['challenge'] = $this->encrypter->encrypt($value, false);

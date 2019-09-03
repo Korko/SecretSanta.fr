@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Mail\Message;
 use Mail;
+use Illuminate\Mail\Message;
+use Illuminate\Console\Command;
 
 class SendMailCommand extends Command
 {

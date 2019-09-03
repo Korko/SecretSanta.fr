@@ -17,3 +17,4 @@ public/assets/*.map
 .phpunit.result.cache
 npm-debug.log
 yarn-error.log
+.php_cs.cache
