@@ -3,12 +3,12 @@
 namespace App\Providers;
 
 use Arr;
-use Facades\App\Services\SmsTools as SmsTools;
-use Illuminate\Support\ServiceProvider;
 use Validator;
+use Illuminate\Support\ServiceProvider;
+use Facades\App\Services\SmsTools as SmsTools;
 
-class ValidatorServiceProvider extends ServiceProvider {
-
+class ValidatorServiceProvider extends ServiceProvider
+{
     public function boot()
     {
         Validator::extend('max_sms_count', function ($attribute, $value, $parameters, $validator) {
@@ -30,11 +30,11 @@ class ValidatorServiceProvider extends ServiceProvider {
 
             $parts = explode('.*.', $parameters[0]);
             $data = (array) Arr::get($data, $parts[0]);
-            for ($i=1; $i<count($parts); $i++) {
+            for ($i = 1; $i < count($parts); $i++) {
                 $data = array_column($data, $parts[$i]);
             }
 
-            return (!empty($validator->getData()[$attribute]) || empty(array_filter($data)));
+            return ! empty($validator->getData()[$attribute]) || empty(array_filter($data));
         });
     }
 

@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Draw;
-use App\Services\SymmetricalEncrypter;
 use Mail;
+use App\Draw;
 use NoCaptcha;
+use App\Services\SymmetricalEncrypter;
 
 class RequestOrganizerTest extends RequestCase
 {
@@ -56,7 +56,7 @@ class RequestOrganizerTest extends RequestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'message' => 'Envoyé avec succès !'
+                'message' => 'Envoyé avec succès !',
             ]);
 
         // So fetch it from the mail

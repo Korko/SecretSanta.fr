@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Hashids;
 use App\DearSanta;
-use App\Participant;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 

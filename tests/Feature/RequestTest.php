@@ -2,18 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\DearSanta;
-use App\Draw;
-use App\Mail\Organizer as OrganizerEmail;
-use App\Mail\TargetDrawn;
-use App\Participant;
+use Sms;
 use Mail;
-use Artisan;
 use Metrics;
+use App\Draw;
 use NoCaptcha;
 use Notification;
-use Sms;
-use Mockery;
+use App\DearSanta;
+use App\Participant;
+use App\Mail\TargetDrawn;
+use App\Mail\Organizer as OrganizerEmail;
 
 class RequestTest extends RequestCase
 {
@@ -73,7 +71,7 @@ class RequestTest extends RequestCase
         $response
             ->assertStatus(500)
             ->assertJson([
-                'error' => 'Aucune solution possible'
+                'error' => 'Aucune solution possible',
             ]);
 
         $this->assertEquals(0, DearSanta::count());
@@ -154,7 +152,7 @@ class RequestTest extends RequestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'message' => 'Envoyé avec succès !'
+                'message' => 'Envoyé avec succès !',
             ]);
 
         Mail::assertSent(OrganizerEmail::class, function ($mail) {
@@ -264,7 +262,7 @@ class RequestTest extends RequestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'message' => 'Envoyé avec succès !'
+                'message' => 'Envoyé avec succès !',
             ]);
 
         Mail::assertSent(OrganizerEmail::class, function ($mail) {
@@ -332,31 +330,32 @@ class RequestTest extends RequestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'message' => 'Envoyé avec succès !'
+                'message' => 'Envoyé avec succès !',
             ]);
 
         $draw = Draw::first();
         Notification::assertSentTo(
             $draw->organizer,
             \App\Notification\DrawCreated::class,
-            function($notification, $channels) use ($draw) {
+            function ($notification, $channels) use ($draw) {
                 $mail = $notification->toMail($draw->organizer)->build();
+
                 return $mail->hasTo('test@test.com', 'toto');
             }
         );
-/*
-        Mail::assertSent(TargetDrawn::class, function ($mail) {
-            return $mail->hasTo('test@test.com', 'toto');
-        });
-
-        Mail::assertSent(TargetDrawn::class, function ($mail) {
-            return $mail->hasTo('test2@test.com', 'tata');
-        });
-
-        Mail::assertSent(TargetDrawn::class, function ($mail) {
-            return $mail->hasTo('test3@test.com', 'tutu');
-        });
-*/
+        /*
+                Mail::assertSent(TargetDrawn::class, function ($mail) {
+                    return $mail->hasTo('test@test.com', 'toto');
+                });
+        
+                Mail::assertSent(TargetDrawn::class, function ($mail) {
+                    return $mail->hasTo('test2@test.com', 'tata');
+                });
+        
+                Mail::assertSent(TargetDrawn::class, function ($mail) {
+                    return $mail->hasTo('test3@test.com', 'tutu');
+                });
+        */
         $this->assertEquals(3, DearSanta::count());
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());

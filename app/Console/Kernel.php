@@ -2,8 +2,8 @@
 
 namespace App\Console;
 
-use App\DearSantaDraw;
 use App\Draw;
+use App\DearSantaDraw;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 

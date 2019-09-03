@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Mail;
 use Metrics;
-use App\Participant;
 use App\Mail\DearSanta;
-use Illuminate\Http\Request;
 use App\Http\Requests\DearSantaRequest;
 use App\Services\SymmetricalEncrypter as Encrypter;
 

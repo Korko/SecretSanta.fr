@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\DearSanta;
-use App\Draw;
-use App\Participant;
-use Config;
 use Mail;
+use Config;
 use Metrics;
 use Mockery;
+use App\Draw;
 use NoCaptcha;
+use App\DearSanta;
+use App\Participant;
 
 class RequestBounceTest extends RequestCase
 {
@@ -57,7 +57,7 @@ class RequestBounceTest extends RequestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'message' => 'Envoyé avec succès !'
+                'message' => 'Envoyé avec succès !',
             ]);
 
         $this->assertEquals(1, Draw::count());

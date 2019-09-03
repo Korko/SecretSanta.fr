@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Log;
 use Metrics;
+use Illuminate\Http\Request;
 
 class EmailEventController extends Controller
 {
