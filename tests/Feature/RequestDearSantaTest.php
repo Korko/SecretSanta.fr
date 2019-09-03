@@ -2,11 +2,12 @@
 
 namespace Tests\Feature;
 
+use Mail;
+use Artisan;
+use Hashids;
+use NoCaptcha;
 use App\DearSanta;
 use App\Services\SymmetricalEncrypter;
-use Hashids;
-use Mail;
-use NoCaptcha;
 
 class RequestDearSantaTest extends RequestCase
 {
