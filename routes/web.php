@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('randomForm');
-});
+Route::get('/', 'RandomFormController@view');
 Route::post('/', 'RandomFormController@handle');
 
 Route::pattern('santa', '[0-9a-zA-Z]{'.config('hashids.connections')[config('hashids.default')]['length'].'}');
