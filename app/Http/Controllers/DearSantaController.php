@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\DearSanta;
-use App\Draw;
-use App\Http\Requests\DearSantaRequest;
-use App\Mail\DearSanta as DearSantaMail;
-use App\Services\SymmetricalEncrypter as Encrypter;
-use Hashids;
 use Mail;
 use Metrics;
+use App\Participant;
+use App\Mail\DearSanta;
+use Illuminate\Http\Request;
+use App\Http\Requests\DearSantaRequest;
+use App\Services\SymmetricalEncrypter as Encrypter;
 
 class DearSantaController extends Controller
 {

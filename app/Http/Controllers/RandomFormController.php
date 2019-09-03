@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Arr;
+use Sms;
+use Mail;
+use Hashids;
+use Metrics;
+use App\Draw;
+use App\Participant;
+use Illuminate\Http\Request;
 use App\Exceptions\SolverException;
 use App\Notifications\DrawCreated;
 use App\Notifications\TargetDrawn;
 use App\Http\Requests\RandomFormRequest;
 use App\Services\SymmetricalEncrypter;
-use App\Draw;
-use App\Participant;
-use Arr;
 use Facades\App\Services\HatSolver as Solver;
-use Illuminate\Http\Request;
-use Metrics;
 use Notification;
 
 class RandomFormController extends Controller
@@ -65,7 +68,7 @@ class RandomFormController extends Controller
         for ($i = 0; $i < count($participants); $i++) {
             $participant = &$participants[$i];
 
-            if (!empty($participant['phone'])) {
+            if (! empty($participant['phone'])) {
                 if (substr($participant['phone'], 0, 1) === '0') {
                     $participant['phone'] = substr($participant['phone'], 1);
                 }
