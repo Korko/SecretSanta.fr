@@ -23,8 +23,7 @@
         "vinkla/hashids": "^6.0"
     },
     "require-dev": {
-        "brianium/paratest": "^3.0",
-        "filp/whoops": "^2.0",
+        "facade/ignition": "^1.4",
         "fzaninotto/faker": "^1.4",
         "jakub-onderka/php-parallel-lint": "^1.0",
         "matt-allan/laravel-code-style": "^0.3.0",
@@ -32,10 +31,7 @@
         "nunomaduro/collision": "^3.0",
         "phpro/grumphp": "^0.15.2",
         "phpunit/phpunit": "~8.1",
-        "povils/phpmnd": "^2.0",
-        "rap2hpoutre/laravel-log-viewer": "^1.1.1",
-        "symfony/css-selector": "3.2.*",
-        "symfony/dom-crawler": "4.3.*"
+        "povils/phpmnd": "^2.0"
     },
     "config": {
         "optimize-autoloader": true,

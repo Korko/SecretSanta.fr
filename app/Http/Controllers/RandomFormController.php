@@ -16,6 +16,11 @@ use Facades\App\Services\HatSolver as Solver;
 
 class RandomFormController extends Controller
 {
+    public function view()
+    {
+        return view('randomForm');
+    }
+
     public function handle(RandomFormRequest $request)
     {
         try {
