@@ -31,7 +31,7 @@ class RandomFormRequest extends Request
             'dearsanta-expiration' => 'required_if:dearsanta,"1"|date|after:tomorrow|before:+1year',
         ];
 
-        if (!empty($this->request->get('name'))) {
+        if (! empty($this->request->get('name'))) {
             $keys = array_keys($this->request->get('name', []));
             $rules += [
                 'title' => 'required_with:'.implode(',', array_map(function ($key) {
