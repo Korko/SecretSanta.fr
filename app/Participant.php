@@ -52,12 +52,11 @@ class Participant extends Model
     }
 
     /**
-     * Encryption Key attribute
+     * Encryption Key attribute.
      *
      * Fake one to define the encrypter to
      * encrypt/decrypt the other attributes
      */
-
     public function setEncryptionKeyAttribute($value)
     {
         $this->encrypter = new SymmetricalEncrypter($value);
@@ -69,9 +68,8 @@ class Participant extends Model
     }
 
     /**
-     * Name attribute
+     * Name attribute.
      */
-
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = $this->encrypter->encrypt($value, false);
@@ -83,9 +81,8 @@ class Participant extends Model
     }
 
     /**
-     * Email Address attribute
+     * Email Address attribute.
      */
-
     public function setEmailAddressAttribute($value)
     {
         $this->attributes['email_address'] = $this->encrypter->encrypt($value, false);
@@ -97,9 +94,8 @@ class Participant extends Model
     }
 
     /**
-     * Target attribute
+     * Target attribute.
      */
-
     public function setTargetAttribute($value)
     {
         $this->attributes['target'] = $this->encrypter->encrypt(json_encode($value), false);
@@ -109,5 +105,4 @@ class Participant extends Model
     {
         return json_decode($this->encrypter->decrypt($this->attributes['target'], false));
     }
-
 }

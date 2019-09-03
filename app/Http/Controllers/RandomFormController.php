@@ -3,20 +3,16 @@
 namespace App\Http\Controllers;
 
 use Arr;
-use Sms;
-use Mail;
-use Hashids;
 use Metrics;
 use App\Draw;
 use App\Participant;
 use Illuminate\Http\Request;
-use App\Exceptions\SolverException;
 use App\Notifications\DrawCreated;
 use App\Notifications\TargetDrawn;
-use App\Http\Requests\RandomFormRequest;
+use App\Exceptions\SolverException;
 use App\Services\SymmetricalEncrypter;
+use App\Http\Requests\RandomFormRequest;
 use Facades\App\Services\HatSolver as Solver;
-use Notification;
 
 class RandomFormController extends Controller
 {
@@ -110,7 +106,7 @@ class RandomFormController extends Controller
 
             $superSanta = $participants[array_search($santa['id'], $hat)];
 
-            if($santaIdx === 0) {
+            if ($santaIdx === 0) {
                 $participant->notify(new DrawCreated($draw));
             }
 

@@ -24,7 +24,7 @@ class DearSantaRequest extends Request
     public function rules()
     {
         $rules = [];
-        if (!App::environment('local', 'dev')) {
+        if (! App::environment('local', 'dev')) {
             $rules['g-recaptcha-response'] = 'required|captcha';
         }
 

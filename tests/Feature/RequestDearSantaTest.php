@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Mail;
-use Artisan;
 use Hashids;
 use NoCaptcha;
 use App\DearSanta;
@@ -58,7 +57,7 @@ class RequestDearSantaTest extends RequestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'message' => 'Envoyé avec succès !'
+                'message' => 'Envoyé avec succès !',
             ]);
 
         // For security issues, the key is only sent by mail and never stored
@@ -102,7 +101,7 @@ class RequestDearSantaTest extends RequestCase
             $response
                 ->assertStatus(200)
                 ->assertJson([
-                    'message' => 'Envoyé avec succès !'
+                    'message' => 'Envoyé avec succès !',
                 ]);
 
             Mail::assertSent(\App\Mail\DearSanta::class, function ($mail) use ($santa) {
