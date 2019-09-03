@@ -12,6 +12,10 @@ class Draw extends Model
 {
     private $encrypter;
 
+    protected $dates = [
+        'expires_at',
+    ];
+
     // Fake attributes
     public $sms_body;
 
@@ -24,14 +28,14 @@ class Draw extends Model
     public function save(array $options = [])
     {
         $this->challenge = config('app.challenge');
-        $this->expiration = $this->expiration ?: (new DateTime('now'))->add(new DateInterval('P7D'));
+        $this->expires_at = $this->expires_at ?: (new DateTime('now'))->add(new DateInterval('P7D'));
 
         return parent::save($options);
     }
 
     public static function cleanup()
     {
-        self::where('expiration', '<=', DB::raw('CURRENT_TIMESTAMP'))->delete();
+        self::where('expires_at', '<=', DB::raw('CURRENT_TIMESTAMP'))->delete();
     }
 
     public function participants()

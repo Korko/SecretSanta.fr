@@ -89,7 +89,7 @@ class RandomFormController extends Controller
 
         $draw = new Draw();
         $draw->encryptionKey = $orgaSymKey; // Have to be very first attribute set
-        $draw->expiration = $dataExpiration;
+        $draw->expires_at = $dataExpiration;
         $draw->email_title = $mailContent['title'];
         $draw->email_body = $mailContent['body'];
         $draw->sms_body = $smsContent['body'];
