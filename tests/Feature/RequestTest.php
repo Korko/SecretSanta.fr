@@ -347,11 +347,11 @@ class RequestTest extends RequestCase
                 Mail::assertSent(TargetDrawn::class, function ($mail) {
                     return $mail->hasTo('test@test.com', 'toto');
                 });
-        
+
                 Mail::assertSent(TargetDrawn::class, function ($mail) {
                     return $mail->hasTo('test2@test.com', 'tata');
                 });
-        
+
                 Mail::assertSent(TargetDrawn::class, function ($mail) {
                     return $mail->hasTo('test3@test.com', 'tutu');
                 });
