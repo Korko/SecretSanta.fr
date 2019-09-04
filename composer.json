@@ -15,7 +15,7 @@
         "fideloper/proxy": "^4.0",
         "korko/callr": "^1.0",
         "korko/validator": "dev-master",
-        "laravel/framework": "^6.0",
+        "laravel/framework": "^5.8",
         "league/statsd": "1.5.*",
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
         "spatie/laravel-blade-javascript": "^2.0",
