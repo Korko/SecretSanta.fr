@@ -19,6 +19,7 @@
         </div>
 
         <form v-else action="{{ url('/dearsanta/'.$santa) }}" @submit.prevent="submit" method="post" autocomplete="off">
+            @csrf
             <fieldset :disabled="sending || sent">
                 <fieldset>
                     <div class="form-group">
@@ -31,7 +32,6 @@
                         {!! NoCaptcha::display(['data-theme' => 'light']) !!}
                     </div>
 
-                    {{ csrf_field() }}
                     <input type="hidden" name="key" :value="key" />
                     <button type="submit" class="btn btn-primary btn-lg">
                         <span v-if="sent"><span class="fas fa-check-circle"></span> @lang('form.sent')</span>

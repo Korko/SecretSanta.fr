@@ -21,8 +21,8 @@ class Draw extends Model
 
     public function __construct($attributes = [])
     {
+        $this->encryptionKey = SymmetricalEncrypter::generateKey(config('app.cipher'));
         parent::__construct($attributes);
-        $this->encrypter = new SymmetricalEncrypter(SymmetricalEncrypter::generateKey(config('app.cipher')));
     }
 
     public function save(array $options = [])

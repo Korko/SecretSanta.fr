@@ -11,6 +11,7 @@ use Notification;
 use App\DearSanta;
 use App\Participant;
 use App\Mail\TargetDrawn;
+use App\Services\SymmetricalEncrypter;
 use App\Mail\Organizer as OrganizerEmail;
 
 class RequestTest extends RequestCase

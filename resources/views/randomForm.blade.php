@@ -129,6 +129,7 @@
                 </div>
 
                 <form id="randomForm" action="/" @submit.prevent="submit" method="post" autocomplete="off">
+                    @csrf
                     <fieldset :disabled="sending || sent">
                         <fieldset>
                             <legend>@lang('form.participants')</legend>
@@ -222,8 +223,6 @@
                             <div class="form-group btn">
                                 {!! NoCaptcha::display(['data-theme' => 'light']) !!}
                             </div>
-
-                            {{ csrf_field() }}
 
                             <button type="submit" class="btn btn-primary btn-lg">
                                 <span v-if="sending"><i class="fas fa-spinner"></i> @lang('form.sending')</span>

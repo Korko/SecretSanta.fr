@@ -4,7 +4,7 @@ $factory->define(App\Draw::class, function (Faker\Generator $faker) {
     return [
         'email_title'     => $faker->sentence,
         'email_body'      => $faker->text,
-        'expiration'      => $faker->dateTimeBetween('+1 day', '+1 month'),
+        'expires_at'      => $faker->dateTimeBetween('+1 day', '+1 month'),
         'dear_santa'      => $faker->boolean,
         'challenge'       => $faker->text,
     ];
@@ -12,6 +12,6 @@ $factory->define(App\Draw::class, function (Faker\Generator $faker) {
 
 $factory->state(App\Draw::class, 'expired', function ($faker) {
     return [
-        'expiration' => $faker->dateTime('-1 hour'),
+        'expires_at' => $faker->dateTime('-1 hour'),
     ];
 });
