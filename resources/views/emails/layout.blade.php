@@ -67,7 +67,7 @@
 			}
 		</style>
 	</head>
-	<body style="-webkit-font-smoothing:antialiased;width:100%!important;background:#ffffff;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;margin:0;padding:0;" lang="@{{ Config::get('app.locale') }}">
+	<body style="-webkit-font-smoothing:antialiased;width:100%!important;background:#ffffff;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;margin:0;padding:0;" lang="@{{ config('app.locale') }}">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="width:100% !important;" >
 			<tr>
 				<td width="100%" valign="top" bgcolor="#ffffff">
