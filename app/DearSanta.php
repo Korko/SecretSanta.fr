@@ -2,26 +2,24 @@
 
 namespace App;
 
+use App\Database\Model;
 use App\Services\SymmetricalEncrypter;
-use Illuminate\Database\Eloquent\Model;
 
 class DearSanta extends Model
 {
     public $timestamps = false;
 
-    public static function prepareAndSave(Draw $draw, array $santa, $encryptionKey)
+    protected $encryptable = [
+        'santa_name',
+        'santa_email',
+        'challenge',
+    ];
+
+    public function save(array $options = [])
     {
-        $encrypter = new SymmetricalEncrypter($encryptionKey);
+        $this->challenge = config('app.challenge');
 
-        $dearSanta = new self();
-        $dearSanta->draw_id = $draw->id;
-        $dearSanta->santa_name = $encrypter->encrypt($santa['name'], false);
-        $dearSanta->santa_email = $encrypter->encrypt($santa['email'], false);
-        $dearSanta->challenge = $encrypter->encrypt(config('app.challenge'), false);
-
-        $dearSanta->save();
-
-        return $dearSanta;
+        return parent::save($options);
     }
 
     public function draw()

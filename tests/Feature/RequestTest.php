@@ -296,15 +296,15 @@ class RequestTest extends RequestCase
             ->with('email')
             ->andReturn(true);
 
-        Notification::fake();
-        Notification::assertNothingSent();
+        Mail::fake();
+        Mail::assertNothingSent();
+
+        Sms::shouldReceive('message')
+            ->never();
 
         $this->assertEquals(0, DearSanta::count());
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
-
-        SymmetricalEncrypter::shouldReceive('generateKeys')
-            ->andReturn('');
 
         $response = $this->validateForm([
             'participants'         => [
@@ -334,29 +334,22 @@ class RequestTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        $draw = Draw::first();
-        Notification::assertSentTo(
-            $draw->organizer,
-            \App\Notification\DrawCreated::class,
-            function ($notification, $channels) use ($draw) {
-                $mail = $notification->toMail($draw->organizer)->build();
+        Mail::assertSent(OrganizerEmail::class, function ($mail) {
+            return $mail->hasTo('test@test.com', 'toto');
+        });
 
-                return $mail->hasTo('test@test.com', 'toto');
-            }
-        );
-        /*
-                Mail::assertSent(TargetDrawn::class, function ($mail) {
-                    return $mail->hasTo('test@test.com', 'toto');
-                });
+        Mail::assertSent(TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test@test.com', 'toto');
+        });
 
-                Mail::assertSent(TargetDrawn::class, function ($mail) {
-                    return $mail->hasTo('test2@test.com', 'tata');
-                });
+        Mail::assertSent(TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test2@test.com', 'tata');
+        });
 
-                Mail::assertSent(TargetDrawn::class, function ($mail) {
-                    return $mail->hasTo('test3@test.com', 'tutu');
-                });
-        */
+        Mail::assertSent(TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test3@test.com', 'tutu');
+        });
+
         $this->assertEquals(3, DearSanta::count());
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());

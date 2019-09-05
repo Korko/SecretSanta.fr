@@ -7,8 +7,7 @@ use Metrics;
 use App\Draw;
 use App\Participant;
 use Illuminate\Http\Request;
-use App\Notifications\DrawCreated;
-use App\Notifications\TargetDrawn;
+use App\Services\DrawHandler;
 use App\Exceptions\SolverException;
 use App\Services\SymmetricalEncrypter;
 use App\Http\Requests\RandomFormRequest;
@@ -61,7 +60,7 @@ class RandomFormController extends Controller
             'body' => $request->input('content-sms'),
         ];
 
-        return $this->contactParticipants($participants, $hat, $mailContent, $smsContent, $dataExpiration, $dearSanta);
+        return (new DrawHandler())->contactParticipants($participants, $hat, $mailContent, $smsContent, $dataExpiration, $dearSanta);
     }
 
     protected function formatParticipants(array $participants): array
@@ -81,41 +80,5 @@ class RandomFormController extends Controller
         unset($participant);
 
         return $participants;
-    }
-
-    public function contactParticipants(array $participants, array $hat, array $mailContent, array $smsContent, $dataExpiration, $dearSanta = false)
-    {
-        $orgaSymKey = SymmetricalEncrypter::generateKey(config('app.cipher'));
-
-        $draw = new Draw();
-        $draw->encryptionKey = $orgaSymKey; // Have to be very first attribute set
-        $draw->expires_at = $dataExpiration;
-        $draw->email_title = $mailContent['title'];
-        $draw->email_body = $mailContent['body'];
-        $draw->sms_body = $smsContent['body'];
-        $draw->dear_santa = $dearSanta;
-        $draw->save();
-
-        foreach ($hat as $santaIdx => $targetIdx) {
-            $santa = ['id' => $santaIdx] + $participants[$santaIdx];
-            $target = ['id' => $targetIdx] + $participants[$targetIdx];
-
-            $participant = new Participant();
-            $participant->encryptionKey = $orgaSymKey; // Have to be very first attribute set
-            $participant->draw_id = $draw->id;
-            $participant->name = $santa['name'];
-            $participant->email_address = Arr::get($santa, 'email');
-            $participant->phone_number = Arr::get($santa, 'phone');
-            $participant->target = $target;
-            $participant->save();
-
-            $superSanta = $participants[array_search($santa['id'], $hat)];
-
-            if ($santaIdx === 0) {
-                $participant->notify(new DrawCreated($draw));
-            }
-
-            $participant->notify(new TargetDrawn($draw, $superSanta));
-        }
     }
 }
