@@ -5,25 +5,22 @@ namespace App;
 use DB;
 use DateTime;
 use DateInterval;
-use App\Services\SymmetricalEncrypter;
-use Illuminate\Database\Eloquent\Model;
+use App\Database\Model;
 
 class Draw extends Model
 {
-    private $encrypter;
-
     protected $dates = [
         'expires_at',
     ];
 
+    protected $encryptable = [
+        'email_title',
+        'email_body',
+        'challenge',
+    ];
+
     // Fake attributes
     public $sms_body;
-
-    public function __construct($attributes = [])
-    {
-        $this->encryptionKey = SymmetricalEncrypter::generateKey(config('app.cipher'));
-        parent::__construct($attributes);
-    }
 
     public function save(array $options = [])
     {
@@ -48,66 +45,8 @@ class Draw extends Model
         return $this->hasMany(DearSanta::class);
     }
 
-    /**
-     * Organizer attribute.
-     */
     public function getOrganizerAttribute()
     {
         return $this->participants()->first();
-    }
-
-    /**
-     * Encryption Key attribute.
-     *
-     * Fake one to define the encrypter to
-     * encrypt/decrypt the other attributes
-     */
-    public function setEncryptionKeyAttribute($value)
-    {
-        $this->encrypter = new SymmetricalEncrypter($value);
-    }
-
-    public function getEncryptionKeyAttribute()
-    {
-        return $this->encrypter->getKey();
-    }
-
-    /**
-     * Email Title attribute.
-     */
-    public function setEmailTitleAttribute($value)
-    {
-        $this->attributes['email_title'] = $this->encrypter->encrypt($value, false);
-    }
-
-    public function getEmailTitleAttribute()
-    {
-        return $this->encrypter->decrypt($this->attributes['email_title'], false);
-    }
-
-    /**
-     * Email Body attribute.
-     */
-    public function setEmailBodyAttribute($value)
-    {
-        $this->attributes['email_body'] = $this->encrypter->encrypt($value, false);
-    }
-
-    public function getEmailBodyAttribute()
-    {
-        return $this->encrypter->decrypt($this->attributes['email_body'], false);
-    }
-
-    /**
-     * Challenge attribute.
-     */
-    public function setChallengeAttribute($value)
-    {
-        $this->attributes['challenge'] = $this->encrypter->encrypt($value, false);
-    }
-
-    public function getChallengeAttribute($value)
-    {
-        return $this->encrypter->decrypt($this->attributes['challenge'], false);
     }
 }
