@@ -56,6 +56,8 @@ trait EncryptsAttributes
     public function setEncryptionKey($value)
     {
         $this->encrypter = new SymmetricalEncrypter($value);
+
+        return $this;
     }
 
     public function getEncryptionKey()

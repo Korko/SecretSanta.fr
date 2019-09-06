@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use Mail;
 use App\Draw;
 use NoCaptcha;
-use App\Services\SymmetricalEncrypter;
 
 class RequestOrganizerTest extends RequestCase
 {
@@ -69,7 +68,7 @@ class RequestOrganizerTest extends RequestCase
         $this->assertNotNull($link);
 
         $path = parse_url($link, PHP_URL_PATH);
-        $key = parse_url($link, PHP_URL_FRAGMENT);
+        $key = base64_decode(parse_url($link, PHP_URL_FRAGMENT));
 
         // Get the form page (just to check http code)
         $response = $this->get($path);
@@ -80,11 +79,11 @@ class RequestOrganizerTest extends RequestCase
         $data = sscanf($path, $pathTheorical);
         $draw = Draw::find($data[0]);
 
-        $encrypter = new SymmetricalEncrypter(base64_decode($key));
-
         foreach ($draw->participants as $participant) {
-            $this->assertContains($encrypter->decrypt($participant->name, false), array_column($participants, 'name'));
-            $this->assertContains($encrypter->decrypt($participant->email_address, false), array_column($participants, 'email'));
+            $participant->setEncryptionKey($key);
+
+            $this->assertContains($participant->name, array_column($participants, 'name'));
+            $this->assertContains($participant->email_address, array_column($participants, 'email'));
         }
     }
 }

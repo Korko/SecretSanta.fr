@@ -6,7 +6,6 @@ use Mail;
 use Hashids;
 use NoCaptcha;
 use App\DearSanta;
-use App\Services\SymmetricalEncrypter;
 
 class RequestDearSantaTest extends RequestCase
 {
@@ -85,11 +84,10 @@ class RequestDearSantaTest extends RequestCase
             $pathTheorical = parse_url(route('dearsanta', ['santa' => '%s']), PHP_URL_PATH);
             $data = sscanf($path, $pathTheorical);
             $id = Hashids::decode($data[0]);
-            $dearSanta = DearSanta::find($id[0]);
+            $dearSanta = DearSanta::find($id[0])->setEncryptionKey(base64_decode($key));
 
-            $encrypter = new SymmetricalEncrypter(base64_decode($key));
-            $this->assertEquals($santa['name'], $encrypter->decrypt($dearSanta->santa_name, false));
-            $this->assertEquals($santa['email'], $encrypter->decrypt($dearSanta->santa_email, false));
+            $this->assertEquals($santa['name'], $dearSanta->santa_name);
+            $this->assertEquals($santa['email'], $dearSanta->santa_email);
 
             // Try to contact santa
             $response = $this->ajaxPost($path, [
