@@ -25,9 +25,14 @@ class TargetDrawn extends Mailable
      */
     public function __construct(Draw $draw, Participant $santa, $dearSantaLink = null)
     {
-        $this->subject = __('emails.target_draw.title', ['draw' => $draw->id, 'subject' => $draw->email_title]);
-        $this->content = str_replace('{SANTA}', $santa->name, str_replace('{TARGET}', $santa->target->name, $draw->email_body));
+        $this->subject = $this->parseKeywords(__('emails.target_draw.title', ['draw' => $draw->id, 'subject' => $draw->email_title]), $santa);
+        $this->content = $this->parseKeywords($draw->email_body, $santa);
         $this->dearSantaLink = $dearSantaLink;
+    }
+
+    protected function parseKeywords($str, Participant $santa)
+    {
+        return str_replace(['{SANTA}', '{TARGET}'], [$santa->name, $santa->target->name], $str);
     }
 
     /**
