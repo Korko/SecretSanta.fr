@@ -144,8 +144,8 @@ class RequestTest extends RequestCase
                     'exclusions' => ['1'],
                 ],
             ],
-            'title'                => 'test mail title',
-            'content-email'        => 'test mail {SANTA} => {TARGET}',
+            'title'                => 'test mail {SANTA} => {TARGET} title',
+            'content-email'        => 'test mail {SANTA} => {TARGET} body',
             'content-sms'          => 'test sms "{SANTA}\' => &{TARGET}',
         ]);
 
@@ -159,16 +159,18 @@ class RequestTest extends RequestCase
             return $mail->hasTo('test@test.com', 'toto');
         });
 
-        $body = null;
-        Mail::assertSent(TargetDrawn::class, function ($mail) use (&$body) {
+        $title = $body = null;
+        Mail::assertSent(TargetDrawn::class, function ($mail) use (&$title, &$body) {
             if ($mail->hasTo('test@test.com', 'toto')) {
                 $m = $mail->build();
+                $title = $mail->subject;
                 $body = view($m->view, $m->buildViewData())->render();
 
                 return true;
             }
         });
-        $this->assertStringContainsString('test mail toto => tata', html_entity_decode($body));
+        $this->assertStringContainsString('test mail toto => tata title', html_entity_decode($title));
+        $this->assertStringContainsString('test mail toto => tata body', html_entity_decode($body));
 
         $body = null;
         Mail::assertSent(TargetDrawn::class, function ($mail) use (&$body) {
