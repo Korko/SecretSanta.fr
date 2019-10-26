@@ -9,7 +9,6 @@ use App\Participant;
 use Illuminate\Http\Request;
 use App\Services\DrawHandler;
 use App\Exceptions\SolverException;
-use App\Services\SymmetricalEncrypter;
 use App\Http\Requests\RandomFormRequest;
 use Facades\App\Services\HatSolver as Solver;
 
