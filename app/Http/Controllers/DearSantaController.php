@@ -8,7 +8,6 @@ use Hashids;
 use App\DearSanta;
 use App\Http\Requests\DearSantaRequest;
 use App\Mail\DearSanta as DearSantaMail;
-use App\Services\SymmetricalEncrypter as Encrypter;
 
 class DearSantaController extends Controller
 {
