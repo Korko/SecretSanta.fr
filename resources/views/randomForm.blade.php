@@ -130,6 +130,7 @@
 
                 <form id="randomForm" action="/" @submit.prevent="submit" method="post" autocomplete="off">
                     @csrf
+                    {{ Form::hidden('thisisatest') }}
                     <fieldset :disabled="sending || sent">
                         <fieldset>
                             <legend>@lang('form.participants')</legend>
