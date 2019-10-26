@@ -85,5 +85,17 @@ class RequestOrganizerTest extends RequestCase
             $this->assertContains($participant->name, array_column($participants, 'name'));
             $this->assertContains($participant->email_address, array_column($participants, 'email'));
         }
+
+        // Check data can be changed
+        $response = $this->ajaxPost($path, [
+            'g-recaptcha-response' => 'mocked',
+            ''
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Envoy   avec succ  s !',
+            ]);
     }
 }
