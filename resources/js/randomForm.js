@@ -14,7 +14,7 @@ import Papa from 'papaparse';
 import Lang from './lang.js';
 Lang.setLocale(window.global.lang);
 
-import Select2 from './components/select2.vue';
+import Multiselect from 'vue-multiselect';
 
 import VueAjax from './ajaxVue.js';
 
@@ -89,7 +89,7 @@ window.app = new Vue({
         };
       },
       components: {
-        select2: Select2
+        Multiselect
       },
       computed: {
         participantNames: function() {
