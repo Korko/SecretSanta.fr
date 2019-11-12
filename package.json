@@ -18,10 +18,10 @@
     "laravel-elixir": "^5.0.0",
     "laravel-elixir-vueify": "^1.0.6",
     "moment": "^2.17.1",
-    "multiple-select": "^1.2.0",
     "papaparse": "^4.2.0",
     "vue": "^2.5.2",
     "vue-autosize": "^1.0.2",
+    "vue-multiselect": "^2.1.6",
     "vueify": "^9.4.0",
     "vueify-insert-css": "^1.0.0"
   },

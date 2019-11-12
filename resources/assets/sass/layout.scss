@@ -6,12 +6,6 @@ $icon-font-path: "/assets/fonts/bootstrap/";
 $fa-font-path: "/assets/fonts";
 @import "font-awesome";
 
-@import "languages";
-
-.lang-xs { background-image: url('/assets/images/languages.png') !important; }
-.lang-sm { background-image: url('/assets/images/languages.png') !important; }
-.lang-lg { background-image: url('/assets/images/languages.png') !important; }
-
 /*  
 Sticky Footer Solution
 by Steve Hatcher 
@@ -303,10 +297,7 @@ footer .row {
         float: none !important;
         width: 100%;
         text-align: center;
-        margin-left: -16px;
-    }
-    html:lang(en) .navbar-nav {
-        margin-left: 13px;
+        margin-left: -73px;
     }
     .navbar-nav>li {
         display: inline-block;

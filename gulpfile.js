@@ -38,7 +38,7 @@ elixir(function(mix) {
             './node_modules/bootstrap-sass/assets/stylesheets/',
             './node_modules/font-awesome/scss/',
             './node_modules/alertify.js/src/sass/',
-            './node_modules/multiple-select/',
+            './node_modules/vue-multiselect/dist/',
             './node_modules/jquery-ui-browserify/themes/base/',
             './resources/assets/vendor/bootstrap-languages/'
         ]
@@ -57,9 +57,7 @@ elixir(function(mix) {
     ], 'public/assets/dearSanta.css', sassOptions);
 
     mix.copy('resources/assets/img', 'public/assets/images');
-    mix.copy('resources/assets/vendor/bootstrap-languages/languages.png', 'public/assets/images');
     mix.copy('node_modules/bootstrap-sass/assets/fonts', 'public/assets/fonts');
     mix.copy('node_modules/font-awesome/fonts', 'public/assets/fonts');
-    mix.copy('node_modules/multiple-select/multiple-select.png', 'public/assets');
     mix.copy('node_modules/jquery-ui-browserify/themes/base/images', 'public/assets/images');
 });

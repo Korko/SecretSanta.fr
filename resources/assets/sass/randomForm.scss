@@ -2,7 +2,8 @@ $footer-height: 120px;
 @import "layout";
 
 @import "alertify";
-@import "multiple-select";
+
+@import "vue-multiselect.min";
 
 @import "jquery.ui.core";
 @import "jquery.ui.theme";
