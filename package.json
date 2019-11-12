@@ -21,7 +21,7 @@
     "multiple-select": "^1.2.0",
     "papaparse": "^4.2.0",
     "vue": "^2.5.2",
-    "vue-autosize": "korko/vue-autosize#master",
+    "vue-autosize": "^1.0.2",
     "vueify": "^9.4.0",
     "vueify-insert-css": "^1.0.0"
   },
