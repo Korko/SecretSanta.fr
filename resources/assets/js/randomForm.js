@@ -18,6 +18,8 @@ var Papa = require('papaparse');
 var Lang = require('./lang.js');
 Lang.setLocale(window.global.lang);
 
+import Multiselect from 'vue-multiselect';
+
 var VueAjax = require('./ajaxVue.js');
 window.app = new VueAjax({
   el: '#form',
@@ -88,7 +90,7 @@ window.app = new VueAjax({
         };
       },
       components: {
-        select2: require('../vuejs/select2.vue')
+        Multiselect
       },
       computed: {
         participantNames: function() {
