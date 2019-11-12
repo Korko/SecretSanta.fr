@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Foundation\Http\Middleware\TransformsRequest;
+use App\Http\Middleware\TransformsRequest;
 
 class DecryptInput extends TransformsRequest
 {
@@ -18,12 +18,12 @@ class DecryptInput extends TransformsRequest
     }
 
     /**
-     * Clean the given key.
+     * Transform the given key.
      *
-     * @param  string  $key
+     * @param  string $key
      * @return mixed
      */
-    protected function cleanKey($key)
+    protected function transformKey($key)
     {
         return $this->decrypter->decrypt($key);
     }
