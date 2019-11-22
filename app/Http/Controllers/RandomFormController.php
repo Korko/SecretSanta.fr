@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Korko\SecretSanta\Draw;
 use Korko\SecretSanta\Exceptions\SolverException;
 use Korko\SecretSanta\Http\Requests\RandomFormRequest;
+use Korko\SecretSanta\Mail\OrganizerRecap;
 use Korko\SecretSanta\Mail\TargetDrawn;
 use Korko\SecretSanta\Participant;
 use Mail;
@@ -45,6 +46,11 @@ class RandomFormController extends Controller
         $participants = $this->getParticipants($request);
 
         $hat = Solver::one($participants, array_column($participants, 'exclusions'));
+
+        if (!empty($participants[0]['email'])) {
+            Mail::to($participants[0]['email'], $participants[0]['name'])
+                ->send(new OrganizerRecap($participants));
+        }
 
         $this->sendMessages($request, $participants, $hat);
     }
