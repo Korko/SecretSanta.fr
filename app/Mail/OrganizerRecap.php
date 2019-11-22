@@ -30,7 +30,7 @@ class OrganizerRecap extends Mailable
      */
     public function build()
     {
-        $csv = $this->formatCsv(array_map(function($participant) {
+        $csv = $this->formatCsv(array_map(function ($participant) {
             return [
                 $participant['name'],
                 $participant['email']
@@ -41,7 +41,7 @@ class OrganizerRecap extends Mailable
                     ->text('emails.organizer_recap_plain')
                     ->attachData($csv, 'secretsanta.csv', [
                         'mime' => 'text/csv',
-                    ]);;
+                    ]);
     }
 
     protected function formatCsv($data, $delimiter = ",", $enclosure = '"', $escape_char = "\\")
