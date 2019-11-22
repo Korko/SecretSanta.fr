@@ -9,6 +9,7 @@ use Metrics;
 use App\Draw;
 use App\Participant;
 use App\Mail\TargetDrawn;
+use App\Mail\OrganizerRecap;
 use Illuminate\Http\Request;
 use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
@@ -46,6 +47,11 @@ class RandomFormController extends Controller
         $participants = $this->getParticipants($request);
 
         $hat = Solver::one($participants, array_column($participants, 'exclusions'));
+
+        if (!empty($participants[0]['email'])) {
+            Mail::to($participants[0]['email'], $participants[0]['name'])
+                ->send(new OrganizerRecap($participants));
+        }
 
         $this->sendMessages($request, $participants, $hat);
     }
