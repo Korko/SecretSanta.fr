@@ -1,4 +1,10 @@
-{{ $content }}
+Ceci est un message automatique, merci de ne pas y répondre.
 
-{!! nl2br(htmlentities( trans('form.mail.post') )) !!}
+---
 
+Bonjour,
+
+Voici un message de la part de votre cible :
+> {{ implode("\n> ", explode("\n", $content)) }}
+
+{{ config('app.name') }} - {{ config('app.url') }}
