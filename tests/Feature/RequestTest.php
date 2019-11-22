@@ -88,13 +88,18 @@ class RequestTest extends RequestCase
             ->andReturn(true);
 
         Mail::shouldReceive('to')
-            ->once()
+            ->times(2)
             ->with('test@test.com', 'toto')
             ->andReturn(Mockery::self());
 
         Mail::shouldReceive('to')
             ->once()
             ->with('test2@test.com', 'tutu')
+            ->andReturn(Mockery::self());
+
+        Mail::shouldReceive('send')
+            ->once()
+            ->with(\Mockery::type(\Korko\SecretSanta\Mail\OrganizerRecap::class))
             ->andReturn(Mockery::self());
 
         Mail::shouldReceive('send')
@@ -223,7 +228,7 @@ class RequestTest extends RequestCase
             ->andReturn(true);
 
         Mail::shouldReceive('to')
-            ->once()
+            ->times(2)
             ->with('test@test.com', 'toto')
             ->andReturn(Mockery::self());
 
@@ -235,6 +240,11 @@ class RequestTest extends RequestCase
         Mail::shouldReceive('to')
             ->once()
             ->with('test3@test.com', 'tutu')
+            ->andReturn(Mockery::self());
+
+        Mail::shouldReceive('send')
+            ->once()
+            ->with(\Mockery::type(\Korko\SecretSanta\Mail\OrganizerRecap::class))
             ->andReturn(Mockery::self());
 
         Mail::shouldReceive('send')
