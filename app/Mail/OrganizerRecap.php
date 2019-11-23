@@ -37,7 +37,8 @@ class OrganizerRecap extends Mailable
             ];
         }, $this->participants));
 
-        return $this->view('emails.organizer_recap')
+        return $this->subject("Récapitulatif Organisateur")
+                    ->view('emails.organizer_recap')
                     ->text('emails.organizer_recap_plain')
                     ->attachData($csv, 'secretsanta.csv', [
                         'mime' => 'text/csv',
