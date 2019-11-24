@@ -11,7 +11,7 @@ use App\Draw;
 use App\DearSanta;
 use App\Participant;
 use App\Mail\TargetDrawn;
-use App\Mail\Organizer as OrganizerEmail;
+use App\Mail\OrganizerRecap;
 use Facades\App\Services\SmsTools as SmsTools;
 
 class DrawHandler
@@ -54,7 +54,7 @@ class DrawHandler
         $panelLink = route('organizerPanel', ['draw' => $organizer->draw_id]).'#'.base64_encode($organizer->getEncryptionKey());
 
         Mail::to([['email' => $organizer->email_address, 'name' => $organizer->name]])
-            ->send(new OrganizerEmail($organizer->draw, $panelLink));
+            ->send(new OrganizerRecap($organizer->draw, $panelLink));
     }
 
     public function informParticipant(Draw $draw, Participant $participant, array $superSanta)

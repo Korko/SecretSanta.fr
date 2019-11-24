@@ -60,7 +60,7 @@ class RequestOrganizerTest extends RequestCase
 
         // So fetch it from the mail
         $link = null;
-        Mail::assertSent(\App\Mail\Organizer::class, function ($mail) use (&$link) {
+        Mail::assertSent(\App\Mail\OrganizerRecap::class, function ($mail) use (&$link) {
             $link = $mail->panelLink;
 
             return true;
@@ -75,7 +75,7 @@ class RequestOrganizerTest extends RequestCase
         $this->assertEquals(200, $response->status(), $response->__toString());
 
         // Check data stored are decryptable
-        $pathTheorical = parse_url(route('organizerPanel', ['santa' => '%d']), PHP_URL_PATH);
+        $pathTheorical = parse_url(route('organizerPanel', ['draw' => '%d']), PHP_URL_PATH);
         $data = sscanf($path, $pathTheorical);
         $draw = Draw::find($data[0]);
 
@@ -91,7 +91,7 @@ class RequestOrganizerTest extends RequestCase
             'g-recaptcha-response' => 'mocked',
             ''
         ]);
-
+dump($response);
         $response
             ->assertStatus(200)
             ->assertJson([
