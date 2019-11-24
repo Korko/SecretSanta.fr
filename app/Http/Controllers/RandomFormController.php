@@ -119,7 +119,7 @@ class RandomFormController extends Controller
         $key = openssl_random_pseudo_bytes(32);
         $participant = $this->addParticipant($santa, $key, $expirationDate);
 
-        return route('dearsanta', ['santa' => Hashids::encode($participant->id)]).'#'.bin2hex($key);
+        return route('dearsanta', ['participant' => Hashids::encode($participant->id)]).'#'.bin2hex($key);
     }
 
     private function getDraw($expirationDate)
