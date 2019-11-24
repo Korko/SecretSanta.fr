@@ -19,7 +19,7 @@
         "league/statsd": "1.5.*",
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
         "spatie/laravel-blade-javascript": "^2.0",
-        "vinkla/hashids": "^6.0",
+        "vinkla/hashids": "^7.0",
         "laravel/tinker": "^1.0"
     },
     "require-dev": {
