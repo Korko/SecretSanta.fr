@@ -4,19 +4,17 @@
 
 <tr>
         <td class="h2" style="font-size:35px; line-height:46px; text-align:center; font-style:italic; padding-bottom:15px;">
-                Message de votre cible
+                Message de la personne à qui vous devez faire un cadeau
         </td>
 </tr>
 <tr>
         <td style="text-align:center; font-family: monospace; font-style:italic; padding-bottom:15px;">
 
-                <p>Ceci est un message automatique, merci de ne pas y répondre.</p>
-                <hr style="padding:0 10px !important" />
+                <p style="border:1px solid #000000;background-color:#dddddd;">Ceci est un message automatique, merci de ne pas y répondre.</p>
 
-                <p style="padding-bottom:10px !important">Bonjour,</p>
+                <blockquote>{!! nl2br(htmlentities( $content )) !!}</blockquote>
 
-                <p>Voici un message de la part de votre cible :</p>
-                <blockquote style="border:1px solid #000000;background-color:#dddddd;">{!! nl2br(htmlentities( $content )) !!}</blockquote>
+                <hr />
 
                 <p><a href="{{ config('app.url') }}">{{ config('app.name') }}</a></p>
 
