@@ -1,3 +1,9 @@
+Ceci est un message automatique, merci de ne pas y répondre.
+
+---
+
 {{ $content }}
 
-{!! trans('form.mail.post') !!}
+---
+
+{{ config('app.name') }} - {{ config('app.url') }}

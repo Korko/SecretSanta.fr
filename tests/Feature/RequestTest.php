@@ -155,7 +155,7 @@ class RequestTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Mail::assertSent(OrganizerEmail::class, function ($mail) {
+        Mail::assertSent(OrganizerRecap::class, function ($mail) {
             return $mail->hasTo('test@test.com', 'toto');
         });
 
@@ -335,7 +335,7 @@ class RequestTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Mail::assertSent(OrganizerEmail::class, function ($mail) {
+        Mail::assertSent(OrganizerRecap::class, function ($mail) {
             return $mail->hasTo('test@test.com', 'toto');
         });
 

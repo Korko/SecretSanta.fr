@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Secret Santa'),
+    'name' => env('APP_NAME', 'Laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,6 +55,8 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL', null),
+
+    'email' => env('APP_EMAIL', 'webmaster@localhost'),
 
     /*
     |--------------------------------------------------------------------------
