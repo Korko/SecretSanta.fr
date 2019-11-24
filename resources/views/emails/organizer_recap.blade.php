@@ -11,9 +11,9 @@
 	<td style="text-align:center; font-family: monospace; font-style:italic; padding-bottom:15px;">
 		<p style="padding-bottom:10px !important">Bonjour {{ $participants[0]['name'] }},</p>
 
-		<p style="padding-bottom:10px !important">Merci d'avoir organisé un SecretSanta en utilisant <a href="{{ config('app.url') }}">{{ config('app.name') }}</a>. Nous espérons que vous avez apprécié le site, en cas de soucis, vous pouvez contacter le développeur à l'adresse suivante : <a href="mailto:{{ config('app.email') }}">{{ config('app.email') }}</a>.</p>
+		<p style="padding-bottom:10px !important">Merci d'avoir organisé un SecretSanta en utilisant <a href="{{ config('app.url') }}">{{ config('app.name') }}</a>.</p>
 
-		<p style="padding-bottom:10px !important">Vous trouverez en pièce jointe un récapitulatif des participants que vous avez défini sur le site. Vous pourrez le réutiliser lors de votre prochain SecretSanta pour accélérer la rentrée des informations.</p>
+		<p style="padding-bottom:10px !important">Vous trouverez en pièce jointe un récapitulatif des participants que vous avez défini sur le site. Vous pourrez le réutiliser lors de votre prochain SecretSanta pour accélérer la rentrée des informations. En cas de problème durant votre tirage, vous pouvez aussi vérifier si il y a eu une erreur dans les données entrées.</p>
 
 		<p style="padding-bottom:10px !important">Amusez-vous bien !</p>
 
