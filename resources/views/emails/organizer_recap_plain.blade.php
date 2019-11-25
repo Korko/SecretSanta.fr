@@ -1,4 +1,4 @@
-Bonjour {{ $participants[0]['name'] }},
+Bonjour {{ $draw->organizer->name }},
 
 Merci d'avoir organisé un SecretSanta en utilisant {{ config('app.name') }}.
 
