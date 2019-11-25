@@ -47,6 +47,6 @@ class Draw extends Model
 
     public function getOrganizerAttribute()
     {
-        return $this->participants()->first();
+        return $this->participants->first();
     }
 }

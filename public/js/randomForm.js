@@ -598,7 +598,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   var hadGlobal = 'Modernizr' in window;
   var oldGlobal = window.Modernizr;
   /*!
-  * modernizr v3.6.0
+  * modernizr v3.8.0
   * Build https://modernizr.com/download?-filesystem-inputtypes-setclasses-dontmin
   *
   * Copyright (c)
@@ -609,6 +609,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   *  Patrick Kettner
   *  Stu Cox
   *  Richard Herrera
+  *  Veeck
   * MIT License
   */
 
@@ -625,7 +626,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   (function (window, document, undefined) {
     var tests = [];
     /**
-     *
      * ModernizrProto is the constructor for Modernizr
      *
      * @class
@@ -634,7 +634,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     var ModernizrProto = {
       // The current version, dummy
-      _version: '3.6.0',
+      _version: '3.8.0',
       // Any settings that don't work as separate modules
       // can go in here as configuration.
       _config: {
@@ -687,7 +687,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @function is
      * @param {*} obj - A thing we want to check the type of
      * @param {string} type - A string to compare the typeof against
-     * @returns {boolean}
+     * @returns {boolean} true if the typeof the first parameter is exactly the specified type, false otherwise
      */
 
     function is(obj, type) {
@@ -699,6 +699,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Run through all tests and detect their support in the current UA.
      *
      * @access private
+     * @returns {void}
      */
 
     function testRunner() {
@@ -748,8 +749,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             if (featureNameSplit.length === 1) {
               Modernizr[featureNameSplit[0]] = result;
             } else {
-              // cast to a Boolean, if not one already
-              if (Modernizr[featureNameSplit[0]] && !(Modernizr[featureNameSplit[0]] instanceof Boolean)) {
+              // cast to a Boolean, if not one already or if it doesnt exist yet (like inputtypes)
+              if (!Modernizr[featureNameSplit[0]] || Modernizr[featureNameSplit[0]] && !(Modernizr[featureNameSplit[0]] instanceof Boolean)) {
                 Modernizr[featureNameSplit[0]] = new Boolean(Modernizr[featureNameSplit[0]]);
               }
 
@@ -806,7 +807,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (Modernizr._config.enableClasses) {
         // Add the new classes
-        className += ' ' + classPrefix + classes.join(' ' + classPrefix);
+        if (classes.length > 0) {
+          className += ' ' + classPrefix + classes.join(' ' + classPrefix);
+        }
 
         if (isSVG) {
           docElement.className.baseVal = className;
@@ -841,7 +844,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @function contains
      * @param {string} str - The string we want to check for substrings
      * @param {string} substr - The substring we want to search the first string for
-     * @returns {boolean}
+     * @returns {boolean} true if and only if the first string 'str' contains the second string 'substr'
      */
 
     function contains(str, substr) {
@@ -926,10 +929,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @access private
      * @function injectElementWithStyles
      * @param {string} rule - String representing a css rule
-     * @param {function} callback - A function that is used to test the injected element
+     * @param {Function} callback - A function that is used to test the injected element
      * @param {number} [nodes] - An integer representing the number of additional nodes you want injected
      * @param {string[]} [testnames] - An array of strings that are used as ids for the additional nodes
-     * @returns {boolean}
+     * @returns {boolean} the result of the specified callback test
      */
 
     function injectElementWithStyles(rule, callback, nodes, testnames) {
@@ -1016,9 +1019,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      *
      * @access private
      * @function computedStyle
-     * @param {HTMLElement|SVGElement} - The element we want to find the computed styles of
-     * @param {string|null} [pseudoSelector]- An optional pseudo element selector (e.g. :before), of null if none
-     * @returns {CSSStyleDeclaration}
+     * @param {HTMLElement|SVGElement} elem - The element we want to find the computed styles of
+     * @param {string|null} [pseudo] - An optional pseudo element selector (e.g. :before), of null if none
+     * @param {string} prop - A CSS property
+     * @returns {CSSStyleDeclaration} the value of the specified CSS property
      */
 
     function computedStyle(elem, pseudo, prop) {
@@ -1060,7 +1064,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     // Returns `undefined` if native detection not available
 
     function nativeTestProps(props, value) {
-      var i = props.length; // Start with the JS API: http://www.w3.org/TR/css3-conditional/#the-css-interface
+      var i = props.length; // Start with the JS API: https://www.w3.org/TR/css3-conditional/#the-css-interface
 
       if ('CSS' in window && 'supports' in window.CSS) {
         // Try every prefixed variant of the property
@@ -1082,7 +1086,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           conditionText = conditionText.join(' or ');
           return injectElementWithStyles('@supports (' + conditionText + ') { #modernizr { position: absolute; } }', function (node) {
-            return computedStyle(node, null, 'position') == 'absolute';
+            return computedStyle(node, null, 'position') === 'absolute';
           });
         }
 
@@ -1129,11 +1133,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 
       var afterInit, i, propsLength, prop, before; // If we don't have a style element, that means we're running async or after
-      // the core tests, so we'll need to create our own elements to use
-      // inside of an SVG element, in certain browsers, the `style` element is only
+      // the core tests, so we'll need to create our own elements to use.
+      // Inside of an SVG element, in certain browsers, the `style` element is only
       // defined for valid tags. Therefore, if `modernizr` does not have one, we
       // fall back to a less used element and hope for the best.
-      // for strict XHTML browsers the hardly used samp element is used
+      // For strict XHTML browsers the hardly used samp element is used.
 
       var elems = ['modernizr', 'tspan', 'samp'];
 
@@ -1176,15 +1180,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             // CSS.supports()
 
 
-            if (mStyle.style[prop] != before) {
+            if (mStyle.style[prop] !== before) {
               cleanElems();
-              return prefixed == 'pfx' ? prop : true;
+              return prefixed === 'pfx' ? prop : true;
             }
           } // Otherwise just return true, or the property name if this is a
           // `prefixed()` call
           else {
               cleanElems();
-              return prefixed == 'pfx' ? prop : true;
+              return prefixed === 'pfx' ? prop : true;
             }
         }
       }
@@ -1197,7 +1201,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * List of JavaScript DOM values used for tests
      *
-     * @memberof Modernizr
+     * @memberOf Modernizr
      * @name Modernizr._domPrefixes
      * @optionName Modernizr._domPrefixes
      * @optionProp domPrefixes
@@ -1219,9 +1223,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      *
      * @access private
      * @function fnBind
-     * @param {function} fn - a function you want to change `this` reference to
-     * @param {object} that - the `this` you want to call the function with
-     * @returns {function} The wrapped version of the supplied function
+     * @param {Function} fn - a function you want to change `this` reference to
+     * @param {Object} that - the `this` you want to call the function with
+     * @returns {Function} The wrapped version of the supplied function
      */
 
     function fnBind(fn, that) {
@@ -1237,9 +1241,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      *
      * @access private
      * @function testDOMProps
-     * @param {array.<string>} props - An array of properties to test for
-     * @param {object} obj - An object or Element you want to use to test the parameters again
-     * @param {boolean|object} elem - An Element to bind the property lookup again. Use `false` to prevent the check
+     * @param {Array<string>} props - An array of properties to test for
+     * @param {Object} obj - An object or Element you want to use to test the parameters again
+     * @param {boolean|Object} elem - An Element to bind the property lookup again. Use `false` to prevent the check
      * @returns {false|*} returns false if the prop is unsupported, otherwise the value that is supported
      */
 
@@ -1256,7 +1260,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           item = obj[props[i]]; // let's bind a function
 
           if (is(item, 'function')) {
-            // bind to obj unless overriden
+            // bind to obj unless overridden
             return fnBind(item, elem || obj);
           } // return the unbound function or obj or value
 
@@ -1278,7 +1282,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @access private
      * @function testPropsAll
      * @param {string} prop - A string of the property to test for
-     * @param {string|object} [prefixed] - An object to check the prefixed properties on. Use a string to skip
+     * @param {string|Object} [prefixed] - An object to check the prefixed properties on. Use a string to skip
      * @param {HTMLElement|SVGElement} [elem] - An element used to test the property and value against
      * @param {string} [value] - A string of a css value
      * @param {boolean} [skipValueTest] - An boolean representing if you want to test if value sticks when set
@@ -1307,7 +1311,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * atRule returns a given CSS property at-rule (eg @keyframes), possibly in
      * some prefixed form, or false, in the case of an unsupported rule
      *
-     * @memberof Modernizr
+     * @memberOf Modernizr
      * @name Modernizr.atRule
      * @optionName Modernizr.atRule()
      * @optionProp atRule
@@ -1327,7 +1331,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      *    // keyframes === `false`
      *  }
      * ```
-     *
      */
 
     var atRule = function atRule(prop) {
@@ -1369,14 +1372,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * prefixed returns the prefixed or nonprefixed property name variant of your input
      *
-     * @memberof Modernizr
+     * @memberOf Modernizr
      * @name Modernizr.prefixed
      * @optionName Modernizr.prefixed()
      * @optionProp prefixed
      * @access public
      * @function prefixed
      * @param {string} prop - String name of the property to test for
-     * @param {object} [obj] - An object to test for the prefixed properties on
+     * @param {Object} [obj] - An object to test for the prefixed properties on
      * @param {HTMLElement} [elem] - An element used to test specific properties against
      * @returns {string|false} The string representing the (possibly prefixed) valid
      * version of the property, or `false` when it is unsupported.
@@ -1436,7 +1439,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return atRule(prop);
       }
 
-      if (prop.indexOf('-') != -1) {
+      if (prop.indexOf('-') !== -1) {
         // Convert kebab-case to camelCase
         prop = cssToDOM(prop);
       }
@@ -1454,8 +1457,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       "property": "filesystem",
       "caniuse": "filesystem",
       "notes": [{
-        "name": "W3 Draft",
-        "href": "http://dev.w3.org/2009/dap/file-system/file-dir-sys.html"
+        "name": "W3C Spec",
+        "href": "https://www.w3.org/TR/file-system-api/"
       }],
       "authors": ["Eric Bidelman (@ebidel)"],
       "tags": ["file"],
@@ -1525,17 +1528,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     //   containing each input type with its corresponding true/false value
     // Big thanks to @miketaylr for the html5 forms expertise. miketaylr.com/
 
-    var inputtypes = 'search tel url email datetime date month week time datetime-local number range color'.split(' ');
-    var inputs = {};
-
-    Modernizr.inputtypes = function (props) {
-      var len = props.length;
+    (function () {
+      var props = ['search', 'tel', 'url', 'email', 'datetime', 'date', 'month', 'week', 'time', 'datetime-local', 'number', 'range', 'color'];
       var smile = '1)';
       var inputElemType;
       var defaultView;
       var bool;
 
-      for (var i = 0; i < len; i++) {
+      for (var i = 0; i < props.length; i++) {
         inputElem.setAttribute('type', inputElemType = props[i]);
         bool = inputElem.type !== 'text' && 'style' in inputElem; // We first check to see if the type we give it sticks..
         // If the type does, we feed it a textual value, which shouldn't be valid.
@@ -1561,16 +1561,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             // Real url and email support comes with prebaked validation.
             bool = inputElem.checkValidity && inputElem.checkValidity() === false;
           } else {
-            // If the upgraded input compontent rejects the :) text, we got a winner
-            bool = inputElem.value != smile;
+            // If the upgraded input component rejects the :) text, we got a winner
+            bool = inputElem.value !== smile;
           }
         }
 
-        inputs[props[i]] = !!bool;
+        Modernizr.addTest('inputtypes.' + inputElemType, !!bool);
       }
-
-      return inputs;
-    }(inputtypes); // Run each test
+    })(); // Run each test
 
 
     testRunner(); // Remove the "no-js" class if it exists

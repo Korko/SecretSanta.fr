@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Draw;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -13,16 +14,16 @@ class OrganizerRecap extends Mailable
 
     public $panelLink;
 
-    public $participants;
+    public $draw;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($participants, $panelLink)
+    public function __construct(Draw $draw, $panelLink)
     {
-        $this->participants = $participants;
+        $this->draw = $draw;
         $this->panelLink = $panelLink;
     }
 
@@ -33,12 +34,12 @@ class OrganizerRecap extends Mailable
      */
     public function build()
     {
-        $csv = $this->formatCsv(array_map(function ($participant) {
+        $csv = $this->formatCsv($this->draw->participants->map(function ($participant) {
             return [
-                $participant['name'],
-                $participant['email']
+                $participant->name,
+                $participant->email_address
             ];
-        }, $this->participants));
+        }));
 
         return $this->subject(__('emails.organizer.title', ['draw' => $this->draw->id]))
                     ->view('emails.organizer_recap')
@@ -49,7 +50,7 @@ class OrganizerRecap extends Mailable
 
     }
 
-    protected function formatCsv($data, $delimiter = ",", $enclosure = '"', $escape_char = "\\")
+    protected function formatCsv(iterable $data, $delimiter = ",", $enclosure = '"', $escape_char = "\\")
     {
         $f = fopen('php://memory', 'r+');
         foreach ($data as $fields) {

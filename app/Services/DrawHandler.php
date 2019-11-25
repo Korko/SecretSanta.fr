@@ -26,35 +26,39 @@ class DrawHandler
         $draw->dear_santa = $dearSanta;
         $draw->save();
 
+        // Need to cheat the relationship to force Eloquent not to request it again
+        // That way we keep the encryption key in the Participant model too
+        $draw->participants = collect();
+
         foreach ($hat as $santaIdx => $targetIdx) {
             $santa = ['id' => $santaIdx] + $participants[$santaIdx];
             $target = ['id' => $targetIdx] + $participants[$targetIdx];
 
             $participant = new Participant();
             $participant->setEncryptionKey($draw->getEncryptionKey()); // Have to be very first attribute set
-            $participant->draw_id = $draw->id;
+            $participant->draw()->associate($draw);
             $participant->name = $santa['name'];
             $participant->email_address = Arr::get($santa, 'email');
             $participant->phone_number = Arr::get($santa, 'phone');
             $participant->target = $target;
             $participant->save();
 
-            $superSanta = $participants[array_search($santa['id'], $hat)];
+            $draw->participants->add($participant);
 
-            if ($santaIdx === 0) {
-                $this->informOrganizer($draw, $participant);
-            }
+            $superSanta = $participants[array_search($santa['id'], $hat)];
 
             $this->informParticipant($draw, $participant, $superSanta);
         }
+
+        $this->informOrganizer($draw);
     }
 
-    public function informOrganizer(Draw $draw, Participant $organizer)
+    public function informOrganizer(Draw $draw)
     {
-        $panelLink = route('organizerPanel', ['draw' => $organizer->draw_id]).'#'.base64_encode($organizer->getEncryptionKey());
+        $panelLink = route('organizerPanel', ['draw' => $draw->id]).'#'.base64_encode($draw->getEncryptionKey());
 
-        Mail::to([['email' => $organizer->email_address, 'name' => $organizer->name]])
-            ->send(new OrganizerRecap($organizer->draw, $panelLink));
+        Mail::to([['email' => $draw->organizer->email_address, 'name' => $draw->organizer->name]])
+            ->send(new OrganizerRecap($draw, $panelLink));
     }
 
     public function informParticipant(Draw $draw, Participant $participant, array $superSanta)

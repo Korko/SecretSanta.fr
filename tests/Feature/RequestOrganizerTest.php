@@ -91,7 +91,7 @@ class RequestOrganizerTest extends RequestCase
             'g-recaptcha-response' => 'mocked',
             ''
         ]);
-dump($response);
+
         $response
             ->assertStatus(200)
             ->assertJson([

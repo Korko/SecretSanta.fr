@@ -2,7 +2,7 @@ Ceci est un message automatique, merci de ne pas y répondre.
 
 ---
 
-{{ str_replace(['{SANTA}', '{TARGET}'], [$santa['name'], $target['name']], $content) }}
+{{ $content }}
 
 ---
 
