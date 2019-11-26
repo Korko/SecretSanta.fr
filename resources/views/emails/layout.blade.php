@@ -92,11 +92,11 @@
 <body class="body" style="padding:0 !important; margin:0 !important; display:block !important; -webkit-text-size-adjust:none; background:#ffffff">
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: #ffffff;" align="center">
 		<tr>
-			<td align="center" valign="top" style="background: rgba(33,45,57,.8) url({{ $message->embed(resource_path('img/email/bg1.png')) }} ); background-repeat: repeat-x; background-position: 0 0;">
+			<td align="center" valign="top" style="background: rgba(33,45,57,.8) url({{ $message->embed(public_path('images/email/bg1.png')) }} ); background-repeat: repeat-x; background-position: 0 0;">
 				<table width="110" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="td" style="width:86px; min-width:86px; height:86px; min-height:86px; font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; background:#000;border-radius: 0 0 100% 100%;padding:12px;">
-							<img src="{{ $message->embed(resource_path('img/logo.png')) }}" width="86" height="86" border="0" alt="" />
+							<img src="{{ $message->embed(public_path('images/logo.png')) }}" width="86" height="86" border="0" alt="" />
 						</td>
 					</tr>
 				</table>
