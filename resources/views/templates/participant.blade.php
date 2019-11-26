@@ -19,7 +19,10 @@
             </div>
         </td>
         <td class="row border-right text-left participant-exclusions-wrapper">
-            <multiselect :name="'exclusions['+idx+'][]'" :options="participantNames" v-model="exclusions" track-by="value" label="text" placeholder="@lang('form.exclusions.placeholder')" :multiple="true"></multiselect>
+            <multiselect :options="participantNames" v-model="exclusions" track-by="value" label="text" placeholder="@lang('form.exclusions.placeholder')" :multiple="true"></multiselect>
+            <select style="display:none" :name="'exclusions['+idx+'][]'" multiple>
+                <option v-for="participantName in participantNames" :value="participantName.value" :selected="exclusions.find(a => (a.value === participantName.value))"></option>
+            </select>
         </td>
         <td class="row participant-remove-wrapper">
             <button type="button" class="btn btn-danger participant-remove" :disabled="participants.length <= 3" @click="$emit('delete')">
