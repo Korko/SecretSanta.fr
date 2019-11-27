@@ -20,7 +20,7 @@
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
         "spatie/laravel-blade-javascript": "^2.0",
         "vinkla/hashids": "^7.0",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^2.0"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
