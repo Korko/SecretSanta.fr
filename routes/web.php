@@ -19,7 +19,7 @@ Route::get('/dearsanta/{santa}', 'DearSantaController@view')->name('dearsanta');
 Route::post('/dearsanta/{santa}', 'DearSantaController@handle');
 
 Route::get('/org/{draw}', 'OrganizerController@view')->name('organizerPanel');
-Route::post('/org/{draw}', 'OrganizerController@handle');
+Route::post('/org/{draw}/{participant}/changeEmail', 'OrganizerController@changeEmail')->name('organizerPanel.changeEmail');
 
 Route::post('/event', 'EmailEventController@handle');
 

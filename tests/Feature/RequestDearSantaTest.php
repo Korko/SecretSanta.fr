@@ -4,22 +4,16 @@ namespace Tests\Feature;
 
 use Mail;
 use Hashids;
-use NoCaptcha;
 use App\DearSanta;
 
 class RequestDearSantaTest extends RequestCase
 {
-    use \Illuminate\Foundation\Testing\DatabaseMigrations;
-    use \Illuminate\Foundation\Testing\DatabaseTransactions;
-
     public function testDearsanta(): void
     {
         Mail::fake();
-        NoCaptcha::shouldReceive('verifyResponse')->andReturn(true);
-        NoCaptcha::makePartial(); // We don't want to mock the display
 
         // Participants can only select one person, all the others will be excluded
-        $participants = [
+        $participants = $this->formatParticipants([
             [
                 'name'   => 'toto',
                 'email'  => 'test@test.com',
@@ -35,13 +29,7 @@ class RequestDearSantaTest extends RequestCase
                 'email'  => 'test3@test.com',
                 'target' => 0,
             ],
-        ];
-
-        $participants = array_map(function ($id) use ($participants) {
-            return $participants[$id] + [
-                'exclusions' => array_values(array_map('strval', array_diff(array_keys($participants), [$id], [$participants[$id]['target']]))),
-            ];
-        }, array_keys($participants));
+        ]);
 
         // Initiate DearSanta
         $response = $this->ajaxPost('/', [

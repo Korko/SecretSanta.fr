@@ -4,21 +4,15 @@ namespace Tests\Feature;
 
 use Mail;
 use App\Draw;
-use NoCaptcha;
 
 class RequestOrganizerTest extends RequestCase
 {
-    use \Illuminate\Foundation\Testing\DatabaseMigrations;
-    use \Illuminate\Foundation\Testing\DatabaseTransactions;
-
-    public function testOrganizer(): void
+    public function testDraw(): Draw
     {
         Mail::fake();
-        NoCaptcha::shouldReceive('verifyResponse')->andReturn(true);
-        NoCaptcha::makePartial(); // We don't want to mock the display
 
         // Participants can only select one person, all the others will be excluded
-        $participants = [
+        $participants = $this->formatParticipants([
             [
                 'name'   => 'toto',
                 'email'  => 'test@test.com',
@@ -34,15 +28,8 @@ class RequestOrganizerTest extends RequestCase
                 'email'  => 'test3@test.com',
                 'target' => 0,
             ],
-        ];
+        ]);
 
-        $participants = array_map(function ($id) use ($participants) {
-            return $participants[$id] + [
-                'exclusions' => array_values(array_map('strval', array_diff(array_keys($participants), [$id], [$participants[$id]['target']]))),
-            ];
-        }, array_keys($participants));
-
-        // Initiate DearSanta
         $response = $this->ajaxPost('/', [
             'g-recaptcha-response' => 'mocked',
             'participants'         => $participants,
@@ -77,25 +64,50 @@ class RequestOrganizerTest extends RequestCase
         // Check data stored are decryptable
         $pathTheorical = parse_url(route('organizerPanel', ['draw' => '%d']), PHP_URL_PATH);
         $data = sscanf($path, $pathTheorical);
-        $draw = Draw::find($data[0]);
+        $draw = Draw::find($data[0])
+            ->setEncryptionKey($key);
 
-        foreach ($draw->participants as $participant) {
-            $participant->setEncryptionKey($key);
+        $this->assertNotEquals(0, $draw->participants->count());
+
+        foreach ($draw->participants as &$participant) {
+            $participant->shareEncryptionKey($draw);
 
             $this->assertContains($participant->name, array_column($participants, 'name'));
             $this->assertContains($participant->email_address, array_column($participants, 'email'));
         }
 
+        return $draw;
+    }
+
+    /**
+     * @depends testDraw
+     */
+    public function testOrganizerPanel(Draw $draw): void
+    {
+        Mail::fake();
+
+        $participant = $draw->participants->first();
+
         // Check data can be changed
+        $path = route('organizerPanel.changeEmail', [
+            'draw' => $draw->id,
+            'participant' => $participant
+        ]);
         $response = $this->ajaxPost($path, [
             'g-recaptcha-response' => 'mocked',
-            ''
+            'key' => base64_encode($draw->getEncryptionKey()),
+            'email' => 'test@test2.com'
         ]);
 
+        $before = $participant->email_address;
+        $after = $participant->fresh()->shareEncryptionKey($draw)->email_address;
+        $this->assertNotEquals($before, $after);
+        $this->assertEquals('test@test2.com', $after);
+/*
         $response
             ->assertStatus(200)
             ->assertJson([
-                'message' => 'Envoy   avec succ  s !',
-            ]);
+                'message' => 'Envoyé avec succès !',
+            ]);*/
     }
 }

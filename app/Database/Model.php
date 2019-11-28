@@ -4,7 +4,7 @@ namespace App\Database;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
-class Model extends BaseModel
+class Model extends BaseModel implements EncryptsAttributes
 {
-    use EncryptsAttributes;
+    use AttributesEncrypter;
 }
