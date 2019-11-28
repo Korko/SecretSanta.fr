@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use Mail;
-use Metrics;
 use App\Draw;
-use App\DearSanta;
-use Illuminate\Http\Request;
-use App\Http\Requests\DearSantaRequest;
-use App\Mail\DearSanta as DearSantaMail;
-use App\Services\SymmetricalEncrypter as Encrypter;
+use App\Participant;
+use App\Http\Requests\OrganizerChangeEmailRequest;
+use App\Http\Requests\OrganizerResendEmailRequest;
 
 class OrganizerController extends Controller
 {
@@ -24,36 +21,26 @@ class OrganizerController extends Controller
         ]);
     }
 
-    /*
-        public function handle(Draw $draw, DearSantaRequest $request)
-        {
-            $santa = $this->getSanta($dearSanta, $request);
+    public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
+    {
+        $key = base64_decode($request->input('key'));
 
-            Metrics::increment('dearsanta');
+        $participant->setEncryptionKey($key);
+        $participant->email_address = $request->input('email');
+        $participant->save();
 
-            $this->sendMail($santa, $request->input('title'), $request->input('content'));
+        $emailSent = true;//$this->resendEmail($draw, $participant);
+        $message = $emailSent ? trans('organizer.up_and_sent') : trans('organizer.up_but_not_sent');
 
-            $message = trans('message.sent');
+        return $request->ajax() ?
+            response()->json(['message' => $message]) :
+            redirect('/')->with('message', $message);
+    }
 
-            return $request->ajax() ?
-                ['message' => $message] :
-                redirect('/dearsanta/'.$dearSanta->id)->with('message', $message);
-        }
+    public function resendEmail(OrganizerResendEmailRequest $request, Draw $draw, Participant $participant)
+    {
+        $key = base64_decode($request->input('key'));
+        $participant->setEncryptionKey($key);
 
-        private function getSanta(DearSanta $dearSanta, Request $request)
-        {
-            $key = base64_decode($request->input('key'));
-
-            $encrypter = new Encrypter($key);
-
-            return [
-                'name'  => $encrypter->decrypt($dearSanta->santa_name, false),
-                'email' => $encrypter->decrypt($dearSanta->santa_email, false),
-            ];
-        }
-
-        protected function sendMail(array $santa, $title, $content)
-        {
-            Mail::to($santa['email'], $santa['name'])->send(new DearSantaMail($title, $content));
-        }*/
+    }
 }

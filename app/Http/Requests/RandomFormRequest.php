@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App;
-
 class RandomFormRequest extends Request
 {
     /**
@@ -23,12 +21,7 @@ class RandomFormRequest extends Request
      */
     public function rules()
     {
-        $rules = [];
-        if (! App::environment('local', 'dev')) {
-            $rules['g-recaptcha-response'] = 'required|captcha';
-        }
-
-        $rules += [
+        return parent::rules() + [
             'participants'                => 'required|array|min:3',
 
             'participants.*.name'         => 'required|distinct',
@@ -47,7 +40,5 @@ class RandomFormRequest extends Request
 
             'data-expiration'             => 'required|date|after:tomorrow|before:+1year',
         ];
-
-        return $rules;
     }
 }

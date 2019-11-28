@@ -35,7 +35,7 @@ class DrawHandler
             $target = ['id' => $targetIdx] + $participants[$targetIdx];
 
             $participant = new Participant();
-            $participant->setEncryptionKey($draw->getEncryptionKey()); // Have to be very first attribute set
+            $participant->shareEncryptionKey($draw); // Have to be very first attribute set
             $participant->draw()->associate($draw);
             $participant->name = $santa['name'];
             $participant->email_address = Arr::get($santa, 'email');

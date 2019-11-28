@@ -6,7 +6,6 @@ use Sms;
 use Mail;
 use Metrics;
 use App\Draw;
-use NoCaptcha;
 use Notification;
 use App\DearSanta;
 use App\Participant;
@@ -20,8 +19,6 @@ class RequestTest extends RequestCase
 
     protected function validateForm($parameters)
     {
-        NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
-
         return $this->ajaxPost('/', array_merge([
             'g-recaptcha-response' => 'mocked',
             'dearsanta'            => '0',

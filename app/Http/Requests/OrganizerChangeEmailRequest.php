@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class DearSantaRequest extends Request
+class OrganizerChangeEmailRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class DearSantaRequest extends Request
     public function rules()
     {
         return parent::rules() + [
-            'content'              => 'required|string',
+            'email'                => 'required|string',
             'key'                  => 'required|string',
         ];
     }
