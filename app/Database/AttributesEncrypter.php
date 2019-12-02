@@ -2,9 +2,7 @@
 
 namespace App\Database;
 
-use Config;
 use App\Services\SymmetricalEncrypter;
-use Illuminate\Contracts\Encryption\DecryptException;
 
 trait AttributesEncrypter
 {
@@ -13,10 +11,10 @@ trait AttributesEncrypter
 
     public function setAttribute($key, $value)
     {
-       parent::setAttribute($key, $value);
+        parent::setAttribute($key, $value);
 
-       // Don't use $value, parent setAttribute may have modified it
-       $this->attributes[$key] = $this->isEncryptable($key) ? $this->encrypt($this->attributes[$key]) : $this->attributes[$key];
+        // Don't use $value, parent setAttribute may have modified it
+        $this->attributes[$key] = $this->isEncryptable($key) ? $this->encrypt($this->attributes[$key]) : $this->attributes[$key];
     }
 
     public function getAttributeFromArray($key)

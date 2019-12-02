@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Arr;
 use Metrics;
-use App\Draw;
-use App\Participant;
 use Illuminate\Http\Request;
 use App\Services\DrawHandler;
 use App\Exceptions\SolverException;

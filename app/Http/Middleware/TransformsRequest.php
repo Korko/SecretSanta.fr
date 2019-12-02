@@ -2,8 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Illuminate\Foundation\Http\Middleware\TransformsRequest as Middleware;
 
 class TransformsRequest extends Middleware

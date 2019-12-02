@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Mail;
 use App\Draw;
 use App\Participant;
 use App\Http\Requests\OrganizerChangeEmailRequest;
@@ -29,7 +28,7 @@ class OrganizerController extends Controller
         $participant->email_address = $request->input('email');
         $participant->save();
 
-        $emailSent = true;//$this->resendEmail($draw, $participant);
+        $emailSent = true; //$this->resendEmail($draw, $participant);
         $message = $emailSent ? trans('organizer.up_and_sent') : trans('organizer.up_but_not_sent');
 
         return $request->ajax() ?
@@ -41,6 +40,5 @@ class OrganizerController extends Controller
     {
         $key = base64_decode($request->input('key'));
         $participant->setEncryptionKey($key);
-
     }
 }

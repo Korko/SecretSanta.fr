@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Database\Model;
-use App\Services\SymmetricalEncrypter;
 
 class DearSanta extends Model
 {

@@ -91,23 +91,23 @@ class RequestOrganizerTest extends RequestCase
         // Check data can be changed
         $path = route('organizerPanel.changeEmail', [
             'draw' => $draw->id,
-            'participant' => $participant
+            'participant' => $participant,
         ]);
         $response = $this->ajaxPost($path, [
             'g-recaptcha-response' => 'mocked',
             'key' => base64_encode($draw->getEncryptionKey()),
-            'email' => 'test@test2.com'
+            'email' => 'test@test2.com',
         ]);
 
         $before = $participant->email_address;
         $after = $participant->fresh()->shareEncryptionKey($draw)->email_address;
         $this->assertNotEquals($before, $after);
         $this->assertEquals('test@test2.com', $after);
-/*
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'message' => 'Envoyé avec succès !',
-            ]);*/
+        /*
+                $response
+                    ->assertStatus(200)
+                    ->assertJson([
+                        'message' => 'Envoyé avec succès !',
+                    ]);*/
     }
 }

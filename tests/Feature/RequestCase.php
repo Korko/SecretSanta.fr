@@ -38,23 +38,23 @@ class RequestCase extends TestCase
     }
 
     /**
-        $participants = [
-            [
-                'name'   => 'toto',
-                'email'  => 'test@test.com',
-                'target' => 1,
-            ],
-            [
-                'name'   => 'tata',
-                'email'  => 'test2@test.com',
-                'target' => 2,
-            ],
-            [
-                'name'   => 'tutu',
-                'email'  => 'test3@test.com',
-                'target' => 0,
-            ],
-        ];
+     * $participants = [
+     * [
+     * 'name'   => 'toto',
+     * 'email'  => 'test@test.com',
+     * 'target' => 1,
+     * ],
+     * [
+     * 'name'   => 'tata',
+     * 'email'  => 'test2@test.com',
+     * 'target' => 2,
+     * ],
+     * [
+     * 'name'   => 'tutu',
+     * 'email'  => 'test3@test.com',
+     * 'target' => 0,
+     * ],
+     * ];
      */
     public function formatParticipants($participants)
     {

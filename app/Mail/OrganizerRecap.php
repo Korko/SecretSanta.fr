@@ -6,7 +6,6 @@ use App\Draw;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class OrganizerRecap extends Mailable
 {
@@ -37,7 +36,7 @@ class OrganizerRecap extends Mailable
         $csv = $this->formatCsv($this->draw->participants->map(function ($participant) {
             return [
                 $participant->name,
-                $participant->email_address
+                $participant->email_address,
             ];
         }));
 
@@ -47,10 +46,9 @@ class OrganizerRecap extends Mailable
                     ->attachData($csv, 'secretsanta.csv', [
                         'mime' => 'text/csv',
                     ]);
-
     }
 
-    protected function formatCsv(iterable $data, $delimiter = ",", $enclosure = '"', $escape_char = "\\")
+    protected function formatCsv(iterable $data, $delimiter = ',', $enclosure = '"', $escape_char = '\\')
     {
         $f = fopen('php://memory', 'r+');
         foreach ($data as $fields) {
@@ -60,6 +58,7 @@ class OrganizerRecap extends Mailable
         }
         rewind($f);
         $csv_line = stream_get_contents($f);
+
         return rtrim($csv_line);
     }
 }
