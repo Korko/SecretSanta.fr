@@ -54,7 +54,7 @@ class RequestCase extends TestCase
      * 'email'  => 'test3@test.com',
      * 'target' => 0,
      * ],
-     * ];
+     * ];.
      */
     public function formatParticipants($participants)
     {
