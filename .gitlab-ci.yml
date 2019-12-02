@@ -33,7 +33,7 @@ variables:
 
 phpcs:
   script:
-  - composer check-style
+  - php composer.phar check-style
   allow_failure: true
 
 # Run our tests
