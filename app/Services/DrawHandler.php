@@ -5,8 +5,8 @@ namespace App\Services;
 use Arr;
 use Sms;
 use Mail;
-use Metrics;
 use Hashids;
+use Metrics;
 use App\Draw;
 use App\DearSanta;
 use App\Participant;
@@ -111,4 +111,3 @@ class DrawHandler
         Sms::message($participant->phone_number, $contentSms);
     }
 }
-

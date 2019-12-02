@@ -2,9 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use App\Http\Middleware\TransformsRequest;
-
 class DecryptInput extends TransformsRequest
 {
     protected $decrypter;
@@ -13,7 +10,7 @@ class DecryptInput extends TransformsRequest
     {
         parent::__construct();
 
-        $key = md5(csrf_token() . config('app.key'));
+        $key = md5(csrf_token().config('app.key'));
         $this->decrypter = new Encrypter($key);
     }
 

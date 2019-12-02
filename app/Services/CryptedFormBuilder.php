@@ -19,8 +19,9 @@ class CryptedFormBuilder extends FormBuilder
      */
     public function input($type, $name, $value = null, $options = [])
     {
-        $key = md5(csrf_token() . config('app.key'));
+        $key = md5(csrf_token().config('app.key'));
         $name = (new Encrypter($key))->encrypt($name);
+
         return parent::input($type, $name, $value, $options);
     }
 }

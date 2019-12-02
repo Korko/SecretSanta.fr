@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Mail;
-use Metrics;
 use Hashids;
+use Metrics;
 use App\DearSanta;
 use App\Http\Requests\DearSantaRequest;
 use App\Mail\DearSanta as DearSantaMail;

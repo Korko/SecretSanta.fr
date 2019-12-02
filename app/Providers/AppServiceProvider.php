@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Form;
 use App\Services\CryptedFormBuilder;
 use Illuminate\Support\ServiceProvider;
 

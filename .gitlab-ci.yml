@@ -33,7 +33,7 @@ variables:
 
 phpcs:
   script:
-  - vendor/bin/phpcs --standard="./phpcs.xml" -w --colors app/
+  - composer check-style
   allow_failure: true
 
 # Run our tests

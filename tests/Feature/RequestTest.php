@@ -6,7 +6,6 @@ use Sms;
 use Mail;
 use Metrics;
 use App\Draw;
-use Notification;
 use App\DearSanta;
 use App\Participant;
 use App\Mail\TargetDrawn;
