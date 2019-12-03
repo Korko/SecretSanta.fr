@@ -140,8 +140,6 @@
                                         <tr>
                                             <th class="col-xl-3" scope="col">@lang('form.participant.name')</th>
                                             <th class="col-xl-3" scope="col">@lang('form.participant.email')</th>
-                                            <th class="col-xl-0" scope="col"></th>
-                                            <th class="col-xl-3" scope="col">@lang('form.participant.phone')</th>
                                             <th class="col-xl-2" scope="col">@lang('form.participant.exclusions')</th>
                                             <th class="col-xl-1" scope="col"></th>
                                         </tr>
