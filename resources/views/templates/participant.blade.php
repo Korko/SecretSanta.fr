@@ -2,7 +2,7 @@
     <tr class="participant" :id="'participant_'+idx">
         <td class="row">
             <div class="input-group">
-                <span class="input-group-addon counter">@{{ idx+1 }}</span>
+                <span class="input-group-addon counter">@{{ idx > 0 ? idx+1 : "Organisateur" }}</span>
                 <input type="text" :name="'name['+idx+']'" :required="idx < 3" placeholder="@lang('form.name.placeholder')" v-model="name" class="form-control participant-name" />
             </div>
         </td>
