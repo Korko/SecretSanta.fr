@@ -190,12 +190,6 @@ button .fa-spinner {
 /* ==========================================================================
     08. Responsive styles
 ========================================================================== */
-@media (min-width: 992px) {
-    #contact > fieldset:first-child {
-        box-sizing: border-box;
-        border-right: 2px solid #ccc;
-    }
-}
 @media (max-width: 1199px) {
     .participant-remove span:nth-child(2) {
         display: none;

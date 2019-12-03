@@ -172,15 +172,10 @@
                             </div>
                         </fieldset>
 
-                        <div class="alert alert-info" role="alert">
-                            @if(!env('SMS_ENABLED'))@lang('form.warning.sms_disabled')<br />@endif
-                            {!! nl2br(trans('form.warning.give', ['button' => str_replace("\n", '', view('partials.paypalButton'))])) !!}
-                        </div>
-
                         <fieldset>
                             <legend>Messages</legend>
-                            <div class="row" id="contact">
-                                <fieldset id="form-mail-group" class="col-lg-6">
+                            <div id="contact">
+                                <fieldset id="form-mail-group">
                                     <div class="form-group">
                                         <label for="mailTitle">@lang('form.mail.title')</label>
                                         <input id="mailTitle" type="text" name="title" :required="this.emailUsed" placeholder="@lang('form.mail.title.placeholder')" value="" class="form-control" />
@@ -193,16 +188,6 @@
 
                                         <p class="form-text">@lang('form.mail.content.tip1')</p>
                                         <p class="form-text">@lang('form.mail.content.tip2')</p>
-                                    </div>
-                                </fieldset>
-                                <fieldset id="form-sms-group" class="col-lg-6" @if(!env('SMS_ENABLED')):disabled="true"@endif >
-                                    <div class="form-group">
-                                        <label for="smsContent" v-if="smsCount <= 1">@lang('form.sms.content', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
-                                        <label for="smsContent" v-else>@lang('form.sms.content.multiple', ['count' => '@{{ smsCount }}', 'span' => '<span class="tip" :class="charactersLeft < 0 ?  \'text-danger\' : \'\'">', 'espan' => '</span>', 'left' => '@{{ charactersLeft }}'])</label>
-                                        <textarea id="smsContent" name="content-sms" :required="this.phoneUsed" :maxlength="maxLength" placeholder="@lang('form.sms.content.placeholder')" class="form-control" rows="3" v-model="smsContent" v-autosize></textarea>
-
-                                        <p class="form-text">@lang('form.sms.content.tip1')</p>
-                                        <p class="form-text">@lang('form.sms.content.tip2')</p>
                                     </div>
                                 </fieldset>
                             </div>
