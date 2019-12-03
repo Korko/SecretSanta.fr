@@ -107,10 +107,5 @@ via SecretSanta.fr',
     'sending' => 'Calcul en cours',
     'sent'    => 'Envoyé',
 
-    'warning.sms_disabled' => 'L\'envoi de SMS a été temporairement désactivé car cette fonctionnalité coûte cher au développeur (environ 15€/jour et plus de 100€ depuis septembre 2018).',
-    'warning.give'         => 'Pour information, un tirage au sort classique pour 10 personnes coûte environ 1€.
-Pour que ce service continue à vivre gratuitement et sans aucune exploitation de vos données personnelles, pensez à faire un don.
-:button',
-
     'paypal.alt' => 'PayPal, le réflexe sécurité pour payer en ligne',
 ];
