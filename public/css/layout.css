@@ -12594,3 +12594,27 @@ footer .row {
   transform: scale(1.1);
 }
 
+/* ==========================================================================
+    11. Readability
+========================================================================== */
+
+.btn-success {
+  background-color: #2C642C;
+}
+
+.btn-danger {
+  background-color: #A82824;
+}
+
+.btn-primary {
+  background-color: #275C8B;
+}
+
+.dark-wrapper {
+  background-color: #B50119;
+}
+
+.btn[disabled] {
+  opacity: 0.35;
+}
+
