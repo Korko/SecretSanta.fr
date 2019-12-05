@@ -135,7 +135,7 @@
                         <fieldset>
                             <legend>@lang('form.participants')</legend>
                             <div class="table-responsive form-group">
-                                <table id="participants" class="table table-hover table-striped table-numbered">
+                                <table id="participants" class="table table-hover table-numbered">
                                     <thead>
                                         <tr>
                                             <th class="col-xl-3" scope="col">@lang('form.participant.name')</th>
