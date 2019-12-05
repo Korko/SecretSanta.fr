@@ -13328,6 +13328,11 @@ footer .row {
   opacity: 0.35;
 }
 
+.table-hover tbody tr:focus-within {
+  color: #212529;
+  background-color: rgba(0, 0, 0, 0.175);
+}
+
 #form {
   padding-top: 140px;
   padding-bottom: 60px;
