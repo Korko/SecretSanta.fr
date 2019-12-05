@@ -5,6 +5,7 @@ namespace App\Services;
 use Arr;
 use Sms;
 use Mail;
+use Crypt;
 use Hashids;
 use Metrics;
 use App\Draw;
@@ -35,7 +36,6 @@ class DrawHandler
             $target = ['id' => $targetIdx] + $participants[$targetIdx];
 
             $participant = new Participant();
-            $participant->shareEncryptionKey($draw); // Have to be very first attribute set
             $participant->draw()->associate($draw);
             $participant->name = $santa['name'];
             $participant->email_address = Arr::get($santa, 'email');
@@ -55,7 +55,7 @@ class DrawHandler
 
     public function informOrganizer(Draw $draw)
     {
-        $panelLink = route('organizerPanel', ['draw' => $draw->id]).'#'.base64_encode($draw->getEncryptionKey());
+        $panelLink = route('organizerPanel', ['draw' => $draw->id]).'#'.base64_encode(Crypt::getKey());
 
         Mail::to([['email' => $draw->organizer->email_address, 'name' => $draw->organizer->name]])
             ->send(new OrganizerRecap($draw, $panelLink));
@@ -98,7 +98,7 @@ class DrawHandler
         $dearSanta->santa_email = $santa['email'];
         $dearSanta->save();
 
-        return route('dearsanta', ['santa' => Hashids::encode($dearSanta->id)]).'#'.base64_encode($dearSanta->getEncryptionKey());
+        return route('dearsanta', ['santa' => Hashids::encode($dearSanta->id)]).'#'.base64_encode(Crypt::getKey());
     }
 
     protected function sendSMS(Draw $draw, Participant $participant)

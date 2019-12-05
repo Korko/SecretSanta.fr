@@ -16,12 +16,12 @@ Route::post('/', 'RandomFormController@handle'); //->middleware('decrypt.input')
 
 Route::pattern('santa', '[0-9a-zA-Z]{'.config('hashids.connections')[config('hashids.default')]['length'].'}');
 Route::get('/dearsanta/{santa}', 'DearSantaController@view')->name('dearsanta');
-Route::post('/dearsanta/{santa}', 'DearSantaController@handle');
+Route::post('/dearsanta/{santa}', 'DearSantaController@handle')->middleware('decrypt.key');;
 
 Route::get('/org/{draw}', 'OrganizerController@view')->name('organizerPanel');
-Route::post('/org/{draw}/{participant}/changeEmail', 'OrganizerController@changeEmail')->name('organizerPanel.changeEmail');
+Route::post('/org/{draw}/{participant}/changeEmail', 'OrganizerController@changeEmail')->name('organizerPanel.changeEmail')->middleware('decrypt.key');;
 
-Route::post('/event', 'EmailEventController@handle');
+Route::post('/event', 'EmailEventController@handle')->middleware('decrypt.key');
 
 if (App::environment('local', 'dev', 'testing')) {
     Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');

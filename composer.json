@@ -7,6 +7,12 @@
     ],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/korko/laravel-database-encryption"
+        }
+    ],
     "require": {
         "php": "^7.2",
         "ext-bcmath": "*",
@@ -23,7 +29,8 @@
         "phpro/grumphp": "^0.17.0",
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
         "spatie/laravel-blade-javascript": "^2.0",
-        "vinkla/hashids": "^7.0"
+        "vinkla/hashids": "^7.0",
+        "korko/laravel-database-encryption": "dev-master"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

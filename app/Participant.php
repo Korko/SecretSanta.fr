@@ -22,7 +22,7 @@ class Participant extends Model
         'target' => 'object',
     ];
 
-    protected $encryptable = [
+    protected $encrypted = [
         'name',
         'email_address',
         'target',

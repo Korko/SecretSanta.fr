@@ -13,7 +13,7 @@ class Draw extends Model
         'expires_at',
     ];
 
-    protected $encryptable = [
+    protected $encrypted = [
         'email_title',
         'email_body',
         'challenge',
