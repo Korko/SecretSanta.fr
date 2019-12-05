@@ -53,6 +53,7 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'throttle'      => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'decrypt.input' => \App\Http\Middleware\DecryptInput::class,
+        'decrypt.key'   => \App\Http\Middleware\HandleEncryptionKey::class,
     ];
 
     /**

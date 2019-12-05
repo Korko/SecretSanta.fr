@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use DB;
 use App\Draw;
 use Tests\TestCase;
 use App\Participant;
@@ -15,37 +16,35 @@ class EncryptsAttributesTest extends TestCase
 
     public function testEncrypts()
     {
-        // Define a random title and create a draw with it
         $originalTitle = $this->faker()->sentence;
         $draw = factory(Draw::class)->create([
             'email_title' => $originalTitle,
         ]);
-        $encryptionKey = $draw->getEncryptionKey();
 
-        // When fetching a draw, we can get the title still encrypted
+        // Ensure decryption is done when using Eloquent
         $draw = Draw::find($draw->id);
-        $this->assertNotEquals($originalTitle, $draw->email_title);
-
-        // Just by setting the key, we can get the decrypted value
-        $draw->setEncryptionKey($encryptionKey);
         $this->assertEquals($originalTitle, $draw->email_title);
+
+        // Ensure encryption was done in database
+        $draw = DB::select('select email_title from draws where id = ?', [$draw->id])[0];
+        $this->assertNotEquals($draw->email_title, $originalTitle);
     }
 
     public function testArray()
     {
         $originalTarget = (object) ['name' => $this->faker()->name];
+
         $participant = factory(Participant::class)->create([
             'target' => $originalTarget,
         ]);
-        $encryptionKey = $participant->getEncryptionKey();
 
-        // When fetching a participant, we can get the target still encrypted
+        // Ensure decryption is done when using Eloquent
         $participant = Participant::find($participant->id);
-        $this->assertNotEquals($originalTarget, $participant->target);
-
-        // Just by setting the key, we can get the decrypted value
-        $participant->setEncryptionKey($encryptionKey);
         $this->assertEquals($originalTarget, $participant->target);
+
+        // Ensure encryption was done in database
+        $participant = DB::select('select target from participants where id = ?', [$participant->id])[0];
+        $this->assertNotEquals($participant->target, $originalTarget);
     }
 
     public function testArray2()
@@ -56,14 +55,12 @@ class EncryptsAttributesTest extends TestCase
         $participant->target = $originalTarget;
         $participant->save();
 
-        $encryptionKey = $participant->getEncryptionKey();
-
-        // When fetching a participant, we can get the target still encrypted
+        // Ensure decryption is done when using Eloquent
         $participant = Participant::find($participant->id);
-        $this->assertNotEquals($originalTarget, $participant->target);
-
-        // Just by setting the key, we can get the decrypted value
-        $participant->setEncryptionKey($encryptionKey);
         $this->assertEquals($originalTarget, $participant->target);
+
+        // Ensure encryption was done in database
+        $participant = DB::select('select target from participants where id = ?', [$participant->id])[0];
+        $this->assertNotEquals($participant->target, $originalTarget);
     }
 }

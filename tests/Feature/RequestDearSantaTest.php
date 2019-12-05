@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Mail;
+use Crypt;
 use Hashids;
 use App\DearSanta;
 
@@ -59,7 +60,9 @@ class RequestDearSantaTest extends RequestCase
 
         foreach ($links as $id => $link) {
             $path = parse_url($link, PHP_URL_PATH);
-            $key = parse_url($link, PHP_URL_FRAGMENT);
+
+            $key = base64_decode(parse_url($link, PHP_URL_FRAGMENT));
+            Crypt::setKey($key);
 
             // Get the form page (just to check http code)
             $response = $this->get($path);
@@ -72,7 +75,7 @@ class RequestDearSantaTest extends RequestCase
             $pathTheorical = parse_url(route('dearsanta', ['santa' => '%s']), PHP_URL_PATH);
             $data = sscanf($path, $pathTheorical);
             $id = Hashids::decode($data[0]);
-            $dearSanta = DearSanta::find($id[0])->setEncryptionKey(base64_decode($key));
+            $dearSanta = DearSanta::find($id[0]);
 
             $this->assertEquals($santa['name'], $dearSanta->santa_name);
             $this->assertEquals($santa['email'], $dearSanta->santa_email);
@@ -80,7 +83,7 @@ class RequestDearSantaTest extends RequestCase
             // Try to contact santa
             $response = $this->ajaxPost($path, [
                 'g-recaptcha-response' => 'mocked',
-                'key'                  => $key,
+                'key'                  => base64_encode($key),
                 'content'              => 'test dearsanta mail content',
             ]);
 

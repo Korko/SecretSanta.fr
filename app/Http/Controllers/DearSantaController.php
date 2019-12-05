@@ -21,9 +21,6 @@ class DearSantaController extends Controller
 
     public function handle(DearSanta $dearSanta, DearSantaRequest $request)
     {
-        $key = base64_decode($request->input('key'));
-        $dearSanta->setEncryptionKey($key);
-
         if ($dearSanta->challenge !== config('app.challenge')) {
             abort(400);
         }

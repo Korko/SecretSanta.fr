@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aab45aae0e752caaec4f06cb66a3d949",
+    "content-hash": "8acf5ee90e2dd8a7e4bd0056cdc5612d",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -1325,6 +1325,107 @@
             "time": "2017-12-29T09:59:18+00:00"
         },
         {
+            "name": "korko/laravel-database-encryption",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Korko/laravel-database-encryption.git",
+                "reference": "f5383c0efa9ffb6d95287bdf5404602feb8f7435"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Korko/laravel-database-encryption/zipball/f5383c0efa9ffb6d95287bdf5404602feb8f7435",
+                "reference": "f5383c0efa9ffb6d95287bdf5404602feb8f7435",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "5.5.*|5.6.*|5.7.*|5.8.*|6.0.*",
+                "php": ">=7.1.0"
+            },
+            "conflict": {
+                "delatbabel/elocryptfive": "*",
+                "dtisgodsson/elocrypt": "*"
+            },
+            "replace": {
+                "delatbabel/elocryptfive": "*",
+                "dtisgodsson/elocrypt": "*"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "dev-master",
+                "orchestra/testbench": "^3.5",
+                "phpunit/phpunit": "~6.0|~7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AustinHeap\\Database\\Encryption\\EncryptionServiceProvider"
+                    ],
+                    "aliases": {
+                        "DatabaseEncryption": "AustinHeap\\Database\\Encryption\\EncryptionFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AustinHeap\\Database\\Encryption\\": "src"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Austin Heap",
+                    "email": "me@austinheap.com",
+                    "homepage": "https://github.com/austinheap",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A package for automatically encrypting and decrypting Eloquent attributes in Laravel 5.5+, based on configuration settings.",
+            "homepage": "https://github.com/austinheap/laravel-database-encryption",
+            "keywords": [
+                "aes",
+                "attribute",
+                "attribute encryption",
+                "database",
+                "database encryption",
+                "db",
+                "decrypt",
+                "decryption",
+                "elocrypt",
+                "elocryptfive",
+                "eloquent",
+                "eloquent aes",
+                "eloquent encryption",
+                "encrypt",
+                "encryption",
+                "l5",
+                "laravel",
+                "laravel encryption",
+                "laravel5",
+                "laravel5 aes",
+                "laravel5 encryption",
+                "laravel55",
+                "laravel55 encryption",
+                "laravel56",
+                "laravel56 encryption",
+                "laravel57",
+                "laravel57 encryption",
+                "laravel58",
+                "laravel58 encryption",
+                "model",
+                "model encryption"
+            ],
+            "support": {
+                "source": "https://github.com/Korko/laravel-database-encryption/tree/master"
+            },
+            "time": "2019-12-05T22:46:15+00:00"
+        },
+        {
             "name": "korko/validator",
             "version": "dev-master",
             "source": {
@@ -1362,16 +1463,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v6.6.2",
+            "version": "v6.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "27efba7e13aaf91a87ae9a63db158e943eb71410"
+                "reference": "372e0add8a58e0e3deb78f87cbb2dc40d3e0ff08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/27efba7e13aaf91a87ae9a63db158e943eb71410",
-                "reference": "27efba7e13aaf91a87ae9a63db158e943eb71410",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/372e0add8a58e0e3deb78f87cbb2dc40d3e0ff08",
+                "reference": "372e0add8a58e0e3deb78f87cbb2dc40d3e0ff08",
                 "shasum": ""
             },
             "require": {
@@ -1467,8 +1568,7 @@
                 "league/flysystem-sftp": "Required to use the Flysystem SFTP driver (^1.0).",
                 "moontoast/math": "Required to use ordered UUIDs (^1.1).",
                 "pda/pheanstalk": "Required to use the beanstalk queue driver (^4.0).",
-                "psr/http-message": "Required to allow Storage::put to accept a StreamInterface (^1.0).",
-                "pusher/pusher-php-server": "Required to use the Pusher broadcast driver (^4.0).",
+                "pusher/pusher-php-server": "Required to use the Pusher broadcast driver (^3.0).",
                 "symfony/cache": "Required to PSR-6 cache bridge (^4.3.4).",
                 "symfony/psr-http-message-bridge": "Required to use PSR-7 bridging features (^1.2).",
                 "wildbit/swiftmailer-postmark": "Required to use Postmark mail driver (^3.0)."
@@ -1504,7 +1604,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-12-05T13:49:53+00:00"
+            "time": "2019-09-24T13:40:36+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -7023,7 +7123,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "korko/validator": 20
+        "korko/validator": 20,
+        "korko/laravel-database-encryption": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

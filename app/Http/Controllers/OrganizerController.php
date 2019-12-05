@@ -22,13 +22,10 @@ class OrganizerController extends Controller
 
     public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
     {
-        $key = base64_decode($request->input('key'));
-
-        $participant->setEncryptionKey($key);
         $participant->email_address = $request->input('email');
         $participant->save();
 
-        $emailSent = true; //$this->resendEmail($draw, $participant);
+        $emailSent = $this->doResendEmail($draw, $participant);
         $message = $emailSent ? trans('organizer.up_and_sent') : trans('organizer.up_but_not_sent');
 
         return $request->ajax() ?
@@ -38,7 +35,11 @@ class OrganizerController extends Controller
 
     public function resendEmail(OrganizerResendEmailRequest $request, Draw $draw, Participant $participant)
     {
-        $key = base64_decode($request->input('key'));
-        $participant->setEncryptionKey($key);
+        return true;
+    }
+
+    protected function doResendEmail(Draw $draw, Participant $participant)
+    {
+
     }
 }
