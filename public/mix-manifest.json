@@ -1,10 +1,10 @@
 {
-    "/js/common.js": "/js/common.js",
-    "/css/layout.css": "/css/layout.css",
-    "/css/randomForm.css": "/css/randomForm.css",
-    "/css/dearSanta.css": "/css/dearSanta.css",
-    "/js/dearSanta.js": "/js/dearSanta.js",
-    "/js/manifest.js": "/js/manifest.js",
-    "/js/randomForm.js": "/js/randomForm.js",
-    "/js/vendor.js": "/js/vendor.js"
+    "/js/manifest.js": "/js/manifest.js?id=01c8731923a46c30aaed",
+    "/js/vendor.js": "/js/vendor.js?id=2a0e0620027eb3c3f414",
+    "/js/common.js": "/js/common.js?id=6f5837789a908de481d6",
+    "/css/layout.css": "/css/layout.css?id=e809c14f6d07e72b8bd8",
+    "/css/randomForm.css": "/css/randomForm.css?id=925dc9ebfa9a1142ade7",
+    "/css/dearSanta.css": "/css/dearSanta.css?id=47f2d205a13beb56d00d",
+    "/js/dearSanta.js": "/js/dearSanta.js?id=390556490c0cb96d8fb9",
+    "/js/randomForm.js": "/js/randomForm.js?id=2bc0b95eb163da8374ce"
 }
