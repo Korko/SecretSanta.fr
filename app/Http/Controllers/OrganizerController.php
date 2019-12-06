@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
+use Metrics;
 use App\Draw;
 use App\Participant;
+use App\Mail\TargetDrawn;
 use App\Http\Requests\OrganizerChangeEmailRequest;
 use App\Http\Requests\OrganizerResendEmailRequest;
 
@@ -25,9 +28,9 @@ class OrganizerController extends Controller
         $participant->email_address = $request->input('email');
         $participant->save();
 
-        $emailSent = $this->doResendEmail($draw, $participant);
-        $message = $emailSent ? trans('organizer.up_and_sent') : trans('organizer.up_but_not_sent');
+        $this->doResendEmail($participant);
 
+        $message = trans('organizer.up_and_sent');
         return $request->ajax() ?
             response()->json(['message' => $message]) :
             redirect('/')->with('message', $message);
@@ -35,11 +38,19 @@ class OrganizerController extends Controller
 
     public function resendEmail(OrganizerResendEmailRequest $request, Draw $draw, Participant $participant)
     {
-        return true;
+        $this->doResendEmail($participant);
+
+        $message = trans('message.sent');
+        return $request->ajax() ?
+            response()->json(['message' => $message]) :
+            redirect('/')->with('message', $message);
     }
 
-    protected function doResendEmail(Draw $draw, Participant $participant)
+    protected function doResendEmail(Participant $participant)
     {
+        Metrics::increment('email');
 
+        Mail::to([['email' => $participant->email_address, 'name' => $participant->name]])
+            ->queue(new TargetDrawn($participant));
     }
 }

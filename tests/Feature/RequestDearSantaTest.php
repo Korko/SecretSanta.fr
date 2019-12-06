@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Draw;
+
 use Mail;
 use Crypt;
 use Hashids;
-use App\DearSanta;
+use App\Participant;
 
 class RequestDearSantaTest extends RequestCase
 {
@@ -34,11 +36,9 @@ class RequestDearSantaTest extends RequestCase
 
         // Initiate DearSanta
         $response = $this->ajaxPost('/', [
-            'g-recaptcha-response' => 'mocked',
             'participants'         => $participants,
             'title'                => 'test mail title',
             'content-email'        => 'test mail {SANTA} => {TARGET}',
-            'dearsanta'            => '1',
             'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
         ]);
 
@@ -61,9 +61,6 @@ class RequestDearSantaTest extends RequestCase
         foreach ($links as $id => $link) {
             $path = parse_url($link, PHP_URL_PATH);
 
-            $key = base64_decode(parse_url($link, PHP_URL_FRAGMENT));
-            Crypt::setKey($key);
-
             // Get the form page (just to check http code)
             $response = $this->get($path);
             $this->assertEquals(200, $response->status(), $response->__toString());
@@ -75,15 +72,14 @@ class RequestDearSantaTest extends RequestCase
             $pathTheorical = parse_url(route('dearsanta', ['santa' => '%s']), PHP_URL_PATH);
             $data = sscanf($path, $pathTheorical);
             $id = Hashids::decode($data[0]);
-            $dearSanta = DearSanta::find($id[0]);
+            $santaTheorical = Participant::find($id[0]);
 
-            $this->assertEquals($santa['name'], $dearSanta->santa_name);
-            $this->assertEquals($santa['email'], $dearSanta->santa_email);
+            $this->assertEquals($santa['name'], $santaTheorical->santa->name);
+            $this->assertEquals($santa['email'], $santaTheorical->santa->email_address);
 
             // Try to contact santa
             $response = $this->ajaxPost($path, [
-                'g-recaptcha-response' => 'mocked',
-                'key'                  => base64_encode($key),
+                'key'                  => base64_encode(Crypt::getKey()),
                 'content'              => 'test dearsanta mail content',
             ]);
 

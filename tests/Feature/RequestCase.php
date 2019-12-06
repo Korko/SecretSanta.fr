@@ -34,6 +34,10 @@ class RequestCase extends TestCase
             'X-Requested-With' => 'XMLHttpRequest',
         ];
 
+        $postArgs = $postArgs + [
+            'g-recaptcha-response' => 'mocked',
+        ];
+
         return $this->withHeaders($headers)->json('POST', $url, $postArgs);
     }
 

@@ -5,12 +5,18 @@ namespace Tests\Feature;
 use Mail;
 use Crypt;
 use App\Draw;
+use App\Participant;
+use App\Mail\TargetDrawn;
 
 class RequestOrganizerTest extends RequestCase
 {
+    private static $key;
+
     public function testDraw(): Draw
     {
         Mail::fake();
+
+        self::$key = Crypt::getKey();
 
         // Participants can only select one person, all the others will be excluded
         $participants = $this->formatParticipants([
@@ -32,11 +38,9 @@ class RequestOrganizerTest extends RequestCase
         ]);
 
         $response = $this->ajaxPost('/', [
-            'g-recaptcha-response' => 'mocked',
             'participants'         => $participants,
             'title'                => 'test mail title',
             'content-email'        => 'test mail {SANTA} => {TARGET}',
-            'dearsanta'            => '1',
             'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
         ]);
 
@@ -56,9 +60,6 @@ class RequestOrganizerTest extends RequestCase
         $this->assertNotNull($link);
 
         $path = parse_url($link, PHP_URL_PATH);
-
-        $key = base64_decode(parse_url($link, PHP_URL_FRAGMENT));
-        Crypt::setKey($key);//TODO check needed?
 
         // Get the form page (just to check http code)
         $response = $this->get($path);
@@ -86,6 +87,8 @@ class RequestOrganizerTest extends RequestCase
     {
         Mail::fake();
 
+        Crypt::setKey(self::$key);
+
         $participant = $draw->participants->first();
 
         // Check data can be changed
@@ -94,20 +97,23 @@ class RequestOrganizerTest extends RequestCase
             'participant' => $participant,
         ]);
         $response = $this->ajaxPost($path, [
-            'g-recaptcha-response' => 'mocked',
             'key' => base64_encode(Crypt::getKey()),
             'email' => 'test@test2.com',
         ]);
 
-//        $before = $participant->email_address;
-//        $after = $participant->fresh()->shareEncryptionKey($draw)->email_address;
-//        $this->assertNotEquals($before, $after);
-//        $this->assertEquals('test@test2.com', $after);
-        /*
-                $response
-                    ->assertStatus(200)
-                    ->assertJson([
-                        'message' => 'Envoyé avec succès !',
-                    ]);*/
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Modifié avec succès !',
+            ]);
+
+        $before = $participant->email_address;
+        $after = Participant::find($participant->id)->email_address;
+        $this->assertNotEquals($before, $after);
+        $this->assertEquals('test@test2.com', $after);
+
+        Mail::assertQueued(TargetDrawn::class, function ($mail) {
+            return $mail->hasTo('test@test2.com', 'toto');
+        });
     }
 }

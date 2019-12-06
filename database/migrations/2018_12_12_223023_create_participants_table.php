@@ -21,11 +21,14 @@ class CreateParticipantsTable extends Migration
             $table->mediumText('email_address')->nullable();
             $table->string('email_id')->nullable();
             $table->enum('delivery_status', Participant::$deliveryStatuses);
-            $table->mediumText('target');
+            $table->unsignedInteger('target_id')->nullable();
             $table->timestamps();
 
             $table->foreign('draw_id')
                 ->references('id')->on('draws')->onDelete('cascade');
+
+            $table->foreign('target_id')
+                ->references('id')->on('participants')->onDelete('cascade');
         });
     }
 
