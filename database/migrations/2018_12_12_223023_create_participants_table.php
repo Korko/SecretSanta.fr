@@ -17,9 +17,8 @@ class CreateParticipantsTable extends Migration
         Schema::create('participants', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('draw_id');
-            $table->mediumText('name');
-            $table->mediumText('email_address')->nullable();
-            $table->string('email_id')->nullable();
+            $table->longText('name');
+            $table->longText('email_address');
             $table->enum('delivery_status', Participant::$deliveryStatuses);
             $table->unsignedInteger('target_id')->nullable();
             $table->timestamps();
