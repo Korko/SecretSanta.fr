@@ -151,12 +151,12 @@ class RequestTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Mail::assertSent(OrganizerRecap::class, function ($mail) {
+        Mail::assertQueued(OrganizerRecap::class, function ($mail) {
             return $mail->hasTo('test@test.com', 'toto');
         });
 
         $title = $body = null;
-        Mail::assertSent(TargetDrawn::class, function ($mail) use (&$title, &$body) {
+        Mail::assertQueued(TargetDrawn::class, function ($mail) use (&$title, &$body) {
             if ($mail->hasTo('test@test.com', 'toto')) {
                 $m = $mail->build();
                 $title = $mail->subject;
@@ -169,7 +169,7 @@ class RequestTest extends RequestCase
         //$this->assertStringContainsString('test mail toto => tata body', html_entity_decode($body));
 
         $body = null;
-        Mail::assertSent(TargetDrawn::class, function ($mail) use (&$body) {
+        Mail::assertQueued(TargetDrawn::class, function ($mail) use (&$body) {
             if ($mail->hasTo('test2@test.com', 'tutu')) {
                 $m = $mail->build();
                 //$body = view($m->view, $m->buildViewData())->render();
@@ -263,11 +263,11 @@ class RequestTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Mail::assertSent(OrganizerRecap::class, function ($mail) {
+        Mail::assertQueued(OrganizerRecap::class, function ($mail) {
             return $mail->hasTo('test@test.com', 'toto');
         });
 
-        Mail::assertSent(TargetDrawn::class, function ($mail) {
+        Mail::assertQueued(TargetDrawn::class, function ($mail) {
             return $mail->hasTo('test@test.com', 'toto');
         });
 
@@ -331,19 +331,19 @@ class RequestTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Mail::assertSent(OrganizerRecap::class, function ($mail) {
+        Mail::assertQueued(OrganizerRecap::class, function ($mail) {
             return $mail->hasTo('test@test.com', 'toto');
         });
 
-        Mail::assertSent(TargetDrawn::class, function ($mail) {
+        Mail::assertQueued(TargetDrawn::class, function ($mail) {
             return $mail->hasTo('test@test.com', 'toto');
         });
 
-        Mail::assertSent(TargetDrawn::class, function ($mail) {
+        Mail::assertQueued(TargetDrawn::class, function ($mail) {
             return $mail->hasTo('test2@test.com', 'tata');
         });
 
-        Mail::assertSent(TargetDrawn::class, function ($mail) {
+        Mail::assertQueued(TargetDrawn::class, function ($mail) {
             return $mail->hasTo('test3@test.com', 'tutu');
         });
 

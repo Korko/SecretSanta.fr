@@ -38,6 +38,6 @@ class DearSantaController extends Controller
 
     protected function sendMail(DearSanta $dearSanta, $content)
     {
-        Mail::to([['email' => $dearSanta->santa_email, 'name' => $dearSanta->santa_name]])->send(new DearSantaMail($dearSanta->draw, $content));
+        Mail::to([['email' => $dearSanta->santa_email, 'name' => $dearSanta->santa_name]])->queue(new DearSantaMail($dearSanta->draw, $content));
     }
 }

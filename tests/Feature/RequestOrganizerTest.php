@@ -48,7 +48,7 @@ class RequestOrganizerTest extends RequestCase
 
         // So fetch it from the mail
         $link = null;
-        Mail::assertSent(\App\Mail\OrganizerRecap::class, function ($mail) use (&$link) {
+        Mail::assertQueued(\App\Mail\OrganizerRecap::class, function ($mail) use (&$link) {
             $link = $mail->panelLink;
 
             return true;
