@@ -18,14 +18,9 @@ class Participant extends Model
         'delivery_status' => self::CREATED,
     ];
 
-    protected $casts = [
-        'target' => 'object',
-    ];
-
     protected $encrypted = [
         'name',
         'email_address',
-        'target',
     ];
 
     const CREATED = 'created';
@@ -43,5 +38,15 @@ class Participant extends Model
     public function draw()
     {
         return $this->belongsTo(Draw::class);
+    }
+
+    public function target()
+    {
+        return $this->hasOne(Participant::class, 'target_id');
+    }
+
+    public function santa()
+    {
+        return $this->belongsTo(Participant::class, 'target_id');
     }
 }

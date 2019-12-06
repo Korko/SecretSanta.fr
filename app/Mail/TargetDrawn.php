@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use Crypt;
+use Hashids;
 use App\Draw;
 use App\Participant;
 use Illuminate\Bus\Queueable;
@@ -23,11 +25,11 @@ class TargetDrawn extends Mailable
      *
      * @return void
      */
-    public function __construct(Draw $draw, Participant $santa, $dearSantaLink = null)
+    public function __construct(Participant $santa)
     {
-        $this->subject = $this->parseKeywords(__('emails.target_draw.title', ['draw' => $draw->id, 'subject' => $draw->email_title]), $santa);
-        $this->content = $this->parseKeywords($draw->email_body, $santa);
-        $this->dearSantaLink = $dearSantaLink;
+        $this->subject = $this->parseKeywords(__('emails.target_draw.title', ['draw' => $santa->draw->id, 'subject' => $santa->draw->email_title]), $santa);
+        $this->content = $this->parseKeywords($santa->draw->email_body, $santa);
+        $this->dearSantaLink = route('dearsanta', ['santa' => Hashids::encode($santa->id)]).'#'.base64_encode(Crypt::getKey());
     }
 
     protected function parseKeywords($str, Participant $santa)

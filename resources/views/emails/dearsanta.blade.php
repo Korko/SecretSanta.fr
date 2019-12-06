@@ -4,7 +4,7 @@
 
 <tr>
         <td class="h2" style="font-size:35px; line-height:46px; text-align:center; font-style:italic; padding-bottom:15px;">
-                Message de la personne à qui vous devez faire un cadeau
+                Message de {{ $santa->target->name }}
         </td>
 </tr>
 <tr>

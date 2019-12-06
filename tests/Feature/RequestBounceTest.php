@@ -8,7 +8,6 @@ use Metrics;
 use Mockery;
 use App\Draw;
 use NoCaptcha;
-use App\DearSanta;
 use App\Participant;
 
 class RequestBounceTest extends RequestCase
@@ -27,10 +26,8 @@ class RequestBounceTest extends RequestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
-        $this->assertEquals(0, DearSanta::count());
 
         $response = $this->ajaxPost('/', [
-            'g-recaptcha-response' => 'mocked',
             'participants'         => [
                 [
                     'name'       => 'toto',
@@ -50,7 +47,6 @@ class RequestBounceTest extends RequestCase
             ],
             'title'                => 'test mail title',
             'content-email'        => 'test mail {SANTA} => {TARGET}',
-            'dearsanta'            => '0',
             'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
         ]);
 
@@ -62,7 +58,6 @@ class RequestBounceTest extends RequestCase
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
-        $this->assertEquals(0, DearSanta::count());
 
         /*
                 // Simulate a bounce, note which mail should be sent
@@ -101,6 +96,5 @@ class RequestBounceTest extends RequestCase
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
-        $this->assertEquals(0, DearSanta::count());
     }
 }

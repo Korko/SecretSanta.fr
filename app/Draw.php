@@ -40,11 +40,6 @@ class Draw extends Model
         return $this->hasMany(Participant::class);
     }
 
-    public function dearSanta()
-    {
-        return $this->hasMany(DearSanta::class);
-    }
-
     public function getOrganizerAttribute()
     {
         return $this->participants->first();

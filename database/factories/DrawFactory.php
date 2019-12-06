@@ -5,7 +5,6 @@ $factory->define(App\Draw::class, function (Faker\Generator $faker) {
         'email_title'     => $faker->sentence,
         'email_body'      => $faker->text,
         'expires_at'      => $faker->dateTimeBetween('+1 day', '+1 month'),
-        'dear_santa'      => $faker->boolean,
         'challenge'       => $faker->text,
     ];
 });

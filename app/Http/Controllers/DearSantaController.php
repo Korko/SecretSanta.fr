@@ -5,39 +5,40 @@ namespace App\Http\Controllers;
 use Mail;
 use Hashids;
 use Metrics;
-use App\DearSanta;
+use App\Participant;
+use App\Mail\DearSanta;
 use App\Http\Requests\DearSantaRequest;
-use App\Mail\DearSanta as DearSantaMail;
 
 class DearSantaController extends Controller
 {
-    public function view(DearSanta $dearSanta)
+    public function view(Participant $participant)
     {
         return view('dearSanta', [
-            'challenge' => $dearSanta->challenge,
-            'santa'     => Hashids::encode($dearSanta->id),
+            'challenge' => $participant->draw->challenge,
+            'santa'     => Hashids::encode($participant->id),
         ]);
     }
 
-    public function handle(DearSanta $dearSanta, DearSantaRequest $request)
+    public function handle(Participant $participant, DearSantaRequest $request)
     {
-        if ($dearSanta->challenge !== config('app.challenge')) {
+        if ($participant->draw->challenge !== config('app.challenge')) {
             abort(400);
         }
 
         Metrics::increment('dearsanta');
 
-        $this->sendMail($dearSanta, $request->input('content'));
+        $this->sendMail($participant->santa, $request->input('content'));
 
         $message = trans('message.sent');
 
         return $request->ajax() ?
             ['message' => $message] :
-            redirect('/dearsanta/'.$dearSanta->id)->with('message', $message);
+            redirect('/dearsanta/'.$participant->id)->with('message', $message);
     }
 
-    protected function sendMail(DearSanta $dearSanta, $content)
+    protected function sendMail(Participant $santa, $content)
     {
-        Mail::to([['email' => $dearSanta->santa_email, 'name' => $dearSanta->santa_name]])->queue(new DearSantaMail($dearSanta->draw, $content));
+        Mail::to([['email' => $santa->email_address, 'name' => $santa->name]])
+            ->queue(new DearSanta($santa, $content));
     }
 }

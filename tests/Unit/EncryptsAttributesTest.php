@@ -29,38 +29,4 @@ class EncryptsAttributesTest extends TestCase
         $draw = DB::select('select email_title from draws where id = ?', [$draw->id])[0];
         $this->assertNotEquals($draw->email_title, $originalTitle);
     }
-
-    public function testArray()
-    {
-        $originalTarget = (object) ['name' => $this->faker()->name];
-
-        $participant = factory(Participant::class)->create([
-            'target' => $originalTarget,
-        ]);
-
-        // Ensure decryption is done when using Eloquent
-        $participant = Participant::find($participant->id);
-        $this->assertEquals($originalTarget, $participant->target);
-
-        // Ensure encryption was done in database
-        $participant = DB::select('select target from participants where id = ?', [$participant->id])[0];
-        $this->assertNotEquals($participant->target, $originalTarget);
-    }
-
-    public function testArray2()
-    {
-        $originalTarget = (object) ['name' => $this->faker()->name];
-
-        $participant = factory(Participant::class)->make();
-        $participant->target = $originalTarget;
-        $participant->save();
-
-        // Ensure decryption is done when using Eloquent
-        $participant = Participant::find($participant->id);
-        $this->assertEquals($originalTarget, $participant->target);
-
-        // Ensure encryption was done in database
-        $participant = DB::select('select target from participants where id = ?', [$participant->id])[0];
-        $this->assertNotEquals($participant->target, $originalTarget);
-    }
 }
