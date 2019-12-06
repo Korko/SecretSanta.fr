@@ -15,11 +15,11 @@ class CreateDrawsTable extends Migration
     {
         Schema::create('draws', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('email_title');
+            $table->longText('email_title');
             $table->longText('email_body');
             $table->date('expires_at');
             $table->integer('dear_santa')->boolean()->default(false);
-            $table->string('challenge');
+            $table->text('challenge');
             $table->timestamps();
         });
     }
