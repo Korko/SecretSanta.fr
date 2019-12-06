@@ -51,7 +51,7 @@ class RequestDearSantaTest extends RequestCase
         // For security issues, the key is only sent by mail and never stored
         // So fetch it from the mail
         $links = [];
-        Mail::assertSent(\App\Mail\TargetDrawn::class, function ($mail) use (&$links) {
+        Mail::assertQueued(\App\Mail\TargetDrawn::class, function ($mail) use (&$links) {
             $links[] = $mail->dearSantaLink;
 
             return true;
@@ -93,7 +93,7 @@ class RequestDearSantaTest extends RequestCase
                     'message' => 'Envoyé avec succès !',
                 ]);
 
-            Mail::assertSent(\App\Mail\DearSanta::class, function ($mail) use ($santa) {
+            Mail::assertQueued(\App\Mail\DearSanta::class, function ($mail) use ($santa) {
                 return $mail->hasTo($santa['email'], $santa['name']);
             });
         }

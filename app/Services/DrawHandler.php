@@ -58,7 +58,7 @@ class DrawHandler
         $panelLink = route('organizerPanel', ['draw' => $draw->id]).'#'.base64_encode(Crypt::getKey());
 
         Mail::to([['email' => $draw->organizer->email_address, 'name' => $draw->organizer->name]])
-            ->send(new OrganizerRecap($draw, $panelLink));
+            ->queue(new OrganizerRecap($draw, $panelLink));
     }
 
     public function informParticipant(Draw $draw, Participant $participant, array $superSanta)
@@ -82,12 +82,7 @@ class DrawHandler
         Metrics::increment('email');
 
         Mail::to([['email' => $participant->email_address, 'name' => $participant->name]])
-            ->send(
-                (new TargetDrawn($draw, $participant, $dearSantaLink))
-                    ->withEventData([
-                        'participant' => $participant,
-                    ])
-            );
+            ->queue(new TargetDrawn($draw, $participant, $dearSantaLink));
     }
 
     protected function getDearSantaLink(Draw $draw, array $santa)
