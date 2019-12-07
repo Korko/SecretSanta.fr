@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Draw;
-
 use Mail;
 use Crypt;
 use Hashids;

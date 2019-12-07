@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use DB;
 use App\Draw;
 use Tests\TestCase;
-use App\Participant;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
