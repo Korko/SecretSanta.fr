@@ -13,7 +13,7 @@ class EncryptionTest extends RequestCase
     {
         list('private' => $privKey, 'public' => $pubKey) = AsymmetricalEncrypter::generateKeys();
 
-        $challengeRaw = config('app.challenge');
+        $challengeRaw = 'challenge';
 
         // Encrypted with public
         $encrypter = new AsymmetricalPublicEncrypter($pubKey);
@@ -38,7 +38,7 @@ class EncryptionTest extends RequestCase
     {
         $key = SymmetricalEncrypter::generateKey(config('app.cipher'));
 
-        $challengeRaw = config('app.challenge');
+        $challengeRaw = 'challenge';
 
         $encrypter = new SymmetricalEncrypter($key);
 

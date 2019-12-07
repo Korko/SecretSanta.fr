@@ -19,7 +19,6 @@ class CreateDrawsTable extends Migration
             $table->longText('email_body');
             $table->date('expires_at');
             $table->integer('dear_santa')->boolean()->default(false);
-            $table->text('challenge');
             $table->timestamps();
         });
     }

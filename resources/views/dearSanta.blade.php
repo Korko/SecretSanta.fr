@@ -1,46 +1,10 @@
 @extends('templates/layout', ['styles' => '/css/dearSanta.css'])
 
-@section('header')
-    @parent
-
-    <!-- config js -->
-    @javascript([
-        'challenge' => $challenge,
-        'text' => config('app.challenge')
-    ])
-@stop
-
 @section('body')
     <div id="form" v-cloak>
-        <div v-if="!verified" class="alert alert-danger" role="alert">
-            <span class="fas fa-exclamation-triangle" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span>
-            This link is invalid, please try again
-        </div>
-
-        <form v-else action="{{ url('/dearsanta/'.$santa) }}" @submit.prevent="submit" method="post" autocomplete="off">
-            @csrf
-            <fieldset :disabled="sending || sent">
-                <fieldset>
-                    <div class="form-group">
-                        <label for="mailContent">Contenu du mail</label>
-                        <textarea id="mailContent" name="content" required placeholder="Cher Papa Noël..." class="form-control"></textarea>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <div class="form-group btn">
-                        {!! NoCaptcha::display(['data-theme' => 'light']) !!}
-                    </div>
-
-                    <input type="hidden" name="key" :value="key" />
-                    <button type="submit" class="btn btn-primary btn-lg">
-                        <span v-if="sent"><span class="fas fa-check-circle"></span> @lang('form.sent')</span>
-                        <span v-else-if="sending"><span class="fas fa-spinner"></span> @lang('form.sending')</span>
-                        <span v-else>Envoyer</span>
-                    </button>
-                </fieldset>
-            </fieldset>
-        </form>
+        <component :is="state" v-if="state === 'DearSantaFetcher'" formurl="{{ route('dearsanta.fetch', ['santa' => $santa]) }}"></component>
+        <component :is="state" v-else-if="state === 'DearSantaForm'" formurl="{{ route('dearsanta.contact', ['santa' => $santa]) }}"></component>
+        <component :is="state" v-else></component>
     </div>
 @stop
 

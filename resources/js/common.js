@@ -22,7 +22,7 @@ require('jquery.scrollto');
             timeout = setTimeout(delayed, threshold || 100);
         };
     }
-    // smartresize 
+    // smartresize
     jQuery.fn[sr] = function(fn) {
         return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr);
     };
@@ -53,7 +53,7 @@ jQuery(document).ready(function() {
         setHomeBannerHeight();
         centerHomeBannerText();
     });
-    
+
     function scroll() {
         centerHomeBannerText();
         if ($(document).scrollTop() > 200) {
@@ -94,6 +94,6 @@ jQuery(document).ready(function() {
 });
 
 var alertify = require('alertify.js');
-if(window.global.alert) {
+if(window.global && window.global.alert) {
     alertify.alert(window.global.alert);
 }
