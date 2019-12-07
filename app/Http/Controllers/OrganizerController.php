@@ -31,6 +31,7 @@ class OrganizerController extends Controller
         $this->doResendEmail($participant);
 
         $message = trans('organizer.up_and_sent');
+
         return $request->ajax() ?
             response()->json(['message' => $message]) :
             redirect('/')->with('message', $message);
@@ -41,6 +42,7 @@ class OrganizerController extends Controller
         $this->doResendEmail($participant);
 
         $message = trans('message.sent');
+
         return $request->ajax() ?
             response()->json(['message' => $message]) :
             redirect('/')->with('message', $message);

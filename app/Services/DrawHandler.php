@@ -6,7 +6,6 @@ use Arr;
 use Sms;
 use Mail;
 use Crypt;
-use Hashids;
 use Metrics;
 use App\Draw;
 use App\Participant;
@@ -36,7 +35,7 @@ class DrawHandler
             $participant->phone_number = Arr::get($santa, 'phone');
             $participant->save();
 
-            $participants[$idx] = $participant;;
+            $participants[$idx] = $participant;
             $draw->participants->add($participant);
         }
 

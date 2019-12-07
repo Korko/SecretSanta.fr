@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use Crypt;
 use Hashids;
-use App\Draw;
 use App\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;

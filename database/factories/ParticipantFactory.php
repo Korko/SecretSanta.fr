@@ -9,6 +9,6 @@ $factory->define(App\Participant::class, function (Faker\Generator $faker) {
         'email_address'   => $faker->email,
         'email_id'        => null,
         'delivery_status' => App\Participant::CREATED,
-        'target_id'       => null
+        'target_id'       => null,
     ];
 });
