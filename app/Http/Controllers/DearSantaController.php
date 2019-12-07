@@ -14,17 +14,21 @@ class DearSantaController extends Controller
     public function view(Participant $participant)
     {
         return view('dearSanta', [
-            'challenge' => $participant->draw->challenge,
             'santa'     => Hashids::encode($participant->id),
         ]);
     }
 
+    public function fetch(Participant $participant)
+    {
+        return [
+            'santa' => $participant->name,
+            'draw' => $participant->draw->only(['id', 'email_title']),
+            'organizer' => $participant->draw->organizer->name,
+        ];
+    }
+
     public function handle(Participant $participant, DearSantaRequest $request)
     {
-        if ($participant->draw->challenge !== config('app.challenge')) {
-            abort(400);
-        }
-
         Metrics::increment('dearsanta');
 
         $this->sendMail($participant->santa, $request->input('content'));

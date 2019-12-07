@@ -31,7 +31,7 @@ __webpack_require__(/*! jquery.scrollto */ "./node_modules/jquery.scrollto/jquer
       if (timeout) clearTimeout(timeout);else if (execAsap) func.apply(obj, args);
       timeout = setTimeout(delayed, threshold || 100);
     };
-  }; // smartresize 
+  }; // smartresize
 
 
   jQuery.fn[sr] = function (fn) {
@@ -112,7 +112,7 @@ jQuery(document).ready(function () {
 
 var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
 
-if (window.global.alert) {
+if (window.global && window.global.alert) {
   alertify.alert(window.global.alert);
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))

@@ -16,7 +16,6 @@ class Draw extends Model
     protected $encrypted = [
         'email_title',
         'email_body',
-        'challenge',
     ];
 
     // Fake attributes
@@ -24,7 +23,6 @@ class Draw extends Model
 
     public function save(array $options = [])
     {
-        $this->challenge = config('app.challenge');
         $this->expires_at = $this->expires_at ?: (new DateTime('now'))->add(new DateInterval('P7D'));
 
         return parent::save($options);

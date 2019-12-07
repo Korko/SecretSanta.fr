@@ -1,21 +1,32 @@
-import Vue from 'vue';
-import VueAjax from './ajaxVue.js';
-import VueDecrypt from './decrypterVue.js';
+import Vue from 'vue'
+
+import VueStates from './statesVue.js'
+
+import DearSantaFetcher from './dearSantaFetcher.vue'
+import DearSantaForm from './dearSantaForm.vue'
+
+import store from './store.js'
 
 window.app = new Vue({
-  mixins: [VueAjax, VueDecrypt],
+  mixins: [VueStates],
+  components: {
+    DearSantaFetcher,
+    DearSantaForm
+  },
 
   el: '#form',
 
-  data: {
-    challenge: window.global.challenge,
-    key: window.location.hash.substr(1),
-    text: window.global.text,
-    verified: false
-  },
+  store,
 
-  created: function() {
-      this.verified = (this.decrypt(this.challenge) === this.text);
+  data: {
+    state: 'DearSantaFetcher',
+    states: Object.freeze({
+        'DearSantaFetcher': {
+            'success': 'DearSantaForm',
+            'failure': 'FetcherFailure'
+        }
+    })
   }
 });
+
 
