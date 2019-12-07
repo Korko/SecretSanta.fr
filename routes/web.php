@@ -20,5 +20,3 @@ Route::post('/dearsanta/{santa}', 'DearSantaController@handle')->middleware('dec
 
 Route::get('/org/{draw}', 'OrganizerController@view')->name('organizerPanel');
 Route::post('/org/{draw}/{participant}/changeEmail', 'OrganizerController@changeEmail')->name('organizerPanel.changeEmail')->middleware('decrypt.key');;
-
-Route::post('/event', 'EmailEventController@handle')->middleware('decrypt.key');
