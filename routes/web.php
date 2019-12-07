@@ -22,7 +22,3 @@ Route::get('/org/{draw}', 'OrganizerController@view')->name('organizerPanel');
 Route::post('/org/{draw}/{participant}/changeEmail', 'OrganizerController@changeEmail')->name('organizerPanel.changeEmail')->middleware('decrypt.key');;
 
 Route::post('/event', 'EmailEventController@handle')->middleware('decrypt.key');
-
-if (App::environment('local', 'dev', 'testing')) {
-    Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-}
