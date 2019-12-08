@@ -15,12 +15,17 @@ class OrganizerController extends Controller
     public function view(Draw $draw)
     {
         return view('organizer', [
-            'challenge'    => $draw->challenge,
             'draw'         => $draw->id,
+        ]);
+    }
+
+    public function fetch(Draw $draw)
+    {
+        return [
             'participants' => $draw->participants->map(function ($participant) {
                 return $participant->only(['name', 'email_address', 'delivery_status']);
             }),
-        ]);
+        ];
     }
 
     public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
