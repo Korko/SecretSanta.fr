@@ -28,7 +28,7 @@ export default {
           type: options.data ? "POST" : "GET",
           data : options.data,
           success: function(data, textStatus, jqXHR) {
-            if(jqXHR.responseJSON.message)
+            if(jqXHR.responseJSON && jqXHR.responseJSON.message)
               alertify.success(jqXHR.responseJSON.message);
 
             app.sending = false;
@@ -37,9 +37,9 @@ export default {
             if(options.success) options.success(jqXHR.responseJSON);
           },
           error: function(jqXHR, textStatus, errorThrown) {
-            if(jqXHR.responseJSON.message)
+            if(jqXHR.responseJSON && jqXHR.responseJSON.message)
               alertify.error(jqXHR.responseJSON.message);
-            if(jqXHR.responseJSON.errors)
+            if(jqXHR.responseJSON && jqXHR.responseJSON.errors)
               app.fieldErrors = jqXHR.responseJSON.errors;
 
             app.sending = false;
@@ -52,12 +52,12 @@ export default {
     submit: function(event) {
       this.submitForm(event.target);
     },
-    submitForm: function(target) {
-      var postData = $(event.target).serializeArray();
-      var formUrl = $(event.target).attr("action");
-      this.call(formUrl, {
+    submitForm: function(target, options) {
+      var postData = $(target).serializeArray();
+      var formUrl = $(target).attr("action");
+      this.call(formUrl, Object.assign({
         data: postData
-      });
+      }, options));
     }
   }
 };

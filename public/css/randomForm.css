@@ -13333,6 +13333,43 @@ footer .row {
   background-color: rgba(0, 0, 0, 0.175);
 }
 
+/* ==========================================================================
+    12. Widgets
+========================================================================== */
+
+.fa-spinner {
+  -webkit-animation: spin 1s infinite linear;
+          animation: spin 1s infinite linear;
+}
+
+button .fa-spinner {
+  margin-right: 10px;
+}
+
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: scale(1) rotate(0deg);
+            transform: scale(1) rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: scale(1) rotate(360deg);
+            transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  from {
+    -webkit-transform: scale(1) rotate(0deg);
+            transform: scale(1) rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: scale(1) rotate(360deg);
+            transform: scale(1) rotate(360deg);
+  }
+}
+
 .alertify-logs > * {
   padding: 12px 24px;
   color: #fff;
@@ -14503,39 +14540,6 @@ fieldset > div.form-group {
 .tip {
   font-style: italic;
   font-size: 12px;
-}
-
-.fa-spinner {
-  -webkit-animation: spin 1s infinite linear;
-          animation: spin 1s infinite linear;
-}
-
-button .fa-spinner {
-  margin-right: 10px;
-}
-
-@-webkit-keyframes spin {
-  from {
-    -webkit-transform: scale(1) rotate(0deg);
-            transform: scale(1) rotate(0deg);
-  }
-
-  to {
-    -webkit-transform: scale(1) rotate(360deg);
-            transform: scale(1) rotate(360deg);
-  }
-}
-
-@keyframes spin {
-  from {
-    -webkit-transform: scale(1) rotate(0deg);
-            transform: scale(1) rotate(0deg);
-  }
-
-  to {
-    -webkit-transform: scale(1) rotate(360deg);
-            transform: scale(1) rotate(360deg);
-  }
 }
 
 .table-bordered.heavy-borders,

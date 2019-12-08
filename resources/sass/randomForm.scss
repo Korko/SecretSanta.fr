@@ -173,16 +173,6 @@ fieldset > div.form-group {
     font-style: italic;
     font-size: 12px;
 }
-.fa-spinner {
-    animation: spin 1s infinite linear;
-}
-button .fa-spinner {
-    margin-right: 10px;
-}
-@keyframes spin {
-    from { transform: scale(1) rotate(0deg); }
-    to { transform: scale(1) rotate(360deg); }
-}
 .table-bordered.heavy-borders, .table-bordered.heavy-borders > tbody > tr > td, .table-bordered.heavy-borders > tbody > tr > th, .table-bordered.heavy-borders > tfoot > tr > td, .table-bordered.heavy-borders > tfoot > tr > th, .table-bordered.heavy-borders > thead > tr > td, .table-bordered.heavy-borders > thead > tr > th {
     border-width: 3px;
 }

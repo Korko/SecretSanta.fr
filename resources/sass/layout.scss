@@ -486,3 +486,18 @@ footer .row {
   color: #212529;
   background-color: rgba(0, 0, 0, 0.175);
 }
+
+/* ==========================================================================
+    12. Widgets
+========================================================================== */
+
+.fa-spinner {
+    animation: spin 1s infinite linear;
+}
+button .fa-spinner {
+    margin-right: 10px;
+}
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg); }
+    to { transform: scale(1) rotate(360deg); }
+}
