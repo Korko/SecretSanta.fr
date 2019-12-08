@@ -16,6 +16,9 @@ export default {
         data: {
           _token: this.csrf,
           key: this.key
+        },
+        success: (json) => {
+          this.$emit('success',json);
         }
       });
     });

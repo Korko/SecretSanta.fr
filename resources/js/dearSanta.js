@@ -1,17 +1,40 @@
 import Vue from 'vue'
 
+import VueAjax from './ajaxVue.js'
 import VueStates from './statesVue.js'
 
-import DearSantaFetcher from './dearSantaFetcher.vue'
-import DearSantaForm from './dearSantaForm.vue'
+import { mapState } from 'vuex'
 
 import store from './store.js'
 
 window.app = new Vue({
   mixins: [VueStates],
   components: {
-    DearSantaFetcher,
-    DearSantaForm
+    DearSantaFetcher: {
+      mixins: [VueAjax],
+      props: ['formurl'],
+      computed: mapState(['csrf', 'key']),
+
+      mounted() {
+        this.$nextTick(function () {
+          this.call(this.formurl, {
+            data: {
+              _token: this.csrf,
+              key: this.key
+            },
+            success: (json) => {
+              this.$emit('success',json);
+            }
+          });
+        });
+      }
+    },
+    DearSantaForm: {
+      template: '#form-template',
+      mixins: [VueAjax],
+      props: ['formurl'],
+      computed: mapState(['csrf', 'key', 'data'])
+    }
   },
 
   el: '#form',
