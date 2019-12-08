@@ -139,28 +139,45 @@ var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.j
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _ajaxVue_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ajaxVue.js */ "./resources/js/ajaxVue.js");
-/* harmony import */ var _statesVue_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./statesVue.js */ "./resources/js/statesVue.js");
-/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store.js */ "./resources/js/store.js");
-/* harmony import */ var _timer_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./timer.vue */ "./resources/js/timer.vue");
-
-
-
-
+/* harmony import */ var _fetcherVue_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fetcherVue.js */ "./resources/js/fetcherVue.js");
 
 
 window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  mixins: [_statesVue_js__WEBPACK_IMPORTED_MODULE_3__["default"]],
+  mixins: [_fetcherVue_js__WEBPACK_IMPORTED_MODULE_1__["default"]]
+});
+
+/***/ }),
+
+/***/ "./resources/js/fetcherVue.js":
+/*!************************************!*\
+  !*** ./resources/js/fetcherVue.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _ajaxVue_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ajaxVue.js */ "./resources/js/ajaxVue.js");
+/* harmony import */ var _statesVue_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./statesVue.js */ "./resources/js/statesVue.js");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store.js */ "./resources/js/store.js");
+/* harmony import */ var _timer_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./timer.vue */ "./resources/js/timer.vue");
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [_statesVue_js__WEBPACK_IMPORTED_MODULE_2__["default"]],
   components: {
-    DearSantaFailure: {
+    Failure: {
       template: '#error-template'
     },
-    DearSantaFetcher: {
+    Fetcher: {
       template: '#fetcher-template',
-      mixins: [_ajaxVue_js__WEBPACK_IMPORTED_MODULE_2__["default"]],
+      mixins: [_ajaxVue_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
       components: {
-        Timer: _timer_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+        Timer: _timer_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
       },
       props: ['formurl'],
       data: function data() {
@@ -168,7 +185,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           loading: false
         };
       },
-      computed: Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['csrf', 'key']),
+      computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['csrf', 'key']),
       mounted: function mounted() {
         this.$nextTick(function () {
           var _this = this;
@@ -185,21 +202,21 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         });
       }
     },
-    DearSantaForm: {
+    Form: {
       template: '#form-template',
-      mixins: [_ajaxVue_js__WEBPACK_IMPORTED_MODULE_2__["default"]],
+      mixins: [_ajaxVue_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
       props: ['formurl'],
-      computed: Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['csrf', 'key', 'data'])
+      computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['csrf', 'key', 'data'])
     }
   },
   el: '#form',
-  store: _store_js__WEBPACK_IMPORTED_MODULE_4__["default"],
+  store: _store_js__WEBPACK_IMPORTED_MODULE_3__["default"],
   data: {
-    state: 'DearSantaFetcher',
+    state: 'Fetcher',
     states: Object.freeze({
-      'DearSantaFetcher': {
-        'success': 'DearSantaForm',
-        'failure': 'DearSantaFailure'
+      'Fetcher': {
+        'success': 'Form',
+        'failure': 'Failure'
       }
     })
   }

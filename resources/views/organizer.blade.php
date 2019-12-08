@@ -1,41 +1,23 @@
-@extends('templates/layout', ['styles' => '/css/organizer.css'])
+@extends('templates/fetcher', ['styles' => '/css/dearSanta.css', 'fetchUrl' => route('organizerPanel.fetch', ['draw' => $draw])])
 
-@section('header')
-    @parent
-
-    <!-- config js -->
-    @javascript([
-        'challenge' => $challenge,
-        'text' => config('app.challenge'),
-        'participants' => $participants,
-    ])
-@stop
-
-@section('body')
-    <div id="form" v-cloak>
-        <div v-if="!verified" class="alert alert-danger" role="alert">
-            <span class="fas fa-exclamation-triangle" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span>
-            This link is invalid, please try again
-        </div>
-        <div v-else>
-            <table class="table table-hover">
-                <thead>
-                    <tr class="table-active">
-                        <th scope="col">@lang('organizer.list.name')</th>
-                        <th scope="col">@lang('organizer.list.email')</th>
-                        <th scope="col">@lang('organizer.list.status')</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="participant in participants">
-                        <td>@{{ participant.name }}</td>
-                        <td>@{{ participant.email_address }}</td>
-                        <td>@{{ participant.delivery_status }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+@section('form')
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-active">
+                    <th scope="col">@lang('organizer.list.name')</th>
+                    <th scope="col">@lang('organizer.list.email')</th>
+                    <th scope="col">@lang('organizer.list.status')</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="participant in data.participants">
+                    <td>@{{ participant.name }}</td>
+                    <td>@{{ participant.email_address }}</td>
+                    <td>@{{ participant.delivery_status }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 @stop
 
