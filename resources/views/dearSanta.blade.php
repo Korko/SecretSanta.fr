@@ -1,8 +1,23 @@
 @extends('templates/layout', ['styles' => '/css/dearSanta.css'])
 
 @section('body')
+    <template id="error-template">
+      <span>Une erreur est survenue</span>
+    </template>
+    <template id="fetcher-template">
+        <form id="fetch" action="{{ route('dearsanta.fetch', ['santa' => $santa]) }}" @submit.prevent="submit" method="post" autocomplete="off">
+            <input type="hidden" name="_token" :value="csrf">
+            <input type="hidden" name="key" :value="key">
+            <timer :delay="2000">
+                <button type="submit" class="btn btn-primary btn-lg" :disabled="loading">
+                    <span v-if="loading"><span class="fas fa-spinner"></span> Chargement en cours...</span>
+                    <span v-else>Charger</span>
+                </button>
+            </timer>
+        </form>
+    </template>
     <template id="form-template">
-        <form action="formurl" @submit.prevent="submit" method="post" autocomplete="off">
+        <form action="{{ route('dearsanta.contact', ['santa' => $santa]) }}" @submit.prevent="submit" method="post" autocomplete="off">
             <input type="hidden" name="_token" :value="csrf">
             <fieldset :disabled="sending || sent">
                 <fieldset>
@@ -28,9 +43,7 @@
     </template>
 
     <div id="form" v-cloak>
-        <component :is="state" v-if="state === 'DearSantaFetcher'" formurl="{{ route('dearsanta.fetch', ['santa' => $santa]) }}" v-on:success="stateSuccess" v-on:error="stateFailure"></component>
-        <component :is="state" v-else-if="state === 'DearSantaForm'" formurl="{{ route('dearsanta.contact', ['santa' => $santa]) }}"></component>
-        <component :is="state" v-else></component>
+        <component :is="state" v-on:success="stateSuccess" v-on:error="stateFailure"></component>
     </div>
 @stop
 

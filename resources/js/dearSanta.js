@@ -1,29 +1,39 @@
 import Vue from 'vue'
 
-import VueAjax from './ajaxVue.js'
-import VueStates from './statesVue.js'
-
 import { mapState } from 'vuex'
 
+import VueAjax from './ajaxVue.js'
+import VueStates from './statesVue.js'
 import store from './store.js'
+import Timer from './timer.vue'
 
 window.app = new Vue({
   mixins: [VueStates],
   components: {
+    DearSantaFailure: {
+      template: '#error-template'
+    },
     DearSantaFetcher: {
+      template: '#fetcher-template',
       mixins: [VueAjax],
+      components: {Timer},
       props: ['formurl'],
+      data: () => {
+        return {
+          loading: false
+        };
+      },
       computed: mapState(['csrf', 'key']),
 
       mounted() {
         this.$nextTick(function () {
-          this.call(this.formurl, {
-            data: {
-              _token: this.csrf,
-              key: this.key
-            },
+          this.loading = true;
+          this.submitForm('#fetch', {
             success: (json) => {
-              this.$emit('success',json);
+              this.$emit('success', json);
+            },
+            error: () => {
+              this.$emit('error');
             }
           });
         });
@@ -46,7 +56,7 @@ window.app = new Vue({
     states: Object.freeze({
         'DearSantaFetcher': {
             'success': 'DearSantaForm',
-            'failure': 'FetcherFailure'
+            'failure': 'DearSantaFailure'
         }
     })
   }

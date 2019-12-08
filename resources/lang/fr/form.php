@@ -104,7 +104,7 @@ via SecretSanta.fr',
     'data-expiration'   => 'Date limite de stockage des emails',
 
     'submit'  => 'Lancez l\'aléatoire !',
-    'sending' => 'Calcul en cours',
+    'sending' => 'Envoi en cours',
     'sent'    => 'Envoyé',
 
     'paypal.alt' => 'PayPal, le réflexe sécurité pour payer en ligne',

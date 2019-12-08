@@ -42,14 +42,14 @@ var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.j
           type: options.data ? "POST" : "GET",
           data: options.data,
           success: function success(data, textStatus, jqXHR) {
-            if (jqXHR.responseJSON.message) alertify.success(jqXHR.responseJSON.message);
+            if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify.success(jqXHR.responseJSON.message);
             app.sending = false;
             app.sent = true;
             if (options.success) options.success(jqXHR.responseJSON);
           },
           error: function error(jqXHR, textStatus, errorThrown) {
-            if (jqXHR.responseJSON.message) alertify.error(jqXHR.responseJSON.message);
-            if (jqXHR.responseJSON.errors) app.fieldErrors = jqXHR.responseJSON.errors;
+            if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify.error(jqXHR.responseJSON.message);
+            if (jqXHR.responseJSON && jqXHR.responseJSON.errors) app.fieldErrors = jqXHR.responseJSON.errors;
             app.sending = false;
             if (options.error) options.error(jqXHR.responseJSON);
           }
@@ -59,12 +59,12 @@ var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.j
     submit: function submit(event) {
       this.submitForm(event.target);
     },
-    submitForm: function submitForm(target) {
-      var postData = $(event.target).serializeArray();
-      var formUrl = $(event.target).attr("action");
-      this.call(formUrl, {
+    submitForm: function submitForm(target, options) {
+      var postData = $(target).serializeArray();
+      var formUrl = $(target).attr("action");
+      this.call(formUrl, Object.assign({
         data: postData
-      });
+      }, options));
     }
   }
 });
