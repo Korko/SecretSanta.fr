@@ -6,9 +6,6 @@ use App\Database\Model;
 
 class Participant extends Model
 {
-    // Fake attributes
-    public $phone_number;
-
     /**
      * The model's default values for attributes.
      *

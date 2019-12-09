@@ -44,8 +44,6 @@ class RandomFormController extends Controller
         Metrics::increment('draws');
         Metrics::increment('participants', count($participants));
 
-        $dearSanta = ($request->input('dearsanta') === '1');
-
         $dataExpiration = $request->input('data-expiration');
 
         $mailContent = [
@@ -53,11 +51,7 @@ class RandomFormController extends Controller
             'body'  => $request->input('content-email'),
         ];
 
-        $smsContent = [
-            'body' => $request->input('content-sms'),
-        ];
-
-        return (new DrawHandler())->contactParticipants($participants, $hat, $mailContent, $smsContent, $dataExpiration, $dearSanta);
+        return (new DrawHandler())->contactParticipants($participants, $hat, $mailContent, $dataExpiration);
     }
 
     protected function formatParticipants(array $participants): array
