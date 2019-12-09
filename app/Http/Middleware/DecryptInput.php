@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use Korko\Encrypter\SymmetricalEncrypter as Encrypter;
+
 class DecryptInput extends TransformsRequest
 {
     protected $decrypter;
