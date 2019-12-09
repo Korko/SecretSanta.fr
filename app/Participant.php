@@ -6,6 +6,9 @@ use App\Database\Model;
 
 class Participant extends Model
 {
+    // Fake property
+    public $exclusions;
+
     /**
      * The model's default values for attributes.
      *

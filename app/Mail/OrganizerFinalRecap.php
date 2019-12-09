@@ -7,11 +7,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class OrganizerRecap extends Mailable
+class OrganizerFinalRecap extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $panelLink;
 
     public $draw;
 
@@ -20,10 +18,9 @@ class OrganizerRecap extends Mailable
      *
      * @return void
      */
-    public function __construct(Draw $draw, $panelLink)
+    public function __construct(Draw $draw)
     {
         $this->draw = $draw;
-        $this->panelLink = $panelLink;
     }
 
     /**
@@ -45,9 +42,9 @@ class OrganizerRecap extends Mailable
             ];
         }));
 
-        return $this->subject(__('emails.organizer_recap_title', ['draw' => $this->draw->id]))
-                    ->view('emails.organizer_recap')
-                    ->text('emails.organizer_recap_plain')
+        return $this->subject(__('emails.organizer_final_recap_title', ['draw' => $this->draw->id]))
+                    ->view('emails.organizer_final_recap')
+                    ->text('emails.organizer_final_recap_plain')
                     ->attachData($csv, 'secretsanta.csv', [
                         'mime' => 'text/csv',
                     ]);
