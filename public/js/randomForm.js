@@ -1414,45 +1414,41 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(global, $) {/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
 /* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(alertify_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _smsTools_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./smsTools.js */ "./resources/js/smsTools.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var vue_autosize__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-autosize */ "./node_modules/vue-autosize/src/index.js");
-/* harmony import */ var vue_autosize__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_autosize__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _modernizr_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modernizr.js */ "./resources/js/modernizr.js");
-/* harmony import */ var _modernizr_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_modernizr_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! papaparse */ "./node_modules/papaparse/papaparse.min.js");
-/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _lang_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./lang.js */ "./resources/js/lang.js");
-/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
-/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _ajaxVue_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ajaxVue.js */ "./resources/js/ajaxVue.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_autosize__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-autosize */ "./node_modules/vue-autosize/src/index.js");
+/* harmony import */ var vue_autosize__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_autosize__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _modernizr_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modernizr.js */ "./resources/js/modernizr.js");
+/* harmony import */ var _modernizr_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_modernizr_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! papaparse */ "./node_modules/papaparse/papaparse.min.js");
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _lang_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./lang.js */ "./resources/js/lang.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _ajaxVue_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ajaxVue.js */ "./resources/js/ajaxVue.js");
 
 
 
 
-
-vue__WEBPACK_IMPORTED_MODULE_3___default.a.use(vue_autosize__WEBPACK_IMPORTED_MODULE_4___default.a);
-
+vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vue_autosize__WEBPACK_IMPORTED_MODULE_3___default.a);
 
 
 
-_lang_js__WEBPACK_IMPORTED_MODULE_8__["default"].setLocale(window.global.lang);
+
+_lang_js__WEBPACK_IMPORTED_MODULE_7__["default"].setLocale(window.global.lang);
 
 
-window.app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
-  mixins: [_ajaxVue_js__WEBPACK_IMPORTED_MODULE_10__["default"]],
+window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
+  mixins: [_ajaxVue_js__WEBPACK_IMPORTED_MODULE_9__["default"]],
   el: '#form',
   data: {
     participants: [],
-    smsContent: '',
-    maxSms: global.maxSms,
     dearsanta: false,
     date: window.now,
     showModal: false,
@@ -1491,21 +1487,9 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
           type: String,
           "default": ''
         },
-        phone: {
-          type: String,
-          "default": ''
-        },
         participants: {
           type: Array,
           required: true
-        },
-        dearsanta: {
-          type: Boolean,
-          "default": false
-        },
-        smsdisabled: {
-          type: Boolean,
-          "default": false
         }
       },
       data: function data() {
@@ -1514,7 +1498,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
         };
       },
       components: {
-        Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_9___default.a
+        Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_8___default.a
       },
       computed: {
         participantNames: function participantNames() {
@@ -1529,13 +1513,6 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
             }
           }.bind(this));
           return names;
-        },
-        phoneNumber: function phoneNumber() {
-          if (this.phone.length) {
-            return this.phone[0] === '0' ? this.phone.match(/[0-9]{1,2}/g).join(' ') : [this.phone[0]].concat(this.phone.slice(1).match(/[0-9]{1,2}/g)).join(' ');
-          } else {
-            return this.phone;
-          }
         }
       },
       watch: {
@@ -1544,82 +1521,32 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
         },
         email: function email() {
           this.$emit('changeemail', this.email);
-        },
-        phone: function phone() {
-          this.$emit('changephone', this.phone);
         }
       }
-    }
-  },
-  computed: {
-    emailUsed: function emailUsed() {
-      var used = false;
-
-      for (var i in this.participants) {
-        used = used || !!this.participants[i].email;
-      }
-
-      return used;
-    },
-    phoneUsed: function phoneUsed() {
-      var used = false;
-
-      for (var i in this.participants) {
-        used = used || !!this.participants[i].phone;
-      }
-
-      return used;
-    },
-    allMails: function allMails() {
-      var allMails = true;
-      this.participants.forEach(function (participant) {
-        allMails = allMails && (participant.name === '' || participant.email !== '');
-      });
-      return allMails;
-    },
-    longuestName: function longuestName() {
-      var name = '';
-      this.participants.forEach(function (participant) {
-        name = participant.name && _smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].length(participant.name) > _smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].length(name) ? participant.name : name;
-      });
-      return name;
-    },
-    maxSmsContent: function maxSmsContent() {
-      return this.smsContent.replace('{SANTA}', this.longuestName).replace('{TARGET}', this.longuestName);
-    },
-    smsCount: function smsCount() {
-      var smsCount = _smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].chunk(this.maxSmsContent).length;
-      return this.maxSms ? Math.min(smsCount, this.maxSms) : smsCount;
-    },
-    charactersLeft: function charactersLeft() {
-      return _smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].chunkMaxLength(this.maxSmsContent, this.smsCount, true) - this.maxSmsContent.length;
-    },
-    maxLength: function maxLength() {
-      return _smsTools_js__WEBPACK_IMPORTED_MODULE_2__["default"].chunkMaxLength(this.maxSmsContent, this.maxSms, true);
     }
   },
   created: function created() {
     this.addParticipant();
     this.addParticipant();
     this.addParticipant();
-    vue__WEBPACK_IMPORTED_MODULE_3___default.a.nextTick(function () {
-      if (!_modernizr_js__WEBPACK_IMPORTED_MODULE_5___default.a.inputtypes.date) {
+    vue__WEBPACK_IMPORTED_MODULE_2___default.a.nextTick(function () {
+      if (!_modernizr_js__WEBPACK_IMPORTED_MODULE_4___default.a.inputtypes.date) {
         $('input[type=date]', this.$el).datepicker({
           // Consistent format with the HTML5 picker
           dateFormat: 'yy-mm-dd',
-          minDate: moment__WEBPACK_IMPORTED_MODULE_6___default()(this.now).add(1, 'day').toDate(),
-          maxDate: moment__WEBPACK_IMPORTED_MODULE_6___default()(this.now).add(1, 'year').toDate()
+          minDate: moment__WEBPACK_IMPORTED_MODULE_5___default()(this.now).add(1, 'day').toDate(),
+          maxDate: moment__WEBPACK_IMPORTED_MODULE_5___default()(this.now).add(1, 'year').toDate()
         });
       }
 
-      if (!_modernizr_js__WEBPACK_IMPORTED_MODULE_5___default.a.filereader) {
+      if (!_modernizr_js__WEBPACK_IMPORTED_MODULE_4___default.a.filereader) {
         $('.participants-imports').remove();
       }
     }.bind(this));
   },
   filters: {
     moment: function moment(date, amount, unit) {
-      return moment__WEBPACK_IMPORTED_MODULE_6___default()(date).add(amount, unit).format("YYYY-MM-DD");
+      return moment__WEBPACK_IMPORTED_MODULE_5___default()(date).add(amount, unit).format("YYYY-MM-DD");
     }
   },
   watch: {
@@ -1644,36 +1571,32 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
           offset: -120
         });
       }
-    },
-    allMails: function allMails(newVal) {
-      this.dearsanta = this.dearsanta && newVal;
     }
   },
   methods: {
     resetParticipants: function resetParticipants() {
       this.participants = [];
     },
-    addParticipant: function addParticipant(name, email, phone) {
+    addParticipant: function addParticipant(name, email) {
       this.participants.push({
         name: name,
         email: email,
-        phone: phone,
         id: 'id' + this.participants.length + new Date().getTime()
       });
     },
     importParticipants: function importParticipants(file) {
       this.importing = true;
-      var test = papaparse__WEBPACK_IMPORTED_MODULE_7___default.a.parse(file, {
+      var test = papaparse__WEBPACK_IMPORTED_MODULE_6___default.a.parse(file, {
         error: function error() {
           this.importing = false;
-          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(_lang_js__WEBPACK_IMPORTED_MODULE_8__["default"].get('csv.importError'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(_lang_js__WEBPACK_IMPORTED_MODULE_7__["default"].get('csv.importError'));
         },
         complete: function (file) {
           this.importing = false;
           this.resetParticipants();
           file.data.forEach(function (participant) {
             if (participant[0] !== '') {
-              this.addParticipant(participant[0], participant[1], participant[2]);
+              this.addParticipant(participant[0], participant[1]);
             }
           }.bind(this));
 
@@ -1683,105 +1606,13 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
             }
           }
 
-          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(_lang_js__WEBPACK_IMPORTED_MODULE_8__["default"].get('csv.importSuccess'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(_lang_js__WEBPACK_IMPORTED_MODULE_7__["default"].get('csv.importSuccess'));
         }.bind(this)
       });
     }
   }
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
-
-/***/ }),
-
-/***/ "./resources/js/smsTools.js":
-/*!**********************************!*\
-  !*** ./resources/js/smsTools.js ***!
-  \**********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ((function () {
-  var lengths = {
-    ascii: [160, 146, 153],
-    unicode: [70, 62, 66]
-  };
-  return {
-    isUnicode: function isUnicode(text) {
-      for (var charPos = 0; charPos < text.length; charPos++) {
-        if (text.charCodeAt(charPos) > 127 && text[charPos] != "€") {
-          return true;
-        }
-      }
-
-      return false;
-    },
-    length: function length(text) {
-      var smsLength = 0;
-
-      for (var charPos = 0; charPos < text.length; charPos++) {
-        switch (text[charPos]) {
-          case "\n":
-          case "[":
-          case "]":
-          case "\\":
-          case "^":
-          case "{":
-          case "}":
-          case "|":
-          case "€":
-            smsLength += 2;
-            break;
-
-          default:
-            smsLength += 1;
-        }
-      }
-
-      return smsLength;
-    },
-    chunkMaxLength: function chunkMaxLength(text, chunkQuantity, adaptLength) {
-      var limits = this.isUnicode(text) ? lengths.unicode : lengths.ascii;
-      var limit = limits[0];
-
-      for (var i = 1; i < chunkQuantity; i++) {
-        limit += limits[Math.min(2, i)];
-      }
-
-      if (adaptLength) {
-        limit -= this.length(text) - text.length;
-      }
-
-      return limit;
-    },
-    chunkLengthLeft: function chunkLengthLeft(text) {
-      var chunks = this.chunk(text);
-      var maxLength = this.chunkMaxLength(text, chunks.length);
-      return maxLength - this.length(text);
-    },
-    chunk: function chunk(text) {
-      var chunks = [];
-      var limits = this.isUnicode(text) ? lengths.unicode : lengths.ascii;
-      var limit = limits[0];
-      var chunk = '';
-
-      while (text.length) {
-        if (this.length(chunk + text[0]) > limit) {
-          chunks.push(chunk);
-          chunk = '';
-          limit = limits[Math.min(2, chunks.length)];
-        }
-
-        chunk = chunk + text[0];
-        text = text.substr(1);
-      }
-
-      if (chunk) chunks.push(chunk);
-      return chunks;
-    }
-  };
-})());
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
 

@@ -15,7 +15,7 @@
 
             @lang('form.csv.format')
             <table class="table table-bordered heavy-borders">
-                <tbody><tr><td>@lang('form.csv.column1')</td><td>@lang('form.csv.column2')</td><td>@lang('form.csv.column3')</td></tr></tbody>
+                <tbody><tr><td>@lang('form.csv.column1')</td><td>@lang('form.csv.column2')</td></tr></tbody>
             </table>
 
             <div class="alert alert-danger" role="alert">

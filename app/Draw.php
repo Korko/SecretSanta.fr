@@ -18,9 +18,6 @@ class Draw extends Model
         'email_body',
     ];
 
-    // Fake attributes
-    public $sms_body;
-
     public function save(array $options = [])
     {
         $this->expires_at = $this->expires_at ?: (new DateTime('now'))->add(new DateInterval('P7D'));
