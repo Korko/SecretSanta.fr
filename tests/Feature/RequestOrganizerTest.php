@@ -7,6 +7,8 @@ use Crypt;
 use App\Draw;
 use App\Participant;
 use App\Mail\TargetDrawn;
+use App\Mail\OrganizerRecap;
+use App\Mail\OrganizerFinalRecap;
 
 class RequestOrganizerTest extends RequestCase
 {
@@ -50,9 +52,11 @@ class RequestOrganizerTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
+        Mail::assertQueued(OrganizerFinalRecap::class);
+
         // So fetch it from the mail
         $link = null;
-        Mail::assertQueued(\App\Mail\OrganizerRecap::class, function ($mail) use (&$link) {
+        Mail::assertQueued(OrganizerRecap::class, function ($mail) use (&$link) {
             $link = $mail->panelLink;
 
             return true;

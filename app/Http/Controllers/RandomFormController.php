@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Services\DrawHandler;
 use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
-use Facades\App\Services\HatSolver as Solver;
 
 class RandomFormController extends Controller
 {
@@ -39,10 +38,6 @@ class RandomFormController extends Controller
     protected function drawAndInform(Request $request)
     {
         $participants = $this->formatParticipants($request->input('participants'));
-        $hat = Solver::one($participants, array_column($participants, 'exclusions'));
-
-        Metrics::increment('draws');
-        Metrics::increment('participants', count($participants));
 
         $dataExpiration = $request->input('data-expiration');
 
@@ -51,7 +46,7 @@ class RandomFormController extends Controller
             'body'  => $request->input('content-email'),
         ];
 
-        return (new DrawHandler())->contactParticipants($participants, $hat, $mailContent, $dataExpiration);
+        return (new DrawHandler())->contactParticipants($participants, $mailContent, $dataExpiration);
     }
 
     protected function formatParticipants(array $participants): array
