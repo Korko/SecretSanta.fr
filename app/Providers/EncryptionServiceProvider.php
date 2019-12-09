@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\SymmetricalEncrypter;
+use Korko\Encrypter\SymmetricalEncrypter;
 use Illuminate\Encryption\EncryptionServiceProvider as ServiceProvider;
 
 class EncryptionServiceProvider extends ServiceProvider
@@ -15,7 +15,7 @@ class EncryptionServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('encrypter', function ($app) {
-            return new SymmetricalEncrypter(SymmetricalEncrypter::generateKey('AES-256-CBC'));
+            return new SymmetricalEncrypter(SymmetricalEncrypter::generateKey('AES-256-CBC'), 'AES-256-CBC');
         });
     }
 }
