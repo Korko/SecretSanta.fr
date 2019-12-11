@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Arr;
 use Mail;
-use Crypt;
 use Metrics;
 use App\Draw;
 use App\Participant;
@@ -56,10 +55,8 @@ class DrawHandler
 
     public function informOrganizer(Draw $draw)
     {
-        $panelLink = route('organizerPanel', ['draw' => $draw->id]).'#'.base64_encode(Crypt::getKey());
-
         Mail::to([['email' => $draw->organizer->email_address, 'name' => $draw->organizer->name]])
-            ->queue(new OrganizerRecap($draw, $panelLink));
+            ->queue(new OrganizerRecap($draw));
 
         $draw->participants->each(function (&$participant) {
             $participant->exclusions[] = $participant->target->id;
@@ -68,7 +65,7 @@ class DrawHandler
         try {
             // Check if there's a solution with the previous exclusions + the actual target
             Solver::one($draw->participants->all(), $draw->participants->pluck('exclusions', 'id')->all());
-        } catch(SolverException $e) {
+        } catch (SolverException $e) {
             // If not, reset all the exclusions
             $draw->participants->each(function (&$participant) {
                 $participant->exclusions = [];
