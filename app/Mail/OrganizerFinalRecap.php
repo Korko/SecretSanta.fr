@@ -4,14 +4,14 @@ namespace App\Mail;
 
 use App\Draw;
 use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class OrganizerFinalRecap extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $draw;
+    public $organizerName;
+    public $csv;
 
     /**
      * Create a new message instance.
@@ -20,7 +20,22 @@ class OrganizerFinalRecap extends Mailable
      */
     public function __construct(Draw $draw)
     {
-        $this->draw = $draw;
+        $this->subject = __('emails.organizer_final_recap_title', ['draw' => $draw->id]);
+
+        $this->organizerName = $draw->organizer->name;
+
+        $participantNames = $draw->participants->pluck('name', 'id');
+        $this->csv = $this->formatCsv($draw->participants->map(function ($participant) use ($participantNames) {
+            return [
+                $participant->name,
+                $participant->email_address,
+                collect($participant->exclusions)
+                    ->map(function ($participantId) use ($participantNames) {
+                        return $participantNames[$participantId];
+                    })
+                    ->implode(','),
+            ];
+        }));
     }
 
     /**
@@ -30,22 +45,9 @@ class OrganizerFinalRecap extends Mailable
      */
     public function build()
     {
-        $csv = $this->formatCsv($this->draw->participants->map(function ($participant) {
-            return [
-                $participant->name,
-                $participant->email_address,
-                collect($participant->exclusions)
-                    ->map(function ($participantId) {
-                        return $this->draw->participants[$participantId]->name;
-                    })
-                    ->implode(','),
-            ];
-        }));
-
-        return $this->subject(__('emails.organizer_final_recap_title', ['draw' => $this->draw->id]))
-                    ->view('emails.organizer_final_recap')
+        return $this->view('emails.organizer_final_recap')
                     ->text('emails.organizer_final_recap_plain')
-                    ->attachData($csv, 'secretsanta.csv', [
+                    ->attachData($this->csv, 'secretsanta.csv', [
                         'mime' => 'text/csv',
                     ]);
     }

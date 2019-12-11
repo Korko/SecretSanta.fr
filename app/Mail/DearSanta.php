@@ -4,15 +4,13 @@ namespace App\Mail;
 
 use App\Participant;
 use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class DearSanta extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $santa;
-
+    public $targetName;
     public $content;
 
     /**
@@ -22,7 +20,8 @@ class DearSanta extends Mailable
      */
     public function __construct(Participant $santa, $content)
     {
-        $this->santa = $santa;
+        $this->subject = __('emails.dear_santa.title', ['draw' => $santa->draw->id]);
+        $this->targetName = $santa->target->name;
         $this->content = $content;
     }
 
@@ -33,8 +32,7 @@ class DearSanta extends Mailable
      */
     public function build()
     {
-        return $this->subject(__('emails.dear_santa.title', ['draw' => $this->santa->draw->id]))
-                    ->view('emails.dearsanta')
+        return $this->view('emails.dearsanta')
                     ->text('emails.dearsanta_plain');
     }
 }

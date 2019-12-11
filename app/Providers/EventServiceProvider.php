@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Listeners\SaveEmailData;
+use App\Listeners\EmailSent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -16,7 +16,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         MessageSent::class => [
-            SaveEmailData::class,
+            EmailSent::class,
         ],
     ];
 
