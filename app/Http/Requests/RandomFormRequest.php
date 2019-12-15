@@ -28,7 +28,7 @@ class RandomFormRequest extends Request
             'phone'                => 'array',
             'exclusions'           => 'array',
             'dearsanta'            => 'boolean|in:"0","1"',
-            'dearsanta-expiration' => 'required_if:dearsanta,"1"|date|after:tomorrow|before:+1year',
+            'dearsanta-expiration' => 'required_if:dearsanta,"1"|date|after_or_equal:tomorrow|before:+1year',
         ];
 
         if (!empty($this->request->get('name'))) {
