@@ -121,6 +121,9 @@
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
             <p class="lead main text-center">@lang('form.section.go.subtitle')</p>
             <div class="row text-center form" v-cloak>
+
+                <div class="well well-lg" style="background-color: rgba(33,45,57,.8); color: white">Pensez à vérifier vos spams<br />Il se peut que les emails soit marqués comme spam, pensez à vérifier le dossier de courrier indésirable.</div>
+
                 <div id="success-wrapper" class="alert alert-success" v-show="sent">
                     @lang('form.success')
                 </div>
