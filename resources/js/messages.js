@@ -1,3 +1,3 @@
 export default {
-    'fr.csv': require('../lang/fr/csv.php')
+    'fr.csv': require('../../resources/lang/fr/csv.php')
 }

@@ -1,5 +1,5 @@
-var $ = require('jquery');
-var alertify = require('alertify.js');
+import $ from 'jquery';
+import alertify from 'alertify.js';
 
 export default {
   data: function() {

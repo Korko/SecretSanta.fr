@@ -295,9 +295,11 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
+/* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(alertify_js__WEBPACK_IMPORTED_MODULE_1__);
 
-var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -323,18 +325,18 @@ var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.j
       if (!this.sending && !this.sent) {
         this.sending = true;
         var app = this;
-        $.ajax({
+        jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
           url: url,
           type: options.data ? "POST" : "GET",
           data: options.data,
           success: function success(data, textStatus, jqXHR) {
-            if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify.success(jqXHR.responseJSON.message);
+            if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.success(jqXHR.responseJSON.message);
             app.sending = false;
             app.sent = true;
             if (options.success) options.success(jqXHR.responseJSON);
           },
           error: function error(jqXHR, textStatus, errorThrown) {
-            if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify.error(jqXHR.responseJSON.message);
+            if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.error(jqXHR.responseJSON.message);
             if (jqXHR.responseJSON && jqXHR.responseJSON.errors) app.fieldErrors = jqXHR.responseJSON.errors;
             app.sending = false;
             if (options.error) options.error(jqXHR.responseJSON);
@@ -346,8 +348,8 @@ var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.j
       this.submitForm(event.target);
     },
     submitForm: function submitForm(target, options) {
-      var postData = $(target).serializeArray();
-      var formUrl = $(target).attr("action");
+      var postData = jquery__WEBPACK_IMPORTED_MODULE_0___default()(target).serializeArray();
+      var formUrl = jquery__WEBPACK_IMPORTED_MODULE_0___default()(target).attr("action");
       this.call(formUrl, Object.assign({
         data: postData
       }, options));
@@ -366,12 +368,13 @@ var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.j
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var Lang = __webpack_require__(/*! lang.js */ "./node_modules/lang.js/src/lang.js");
+/* harmony import */ var lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lang.js */ "./node_modules/lang.js/src/lang.js");
+/* harmony import */ var lang_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lang_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _messages_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./messages.js */ "./resources/js/messages.js");
 
-var messages = __webpack_require__(/*! ./messages.js */ "./resources/js/messages.js");
 
-/* harmony default export */ __webpack_exports__["default"] = (new Lang({
-  messages: messages
+/* harmony default export */ __webpack_exports__["default"] = (new lang_js__WEBPACK_IMPORTED_MODULE_0___default.a({
+  messages: _messages_js__WEBPACK_IMPORTED_MODULE_1__["default"]
 }));
 
 /***/ }),
@@ -386,7 +389,7 @@ var messages = __webpack_require__(/*! ./messages.js */ "./resources/js/messages
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  'fr.csv': __webpack_require__(/*! ../lang/fr/csv.php */ "./resources/lang/fr/csv.php")
+  'fr.csv': __webpack_require__(/*! ../../resources/lang/fr/csv.php */ "./resources/lang/fr/csv.php")
 });
 
 /***/ }),
