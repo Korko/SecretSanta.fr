@@ -5,10 +5,9 @@
 
     <!-- config js -->
     @javascript([
-        'maxSms' => config('sms.max'),
-        'now'    => time(),
-        'lang'   => App::getLocale(),
-        'alert'  => session('message', '')
+        'now'   => time(),
+        'lang'  => App::getLocale(),
+        'alert' => session('message', '')
     ])
 @stop
 
@@ -150,16 +149,11 @@
                                             :key="participant.id"
                                             :name="participant.name"
                                             :email="participant.email"
-                                            :phone="participant.phone"
-
-                                            @if(!env('SMS_ENABLED')):smsdisabled="true"@endif
 
                                             :participants="participants"
-                                            :dearsanta="dearsanta"
                                             :idx="idx"
                                             @changename="participant.name = $event"
                                             @changeemail="participant.email = $event"
-                                            @changephone="participant.phone = $event"
                                             @delete="participants.splice(idx, 1)">
                                         </tr>
                                     </tbody>
@@ -183,8 +177,7 @@
                                     <div class="form-group">
                                         <label for="mailContent">@lang('form.mail.content')</label>
                                         <textarea id="mailContent" name="content-email" :required="this.emailUsed" placeholder="@lang('form.mail.content.placeholder')" class="form-control" rows="3" v-autosize></textarea>
-                                        <textarea id="mailPost" class="form-control" read-only disabled v-if="!dearsanta">@lang('form.mail.post')</textarea>
-                                        <textarea id="mailPost" class="form-control extended" read-only disabled v-else>@lang('form.mail.post2')</textarea>
+                                        <textarea id="mailPost" class="form-control extended" read-only disabled>@lang('form.mail.post2')</textarea>
 
                                         <p class="form-text">@lang('form.mail.content.tip1')</p>
                                         <p class="form-text">@lang('form.mail.content.tip2')</p>
@@ -195,11 +188,6 @@
                         <fieldset>
                             <legend>Options</legend>
                             <div id="form-options" class="form-group">
-                                <label><input type="checkbox" name="dearsanta" v-model="dearsanta" value="1" />@lang('form.dearsanta')</label>
-                                <p class="tip" role="alert">
-                                    <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
-                                    @lang('form.dearsanta.warning')
-                                </p>
                                 <label><input type="date" name="data-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" />@lang('form.data-expiration')</label>
                             </div>
                         </fieldset>

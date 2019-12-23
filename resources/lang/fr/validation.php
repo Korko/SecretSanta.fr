@@ -72,7 +72,6 @@ return [
         'string'  => 'Le texte de :attribute doit contenir :size caractères.',
         'array'   => 'Le tableau :attribute doit contenir :size éléments.',
     ],
-    'max_sms_count' => 'Le contenu du sms ne respecte pas la limite de :size messages max',
     'string'    => 'Le champ :attribute doit être une chaîne de caractères.',
     'timezone'  => 'Le champ :attribute doit être un fuseau horaire valide.',
     'unique'    => 'La valeur du champ :attribute est déjà utilisée.',
@@ -98,9 +97,6 @@ return [
         ],
         'content-email' => [
             'contains' => 'Le contenu du mail doit inclure le mot clef :values',
-        ],
-        'content-sms' => [
-            'contains' => 'Le contenu du sms doit include le mot clef :values',
         ],
         'data-expiration' => [
             'required' => 'La date limite de stockage des emails est requise',

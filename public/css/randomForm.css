@@ -14507,10 +14507,6 @@ fieldset > div.form-group {
   border-top-left-radius: 0;
 }
 
-#smsContent {
-  resize: none;
-}
-
 #form .container {
   -webkit-transition: all 0.4s;
   transition: all 0.4s;

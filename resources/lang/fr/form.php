@@ -29,11 +29,9 @@ Si cet outil vous plait, pensez à faire un don.
 Pour chaque personne, indiquez un nom/prénom ou un pseudonyme. Deux participants ne peuvent avoir le même nom, sinon il est impossible de les différencier.
 A noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se piocher elle-même.",
     'section.how.heading2' => 'Deuxième étape : remplir les informations de contact et les exclusions',
-    'section.how.content2' => "Vous avez la possibilité de choisir si les participants recevront le nom de leur cible par e-mail, par sms, ou les deux.
-Pour cela, précisez pour chacun une adresse e-mail et/ou un numéro de téléphone portable.
-(Optionel) Ajoutez des exclusions. Si vous ne voulez pas que deux participants puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
-    'section.how.heading3' => 'Troisième étape : préparer le mail ou le sms',
-    'section.how.content3' => "Il ne vous reste plus qu'à remplir le titre et le corps du courriel ou du SMS que les participants recevront.
+    'section.how.content2' => "(Optionel) Ajoutez des exclusions. Si vous ne voulez pas que deux participants puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
+    'section.how.heading3' => 'Troisième étape : préparer l\'e-mail',
+    'section.how.content3' => "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participants recevront.
 Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".
 (Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
     'section.how.notice' => 'Pour votre information
@@ -53,12 +51,10 @@ Le code source est disponible sur :link',
 
     'participant.name'       => 'Nom ou pseudonyme',
     'participant.email'      => 'Adresse e-mail',
-    'participant.phone'      => 'Téléphone',
     'participant.exclusions' => 'Exclusions',
 
     'name.placeholder'       => 'exemple : Paul ou Korko',
     'email.placeholder'      => 'exemple : michel@aol.com',
-    'phone.placeholder'      => 'ex : 0612345678',
     'exclusions.placeholder' => 'Aucune exclusion',
 
     'participant.remove' => 'Enlever',
