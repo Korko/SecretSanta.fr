@@ -23,7 +23,7 @@ class OrganizerController extends Controller
     {
         return [
             'participants' => $draw->participants->map(function ($participant) {
-                return $participant->only(['name', 'email_address', 'delivery_status']);
+                return $participant->only(['id', 'name', 'email_address', 'delivery_status']);
             }),
         ];
     }
