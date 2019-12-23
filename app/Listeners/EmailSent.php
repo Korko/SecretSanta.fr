@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use Log;
+use App\Participant;
 use Illuminate\Mail\Events\MessageSent;
 
 class EmailSent
@@ -25,9 +26,11 @@ class EmailSent
      */
     public function handle(MessageSent $event)
     {
-        Participant::find($event->data->participantId)
-            ->fill(['delivery_status' => Participant::SENT,
-        ])->save();
+        if (isset($event->data->participantId)) {
+            Participant::find($event->data->participantId)
+                ->fill(['delivery_status' => Participant::SENT])
+                ->save();
+        }
     }
 
     /**
@@ -39,9 +42,11 @@ class EmailSent
      */
     public function failed(MessageSent $event, Exception $exception)
     {
-        Participant::find($event->data->participantId)
-            ->fill(['delivery_status' => Participant::ERROR,
-        ])->save();
-        Log::debug(var_export($event->message->getHeaders(), true));
+        if (isset($event->data->participantId)) {
+            Participant::find($event->data->participantId)
+                ->fill(['delivery_status' => Participant::ERROR])
+                ->save();
+            Log::debug(var_export($event->message->getHeaders(), true));
+        }
     }
 }
