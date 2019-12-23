@@ -9,7 +9,7 @@
             </div>
         </td>
         <td class="border-left align-middle">
-            <input type="email" :name="'participants['+idx+'][email]'" placeholder="@lang('form.email.placeholder')" v-model="email" class="form-control participant-email" :required="(idx < 3 || name !== '') && (!phone || dearsanta)" />
+            <input type="email" :name="'participants['+idx+'][email]'" placeholder="@lang('form.email.placeholder')" v-model="email" class="form-control participant-email" :required="(idx < 3 || name !== '')" />
         </td>
         <td class="border-right text-left participant-exclusions-wrapper align-middle">
             <multiselect :options="participantNames" v-model="exclusions" track-by="value" label="text" placeholder="@lang('form.exclusions.placeholder')" :multiple="true"></multiselect>
