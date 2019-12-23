@@ -87,7 +87,38 @@ class RequestOrganizerTest extends RequestCase
     /**
      * @depends testDraw
      */
-    public function testOrganizerPanel(Draw $draw): void
+    public function testSendAgain(Draw $draw): void
+    {
+        Mail::fake();
+
+        Crypt::setKey(self::$key);
+
+        $participant = $draw->participants->first();
+
+        // Check data can be changed
+        $path = route('organizerPanel.resendEmail', [
+            'draw' => $draw->id,
+            'participant' => $participant,
+        ]);
+        $response = $this->ajaxPost($path, [
+            'key' => base64_encode(Crypt::getKey()),
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Envoyé avec succès !',
+            ]);
+
+        Mail::assertQueued(TargetDrawn::class, function ($mail) use ($participant) {
+            return $mail->hasTo($participant->email_address, $participant->name);
+        });
+    }
+
+    /**
+     * @depends testDraw
+     */
+    public function testChangeEmail(Draw $draw): void
     {
         Mail::fake();
 
@@ -112,12 +143,15 @@ class RequestOrganizerTest extends RequestCase
             ]);
 
         $before = $participant->email_address;
-        $after = Participant::find($participant->id)->email_address;
+
+        $participant = Participant::find($participant->id);
+        $after = $participant->email_address;
+
         $this->assertNotEquals($before, $after);
         $this->assertEquals('test@test2.com', $after);
 
-        Mail::assertQueued(TargetDrawn::class, function ($mail) {
-            return $mail->hasTo('test@test2.com', 'toto');
+        Mail::assertQueued(TargetDrawn::class, function ($mail) use ($participant) {
+            return $mail->hasTo($participant->email_address, $participant->name);
         });
     }
 }

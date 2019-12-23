@@ -34,10 +34,10 @@ class RequestDearSantaTest extends RequestCase
 
         // Initiate DearSanta
         $response = $this->ajaxPost('/', [
-            'participants'         => $participants,
-            'title'                => 'test mail title',
-            'content-email'        => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
+            'participants'    => $participants,
+            'title'           => 'test mail title',
+            'content-email'   => 'test mail {SANTA} => {TARGET}',
+            'data-expiration' => date('Y-m-d', strtotime('+2 days')),
         ]);
 
         $response
@@ -69,16 +69,16 @@ class RequestDearSantaTest extends RequestCase
             // Check data stored are decryptable
             $pathTheorical = parse_url(route('dearsanta', ['santa' => '%s']), PHP_URL_PATH);
             $data = sscanf($path, $pathTheorical);
-            $id = Hashids::decode($data[0]);
-            $santaTheorical = Participant::find($id[0]);
+            $id = Hashids::decode($data[0])[0];
+            $santaTheorical = Participant::find($id);
 
             $this->assertEquals($santa['name'], $santaTheorical->santa->name);
             $this->assertEquals($santa['email'], $santaTheorical->santa->email_address);
 
             // Try to contact santa
-            $response = $this->ajaxPost($path, [
-                'key'                  => base64_encode(Crypt::getKey()),
-                'content'              => 'test dearsanta mail content',
+            $response = $this->ajaxPost(route('dearsanta.contact', ['santa' => $data[0]]), [
+                'key'     => base64_encode(Crypt::getKey()),
+                'content' => 'test dearsanta mail content',
             ]);
 
             $response
