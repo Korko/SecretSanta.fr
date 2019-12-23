@@ -1,4 +1,4 @@
-@extends('templates/fetcher', ['styles' => '/css/dearSanta.css', 'fetchUrl' => route('organizerPanel.fetch', ['draw' => $draw])])
+@extends('templates/fetcher', ['styles' => '/css/organizer.css', 'fetchUrl' => route('organizerPanel.fetch', ['draw' => $draw])])
 
 @section('form')
     <div>
@@ -11,9 +11,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="participant in data.participants">
+                <tr v-for="(participant, idx) in data.participants">
                     <td>@{{ participant.name }}</td>
-                    <td>@{{ participant.email_address }}</td>
+                    <td><input-edit v-model="participant.email_address" type="email"></input-edit></td>
                     <td>@{{ participant.delivery_status }}</td>
                 </tr>
             </tbody>
