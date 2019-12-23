@@ -4,14 +4,20 @@
 /*!********************************!*\
   !*** ./resources/js/common.js ***!
   \********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(jQuery, $) {jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var jquery_actual__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery.actual */ "./node_modules/jquery.actual/jquery.actual.js");
+/* harmony import */ var jquery_actual__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery_actual__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var jquery_scrollto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery.scrollto */ "./node_modules/jquery.scrollto/jquery.scrollTo.js");
+/* harmony import */ var jquery_scrollto__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery_scrollto__WEBPACK_IMPORTED_MODULE_2__);
 
-__webpack_require__(/*! jquery.actual */ "./node_modules/jquery.actual/jquery.actual.js");
 
-__webpack_require__(/*! jquery.scrollto */ "./node_modules/jquery.scrollto/jquery.scrollTo.js");
+
 
 (function ($, sr) {
   // debouncing function from John Hann
@@ -34,26 +40,26 @@ __webpack_require__(/*! jquery.scrollto */ "./node_modules/jquery.scrollto/jquer
   }; // smartresize
 
 
-  jQuery.fn[sr] = function (fn) {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.fn[sr] = function (fn) {
     return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr);
   };
-})(jQuery, 'smartresize');
+})(jquery__WEBPACK_IMPORTED_MODULE_0___default.a, 'smartresize');
 
-jQuery(document).ready(function () {
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
   ///////////////////////////////
   // Set Home Slideshow Height
   ///////////////////////////////
   function setHomeBannerHeight() {
-    var windowHeight = jQuery(window).height();
-    jQuery('#header').height(windowHeight);
+    var windowHeight = jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).height();
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#header').height(windowHeight);
   } ///////////////////////////////
   // Center Home Slideshow Text
   ///////////////////////////////
 
 
   function centerHomeBannerText() {
-    var bannerText = jQuery('#header > .center');
-    var bannerTextTop = jQuery('#header').actual('height') / 2 - jQuery('#header > .center').actual('height') / 2 - 20; //var bannerTextTop = Math.min(jQuery('#header').actual('height'), (jQuery('#header').actual('height')/2) - (jQuery('#header > .center').actual('height')/2) - 20 + jQuery('html').scrollTop());
+    var bannerText = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#header > .center');
+    var bannerTextTop = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#header').actual('height') / 2 - jquery__WEBPACK_IMPORTED_MODULE_0___default()('#header > .center').actual('height') / 2 - 20; //var bannerTextTop = Math.min(jQuery('#header').actual('height'), (jQuery('#header').actual('height')/2) - (jQuery('#header > .center').actual('height')/2) - 20 + jQuery('html').scrollTop());
 
     bannerText.css('padding-top', bannerTextTop + 'px');
     bannerText.show();
@@ -62,7 +68,7 @@ jQuery(document).ready(function () {
   setHomeBannerHeight();
   centerHomeBannerText(); //Resize events
 
-  jQuery(window).smartresize(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).smartresize(function () {
     setHomeBannerHeight();
     centerHomeBannerText();
   });
@@ -94,17 +100,17 @@ jQuery(document).ready(function () {
 
   animateScrollDownArrow(); //Set Down Arrow Button
 
-  jQuery('#scrollDownArrow').click(function (e) {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('#scrollDownArrow').click(function (e) {
     e.preventDefault();
-    jQuery.scrollTo("#what", 1000, {
-      offset: -jQuery('#header #menu').height(),
+    jquery__WEBPACK_IMPORTED_MODULE_0___default.a.scrollTo("#what", 1000, {
+      offset: -jquery__WEBPACK_IMPORTED_MODULE_0___default()('#header #menu').height(),
       axis: 'y'
     });
   });
-  jQuery('.nav > li > a, #logo a').click(function (e) {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.nav > li > a, #logo a').click(function (e) {
     e.preventDefault();
-    jQuery.scrollTo(jQuery(this).attr('href'), 400, {
-      offset: -jQuery('#header #menu').height(),
+    jquery__WEBPACK_IMPORTED_MODULE_0___default.a.scrollTo(jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('href'), 400, {
+      offset: -jquery__WEBPACK_IMPORTED_MODULE_0___default()('#header #menu').height(),
       axis: 'y'
     });
   });
@@ -115,7 +121,7 @@ var alertify = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.j
 if (window.global && window.global.alert) {
   alertify.alert(window.global.alert);
 }
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
 

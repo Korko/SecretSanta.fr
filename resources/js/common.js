@@ -1,7 +1,7 @@
-jQuery = require('jquery');
+import jQuery from 'jquery';
 
-require('jquery.actual');
-require('jquery.scrollto');
+import actual from 'jquery.actual';
+import scrollTo from 'jquery.scrollto';
 
 (function($,sr) {
     // debouncing function from John Hann

@@ -1,6 +1,5 @@
-var Lang = require('lang.js');
-
-var messages = require('./messages.js');
+import Lang from 'lang.js';
+import messages from './messages.js';
 
 export default new Lang({
     messages
