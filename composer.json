@@ -21,6 +21,7 @@
         "korko/callr": "^1.0",
         "korko/encrypter": "dev-master",
         "korko/input-encrypter": "dev-master",
+        "korko/laravel-database-encryption": "dev-master",
         "korko/validator": "dev-master",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^2.0",
@@ -30,8 +31,7 @@
         "phpro/grumphp": "^0.17.0",
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
         "spatie/laravel-blade-javascript": "^2.0",
-        "vinkla/hashids": "^7.0",
-        "korko/laravel-database-encryption": "dev-master"
+        "vinkla/hashids": "^7.0"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e98ff6e695fd72acf430c308b0c860f",
+    "content-hash": "d045c4f0894e56ae5bee0ba7f8b3baf5",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -7394,8 +7394,8 @@
     "stability-flags": {
         "korko/encrypter": 20,
         "korko/input-encrypter": 20,
-        "korko/validator": 20,
-        "korko/laravel-database-encryption": 20
+        "korko/laravel-database-encryption": 20,
+        "korko/validator": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
