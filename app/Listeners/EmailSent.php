@@ -27,9 +27,9 @@ class EmailSent
     public function handle(MessageSent $event)
     {
         if (isset($event->data->participantId)) {
-            Participant::find($event->data->participantId)
-                ->fill(['delivery_status' => Participant::SENT])
-                ->save();
+            $participant = Participant::find($event->data->participantId);
+            $participant->delivery_status = Participant::SENT;
+            $participant->save();
         }
     }
 
@@ -43,9 +43,10 @@ class EmailSent
     public function failed(MessageSent $event, Exception $exception)
     {
         if (isset($event->data->participantId)) {
-            Participant::find($event->data->participantId)
-                ->fill(['delivery_status' => Participant::ERROR])
-                ->save();
+            $participant = Participant::find($event->data->participantId);
+            $participant->delivery_status = Participant::ERROR;
+            $participant->save();
+
             Log::debug(var_export($event->message->getHeaders(), true));
         }
     }
