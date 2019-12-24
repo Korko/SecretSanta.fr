@@ -27,7 +27,7 @@
         "laravel/tinker": "^2.0",
         "laravelcollective/html": "^6.0",
         "league/statsd": "1.5.*",
-        "matt-allan/laravel-code-style": "^0.4.0",
+        "matt-allan/laravel-code-style": "^0.5.0",
         "phpro/grumphp": "^0.17.0",
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
         "spatie/laravel-blade-javascript": "^2.0",
