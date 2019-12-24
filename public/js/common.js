@@ -23,17 +23,19 @@ __webpack_require__.r(__webpack_exports__);
   // debouncing function from John Hann
   // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
   var debounce = function debounce(func, threshold, execAsap) {
+    var _arguments = arguments,
+        _this = this;
+
     var timeout;
-    return function debounced() {
-      var obj = this,
-          args = arguments;
+    return function () {
+      var obj = _this,
+          args = _arguments;
 
       function delayed() {
         if (!execAsap) func.apply(obj, args);
         timeout = null;
       }
 
-      ;
       if (timeout) clearTimeout(timeout);else if (execAsap) func.apply(obj, args);
       timeout = setTimeout(delayed, threshold || 100);
     };
@@ -89,10 +91,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
   var animateScrollDownArrow = function animateScrollDownArrow() {
     $scrollDownArrow.animate({
       top: 5
-    }, 400, "linear", function () {
+    }, 400, 'linear', function () {
       $scrollDownArrow.animate({
         top: -5
-      }, 400, "linear", function () {
+      }, 400, 'linear', function () {
         animateScrollDownArrow();
       });
     });
@@ -102,7 +104,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
 
   jquery__WEBPACK_IMPORTED_MODULE_0___default()('#scrollDownArrow').click(function (e) {
     e.preventDefault();
-    jquery__WEBPACK_IMPORTED_MODULE_0___default.a.scrollTo("#what", 1000, {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default.a.scrollTo('#what', 1000, {
       offset: -jquery__WEBPACK_IMPORTED_MODULE_0___default()('#header #menu').height(),
       axis: 'y'
     });

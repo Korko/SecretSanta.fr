@@ -1,6 +1,9 @@
 import Lang from 'lang.js';
 import messages from './messages.js';
 
-export default new Lang({
+var LangObj = new Lang({
     messages
 });
+LangObj.setLocale('fr');
+
+export default LangObj;

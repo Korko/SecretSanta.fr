@@ -1,12 +1,5 @@
-import Vue from 'vue'
-
-import VueFetcher from './fetcherVue.js'
-
-import InputEdit from './inputEdit.vue'
-Vue.component('InputEdit', InputEdit);
-
+import Vue from 'vue';
+import OrganizerFetcher from './components/organizerFetcher.js';
 window.app = new Vue({
-  mixins: [VueFetcher]
+    mixins: [OrganizerFetcher]
 });
-
-
