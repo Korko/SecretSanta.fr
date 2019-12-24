@@ -110,8 +110,8 @@
     </div>
 
     @include('templates/participant')
-    @include('templates/csv')
     <div id="form" class="light-wrapper">
+        <csv @submit="emitSubmit" @cancel="emitCancel"></csv>
         <section class="ss-style-top"></section>
         <div class="container inner">
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
