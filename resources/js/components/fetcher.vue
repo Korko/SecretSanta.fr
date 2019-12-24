@@ -40,7 +40,7 @@
                 loading: false
             };
         },
-        computed: mapState(['csrf', 'key']),
+        computed: mapState(['csrf', 'key', 'lang']),
         mounted() {
             this.$nextTick(function() {
                 this.loading = true;

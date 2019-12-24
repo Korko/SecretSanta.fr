@@ -16,6 +16,8 @@ import Multiselect from 'vue-multiselect';
 
 import VueAjax from './mixins/ajaxVue.js';
 
+import Csv from './components/csv.vue';
+
 window.app = new Vue({
     mixins: [VueAjax],
 
@@ -23,33 +25,13 @@ window.app = new Vue({
 
     data: {
         participants: [],
-        dearsanta: false,
         date: window.now,
         showModal: false,
         importing: false
     },
 
     components: {
-        csv: {
-            template: '#csv-template',
-            components: {
-                modal: {
-                    template: '#modal-template'
-                }
-            },
-            methods: {
-                emitSubmit: function() {
-                    this.$emit(
-                        'import',
-                        $('#uploadCsv input[type=file]')[0].files[0]
-                    );
-                    this.$emit('close');
-                },
-                emitCancel: function() {
-                    this.$emit('close');
-                }
-            }
-        },
+        Csv,
         participant: {
             template: '#participant-template',
             props: {

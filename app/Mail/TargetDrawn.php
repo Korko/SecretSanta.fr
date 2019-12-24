@@ -15,6 +15,7 @@ class TargetDrawn extends Mailable
 
     public $content;
     public $participantId;
+    public $dearSantaLink;
 
     /**
      * Create a new message instance.

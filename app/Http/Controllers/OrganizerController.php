@@ -22,6 +22,7 @@ class OrganizerController extends Controller
     public function fetch(Draw $draw)
     {
         return [
+            'draw' => $draw->id,
             'participants' => $draw->participants->map(function ($participant) {
                 return $participant->only(['id', 'name', 'email_address', 'delivery_status']);
             }),

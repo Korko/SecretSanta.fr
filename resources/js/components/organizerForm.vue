@@ -8,12 +8,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(participant, idx) in data.participants">
+            <tr v-for="participant in data.participants">
                 <td>{{ participant.name }}</td>
                 <td>
                     <input-edit
                         v-model="participant.email_address"
-                        :update="email => updateEmail(idx, email)"
+                        :update="email => updateEmail(participant.id, email)"
                         type="email"
                     ></input-edit>
                 </td>
@@ -36,12 +36,17 @@
         components: { InputEdit },
         methods: {
             updateEmail(id, email) {
-                console.debug(id, email);
-                return new Promise((yes, no) => {
-                    yes();
-                }); //$.ajax()
+                return $.ajax({
+                    url: `/org/${this.data.draw}/${id}/changeEmail`,
+                    type: 'POST',
+                    data: {
+                        _token: this.csrf,
+                        key: this.key,
+                        email: email,
+                    }
+                });
             }
         },
-        computed: mapState(['lang'])
+        computed: mapState(['csrf', 'key', 'lang'])
     };
 </script>

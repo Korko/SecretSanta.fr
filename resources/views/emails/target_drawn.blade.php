@@ -16,9 +16,7 @@
 
                 <hr/>
 
-		@if (!empty($dearSantaLink))
 		<p style="padding-bottom:10px !important">Pour écrire à votre Père Noël Secret : <a href="{{ $dearSantaLink }}">{{ $dearSantaLink }}</a></p>
-		@endif
 
 		<p><a href="{{ config('app.url') }}">{{ config('app.name') }}</a></p>
 
