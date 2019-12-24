@@ -286,10 +286,10 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ }),
 
-/***/ "./resources/js/ajaxVue.js":
-/*!*********************************!*\
-  !*** ./resources/js/ajaxVue.js ***!
-  \*********************************/
+/***/ "./resources/js/mixins/ajaxVue.js":
+/*!****************************************!*\
+  !*** ./resources/js/mixins/ajaxVue.js ***!
+  \****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -327,7 +327,7 @@ __webpack_require__.r(__webpack_exports__);
         var app = this;
         jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
           url: url,
-          type: options.data ? "POST" : "GET",
+          type: options.data ? 'POST' : 'GET',
           data: options.data,
           success: function success(data, textStatus, jqXHR) {
             if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.success(jqXHR.responseJSON.message);
@@ -349,47 +349,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     submitForm: function submitForm(target, options) {
       var postData = jquery__WEBPACK_IMPORTED_MODULE_0___default()(target).serializeArray();
-      var formUrl = jquery__WEBPACK_IMPORTED_MODULE_0___default()(target).attr("action");
+      var formUrl = jquery__WEBPACK_IMPORTED_MODULE_0___default()(target).attr('action');
       this.call(formUrl, Object.assign({
         data: postData
       }, options));
     }
   }
-});
-
-/***/ }),
-
-/***/ "./resources/js/lang.js":
-/*!******************************!*\
-  !*** ./resources/js/lang.js ***!
-  \******************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lang.js */ "./node_modules/lang.js/src/lang.js");
-/* harmony import */ var lang_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lang_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _messages_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./messages.js */ "./resources/js/messages.js");
-
-
-/* harmony default export */ __webpack_exports__["default"] = (new lang_js__WEBPACK_IMPORTED_MODULE_0___default.a({
-  messages: _messages_js__WEBPACK_IMPORTED_MODULE_1__["default"]
-}));
-
-/***/ }),
-
-/***/ "./resources/js/messages.js":
-/*!**********************************!*\
-  !*** ./resources/js/messages.js ***!
-  \**********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  'fr.csv': __webpack_require__(/*! ../../resources/lang/fr/csv.php */ "./resources/lang/fr/csv.php")
 });
 
 /***/ }),
@@ -1408,6 +1373,44 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 /***/ }),
 
+/***/ "./resources/js/partials/lang.js":
+/*!***************************************!*\
+  !*** ./resources/js/partials/lang.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lang.js */ "./node_modules/lang.js/src/lang.js");
+/* harmony import */ var lang_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lang_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _messages_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./messages.js */ "./resources/js/partials/messages.js");
+
+
+var LangObj = new lang_js__WEBPACK_IMPORTED_MODULE_0___default.a({
+  messages: _messages_js__WEBPACK_IMPORTED_MODULE_1__["default"]
+});
+LangObj.setLocale('fr');
+/* harmony default export */ __webpack_exports__["default"] = (LangObj);
+
+/***/ }),
+
+/***/ "./resources/js/partials/messages.js":
+/*!*******************************************!*\
+  !*** ./resources/js/partials/messages.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  'fr.csv': __webpack_require__(/*! ../../../resources/lang/fr/csv.php */ "./resources/lang/fr/csv.php"),
+  'fr.organizer': __webpack_require__(/*! ../../../resources/lang/fr/organizer.php */ "./resources/lang/fr/organizer.php")
+});
+
+/***/ }),
+
 /***/ "./resources/js/randomForm.js":
 /*!************************************!*\
   !*** ./resources/js/randomForm.js ***!
@@ -1431,10 +1434,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! papaparse */ "./node_modules/papaparse/papaparse.min.js");
 /* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _lang_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./lang.js */ "./resources/js/lang.js");
+/* harmony import */ var _partials_lang_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./partials/lang.js */ "./resources/js/partials/lang.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _ajaxVue_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ajaxVue.js */ "./resources/js/ajaxVue.js");
+/* harmony import */ var _mixins_ajaxVue_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./mixins/ajaxVue.js */ "./resources/js/mixins/ajaxVue.js");
 
 
 
@@ -1444,11 +1447,10 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vue_autosize__WEBPACK_IMPORTED_MO
 
 
 
-_lang_js__WEBPACK_IMPORTED_MODULE_7__["default"].setLocale(window.global.lang);
 
 
 window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
-  mixins: [_ajaxVue_js__WEBPACK_IMPORTED_MODULE_9__["default"]],
+  mixins: [_mixins_ajaxVue_js__WEBPACK_IMPORTED_MODULE_9__["default"]],
   el: '#form',
   data: {
     participants: [],
@@ -1549,7 +1551,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
   },
   filters: {
     moment: function moment(date, amount, unit) {
-      return moment__WEBPACK_IMPORTED_MODULE_5___default()(date).add(amount, unit).format("YYYY-MM-DD");
+      return moment__WEBPACK_IMPORTED_MODULE_5___default()(date).add(amount, unit).format('YYYY-MM-DD');
     }
   },
   watch: {
@@ -1592,7 +1594,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
       var test = papaparse__WEBPACK_IMPORTED_MODULE_6___default.a.parse(file, {
         error: function error() {
           this.importing = false;
-          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(_lang_js__WEBPACK_IMPORTED_MODULE_7__["default"].get('csv.importError'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(_partials_lang_js__WEBPACK_IMPORTED_MODULE_7__["default"].get('csv.importError'));
         },
         complete: function (file) {
           this.importing = false;
@@ -1609,7 +1611,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
             }
           }
 
-          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(_lang_js__WEBPACK_IMPORTED_MODULE_7__["default"].get('csv.importSuccess'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(_partials_lang_js__WEBPACK_IMPORTED_MODULE_7__["default"].get('csv.importSuccess'));
         }.bind(this)
       });
     }
@@ -1627,6 +1629,17 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
 /***/ (function(module, exports) {
 
 module.exports = {"importError":"Une erreur est survenue lors de l'import.","importSuccess":"L'import a été effectué avec succès."};
+
+/***/ }),
+
+/***/ "./resources/lang/fr/organizer.php":
+/*!*****************************************!*\
+  !*** ./resources/lang/fr/organizer.php ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {"list":{"name":"Nom","email":"Adresse Email","status":"Status de réception de l'email"},"up_and_sent":"Modifié avec succès !"};
 
 /***/ }),
 

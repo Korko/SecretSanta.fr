@@ -1,7 +1,7 @@
-import Vue from 'vue'
+import Vue from 'vue';
 
-import VueFetcher from './fetcherVue.js'
+import VueFetcher from './mixins/fetcherVue.js';
 
 window.app = new Vue({
-  mixins: [VueFetcher]
+    mixins: [VueFetcher]
 });
