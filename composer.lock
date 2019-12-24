@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d045c4f0894e56ae5bee0ba7f8b3baf5",
+    "content-hash": "ae640d86868769f9e811fa48a2dcc24b",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -1955,9 +1955,9 @@
             "authors": [
                 {
                     "name": "Marc Qualie",
-                    "role": "Developer",
                     "email": "marc@marcqualie.com",
-                    "homepage": "http://marcqualie.com"
+                    "homepage": "http://marcqualie.com",
+                    "role": "Developer"
                 }
             ],
             "description": "A simple library for working with StatsD in PHP.",
@@ -1971,16 +1971,16 @@
         },
         {
             "name": "matt-allan/laravel-code-style",
-            "version": "0.4.0",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matt-allan/laravel-code-style.git",
-                "reference": "ac5dcc39c41f7a12665dda8aafb7a40e2bc2e7a0"
+                "reference": "f267c917f4cc3c8e2f85fdf0d9d2905da5166b8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/ac5dcc39c41f7a12665dda8aafb7a40e2bc2e7a0",
-                "reference": "ac5dcc39c41f7a12665dda8aafb7a40e2bc2e7a0",
+                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/f267c917f4cc3c8e2f85fdf0d9d2905da5166b8f",
+                "reference": "f267c917f4cc3c8e2f85fdf0d9d2905da5166b8f",
                 "shasum": ""
             },
             "require": {
@@ -1989,7 +1989,7 @@
                 "php": ">=7.2"
             },
             "require-dev": {
-                "laravel/framework": "^6.0",
+                "laravel/framework": "^6.0.3",
                 "phpunit/phpunit": "^7.0"
             },
             "type": "library",
@@ -2026,7 +2026,7 @@
                 "laravel",
                 "php-cs-fixer"
             ],
-            "time": "2019-09-05T13:41:48+00:00"
+            "time": "2019-12-15T15:09:59+00:00"
         },
         {
             "name": "monolog/monolog",
