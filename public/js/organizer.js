@@ -60,6 +60,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.directive('autofocus', vue_autofocus_directive__WEBPACK_IMPORTED_MODULE_1___default.a);
@@ -214,7 +264,13 @@ __webpack_require__.r(__webpack_exports__);
           _token: this.csrf,
           key: this.key,
           email: email
-        }
+        },
+        // jQuery is forcing "this" so ES6 arrow is not working here
+        success: function () {
+          this.data.participants.find(function (participant) {
+            return participant.id = id;
+          }).email_address = email;
+        }.bind(this)
       });
     }
   },
@@ -236,7 +292,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.disabled[data-v-7c272539] {\n    background-color: #ddd;\n    color: #999;\n}\n", ""]);
+exports.push([module.i, "\n.input-group[data-v-7c272539]::after {\n    content: '';\n    box-sizing: border-box;\n    width: 0;\n    height: 2px;\n\n    position: absolute;\n    bottom: -4px;\n    left: 0;\n\n    will-change: width;\n    -webkit-transition: width 0.285s ease-out;\n    transition: width 0.285s ease-out;\n    z-index: 4;\n}\n.input-group-append[data-v-7c272539] {\n    z-index: 5;\n}\n.input-group[data-state='updated'][data-v-7c272539]::after {\n    background-color: #2c642c;\n    width: 100%;\n}\n.input-group[data-state='error'][data-v-7c272539]::after {\n    background-color: #a82824;\n    width: 100%;\n}\ninput[data-v-7c272539] {\n    border: 0;\n    background: none;\n    box-shadow: none !important;\n}\n.table-hover tbody tr:hover input[data-v-7c272539] {\n    color: #212529;\n}\n@-webkit-keyframes bg-data-v-7c272539 {\n0% {\n        background-size: 0 3px, 3px 0, 0 3px, 3px 0;\n}\n25% {\n        background-size: 100% 3px, 3px 0, 0 3px, 3px 0;\n}\n50% {\n        background-size: 100% 3px, 3px 100%, 0 3px, 3px 0;\n}\n75% {\n        background-size: 100% 3px, 3px 100%, 100% 3px, 3px 0;\n}\n100% {\n        background-size: 100% 3px, 3px 100%, 100% 3px, 3px 100%;\n}\n}\n@keyframes bg-data-v-7c272539 {\n0% {\n        background-size: 0 3px, 3px 0, 0 3px, 3px 0;\n}\n25% {\n        background-size: 100% 3px, 3px 0, 0 3px, 3px 0;\n}\n50% {\n        background-size: 100% 3px, 3px 100%, 0 3px, 3px 0;\n}\n75% {\n        background-size: 100% 3px, 3px 100%, 100% 3px, 3px 0;\n}\n100% {\n        background-size: 100% 3px, 3px 100%, 100% 3px, 3px 100%;\n}\n}\n", ""]);
 
 // exports
 
@@ -291,199 +347,200 @@ var render = function() {
   return _c(
     "form",
     {
+      staticClass: "input-group",
       attrs: {
         "data-state": _vm.state,
-        "data-previousState": _vm.previousState
+        "data-previous-state": _vm.previousState
       }
     },
     [
-      _vm.state.startsWith("editing")
-        ? _c("div", [
-            _c("div", { staticClass: "input-group" }, [
-              _vm.$attrs.type === "checkbox"
-                ? _c(
-                    "input",
-                    _vm._b(
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.newValue,
-                            expression: "newValue"
-                          },
-                          { name: "autofocus", rawName: "v-autofocus" }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          checked: Array.isArray(_vm.newValue)
-                            ? _vm._i(_vm.newValue, null) > -1
-                            : _vm.newValue
-                        },
-                        on: {
-                          input: function($event) {
-                            return _vm.send("validate")
-                          },
-                          blur: function($event) {
-                            return _vm.send("blur")
-                          },
-                          change: function($event) {
-                            var $$a = _vm.newValue,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 && (_vm.newValue = $$a.concat([$$v]))
-                              } else {
-                                $$i > -1 &&
-                                  (_vm.newValue = $$a
-                                    .slice(0, $$i)
-                                    .concat($$a.slice($$i + 1)))
-                              }
-                            } else {
-                              _vm.newValue = $$c
-                            }
-                          }
-                        }
-                      },
-                      "input",
-                      _vm.$attrs,
-                      false
-                    )
-                  )
-                : _vm.$attrs.type === "radio"
-                ? _c(
-                    "input",
-                    _vm._b(
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.newValue,
-                            expression: "newValue"
-                          },
-                          { name: "autofocus", rawName: "v-autofocus" }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "radio" },
-                        domProps: { checked: _vm._q(_vm.newValue, null) },
-                        on: {
-                          input: function($event) {
-                            return _vm.send("validate")
-                          },
-                          blur: function($event) {
-                            return _vm.send("blur")
-                          },
-                          change: function($event) {
-                            _vm.newValue = null
-                          }
-                        }
-                      },
-                      "input",
-                      _vm.$attrs,
-                      false
-                    )
-                  )
-                : _c(
-                    "input",
-                    _vm._b(
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.newValue,
-                            expression: "newValue"
-                          },
-                          { name: "autofocus", rawName: "v-autofocus" }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: _vm.$attrs.type },
-                        domProps: { value: _vm.newValue },
-                        on: {
-                          input: [
-                            function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.newValue = $event.target.value
-                            },
-                            function($event) {
-                              return _vm.send("validate")
-                            }
-                          ],
-                          blur: function($event) {
-                            return _vm.send("blur")
-                          }
-                        }
-                      },
-                      "input",
-                      _vm.$attrs,
-                      false
-                    )
-                  ),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group-append" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-success",
-                    attrs: {
-                      type: "button",
-                      disabled: _vm.isSame || !_vm.state.endsWith("Valid")
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.send("submit")
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "fas fa-check-circle" })]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-danger",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        return _vm.send("cancel")
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "fas fa-times-circle" })]
-                )
-              ])
-            ])
-          ])
-        : _c("div", [
-            _c(
-              "div",
+      _vm.$attrs.type === "checkbox"
+        ? _c(
+            "input",
+            _vm._b(
               {
-                staticClass: "input-group",
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newValue,
+                    expression: "newValue"
+                  },
+                  { name: "autofocus", rawName: "v-autofocus" }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(_vm.newValue)
+                    ? _vm._i(_vm.newValue, null) > -1
+                    : _vm.newValue
+                },
                 on: {
                   click: function($event) {
                     return _vm.send("edit")
+                  },
+                  input: function($event) {
+                    return _vm.send("validate")
+                  },
+                  blur: function($event) {
+                    return _vm.send("blur")
+                  },
+                  change: function($event) {
+                    var $$a = _vm.newValue,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 && (_vm.newValue = $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          (_vm.newValue = $$a
+                            .slice(0, $$i)
+                            .concat($$a.slice($$i + 1)))
+                      }
+                    } else {
+                      _vm.newValue = $$c
+                    }
                   }
                 }
               },
-              [
-                _c("input", {
-                  staticClass: "form-control disabled",
-                  domProps: { value: _vm.newValue }
-                })
-              ]
+              "input",
+              _vm.$attrs,
+              false
+            )
+          )
+        : _vm.$attrs.type === "radio"
+        ? _c(
+            "input",
+            _vm._b(
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newValue,
+                    expression: "newValue"
+                  },
+                  { name: "autofocus", rawName: "v-autofocus" }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "radio" },
+                domProps: { checked: _vm._q(_vm.newValue, null) },
+                on: {
+                  click: function($event) {
+                    return _vm.send("edit")
+                  },
+                  input: function($event) {
+                    return _vm.send("validate")
+                  },
+                  blur: function($event) {
+                    return _vm.send("blur")
+                  },
+                  change: function($event) {
+                    _vm.newValue = null
+                  }
+                }
+              },
+              "input",
+              _vm.$attrs,
+              false
+            )
+          )
+        : _c(
+            "input",
+            _vm._b(
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newValue,
+                    expression: "newValue"
+                  },
+                  { name: "autofocus", rawName: "v-autofocus" }
+                ],
+                staticClass: "form-control",
+                attrs: { type: _vm.$attrs.type },
+                domProps: { value: _vm.newValue },
+                on: {
+                  click: function($event) {
+                    return _vm.send("edit")
+                  },
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newValue = $event.target.value
+                    },
+                    function($event) {
+                      return _vm.send("validate")
+                    }
+                  ],
+                  blur: function($event) {
+                    return _vm.send("blur")
+                  }
+                }
+              },
+              "input",
+              _vm.$attrs,
+              false
+            )
+          ),
+      _vm._v(" "),
+      _vm.state === "updating"
+        ? _c("div", { staticClass: "input-group-append" }, [_vm._m(0)])
+        : _vm.state.startsWith("editing") || _vm.state === "error"
+        ? _c("div", { staticClass: "input-group-append" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-success",
+                attrs: {
+                  type: "button",
+                  disabled: _vm.isSame || !_vm.state.endsWith("Valid")
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.send("submit")
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fas fa-check-circle" })]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.send("cancel")
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fas fa-times-circle" })]
             )
           ])
+        : _vm._e()
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-secondary", attrs: { type: "button" } },
+      [_c("i", { staticClass: "fas fa-spinner" })]
+    )
+  }
+]
 render._withStripped = true
 
 

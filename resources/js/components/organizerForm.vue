@@ -42,8 +42,14 @@
                     data: {
                         _token: this.csrf,
                         key: this.key,
-                        email: email,
-                    }
+                        email: email
+                    },
+                    // jQuery is forcing "this" so ES6 arrow is not working here
+                    success: function() {
+                        this.data.participants.find(participant => {
+                            return (participant.id = id);
+                        }).email_address = email;
+                    }.bind(this)
                 });
             }
         },
