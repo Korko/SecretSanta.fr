@@ -7,11 +7,10 @@ use Hashids;
 use App\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
-use Sichikawa\LaravelSendgridDriver\SendGrid;
 
 class TargetDrawn extends Mailable
 {
-    use Queueable, SerializesModels, SendGrid;
+    use Queueable, SerializesModels;
 
     public $content;
     public $participantId;
