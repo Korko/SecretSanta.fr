@@ -10,8 +10,6 @@ class DecryptInput extends TransformsRequest
 
     public function __construct()
     {
-        parent::__construct();
-
         $key = md5(csrf_token().config('app.key'));
         $this->decrypter = new Encrypter($key);
     }
