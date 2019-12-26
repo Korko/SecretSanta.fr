@@ -23,7 +23,7 @@
                 <div class="form-group btn">
                     <!-- {!! NoCaptcha::display(['data-theme' => 'light']) !!} -->
                 </div>
- 
+
                 <input type="hidden" name="key" :value="key" />
                 <button type="submit" class="btn btn-primary btn-lg">
                     <span v-if="sent"

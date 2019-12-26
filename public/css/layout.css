@@ -13342,7 +13342,7 @@ footer .row {
           animation: spin 1s infinite linear;
 }
 
-button .fa-spinner {
+.participants-import button .fa-spinner {
   margin-right: 10px;
 }
 
