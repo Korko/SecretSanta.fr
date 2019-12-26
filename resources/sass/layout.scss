@@ -4,13 +4,6 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-// Bootstrap Languages
-@import "../vendor/bootstrap-languages/languages";
-
-.lang-xs { background-image: url('../vendor/bootstrap-languages/languages.png') !important; }
-.lang-sm { background-image: url('../vendor/bootstrap-languages/languages.png') !important; }
-.lang-lg { background-image: url('../vendor/bootstrap-languages/languages.png') !important; }
-
 /*  
 Sticky Footer Solution
 by Steve Hatcher 
