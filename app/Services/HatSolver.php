@@ -30,7 +30,7 @@ class HatSolver
         return $this->solve(0, [], $exclusions, $hat);
     }
 
-    private function solve($participantIdx, array $combination, array $exclusions, array $hat) : Generator
+    private function solve(int $participantIdx, array $combination, array $exclusions, array $hat) : Generator
     {
         $actualExclusions = array_key_exists($participantIdx, $exclusions) ? $exclusions[$participantIdx] : [];
         $actualHat = array_diff($hat, $actualExclusions, [$participantIdx]);

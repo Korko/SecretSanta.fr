@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class ValidatorServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         Validator::extend('in_keys', function ($attribute, $value, $parameters, $validator) {
             return collect($parameters)->contains(function ($parameter) use ($value, $validator) {
@@ -29,7 +29,7 @@ class ValidatorServiceProvider extends ServiceProvider
         });
     }
 
-    public function register()
+    public function register(): void
     {
         //
     }
