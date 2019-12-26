@@ -26,9 +26,9 @@ class TransformsRequest extends Middleware
      * @param  string  $key
      * @return mixed
      */
-    protected function cleanKey($key)
+    protected function cleanKey($keyWithPrefix, $key)
     {
-        return $this->transformKey($key);
+        return $this->transformKey($keyWithPrefix);
     }
 
     /**
