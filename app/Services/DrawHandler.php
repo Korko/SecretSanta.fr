@@ -15,7 +15,7 @@ use Facades\App\Services\HatSolver as Solver;
 
 class DrawHandler
 {
-    public function contactParticipants(array $participants, array $mailContent, $dataExpiration)
+    public function contactParticipants(array $participants, array $mailContent, $dataExpiration): void
     {
         $hat = Solver::one($participants, array_column($participants, 'exclusions'));
 
@@ -53,7 +53,7 @@ class DrawHandler
         $this->informParticipants($draw);
     }
 
-    public function informOrganizer(Draw $draw)
+    public function informOrganizer(Draw $draw): void
     {
         Mail::to([['email' => $draw->organizer->email_address, 'name' => $draw->organizer->name]])
             ->queue(new OrganizerRecap($draw));
@@ -77,7 +77,7 @@ class DrawHandler
             ->later($when, new OrganizerFinalRecap($draw));
     }
 
-    public function informParticipants(Draw $draw)
+    public function informParticipants(Draw $draw): void
     {
         foreach ($draw->participants as $participant) {
             Metrics::increment('email');
