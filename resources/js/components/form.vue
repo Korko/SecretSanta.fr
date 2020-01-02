@@ -1,14 +1,14 @@
 <template>
-    <div></div>
+    <ajax-form></ajax-form>
 </template>
 
 <script>
     import { mapState } from 'vuex';
 
-    import VueAjax from '../mixins/ajaxVue.js';
+    import AjaxForm from './ajaxForm.vue';
 
     export default {
-        mixins: [VueAjax],
+        components: {AjaxForm},
         props: ['data'],
         computed: mapState(['csrf', 'key'])
     };

@@ -1,5 +1,5 @@
 <template>
-    <modal>
+    <modal @close="$emit('close")">
         <template #header>
             <h3>{{ lang('form.csv.title') }}</h3>
         </template>
@@ -47,9 +47,11 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex';
     import Modal from './modal.vue';
     export default {
         components: { Modal },
+        computed: mapState(['lang']),
         methods: {
             emitSubmit: function() {
                 this.$emit(

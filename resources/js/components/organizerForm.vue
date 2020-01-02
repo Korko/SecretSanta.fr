@@ -11,11 +11,13 @@
             <tr v-for="participant in data.participants">
                 <td>{{ participant.name }}</td>
                 <td>
-                    <input-edit
-                        v-model="participant.email_address"
-                        :update="email => updateEmail(participant.id, email)"
-                        type="email"
-                    ></input-edit>
+                    <ajax-form :action="`/org/${data.draw.id}/${participant.id}/changeEmail`" v-slot="{ submit }">
+                        <input-edit
+                            v-model="participant.email_address"
+                            :update="submit"
+                            type="email"
+                        ></input-edit>
+                    </ajax-form>
                 </td>
                 <td>{{ participant.delivery_status }}</td>
             </tr>
@@ -29,30 +31,13 @@
     import Lang from '../partials/lang.js';
 
     import InputEdit from './inputEdit.vue';
+    import AjaxForm from './ajaxForm.vue';
+
     import DefaultForm from './form.vue';
 
     export default {
         extends: DefaultForm,
-        components: { InputEdit },
-        methods: {
-            updateEmail(id, email) {
-                return $.ajax({
-                    url: `/org/${this.data.draw}/${id}/changeEmail`,
-                    type: 'POST',
-                    data: {
-                        _token: this.csrf,
-                        key: this.key,
-                        email: email
-                    },
-                    // jQuery is forcing "this" so ES6 arrow is not working here
-                    success: function() {
-                        this.data.participants.find(participant => {
-                            return (participant.id = id);
-                        }).email_address = email;
-                    }.bind(this)
-                });
-            }
-        },
-        computed: mapState(['csrf', 'key', 'lang'])
+        components: { InputEdit, AjaxForm },
+        computed: mapState(['lang'])
     };
 </script>

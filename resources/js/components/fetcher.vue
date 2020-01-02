@@ -1,13 +1,9 @@
 <template>
-    <form
+    <ajax-form
         id="fetch"
         :action="fetchurl"
-        @submit.prevent="submit"
-        method="post"
-        autocomplete="off"
+        ref="form"
     >
-        <input type="hidden" name="_token" :value="csrf" />
-        <input type="hidden" name="key" :value="key" />
         <timer :delay="2000">
             <button
                 type="submit"
@@ -20,7 +16,7 @@
                 <span v-else>Charger</span>
             </button>
         </timer>
-    </form>
+    </ajax-form>
 </template>
 
 <script>
@@ -28,23 +24,21 @@
 
     import Timer from './timer.vue';
 
-    import VueAjax from '../mixins/ajaxVue.js';
+    import AjaxForm from './ajaxForm.vue';
 
     export default {
         template: '#fetcher-template',
-        mixins: [VueAjax],
-        components: { Timer },
+        components: { Timer, AjaxForm },
         props: ['fetchurl'],
         data: () => {
             return {
                 loading: false
             };
         },
-        computed: mapState(['csrf', 'key', 'lang']),
         mounted() {
-            this.$nextTick(function() {
+            this.$nextTick(() => {
                 this.loading = true;
-                this.submitForm('#fetch', {
+                this.$refs.form.submit(undefined, {
                     success: json => {
                         this.$emit('success', json);
                     },

@@ -1,9 +1,14 @@
 <template>
-    <form
-        class="input-group"
-        :data-state="state"
-        :data-previous-state="previousState"
-    >
+    <div class="input-group" :data-state="state" :data-previous-state="previousState">
+        <div class="input-group-prepend" v-if="updating">
+            <i class="input-group-text fas fa-spinner fa-spin"></i>
+        </div>
+        <div class="input-group-prepend" v-if="state === 'viewUpdated'">
+            <i class="input-group-text fas fa-check"></i>
+        </div>
+        <div class="input-group-prepend" v-if="state === 'viewError'">
+            <i class="input-group-text fas fa-exclamation-circle"></i>
+        </div>
         <input
             v-bind="$attrs"
             v-model="newValue"
@@ -12,21 +17,14 @@
             @input="send('validate')"
             @blur="send('blur')"
             v-autofocus
+            :disabled="updating"
         />
-        <div class="input-group-append" v-if="state === 'updating'">
-            <button type="button" class="btn btn-secondary">
-                <i class="fas fa-spinner"></i>
-            </button>
-        </div>
-        <div
-            class="input-group-append"
-            v-else-if="state.startsWith('editing') || state === 'error'"
-        >
+        <div class="input-group-append">
             <button
                 type="button"
                 class="btn btn-success"
                 @click="send('submit')"
-                :disabled="isSame || !state.endsWith('Valid')"
+                :disabled="updating || isSame || !state.endsWith('Valid')"
             >
                 <i class="fas fa-check-circle"></i>
             </button>
@@ -34,14 +32,22 @@
                 type="button"
                 class="btn btn-danger"
                 @click="send('cancel')"
+                :disabled="updating || isSame"
             >
                 <i class="fas fa-times-circle"></i>
             </button>
         </div>
-    </form>
+    </div>
 </template>
 
 <style scoped>
+    .input-group > .form-control:not(:first-child), .input-group > .custom-select:not(:first-child) {
+        border-left: 0;
+        padding-left: 0;
+    }
+    .input-group > .input-group-prepend > .input-group-text {
+        border-right: 0;
+    }
     .input-group::after {
         content: '';
         box-sizing: border-box;
@@ -59,39 +65,44 @@
     .input-group-append {
         z-index: 5;
     }
-    .input-group[data-state='updated']::after {
-        background-color: #2c642c;
-        width: 100%;
+    .input-group[data-state='viewUpdated'] .input-group-text {
+        color: var(--success);
+        background: none;
     }
-    .input-group[data-state='error']::after {
-        background-color: #a82824;
+    .input-group[data-state='viewError'] .input-group-text {
+        color: var(--danger);
+        background: none;
+    }
+    .input-group[data-state='viewUpdated']::after {
         width: 100%;
+        background-color: var(--success);
+    }
+    .input-group[data-state='viewError']::after {
+        width: 100%;
+        background-color: var(--danger);
     }
     input {
-        border: 0;
         background: none;
         box-shadow: none !important;
+        height: 100%;
     }
     .table-hover tbody tr:hover input {
         color: #212529;
     }
-    @keyframes bg {
-        0% {
-            background-size: 0 3px, 3px 0, 0 3px, 3px 0;
-        }
-        25% {
-            background-size: 100% 3px, 3px 0, 0 3px, 3px 0;
-        }
-        50% {
-            background-size: 100% 3px, 3px 100%, 0 3px, 3px 0;
-        }
-        75% {
-            background-size: 100% 3px, 3px 100%, 100% 3px, 3px 0;
-        }
-        100% {
-            background-size: 100% 3px, 3px 100%, 100% 3px, 3px 100%;
-        }
-    }
+@keyframes check {
+  0% {
+    stroke-dashoffset: 10;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+.fa-check path {
+  animation-name: check;
+  animation-duration: 2s;
+  transition: stroke-dashoffset 0.35s;
+  transform-origin: 50% 50%;
+}
 </style>
 
 <script>
@@ -122,7 +133,7 @@
                     },
                     editingValid: {
                         validate: 'editingValidating',
-                        submit: 'updating',
+                        submit: 'viewUpdating',
                         cancel: 'view',
                         blur: 'editingBlur'
                     },
@@ -134,16 +145,16 @@
                         valid: 'editingValid',
                         invalid: 'editingInvalid'
                     },
-                    updating: {
-                        success: 'updated',
-                        error: 'error'
+                    viewUpdating: {
+                        success: 'viewUpdated',
+                        error: 'viewError'
                     },
-                    updated: {
+                    viewUpdated: {
                         timer: 'view'
                     },
-                    error: {
+                    viewError: {
                         edit: 'editing',
-                        resend: 'updating'
+                        resend: 'viewUpdating'
                     }
                 }),
                 state: 'view',
@@ -153,6 +164,9 @@
         computed: {
             isSame() {
                 return this.newValue === this.value;
+            },
+            updating() {
+                return this.state === 'viewUpdating';
             }
         },
         methods: {
@@ -176,6 +190,7 @@
             stateUpdating() {
                 this.update(this.newValue)
                     .then(() => {
+                        this.value = this.newValue;
                         this.send('success');
                     })
                     .catch(() => {
@@ -183,7 +198,6 @@
                     });
             },
             stateUpdated() {
-                this.$emit('value', this.newValue);
                 setTimeout(() => {
                     this.send('timer');
                 }, 5000);

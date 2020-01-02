@@ -138,17 +138,6 @@ if (window.global && window.global.alert) {
 
 /***/ }),
 
-/***/ "./resources/sass/layout.scss":
-/*!************************************!*\
-  !*** ./resources/sass/layout.scss ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ "./resources/sass/organizer.scss":
 /*!***************************************!*\
   !*** ./resources/sass/organizer.scss ***!
@@ -172,14 +161,13 @@ if (window.global && window.global.alert) {
 /***/ }),
 
 /***/ 0:
-/*!********************************************************************************************************************************************************************!*\
-  !*** multi ./resources/js/common.js ./resources/sass/layout.scss ./resources/sass/randomForm.scss ./resources/sass/dearSanta.scss ./resources/sass/organizer.scss ***!
-  \********************************************************************************************************************************************************************/
+/*!***************************************************************************************************************************************!*\
+  !*** multi ./resources/js/common.js ./resources/sass/randomForm.scss ./resources/sass/dearSanta.scss ./resources/sass/organizer.scss ***!
+  \***************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/js/common.js */"./resources/js/common.js");
-__webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/layout.scss */"./resources/sass/layout.scss");
 __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/randomForm.scss */"./resources/sass/randomForm.scss");
 __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/dearSanta.scss */"./resources/sass/dearSanta.scss");
 module.exports = __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/organizer.scss */"./resources/sass/organizer.scss");

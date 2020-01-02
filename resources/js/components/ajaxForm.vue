@@ -1,8 +1,26 @@
+<template>
+    <form
+        :action="action"
+        @submit.prevent="onSubmit"
+        method="post"
+        autocomplete="off"
+    >
+        <input type="hidden" name="_token" :value="csrf" />
+        <input type="hidden" name="key" :value="key" />
+        <fieldset :disabled="sending || sent">
+            <slot v-bind="{ sending, sent, errors, submit, onSubmit }"></slot>
+        </fieldset>
+    </form>
+</template>
+
+<script>
+import { mapState } from 'vuex';
 import $ from 'jquery';
 import alertify from 'alertify.js';
 
 export default {
-    data: function() {
+    props: ['action'],
+    data: () => {
         return {
             fieldErrors: [],
             sending: false,
@@ -10,24 +28,30 @@ export default {
         };
     },
     computed: {
-        errors: function() {
+        errors() {
             var errors = [];
             for (var field in this.fieldErrors) {
                 errors = errors.concat(this.fieldErrors[field]);
             }
             return errors;
+        },
+        ...mapState(['csrf', 'key'])
+    },
+    watch: {
+        sending() {
+            this.$emit('change', this.sending);
         }
     },
     methods: {
-        call: function(url, options) {
+        call(url, options) {
             if (!this.sending && !this.sent) {
                 this.sending = true;
                 var app = this;
-                $.ajax({
+                return $.ajax({
                     url: url,
                     type: options.data ? 'POST' : 'GET',
                     data: options.data,
-                    success: function(data, textStatus, jqXHR) {
+                    success(data, textStatus, jqXHR) {
                         if (jqXHR.responseJSON && jqXHR.responseJSON.message)
                             alertify.success(jqXHR.responseJSON.message);
 
@@ -37,7 +61,7 @@ export default {
                         if (options.success)
                             options.success(jqXHR.responseJSON);
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                    error(jqXHR, textStatus, errorThrown) {
                         if (jqXHR.responseJSON && jqXHR.responseJSON.message)
                             alertify.error(jqXHR.responseJSON.message);
                         if (jqXHR.responseJSON && jqXHR.responseJSON.errors)
@@ -50,21 +74,19 @@ export default {
                 });
             }
         },
-        submit: function(event) {
-            this.submitForm(event.target);
+        onSubmit(event) {
+            this.submit();
         },
-        submitForm: function(target, options) {
-            var postData = $(target).serializeArray();
-            var formUrl = $(target).attr('action');
-            this.call(
-                formUrl,
-                Object.assign(
-                    {
-                        data: postData
-                    },
-                    options
-                )
+        submit(postData, options) {
+            this.$emit('beforeSubmit');
+            postData = postData || $(this.$el).serializeArray();
+            var ajax = this.call(
+                this.action,
+                Object.assign({data: postData}, options)
             );
+            this.$emit('afterSubmit');
+            return ajax;
         }
     }
-};
+}
+</script>

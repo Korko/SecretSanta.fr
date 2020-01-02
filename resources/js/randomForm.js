@@ -11,17 +11,17 @@ import Moment from 'moment';
 import Papa from 'papaparse';
 
 import Lang from './partials/lang.js';
+import store from './partials/store.js';
 
 import Multiselect from 'vue-multiselect';
 
-import VueAjax from './mixins/ajaxVue.js';
-
 import Csv from './components/csv.vue';
+import AjaxForm from './components/ajaxForm.vue';
 
 window.app = new Vue({
-    mixins: [VueAjax],
-
     el: '#form',
+
+    store,
 
     data: {
         participants: [],
@@ -31,6 +31,7 @@ window.app = new Vue({
     },
 
     components: {
+        AjaxForm,
         Csv,
         participant: {
             template: '#participant-template',

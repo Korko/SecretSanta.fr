@@ -111,26 +111,25 @@
 
     @include('templates/participant')
     <div id="form" class="light-wrapper">
-        <csv @submit="emitSubmit" @cancel="emitCancel"></csv>
+        <csv @import="importParticipants"></csv>
         <section class="ss-style-top"></section>
         <div class="container inner">
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
             <p class="lead main text-center">@lang('form.section.go.subtitle')</p>
             <div class="row text-center form" v-cloak>
-                <div id="success-wrapper" class="alert alert-success" v-show="sent">
-                    @lang('form.success')
-                </div>
+                <ajax-form id="randomForm" action="/">
+                    <template v-slot="{ sending, sent, errors }">
+                        <div id="success-wrapper" class="alert alert-success" v-show="sent">
+                            @lang('form.success')
+                        </div>
 
-                <div id="errors-wrapper" class="alert alert-danger" v-show="errors.length && !sent">
-                    <ul id="errors">
-                        <li v-for="error in errors">@{{ error }}</li>
-                    </ul>
-                </div>
+                        <div id="errors-wrapper" class="alert alert-danger" v-show="errors.length && !sent">
+                            <ul id="errors">
+                                <li v-for="error in errors">@{{ error }}</li>
+                            </ul>
+                        </div>
 
-                <form id="randomForm" action="/" @submit.prevent="submit" method="post" autocomplete="off">
-                    @csrf
-                    {{ Form::hidden('thisisatest') }}
-                    <fieldset :disabled="sending || sent">
+                        {{ Form::hidden('thisisatest') }}
                         <fieldset>
                             <legend>@lang('form.participants')</legend>
                             <div class="table-responsive form-group">
@@ -160,7 +159,7 @@
                                 </table>
                                 <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><i class="fas fa-plus"></i> @lang('form.participant.add')</button>
                                 <button type="button" class="btn btn-warning participants-import" @click="showModal = true" :disabled="importing">
-                                    <span v-if="importing"><i class="fas fa-spinner"></i> @lang('form.participants.importing')</span>
+                                    <span v-if="importing"><i class="fas fa-spinner fa-spin"></i> @lang('form.participants.importing')</span>
                                     <span v-else><i class="fas fa-list-alt"></i> @lang('form.participants.import')</span>
                                 </button>
                             </div>
@@ -197,13 +196,13 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary btn-lg">
-                                <span v-if="sending"><i class="fas fa-spinner"></i> @lang('form.sending')</span>
+                                <span v-if="sending"><i class="fas fa-spinner fa-spin"></i> @lang('form.sending')</span>
                                 <span v-else-if="sent"><i class="fas fa-check-circle"></i> @lang('form.sent')</span>
                                 <span v-else>@lang('form.submit')</span>
                             </button>
                         </fieldset>
-                    </fieldset>
-                </form>
+                    </template>
+                </ajax-form>
             </div><!-- /.services -->
 
             <div id="errors-wrapper" class="alert alert-danger v-rcloak">@lang('form.waiting')</div>
