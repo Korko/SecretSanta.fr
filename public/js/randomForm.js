@@ -9,7 +9,8 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var _modal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal.vue */ "./resources/js/components/modal.vue");
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modal_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modal.vue */ "./resources/js/components/modal.vue");
 //
 //
 //
@@ -59,10 +60,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Modal: _modal_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Modal: _modal_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
+  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['lang']),
   methods: {
     emitSubmit: function emitSubmit() {
       this.$emit('import', $('#uploadCsv input[type=file]')[0].files[0]);
@@ -374,121 +377,8 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("modal", {
-    scopedSlots: _vm._u([
-      {
-        key: "header",
-        fn: function() {
-          return [_c("h3", [_vm._v(_vm._s(_vm.lang("form.csv.title")))])]
-        },
-        proxy: true
-      },
-      {
-        key: "body",
-        fn: function() {
-          return [
-            _c(
-              "div",
-              { staticClass: "alert alert-info", attrs: { role: "alert" } },
-              [_c("span", { staticClass: "fas fa-question-cirle" })]
-            ),
-            _vm._v(
-              "\n\n        " +
-                _vm._s(_vm.lang("form.csv.format")) +
-                "\n        "
-            ),
-            _c("table", { staticClass: "table table-bordered heavy-borders" }, [
-              _c("tbody", [
-                _c("tr", [
-                  _c("td", [_vm._v(_vm._s(_vm.lang("form.csv.column1")))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.lang("form.csv.column2")))])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "alert alert-danger", attrs: { role: "alert" } },
-              [
-                _vm._v(
-                  "\n            " +
-                    _vm._s(_vm.lang("form.csv.warning")) +
-                    "\n        "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "form",
-              {
-                attrs: { id: "uploadCsv" },
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.emitSubmit($event)
-                  },
-                  reset: _vm.emitCancel
-                }
-              },
-              [
-                _c("input", {
-                  attrs: { type: "file", accept: ".csv", required: "required" }
-                })
-              ]
-            )
-          ]
-        },
-        proxy: true
-      },
-      {
-        key: "footer",
-        fn: function() {
-          return [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-warning",
-                attrs: { type: "reset", form: "uploadCsv" }
-              },
-              [
-                _c("span", { staticClass: "fas fa-stop-circle" }),
-                _vm._v(
-                  "\n            " +
-                    _vm._s(_vm.lang("form.csv.cancel")) +
-                    "\n        "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { type: "submit", form: "uploadCsv" }
-              },
-              [
-                _c("span", { staticClass: "fas fa-upload" }),
-                _vm._v(
-                  "\n            " +
-                    _vm._s(_vm.lang("form.csv.import")) +
-                    "\n        "
-                )
-              ]
-            )
-          ]
-        },
-        proxy: true
-      }
-    ])
-  })
-}
+var render = function () {}
 var staticRenderFns = []
-render._withStripped = true
 
 
 
@@ -1714,10 +1604,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! papaparse */ "./node_modules/papaparse/papaparse.min.js");
 /* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _partials_lang_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./partials/lang.js */ "./resources/js/partials/lang.js");
-/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
-/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _mixins_ajaxVue_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./mixins/ajaxVue.js */ "./resources/js/mixins/ajaxVue.js");
+/* harmony import */ var _partials_store_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./partials/store.js */ "./resources/js/partials/store.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var _components_csv_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/csv.vue */ "./resources/js/components/csv.vue");
+/* harmony import */ var _components_ajaxForm_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/ajaxForm.vue */ "./resources/js/components/ajaxForm.vue");
 
 
 
@@ -1730,9 +1621,10 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vue_autosize__WEBPACK_IMPORTED_MO
 
 
 
+
 window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
-  mixins: [_mixins_ajaxVue_js__WEBPACK_IMPORTED_MODULE_9__["default"]],
   el: '#form',
+  store: _partials_store_js__WEBPACK_IMPORTED_MODULE_8__["default"],
   data: {
     participants: [],
     date: window.now,
@@ -1740,6 +1632,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
     importing: false
   },
   components: {
+    AjaxForm: _components_ajaxForm_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
     Csv: _components_csv_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
     participant: {
       template: '#participant-template',
@@ -1767,7 +1660,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
         };
       },
       components: {
-        Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_8___default.a
+        Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_9___default.a
       },
       computed: {
         participantNames: function participantNames() {
