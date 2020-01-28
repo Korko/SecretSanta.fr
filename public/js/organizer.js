@@ -11,9 +11,16 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue_autofocus_directive__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-autofocus-directive */ "./node_modules/vue-autofocus-directive/dist/vue-autofocus-directive.js");
-/* harmony import */ var vue_autofocus_directive__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_autofocus_directive__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _mixins_stateMachine_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/stateMachine.js */ "./resources/js/mixins/stateMachine.js");
+/* harmony import */ var _mixins_stateMachine_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/stateMachine.js */ "./resources/js/mixins/stateMachine.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -122,12 +129,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
-
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.directive('autofocus', vue_autofocus_directive__WEBPACK_IMPORTED_MODULE_1___default.a);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   inheritAttrs: false,
-  mixins: [_mixins_stateMachine_js__WEBPACK_IMPORTED_MODULE_2__["default"]],
+  mixins: [_mixins_stateMachine_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
   props: ['value', 'update'],
   data: function data() {
     return {
@@ -178,6 +183,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.directive('autofocus', vue_autofocus_
     isSame: function isSame() {
       return this.newValue === this.value;
     },
+    view: function view() {
+      return this.state.startsWith('view');
+    },
     updating: function updating() {
       return this.state === 'viewUpdating';
     }
@@ -185,6 +193,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.directive('autofocus', vue_autofocus_
   methods: {
     stateView: function stateView() {
       this.newValue = this.value;
+    },
+    stateEditing: function stateEditing() {
+      var _this = this;
+
+      this.$nextTick(function () {
+        return _this.$refs.input.focus();
+      });
     },
     stateEditingBlur: function stateEditingBlur() {
       if (this.isSame) {
@@ -201,21 +216,21 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.directive('autofocus', vue_autofocus_
       }
     },
     stateUpdating: function stateUpdating() {
-      var _this = this;
+      var _this2 = this;
 
       this.update(this.newValue).then(function () {
-        _this.value = _this.newValue;
+        _this2.value = _this2.newValue;
 
-        _this.send('success');
+        _this2.send('success');
       })["catch"](function () {
-        _this.send('error');
+        _this2.send('error');
       });
     },
     stateUpdated: function stateUpdated() {
-      var _this2 = this;
+      var _this3 = this;
 
       setTimeout(function () {
-        _this2.send('timer');
+        _this3.send('timer');
       }, 5000);
     }
   }
@@ -385,20 +400,17 @@ var render = function() {
                     rawName: "v-model",
                     value: _vm.newValue,
                     expression: "newValue"
-                  },
-                  { name: "autofocus", rawName: "v-autofocus" }
+                  }
                 ],
+                ref: "input",
                 staticClass: "form-control",
-                attrs: { disabled: _vm.updating, type: "checkbox" },
+                attrs: { disabled: _vm.view || _vm.updating, type: "checkbox" },
                 domProps: {
                   checked: Array.isArray(_vm.newValue)
                     ? _vm._i(_vm.newValue, null) > -1
                     : _vm.newValue
                 },
                 on: {
-                  click: function($event) {
-                    return _vm.send("edit")
-                  },
                   input: function($event) {
                     return _vm.send("validate")
                   },
@@ -442,16 +454,13 @@ var render = function() {
                     rawName: "v-model",
                     value: _vm.newValue,
                     expression: "newValue"
-                  },
-                  { name: "autofocus", rawName: "v-autofocus" }
+                  }
                 ],
+                ref: "input",
                 staticClass: "form-control",
-                attrs: { disabled: _vm.updating, type: "radio" },
+                attrs: { disabled: _vm.view || _vm.updating, type: "radio" },
                 domProps: { checked: _vm._q(_vm.newValue, null) },
                 on: {
-                  click: function($event) {
-                    return _vm.send("edit")
-                  },
                   input: function($event) {
                     return _vm.send("validate")
                   },
@@ -478,16 +487,16 @@ var render = function() {
                     rawName: "v-model",
                     value: _vm.newValue,
                     expression: "newValue"
-                  },
-                  { name: "autofocus", rawName: "v-autofocus" }
+                  }
                 ],
+                ref: "input",
                 staticClass: "form-control",
-                attrs: { disabled: _vm.updating, type: _vm.$attrs.type },
+                attrs: {
+                  disabled: _vm.view || _vm.updating,
+                  type: _vm.$attrs.type
+                },
                 domProps: { value: _vm.newValue },
                 on: {
-                  click: function($event) {
-                    return _vm.send("edit")
-                  },
                   input: [
                     function($event) {
                       if ($event.target.composing) {
@@ -511,37 +520,57 @@ var render = function() {
           ),
       _vm._v(" "),
       _c("div", { staticClass: "input-group-append" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-success",
-            attrs: {
-              type: "button",
-              disabled:
-                _vm.updating || _vm.isSame || !_vm.state.endsWith("Valid")
-            },
-            on: {
-              click: function($event) {
-                return _vm.send("submit")
-              }
-            }
-          },
-          [_c("i", { staticClass: "fas fa-check-circle" })]
-        ),
+        _vm.state.startsWith("view")
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.send("edit")
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fas fa-edit" })]
+            )
+          : _vm._e(),
         _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-danger",
-            attrs: { type: "button", disabled: _vm.updating || _vm.isSame },
-            on: {
-              click: function($event) {
-                return _vm.send("cancel")
-              }
-            }
-          },
-          [_c("i", { staticClass: "fas fa-times-circle" })]
-        )
+        _vm.state.startsWith("edit")
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-success",
+                attrs: {
+                  type: "button",
+                  disabled:
+                    _vm.updating || _vm.isSame || !_vm.state.endsWith("Valid")
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.send("submit")
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fas fa-check-circle" })]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.state.startsWith("edit")
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-danger",
+                attrs: { type: "button", disabled: _vm.updating },
+                on: {
+                  click: function($event) {
+                    return _vm.send("cancel")
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fas fa-times-circle" })]
+            )
+          : _vm._e()
       ])
     ]
   )

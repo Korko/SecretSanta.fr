@@ -10,19 +10,27 @@
             <i class="input-group-text fas fa-exclamation-circle"></i>
         </div>
         <input
+            ref="input"
             v-bind="$attrs"
             v-model="newValue"
             class="form-control"
-            @click="send('edit')"
             @input="send('validate')"
             @blur="send('blur')"
-            v-autofocus
-            :disabled="updating"
+            :disabled="view || updating"
         />
         <div class="input-group-append">
             <button
                 type="button"
+                class="btn btn-primary"
+                v-if="state.startsWith('view')"
+                @click="send('edit')"
+            >
+                <i class="fas fa-edit"></i>
+            </button>
+            <button
+                type="button"
                 class="btn btn-success"
+                v-if="state.startsWith('edit')"
                 @click="send('submit')"
                 :disabled="updating || isSame || !state.endsWith('Valid')"
             >
@@ -31,8 +39,9 @@
             <button
                 type="button"
                 class="btn btn-danger"
+                v-if="state.startsWith('edit')"
                 @click="send('cancel')"
-                :disabled="updating || isSame"
+                :disabled="updating"
             >
                 <i class="fas fa-times-circle"></i>
             </button>
@@ -107,8 +116,6 @@
 
 <script>
     import Vue from 'vue';
-    import autofocus from 'vue-autofocus-directive';
-    Vue.directive('autofocus', autofocus);
 
     import StateMachine from '../mixins/stateMachine.js';
 
@@ -165,6 +172,9 @@
             isSame() {
                 return this.newValue === this.value;
             },
+            view() {
+                return this.state.startsWith('view');
+            },
             updating() {
                 return this.state === 'viewUpdating';
             }
@@ -172,6 +182,9 @@
         methods: {
             stateView() {
                 this.newValue = this.value;
+            },
+            stateEditing() {
+                this.$nextTick(() => this.$refs.input.focus());
             },
             stateEditingBlur() {
                 if (this.isSame) {
