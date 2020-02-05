@@ -11,13 +11,12 @@
             <tr v-for="participant in data.participants">
                 <td>{{ participant.name }}</td>
                 <td>
-                    <ajax-form :action="`/org/${data.draw.id}/${participant.id}/changeEmail`" v-slot="{ submit }">
-                        <input-edit
-                            v-model="participant.email_address"
-                            :update="submit"
-                            type="email"
-                        ></input-edit>
-                    </ajax-form>
+                    <input-edit
+                        :action="`/org/${data.draw}/${participant.id}/changeEmail`"
+                        v-model="participant.email_address"
+                        type="email"
+                        name="email"
+                    ></input-edit>
                 </td>
                 <td>{{ participant.delivery_status }}</td>
             </tr>
@@ -31,13 +30,12 @@
     import Lang from '../partials/lang.js';
 
     import InputEdit from './inputEdit.vue';
-    import AjaxForm from './ajaxForm.vue';
 
     import DefaultForm from './form.vue';
 
     export default {
         extends: DefaultForm,
-        components: { InputEdit, AjaxForm },
+        components: { InputEdit },
         computed: mapState(['lang'])
     };
 </script>
