@@ -5,8 +5,6 @@
         method="post"
         autocomplete="off"
     >
-        <input type="hidden" name="_token" :value="csrf" />
-        <input type="hidden" name="key" :value="key" />
         <fieldset :disabled="sending || sent">
             <slot v-bind="{ sending, sent, errors, submit, onSubmit }"></slot>
         </fieldset>
@@ -46,11 +44,14 @@ export default {
         call(url, options) {
             if (!this.sending && !this.sent) {
                 this.sending = true;
+                var keys = { _token: this.csrf, key: this.key };
                 var app = this;
                 return $.ajax({
                     url: url,
                     type: options.data ? 'POST' : 'GET',
-                    data: options.data,
+                    data: Array.isArray(options.data) ?
+                        options.data.concat(Object.keys(keys).map(key => { return { name: key, value: keys[key] }; })) :
+                        Object.assign({}, options.data, keys),
                     success(data, textStatus, jqXHR) {
                         if (jqXHR.responseJSON && jqXHR.responseJSON.message)
                             alertify.success(jqXHR.responseJSON.message);
@@ -58,8 +59,8 @@ export default {
                         app.sending = false;
                         app.sent = true;
 
-                        if (options.success)
-                            options.success(jqXHR.responseJSON);
+                        (options.success || options.then || function() {})(jqXHR.responseJSON);
+                        (options.complete || options.finally || function() {})();
                     },
                     error(jqXHR, textStatus, errorThrown) {
                         if (jqXHR.responseJSON && jqXHR.responseJSON.message)
@@ -69,7 +70,8 @@ export default {
 
                         app.sending = false;
 
-                        if (options.error) options.error(jqXHR.responseJSON);
+                        (options.error || options.catch || function() {})(jqXHR.responseJSON);
+                        (options.complete || options.finally || function() {})();
                     }
                 });
             }
