@@ -443,8 +443,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
 
 
 
@@ -477,22 +475,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     call: function call(url, options) {
       if (!this.sending && !this.sent) {
         this.sending = true;
+        var keys = {
+          _token: this.csrf,
+          key: this.key
+        };
         var app = this;
         return jquery__WEBPACK_IMPORTED_MODULE_1___default.a.ajax({
           url: url,
           type: options.data ? 'POST' : 'GET',
-          data: options.data,
+          data: Array.isArray(options.data) ? options.data.concat(Object.keys(keys).map(function (key) {
+            return {
+              name: key,
+              value: keys[key]
+            };
+          })) : Object.assign({}, options.data, keys),
           success: function success(data, textStatus, jqXHR) {
             if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_2___default.a.success(jqXHR.responseJSON.message);
             app.sending = false;
             app.sent = true;
-            if (options.success) options.success(jqXHR.responseJSON);
+            (options.success || options.then || function () {})(jqXHR.responseJSON);
+            (options.complete || options["finally"] || function () {})();
           },
           error: function error(jqXHR, textStatus, errorThrown) {
             if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_2___default.a.error(jqXHR.responseJSON.message);
             if (jqXHR.responseJSON && jqXHR.responseJSON.errors) app.fieldErrors = jqXHR.responseJSON.errors;
             app.sending = false;
-            if (options.error) options.error(jqXHR.responseJSON);
+            (options.error || options["catch"] || function () {})(jqXHR.responseJSON);
+            (options.complete || options["finally"] || function () {})();
           }
         });
       }
@@ -30773,16 +30782,6 @@ var render = function() {
       }
     },
     [
-      _c("input", {
-        attrs: { type: "hidden", name: "_token" },
-        domProps: { value: _vm.csrf }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: { type: "hidden", name: "key" },
-        domProps: { value: _vm.key }
-      }),
-      _vm._v(" "),
       _c(
         "fieldset",
         { attrs: { disabled: _vm.sending || _vm.sent } },

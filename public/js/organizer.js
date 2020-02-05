@@ -9,9 +9,18 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mixins_stateMachine_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/stateMachine.js */ "./resources/js/mixins/stateMachine.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
+/* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(alertify_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _mixins_stateMachine_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mixins/stateMachine.js */ "./resources/js/mixins/stateMachine.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -128,12 +137,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   inheritAttrs: false,
-  mixins: [_mixins_stateMachine_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
-  props: ['value', 'update'],
+  mixins: [_mixins_stateMachine_js__WEBPACK_IMPORTED_MODULE_3__["default"]],
+  props: ['name', 'value', 'action'],
   data: function data() {
     return {
       states: Object.freeze({
@@ -168,6 +184,7 @@ __webpack_require__.r(__webpack_exports__);
           error: 'viewError'
         },
         viewUpdated: {
+          edit: 'editing',
           timer: 'view'
         },
         viewError: {
@@ -179,7 +196,7 @@ __webpack_require__.r(__webpack_exports__);
       newValue: this.value
     };
   },
-  computed: {
+  computed: _objectSpread({
     isSame: function isSame() {
       return this.newValue === this.value;
     },
@@ -189,8 +206,24 @@ __webpack_require__.r(__webpack_exports__);
     updating: function updating() {
       return this.state === 'viewUpdating';
     }
-  },
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['csrf', 'key'])),
   methods: {
+    submit: function submit(options) {
+      return jquery__WEBPACK_IMPORTED_MODULE_1___default.a.ajax({
+        url: this.action,
+        type: 'POST',
+        data: _defineProperty({
+          _token: this.csrf,
+          key: this.key
+        }, this.name, this.newValue),
+        success: function success(data, textStatus, jqXHR) {
+          if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_2___default.a.success(jqXHR.responseJSON.message);
+        },
+        error: function error(jqXHR, textStatus, errorThrown) {
+          if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_2___default.a.error(jqXHR.responseJSON.message);
+        }
+      });
+    },
     stateView: function stateView() {
       this.newValue = this.value;
     },
@@ -215,18 +248,18 @@ __webpack_require__.r(__webpack_exports__);
         this.send('valid');
       }
     },
-    stateUpdating: function stateUpdating() {
+    stateViewUpdating: function stateViewUpdating() {
       var _this2 = this;
 
-      this.update(this.newValue).then(function () {
-        _this2.value = _this2.newValue;
+      this.submit().then(function () {
+        _this2.$emit('input', _this2.newValue);
 
         _this2.send('success');
       })["catch"](function () {
         _this2.send('error');
       });
     },
-    stateUpdated: function stateUpdated() {
+    stateViewUpdated: function stateViewUpdated() {
       var _this3 = this;
 
       setTimeout(function () {
@@ -250,8 +283,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _partials_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../partials/lang.js */ "./resources/js/partials/lang.js");
 /* harmony import */ var _inputEdit_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./inputEdit.vue */ "./resources/js/components/inputEdit.vue");
-/* harmony import */ var _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ajaxForm.vue */ "./resources/js/components/ajaxForm.vue");
-/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
+/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
 //
 //
 //
@@ -278,17 +310,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  "extends": _form_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+  "extends": _form_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
   components: {
-    InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    AjaxForm: _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['lang'])
 });
@@ -307,7 +336,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.input-group > .form-control[data-v-7c272539]:not(:first-child), .input-group > .custom-select[data-v-7c272539]:not(:first-child) {\n        border-left: 0;\n        padding-left: 0;\n}\n.input-group > .input-group-prepend > .input-group-text[data-v-7c272539] {\n        border-right: 0;\n}\n.input-group[data-v-7c272539]::after {\n        content: '';\n        box-sizing: border-box;\n        width: 0;\n        height: 2px;\n\n        position: absolute;\n        bottom: -4px;\n        left: 0;\n\n        will-change: width;\n        -webkit-transition: width 0.285s ease-out;\n        transition: width 0.285s ease-out;\n        z-index: 4;\n}\n.input-group-append[data-v-7c272539] {\n        z-index: 5;\n}\n.input-group[data-state='viewUpdated'] .input-group-text[data-v-7c272539] {\n        color: var(--success);\n        background: none;\n}\n.input-group[data-state='viewError'] .input-group-text[data-v-7c272539] {\n        color: var(--danger);\n        background: none;\n}\n.input-group[data-state='viewUpdated'][data-v-7c272539]::after {\n        width: 100%;\n        background-color: var(--success);\n}\n.input-group[data-state='viewError'][data-v-7c272539]::after {\n        width: 100%;\n        background-color: var(--danger);\n}\ninput[data-v-7c272539] {\n        background: none;\n        box-shadow: none !important;\n        height: 100%;\n}\n.table-hover tbody tr:hover input[data-v-7c272539] {\n        color: #212529;\n}\n@-webkit-keyframes check-data-v-7c272539 {\n0% {\n    stroke-dashoffset: 10;\n}\n100% {\n    stroke-dashoffset: 0;\n}\n}\n@keyframes check-data-v-7c272539 {\n0% {\n    stroke-dashoffset: 10;\n}\n100% {\n    stroke-dashoffset: 0;\n}\n}\n.fa-check path[data-v-7c272539] {\n  -webkit-animation-name: check-data-v-7c272539;\n          animation-name: check-data-v-7c272539;\n  -webkit-animation-duration: 2s;\n          animation-duration: 2s;\n  -webkit-transition: stroke-dashoffset 0.35s;\n  transition: stroke-dashoffset 0.35s;\n  -webkit-transform-origin: 50% 50%;\n          transform-origin: 50% 50%;\n}\n", ""]);
+exports.push([module.i, "\n.input-group > .input-group-prepend > .input-group-text[data-v-7c272539] {\n        border-right: 0;\n}\n.input-group[data-v-7c272539]::after {\n        content: '';\n        box-sizing: border-box;\n        width: 0;\n        height: 2px;\n\n        position: absolute;\n        bottom: -4px;\n        left: 0;\n\n        will-change: width;\n        -webkit-transition: width 0.285s ease-out;\n        transition: width 0.285s ease-out;\n        z-index: 4;\n}\n.input-group-append[data-v-7c272539] {\n        z-index: 5;\n}\n.input-group[data-state='viewUpdated'] .input-group-text[data-v-7c272539] {\n        color: var(--success);\n        background: none;\n}\n.input-group[data-state='viewError'] .input-group-text[data-v-7c272539] {\n        color: var(--danger);\n        background: none;\n}\n.input-group[data-state='viewUpdated'][data-v-7c272539]::after {\n        width: 100%;\n        background-color: var(--success);\n}\n.input-group[data-state='viewError'][data-v-7c272539]::after {\n        width: 100%;\n        background-color: var(--danger);\n}\ninput[data-v-7c272539] {\n        background: none;\n        box-shadow: none !important;\n        height: 100%;\n}\n.table-hover tbody tr:hover input[data-v-7c272539] {\n        color: #212529;\n}\n@-webkit-keyframes check-data-v-7c272539 {\n0% {\n    stroke-dashoffset: 10;\n}\n100% {\n    stroke-dashoffset: 0;\n}\n}\n@keyframes check-data-v-7c272539 {\n0% {\n    stroke-dashoffset: 10;\n}\n100% {\n    stroke-dashoffset: 0;\n}\n}\n.fa-check path[data-v-7c272539] {\n  -webkit-animation-name: check-data-v-7c272539;\n          animation-name: check-data-v-7c272539;\n  -webkit-animation-duration: 2s;\n          animation-duration: 2s;\n  -webkit-transition: stroke-dashoffset 0.35s;\n  transition: stroke-dashoffset 0.35s;\n  -webkit-transform-origin: 50% 50%;\n          transform-origin: 50% 50%;\n}\n", ""]);
 
 // exports
 
@@ -360,217 +389,243 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "form",
     {
-      staticClass: "input-group",
-      attrs: {
-        "data-state": _vm.state,
-        "data-previous-state": _vm.previousState
+      attrs: { action: _vm.action, method: "post", autocomplete: "off" },
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          return _vm.send("submit")
+        }
       }
     },
     [
-      _vm.updating
-        ? _c("div", { staticClass: "input-group-prepend" }, [
-            _c("i", { staticClass: "input-group-text fas fa-spinner fa-spin" })
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.state === "viewUpdated"
-        ? _c("div", { staticClass: "input-group-prepend" }, [
-            _c("i", { staticClass: "input-group-text fas fa-check" })
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.state === "viewError"
-        ? _c("div", { staticClass: "input-group-prepend" }, [
-            _c("i", {
-              staticClass: "input-group-text fas fa-exclamation-circle"
-            })
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.$attrs.type === "checkbox"
-        ? _c(
-            "input",
-            _vm._b(
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.newValue,
-                    expression: "newValue"
-                  }
-                ],
-                ref: "input",
-                staticClass: "form-control",
-                attrs: { disabled: _vm.view || _vm.updating, type: "checkbox" },
-                domProps: {
-                  checked: Array.isArray(_vm.newValue)
-                    ? _vm._i(_vm.newValue, null) > -1
-                    : _vm.newValue
-                },
-                on: {
-                  input: function($event) {
-                    return _vm.send("validate")
-                  },
-                  blur: function($event) {
-                    return _vm.send("blur")
-                  },
-                  change: function($event) {
-                    var $$a = _vm.newValue,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 && (_vm.newValue = $$a.concat([$$v]))
-                      } else {
-                        $$i > -1 &&
-                          (_vm.newValue = $$a
-                            .slice(0, $$i)
-                            .concat($$a.slice($$i + 1)))
+      _c("fieldset", { attrs: { disabled: _vm.updating } }, [
+        _c(
+          "div",
+          {
+            staticClass: "input-group",
+            attrs: {
+              "data-state": _vm.state,
+              "data-previous-state": _vm.previousState
+            }
+          },
+          [
+            _vm.updating
+              ? _c("div", { staticClass: "input-group-prepend" }, [
+                  _c("i", {
+                    staticClass: "input-group-text fas fa-spinner fa-spin"
+                  })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.state === "viewUpdated"
+              ? _c("div", { staticClass: "input-group-prepend" }, [
+                  _c("i", { staticClass: "input-group-text fas fa-check" })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.state === "viewError"
+              ? _c("div", { staticClass: "input-group-prepend" }, [
+                  _c("i", {
+                    staticClass: "input-group-text fas fa-exclamation-circle"
+                  })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$attrs.type === "checkbox"
+              ? _c(
+                  "input",
+                  _vm._b(
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newValue,
+                          expression: "newValue"
+                        }
+                      ],
+                      ref: "input",
+                      staticClass: "form-control",
+                      attrs: {
+                        name: _vm.name,
+                        disabled: _vm.view,
+                        type: "checkbox"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.newValue)
+                          ? _vm._i(_vm.newValue, null) > -1
+                          : _vm.newValue
+                      },
+                      on: {
+                        input: function($event) {
+                          return _vm.send("validate")
+                        },
+                        blur: function($event) {
+                          return _vm.send("blur")
+                        },
+                        change: function($event) {
+                          var $$a = _vm.newValue,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = null,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.newValue = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.newValue = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.newValue = $$c
+                          }
+                        }
                       }
-                    } else {
-                      _vm.newValue = $$c
-                    }
-                  }
-                }
-              },
-              "input",
-              _vm.$attrs,
-              false
-            )
-          )
-        : _vm.$attrs.type === "radio"
-        ? _c(
-            "input",
-            _vm._b(
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.newValue,
-                    expression: "newValue"
-                  }
-                ],
-                ref: "input",
-                staticClass: "form-control",
-                attrs: { disabled: _vm.view || _vm.updating, type: "radio" },
-                domProps: { checked: _vm._q(_vm.newValue, null) },
-                on: {
-                  input: function($event) {
-                    return _vm.send("validate")
-                  },
-                  blur: function($event) {
-                    return _vm.send("blur")
-                  },
-                  change: function($event) {
-                    _vm.newValue = null
-                  }
-                }
-              },
-              "input",
-              _vm.$attrs,
-              false
-            )
-          )
-        : _c(
-            "input",
-            _vm._b(
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.newValue,
-                    expression: "newValue"
-                  }
-                ],
-                ref: "input",
-                staticClass: "form-control",
-                attrs: {
-                  disabled: _vm.view || _vm.updating,
-                  type: _vm.$attrs.type
-                },
-                domProps: { value: _vm.newValue },
-                on: {
-                  input: [
-                    function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.newValue = $event.target.value
                     },
-                    function($event) {
-                      return _vm.send("validate")
-                    }
-                  ],
-                  blur: function($event) {
-                    return _vm.send("blur")
-                  }
-                }
-              },
-              "input",
-              _vm.$attrs,
-              false
-            )
-          ),
-      _vm._v(" "),
-      _c("div", { staticClass: "input-group-append" }, [
-        _vm.state.startsWith("view")
-          ? _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { type: "button" },
-                on: {
-                  click: function($event) {
-                    return _vm.send("edit")
-                  }
-                }
-              },
-              [_c("i", { staticClass: "fas fa-edit" })]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.state.startsWith("edit")
-          ? _c(
-              "button",
-              {
-                staticClass: "btn btn-success",
-                attrs: {
-                  type: "button",
-                  disabled:
-                    _vm.updating || _vm.isSame || !_vm.state.endsWith("Valid")
-                },
-                on: {
-                  click: function($event) {
-                    return _vm.send("submit")
-                  }
-                }
-              },
-              [_c("i", { staticClass: "fas fa-check-circle" })]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.state.startsWith("edit")
-          ? _c(
-              "button",
-              {
-                staticClass: "btn btn-danger",
-                attrs: { type: "button", disabled: _vm.updating },
-                on: {
-                  click: function($event) {
-                    return _vm.send("cancel")
-                  }
-                }
-              },
-              [_c("i", { staticClass: "fas fa-times-circle" })]
-            )
-          : _vm._e()
+                    "input",
+                    _vm.$attrs,
+                    false
+                  )
+                )
+              : _vm.$attrs.type === "radio"
+              ? _c(
+                  "input",
+                  _vm._b(
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newValue,
+                          expression: "newValue"
+                        }
+                      ],
+                      ref: "input",
+                      staticClass: "form-control",
+                      attrs: {
+                        name: _vm.name,
+                        disabled: _vm.view,
+                        type: "radio"
+                      },
+                      domProps: { checked: _vm._q(_vm.newValue, null) },
+                      on: {
+                        input: function($event) {
+                          return _vm.send("validate")
+                        },
+                        blur: function($event) {
+                          return _vm.send("blur")
+                        },
+                        change: function($event) {
+                          _vm.newValue = null
+                        }
+                      }
+                    },
+                    "input",
+                    _vm.$attrs,
+                    false
+                  )
+                )
+              : _c(
+                  "input",
+                  _vm._b(
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newValue,
+                          expression: "newValue"
+                        }
+                      ],
+                      ref: "input",
+                      staticClass: "form-control",
+                      attrs: {
+                        name: _vm.name,
+                        disabled: _vm.view,
+                        type: _vm.$attrs.type
+                      },
+                      domProps: { value: _vm.newValue },
+                      on: {
+                        input: [
+                          function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.newValue = $event.target.value
+                          },
+                          function($event) {
+                            return _vm.send("validate")
+                          }
+                        ],
+                        blur: function($event) {
+                          return _vm.send("blur")
+                        }
+                      }
+                    },
+                    "input",
+                    _vm.$attrs,
+                    false
+                  )
+                ),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _vm.state.startsWith("view")
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.send("edit")
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-edit" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.state.startsWith("edit")
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      attrs: {
+                        type: "button",
+                        disabled: _vm.isSame || !_vm.state.endsWith("Valid")
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.send("submit")
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-check-circle" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.state.startsWith("edit")
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.send("cancel")
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-times-circle" })]
+                  )
+                : _vm._e()
+            ])
+          ]
+        )
       ])
     ]
   )
@@ -623,39 +678,24 @@ var render = function() {
           _c(
             "td",
             [
-              _c("ajax-form", {
+              _c("input-edit", {
                 attrs: {
                   action:
                     "/org/" +
-                    _vm.data.draw.id +
+                    _vm.data.draw +
                     "/" +
                     participant.id +
-                    "/changeEmail"
+                    "/changeEmail",
+                  type: "email",
+                  name: "email"
                 },
-                scopedSlots: _vm._u(
-                  [
-                    {
-                      key: "default",
-                      fn: function(ref) {
-                        var submit = ref.submit
-                        return [
-                          _c("input-edit", {
-                            attrs: { update: submit, type: "email" },
-                            model: {
-                              value: participant.email_address,
-                              callback: function($$v) {
-                                _vm.$set(participant, "email_address", $$v)
-                              },
-                              expression: "participant.email_address"
-                            }
-                          })
-                        ]
-                      }
-                    }
-                  ],
-                  null,
-                  true
-                )
+                model: {
+                  value: participant.email_address,
+                  callback: function($$v) {
+                    _vm.$set(participant, "email_address", $$v)
+                  },
+                  expression: "participant.email_address"
+                }
               })
             ],
             1
