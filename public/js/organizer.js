@@ -209,6 +209,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['csrf', 'key'])),
   methods: {
     submit: function submit(options) {
+      var app = this;
       return jquery__WEBPACK_IMPORTED_MODULE_1___default.a.ajax({
         url: this.action,
         type: 'POST',
@@ -217,7 +218,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           key: this.key
         }, this.name, this.newValue),
         success: function success(data, textStatus, jqXHR) {
-          if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_2___default.a.success(jqXHR.responseJSON.message);
+          var update = {
+            value: app.newValue
+          };
+
+          if (jqXHR.responseJSON) {
+            if (jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_2___default.a.success(jqXHR.responseJSON.message);
+            Object.assign(update, jqXHR.responseJSON);
+          }
+
+          app.$emit('update', update);
         },
         error: function error(jqXHR, textStatus, errorThrown) {
           if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_2___default.a.error(jqXHR.responseJSON.message);
@@ -252,8 +262,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this2 = this;
 
       this.submit().then(function () {
-        _this2.$emit('input', _this2.newValue);
-
         _this2.send('success');
       })["catch"](function () {
         _this2.send('error');
@@ -310,6 +318,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -319,7 +328,13 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['lang'])
+  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['lang']),
+  methods: {
+    update: function update(k, data) {
+      this.data.participants[k].email_address = data.value;
+      this.data.participants[k].delivery_status = data.status;
+    }
+  }
 });
 
 /***/ }),
@@ -671,7 +686,7 @@ var render = function() {
     _vm._v(" "),
     _c(
       "tbody",
-      _vm._l(_vm.data.participants, function(participant) {
+      _vm._l(_vm.data.participants, function(participant, k) {
         return _c("tr", [
           _c("td", [_vm._v(_vm._s(participant.name))]),
           _vm._v(" "),
@@ -686,15 +701,14 @@ var render = function() {
                     "/" +
                     participant.id +
                     "/changeEmail",
+                  value: participant.email_address,
                   type: "email",
                   name: "email"
                 },
-                model: {
-                  value: participant.email_address,
-                  callback: function($$v) {
-                    _vm.$set(participant, "email_address", $$v)
-                  },
-                  expression: "participant.email_address"
+                on: {
+                  update: function($event) {
+                    return _vm.update(k, $event)
+                  }
                 }
               })
             ],

@@ -8,12 +8,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="participant in data.participants">
+            <tr v-for="(participant, k) in data.participants">
                 <td>{{ participant.name }}</td>
                 <td>
                     <input-edit
                         :action="`/org/${data.draw}/${participant.id}/changeEmail`"
-                        v-model="participant.email_address"
+                        :value="participant.email_address"
+                        @update="update(k, $event)"
                         type="email"
                         name="email"
                     ></input-edit>
@@ -36,6 +37,12 @@
     export default {
         extends: DefaultForm,
         components: { InputEdit },
-        computed: mapState(['lang'])
+        computed: mapState(['lang']),
+        methods: {
+            update(k, data) {
+                this.data.participants[k].email_address = data.value;
+                this.data.participants[k].delivery_status = data.status;
+            }
+        }
     };
 </script>

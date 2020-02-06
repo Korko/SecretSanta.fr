@@ -32,6 +32,7 @@ class OrganizerController extends Controller
     public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
     {
         $participant->email_address = $request->input('email');
+        $participant->delivery_status = Participant::CREATED;
         $participant->save();
 
         $this->doResendEmail($participant);
@@ -39,18 +40,21 @@ class OrganizerController extends Controller
         $message = trans('organizer.up_and_sent');
 
         return $request->ajax() ?
-            response()->json(['message' => $message]) :
+            response()->json(['message' => $message, 'status' => $participant->delivery_status]) :
             redirect('/')->with('message', $message);
     }
 
     public function resendEmail(OrganizerResendEmailRequest $request, Draw $draw, Participant $participant)
     {
+        $participant->delivery_status = Participant::CREATED;
+        $participant->save();
+
         $this->doResendEmail($participant);
 
         $message = trans('message.sent');
 
         return $request->ajax() ?
-            response()->json(['message' => $message]) :
+            response()->json(['message' => $message, 'status' => $participant->delivery_status]) :
             redirect('/')->with('message', $message);
     }
 
