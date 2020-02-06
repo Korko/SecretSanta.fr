@@ -190,13 +190,19 @@ export default {
     },
     methods: {
         submit(options) {
+            var app = this;
             return $.ajax({
                 url: this.action,
                 type: 'POST',
                 data: { _token: this.csrf, key: this.key, [this.name]: this.newValue },
                 success(data, textStatus, jqXHR) {
-                    if (jqXHR.responseJSON && jqXHR.responseJSON.message)
-                        alertify.success(jqXHR.responseJSON.message);
+                    var update = { value: app.newValue };
+                    if (jqXHR.responseJSON) {
+                        if (jqXHR.responseJSON.message)
+                            alertify.success(jqXHR.responseJSON.message);
+                        Object.assign(update, jqXHR.responseJSON);
+                    }
+                    app.$emit('update', update);
                 },
                 error(jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON && jqXHR.responseJSON.message)
@@ -226,7 +232,6 @@ export default {
         },
         stateViewUpdating() {
             this.submit().then(() => {
-                this.$emit('input', this.newValue);
                 this.send('success');
             }).catch(() => {
                 this.send('error');
