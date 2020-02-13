@@ -2,11 +2,13 @@
 
 namespace App\Mail;
 
+use Log;
 use Crypt;
 use Hashids;
 use App\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Mail\Mailer as MailerContract;
 
 class TargetDrawn extends Mailable
 {
@@ -50,6 +52,15 @@ class TargetDrawn extends Mailable
     {
         return $this->view('emails.target_drawn')
                     ->text('emails.target_drawn_plain');
+    }
+
+    public function send(MailerContract $mailer)
+    {
+        parent::send($mailer);
+
+        $participant = Participant::find($this->participantId);
+        $participant->delivery_status = Participant::SENT;
+        $participant->save();
     }
 
     public function failed($exception)
