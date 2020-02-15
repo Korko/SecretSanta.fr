@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Mail;
-use Metrics;
 use App\Draw;
-use App\Participant;
-use App\Mail\TargetDrawn;
 use App\Http\Requests\OrganizerChangeEmailRequest;
 use App\Http\Requests\OrganizerResendEmailRequest;
+use App\Mail\TargetDrawn;
+use App\Participant;
+use Mail;
+use Metrics;
 
 class OrganizerController extends Controller
 {

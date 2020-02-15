@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
+use App\Draw;
+use App\Exceptions\SolverException;
+use App\Mail\OrganizerFinalRecap;
+use App\Mail\OrganizerRecap;
+use App\Mail\TargetDrawn;
+use App\Participant;
 use Arr;
+use Facades\App\Services\HatSolver as Solver;
 use Mail;
 use Metrics;
-use App\Draw;
-use App\Participant;
-use App\Mail\TargetDrawn;
-use App\Mail\OrganizerRecap;
-use App\Mail\OrganizerFinalRecap;
-use App\Exceptions\SolverException;
-use Facades\App\Services\HatSolver as Solver;
 
 class DrawHandler
 {

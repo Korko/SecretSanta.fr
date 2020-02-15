@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use Generator;
 use App\Exceptions\SolverException;
+use Generator;
 
 class HatSolver
 {

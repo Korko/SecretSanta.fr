@@ -2,8 +2,8 @@
 
 namespace App\Mail;
 
-use Illuminate\Mail\Mailable as BaseMailable;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
+use Illuminate\Mail\Mailable as BaseMailable;
 
 abstract class Mailable extends BaseMailable
 {

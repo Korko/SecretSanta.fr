@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Arr;
-use Illuminate\Http\Request;
-use App\Services\DrawHandler;
 use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
+use App\Services\DrawHandler;
+use Arr;
+use Illuminate\Http\Request;
 
 class RandomFormController extends Controller
 {

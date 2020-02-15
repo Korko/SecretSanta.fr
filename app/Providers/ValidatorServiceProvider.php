@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use Arr;
-use Validator;
 use Illuminate\Support\ServiceProvider;
+use Validator;
 
 class ValidatorServiceProvider extends ServiceProvider
 {

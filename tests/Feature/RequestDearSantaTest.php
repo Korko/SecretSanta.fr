@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use Mail;
+use App\Participant;
 use Crypt;
 use Hashids;
-use App\Participant;
+use Mail;
 
 class RequestDearSantaTest extends RequestCase
 {

@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use Mail;
-use Crypt;
 use App\Draw;
-use App\Participant;
-use App\Mail\TargetDrawn;
-use App\Mail\OrganizerRecap;
 use App\Mail\OrganizerFinalRecap;
+use App\Mail\OrganizerRecap;
+use App\Mail\TargetDrawn;
+use App\Participant;
+use Crypt;
+use Mail;
 
 class RequestOrganizerTest extends RequestCase
 {
