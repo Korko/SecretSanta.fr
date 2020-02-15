@@ -2,10 +2,10 @@
 
 namespace App;
 
-use DB;
-use DateTime;
-use DateInterval;
 use App\Database\Model;
+use DateInterval;
+use DateTime;
+use DB;
 
 class Draw extends Model
 {

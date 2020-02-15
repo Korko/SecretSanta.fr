@@ -2,8 +2,8 @@
 
 namespace App\Database;
 
-use Illuminate\Database\Eloquent\Model as BaseModel;
 use AustinHeap\Database\Encryption\Traits\HasEncryptedAttributes;
+use Illuminate\Database\Eloquent\Model as BaseModel;
 
 class Model extends BaseModel
 {

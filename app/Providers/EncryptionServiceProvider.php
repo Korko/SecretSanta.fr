@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Korko\Encrypter\SymmetricalEncrypter;
 use Illuminate\Encryption\EncryptionServiceProvider as ServiceProvider;
+use Korko\Encrypter\SymmetricalEncrypter;
 
 class EncryptionServiceProvider extends ServiceProvider
 {

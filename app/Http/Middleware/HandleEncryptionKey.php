@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Crypt;
 use Closure;
+use Crypt;
 
 class HandleEncryptionKey
 {

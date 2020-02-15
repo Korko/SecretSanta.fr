@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use Sms;
+use App\Draw;
+use App\Mail\OrganizerRecap;
+use App\Mail\TargetDrawn;
+use App\Participant;
 use Mail;
 use Metrics;
-use App\Draw;
-use App\Participant;
-use App\Mail\TargetDrawn;
-use App\Mail\OrganizerRecap;
+use Sms;
 
 class RequestTest extends RequestCase
 {

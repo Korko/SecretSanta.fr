@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use Mail;
+use App\Draw;
+use App\Participant;
 use Config;
+use Mail;
 use Metrics;
 use Mockery;
-use App\Draw;
 use NoCaptcha;
-use App\Participant;
 
 class RequestBounceTest extends RequestCase
 {

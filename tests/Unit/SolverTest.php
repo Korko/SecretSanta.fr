@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Exceptions\SolverException;
 use Facades\App\Services\HatSolver as Solver;
+use Tests\TestCase;
 
 class SolverTest extends TestCase
 {

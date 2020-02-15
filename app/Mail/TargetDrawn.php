@@ -2,13 +2,12 @@
 
 namespace App\Mail;
 
-use Log;
+use App\Participant;
 use Crypt;
 use Hashids;
-use App\Participant;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
+use Illuminate\Queue\SerializesModels;
 
 class TargetDrawn extends Mailable
 {

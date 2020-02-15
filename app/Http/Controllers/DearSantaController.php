@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Mail;
-use Hashids;
-use Metrics;
-use App\Participant;
-use App\Mail\DearSanta;
 use App\Http\Requests\DearSantaRequest;
+use App\Mail\DearSanta;
+use App\Participant;
+use Hashids;
+use Mail;
+use Metrics;
 
 class DearSantaController extends Controller
 {
