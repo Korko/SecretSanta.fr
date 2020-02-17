@@ -288,7 +288,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _partials_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../partials/lang.js */ "./resources/js/partials/lang.js");
 /* harmony import */ var _inputEdit_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./inputEdit.vue */ "./resources/js/components/inputEdit.vue");
 /* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
@@ -328,14 +328,43 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['lang']),
+  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['csrf', 'key', 'lang']),
+  created: function created() {
+    var _this = this;
+
+    setInterval(function () {
+      _this.fetchState();
+    }, 5000);
+  },
   methods: {
     update: function update(k, data) {
       this.data.participants[k].email_address = data.value;
-      this.data.participants[k].delivery_status = data.status;
+      this.data.participants[k].delivery_status = data.participant.delivery_status;
+      this.data.participants[k].updated_at = data.participant.updated_at;
+    },
+    fetchState: function fetchState() {
+      var app = this;
+      return $.ajax({
+        url: "/org/".concat(this.data.draw, "/fetchState"),
+        type: 'POST',
+        data: {
+          _token: this.csrf,
+          key: this.key
+        },
+        success: function success(data) {
+          if (data.participants) {
+            Object.values(data.participants).forEach(function (participant) {
+              var new_update = new Date(participant.updated_at);
+              var old_update = new Date(app.data.participants[participant.id].updated_at);
+              app.data.participants[participant.id].delivery_status = new_update > old_update ? participant.delivery_status : app.data.participants[participant.id].delivery_status;
+            });
+          }
+        }
+      });
     }
   }
 });
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
 

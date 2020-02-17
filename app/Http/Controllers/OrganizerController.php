@@ -23,10 +23,21 @@ class OrganizerController extends Controller
     {
         return [
             'draw' => $draw->id,
-            'participants' => $draw->participants->map(function ($participant) {
-                return $participant->only(['id', 'name', 'email_address', 'delivery_status']);
+            'participants' => $draw->participants->mapWithKeys(function ($participant) {
+                return [$participant->id => $participant->only([
+                    'id', 'name', 'email_address', 'delivery_status', 'updated_at'
+                ])];
             }),
         ];
+    }
+
+    public function fetchState(Draw $draw)
+    {
+        return response()->json([
+            'participants' => $draw->participants->mapWithKeys(function ($participant) {
+                return [$participant->id => $participant->only(['id', 'delivery_status', 'updated_at'])];
+            })
+        ]);
     }
 
     public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
@@ -40,7 +51,11 @@ class OrganizerController extends Controller
         $message = trans('organizer.up_and_sent');
 
         return $request->ajax() ?
-            response()->json(['message' => $message, 'status' => $participant->delivery_status]) :
+            response()->json([
+                'message' => $message, 'participant' => $participant->only([
+                    'id', 'delivery_status', 'updated_at'
+                ])
+            ]) :
             redirect('/')->with('message', $message);
     }
 
