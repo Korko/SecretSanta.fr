@@ -377,8 +377,126 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function () {}
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("modal", {
+    on: {
+      close: function($event) {
+        return _vm.$emit("close")
+      }
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "header",
+        fn: function() {
+          return [_c("h3", [_vm._v(_vm._s(_vm.lang("form.csv.title")))])]
+        },
+        proxy: true
+      },
+      {
+        key: "body",
+        fn: function() {
+          return [
+            _c(
+              "div",
+              { staticClass: "alert alert-info", attrs: { role: "alert" } },
+              [_c("span", { staticClass: "fas fa-question-cirle" })]
+            ),
+            _vm._v(
+              "\n\n        " +
+                _vm._s(_vm.lang("form.csv.format")) +
+                "\n        "
+            ),
+            _c("table", { staticClass: "table table-bordered heavy-borders" }, [
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v(_vm._s(_vm.lang("form.csv.column1")))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.lang("form.csv.column2")))])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+              [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.lang("form.csv.warning")) +
+                    "\n        "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "form",
+              {
+                attrs: { id: "uploadCsv" },
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.emitSubmit($event)
+                  },
+                  reset: _vm.emitCancel
+                }
+              },
+              [
+                _c("input", {
+                  attrs: { type: "file", accept: ".csv", required: "required" }
+                })
+              ]
+            )
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "footer",
+        fn: function() {
+          return [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-warning",
+                attrs: { type: "reset", form: "uploadCsv" }
+              },
+              [
+                _c("span", { staticClass: "fas fa-stop-circle" }),
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.lang("form.csv.cancel")) +
+                    "\n        "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "submit", form: "uploadCsv" }
+              },
+              [
+                _c("span", { staticClass: "fas fa-upload" }),
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.lang("form.csv.import")) +
+                    "\n        "
+                )
+              ]
+            )
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
 var staticRenderFns = []
+render._withStripped = true
 
 
 

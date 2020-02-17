@@ -1,5 +1,5 @@
 <template>
-    <modal @close="$emit('close")">
+    <modal @close="$emit('close')">
         <template #header>
             <h3>{{ lang('form.csv.title') }}</h3>
         </template>
