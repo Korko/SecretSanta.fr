@@ -15,6 +15,7 @@ class TargetDrawn extends Mailable
 
     public $content;
     public $participantId;
+    public $updateDate;
     public $dearSantaLink;
 
     /**
@@ -35,6 +36,7 @@ class TargetDrawn extends Mailable
 
         // Needed for the MessageSent event
         $this->participantId = $santa->id;
+        $this->updateDate = $santa->updated_at;
     }
 
     protected function parseKeywords($str, Participant $santa)
@@ -58,14 +60,18 @@ class TargetDrawn extends Mailable
         parent::send($mailer);
 
         $participant = Participant::find($this->participantId);
-        $participant->delivery_status = Participant::SENT;
-        $participant->save();
+        if ($participant->updated_at == $this->updateDate) {
+            $participant->delivery_status = Participant::SENT;
+            $participant->save();
+        }
     }
 
     public function failed($exception)
     {
         $participant = Participant::find($this->participantId);
-        $participant->delivery_status = Participant::ERROR;
-        $participant->save();
+        if ($participant->updated_at == $this->updateDate) {
+            $participant->delivery_status = Participant::ERROR;
+            $participant->save();
+        }
     }
 }
