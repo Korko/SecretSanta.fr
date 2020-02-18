@@ -37,10 +37,18 @@
     export default {
         extends: DefaultForm,
         components: { InputEdit },
-        computed: mapState(['csrf', 'key', 'lang']),
+        computed: {
+            checkUpdates() {
+                return !!(
+                    Object.values(this.data.participants)
+                        .find(participant => participant.delivery_status === 'created')
+                );
+            },
+            ...mapState(['csrf', 'key', 'lang'])
+        },
         created() {
             setInterval(() => {
-                this.fetchState();
+                if(this.checkUpdates) this.fetchState();
             }, 5000);
         },
         methods: {
