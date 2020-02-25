@@ -15,20 +15,20 @@ class OrganizerController extends Controller
     public function view(Draw $draw)
     {
         return view('organizer', [
-            'draw'         => $draw->id,
+            'draw' => $draw->id,
         ]);
     }
 
     public function fetch(Draw $draw)
     {
-        return [
+        return response()->json([
             'draw' => $draw->id,
             'participants' => $draw->participants->mapWithKeys(function ($participant) {
                 return [$participant->id => $participant->only([
                     'id', 'name', 'email_address', 'delivery_status', 'updated_at'
                 ])];
             }),
-        ];
+        ]);
     }
 
     public function fetchState(Draw $draw)

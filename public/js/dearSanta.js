@@ -12,7 +12,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _partials_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../partials/lang.js */ "./resources/js/partials/lang.js");
 /* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
-//
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -60,7 +65,21 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   "extends": _form_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['lang'])
+  computed: _objectSpread({
+    emails: function emails() {
+      return Object.values(this.data.emails).sort(function (email1, email2) {
+        return new Date(email1.created_at) > new Date(email2.created_at) ? -1 : 1;
+      }).map(function (email) {
+        email.created_at = new Date(email.created_at).toLocaleString('fr-FR');
+        return email;
+      });
+    }
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['lang'])),
+  methods: {
+    success: function success(data) {
+      this.$set(this.data.emails, data.email.id, data.email);
+    }
+  }
 });
 
 /***/ }),
@@ -81,86 +100,84 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "form",
-    {
-      attrs: {
-        action: "/dearsanta/" + _vm.data.id + "/send",
-        method: "post",
-        autocomplete: "off"
-      },
-      on: {
-        submit: function($event) {
-          $event.preventDefault()
-          return _vm.submit($event)
-        }
-      }
-    },
+    "div",
     [
-      _c("input", {
-        attrs: { type: "hidden", name: "_token" },
-        domProps: { value: _vm.csrf }
-      }),
+      _c(
+        "ajax-form",
+        {
+          attrs: {
+            action: "/dearsanta/" + _vm.data.santa.id + "/send",
+            button: true
+          },
+          on: { success: _vm.success }
+        },
+        [
+          _c("fieldset", [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "mailContent" } }, [
+                _vm._v("Contenu du mail")
+              ]),
+              _vm._v(" "),
+              _c("textarea", {
+                staticClass: "form-control",
+                attrs: {
+                  id: "mailContent",
+                  name: "content",
+                  required: "",
+                  placeholder: "Cher Papa Noël..."
+                }
+              })
+            ])
+          ])
+        ]
+      ),
       _vm._v(" "),
-      _c("fieldset", { attrs: { disabled: _vm.sending || _vm.sent } }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("fieldset", [
-          _c("div", { staticClass: "form-group btn" }),
-          _vm._v(" "),
-          _c("input", {
-            attrs: { type: "hidden", name: "key" },
-            domProps: { value: _vm.key }
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary btn-lg",
-              attrs: { type: "submit" }
-            },
-            [
-              _vm.sent
-                ? _c("span", [
-                    _c("span", { staticClass: "fas fa-check-circle" }),
-                    _vm._v("\n                    @lang('form.sent')")
-                  ])
-                : _vm.sending
-                ? _c("span", [
-                    _c("span", { staticClass: "fas fa-spinner" }),
-                    _vm._v("\n                    @lang('form.sending')")
-                  ])
-                : _c("span", [_vm._v("Envoyer")])
-            ]
-          )
-        ])
-      ])
-    ]
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("fieldset", [
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "mailContent" } }, [
-          _vm._v("Contenu du mail")
+      _c("table", { staticClass: "table table-hover" }, [
+        _c("thead", [
+          _c("tr", { staticClass: "table-active" }, [
+            _c("th", { attrs: { scope: "col" } }, [
+              _vm._v(_vm._s(_vm.lang.get("dearsanta.list.date")))
+            ]),
+            _vm._v(" "),
+            _c("th", { attrs: { scope: "col" } }, [
+              _vm._v(_vm._s(_vm.lang.get("dearsanta.list.body")))
+            ]),
+            _vm._v(" "),
+            _c("th", { attrs: { scope: "col" } }, [
+              _vm._v(_vm._s(_vm.lang.get("dearsanta.list.status")))
+            ])
+          ])
         ]),
         _vm._v(" "),
-        _c("textarea", {
-          staticClass: "form-control",
-          attrs: {
-            id: "mailContent",
-            name: "content",
-            required: "",
-            placeholder: "Cher Papa Noël..."
-          }
-        })
+        _c(
+          "tbody",
+          [
+            _vm._l(_vm.emails, function(email) {
+              return _c("tr", { staticClass: "email" }, [
+                _c("td", [_vm._v(_vm._s(email.created_at))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(email.email_body))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(email.delivery_status))])
+              ])
+            }),
+            _vm._v(" "),
+            _vm.emails.length === 0
+              ? _c("tr", { staticClass: "no-email" }, [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _vm._v(_vm._s(_vm.lang.get("dearsanta.list.empty")))
+                  ])
+                ])
+              : _vm._e()
+          ],
+          2
+        )
       ])
-    ])
-  }
-]
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -253,7 +270,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  mixins: [Object(_mixins_vueFetcher_js__WEBPACK_IMPORTED_MODULE_2__["VueFetcher"])(OrganizerForm)]
+  mixins: [Object(_mixins_vueFetcher_js__WEBPACK_IMPORTED_MODULE_2__["VueFetcher"])(_components_dearSantaForm_vue__WEBPACK_IMPORTED_MODULE_1__["default"])]
 });
 
 /***/ }),

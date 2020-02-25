@@ -4,11 +4,8 @@ namespace App;
 
 use App\Database\Model;
 
-class Participant extends Model
+class DearSanta extends Model
 {
-    // Fake property
-    public $exclusions;
-
     /**
      * The model's default values for attributes.
      *
@@ -19,8 +16,7 @@ class Participant extends Model
     ];
 
     protected $encrypted = [
-        'name',
-        'email_address',
+        'email_body',
     ];
 
     const CREATED = 'created';
@@ -35,23 +31,8 @@ class Participant extends Model
          self::ERROR,
     ];
 
-    public function draw()
+    public function sender()
     {
-        return $this->belongsTo(Draw::class);
-    }
-
-    public function target()
-    {
-        return $this->hasOne(Participant::class, 'target_id');
-    }
-
-    public function santa()
-    {
-        return $this->belongsTo(Participant::class, 'target_id');
-    }
-
-    public function dearSanta()
-    {
-        return $this->hasMany(DearSanta::class, 'sender_id');
+        return $this->belongsTo(Participant::class, 'sender_id');
     }
 }

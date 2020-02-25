@@ -88,6 +88,7 @@ via SecretSanta.fr',
     'data-expiration'   => 'Date limite de stockage des emails',
 
     'submit'  => 'Lancez l\'aléatoire !',
+    'send'    => 'Envoyer',
     'sending' => 'Envoi en cours',
     'sent'    => 'Envoyé',
 

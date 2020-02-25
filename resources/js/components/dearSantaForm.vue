@@ -1,12 +1,10 @@
 <template>
-    <form
-        :action="`/dearsanta/${data.id}/send`"
-        @submit.prevent="submit"
-        method="post"
-        autocomplete="off"
-    >
-        <input type="hidden" name="_token" :value="csrf" />
-        <fieldset :disabled="sending || sent">
+    <div>
+        <ajax-form
+             :action="`/dearsanta/${data.santa.id}/send`"
+             :button="true"
+             @success="success"
+        >
             <fieldset>
                 <div class="form-group">
                     <label for="mailContent">Contenu du mail</label>
@@ -19,26 +17,27 @@
                     ></textarea>
                 </div>
             </fieldset>
-            <fieldset>
-                <div class="form-group btn">
-                    <!-- {!! NoCaptcha::display(['data-theme' => 'light']) !!} -->
-                </div>
-
-                <input type="hidden" name="key" :value="key" />
-                <button type="submit" class="btn btn-primary btn-lg">
-                    <span v-if="sent"
-                        ><span class="fas fa-check-circle"></span>
-                        @lang('form.sent')</span
-                    >
-                    <span v-else-if="sending"
-                        ><span class="fas fa-spinner"></span>
-                        @lang('form.sending')</span
-                    >
-                    <span v-else>Envoyer</span>
-                </button>
-            </fieldset>
-        </fieldset>
-    </form>
+        </ajax-form>
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-active">
+                    <th scope="col">{{ lang.get('dearsanta.list.date') }}</th>
+                    <th scope="col">{{ lang.get('dearsanta.list.body') }}</th>
+                    <th scope="col">{{ lang.get('dearsanta.list.status') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="email in emails" class="email">
+                    <td>{{ email.created_at }}</td>
+                    <td>{{ email.email_body }}</td>
+                    <td>{{ email.delivery_status }}</td>
+                </tr>
+                <tr v-if="emails.length === 0" class="no-email">
+                    <td colspan="3">{{ lang.get('dearsanta.list.empty') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -50,6 +49,21 @@
 
     export default {
         extends: DefaultForm,
-        computed: mapState(['lang'])
+        computed: {
+            emails() {
+                return Object.values(this.data.emails).sort(
+                    (email1, email2) => (new Date(email1.created_at)) > new Date(email2.created_at) ? -1 : 1
+                ).map(email => {
+                    email.created_at = (new Date(email.created_at)).toLocaleString('fr-FR');
+                    return email;
+                });
+            }, 
+            ...mapState(['lang'])
+        },
+        methods: {
+            success(data) {
+                this.$set(this.data.emails, data.email.id, data.email);
+            }
+        }
     };
 </script>
