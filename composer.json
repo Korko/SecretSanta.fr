@@ -28,7 +28,7 @@
         "laravelcollective/html": "^6.0",
         "league/statsd": "1.5.*",
         "matt-allan/laravel-code-style": "^0.5.0",
-        "phpro/grumphp": "^0.17.0",
+        "phpro/grumphp": "^0.18.0",
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
         "spatie/laravel-blade-javascript": "^2.0",
         "vinkla/hashids": "^7.0"
@@ -41,7 +41,7 @@
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
         "nunomaduro/larastan": "^0.5.0",
-        "phpro/grumphp": "^0.17.0",
+        "phpro/grumphp": "^0.18.0",
         "phpunit/phpunit": "~8.1",
         "povils/phpmnd": "^2.0",
         "rap2hpoutre/laravel-log-viewer": "^1.1.1",
