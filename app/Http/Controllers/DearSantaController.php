@@ -34,7 +34,7 @@ class DearSantaController extends Controller
         ]);
     }
 
-    public function fetchState(Draw $draw)
+    public function fetchState(Participant $participant)
     {
         return response()->json([
             'emails' => $participant->dearSanta->mapWithKeys(function ($email) {
@@ -45,8 +45,6 @@ class DearSantaController extends Controller
 
     public function handle(Participant $participant, DearSantaRequest $request)
     {
-        Metrics::increment('dearsanta');
-
         $dearSanta = new DearSanta();
         $dearSanta->sender()->associate($participant);
         $dearSanta->email_body = $request->input('content');
@@ -67,6 +65,8 @@ class DearSantaController extends Controller
 
     protected function sendMail(DearSanta $dearSanta)
     {
+        Metrics::increment('dearsanta');
+
         Mail::to([['email' => $dearSanta->sender->santa->email_address, 'name' => $dearSanta->sender->santa->name]])
             ->queue(new DearSantaEmail($dearSanta));
     }

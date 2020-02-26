@@ -57,12 +57,42 @@
                     email.created_at = (new Date(email.created_at)).toLocaleString('fr-FR');
                     return email;
                 });
-            }, 
+            },
+            checkUpdates() {
+                return !!(
+                    Object.values(this.data.emails)
+                        .find(email => email.delivery_status === 'created')
+                );
+            },
             ...mapState(['lang'])
+        },
+        created() {
+            setInterval(() => {
+                if(this.checkUpdates) this.fetchState();
+            }, 5000);
         },
         methods: {
             success(data) {
                 this.$set(this.data.emails, data.email.id, data.email);
+            },
+            fetchState() {
+                var app = this;
+                return $.ajax({
+                    url: `/dearsanta/${this.data.santa.id}/fetchState`,
+                    type: 'POST',
+                    data: { _token: this.csrf, key: this.key },
+                    success(data) {
+                        if (data.emails) {
+                            Object.values(data.emails).forEach(email => {
+                                var new_update = new Date(email.updated_at);
+                                var old_update = new Date(app.data.emails[email.id].updated_at);
+                                app.data.emails[email.id].delivery_status = new_update > old_update ?
+                                    email.delivery_status :
+                                    app.data.emails[email.id].delivery_status;
+                            });
+                        }
+                    }
+                });
             }
         }
     };
