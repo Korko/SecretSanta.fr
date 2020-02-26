@@ -9,7 +9,7 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _partials_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../partials/lang.js */ "./resources/js/partials/lang.js");
 /* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -73,14 +73,47 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         email.created_at = new Date(email.created_at).toLocaleString('fr-FR');
         return email;
       });
+    },
+    checkUpdates: function checkUpdates() {
+      return !!Object.values(this.data.emails).find(function (email) {
+        return email.delivery_status === 'created';
+      });
     }
   }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['lang'])),
+  created: function created() {
+    var _this = this;
+
+    setInterval(function () {
+      if (_this.checkUpdates) _this.fetchState();
+    }, 5000);
+  },
   methods: {
     success: function success(data) {
       this.$set(this.data.emails, data.email.id, data.email);
+    },
+    fetchState: function fetchState() {
+      var app = this;
+      return $.ajax({
+        url: "/dearsanta/".concat(this.data.santa.id, "/fetchState"),
+        type: 'POST',
+        data: {
+          _token: this.csrf,
+          key: this.key
+        },
+        success: function success(data) {
+          if (data.emails) {
+            Object.values(data.emails).forEach(function (email) {
+              var new_update = new Date(email.updated_at);
+              var old_update = new Date(app.data.emails[email.id].updated_at);
+              app.data.emails[email.id].delivery_status = new_update > old_update ? email.delivery_status : app.data.emails[email.id].delivery_status;
+            });
+          }
+        }
+      });
     }
   }
 });
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
 
