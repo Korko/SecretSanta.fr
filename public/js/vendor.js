@@ -44724,7 +44724,7 @@ module.exports = {"importError":"Une erreur est survenue lors de l'import.","imp
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = {"list":{"date":"Date d'envoi","body":"Corps du message","status":"Status de réception de l'email","empty":"Aucun email envoyé pour le moment"}};
+throw new Error("Module build failed (from ./node_modules/laravel-localization-loader/index.js):\nError: ENOENT: no such file or directory, open '/var/www/secretsanta.fr/dev/resources/lang/fr/dearsanta.php'");
 
 /***/ }),
 
