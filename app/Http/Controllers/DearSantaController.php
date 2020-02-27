@@ -29,7 +29,7 @@ class DearSantaController extends Controller
             'draw' => $participant->draw->email_title,
             'organizer' => $participant->draw->organizer->name,
             'emails' => $participant->dearSanta->mapWithKeys(function ($email) {
-                return [$email->id => $email->only(['id', 'email_body', 'delivery_status', 'created_at'])];
+                return [$email->id => $email->only(['id', 'email_body', 'delivery_status', 'created_at', 'updated_at'])];
             }),
         ]);
     }
@@ -38,7 +38,7 @@ class DearSantaController extends Controller
     {
         return response()->json([
             'emails' => $participant->dearSanta->mapWithKeys(function ($email) {
-                return [$email->id => $email->only(['id', 'email_body', 'delivery_status', 'created_at'])];
+                return [$email->id => $email->only(['id', 'email_body', 'delivery_status', 'created_at', 'updated_at'])];
             }),
         ]);
     }
@@ -57,7 +57,7 @@ class DearSantaController extends Controller
         return $request->ajax() ?
             response()->json([
                 'message' => $message, 'email' => $dearSanta->only([
-                    'id', 'email_body', 'delivery_status', 'created_at'
+                    'id', 'email_body', 'delivery_status', 'created_at', 'updated_at'
                 ])
             ]) :
             redirect('/dearsanta/'.$participant->id)->with('message', $message);
