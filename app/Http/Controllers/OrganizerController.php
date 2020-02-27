@@ -25,7 +25,7 @@ class OrganizerController extends Controller
             'draw' => $draw->id,
             'participants' => $draw->participants->mapWithKeys(function ($participant) {
                 return [$participant->id => $participant->only([
-                    'id', 'name', 'email_address', 'delivery_status', 'updated_at'
+                    'id', 'name', 'email_address', 'delivery_status', 'updated_at',
                 ])];
             }),
         ]);
@@ -36,7 +36,7 @@ class OrganizerController extends Controller
         return response()->json([
             'participants' => $draw->participants->mapWithKeys(function ($participant) {
                 return [$participant->id => $participant->only(['id', 'delivery_status', 'updated_at'])];
-            })
+            }),
         ]);
     }
 
@@ -53,8 +53,8 @@ class OrganizerController extends Controller
         return $request->ajax() ?
             response()->json([
                 'message' => $message, 'participant' => $participant->only([
-                    'id', 'delivery_status', 'updated_at'
-                ])
+                    'id', 'delivery_status', 'updated_at',
+                ]),
             ]) :
             redirect('/')->with('message', $message);
     }

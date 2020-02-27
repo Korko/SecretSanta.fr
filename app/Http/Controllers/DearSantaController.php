@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\DearSanta;
 use App\Http\Requests\DearSantaRequest;
 use App\Mail\DearSanta as DearSantaEmail;
-use App\DearSanta;
 use App\Participant;
 use Hashids;
 use Mail;
@@ -57,8 +57,8 @@ class DearSantaController extends Controller
         return $request->ajax() ?
             response()->json([
                 'message' => $message, 'email' => $dearSanta->only([
-                    'id', 'email_body', 'delivery_status', 'created_at', 'updated_at'
-                ])
+                    'id', 'email_body', 'delivery_status', 'created_at', 'updated_at',
+                ]),
             ]) :
             redirect('/dearsanta/'.$participant->id)->with('message', $message);
     }
