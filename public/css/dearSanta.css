@@ -11915,3 +11915,17 @@ footer .row {
   padding-bottom: 60px;
 }
 
+#form form {
+  margin-bottom: 20px;
+}
+
+.email td:nth-child(2) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.no-email {
+  text-align: center;
+}
+

@@ -8,6 +8,23 @@
         <fieldset :disabled="sending || sent">
             <slot v-bind="{ sending, sent, errors, submit, onSubmit }"></slot>
         </fieldset>
+        <fieldset v-if="button">
+            <div class="form-group btn">
+                <!-- {!! NoCaptcha::display(['data-theme' => 'light']) !!} -->
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg">
+                <span v-if="sent"
+                    ><span class="fas fa-check-circle"></span>
+                    {{ lang.get('form.sent') }}</span
+                >
+                <span v-else-if="sending"
+                    ><span class="fas fa-spinner"></span>
+                    {{ lang.get('form.sending') }}</span
+                >
+                <span v-else>{{ lang.get('form.send') }}</span>
+            </button>
+        </fieldset>
     </form>
 </template>
 
@@ -17,7 +34,7 @@ import $ from 'jquery';
 import alertify from 'alertify.js';
 
 export default {
-    props: ['action'],
+    props: ['action', 'button'],
     data: () => {
         return {
             fieldErrors: [],
@@ -33,7 +50,7 @@ export default {
             }
             return errors;
         },
-        ...mapState(['csrf', 'key'])
+        ...mapState(['csrf', 'key', 'lang'])
     },
     watch: {
         sending() {
@@ -61,6 +78,8 @@ export default {
 
                         (options.success || options.then || function() {})(jqXHR.responseJSON);
                         (options.complete || options.finally || function() {})();
+
+                        app.$emit('success', data);
                     },
                     error(jqXHR, textStatus, errorThrown) {
                         if (jqXHR.responseJSON && jqXHR.responseJSON.message)
@@ -72,6 +91,8 @@ export default {
 
                         (options.error || options.catch || function() {})(jqXHR.responseJSON);
                         (options.complete || options.finally || function() {})();
+
+                        app.$emit('error');
                     }
                 });
             }

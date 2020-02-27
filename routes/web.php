@@ -19,6 +19,7 @@ Route::pattern('santa', '[0-9a-zA-Z]{'.config('hashids.connections')[config('has
 Route::get('/dearsanta/{santa}', 'DearSantaController@view')->name('dearsanta');
 Route::middleware(['decrypt.key'])->group(function () {
     Route::post('/dearsanta/{santa}', 'DearSantaController@fetch')->name('dearsanta.fetch');
+    Route::post('/dearsanta/{santa}/fetchState', 'DearSantaController@fetchState')->name('dearsanta.fetchState');
     Route::post('/dearsanta/{santa}/send', 'DearSantaController@handle')->name('dearsanta.contact');
 });
 
