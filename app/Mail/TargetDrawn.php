@@ -6,16 +6,12 @@ use App\Participant;
 use Crypt;
 use Hashids;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Mail\Mailer as MailerContract;
-use Illuminate\Queue\SerializesModels;
 
 class TargetDrawn extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable, UpdatesDeliveryStatus;
 
     public $content;
-    public $participantId;
-    public $updateDate;
     public $dearSantaLink;
 
     /**
@@ -34,9 +30,7 @@ class TargetDrawn extends Mailable
 
         $this->dearSantaLink = route('dearsanta', ['santa' => Hashids::encode($santa->id)]).'#'.base64_encode(Crypt::getKey());
 
-        // Needed for the MessageSent event
-        $this->participantId = $santa->id;
-        $this->updateDate = $santa->updated_at;
+        $this->trackEntry($santa);
     }
 
     protected function parseKeywords($str, Participant $santa)
@@ -53,25 +47,5 @@ class TargetDrawn extends Mailable
     {
         return $this->view('emails.target_drawn')
                     ->text('emails.target_drawn_plain');
-    }
-
-    public function send(MailerContract $mailer)
-    {
-        parent::send($mailer);
-
-        $participant = Participant::find($this->participantId);
-        if ($participant->updated_at == $this->updateDate) {
-            $participant->delivery_status = Participant::SENT;
-            $participant->save();
-        }
-    }
-
-    public function failed($exception)
-    {
-        $participant = Participant::find($this->participantId);
-        if ($participant->updated_at == $this->updateDate) {
-            $participant->delivery_status = Participant::ERROR;
-            $participant->save();
-        }
     }
 }

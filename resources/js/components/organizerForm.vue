@@ -28,8 +28,6 @@
 <script>
     import { mapState } from 'vuex';
 
-    import Lang from '../partials/lang.js';
-
     import InputEdit from './inputEdit.vue';
 
     import DefaultForm from './form.vue';
