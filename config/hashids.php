@@ -40,10 +40,14 @@ return [
     'connections' => [
 
         'main' => [
-            'salt'   => 'secretsanta',
+            'salt'   => env('HASHIDS_SALT_MAIN', 'secretsanta'),
             'length' => '5',
         ],
 
+        'bounce' => [
+            'salt'   => env('HASHIDS_SALT_BOUNCE', 'secretsanta-bounce'),
+            'length' => '10',
+        ]
     ],
 
 ];
