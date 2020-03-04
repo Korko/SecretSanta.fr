@@ -1,6 +1,6 @@
 # This file is a template, and might need editing before it works on your project.
 # Select image from https://hub.docker.com/_/php/
-image: php:7.2
+image: php:7.4
 
 # Select what we should cache between builds
 cache:
@@ -38,9 +38,9 @@ phpcs:
 
 # Run our tests
 # If Xdebug was installed you can generate a coverage report and see code coverage metrics.
-php-7.2:
+php-7.4:
   type: test
-  image: php:7.2
+  image: php:7.4
   only:
     - /^\d\.\d\.x$/
   script:
