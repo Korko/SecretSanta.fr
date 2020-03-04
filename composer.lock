@@ -8,21 +8,21 @@
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
-            "version": "3.1.1",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anhskohbo/no-captcha.git",
-                "reference": "3b2f7d461e1fc7153e0c724c3ccac7a2db156733"
+                "reference": "c14dd67024f30fd28f38ac9faa44cc47e1d4bddf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anhskohbo/no-captcha/zipball/3b2f7d461e1fc7153e0c724c3ccac7a2db156733",
-                "reference": "3b2f7d461e1fc7153e0c724c3ccac7a2db156733",
+                "url": "https://api.github.com/repos/anhskohbo/no-captcha/zipball/c14dd67024f30fd28f38ac9faa44cc47e1d4bddf",
+                "reference": "c14dd67024f30fd28f38ac9faa44cc47e1d4bddf",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.2",
-                "illuminate/support": "^5.0|^6.0",
+                "illuminate/support": "^5.0|^6.0|^7.0",
                 "php": ">=5.5.5"
             },
             "require-dev": {
@@ -64,7 +64,7 @@
                 "no-captcha",
                 "recaptcha"
             ],
-            "time": "2019-10-03T06:42:31+00:00"
+            "time": "2020-03-04T03:27:38+00:00"
         },
         {
             "name": "callr/sdk-php",
@@ -1957,9 +1957,9 @@
             "authors": [
                 {
                     "name": "Marc Qualie",
-                    "role": "Developer",
                     "email": "marc@marcqualie.com",
-                    "homepage": "http://marcqualie.com"
+                    "homepage": "http://marcqualie.com",
+                    "role": "Developer"
                 }
             ],
             "description": "A simple library for working with StatsD in PHP.",
