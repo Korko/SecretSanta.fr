@@ -6,6 +6,7 @@ use App\Participant;
 use Crypt;
 use Hashids;
 use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
 
 class TargetDrawn extends Mailable
 {

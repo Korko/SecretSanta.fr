@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use App\DearSanta as DearSantaEntry;
 use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
 
 class DearSanta extends Mailable
 {

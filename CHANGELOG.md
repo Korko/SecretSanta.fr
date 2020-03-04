@@ -1,5 +1,200 @@
 # Release Notes
 
+## [Unreleased](https://github.com/laravel/laravel/compare/v7.0.0...master)
+
+
+## [v7.0.0 (2020-03-03)](https://github.com/laravel/laravel/compare/v6.18.0...v7.0.0)
+
+### Added
+- Add HandleCors middleware ([#5189](https://github.com/laravel/laravel/pull/5189), [0bec06c](https://github.com/laravel/laravel/commit/0bec06cd45a7f6eda0d52f78dd5ff767d94ed5cc))
+- Add new `view.expires` option ([#5209](https://github.com/laravel/laravel/pull/5209), [91dd1f6](https://github.com/laravel/laravel/commit/91dd1f61cdd3c7949593a4435dff8b77322761f2))
+- Add `links` option to filesystem config ([#5222](https://github.com/laravel/laravel/pull/5222))
+- Add Guzzle dependency ([c434eae](https://github.com/laravel/laravel/commit/c434eae43d673a709bb840f5f2e03b58da30682b), [705076f](https://github.com/laravel/laravel/commit/705076ffc28a834a1eb76b3550be2b6269a8fefb))
+- Add array mailer ([#5240](https://github.com/laravel/laravel/pull/5240))
+
+### Changed
+- Laravel 7 constraint ([054bb43](https://github.com/laravel/laravel/commit/054bb43038f4acb7f356dd668715225ffc2e55ba))
+- Implement new primary key syntax ([#5147](https://github.com/laravel/laravel/pull/5147))
+- Switch to Symfony 5 ([#5157](https://github.com/laravel/laravel/pull/5157))
+- Bumps `nunomaduro/collision` dependency to 4.1 ([#5221](https://github.com/laravel/laravel/pull/5221))
+- Utilize Authentication Middleware Contract ([#5181](https://github.com/laravel/laravel/pull/5181), [#5182](https://github.com/laravel/laravel/pull/5182))
+- Remove auth scaffolding ([b5bb91f](https://github.com/laravel/laravel/commit/b5bb91fea79a3bd5504cbcadfd4766f41f7d01ce), [13e4389](https://github.com/laravel/laravel/commit/13e43893ba2457c3e49898f0066a5ce8d7ea74f4), [3ee0065](https://github.com/laravel/laravel/commit/3ee0065bcd879b82ee42023165f8a8f71e893011))
+- Import facades ([4d565e6](https://github.com/laravel/laravel/commit/4d565e681cbf496e0cdfb58743d4ae8238cef15e))
+- Ignition v2 ([#5211](https://github.com/laravel/laravel/pull/5211))
+- Bumped defaults for Laravel 7 ([#5195](https://github.com/laravel/laravel/pull/5195))
+- Update mail config ([76d8227](https://github.com/laravel/laravel/commit/76d822768dcab14fa1ee1fd1f4a24065234860db), [61ec16f](https://github.com/laravel/laravel/commit/61ec16fe392967766b68d865ed10d56275a78718), [e43d454](https://github.com/laravel/laravel/commit/e43d4546a9c0bde49dae51fd6f4e2766674f1152), [130b8c8](https://github.com/laravel/laravel/commit/130b8c8bcb8f167e7013e7846004b2df3e405b72))
+- Remove hyphen on email ([ffc74ba](https://github.com/laravel/laravel/commit/ffc74ba143a7de4a89f2c3fd525a5621ca879e38))
+- Use `MAIL_MAILER` in test environment ([#5239](https://github.com/laravel/laravel/pull/5239))
+
+
+## [v6.18.0 (2020-02-24)](https://github.com/laravel/laravel/compare/v6.12.0...v6.18.0)
+
+### Changed
+- Update cross-env and resolve-url-loader to the latest ([#5210](https://github.com/laravel/laravel/pull/5210), [#5216](https://github.com/laravel/laravel/pull/5216))
+- Bump fzaninotto/faker version to support PHP 7.4 ([#5218](https://github.com/laravel/laravel/pull/5218))
+- Remove redundant default attributes from `phpunit.xml` ([#5233](https://github.com/laravel/laravel/pull/5233))
+
+
+## [v6.12.0 (2020-01-14)](https://github.com/laravel/laravel/compare/v6.8.0...v6.12.0)
+
+### Added
+- Allow configurable emergency logger ([#5179](https://github.com/laravel/laravel/pull/5179))
+- Add `MAIL_FROM_ADDRESS` & `MAIL_FROM_NAME` to `.env` file ([#5180](https://github.com/laravel/laravel/pull/5180))
+- Add missing full stop for some validation messages ([#5205](https://github.com/laravel/laravel/pull/5205))
+
+### Changed
+- Use class name to be consistent with web middleware ([140d4d9](https://github.com/laravel/laravel/commit/140d4d9b0a4581cec046875361e87c2981b3f9fe))
+- Use file session driver again ([#5201](https://github.com/laravel/laravel/pull/5201))
+
+### Fixed
+- Correct exception handler doc ([#5187](https://github.com/laravel/laravel/pull/5187))
+- Fix types consistency in Redis database config ([#5191](https://github.com/laravel/laravel/pull/5191))
+
+### Security
+- Update laravel mix and sass loader ([#5203](https://github.com/laravel/laravel/pull/5203))
+
+
+## [v6.8.0 (2019-12-16)](https://github.com/laravel/laravel/compare/v6.5.2...v6.8.0)
+
+### Added
+- Add "none" to supported same site options in session config ([#5174](https://github.com/laravel/laravel/pull/5174))
+
+### Changed
+- Rename `encrypted` to `forceTLS` for Pusher ([#5159](https://github.com/laravel/laravel/pull/5159))
+- Use laravel/tinker v2 ([#5161](https://github.com/laravel/laravel/pull/5161))
+- Use PHPUnit TestCase and in-memory DB ([#5169](https://github.com/laravel/laravel/pull/5169))
+- DRY up path to /home ([#5173](https://github.com/laravel/laravel/pull/5173))
+- Change some default settings ([f48e2d5](https://github.com/laravel/laravel/commit/f48e2d500cb53cc4a09dfcb40beb0abafd79de4f))
+
+### Fixed
+- Consistent alphabetical order ([#5167](https://github.com/laravel/laravel/pull/5167))
+- Update redirectTo return type PHPDoc ([#5175](https://github.com/laravel/laravel/pull/5175))
+
+
+## [v6.5.2 (2019-11-21)](https://github.com/laravel/laravel/compare/v6.4.0...v6.5.2)
+
+### Changed
+- Update .styleci.yml ([bfd4b1e](https://github.com/laravel/laravel/commit/bfd4b1e92f7c6b4e6b74cfdde995a5afad648d96))
+
+
+## [v6.4.0 (2019-10-21)](https://github.com/laravel/laravel/compare/v6.2.0...v6.4.0)
+
+### Changed
+- Add xml schema to phpunit ([#5139](https://github.com/laravel/laravel/pull/5139))
+
+### Fixed
+- Fixes required version of the framework within `composer.json` ([#5130](https://github.com/laravel/laravel/pull/5130))
+- Security fix: Waiting before retrying password reset ([ace38c1](https://github.com/laravel/laravel/commit/ace38c133f3d8088fc7477f56b9db6fdc0098d06), [ba2f2ab](https://github.com/laravel/laravel/commit/ba2f2abe830f5d03c52fd9c88411859cf863abd6), [953b488](https://github.com/laravel/laravel/commit/953b488b8bb681d4d6e12227645c7c1b7ac26935))
+
+
+## [v6.2.0 (2019-10-08)](https://github.com/laravel/laravel/compare/v6.0.2...v6.2.0)
+
+### Added
+- Add 'null' logging channel ([#5106](https://github.com/laravel/laravel/pull/5106))
+- Add Password confirmation ([#5129](https://github.com/laravel/laravel/pull/5129), [d1f7a5a](https://github.com/laravel/laravel/commit/d1f7a5a886039e28a434905447865ca952032284), [9bc23ee](https://github.com/laravel/laravel/commit/9bc23ee468e1fb3e5b4efccdc35f1fcee5a8b6bc))
+
+### Removed
+- Remove testing bootstrap extension ([#5107](https://github.com/laravel/laravel/pull/5107))
+
+### Fixed
+- Revert "[6.x] According to PHP Bug 78516 Argon2 requires at least 8KB" ([#5102]()https://github.com/laravel/laravel/pull/5102)
+
+
+## [v6.0.2 (2019-09-10)](https://github.com/laravel/laravel/compare/v6.0.1...v6.0.2)
+
+### Changed
+- Order imports alphabetically ([79fb6af](https://github.com/laravel/laravel/commit/79fb6af96ebf0325cef15c3132157fdf75f6fd6c), [#5100](https://github.com/laravel/laravel/pull/5100))
+
+### Fixed
+- Delete cached config file before running tests ([#5091](https://github.com/laravel/laravel/pull/5091))
+- Update Argon memory ([#5097](https://github.com/laravel/laravel/pull/5097))
+
+
+## [v6.0.1 (2019-08-27)](https://github.com/laravel/laravel/compare/v6.0.0...v6.0.1)
+
+### Added
+- Add Ignition ([41ee35d](https://github.com/laravel/laravel/commit/41ee35d01f4e57c47e924400db8a805089664141), [13ab419](https://github.com/laravel/laravel/commit/13ab419d59e2f0d2e188a5157a3cc17f72db595c))
+
+
+## [v6.0.0 (2019-08-27)](https://github.com/laravel/laravel/compare/v5.8.35...v6.0.0)
+
+### Added
+- Add ThrottleRequests to the priority array ([#5057](https://github.com/laravel/laravel/pull/5057))
+- Add PHPUnit bootstrap file to allow execution of console commands before a test run ([#5050](https://github.com/laravel/laravel/pull/5050), [8f2a278](https://github.com/laravel/laravel/commit/8f2a27868f7f9e0a0bbf69fa83d06b8a7a1b7894))
+- Add failed jobs table ([b7d2b48](https://github.com/laravel/laravel/commit/b7d2b48b75afbaa34c82688cb30be2f00a7d8c57), [#5082](https://github.com/laravel/laravel/pull/5082))
+- Add new failed driver option ([e6becd2](https://github.com/laravel/laravel/commit/e6becd2ca35a650f51ed49525935e8ca65671152))
+
+### Changed
+- Require PHP 7.2 ([25cf4c4](https://github.com/laravel/laravel/commit/25cf4c492308b9c5148f9522d8dd8f8f18819f50))
+- Encourage to use PHPUnit 8 ([0582a20](https://github.com/laravel/laravel/commit/0582a20adddc0e6bd16ca05eeae93e6412924ad6))
+- Use phpredis as default Redis client ([#5085](https://github.com/laravel/laravel/pull/5085))
+
+### Removed
+- Remove services deleted from core ([#5019](https://github.com/laravel/laravel/pull/5019))
+- Remove dumpserver ([f053116](https://github.com/laravel/laravel/commit/f053116c5680e77c3a6c73afd193984a17ea482d))
+- Remove UI scaffolding ([fc39b07](https://github.com/laravel/laravel/commit/fc39b073f3f61a22f1b48329e294ebb881700dbe))
+- Remove deprecated language line ([#5074](https://github.com/laravel/laravel/pull/5074))
+
+
+## [v5.8.35 (2019-09-09)](https://github.com/laravel/laravel/compare/v5.8.17...v5.8.35)
+
+### Added
+- Add DYNAMODB_ENDPOINT to the cache config ([#5034](https://github.com/laravel/laravel/pull/5034))
+- Added support for new redis URL property ([#5037](https://github.com/laravel/laravel/pull/5037))
+- Add .env.backup to gitignore ([#5046](https://github.com/laravel/laravel/pull/5046))
+- Using environment variable to set redis prefix ([#5062](https://github.com/laravel/laravel/pull/5062))
+
+### Changed
+- Update axios package ([#5038](https://github.com/laravel/laravel/pull/5038))
+- Use generic default db config ([6f3d68f](https://github.com/laravel/laravel/commit/6f3d68f67f3dab0e0d853719696ede8dfd9cc4e1))
+- Update deprecated pusher option ([#5058](https://github.com/laravel/laravel/pull/5058))
+- Move TrustProxies to highest priority ([#5055](https://github.com/laravel/laravel/pull/5055))
+
+### Fixed
+- Fixed lodash version ([#5060](https://github.com/laravel/laravel/pull/5060))
+
+### Removed
+- Remove Stripe config settings ([#5075](https://github.com/laravel/laravel/pull/5075), [bb43372](https://github.com/laravel/laravel/commit/bb433725483803a27f21d3b21317072610bc3e9c))
+- Remove unnecessary X-CSRF-TOKEN header from our Axios instance ([#5083](https://github.com/laravel/laravel/pull/5083))
+
+
+## [v5.8.17 (2019-05-14)](https://github.com/laravel/laravel/compare/v5.8.16...v5.8.17)
+
+### Added
+- Add ends_with validation message ([#5020](https://github.com/laravel/laravel/pull/5020))
+
+### Fixed
+- Fix type hint for case of trusting all proxies (string) ([#5025](https://github.com/laravel/laravel/pull/5025))
+
+
+## [v5.8.16 (2019-05-07)](https://github.com/laravel/laravel/compare/v5.8.3...v5.8.16)
+
+### Added
+- Add IDE type-hint to UserFactory ([#4990](https://github.com/laravel/laravel/pull/4990))
+- Update database config relating to Url addition ([#5018](https://github.com/laravel/laravel/pull/5018), [b0e0bdc](https://github.com/laravel/laravel/commit/b0e0bdc060ce068b73371919b904f3c7f0c1cfa6))
+
+### Changed
+- Upgrade the collision dependency from v2 to v3 ([#4963](https://github.com/laravel/laravel/pull/4963))
+- Ignore SQLite journals ([#4971](https://github.com/laravel/laravel/pull/4971))
+- Prefix redis database connection by default ([#4982](https://github.com/laravel/laravel/pull/4982), [#4986](https://github.com/laravel/laravel/pull/4986), [#4987](https://github.com/laravel/laravel/pull/4987))
+
+### Removed
+- Remove `.navbar-laravel` CSS class ([65f8271](https://github.com/laravel/laravel/commit/65f8271032c113883fb3f1e8e7b3279821148ad1))
+
+
+## [v5.8.3 (2019-03-05)](https://github.com/laravel/laravel/compare/v5.8.0...v5.8.3)
+
+### Added
+- Add AWS S3 Bucket to `.env.example` ([f84a69e](https://github.com/laravel/laravel/commit/f84a69ee852bd44363042a61995d330574b6b8c3))
+
+### Changed
+- Set default AWS region ([ff4f40f](https://github.com/laravel/laravel/commit/ff4f40fbabcefcb87facb1346fcfe5b8266eb40d), [#4956](https://github.com/laravel/laravel/pull/4956))
+
+### Fixed
+- Comment out non-existing model class and policy example ([f4ff4f4](https://github.com/laravel/laravel/commit/f4ff4f4176f7d931e301f36b95a46285ac61b8b8))
+- Only apply MySQL PDO options when extension exists ([3001f3c](https://github.com/laravel/laravel/commit/3001f3c6e232ba7ce2ecdbdfe6e43b4c64ee05ad))
+
+
 ## [v5.8.0 (2019-02-26)](https://github.com/laravel/laravel/compare/v5.7.28...v5.8.0)
 
 ### Added
@@ -321,3 +516,4 @@
 
 ### Removed
 - Remove index from password reset `token` column ([#4180](https://github.com/laravel/laravel/pull/4180))
+

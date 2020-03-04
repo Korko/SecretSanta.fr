@@ -14,7 +14,7 @@ class CreateDrawsTable extends Migration
     public function up()
     {
         Schema::create('draws', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->longText('email_title');
             $table->longText('email_body');
             $table->date('expires_at');

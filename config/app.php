@@ -178,7 +178,6 @@ return [
         /*
          * Package Service Providers...
          */
-        AustinHeap\Database\Encryption\EncryptionServiceProvider::class,
         Korko\Validator\ValidatorServiceProvider::class,
         League\StatsD\Laravel5\Provider\StatsdServiceProvider::class,
 
@@ -218,7 +217,6 @@ return [
         'Config'       => Illuminate\Support\Facades\Config::class,
         'Cookie'       => Illuminate\Support\Facades\Cookie::class,
         'Crypt'        => Illuminate\Support\Facades\Crypt::class,
-        'DatabaseEncryption' => AustinHeap\Database\Encryption\EncryptionFacade::class,
         'DB'           => Illuminate\Support\Facades\DB::class,
         'Eloquent'     => Illuminate\Database\Eloquent\Model::class,
         'Event'        => Illuminate\Support\Facades\Event::class,
@@ -226,6 +224,7 @@ return [
         'Gate'         => Illuminate\Support\Facades\Gate::class,
         'Hash'         => Illuminate\Support\Facades\Hash::class,
         'Hashids'      => Vinkla\Hashids\Facades\Hashids::class,
+        'Http'         => Illuminate\Support\Facades\Http::class,
         'Lang'         => Illuminate\Support\Facades\Lang::class,
         'Log'          => Illuminate\Support\Facades\Log::class,
         'Mail'         => Illuminate\Support\Facades\Mail::class,
@@ -241,7 +240,6 @@ return [
         'Route'        => Illuminate\Support\Facades\Route::class,
         'Schema'       => Illuminate\Support\Facades\Schema::class,
         'Session'      => Illuminate\Support\Facades\Session::class,
-        'Sms'          => Facades\Korko\Callr\CallrClient::class,
         'Storage'      => Illuminate\Support\Facades\Storage::class,
         'Str'          => Illuminate\Support\Str::class,
         'URL'          => Illuminate\Support\Facades\URL::class,

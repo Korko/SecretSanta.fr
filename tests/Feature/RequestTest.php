@@ -8,7 +8,6 @@ use App\Mail\TargetDrawn;
 use App\Participant;
 use Mail;
 use Metrics;
-use Sms;
 
 class RequestTest extends RequestCase
 {
@@ -25,9 +24,6 @@ class RequestTest extends RequestCase
     public function testInvalid(): void
     {
         Mail::shouldReceive('to')
-            ->never();
-
-        Sms::shouldReceive('message')
             ->never();
 
         Metrics::shouldReceive('increment')
