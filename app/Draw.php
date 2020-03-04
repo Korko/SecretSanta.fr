@@ -2,10 +2,11 @@
 
 namespace App;
 
-use App\Database\Model;
+use App\Casts\EncryptedString;
 use DateInterval;
 use DateTime;
 use DB;
+use Illuminate\Database\Eloquent\Model;
 
 class Draw extends Model
 {
@@ -13,9 +14,14 @@ class Draw extends Model
         'expires_at',
     ];
 
-    protected $encrypted = [
-        'email_title',
-        'email_body',
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_title' => EncryptedString::class,
+        'email_body' => EncryptedString::class,
     ];
 
     public function save(array $options = [])

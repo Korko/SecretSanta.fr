@@ -2,8 +2,7 @@
 
 namespace App\Mail;
 
-use App\Database\Model;
-use Illuminate\Contracts\Mail\Mailer as MailerContract;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\SerializesModels;
 
 trait UpdatesDeliveryStatus
@@ -19,7 +18,7 @@ trait UpdatesDeliveryStatus
         $this->updateDatetime = $entry->updated_at;
     }
 
-    public function send(MailerContract $mailer)
+    public function send($mailer)
     {
         parent::send($mailer);
 

@@ -2,7 +2,8 @@
 
 namespace App;
 
-use App\Database\Model;
+use App\Casts\EncryptedString;
+use Illuminate\Database\Eloquent\Model;
 
 class Participant extends Model
 {
@@ -18,9 +19,14 @@ class Participant extends Model
         'delivery_status' => self::CREATED,
     ];
 
-    protected $encrypted = [
-        'name',
-        'email_address',
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'name' => EncryptedString::class,
+        'email_address' => EncryptedString::class,
     ];
 
     const CREATED = 'created';

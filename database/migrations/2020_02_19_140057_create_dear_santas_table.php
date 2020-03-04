@@ -15,7 +15,7 @@ class CreateDearSantasTable extends Migration
     public function up()
     {
         Schema::create('dear_santas', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->unsignedInteger('sender_id');
             $table->longText('email_body');
             $table->enum('delivery_status', DearSanta::$deliveryStatuses);

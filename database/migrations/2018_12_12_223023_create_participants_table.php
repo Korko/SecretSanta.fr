@@ -15,7 +15,7 @@ class CreateParticipantsTable extends Migration
     public function up()
     {
         Schema::create('participants', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->unsignedInteger('draw_id');
             $table->longText('name');
             $table->longText('email_address');
