@@ -22,11 +22,11 @@ class DearSanta extends Mailable
     {
         $this->subject = __('emails.dear_santa.title', ['draw' => $dearSanta->sender->draw->id]);
 
-        $this->content = $dearSanta->email_body;
+        $this->content = $dearSanta->mail_body;
 
         $this->targetName = $dearSanta->sender->name;
 
-        $this->trackEntry($dearSanta);
+        $this->trackMail($dearSanta->mail);
     }
 
     /**

@@ -28,9 +28,9 @@
             </thead>
             <tbody>
                 <tr v-for="email in emails" class="email">
-                    <td>{{ email.created_at }}</td>
-                    <td>{{ email.email_body }}</td>
-                    <td>{{ email.delivery_status }}</td>
+                    <td>{{ email.mail.created_at }}</td>
+                    <td>{{ email.mail_body }}</td>
+                    <td>{{ email.mail.delivery_status }}</td>
                 </tr>
                 <tr v-if="emails.length === 0" class="no-email">
                     <td colspan="3">{{ lang.get('dearsanta.list.empty') }}</td>
@@ -84,11 +84,11 @@
                     success(data) {
                         if (data.emails) {
                             Object.values(data.emails).forEach(email => {
-                                var new_update = new Date(email.updated_at);
-                                var old_update = new Date(app.data.emails[email.id].updated_at);
-                                app.data.emails[email.id].delivery_status = new_update > old_update ?
-                                    email.delivery_status :
-                                    app.data.emails[email.id].delivery_status;
+                                var new_update = new Date(email.mail.updated_at);
+                                var old_update = new Date(app.data.emails[email.id].mail.updated_at);
+                                app.data.emails[email.id].mail.delivery_status = new_update > old_update ?
+                                    email.mail.delivery_status :
+                                    app.data.emails[email.id].mail.delivery_status;
                             });
                         }
                     }

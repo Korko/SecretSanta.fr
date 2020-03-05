@@ -73,7 +73,7 @@ class RequestDearSantaTest extends RequestCase
             $santaTheorical = Participant::find($id);
 
             $this->assertEquals($santa['name'], $santaTheorical->santa->name);
-            $this->assertEquals($santa['email'], $santaTheorical->santa->email_address);
+            $this->assertEquals($santa['email'], $santaTheorical->santa->address);
 
             // Try to contact santa
             $response = $this->ajaxPost(route('dearsanta.contact', ['santa' => $data[0]]), [

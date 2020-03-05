@@ -103,9 +103,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         success: function success(data) {
           if (data.emails) {
             Object.values(data.emails).forEach(function (email) {
-              var new_update = new Date(email.updated_at);
-              var old_update = new Date(app.data.emails[email.id].updated_at);
-              app.data.emails[email.id].delivery_status = new_update > old_update ? email.delivery_status : app.data.emails[email.id].delivery_status;
+              var new_update = new Date(email.mail.updated_at);
+              var old_update = new Date(app.data.emails[email.id].mail.updated_at);
+              app.data.emails[email.id].mail.delivery_status = new_update > old_update ? email.mail.delivery_status : app.data.emails[email.id].mail.delivery_status;
             });
           }
         }
@@ -187,11 +187,11 @@ var render = function() {
           [
             _vm._l(_vm.emails, function(email) {
               return _c("tr", { staticClass: "email" }, [
-                _c("td", [_vm._v(_vm._s(email.created_at))]),
+                _c("td", [_vm._v(_vm._s(email.mail.created_at))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(email.email_body))]),
+                _c("td", [_vm._v(_vm._s(email.mail_body))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(email.delivery_status))])
+                _c("td", [_vm._v(_vm._s(email.mail.delivery_status))])
               ])
             }),
             _vm._v(" "),

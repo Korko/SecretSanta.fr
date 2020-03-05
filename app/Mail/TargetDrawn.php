@@ -24,14 +24,14 @@ class TargetDrawn extends Mailable
     {
         $this->subject = $this->parseKeywords(__('emails.target_draw.title', [
             'draw' => $santa->draw->id,
-            'subject' => $santa->draw->email_title,
+            'subject' => $santa->draw->mail_title,
         ]), $santa);
 
-        $this->content = $this->parseKeywords($santa->draw->email_body, $santa);
+        $this->content = $this->parseKeywords($santa->draw->mail_body, $santa);
 
         $this->dearSantaLink = route('dearsanta', ['santa' => Hashids::encode($santa->id)]).'#'.base64_encode(Crypt::getKey());
 
-        $this->trackEntry($santa);
+        $this->trackMail($santa->mail);
     }
 
     protected function parseKeywords($str, Participant $santa)

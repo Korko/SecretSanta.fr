@@ -2,8 +2,8 @@
 
 $factory->define(App\Draw::class, function (Faker\Generator $faker) {
     return [
-        'email_title'     => $faker->sentence,
-        'email_body'      => $faker->text,
+        'mail_title'     => $faker->sentence,
+        'mail_body'      => $faker->text,
         'expires_at'      => $faker->dateTimeBetween('+1 day', '+1 month'),
     ];
 });
