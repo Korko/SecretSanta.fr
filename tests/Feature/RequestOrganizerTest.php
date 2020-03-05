@@ -78,7 +78,7 @@ class RequestOrganizerTest extends RequestCase
 
         foreach ($draw->participants as &$participant) {
             $this->assertContains($participant->name, array_column($participants, 'name'));
-            $this->assertContains($participant->email_address, array_column($participants, 'email'));
+            $this->assertContains($participant->address, array_column($participants, 'email'));
         }
 
         return $draw;
@@ -111,7 +111,7 @@ class RequestOrganizerTest extends RequestCase
             ]);
 
         Mail::assertQueued(TargetDrawn::class, function ($mail) use ($participant) {
-            return $mail->hasTo($participant->email_address, $participant->name);
+            return $mail->hasTo($participant->address, $participant->name);
         });
     }
 
@@ -142,16 +142,16 @@ class RequestOrganizerTest extends RequestCase
                 'message' => 'Modifié avec succès !',
             ]);
 
-        $before = $participant->email_address;
+        $before = $participant->address;
 
         $participant = Participant::find($participant->id);
-        $after = $participant->email_address;
+        $after = $participant->address;
 
         $this->assertNotEquals($before, $after);
         $this->assertEquals('test@test2.com', $after);
 
         Mail::assertQueued(TargetDrawn::class, function ($mail) use ($participant) {
-            return $mail->hasTo($participant->email_address, $participant->name);
+            return $mail->hasTo($participant->address, $participant->name);
         });
     }
 }

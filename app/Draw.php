@@ -20,8 +20,8 @@ class Draw extends Model
      * @var array
      */
     protected $casts = [
-        'email_title' => EncryptedString::class,
-        'email_body' => EncryptedString::class,
+        'mail_title' => EncryptedString::class,
+        'mail_body' => EncryptedString::class,
     ];
 
     public function save(array $options = [])

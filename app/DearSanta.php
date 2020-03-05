@@ -8,13 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class DearSanta extends Model
 {
     /**
-     * The model's default values for attributes.
+     * Indicates if the model should be timestamped.
      *
-     * @var array
+     * @var bool
      */
-    protected $attributes = [
-        'delivery_status' => self::CREATED,
-    ];
+    public $timestamps = false;
 
     /**
      * The attributes that should be cast.
@@ -25,20 +23,13 @@ class DearSanta extends Model
         'email_body' => EncryptedString::class,
     ];
 
-    const CREATED = 'created';
-    const SENT = 'sent';
-    const RECEIVED = 'received';
-    const ERROR = 'error';
-
-    public static $deliveryStatuses = [
-         self::CREATED,
-         self::SENT,
-         self::RECEIVED,
-         self::ERROR,
-    ];
-
     public function sender()
     {
         return $this->belongsTo(Participant::class, 'sender_id');
+    }
+
+    public function mail()
+    {
+        return $this->belongsTo(Mail::class, 'mail_id');
     }
 }

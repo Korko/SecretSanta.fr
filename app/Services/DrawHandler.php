@@ -7,6 +7,7 @@ use App\Exceptions\SolverException;
 use App\Mail\OrganizerFinalRecap;
 use App\Mail\OrganizerRecap;
 use App\Mail\TargetDrawn;
+use App\Mail as MailModel;
 use App\Participant;
 use Arr;
 use Facades\App\Services\HatSolver as Solver;
@@ -24,8 +25,8 @@ class DrawHandler
 
         $draw = new Draw();
         $draw->expires_at = $dataExpiration;
-        $draw->email_title = $mailContent['title'];
-        $draw->email_body = $mailContent['body'];
+        $draw->mail_title = $mailContent['title'];
+        $draw->mail_body = $mailContent['body'];
         $draw->save();
 
         $draw->participants = collect();
@@ -33,8 +34,9 @@ class DrawHandler
             $participant = new Participant();
             $participant->draw()->associate($draw);
             $participant->name = $santa['name'];
-            $participant->email_address = Arr::get($santa, 'email');
+            $participant->address = Arr::get($santa, 'email');
             $participant->exclusions = $santa['exclusions'];
+            $participant->mail()->associate(MailModel::create());
             $participant->save();
 
             $participants[$idx] = $participant;
@@ -55,7 +57,7 @@ class DrawHandler
 
     public function informOrganizer(Draw $draw): void
     {
-        Mail::to([['email' => $draw->organizer->email_address, 'name' => $draw->organizer->name]])
+        Mail::to([['email' => $draw->organizer->address, 'name' => $draw->organizer->name]])
             ->queue(new OrganizerRecap($draw));
 
         $draw->participants->each(function (&$participant) {
@@ -73,7 +75,7 @@ class DrawHandler
         }
 
         $when = $draw->expires_at->addDays(2);
-        Mail::to([['email' => $draw->organizer->email_address, 'name' => $draw->organizer->name]])
+        Mail::to([['email' => $draw->organizer->address, 'name' => $draw->organizer->name]])
             ->later($when, new OrganizerFinalRecap($draw));
     }
 
@@ -82,7 +84,7 @@ class DrawHandler
         foreach ($draw->participants as $participant) {
             Metrics::increment('email');
 
-            Mail::to([['email' => $participant->email_address, 'name' => $participant->name]])
+            Mail::to([['email' => $participant->address, 'name' => $participant->name]])
                 ->queue(new TargetDrawn($participant));
         }
     }

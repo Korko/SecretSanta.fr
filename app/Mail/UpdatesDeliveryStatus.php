@@ -2,20 +2,20 @@
 
 namespace App\Mail;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Mail;
 use Illuminate\Queue\SerializesModels;
 
 trait UpdatesDeliveryStatus
 {
     use SerializesModels;
 
-    private $entry;
+    private $mail;
     private $updateDatetime;
 
-    public function trackEntry(Model $entry)
+    public function trackMail(Mail $mail)
     {
-        $this->entry = $entry;
-        $this->updateDatetime = $entry->updated_at;
+        $this->mail = $mail;
+        $this->updateDatetime = $mail->updated_at;
     }
 
     public function send($mailer)
@@ -25,17 +25,17 @@ trait UpdatesDeliveryStatus
         // Models are fetched again once the task is runned
         // So the update time may have changed inbetween
         // In that case, ignore update for this task
-        if ($this->entry->updated_at == $this->updateDatetime) {
-            $this->entry->delivery_status = $this->entry::SENT;
-            $this->entry->save();
+        if ($this->mail->updated_at == $this->updateDatetime) {
+            $this->mail->delivery_status = Mail::SENT;
+            $this->mail->save();
         }
     }
 
     public function failed($exception)
     {
-        if ($this->entry->updated_at == $this->updateDatetime) {
-            $this->entry->delivery_status = $this->entry::ERROR;
-            $this->entry->save();
+        if ($this->mail->updated_at == $this->updateDatetime) {
+            $this->mail->delivery_status = Mail::ERROR;
+            $this->mail->save();
         }
     }
 }

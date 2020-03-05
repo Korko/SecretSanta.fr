@@ -348,9 +348,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     update: function update(k, data) {
-      this.data.participants[k].email_address = data.value;
-      this.data.participants[k].delivery_status = data.participant.delivery_status;
-      this.data.participants[k].updated_at = data.participant.updated_at;
+      this.data.participants[k].address = data.value;
+      this.data.participants[k].mail.delivery_status = data.participant.mail.delivery_status;
+      this.data.participants[k].mail.updated_at = data.participant.mail.updated_at;
     },
     fetchState: function fetchState() {
       var app = this;
@@ -364,9 +364,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         success: function success(data) {
           if (data.participants) {
             Object.values(data.participants).forEach(function (participant) {
-              var new_update = new Date(participant.updated_at);
-              var old_update = new Date(app.data.participants[participant.id].updated_at);
-              app.data.participants[participant.id].delivery_status = new_update > old_update ? participant.delivery_status : app.data.participants[participant.id].delivery_status;
+              var new_update = new Date(participant.mail.updated_at);
+              var old_update = new Date(app.data.participants[participant.id].mail.updated_at);
+              app.data.participants[participant.id].mail.delivery_status = new_update > old_update ? participant.mail.delivery_status : app.data.participants[participant.id].mail.delivery_status;
             });
           }
         }
@@ -740,7 +740,7 @@ var render = function() {
                     "/" +
                     participant.id +
                     "/changeEmail",
-                  value: participant.email_address,
+                  value: participant.address,
                   type: "email",
                   name: "email"
                 },

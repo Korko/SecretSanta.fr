@@ -29,7 +29,7 @@ class OrganizerFinalRecap extends Mailable
         $this->csv = $this->formatCsv($draw->participants->map(function ($participant) use ($participantNames) {
             return [
                 $participant->name,
-                $participant->email_address,
+                $participant->address,
                 collect($participant->exclusions)
                     ->map(function ($participantId) use ($participantNames) {
                         return $participantNames[$participantId];
