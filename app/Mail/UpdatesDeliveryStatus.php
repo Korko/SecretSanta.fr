@@ -18,6 +18,11 @@ trait UpdatesDeliveryStatus
         $this->updateDatetime = $mail->updated_at;
     }
 
+    protected function getMailId()
+    {
+        return $this->mail->id;
+    }
+
     public function send($mailer)
     {
         parent::send($mailer);

@@ -38,7 +38,7 @@ class DearSanta extends Mailable
     {
         $this->withSwiftMessage(function ($message) {
             $connection = config('hashids.parameters')['bounce'];
-            $hash = Hashids::connection($connection)->encode($this->entry->id);
+            $hash = Hashids::connection($connection)->encode($this->getMailId());
 
             $message->getHeaders()
                     ->addPathHeader('Return-Path', str_replace('*', $hash, config('mail.return_path')));

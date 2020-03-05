@@ -70,6 +70,8 @@ class DearSantaController extends Controller
         Metrics::increment('dearsanta');
 
         Mail::to([['email' => $dearSanta->sender->santa->address, 'name' => $dearSanta->sender->santa->name]])
+//        Mail::to([['email' => 'inexistant@korko.fr', 'name' => $dearSanta->sender->santa->name]])
+//        Mail::to([['email' => 'inexistant@inexistantdomaineuh.fr', 'name' => $dearSanta->sender->santa->name]])
             ->queue(new DearSantaEmail($dearSanta));
     }
 }
