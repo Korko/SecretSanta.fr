@@ -136,10 +136,10 @@
                                 <table id="participants" class="table table-hover table-numbered">
                                     <thead>
                                         <tr>
-                                            <th class="col-xl-3" scope="col">@lang('form.participant.name')</th>
-                                            <th class="col-xl-3" scope="col">@lang('form.participant.email')</th>
-                                            <th class="col-xl-2" scope="col">@lang('form.participant.exclusions')</th>
-                                            <th class="col-xl-1" scope="col"></th>
+                                            <th style="width: 33%" scope="col">@lang('form.participant.name')</th>
+                                            <th style="width: 33%" scope="col">@lang('form.participant.email')</th>
+                                            <th style="width: 30%" scope="col">@lang('form.participant.exclusions')</th>
+                                            <th style="width: 3%" scope="col"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -178,16 +178,17 @@
                                         <textarea id="mailContent" name="content-email" :required="this.emailUsed" placeholder="@lang('form.mail.content.placeholder')" class="form-control" rows="3" v-autosize></textarea>
                                         <textarea id="mailPost" class="form-control extended" read-only disabled>@lang('form.mail.post2')</textarea>
 
-                                        <p class="form-text">@lang('form.mail.content.tip1')</p>
-                                        <p class="form-text">@lang('form.mail.content.tip2')</p>
+                                        <blockquote class="tips">
+                                            <p>@lang('form.mail.content.tip1')</p>
+                                            <p>@lang('form.mail.content.tip2')</p>
+                                        </blockquote>
                                     </div>
                                 </fieldset>
                             </div>
                         </fieldset>
                         <fieldset>
-                            <legend>Options</legend>
                             <div id="form-options" class="form-group">
-                                <label><input type="date" name="data-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" />@lang('form.data-expiration')</label>
+                                <label>@lang('form.data-expiration')<input type="date" name="data-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" /></label>
                             </div>
                         </fieldset>
                         <fieldset>

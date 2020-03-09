@@ -166,19 +166,32 @@ fieldset > div.form-group {
 .row.text-only {
     line-height: 34px;
 }
-.tip {
-    font-style: italic;
-    font-size: 12px;
+#form-options label > input {
+    margin-left: 10px;
 }
 .table-bordered.heavy-borders, .table-bordered.heavy-borders > tbody > tr > td, .table-bordered.heavy-borders > tbody > tr > th, .table-bordered.heavy-borders > tfoot > tr > td, .table-bordered.heavy-borders > tfoot > tr > th, .table-bordered.heavy-borders > thead > tr > td, .table-bordered.heavy-borders > thead > tr > th {
     border-width: 3px;
+}
+
+.tips {
+    font-size: 12px;
+    font-style: italic;
+    box-shadow: 3px 3px 6px 0 #bbb;
+    margin: 10px auto 0 auto;
+    display: inline-block;
+    border: 1px solid #C0C0C0;
+    background-color: #DDD;
+    padding: 10px;
+}
+.tips p {
+    margin: 0;
 }
 
 /* ==========================================================================
     08. Responsive styles
 ========================================================================== */
 @media (max-width: 1199px) {
-    .participant-remove span:nth-child(2) {
+    .participant-remove span {
         display: none;
     }
 }

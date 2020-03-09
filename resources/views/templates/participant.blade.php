@@ -19,7 +19,7 @@
         </td>
         <td class="participant-remove-wrapper align-middle">
             <button type="button" class="btn btn-danger participant-remove" :disabled="participants.length <= 3" @click="$emit('delete')">
-                <span class="glyphicon glyphicon-minus"></span><span> @lang('form.participant.remove')</span>
+                <i class="fas fa-minus"></i><span> @lang('form.participant.remove')</span>
             </button>
         </td>
     </tr>
