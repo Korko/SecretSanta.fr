@@ -5,12 +5,10 @@ namespace App\Mail;
 use App\Draw;
 use Crypt;
 use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
 
 class OrganizerRecap extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
 
     public $organizerName;
     public $expirationDate;

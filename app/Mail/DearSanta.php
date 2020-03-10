@@ -4,11 +4,10 @@ namespace App\Mail;
 
 use App\DearSanta as DearSantaEntry;
 use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
 
-class DearSanta extends Mailable
+class DearSanta extends TrackedMailable
 {
-    use Queueable, UpdatesDeliveryStatus;
+    use Queueable;
 
     public $targetName;
     public $content;
@@ -26,7 +25,7 @@ class DearSanta extends Mailable
 
         $this->targetName = $dearSanta->sender->name;
 
-        $this->trackMail($dearSanta->mail);
+        $this->track($dearSanta->mail);
     }
 
     /**
@@ -36,14 +35,6 @@ class DearSanta extends Mailable
      */
     public function build()
     {
-        $this->withSwiftMessage(function ($message) {
-            $connection = config('hashids.parameters')['bounce'];
-            $hash = Hashids::connection($connection)->encode($this->getMailId());
-
-            $message->getHeaders()
-                    ->addPathHeader('Return-Path', str_replace('*', $hash, config('mail.return_path')));
-        });
-
         return $this->view('emails.dearsanta')
                     ->text('emails.dearsanta_plain');
     }

@@ -8,6 +8,7 @@ use App\Http\Requests\OrganizerResendEmailRequest;
 use App\Mail\TargetDrawn;
 use App\Mail as MailModel;
 use App\Participant;
+use Carbon\Carbon;
 use Mail;
 use Metrics;
 
@@ -24,7 +25,7 @@ class OrganizerController extends Controller
     {
         return response()->json([
             'draw' => $draw->id,
-            'participants' => $draw->participants->with('mail')->mapWithKeys(function ($participant) {
+            'participants' => $draw->participants->mapWithKeys(function ($participant) {
                 return [$participant->id => $participant->only([
                     'id', 'name', 'address', 'mail',
                 ])];
@@ -35,7 +36,7 @@ class OrganizerController extends Controller
     public function fetchState(Draw $draw)
     {
         return response()->json([
-            'participants' => $draw->participants->with('mail')->mapWithKeys(function ($participant) {
+            'participants' => $draw->participants->mapWithKeys(function ($participant) {
                 return [$participant->id => $participant->only(['id', 'mail'])];
             }),
         ]);
@@ -47,6 +48,8 @@ class OrganizerController extends Controller
         $participant->save();
 
         $participant->mail->delivery_status = MailModel::CREATED;
+        // Force update, in case the delivery_status did not change
+        $participant->mail->updated_at = Carbon::now();
         $participant->mail->save();
 
         $this->doResendEmail($participant);
