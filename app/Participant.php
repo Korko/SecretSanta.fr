@@ -37,7 +37,7 @@ class Participant extends Model
 
     public function dearSanta()
     {
-        return $this->hasMany(DearSanta::class, 'sender_id');
+        return $this->hasMany(DearSanta::class, 'sender_id')->with('mail');
     }
 
     public function mail()

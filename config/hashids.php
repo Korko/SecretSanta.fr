@@ -38,7 +38,6 @@ return [
     */
 
     'connections' => [
-
         'main' => [
             'salt'   => env('HASHIDS_SALT_MAIN', 'secretsanta'),
             'length' => '5',
@@ -47,7 +46,7 @@ return [
         'bounce' => [
             'salt'   => env('HASHIDS_SALT_BOUNCE', 'secretsanta-bounce'),
             'length' => '10',
-        ]
+        ],
     ],
 
 ];

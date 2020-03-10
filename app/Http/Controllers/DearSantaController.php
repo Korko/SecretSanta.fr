@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DearSanta;
 use App\Http\Requests\DearSantaRequest;
+use App\Jobs\SendMail;
 use App\Mail\DearSanta as DearSantaEmail;
 use App\Mail as MailModel;
 use App\Participant;
@@ -29,7 +30,7 @@ class DearSantaController extends Controller
             ],
             'draw' => $participant->draw->mail_title,
             'organizer' => $participant->draw->organizer->name,
-            'emails' => $participant->dearSanta->with('mail')->mapWithKeys(function ($email) {
+            'emails' => $participant->dearSanta->mapWithKeys(function ($email) {
                 return [$email->id => $email->only(['id', 'mail_body', 'mail'])];
             }),
         ]);
@@ -38,7 +39,7 @@ class DearSantaController extends Controller
     public function fetchState(Participant $participant)
     {
         return response()->json([
-            'emails' => $participant->dearSanta->with('mail')->mapWithKeys(function ($email) {
+            'emails' => $participant->dearSanta->mapWithKeys(function ($email) {
                 return [$email->id => $email->only(['id', 'mail_body', 'mail'])];
             }),
         ]);
@@ -69,9 +70,6 @@ class DearSantaController extends Controller
     {
         Metrics::increment('dearsanta');
 
-        Mail::to([['email' => $dearSanta->sender->santa->address, 'name' => $dearSanta->sender->santa->name]])
-//        Mail::to([['email' => 'inexistant@korko.fr', 'name' => $dearSanta->sender->santa->name]])
-//        Mail::to([['email' => 'inexistant@inexistantdomaineuh.fr', 'name' => $dearSanta->sender->santa->name]])
-            ->queue(new DearSantaEmail($dearSanta));
+        SendMail::dispatch($dearSanta->sender->santa, new DearSantaEmail($dearSanta));
     }
 }

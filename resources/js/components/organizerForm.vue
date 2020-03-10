@@ -19,7 +19,7 @@
                         name="email"
                     ></input-edit>
                 </td>
-                <td>{{ participant.delivery_status }}</td>
+                <td>{{ participant.mail.delivery_status }}</td>
             </tr>
         </tbody>
     </table>

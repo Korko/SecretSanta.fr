@@ -754,7 +754,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(participant.delivery_status))])
+          _c("td", [_vm._v(_vm._s(participant.mail.delivery_status))])
         ])
       }),
       0

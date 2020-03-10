@@ -38,7 +38,7 @@ class Draw extends Model
 
     public function participants()
     {
-        return $this->hasMany(Participant::class);
+        return $this->hasMany(Participant::class)->with('mail');
     }
 
     public function getOrganizerAttribute()

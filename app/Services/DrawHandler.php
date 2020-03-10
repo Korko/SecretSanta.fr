@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Draw;
 use App\Exceptions\SolverException;
+use App\Jobs\SendMail;
 use App\Mail\OrganizerFinalRecap;
 use App\Mail\OrganizerRecap;
 use App\Mail\TargetDrawn;
@@ -57,8 +58,7 @@ class DrawHandler
 
     public function informOrganizer(Draw $draw): void
     {
-        Mail::to([['email' => $draw->organizer->address, 'name' => $draw->organizer->name]])
-            ->queue(new OrganizerRecap($draw));
+        SendMail::dispatch($draw->organizer, new OrganizerRecap($draw));
 
         $draw->participants->each(function (&$participant) {
             $participant->exclusions[] = $participant->target->id;
@@ -74,9 +74,8 @@ class DrawHandler
             });
         }
 
-        $when = $draw->expires_at->addDays(2);
-        Mail::to([['email' => $draw->organizer->address, 'name' => $draw->organizer->name]])
-            ->later($when, new OrganizerFinalRecap($draw));
+        SendMail::dispatch($draw->organizer, new OrganizerFinalRecap($draw))
+            ->delay($draw->expires_at->addDays(2));
     }
 
     public function informParticipants(Draw $draw): void
@@ -84,8 +83,7 @@ class DrawHandler
         foreach ($draw->participants as $participant) {
             Metrics::increment('email');
 
-            Mail::to([['email' => $participant->address, 'name' => $participant->name]])
-                ->queue(new TargetDrawn($participant));
+            SendMail::dispatch($participant, new TargetDrawn($participant));
         }
     }
 }

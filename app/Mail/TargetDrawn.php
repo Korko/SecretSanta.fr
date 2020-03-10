@@ -6,11 +6,10 @@ use App\Participant;
 use Crypt;
 use Hashids;
 use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
 
-class TargetDrawn extends Mailable
+class TargetDrawn extends TrackedMailable
 {
-    use Queueable, UpdatesDeliveryStatus;
+    use Queueable;
 
     public $content;
     public $dearSantaLink;
@@ -31,7 +30,7 @@ class TargetDrawn extends Mailable
 
         $this->dearSantaLink = route('dearsanta', ['santa' => Hashids::encode($santa->id)]).'#'.base64_encode(Crypt::getKey());
 
-        $this->trackMail($santa->mail);
+        $this->track($santa->mail);
     }
 
     protected function parseKeywords($str, Participant $santa)

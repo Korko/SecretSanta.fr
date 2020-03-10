@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Draw;
 use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class OrganizerFinalRecap extends Mailable

@@ -18,12 +18,10 @@ class Unhash extends Middleware
      */
     protected function transform($key, $value)
     {
-        if (! array_key_exists($key, config('hashids.parameters'))) {
+        if (! array_key_exists($key, config('hashids.connections'))) {
             return $value;
         }
 
-        $connection = config('hashids.parameters')[$key];
-
-        return Arr::get(Hashids::connection($connection)->decode($value), 0, $value);
+        return Arr::get(Hashids::connection($key)->decode($value), 0, $value);
     }
 }
