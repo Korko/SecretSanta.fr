@@ -3,9 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Mail;
-use Hashids;
+use App\Jobs\ParseBounces;
 use Illuminate\Console\Command;
-use Webklex\IMAP\Facades\Client as EmailClient;
 
 class ListEmail extends Command
 {
@@ -40,16 +39,6 @@ class ListEmail extends Command
      */
     public function handle()
     {
-        $oClient = EmailClient::account('default');
-        $oClient->connect();
-        $oFolder = $oClient->getFolder('INBOX');
-
-        $to = $oFolder->query()->unseen()->limit(1)->get()->first()->getTo()[0]->mailbox;
-        $hash = sscanf($to, str_replace('*', '%s', config('mail.return_path')))[0];
-
-        $id = Hashids::connection('bounce')->decode($hash)[0];
-        $mail = Mail::find($id);
-        $mail->delivery_status = Mail::ERROR;
-        $mail->save();
+        ParseBounces::dispatchNow();
     }
 }

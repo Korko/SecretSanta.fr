@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Draw;
+use App\Jobs\ParseBounces;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -28,6 +29,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             Draw::cleanup();
         })->daily();
+
+        $schedule->job(new ParseBounces)->everyMinute()->withoutOverlapping();
     }
 
     /**
