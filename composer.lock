@@ -3750,16 +3750,16 @@
         },
         {
             "name": "vinkla/hashids",
-            "version": "8.0.0",
+            "version": "8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vinkla/laravel-hashids.git",
-                "reference": "20266758a232ac62ee1f632d7eb2c3937d2c7fb9"
+                "reference": "ecf5534731dbd476e52859b3a6ab265f29ebade7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vinkla/laravel-hashids/zipball/20266758a232ac62ee1f632d7eb2c3937d2c7fb9",
-                "reference": "20266758a232ac62ee1f632d7eb2c3937d2c7fb9",
+                "url": "https://api.github.com/repos/vinkla/laravel-hashids/zipball/ecf5534731dbd476e52859b3a6ab265f29ebade7",
+                "reference": "ecf5534731dbd476e52859b3a6ab265f29ebade7",
                 "shasum": ""
             },
             "require": {
@@ -3767,19 +3767,19 @@
                 "hashids/hashids": "^4.0",
                 "illuminate/contracts": "^7.0",
                 "illuminate/support": "^7.0",
-                "php": "^7.4"
+                "php": "^7.2.5"
             },
             "require-dev": {
-                "graham-campbell/analyzer": "^2.4",
+                "graham-campbell/analyzer": "^3.0",
                 "graham-campbell/testbench": "^5.4",
                 "mockery/mockery": "^1.3",
-                "phpunit/phpunit": "^8.5",
+                "phpunit/phpunit": "^8.5 || ^9.0",
                 "squizlabs/php_codesniffer": "^3.5"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "8.0-dev"
+                    "dev-master": "8.1-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -3810,7 +3810,7 @@
                 "hashids",
                 "laravel"
             ],
-            "time": "2020-01-31T16:12:24+00:00"
+            "time": "2020-03-10T08:21:07+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
