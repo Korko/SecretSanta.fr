@@ -1,54 +1,26 @@
-# This file is a template, and might need editing before it works on your project.
-# Select image from https://hub.docker.com/_/php/
-image: php:7.4-cli
+image: lorisleiva/laravel-docker:latest
 
-# Select what we should cache between builds
 cache:
+  key: ${CI_COMMIT_REF_SLUG}
   paths:
-  - vendor/
+    # We only want to cache the vendor folder.
+    - vendor/
 
-before_script:
-- apt-get update -yqq
-- apt-get install -yqq git libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev libonig-dev libzip-dev openssl libc-client2007e-dev
-# Install PHP extensions
-- docker-php-ext-install mbstring pdo_pgsql curl json intl gd xml zip bz2 opcache bcmath imap
-# Install & enable Xdebug for code coverage reports
-- pecl install xdebug
-- docker-php-ext-enable xdebug
-# Install and run Composer
-- curl -sS https://getcomposer.org/installer | php
-- php composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
-- cp .env.example .env
-- php artisan key:generate
-
-# Bring in any services we need http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service See http://docs.gitlab.com/ce/ci/services/README.html for examples.
-services:
-  - mysql:5.7
-
-# Set any variables we need
-variables:
-  # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
-  MYSQL_DATABASE: mysql_database
-  MYSQL_ROOT_PASSWORD: mysql_strong_password
-
-phpcs:
+codestyle:
+  stage: test
+  cache: {} # Override with an empty object.
   script:
-  - php composer.phar check-style
+    - composer global require tightenco/tlint
+    - tlint lint app
   allow_failure: true
 
-# Run our tests
-# If Xdebug was installed you can generate a coverage report and see code coverage metrics.
-php-7.4-cli:
-  type: test
-  image: php:7.4-cli
-  only:
-    - /^\d\.\d\.x$/
+phpunit:
+  stage: test
   script:
-  - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --colors=never
-
-cache:
-    # We key the cache using the branch's unique identifier.
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-        # We only want to cache the vendor folder.
-        - vendor/
+    - apk add --no-cache imap-dev krb5-dev openssl-dev
+    - docker-php-ext-configure imap --with-kerberos --with-imap-ssl
+    - docker-php-ext-install imap
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - cp .env.example .env
+    - php artisan key:generate
+    - phpunit --coverage-text --colors=never
