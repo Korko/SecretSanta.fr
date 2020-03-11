@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Mail extends Model
@@ -26,4 +27,12 @@ class Mail extends Model
          self::RECEIVED,
          self::ERROR,
     ];
+
+    public function updateDeliveryStatus($status)
+    {
+        $this->delivery_status = $status;
+        // Force update, in case the delivery_status did not change
+        $this->updated_at = Carbon::now();
+        $this->save();
+    }
 }

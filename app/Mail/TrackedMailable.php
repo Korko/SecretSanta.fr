@@ -23,8 +23,7 @@ class TrackedMailable extends Mailable
             $mailModel = MailModel::find($this->mailId);
 
             if ($mailModel->updated_at == $this->updateDatetime) {
-                $mailModel->delivery_status = $status;
-                $mailModel->save();
+                $mailModel->updateDeliveryStatus($status);
             }
         }
     }
