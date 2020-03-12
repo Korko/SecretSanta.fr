@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Mail;
 use App\Jobs\ParseBounces;
 use Illuminate\Console\Command;
 

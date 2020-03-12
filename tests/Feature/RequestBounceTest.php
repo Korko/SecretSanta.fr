@@ -5,9 +5,6 @@ namespace Tests\Feature;
 use App\Draw;
 use App\Participant;
 use Config;
-use Mail;
-use Metrics;
-use Mockery;
 use NoCaptcha;
 
 class RequestBounceTest extends RequestCase

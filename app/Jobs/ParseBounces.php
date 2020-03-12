@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Mail;
 use Webklex\IMAP\Facades\Client as EmailClient;
 use Webklex\IMAP\Message as EmailMessage;
 
@@ -28,11 +27,11 @@ class ParseBounces implements ShouldQueue
         foreach ($unseenMails as $unseenMail) {
             $to = $this->getFirstRecipientAddress($unseenMail);
 
-            if (!empty($to)) {
-                list($hash) = sscanf($to, str_replace('*', '%s', config('mail.return_path')));
+            if (! empty($to)) {
+                [$hash] = sscanf($to, str_replace('*', '%s', config('mail.return_path')));
 
                 if ($hash !== null) {
-                    list($id) = Hashids::connection('bounce')->decode($hash);
+                    [$id] = Hashids::connection('bounce')->decode($hash);
 
                     $mail = MailModel::find($id);
                     $mail->delivery_status = MailModel::ERROR;

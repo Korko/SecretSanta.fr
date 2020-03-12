@@ -10,8 +10,8 @@ codestyle:
   stage: test
   cache: {} # Override with an empty object.
   script:
-    - composer global require tightenco/tlint
-    - tlint lint app
+    - composer global require friendsofphp/php-cs-fixer
+    - php-cs-fixer fix --dry-run
   allow_failure: true
 
 phpunit:
