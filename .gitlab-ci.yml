@@ -38,7 +38,7 @@ php-cs:
   extends: .before_script_composer
   stage: test
   script:
-    - ./vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes --diff
+    - composer check-style
   allow_failure: true
 
 phpunit:
