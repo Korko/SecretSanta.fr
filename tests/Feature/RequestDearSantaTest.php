@@ -5,13 +5,13 @@ namespace Tests\Feature;
 use App\Participant;
 use Crypt;
 use Hashids;
-use Mail;
+use Queue;
 
 class RequestDearSantaTest extends RequestCase
 {
     public function testDearsanta(): void
     {
-        Mail::fake();
+        Queue::fake();
 
         // Participants can only select one person, all the others will be excluded
         $participants = $this->formatParticipants([
@@ -49,8 +49,10 @@ class RequestDearSantaTest extends RequestCase
         // For security issues, the key is only sent by mail and never stored
         // So fetch it from the mail
         $links = [];
-        Mail::assertQueued(\App\Mail\TargetDrawn::class, function ($mail) use (&$links) {
-            $links[] = $mail->dearSantaLink;
+        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) use(&$links) {
+            if ($job->getMailable() instanceof \App\Mail\TargetDrawn) {
+                $links[] = $job->getMailable()->dearSantaLink;
+            }
 
             return true;
         });
@@ -87,8 +89,8 @@ class RequestDearSantaTest extends RequestCase
                     'message' => 'Envoyé avec succès !',
                 ]);
 
-            Mail::assertQueued(\App\Mail\DearSanta::class, function ($mail) use ($santa) {
-                return $mail->hasTo($santa['email'], $santa['name']);
+            Queue::assertPushed(\App\Jobs\SendMail::class, function($job) {
+                return $job->getMailable() instanceof \App\Mail\DearSanta;
             });
         }
     }
