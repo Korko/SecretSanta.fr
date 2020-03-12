@@ -97,7 +97,7 @@ window.app = new Vue({
         Vue.nextTick(
             function() {
                 if (!Modernizr.inputtypes.date) {
-                    $('input[type=date]', this.$el).datepicker({
+                    jQuery('input[type=date]', this.$el).datepicker({
                         // Consistent format with the HTML5 picker
                         dateFormat: 'yy-mm-dd',
                         minDate: Moment(this.now)
@@ -110,7 +110,7 @@ window.app = new Vue({
                 }
 
                 if (!Modernizr.filereader) {
-                    $('.participants-imports').remove();
+                    jQuery('.participants-imports').remove();
                 }
             }.bind(this)
         );
@@ -128,21 +128,21 @@ window.app = new Vue({
         sending: function(newVal) {
             // If we reset the sending status, reset the captcha
             if (!newVal) {
-                grecaptcha.reset();
+                grecaptcha && grecaptcha.reset(); // eslint-disable-line no-undef
             }
         },
 
         sent: function(newVal) {
             // If sent is a success, scroll to the message
             if (newVal) {
-                $.scrollTo('#form .row', 800, { offset: -120 });
+                jQuery.scrollTo('#form .row', 800, { offset: -120 });
             }
         },
 
         errors: function(newVal) {
             // If there's new errors, scroll to them
             if (newVal.length) {
-                $.scrollTo('#form .row', 800, { offset: -120 });
+                jQuery.scrollTo('#form .row', 800, { offset: -120 });
             }
         }
     },
@@ -162,7 +162,7 @@ window.app = new Vue({
 
         importParticipants: function(file) {
             this.importing = true;
-            var test = Papa.parse(file, {
+            Papa.parse(file, {
                 error: function() {
                     this.importing = false;
                     alertify.alert(Lang.get('csv.importError'));

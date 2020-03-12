@@ -16,4 +16,5 @@ return (new MattAllan\LaravelCodeStyle\Config())
     )
     ->setRules([
         '@Laravel' => true,
+        '@Laravel:risky' => true,
     ]);
