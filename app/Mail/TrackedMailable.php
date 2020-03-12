@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use App\Mail as MailModel;
-use App\Mail\Middleware\TrackMailBounces;
 use Hashids;
 
 class TrackedMailable extends Mailable

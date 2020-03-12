@@ -1435,9 +1435,9 @@
             "authors": [
                 {
                     "name": "Marc Qualie",
+                    "role": "Developer",
                     "email": "marc@marcqualie.com",
-                    "homepage": "http://marcqualie.com",
-                    "role": "Developer"
+                    "homepage": "http://marcqualie.com"
                 }
             ],
             "description": "A simple library for working with StatsD in PHP.",

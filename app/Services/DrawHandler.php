@@ -5,14 +5,13 @@ namespace App\Services;
 use App\Draw;
 use App\Exceptions\SolverException;
 use App\Jobs\SendMail;
+use App\Mail as MailModel;
 use App\Mail\OrganizerFinalRecap;
 use App\Mail\OrganizerRecap;
 use App\Mail\TargetDrawn;
-use App\Mail as MailModel;
 use App\Participant;
 use Arr;
 use Facades\App\Services\HatSolver as Solver;
-use Mail;
 use Metrics;
 
 class DrawHandler

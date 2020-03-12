@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\DearSanta;
 use App\Http\Requests\DearSantaRequest;
 use App\Jobs\SendMail;
-use App\Mail\DearSanta as DearSantaEmail;
 use App\Mail as MailModel;
+use App\Mail\DearSanta as DearSantaEmail;
 use App\Participant;
 use Hashids;
-use Mail;
 use Metrics;
 
 class DearSantaController extends Controller

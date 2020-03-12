@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Draw;
 use App\Http\Requests\OrganizerChangeEmailRequest;
 use App\Http\Requests\OrganizerResendEmailRequest;
-use App\Mail\TargetDrawn;
-use App\Mail as MailModel;
 use App\Jobs\SendMail;
+use App\Mail as MailModel;
+use App\Mail\TargetDrawn;
 use App\Participant;
 use Metrics;
 
