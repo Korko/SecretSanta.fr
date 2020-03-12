@@ -4,7 +4,6 @@ js-cs:
   stage: test
   cache: {} # Override with an empty object.
   script:
-    - npm install eslint eslint-plugin-vue
     - ./node_modules/.bin/eslint resources/js/
   rules:
     - changes:
@@ -15,7 +14,6 @@ sass-cs:
   stage: test
   cache: {} # Override with an empty object.
   script:
-    - npm install sass-lint
     - ./node_modules/.bin/sass-lint resources/sass/
   rules:
     - changes:
@@ -36,7 +34,6 @@ php-cs:
   extends: .before_script_composer
   stage: test
   script:
-    - composer require friendsofphp/php-cs-fixer
     - ./vendor/bin/php-cs-fixer fix --dry-run
   allow_failure: true
 
