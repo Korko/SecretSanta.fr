@@ -49,7 +49,7 @@ class RequestDearSantaTest extends RequestCase
         // For security issues, the key is only sent by mail and never stored
         // So fetch it from the mail
         $links = [];
-        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) use(&$links) {
+        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) use (&$links) {
             if ($job->getMailable() instanceof \App\Mail\TargetDrawn) {
                 $links[] = $job->getMailable()->dearSantaLink;
             }
@@ -89,7 +89,7 @@ class RequestDearSantaTest extends RequestCase
                     'message' => 'Envoyé avec succès !',
                 ]);
 
-            Queue::assertPushed(\App\Jobs\SendMail::class, function($job) {
+            Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) {
                 return $job->getMailable() instanceof \App\Mail\DearSanta;
             });
         }

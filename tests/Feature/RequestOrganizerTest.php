@@ -3,9 +3,6 @@
 namespace Tests\Feature;
 
 use App\Draw;
-use App\Mail\OrganizerFinalRecap;
-use App\Mail\OrganizerRecap;
-use App\Mail\TargetDrawn;
 use App\Participant;
 use Crypt;
 use Queue;
@@ -52,13 +49,13 @@ class RequestOrganizerTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Queue::assertPushed(\App\Jobs\SendMail::class, function($job) {
+        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) {
             return $job->getMailable() instanceof \App\Mail\OrganizerFinalRecap;
         });
 
         // So fetch it from the mail
         $link = null;
-        Queue::assertPushed(\App\Jobs\SendMail::class, function($job) use (&$link) {
+        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) use (&$link) {
             if ($job->getMailable() instanceof \App\Mail\OrganizerRecap) {
                 $link = $job->getMailable()->panelLink;
 
@@ -116,11 +113,10 @@ class RequestOrganizerTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Queue::assertPushed(\App\Jobs\SendMail::class, function($job) use ($participant) {
+        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) use ($participant) {
             return $job->getMailable() instanceof \App\Mail\TargetDrawn &&
                    $job->getRecipient()->address === $participant->address;
         });
-
     }
 
     /**
@@ -158,7 +154,7 @@ class RequestOrganizerTest extends RequestCase
         $this->assertNotEquals($before, $after);
         $this->assertEquals('test@test2.com', $after);
 
-        Queue::assertPushed(\App\Jobs\SendMail::class, function($job) use ($participant) {
+        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) use ($participant) {
             return $job->getMailable() instanceof \App\Mail\TargetDrawn &&
                    $job->getRecipient()->address === $participant->address;
         });

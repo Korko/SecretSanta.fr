@@ -27,12 +27,12 @@ class Participant extends Model
 
     public function target()
     {
-        return $this->hasOne(Participant::class, 'target_id');
+        return $this->hasOne(self::class, 'target_id');
     }
 
     public function santa()
     {
-        return $this->belongsTo(Participant::class, 'target_id');
+        return $this->belongsTo(self::class, 'target_id');
     }
 
     public function dearSanta()

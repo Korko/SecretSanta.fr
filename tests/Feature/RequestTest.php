@@ -3,12 +3,10 @@
 namespace Tests\Feature;
 
 use App\Draw;
-use App\Mail\OrganizerRecap;
-use App\Mail\TargetDrawn;
 use App\Jobs\SendMail;
 use App\Participant;
-use Queue;
 use Metrics;
+use Queue;
 
 class RequestTest extends RequestCase
 {
@@ -118,14 +116,14 @@ class RequestTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Queue::assertPushed(SendMail::class, function($job) {
+        Queue::assertPushed(SendMail::class, function ($job) {
             return $job->getMailable() instanceof \App\Mail\OrganizerRecap &&
                    $job->getRecipient()->address === 'test@test.com';
         });
 
         $title = $body = null;
 
-        Queue::assertPushed(SendMail::class, function($job) use (&$title, &$body) {
+        Queue::assertPushed(SendMail::class, function ($job) use (&$title, &$body) {
             if (
                 $job->getMailable() instanceof \App\Mail\TargetDrawn &&
                 $job->getRecipient()->address === 'test@test.com'
@@ -136,13 +134,14 @@ class RequestTest extends RequestCase
 
                 return true;
             }
+
             return false;
         });
         $this->assertStringContainsString('test mail toto => tata title', html_entity_decode($title));
         //$this->assertStringContainsString('test mail toto => tata body', html_entity_decode($body));
 
         $body = null;
-        Queue::assertPushed(SendMail::class, function($job) use (&$title, &$body) {
+        Queue::assertPushed(SendMail::class, function ($job) use (&$title, &$body) {
             if (
                 $job->getMailable() instanceof \App\Mail\TargetDrawn &&
                 $job->getRecipient()->address === 'test2@test.com'
@@ -152,6 +151,7 @@ class RequestTest extends RequestCase
 
                 return true;
             }
+
             return false;
         });
         //$this->assertStringContainsString('test mail tutu => toto', html_entity_decode($body));
