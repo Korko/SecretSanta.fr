@@ -16,8 +16,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery_scrollto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery.scrollto */ "./node_modules/jquery.scrollto/jquery.scrollTo.js");
 /* harmony import */ var jquery_scrollto__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery_scrollto__WEBPACK_IMPORTED_MODULE_2__);
 
+ // eslint-disable-line no-unused-vars
 
-
+ // eslint-disable-line no-unused-vars
 
 (function ($, sr) {
   // debouncing function from John Hann

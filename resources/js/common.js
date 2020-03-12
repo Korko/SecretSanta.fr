@@ -1,7 +1,7 @@
 import jQuery from 'jquery';
 
-import actual from 'jquery.actual';
-import scrollTo from 'jquery.scrollto';
+import actual from 'jquery.actual'; // eslint-disable-line no-unused-vars
+import scrollTo from 'jquery.scrollto'; // eslint-disable-line no-unused-vars
 
 (function($, sr) {
     // debouncing function from John Hann

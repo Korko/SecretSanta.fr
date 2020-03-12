@@ -1707,7 +1707,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
 /* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(alertify_js__WEBPACK_IMPORTED_MODULE_1__);
@@ -1811,7 +1811,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
     this.addParticipant();
     vue__WEBPACK_IMPORTED_MODULE_2___default.a.nextTick(function () {
       if (!_modernizr_js__WEBPACK_IMPORTED_MODULE_4___default.a.inputtypes.date) {
-        $('input[type=date]', this.$el).datepicker({
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('input[type=date]', this.$el).datepicker({
           // Consistent format with the HTML5 picker
           dateFormat: 'yy-mm-dd',
           minDate: moment__WEBPACK_IMPORTED_MODULE_5___default()(this.now).add(1, 'day').toDate(),
@@ -1820,7 +1820,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
       }
 
       if (!_modernizr_js__WEBPACK_IMPORTED_MODULE_4___default.a.filereader) {
-        $('.participants-imports').remove();
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('.participants-imports').remove();
       }
     }.bind(this));
   },
@@ -1833,13 +1833,13 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
     sending: function sending(newVal) {
       // If we reset the sending status, reset the captcha
       if (!newVal) {
-        grecaptcha.reset();
+        grecaptcha && grecaptcha.reset(); // eslint-disable-line no-undef
       }
     },
     sent: function sent(newVal) {
       // If sent is a success, scroll to the message
       if (newVal) {
-        $.scrollTo('#form .row', 800, {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default.a.scrollTo('#form .row', 800, {
           offset: -120
         });
       }
@@ -1847,7 +1847,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
     errors: function errors(newVal) {
       // If there's new errors, scroll to them
       if (newVal.length) {
-        $.scrollTo('#form .row', 800, {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default.a.scrollTo('#form .row', 800, {
           offset: -120
         });
       }
@@ -1866,7 +1866,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
     },
     importParticipants: function importParticipants(file) {
       this.importing = true;
-      var test = papaparse__WEBPACK_IMPORTED_MODULE_6___default.a.parse(file, {
+      papaparse__WEBPACK_IMPORTED_MODULE_6___default.a.parse(file, {
         error: function error() {
           this.importing = false;
           alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(_partials_lang_js__WEBPACK_IMPORTED_MODULE_7__["default"].get('csv.importError'));
@@ -1892,7 +1892,6 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
     }
   }
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
 

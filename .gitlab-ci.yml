@@ -6,12 +6,28 @@ cache:
     # We only want to cache the vendor folder.
     - vendor/
 
-codestyle:
+php-cs:
   stage: test
   cache: {} # Override with an empty object.
   script:
     - composer global require friendsofphp/php-cs-fixer
     - php-cs-fixer fix --dry-run
+  allow_failure: true
+
+js-cs:
+  stage: test
+  cache: {} # Override with an empty object.
+  script:
+    - npm install -g eslint eslint-plugin-vue
+    - eslint resources/js/
+  allow_failure: true
+
+sass-cs:
+  stage: test
+  cache: {} # Override with an empty object.
+  script:
+    - npm install -g sass-lint
+    - sass-lint resources/sass/
   allow_failure: true
 
 phpunit:
