@@ -1,8 +1,12 @@
 image: lorisleiva/laravel-docker:latest
 
+.before_script_npm:
+  before_script:
+    - npm install
+
 js-cs:
+  extends: .before_script_npm
   stage: test
-  cache: {} # Override with an empty object.
   script:
     - ./node_modules/.bin/eslint resources/js/
   rules:
@@ -11,8 +15,8 @@ js-cs:
   allow_failure: true
 
 sass-cs:
+  extends: .before_script_npm
   stage: test
-  cache: {} # Override with an empty object.
   script:
     - ./node_modules/.bin/sass-lint resources/sass/
   rules:
