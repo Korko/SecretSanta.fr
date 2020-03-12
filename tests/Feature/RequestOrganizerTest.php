@@ -8,7 +8,7 @@ use App\Mail\OrganizerRecap;
 use App\Mail\TargetDrawn;
 use App\Participant;
 use Crypt;
-use Mail;
+use Queue;
 
 class RequestOrganizerTest extends RequestCase
 {
@@ -16,7 +16,7 @@ class RequestOrganizerTest extends RequestCase
 
     public function testDraw(): Draw
     {
-        Mail::fake();
+        Queue::fake();
 
         self::$key = Crypt::getKey();
 
@@ -52,14 +52,20 @@ class RequestOrganizerTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Mail::assertQueued(OrganizerFinalRecap::class);
+        Queue::assertPushed(\App\Jobs\SendMail::class, function($job) {
+            return $job->getMailable() instanceof \App\Mail\OrganizerFinalRecap;
+        });
 
         // So fetch it from the mail
         $link = null;
-        Mail::assertQueued(OrganizerRecap::class, function ($mail) use (&$link) {
-            $link = $mail->panelLink;
+        Queue::assertPushed(\App\Jobs\SendMail::class, function($job) use (&$link) {
+            if ($job->getMailable() instanceof \App\Mail\OrganizerRecap) {
+                $link = $job->getMailable()->panelLink;
 
-            return true;
+                return true;
+            }
+
+            return false;
         });
         $this->assertNotNull($link);
 
@@ -89,7 +95,7 @@ class RequestOrganizerTest extends RequestCase
      */
     public function testSendAgain(Draw $draw): void
     {
-        Mail::fake();
+        Queue::fake();
 
         Crypt::setKey(self::$key);
 
@@ -110,9 +116,11 @@ class RequestOrganizerTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Mail::assertQueued(TargetDrawn::class, function ($mail) use ($participant) {
-            return $mail->hasTo($participant->address, $participant->name);
+        Queue::assertPushed(\App\Jobs\SendMail::class, function($job) use ($participant) {
+            return $job->getMailable() instanceof \App\Mail\TargetDrawn &&
+                   $job->getRecipient()->address === $participant->address;
         });
+
     }
 
     /**
@@ -120,7 +128,7 @@ class RequestOrganizerTest extends RequestCase
      */
     public function testChangeEmail(Draw $draw): void
     {
-        Mail::fake();
+        Queue::fake();
 
         Crypt::setKey(self::$key);
 
@@ -150,8 +158,9 @@ class RequestOrganizerTest extends RequestCase
         $this->assertNotEquals($before, $after);
         $this->assertEquals('test@test2.com', $after);
 
-        Mail::assertQueued(TargetDrawn::class, function ($mail) use ($participant) {
-            return $mail->hasTo($participant->address, $participant->name);
+        Queue::assertPushed(\App\Jobs\SendMail::class, function($job) use ($participant) {
+            return $job->getMailable() instanceof \App\Mail\TargetDrawn &&
+                   $job->getRecipient()->address === $participant->address;
         });
     }
 }

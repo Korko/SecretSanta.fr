@@ -32,6 +32,16 @@ class SendMail implements ShouldQueue
         $this->key = base64_encode(Crypt::getKey());
     }
 
+    public function getRecipient()
+    {
+        return $this->participant;
+    }
+
+    public function getMailable()
+    {
+        return $this->mailable;
+    }
+
     /**
      * Execute the job.
      *

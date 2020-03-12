@@ -5,8 +5,9 @@ namespace Tests\Feature;
 use App\Draw;
 use App\Mail\OrganizerRecap;
 use App\Mail\TargetDrawn;
+use App\Jobs\SendMail;
 use App\Participant;
-use Mail;
+use Queue;
 use Metrics;
 
 class RequestTest extends RequestCase
@@ -23,8 +24,8 @@ class RequestTest extends RequestCase
 
     public function testInvalid(): void
     {
-        Mail::shouldReceive('to')
-            ->never();
+        Queue::fake();
+        Queue::assertNotPushed(SendMail::class);
 
         Metrics::shouldReceive('increment')
             ->never();
@@ -81,8 +82,8 @@ class RequestTest extends RequestCase
             ->with('email')
             ->andReturn(true);
 
-        Mail::fake();
-        Mail::assertNothingSent();
+        Queue::fake();
+        Queue::assertNotPushed(SendMail::class);
 
         // TODO: also test mail content
 
@@ -117,31 +118,41 @@ class RequestTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Mail::assertQueued(OrganizerRecap::class, function ($mail) {
-            return $mail->hasTo('test@test.com', 'toto');
+        Queue::assertPushed(SendMail::class, function($job) {
+            return $job->getMailable() instanceof \App\Mail\OrganizerRecap &&
+                   $job->getRecipient()->address === 'test@test.com';
         });
 
         $title = $body = null;
-        Mail::assertQueued(TargetDrawn::class, function ($mail) use (&$title, &$body) {
-            if ($mail->hasTo('test@test.com', 'toto')) {
-                $m = $mail->build();
-                $title = $mail->subject;
+
+        Queue::assertPushed(SendMail::class, function($job) use (&$title, &$body) {
+            if (
+                $job->getMailable() instanceof \App\Mail\TargetDrawn &&
+                $job->getRecipient()->address === 'test@test.com'
+            ) {
+                $title = $job->getMailable()->subject;
+                //$m = $job->getMailable()->build();
                 //$body = view($m->view, $m->buildViewData())->render();
 
                 return true;
             }
+            return false;
         });
         $this->assertStringContainsString('test mail toto => tata title', html_entity_decode($title));
         //$this->assertStringContainsString('test mail toto => tata body', html_entity_decode($body));
 
         $body = null;
-        Mail::assertQueued(TargetDrawn::class, function ($mail) use (&$body) {
-            if ($mail->hasTo('test2@test.com', 'tutu')) {
-                $m = $mail->build();
+        Queue::assertPushed(SendMail::class, function($job) use (&$title, &$body) {
+            if (
+                $job->getMailable() instanceof \App\Mail\TargetDrawn &&
+                $job->getRecipient()->address === 'test2@test.com'
+            ) {
+                //$m = $job->getMailable()->build();
                 //$body = view($m->view, $m->buildViewData())->render();
 
                 return true;
             }
+            return false;
         });
         //$this->assertStringContainsString('test mail tutu => toto', html_entity_decode($body));
 
