@@ -1,12 +1,5 @@
 image: lorisleiva/laravel-docker:latest
 
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - vendor/
-    - node_modules/
-    - public/
-
 js-cs:
   stage: test
   cache: {} # Override with an empty object.
