@@ -11,7 +11,7 @@ js-cs:
   cache: {} # Override with an empty object.
   script:
     - npm install eslint eslint-plugin-vue
-    - eslint resources/js/
+    - ./node_modules/.bin/eslint resources/js/
   allow_failure: true
 
 sass-cs:
@@ -19,7 +19,7 @@ sass-cs:
   cache: {} # Override with an empty object.
   script:
     - npm install sass-lint
-    - sass-lint resources/sass/
+    - ./node_modules/.bin/sass-lint resources/sass/
   allow_failure: true
 
 .before_script_composer:
@@ -34,7 +34,7 @@ php-cs:
   stage: test
   script:
     - composer require friendsofphp/php-cs-fixer
-    - php-cs-fixer fix --dry-run
+    - ./vendor/bin/php-cs-fixer fix --dry-run
   allow_failure: true
 
 phpunit:
@@ -43,4 +43,4 @@ phpunit:
   script:
     - cp .env.example .env
     - php artisan key:generate
-    - phpunit --coverage-text --colors=never
+    - ./vendor/bin/phpunit --coverage-text --colors=never
