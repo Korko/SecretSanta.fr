@@ -36,6 +36,8 @@ class ParseBounces implements ShouldQueue
                     $mail = MailModel::find($id);
                     $mail->delivery_status = MailModel::ERROR;
                     $mail->save();
+
+                    $unseenMail->delete();
                 }
             }
         }
