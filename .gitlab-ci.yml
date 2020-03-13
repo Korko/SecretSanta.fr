@@ -47,4 +47,4 @@ phpunit:
   script:
     - cp .env.example .env
     - php artisan key:generate
-    - ./vendor/bin/phpunit --coverage-text --colors=never
+    - php artisan test
