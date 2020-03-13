@@ -391,7 +391,7 @@ var render = function() {
       {
         key: "header",
         fn: function() {
-          return [_c("h3", [_vm._v(_vm._s(_vm.lang("form.csv.title")))])]
+          return [_c("h3", [_vm._v(_vm._s(_vm.lang.get("form.csv.title")))])]
         },
         proxy: true
       },
@@ -402,19 +402,35 @@ var render = function() {
             _c(
               "div",
               { staticClass: "alert alert-info", attrs: { role: "alert" } },
-              [_c("span", { staticClass: "fas fa-question-cirle" })]
+              [
+                _c("span", { staticClass: "fas fa-question-cirle" }),
+                _vm._v(" "),
+                _c("span", {
+                  domProps: {
+                    innerHTML: _vm._s(
+                      _vm.lang.get("form.csv.help", {
+                        excel:
+                          "<a href='https://support.office.com/fr-fr/article/Importer-ou-exporter-des-fichiers-texte-txt-ou-csv-5250ac4c-663c-47ce-937b-339e391393ba' class='alert-link'>",
+                        calc:
+                          "<a href='https://help.libreoffice.org/Calc/Importing_and_Exporting_CSV_Files/fr' class='alert-link'>",
+                        elink: "</a>"
+                      })
+                    )
+                  }
+                })
+              ]
             ),
             _vm._v(
               "\n\n        " +
-                _vm._s(_vm.lang("form.csv.format")) +
+                _vm._s(_vm.lang.get("form.csv.format")) +
                 "\n        "
             ),
             _c("table", { staticClass: "table table-bordered heavy-borders" }, [
               _c("tbody", [
                 _c("tr", [
-                  _c("td", [_vm._v(_vm._s(_vm.lang("form.csv.column1")))]),
+                  _c("td", [_vm._v(_vm._s(_vm.lang.get("form.csv.column1")))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.lang("form.csv.column2")))])
+                  _c("td", [_vm._v(_vm._s(_vm.lang.get("form.csv.column2")))])
                 ])
               ])
             ]),
@@ -425,7 +441,7 @@ var render = function() {
               [
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.lang("form.csv.warning")) +
+                    _vm._s(_vm.lang.get("form.csv.warning")) +
                     "\n        "
                 )
               ]
@@ -467,7 +483,7 @@ var render = function() {
                 _c("span", { staticClass: "fas fa-stop-circle" }),
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.lang("form.csv.cancel")) +
+                    _vm._s(_vm.lang.get("form.csv.cancel")) +
                     "\n        "
                 )
               ]
@@ -483,7 +499,7 @@ var render = function() {
                 _c("span", { staticClass: "fas fa-upload" }),
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.lang("form.csv.import")) +
+                    _vm._s(_vm.lang.get("form.csv.import")) +
                     "\n        "
                 )
               ]

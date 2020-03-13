@@ -111,7 +111,6 @@
 
     @include('templates/participant')
     <div id="form" class="light-wrapper">
-        <csv @import="importParticipants"></csv>
         <section class="ss-style-top"></section>
         <div class="container inner">
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
