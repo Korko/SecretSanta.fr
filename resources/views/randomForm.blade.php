@@ -145,13 +145,18 @@
                                         {{-- Default is three empty rows to have three entries at any time --}}
                                         <tr is="participant" v-for="(participant, idx) in participants"
                                             :key="participant.id"
+
                                             :name="participant.name"
+                                            @input:name="participant.name = $event"
+
                                             :email="participant.email"
+                                            @input:email="participant.email = $event"
+
+                                            :exclusions="participant.exclusions"
+                                            @input:exclusions="participant.exclusions = $event"
 
                                             :participants="participants"
                                             :idx="idx"
-                                            @changename="participant.name = $event"
-                                            @changeemail="participant.email = $event"
                                             @delete="participants.splice(idx, 1)">
                                         </tr>
                                     </tbody>

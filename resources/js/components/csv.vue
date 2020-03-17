@@ -16,6 +16,7 @@
                     <tr>
                         <td>{{ lang.get('form.csv.column1') }}</td>
                         <td>{{ lang.get('form.csv.column2') }}</td>
+                        <td>{{ lang.get('form.csv.column3') }}</td>
                     </tr>
                 </tbody>
             </table>
