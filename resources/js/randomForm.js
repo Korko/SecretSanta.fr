@@ -48,15 +48,14 @@ window.app = new Vue({
                     type: String,
                     default: ''
                 },
+                exclusions: {
+                    type: Array,
+                    default: () => []
+                },
                 participants: {
                     type: Array,
                     required: true
                 }
-            },
-            data: function() {
-                return {
-                    exclusions: []
-                };
             },
             components: {
                 Multiselect
@@ -80,10 +79,13 @@ window.app = new Vue({
             },
             watch: {
                 name: function() {
-                    this.$emit('changename', this.name);
+                    this.$emit('input:name', this.name);
                 },
                 email: function() {
-                    this.$emit('changeemail', this.email);
+                    this.$emit('input:email', this.email);
+                },
+                exclusions: function() {
+                    this.$emit('input:exclusions', this.exclusions);
                 }
             }
         }
@@ -152,12 +154,22 @@ window.app = new Vue({
             this.participants = [];
         },
 
-        addParticipant: function(name, email) {
-            this.participants.push({
+        addParticipant: function(name, email, exclusions) {
+            var n = this.participants.push({
                 name: name,
                 email: email,
                 id: 'id' + this.participants.length + new Date().getTime()
             });
+            setTimeout(() =>
+                this.participants[n-1].exclusions =
+                    (exclusions || '').split(',').map(s => s.trim()).filter(s => !!s).map(exclusion => {
+                        var participant = this.participants.find(participant => participant.name = exclusion);
+                        return {
+                            id: participant.id,
+                            text: participant.name
+                        };
+                    })
+            , 0);
         },
 
         importParticipants: function(file) {
@@ -170,16 +182,20 @@ window.app = new Vue({
                 complete: function(file) {
                     this.importing = false;
                     this.resetParticipants();
+
+                    // Set participants
                     file.data.forEach(
                         function(participant) {
                             if (participant[0] !== '') {
                                 this.addParticipant(
                                     participant[0],
-                                    participant[1]
+                                    participant[1],
+                                    participant[2]
                                 );
                             }
                         }.bind(this)
                     );
+
                     if (this.participants.length < 3) {
                         for (var i = 0; i < 3 - this.participants.length; i++) {
                             this.addParticipant();

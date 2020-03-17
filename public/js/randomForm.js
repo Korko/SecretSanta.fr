@@ -59,6 +59,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -430,7 +431,9 @@ var render = function() {
                 _c("tr", [
                   _c("td", [_vm._v(_vm._s(_vm.lang.get("form.csv.column1")))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.lang.get("form.csv.column2")))])
+                  _c("td", [_vm._v(_vm._s(_vm.lang.get("form.csv.column2")))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.lang.get("form.csv.column3")))])
                 ])
               ])
             ]),
@@ -1783,15 +1786,16 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
           type: String,
           "default": ''
         },
+        exclusions: {
+          type: Array,
+          "default": function _default() {
+            return [];
+          }
+        },
         participants: {
           type: Array,
           required: true
         }
-      },
-      data: function data() {
-        return {
-          exclusions: []
-        };
       },
       components: {
         Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_9___default.a
@@ -1813,10 +1817,13 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
       },
       watch: {
         name: function name() {
-          this.$emit('changename', this.name);
+          this.$emit('input:name', this.name);
         },
         email: function email() {
-          this.$emit('changeemail', this.email);
+          this.$emit('input:email', this.email);
+        },
+        exclusions: function exclusions() {
+          this.$emit('input:exclusions', this.exclusions);
         }
       }
     }
@@ -1873,12 +1880,30 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
     resetParticipants: function resetParticipants() {
       this.participants = [];
     },
-    addParticipant: function addParticipant(name, email) {
-      this.participants.push({
+    addParticipant: function addParticipant(name, email, exclusions) {
+      var _this = this;
+
+      var n = this.participants.push({
         name: name,
         email: email,
         id: 'id' + this.participants.length + new Date().getTime()
       });
+      setTimeout(function () {
+        return _this.participants[n - 1].exclusions = (exclusions || '').split(',').map(function (s) {
+          return s.trim();
+        }).filter(function (s) {
+          return !!s;
+        }).map(function (exclusion) {
+          var participant = _this.participants.find(function (participant) {
+            return participant.name = exclusion;
+          });
+
+          return {
+            id: participant.id,
+            text: participant.name
+          };
+        });
+      }, 0);
     },
     importParticipants: function importParticipants(file) {
       this.importing = true;
@@ -1889,10 +1914,11 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
         },
         complete: function (file) {
           this.importing = false;
-          this.resetParticipants();
+          this.resetParticipants(); // Set participants
+
           file.data.forEach(function (participant) {
             if (participant[0] !== '') {
-              this.addParticipant(participant[0], participant[1]);
+              this.addParticipant(participant[0], participant[1], participant[2]);
             }
           }.bind(this));
 
