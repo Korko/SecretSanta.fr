@@ -10,7 +10,7 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-storage/database.sqlite
+database/tests.sqlite
 public/assets/*.map
 /public/hot
 /public/storage
