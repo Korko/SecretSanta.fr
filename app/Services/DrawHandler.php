@@ -3,12 +3,8 @@
 namespace App\Services;
 
 use App\Draw;
-use App\Exceptions\SolverException;
-use App\Jobs\SendMail;
+use App\Events\DrawDone;
 use App\Mail as MailModel;
-use App\Mail\OrganizerFinalRecap;
-use App\Mail\OrganizerRecap;
-use App\Mail\TargetDrawn;
 use App\Participant;
 use Arr;
 use Facades\App\Services\HatSolver as Solver;
@@ -16,19 +12,49 @@ use Metrics;
 
 class DrawHandler
 {
-    public function contactParticipants(array $participants, array $mailContent, $dataExpiration): void
+    protected $participants;
+    protected $hat;
+    protected $expirationDate;
+
+    public function toParticipants(array $participants): self
     {
-        $hat = Solver::one($participants, array_column($participants, 'exclusions'));
+        $this->participants = $participants;
+        $this->hat = Solver::one($participants, array_column($participants, 'exclusions'));
 
+        return $this;
+    }
+
+    public function expiresAt($expirationDate): self
+    {
+        $this->expirationDate = $expirationDate;
+
+        return $this;
+    }
+
+    public function sendMail($title, $body): void
+    {
+        $draw = $this->createDraw($title, $body, $this->expirationDate ?: date('Y-m-d', strtotime('+2 days')));
         Metrics::increment('draws');
-        Metrics::increment('participants', count($participants));
 
+        $this->createParticipants($draw, $this->participants, $this->hat);
+        Metrics::increment('participants', count($this->participants));
+
+        event(new DrawDone($draw));
+    }
+
+    protected function createDraw($title, $body, $dataExpiration): Draw
+    {
         $draw = new Draw();
         $draw->expires_at = $dataExpiration;
-        $draw->mail_title = $mailContent['title'];
-        $draw->mail_body = $mailContent['body'];
+        $draw->mail_title = $title;
+        $draw->mail_body = $body;
         $draw->save();
 
+        return $draw;
+    }
+
+    protected function createParticipants(Draw $draw, array $participants, $hat): void
+    {
         $draw->participants = collect();
         foreach ($participants as $idx => $santa) {
             $participant = new Participant();
@@ -44,45 +70,11 @@ class DrawHandler
         }
 
         foreach ($hat as $santaIdx => $targetIdx) {
-            $participants[$santaIdx]->exclusions = array_map(function ($participantId) use ($participants) {
+            $draw->participants[$santaIdx]->exclusions = array_map(function ($participantId) use ($participants) {
                 return $participants[$participantId]->id;
             }, $participants[$santaIdx]->exclusions);
-            $participants[$santaIdx]->target()->save($participants[$targetIdx]);
-            $participants[$santaIdx]->save();
-        }
-
-        $this->informOrganizer($draw);
-        $this->informParticipants($draw);
-    }
-
-    public function informOrganizer(Draw $draw): void
-    {
-        SendMail::dispatch($draw->organizer, new OrganizerRecap($draw));
-
-        $draw->participants->each(function (&$participant) {
-            $participant->exclusions[] = $participant->target->id;
-        });
-
-        try {
-            // Check if there's a solution with the previous exclusions + the actual target
-            Solver::one($draw->participants->all(), $draw->participants->pluck('exclusions', 'id')->all());
-        } catch (SolverException $e) {
-            // If not, reset all the exclusions
-            $draw->participants->each(function (&$participant) {
-                $participant->exclusions = [];
-            });
-        }
-
-        SendMail::dispatch($draw->organizer, new OrganizerFinalRecap($draw))
-            ->delay($draw->expires_at->addDays(2));
-    }
-
-    public function informParticipants(Draw $draw): void
-    {
-        foreach ($draw->participants as $participant) {
-            Metrics::increment('email');
-
-            SendMail::dispatch($participant, new TargetDrawn($participant));
+            $draw->participants[$santaIdx]->target()->save($participants[$targetIdx]);
+            $draw->participants[$santaIdx]->save();
         }
     }
 }
