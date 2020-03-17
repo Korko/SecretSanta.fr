@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
-use App\Services\DrawHandler;
 use Arr;
+use DrawHandler;
 use Illuminate\Http\Request;
 
 class RandomFormController extends Controller
@@ -40,25 +40,18 @@ class RandomFormController extends Controller
 
         $dataExpiration = $request->input('data-expiration');
 
-        $mailContent = [
-            'title' => $request->input('title'),
-            'body'  => $request->input('content-email'),
-        ];
+        $title = $request->input('title');
+        $body = $request->input('content-email');
 
-        return (new DrawHandler())->contactParticipants($participants, $mailContent, $dataExpiration);
+        return DrawHandler::toParticipants($participants)
+            ->expiresAt($dataExpiration)
+            ->sendMail($title, $body);
     }
 
     protected function formatParticipants(array $participants): array
     {
         for ($i = 0; $i < count($participants); $i++) {
             $participant = &$participants[$i];
-
-            if (! empty($participant['phone'])) {
-                if (substr($participant['phone'], 0, 1) === '0') {
-                    $participant['phone'] = substr($participant['phone'], 1);
-                }
-                $participant['phone'] = '+33'.$participant['phone'];
-            }
 
             $participant['exclusions'] = array_map('intval', Arr::get($participant, 'exclusions', []));
         }
