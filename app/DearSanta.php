@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class DearSanta extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['mail_body', 'sender_id', 'mail_id'];
+
+    /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
@@ -20,7 +27,7 @@ class DearSanta extends Model
      * @var array
      */
     protected $casts = [
-        'email_body' => EncryptedString::class,
+        'mail_body' => EncryptedString::class,
     ];
 
     public function sender()

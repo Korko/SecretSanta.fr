@@ -3,99 +3,35 @@
 namespace Tests\Feature;
 
 use App\Draw;
+use App\Mail\TargetDrawn;
 use App\Participant;
 use Crypt;
 use Queue;
 
 class RequestOrganizerTest extends RequestCase
 {
-    private static $key;
-
-    public function testDraw(): Draw
+    public function createDrawWithParticipants(int $participants): Draw
     {
-        Queue::fake();
+        $this->assertGreaterThan(1, $participants);
 
-        self::$key = Crypt::getKey();
+        $draw = factory(Draw::class)->create();
+        $draw->participants()->createMany(
+            factory(Participant::class, $participants)->make()->toArray()
+        );
 
-        // Participants can only select one person, all the others will be excluded
-        $participants = $this->formatParticipants([
-            [
-                'name'   => 'toto',
-                'email'  => 'test@test.com',
-                'target' => 1,
-            ],
-            [
-                'name'   => 'tata',
-                'email'  => 'test2@test.com',
-                'target' => 2,
-            ],
-            [
-                'name'   => 'tutu',
-                'email'  => 'test3@test.com',
-                'target' => 0,
-            ],
-        ]);
-
-        $response = $this->ajaxPost('/', [
-            'participants'         => $participants,
-            'title'                => 'test mail title',
-            'content-email'        => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
-        ]);
-
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'message' => 'Envoyé avec succès !',
-            ]);
-
-        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) {
-            return $job->getMailable() instanceof \App\Mail\OrganizerFinalRecap;
-        });
-
-        // So fetch it from the mail
-        $link = null;
-        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) use (&$link) {
-            if ($job->getMailable() instanceof \App\Mail\OrganizerRecap) {
-                $link = $job->getMailable()->panelLink;
-
-                return true;
-            }
-
-            return false;
-        });
-        $this->assertNotNull($link);
-
-        $path = parse_url($link, PHP_URL_PATH);
-
-        // Get the form page (just to check http code)
-        $response = $this->get($path);
-        $this->assertEquals(200, $response->status(), $response->__toString());
-
-        // Check data stored are decryptable
-        $pathTheorical = parse_url(route('organizerPanel', ['draw' => '%d']), PHP_URL_PATH);
-        $data = sscanf($path, $pathTheorical);
-        $draw = Draw::find($data[0]);
-
-        $this->assertNotEquals(0, $draw->participants->count());
-
-        foreach ($draw->participants as &$participant) {
-            $this->assertContains($participant->name, array_column($participants, 'name'));
-            $this->assertContains($participant->address, array_column($participants, 'email'));
+        foreach ($draw->participants as $idx => $participant) {
+            $target = $draw->participants[$idx - 1 >= 0 ? $idx - 1 : $participants - 1];
+            $participant->target()->save($target);
         }
 
         return $draw;
     }
 
-    /**
-     * @depends testDraw
-     */
-    public function testSendAgain(Draw $draw): void
+    public function test_send_again(): void
     {
         Queue::fake();
 
-        Crypt::setKey(self::$key);
-
+        $draw = $this->createDrawWithParticipants(3);
         $participant = $draw->participants->first();
 
         // Check data can be changed
@@ -113,21 +49,14 @@ class RequestOrganizerTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) use ($participant) {
-            return $job->getMailable() instanceof \App\Mail\TargetDrawn &&
-                   $job->getRecipient()->address === $participant->address;
-        });
+        $this->assertQueueHasMailPushed(TargetDrawn::class, $participant->address);
     }
 
-    /**
-     * @depends testDraw
-     */
-    public function testChangeEmail(Draw $draw): void
+    public function testChangeEmail(): void
     {
         Queue::fake();
 
-        Crypt::setKey(self::$key);
-
+        $draw = $this->createDrawWithParticipants(3);
         $participant = $draw->participants->first();
 
         // Check data can be changed
@@ -147,16 +76,12 @@ class RequestOrganizerTest extends RequestCase
             ]);
 
         $before = $participant->address;
-
         $participant = Participant::find($participant->id);
         $after = $participant->address;
 
         $this->assertNotEquals($before, $after);
         $this->assertEquals('test@test2.com', $after);
 
-        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) use ($participant) {
-            return $job->getMailable() instanceof \App\Mail\TargetDrawn &&
-                   $job->getRecipient()->address === $participant->address;
-        });
+        $this->assertQueueHasMailPushed(TargetDrawn::class, $participant->address);
     }
 }

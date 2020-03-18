@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Mail extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['delivery_status'];
+
+    /**
      * The model's default values for attributes.
      *
      * @var array

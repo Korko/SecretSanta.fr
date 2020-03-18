@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Draw;
 use App\Exceptions\SolverException;
 use App\Jobs\SendMail;
+use App\Mail\OrganizerFinalRecap;
 use App\Mail\OrganizerRecap;
 use App\Mail\TargetDrawn;
 use App\Participant;
@@ -68,54 +69,46 @@ class DrawHandlerTest extends TestCase
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
 
-        DrawHandler::toParticipants([
-                ['name' => 'toto', 'email' => 'test@test.com', 'exclusions' => [2]],
-                ['name' => 'tata', 'email' => 'test3@test.com', 'exclusions' => [0]],
-                ['name' => 'tutu', 'email' => 'test2@test.com', 'exclusions' => [1]],
-            ])
+        $participants = [
+            ['name' => 'toto', 'email' => 'test@test.com', 'exclusions' => [2]],
+            ['name' => 'tata', 'email' => 'test3@test.com', 'exclusions' => [0]],
+            ['name' => 'tutu', 'email' => 'test2@test.com', 'exclusions' => [1]],
+        ];
+
+        DrawHandler::toParticipants($participants)
             ->expiresAt(date('Y-m-d', strtotime('+2 days')))
             ->sendMail('test mail {SANTA} => {TARGET} title', 'test mail {SANTA} => {TARGET} body');
 
-        Queue::assertPushed(SendMail::class, function ($job) {
-            return $job->getMailable() instanceof OrganizerRecap &&
-                   $job->getRecipient()->address === 'test@test.com';
+        // Ensure Organizer receives his recap
+        $this->assertQueueHasMailPushed(OrganizerRecap::class, 'test@test.com', function ($m) use (&$link) {
+            $link = $m->panelLink;
         });
+        $this->assertQueueHasMailPushed(OrganizerFinalRecap::class, 'test@test.com');
 
-        $title = $body = null;
-        Queue::assertPushed(SendMail::class, function ($job) use (&$title, &$body) {
-            if (
-                $job->getMailable() instanceof TargetDrawn &&
-                $job->getRecipient()->address === 'test@test.com'
-            ) {
-                $title = $job->getMailable()->subject;
-                //$m = $job->getMailable()->build();
-                //$body = view($m->view, $m->buildViewData())->render();
-
-                return true;
-            }
-
-            return false;
+        // TODO: assert body
+        // Ensure Participants receive their own recap
+        $title = null;
+        $this->assertQueueHasMailPushed(TargetDrawn::class, 'test@test.com', function ($m) use (&$title, &$body) {
+            $title = $m->subject;
         });
         $this->assertStringContainsString('test mail toto => tata title', html_entity_decode($title));
-        //$this->assertStringContainsString('test mail toto => tata body', html_entity_decode($body));
-
-        $body = null;
-        Queue::assertPushed(SendMail::class, function ($job) use (&$title, &$body) {
-            if (
-                $job->getMailable() instanceof TargetDrawn &&
-                $job->getRecipient()->address === 'test2@test.com'
-            ) {
-                //$m = $job->getMailable()->build();
-                //$body = view($m->view, $m->buildViewData())->render();
-
-                return true;
-            }
-
-            return false;
-        });
-        //$this->assertStringContainsString('test mail tutu => toto', html_entity_decode($body));
+        $this->assertQueueHasMailPushed(TargetDrawn::class, 'test2@test.com');
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
+
+        // Check data stored are decryptable
+        $path = parse_url($link, PHP_URL_PATH);
+        $pathTheorical = parse_url(route('organizerPanel', ['draw' => '%d']), PHP_URL_PATH);
+        $data = sscanf($path, $pathTheorical);
+        $draw = Draw::find($data[0]);
+
+        $this->assertNotEquals(0, $draw->participants->count());
+
+        foreach ($draw->participants as $participant) {
+            $this->assertContains($participant->name, array_column($participants, 'name'));
+            $this->assertContains($participant->address, array_column($participants, 'email'));
+        }
+
     }
 }
