@@ -53,7 +53,7 @@ class DrawHandler
         return $draw;
     }
 
-    protected function createParticipants(Draw $draw, array $participants, $hat): void
+    protected function createParticipants(Draw $draw, array $participants, array $hat): void
     {
         $draw->participants = collect();
         foreach ($participants as $idx => $santa) {

@@ -2,13 +2,10 @@
 
 $factory->define(App\Participant::class, function (Faker\Generator $faker) {
     return [
-        'draw_id'         => function () {
-            return factory(App\Draw::class)->create()->id;
-        },
-        'name'            => $faker->name,
-        'email_address'   => $faker->email,
-        'email_id'        => null,
-        'delivery_status' => App\Participant::CREATED,
-        'target_id'       => null,
+        'draw_id'   => factory(App\Draw::class),
+        'name'      => $faker->name,
+        'address'   => $faker->email,
+        'target_id' => null,
+        'mail_id'   => factory(App\Mail::class),
     ];
 });

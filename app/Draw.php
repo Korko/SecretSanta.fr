@@ -10,6 +10,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Draw extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['mail_title', 'mail_body', 'expires_at'];
+
     protected $dates = [
         'expires_at',
     ];

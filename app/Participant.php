@@ -4,9 +4,19 @@ namespace App;
 
 use App\Casts\EncryptedString;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Participant extends Model
 {
+    use Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'address', 'draw_id', 'target_id', 'mail_id'];
+
     // Fake property
     public $exclusions;
 
