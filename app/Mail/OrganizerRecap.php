@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App;
 use App\Draw;
 use Crypt;
 use Illuminate\Bus\Queueable;
@@ -25,7 +26,7 @@ class OrganizerRecap extends Mailable
 
         $this->organizerName = $draw->organizer->name;
 
-        $this->expirationDate = $draw->expires_at;
+        $this->expirationDate = $draw->expires_at->locale(App::getLocale())->isoFormat('LLLL');
 
         $this->panelLink = route('organizerPanel', ['draw' => $draw->id]).'#'.base64_encode(Crypt::getKey());
     }
