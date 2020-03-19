@@ -24,7 +24,7 @@ mix.webpackConfig({
         loader: 'laravel-localization-loader',
       },
       {
-        test: /resources\/js\/modernizr\.js$/,
+        test: /resources\/js\/partials\/modernizr\.js$/,
         loader: 'webpack-modernizr-loader'
       }
     ]

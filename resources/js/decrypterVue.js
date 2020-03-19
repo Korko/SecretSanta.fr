@@ -7,7 +7,7 @@ export default {
 
     methods: {
         decrypt: function(data) {
-            var datab = JSON.parse(atob(data));
+            var datab = JSON.parse(window.atob(data));
             return CryptoJS.AES.decrypt(
                 datab.value,
                 CryptoJS.enc.Base64.parse(this.key),

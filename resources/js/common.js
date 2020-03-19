@@ -9,8 +9,8 @@ import scrollTo from 'jquery.scrollto'; // eslint-disable-line no-unused-vars
     var debounce = function(func, threshold, execAsap) {
         var timeout;
         return () => {
-            var obj = this,
-                args = arguments;
+            var obj = this;
+            var args = arguments;
             function delayed() {
                 if (!execAsap) func.apply(obj, args);
                 timeout = null;
@@ -27,29 +27,29 @@ import scrollTo from 'jquery.scrollto'; // eslint-disable-line no-unused-vars
 })(jQuery, 'smartresize');
 
 jQuery(document).ready(function() {
-    ///////////////////////////////
+    /// ////////////////////////////
     // Set Home Slideshow Height
-    ///////////////////////////////
+    /// ////////////////////////////
     function setHomeBannerHeight() {
         var windowHeight = jQuery(window).height();
         jQuery('#header').height(windowHeight);
     }
-    ///////////////////////////////
+    /// ////////////////////////////
     // Center Home Slideshow Text
-    ///////////////////////////////
+    /// ////////////////////////////
     function centerHomeBannerText() {
         var bannerText = jQuery('#header > .center');
         var bannerTextTop =
             jQuery('#header').actual('height') / 2 -
             jQuery('#header > .center').actual('height') / 2 -
             20;
-        //var bannerTextTop = Math.min(jQuery('#header').actual('height'), (jQuery('#header').actual('height')/2) - (jQuery('#header > .center').actual('height')/2) - 20 + jQuery('html').scrollTop());
+        // var bannerTextTop = Math.min(jQuery('#header').actual('height'), (jQuery('#header').actual('height')/2) - (jQuery('#header > .center').actual('height')/2) - 20 + jQuery('html').scrollTop());
         bannerText.css('padding-top', bannerTextTop + 'px');
         bannerText.show();
     }
     setHomeBannerHeight();
     centerHomeBannerText();
-    //Resize events
+    // Resize events
     jQuery(window).smartresize(function() {
         setHomeBannerHeight();
         centerHomeBannerText();
@@ -57,14 +57,14 @@ jQuery(document).ready(function() {
 
     function scroll() {
         centerHomeBannerText();
-        if ($(document).scrollTop() > 200) {
-            $('body').addClass('scrolled');
+        if (jQuery(document).scrollTop() > 200) {
+            jQuery('body').addClass('scrolled');
         } else {
-            $('body').removeClass('scrolled');
+            jQuery('body').removeClass('scrolled');
         }
     }
     document.onscroll = scroll;
-    var $scrollDownArrow = $('#scrollDownArrow');
+    var $scrollDownArrow = jQuery('#scrollDownArrow');
     var animateScrollDownArrow = function() {
         $scrollDownArrow.animate(
             {
@@ -87,7 +87,7 @@ jQuery(document).ready(function() {
         );
     };
     animateScrollDownArrow();
-    //Set Down Arrow Button
+    // Set Down Arrow Button
     jQuery('#scrollDownArrow').click(function(e) {
         e.preventDefault();
         jQuery.scrollTo('#what', 1000, {

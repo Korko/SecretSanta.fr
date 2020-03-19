@@ -4,10 +4,10 @@
             <div class="modal-wrapper">
                 <div class="modal-container">
                     <div class="modal-header">
-                        <slot name="header"></slot>
+                        <slot name="header" />
                     </div>
                     <div class="modal-body">
-                        <slot name="body"></slot>
+                        <slot name="body" />
                     </div>
                     <div class="modal-footer">
                         <slot name="footer">

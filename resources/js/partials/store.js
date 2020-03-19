@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-Vue.use(Vuex);
 
 import Lang from '../partials/lang.js';
+Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {

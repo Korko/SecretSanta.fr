@@ -1,3 +1,24 @@
+<script>
+    import { mapState } from 'vuex';
+    import Modal from './modal.vue';
+    export default {
+        components: { Modal },
+        computed: mapState(['lang']),
+        methods: {
+            emitSubmit: function() {
+                this.$emit(
+                    'import',
+                    $('#uploadCsv input[type=file]')[0].files[0]
+                );
+                this.$emit('close');
+            },
+            emitCancel: function() {
+                this.$emit('close');
+            }
+        }
+    };
+</script>
+
 <template>
     <modal @close="$emit('close')">
         <template #header>
@@ -6,8 +27,18 @@
 
         <template #body>
             <div class="alert alert-info" role="alert">
-                <span class="fas fa-question-cirle"></span>
-                <span v-html="lang.get('form.csv.help', {excel: '<a href=\'https://support.office.com/fr-fr/article/Importer-ou-exporter-des-fichiers-texte-txt-ou-csv-5250ac4c-663c-47ce-937b-339e391393ba\' class=\'alert-link\'>', calc: '<a href=\'https://help.libreoffice.org/Calc/Importing_and_Exporting_CSV_Files/fr\' class=\'alert-link\'>', elink: '</a>'})"></span>
+                <span class="fas fa-question-cirle" />
+                <span
+                    v-html="
+                        lang.get('form.csv.help', {
+                            excel:
+                                '<a href=\'https://support.office.com/fr-fr/article/Importer-ou-exporter-des-fichiers-texte-txt-ou-csv-5250ac4c-663c-47ce-937b-339e391393ba\' class=\'alert-link\'>',
+                            calc:
+                                '<a href=\'https://help.libreoffice.org/Calc/Importing_and_Exporting_CSV_Files/fr\' class=\'alert-link\'>',
+                            elink: '</a>'
+                        })
+                    "
+                />
             </div>
 
             {{ lang.get('form.csv.format') }}
@@ -36,34 +67,13 @@
 
         <template #footer>
             <button type="reset" form="uploadCsv" class="btn btn-warning">
-                <span class="fas fa-stop-circle"></span>
+                <span class="fas fa-stop-circle" />
                 {{ lang.get('form.csv.cancel') }}
             </button>
             <button type="submit" form="uploadCsv" class="btn btn-primary">
-                <span class="fas fa-upload"></span>
+                <span class="fas fa-upload" />
                 {{ lang.get('form.csv.import') }}
             </button>
         </template>
     </modal>
 </template>
-
-<script>
-    import { mapState } from 'vuex';
-    import Modal from './modal.vue';
-    export default {
-        components: { Modal },
-        computed: mapState(['lang']),
-        methods: {
-            emitSubmit: function() {
-                this.$emit(
-                    'import',
-                    $('#uploadCsv input[type=file]')[0].files[0]
-                );
-                this.$emit('close');
-            },
-            emitCancel: function() {
-                this.$emit('close');
-            }
-        }
-    };
-</script>

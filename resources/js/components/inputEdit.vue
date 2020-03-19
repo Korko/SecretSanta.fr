@@ -1,56 +1,206 @@
+<script>
+    import { mapState } from 'vuex';
+    import $ from 'jquery';
+    import alertify from 'alertify.js';
+
+    import StateMachine from '../mixins/stateMachine.js';
+
+    export default {
+        mixins: [StateMachine],
+        inheritAttrs: false,
+        props: {
+            name: {
+                type: String,
+                required: true
+            },
+            value: {
+                type: String,
+                required: true
+            },
+            action: {
+                type: String,
+                required: true
+            }
+        },
+        data: function() {
+            return {
+                states: Object.freeze({
+                    view: {
+                        edit: 'editing'
+                    },
+                    editing: {
+                        validate: 'editingValidating',
+                        cancel: 'view',
+                        blur: 'editingBlur'
+                    },
+                    editingBlur: {
+                        same: 'view',
+                        different: 'editingValidating'
+                    },
+                    editingValid: {
+                        validate: 'editingValidating',
+                        submit: 'viewUpdating',
+                        cancel: 'view',
+                        blur: 'editingBlur'
+                    },
+                    editingInvalid: {
+                        validate: 'editingValidating',
+                        cancel: 'view'
+                    },
+                    editingValidating: {
+                        valid: 'editingValid',
+                        invalid: 'editingInvalid'
+                    },
+                    viewUpdating: {
+                        success: 'viewUpdated',
+                        error: 'viewError'
+                    },
+                    viewUpdated: {
+                        edit: 'editing',
+                        timer: 'view'
+                    },
+                    viewError: {
+                        edit: 'editing',
+                        resend: 'viewUpdating'
+                    }
+                }),
+                state: 'view',
+                newValue: this.value
+            };
+        },
+        computed: {
+            isSame() {
+                return this.newValue === this.value;
+            },
+            view() {
+                return this.state.startsWith('view');
+            },
+            updating() {
+                return this.state === 'viewUpdating';
+            },
+            ...mapState(['csrf', 'key'])
+        },
+        methods: {
+            submit() {
+                var app = this;
+                return $.ajax({
+                    url: this.action,
+                    type: 'POST',
+                    data: {
+                        _token: this.csrf,
+                        key: this.key,
+                        [this.name]: this.newValue
+                    },
+                    success(data, textStatus, jqXHR) {
+                        var update = { value: app.newValue };
+                        if (jqXHR.responseJSON) {
+                            if (jqXHR.responseJSON.message)
+                                alertify.success(jqXHR.responseJSON.message);
+                            Object.assign(update, jqXHR.responseJSON);
+                        }
+                        app.$emit('update', update);
+                    },
+                    error(jqXHR) {
+                        if (jqXHR.responseJSON && jqXHR.responseJSON.message)
+                            alertify.error(jqXHR.responseJSON.message);
+                    }
+                });
+            },
+            stateView() {
+                this.newValue = this.value;
+            },
+            stateEditing() {
+                this.$nextTick(() => this.$refs.input.focus());
+            },
+            stateEditingBlur() {
+                if (this.isSame) {
+                    this.send('same');
+                } else {
+                    this.send('different');
+                }
+            },
+            stateEditingValidating() {
+                if (this.$el.querySelectorAll('input:invalid').length > 0) {
+                    this.send('invalid');
+                } else {
+                    this.send('valid');
+                }
+            },
+            stateViewUpdating() {
+                this.submit()
+                    .then(() => {
+                        this.send('success');
+                    })
+                    .catch(() => {
+                        this.send('error');
+                    });
+            },
+            stateViewUpdated() {
+                setTimeout(() => {
+                    this.send('timer');
+                }, 5000);
+            }
+        }
+    };
+</script>
+
 <template>
     <form
         :action="action"
-        @submit.prevent="send('submit')"
         method="post"
         autocomplete="off"
+        @submit.prevent="send('submit')"
     >
         <fieldset :disabled="updating">
-            <div class="input-group" :data-state="state" :data-previous-state="previousState">
-                <div class="input-group-prepend" v-if="updating">
-                    <i class="input-group-text fas fa-spinner fa-spin"></i>
+            <div
+                class="input-group"
+                :data-state="state"
+                :data-previous-state="previousState"
+            >
+                <div v-if="updating" class="input-group-prepend">
+                    <i class="input-group-text fas fa-spinner fa-spin" />
                 </div>
-                <div class="input-group-prepend" v-if="state === 'viewUpdated'">
-                    <i class="input-group-text fas fa-check"></i>
+                <div v-if="state === 'viewUpdated'" class="input-group-prepend">
+                    <i class="input-group-text fas fa-check" />
                 </div>
-                <div class="input-group-prepend" v-if="state === 'viewError'">
-                    <i class="input-group-text fas fa-exclamation-circle"></i>
+                <div v-if="state === 'viewError'" class="input-group-prepend">
+                    <i class="input-group-text fas fa-exclamation-circle" />
                 </div>
                 <input
-                    :name="name"
                     ref="input"
+                    v-model="newValue"
+                    :name="name"
                     v-bind="$attrs"
                     class="form-control"
-                    v-model="newValue"
+                    :disabled="view"
                     @input="send('validate')"
                     @blur="send('blur')"
-                    :disabled="view"
                 />
                 <div class="input-group-append">
                     <button
+                        v-if="state.startsWith('view')"
                         type="button"
                         class="btn btn-primary"
-                        v-if="state.startsWith('view')"
                         @click="send('edit')"
                     >
-                        <i class="fas fa-edit"></i>
+                        <i class="fas fa-edit" />
                     </button>
                     <button
+                        v-if="state.startsWith('edit')"
                         type="button"
                         class="btn btn-success"
-                        v-if="state.startsWith('edit')"
-                        @click="send('submit')"
                         :disabled="isSame || !state.endsWith('Valid')"
+                        @click="send('submit')"
                     >
-                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-check-circle" />
                     </button>
                     <button
+                        v-if="state.startsWith('edit')"
                         type="button"
                         class="btn btn-danger"
-                        v-if="state.startsWith('edit')"
                         @click="send('cancel')"
                     >
-                        <i class="fas fa-times-circle"></i>
+                        <i class="fas fa-times-circle" />
                     </button>
                 </div>
             </div>
@@ -103,145 +253,18 @@
     .table-hover tbody tr:hover input {
         color: #212529;
     }
-@keyframes check {
-  0% {
-    stroke-dashoffset: 10;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-.fa-check path {
-  animation-name: check;
-  animation-duration: 2s;
-  transition: stroke-dashoffset 0.35s;
-  transform-origin: 50% 50%;
-}
-</style>
-
-<script>
-import { mapState } from 'vuex';
-import $ from 'jquery';
-import alertify from 'alertify.js';
-
-import StateMachine from '../mixins/stateMachine.js';
-
-export default {
-    inheritAttrs: false,
-    mixins: [StateMachine],
-    props: ['name', 'value', 'action'],
-    data: function() {
-        return {
-            states: Object.freeze({
-                view: {
-                    edit: 'editing'
-                },
-                editing: {
-                    validate: 'editingValidating',
-                    cancel: 'view',
-                    blur: 'editingBlur'
-                },
-                editingBlur: {
-                    same: 'view',
-                    different: 'editingValidating'
-                },
-                editingValid: {
-                    validate: 'editingValidating',
-                    submit: 'viewUpdating',
-                    cancel: 'view',
-                    blur: 'editingBlur'
-                },
-                editingInvalid: {
-                    validate: 'editingValidating',
-                    cancel: 'view'
-                },
-                editingValidating: {
-                    valid: 'editingValid',
-                    invalid: 'editingInvalid'
-                },
-                viewUpdating: {
-                    success: 'viewUpdated',
-                    error: 'viewError'
-                },
-                viewUpdated: {
-                    edit: 'editing',
-                    timer: 'view'
-                },
-                viewError: {
-                    edit: 'editing',
-                    resend: 'viewUpdating'
-                }
-            }),
-            state: 'view',
-            newValue: this.value
-        };
-    },
-    computed: {
-        isSame() {
-            return this.newValue === this.value;
-        },
-        view() {
-            return this.state.startsWith('view');
-        },
-        updating() {
-            return this.state === 'viewUpdating';
-        },
-        ...mapState(['csrf', 'key'])
-    },
-    methods: {
-        submit(options) {
-            var app = this;
-            return $.ajax({
-                url: this.action,
-                type: 'POST',
-                data: { _token: this.csrf, key: this.key, [this.name]: this.newValue },
-                success(data, textStatus, jqXHR) {
-                    var update = { value: app.newValue };
-                    if (jqXHR.responseJSON) {
-                        if (jqXHR.responseJSON.message)
-                            alertify.success(jqXHR.responseJSON.message);
-                        Object.assign(update, jqXHR.responseJSON);
-                    }
-                    app.$emit('update', update);
-                },
-                error(jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.responseJSON && jqXHR.responseJSON.message)
-                        alertify.error(jqXHR.responseJSON.message);
-                }
-            });
-        },
-        stateView() {
-            this.newValue = this.value;
-        },
-        stateEditing() {
-            this.$nextTick(() => this.$refs.input.focus());
-        },
-        stateEditingBlur() {
-            if (this.isSame) {
-                this.send('same');
-            } else {
-                this.send('different');
-            }
-        },
-        stateEditingValidating() {
-            if (this.$el.querySelectorAll('input:invalid').length > 0) {
-                this.send('invalid');
-            } else {
-                this.send('valid');
-            }
-        },
-        stateViewUpdating() {
-            this.submit().then(() => {
-                this.send('success');
-            }).catch(() => {
-                this.send('error');
-            });
-        },
-        stateViewUpdated() {
-            setTimeout(() => {
-                this.send('timer');
-            }, 5000);
+    @keyframes check {
+        0% {
+            stroke-dashoffset: 10;
+        }
+        100% {
+            stroke-dashoffset: 0;
         }
     }
-};
-</script>
+    .fa-check path {
+        animation-name: check;
+        animation-duration: 2s;
+        transition: stroke-dashoffset 0.35s;
+        transform-origin: 50% 50%;
+    }
+</style>

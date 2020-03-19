@@ -430,41 +430,20 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['action', 'button'],
+  props: {
+    action: {
+      type: String,
+      "default": ''
+    },
+    button: {
+      type: Boolean,
+      "default": true
+    }
+  },
   data: function data() {
     return {
       fieldErrors: [],
@@ -514,7 +493,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             (options.complete || options["finally"] || function () {})();
             app.$emit('success', data);
           },
-          error: function error(jqXHR, textStatus, errorThrown) {
+          error: function error(jqXHR) {
             if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_2___default.a.error(jqXHR.responseJSON.message);
             if (jqXHR.responseJSON && jqXHR.responseJSON.errors) app.fieldErrors = jqXHR.responseJSON.errors;
             app.sending = false;
@@ -525,7 +504,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       }
     },
-    onSubmit: function onSubmit(event) {
+    onSubmit: function onSubmit() {
       this.submit();
     },
     submit: function submit(postData, options) {
@@ -551,10 +530,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -571,42 +546,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _timer_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./timer.vue */ "./resources/js/components/timer.vue");
 /* harmony import */ var _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ajaxForm.vue */ "./resources/js/components/ajaxForm.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  template: '#fetcher-template',
   components: {
     Timer: _timer_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     AjaxForm: _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  props: ['fetchurl'],
+  props: {
+    fetchurl: {
+      type: String,
+      required: true
+    }
+  },
   data: function data() {
     return {
       loading: false
     };
   },
+  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['lang']),
   mounted: function mounted() {
     var _this = this;
 
@@ -636,20 +595,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ajaxForm.vue */ "./resources/js/components/ajaxForm.vue");
-//
-//
-//
-//
-
+/* harmony import */ var _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ajaxForm.vue */ "./resources/js/components/ajaxForm.vue");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    AjaxForm: _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  props: ['data'],
-  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['csrf', 'key'])
+    AjaxForm: _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  }
 });
 
 /***/ }),
@@ -663,13 +614,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    delay: Number
+    delay: {
+      type: Number,
+      required: true,
+      "default": 100
+    }
   },
   data: function data() {
     return {
@@ -44694,8 +44645,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _partials_lang_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../partials/lang.js */ "./resources/js/partials/lang.js");
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

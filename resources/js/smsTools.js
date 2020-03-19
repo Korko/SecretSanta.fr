@@ -7,7 +7,7 @@ export default (function() {
     return {
         isUnicode: function(text) {
             for (var charPos = 0; charPos < text.length; charPos++) {
-                if (text.charCodeAt(charPos) > 127 && text[charPos] != '€') {
+                if (text.charCodeAt(charPos) > 127 && text[charPos] !== '€') {
                     return true;
                 }
             }
