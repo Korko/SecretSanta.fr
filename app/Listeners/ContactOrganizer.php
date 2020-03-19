@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Exceptions\SolverException;
 use App\Events\DrawDone;
+use App\Exceptions\SolverException;
 use App\Jobs\SendMail;
 use App\Mail\OrganizerFinalRecap;
 use App\Mail\OrganizerRecap;

@@ -109,105 +109,13 @@
         <div class="container inner"></div>
     </div>
 
-    @include('templates/participant')
     <div id="form" class="light-wrapper">
         <section class="ss-style-top"></section>
         <div class="container inner">
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
             <p class="lead main text-center">@lang('form.section.go.subtitle')</p>
             <div class="row text-center form" v-cloak>
-                <ajax-form id="randomForm" action="/">
-                    <template v-slot="{ sending, sent, errors }">
-                        <div id="success-wrapper" class="alert alert-success" v-show="sent">
-                            @lang('form.success')
-                        </div>
-
-                        <div id="errors-wrapper" class="alert alert-danger" v-show="errors.length && !sent">
-                            <ul id="errors">
-                                <li v-for="error in errors">@{{ error }}</li>
-                            </ul>
-                        </div>
-
-                        {{ Form::hidden('thisisatest') }}
-                        <fieldset>
-                            <legend>@lang('form.participants')</legend>
-                            <div class="table-responsive form-group">
-                                <table id="participants" class="table table-hover table-numbered">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 33%" scope="col">@lang('form.participant.name')</th>
-                                            <th style="width: 33%" scope="col">@lang('form.participant.email')</th>
-                                            <th style="width: 30%" scope="col">@lang('form.participant.exclusions')</th>
-                                            <th style="width: 3%" scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{-- Default is three empty rows to have three entries at any time --}}
-                                        <tr is="participant" v-for="(participant, idx) in participants"
-                                            :key="participant.id"
-
-                                            :name="participant.name"
-                                            @input:name="participant.name = $event"
-
-                                            :email="participant.email"
-                                            @input:email="participant.email = $event"
-
-                                            :exclusions="participant.exclusions"
-                                            @input:exclusions="participant.exclusions = $event"
-
-                                            :participants="participants"
-                                            :idx="idx"
-                                            @delete="participants.splice(idx, 1)">
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <button type="button" class="btn btn-success participant-add" @click="addParticipant()"><i class="fas fa-plus"></i> @lang('form.participant.add')</button>
-                                <button type="button" class="btn btn-warning participants-import" @click="showModal = true" :disabled="importing">
-                                    <span v-if="importing"><i class="fas fa-spinner fa-spin"></i> @lang('form.participants.importing')</span>
-                                    <span v-else><i class="fas fa-list-alt"></i> @lang('form.participants.import')</span>
-                                </button>
-                            </div>
-                        </fieldset>
-
-                        <fieldset>
-                            <legend>Messages</legend>
-                            <div id="contact">
-                                <fieldset id="form-mail-group">
-                                    <div class="form-group">
-                                        <label for="mailTitle">@lang('form.mail.title')</label>
-                                        <input id="mailTitle" type="text" name="title" :required="this.emailUsed" placeholder="@lang('form.mail.title.placeholder')" value="" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mailContent">@lang('form.mail.content')</label>
-                                        <textarea id="mailContent" name="content-email" :required="this.emailUsed" placeholder="@lang('form.mail.content.placeholder')" class="form-control" rows="3" v-autosize></textarea>
-                                        <textarea id="mailPost" class="form-control extended" read-only disabled>@lang('form.mail.post2')</textarea>
-
-                                        <blockquote class="tips">
-                                            <p>@lang('form.mail.content.tip1')</p>
-                                            <p>@lang('form.mail.content.tip2')</p>
-                                        </blockquote>
-                                    </div>
-                                </fieldset>
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <div id="form-options" class="form-group">
-                                <label>@lang('form.data-expiration')<input type="date" name="data-expiration" :min="date | moment(1, 'day')" :max="date | moment(1, 'year')" /></label>
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <div class="form-group btn">
-                                {!! NoCaptcha::display(['data-theme' => 'light']) !!}
-                            </div>
-
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <span v-if="sending"><i class="fas fa-spinner fa-spin"></i> @lang('form.sending')</span>
-                                <span v-else-if="sent"><i class="fas fa-check-circle"></i> @lang('form.sent')</span>
-                                <span v-else>@lang('form.submit')</span>
-                            </button>
-                        </fieldset>
-                    </template>
-                </ajax-form>
+                <random-form id="randomForm" action="/"></random-form>
             </div><!-- /.services -->
 
             <div id="errors-wrapper" class="alert alert-danger v-rcloak">@lang('form.waiting')</div>

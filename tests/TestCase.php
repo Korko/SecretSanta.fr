@@ -17,11 +17,13 @@ abstract class TestCase extends BaseTestCase
                 $job->getMailable() instanceof $class &&
                 ($recipient === null || $job->getRecipient()->address === $recipient)
             ) {
-                if ($callback !== null)
+                if ($callback !== null) {
                     $callback($job->getMailable());
+                }
 
                 return true;
             }
+
             return false;
         });
     }

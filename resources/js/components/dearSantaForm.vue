@@ -1,49 +1,5 @@
-<template>
-    <div>
-        <ajax-form
-             :action="`/dearsanta/${data.santa.id}/send`"
-             :button="true"
-             @success="success"
-        >
-            <fieldset>
-                <div class="form-group">
-                    <label for="mailContent">Contenu du mail</label>
-                    <textarea
-                        id="mailContent"
-                        name="content"
-                        required
-                        placeholder="Cher Papa Noël..."
-                        class="form-control"
-                    ></textarea>
-                </div>
-            </fieldset>
-        </ajax-form>
-        <table class="table table-hover">
-            <thead>
-                <tr class="table-active">
-                    <th scope="col">{{ lang.get('dearsanta.list.date') }}</th>
-                    <th scope="col">{{ lang.get('dearsanta.list.body') }}</th>
-                    <th scope="col">{{ lang.get('dearsanta.list.status') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="email in emails" class="email">
-                    <td>{{ email.mail.created_at }}</td>
-                    <td>{{ email.mail_body }}</td>
-                    <td>{{ email.mail.delivery_status }}</td>
-                </tr>
-                <tr v-if="emails.length === 0" class="no-email">
-                    <td colspan="3">{{ lang.get('dearsanta.list.empty') }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</template>
-
 <script>
     import { mapState } from 'vuex';
-
-    import Lang from '../partials/lang.js';
 
     import DefaultForm from './form.vue';
 
@@ -51,24 +7,30 @@
         extends: DefaultForm,
         computed: {
             emails() {
-                return Object.values(this.data.emails).sort(
-                    (email1, email2) => (new Date(email1.created_at)) > new Date(email2.created_at) ? -1 : 1
-                ).map(email => {
-                    email.created_at = (new Date(email.created_at)).toLocaleString('fr-FR');
-                    return email;
-                });
+                return Object.values(this.data.emails)
+                    .sort((email1, email2) =>
+                        new Date(email1.created_at) >
+                        new Date(email2.created_at)
+                            ? -1
+                            : 1
+                    )
+                    .map(email => {
+                        email.created_at = new Date(
+                            email.created_at
+                        ).toLocaleString('fr-FR');
+                        return email;
+                    });
             },
             checkUpdates() {
-                return !!(
-                    Object.values(this.data.emails)
-                        .find(email => email.delivery_status === 'created')
+                return !!Object.values(this.data.emails).find(
+                    email => email.delivery_status === 'created'
                 );
             },
             ...mapState(['lang'])
         },
         created() {
             setInterval(() => {
-                if(this.checkUpdates) this.fetchState();
+                if (this.checkUpdates) this.fetchState();
             }, 5000);
         },
         methods: {
@@ -84,11 +46,17 @@
                     success(data) {
                         if (data.emails) {
                             Object.values(data.emails).forEach(email => {
-                                var new_update = new Date(email.mail.updated_at);
-                                var old_update = new Date(app.data.emails[email.id].mail.updated_at);
-                                app.data.emails[email.id].mail.delivery_status = new_update > old_update ?
-                                    email.mail.delivery_status :
-                                    app.data.emails[email.id].mail.delivery_status;
+                                var new_update = new Date(
+                                    email.mail.updated_at
+                                );
+                                var old_update = new Date(
+                                    app.data.emails[email.id].mail.updated_at
+                                );
+                                app.data.emails[email.id].mail.delivery_status =
+                                    new_update > old_update
+                                        ? email.mail.delivery_status
+                                        : app.data.emails[email.id].mail
+                                              .delivery_status;
                             });
                         }
                     }
@@ -97,3 +65,53 @@
         }
     };
 </script>
+
+<template>
+    <div>
+        <ajax-form
+            :action="`/dearsanta/${data.santa.id}/send`"
+            :button="true"
+            @success="success"
+        >
+            <fieldset>
+                <div class="form-group">
+                    <label for="mailContent">Contenu du mail</label>
+                    <textarea
+                        id="mailContent"
+                        name="content"
+                        required
+                        placeholder="Cher Papa Noël..."
+                        class="form-control"
+                    />
+                </div>
+            </fieldset>
+        </ajax-form>
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-active">
+                    <th scope="col">
+                        {{ lang.get('dearsanta.list.date') }}
+                    </th>
+                    <th scope="col">
+                        {{ lang.get('dearsanta.list.body') }}
+                    </th>
+                    <th scope="col">
+                        {{ lang.get('dearsanta.list.status') }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="email in emails" :key="email.id" class="email">
+                    <td>{{ email.mail.created_at }}</td>
+                    <td>{{ email.mail_body }}</td>
+                    <td>{{ email.mail.delivery_status }}</td>
+                </tr>
+                <tr v-if="emails.length === 0" class="no-email">
+                    <td colspan="3">
+                        {{ lang.get('dearsanta.list.empty') }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</template>

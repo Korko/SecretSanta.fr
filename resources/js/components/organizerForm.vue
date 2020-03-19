@@ -1,30 +1,3 @@
-<template>
-    <table class="table table-hover">
-        <thead>
-            <tr class="table-active">
-                <th scope="col">{{ lang.get('organizer.list.name') }}</th>
-                <th scope="col">{{ lang.get('organizer.list.email') }}</th>
-                <th scope="col">{{ lang.get('organizer.list.status') }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(participant, k) in data.participants">
-                <td>{{ participant.name }}</td>
-                <td>
-                    <input-edit
-                        :action="`/org/${data.draw}/${participant.id}/changeEmail`"
-                        :value="participant.address"
-                        @update="update(k, $event)"
-                        type="email"
-                        name="email"
-                    ></input-edit>
-                </td>
-                <td>{{ participant.mail.delivery_status }}</td>
-            </tr>
-        </tbody>
-    </table>
-</template>
-
 <script>
     import { mapState } from 'vuex';
 
@@ -33,27 +6,28 @@
     import DefaultForm from './form.vue';
 
     export default {
-        extends: DefaultForm,
         components: { InputEdit },
+        extends: DefaultForm,
         computed: {
             checkUpdates() {
-                return !!(
-                    Object.values(this.data.participants)
-                        .find(participant => participant.delivery_status === 'created')
+                return !!Object.values(this.data.participants).find(
+                    participant => participant.delivery_status === 'created'
                 );
             },
             ...mapState(['csrf', 'key', 'lang'])
         },
         created() {
             setInterval(() => {
-                if(this.checkUpdates) this.fetchState();
+                if (this.checkUpdates) this.fetchState();
             }, 5000);
         },
         methods: {
             update(k, data) {
                 this.data.participants[k].address = data.value;
-                this.data.participants[k].mail.delivery_status = data.participant.mail.delivery_status;
-                this.data.participants[k].mail.updated_at = data.participant.mail.updated_at;
+                this.data.participants[k].mail.delivery_status =
+                    data.participant.mail.delivery_status;
+                this.data.participants[k].mail.updated_at =
+                    data.participant.mail.updated_at;
             },
             fetchState() {
                 var app = this;
@@ -63,13 +37,26 @@
                     data: { _token: this.csrf, key: this.key },
                     success(data) {
                         if (data.participants) {
-                            Object.values(data.participants).forEach(participant => {
-                                var new_update = new Date(participant.mail.updated_at);
-                                var old_update = new Date(app.data.participants[participant.id].mail.updated_at);
-                                app.data.participants[participant.id].mail.delivery_status = new_update > old_update ?
-                                    participant.mail.delivery_status :
-                                    app.data.participants[participant.id].mail.delivery_status;
-                            });
+                            Object.values(data.participants).forEach(
+                                participant => {
+                                    var new_update = new Date(
+                                        participant.mail.updated_at
+                                    );
+                                    var old_update = new Date(
+                                        app.data.participants[
+                                            participant.id
+                                        ].mail.updated_at
+                                    );
+                                    app.data.participants[
+                                        participant.id
+                                    ].mail.delivery_status =
+                                        new_update > old_update
+                                            ? participant.mail.delivery_status
+                                            : app.data.participants[
+                                                  participant.id
+                                              ].mail.delivery_status;
+                                }
+                            );
                         }
                     }
                 });
@@ -77,3 +64,41 @@
         }
     };
 </script>
+
+<template>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-active">
+                <th scope="col">
+                    {{ lang.get('organizer.list.name') }}
+                </th>
+                <th scope="col">
+                    {{ lang.get('organizer.list.email') }}
+                </th>
+                <th scope="col">
+                    {{ lang.get('organizer.list.status') }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr
+                v-for="(participant, k) in data.participants"
+                :key="participant.id"
+            >
+                <td>{{ participant.name }}</td>
+                <td>
+                    <input-edit
+                        :action="
+                            `/org/${data.draw}/${participant.id}/changeEmail`
+                        "
+                        :value="participant.address"
+                        type="email"
+                        name="email"
+                        @update="update(k, $event)"
+                    />
+                </td>
+                <td>{{ participant.mail.delivery_status }}</td>
+            </tr>
+        </tbody>
+    </table>
+</template>

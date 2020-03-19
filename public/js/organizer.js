@@ -21,135 +21,27 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  inheritAttrs: false,
   mixins: [_mixins_stateMachine_js__WEBPACK_IMPORTED_MODULE_3__["default"]],
-  props: ['name', 'value', 'action'],
+  inheritAttrs: false,
+  props: {
+    name: {
+      type: String,
+      required: true
+    },
+    value: {
+      type: String,
+      required: true
+    },
+    action: {
+      type: String,
+      required: true
+    }
+  },
   data: function data() {
     return {
       states: Object.freeze({
@@ -208,7 +100,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['csrf', 'key'])),
   methods: {
-    submit: function submit(options) {
+    submit: function submit() {
       var app = this;
       return jquery__WEBPACK_IMPORTED_MODULE_1___default.a.ajax({
         url: this.action,
@@ -229,7 +121,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
           app.$emit('update', update);
         },
-        error: function error(jqXHR, textStatus, errorThrown) {
+        error: function error(jqXHR) {
           if (jqXHR.responseJSON && jqXHR.responseJSON.message) alertify_js__WEBPACK_IMPORTED_MODULE_2___default.a.error(jqXHR.responseJSON.message);
         }
       });
@@ -297,41 +189,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  "extends": _form_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
   components: {
     InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
+  "extends": _form_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
   computed: _objectSpread({
     checkUpdates: function checkUpdates() {
       return !!Object.values(this.data.participants).find(function (participant) {
@@ -390,7 +255,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.input-group > .input-group-prepend > .input-group-text[data-v-7c272539] {\n        border-right: 0;\n}\n.input-group[data-v-7c272539]::after {\n        content: '';\n        box-sizing: border-box;\n        width: 0;\n        height: 2px;\n\n        position: absolute;\n        bottom: -4px;\n        left: 0;\n\n        will-change: width;\n        -webkit-transition: width 0.285s ease-out;\n        transition: width 0.285s ease-out;\n        z-index: 4;\n}\n.input-group-append[data-v-7c272539] {\n        z-index: 5;\n}\n.input-group[data-state='viewUpdated'] .input-group-text[data-v-7c272539] {\n        color: var(--success);\n        background: none;\n}\n.input-group[data-state='viewError'] .input-group-text[data-v-7c272539] {\n        color: var(--danger);\n        background: none;\n}\n.input-group[data-state='viewUpdated'][data-v-7c272539]::after {\n        width: 100%;\n        background-color: var(--success);\n}\n.input-group[data-state='viewError'][data-v-7c272539]::after {\n        width: 100%;\n        background-color: var(--danger);\n}\ninput[data-v-7c272539] {\n        background: none;\n        box-shadow: none !important;\n        height: 100%;\n}\n.table-hover tbody tr:hover input[data-v-7c272539] {\n        color: #212529;\n}\n@-webkit-keyframes check-data-v-7c272539 {\n0% {\n    stroke-dashoffset: 10;\n}\n100% {\n    stroke-dashoffset: 0;\n}\n}\n@keyframes check-data-v-7c272539 {\n0% {\n    stroke-dashoffset: 10;\n}\n100% {\n    stroke-dashoffset: 0;\n}\n}\n.fa-check path[data-v-7c272539] {\n  -webkit-animation-name: check-data-v-7c272539;\n          animation-name: check-data-v-7c272539;\n  -webkit-animation-duration: 2s;\n          animation-duration: 2s;\n  -webkit-transition: stroke-dashoffset 0.35s;\n  transition: stroke-dashoffset 0.35s;\n  -webkit-transform-origin: 50% 50%;\n          transform-origin: 50% 50%;\n}\n", ""]);
+exports.push([module.i, "\n.input-group > .input-group-prepend > .input-group-text[data-v-7c272539] {\n    border-right: 0;\n}\n.input-group[data-v-7c272539]::after {\n    content: '';\n    box-sizing: border-box;\n    width: 0;\n    height: 2px;\n\n    position: absolute;\n    bottom: -4px;\n    left: 0;\n\n    will-change: width;\n    -webkit-transition: width 0.285s ease-out;\n    transition: width 0.285s ease-out;\n    z-index: 4;\n}\n.input-group-append[data-v-7c272539] {\n    z-index: 5;\n}\n.input-group[data-state='viewUpdated'] .input-group-text[data-v-7c272539] {\n    color: var(--success);\n    background: none;\n}\n.input-group[data-state='viewError'] .input-group-text[data-v-7c272539] {\n    color: var(--danger);\n    background: none;\n}\n.input-group[data-state='viewUpdated'][data-v-7c272539]::after {\n    width: 100%;\n    background-color: var(--success);\n}\n.input-group[data-state='viewError'][data-v-7c272539]::after {\n    width: 100%;\n    background-color: var(--danger);\n}\ninput[data-v-7c272539] {\n    background: none;\n    box-shadow: none !important;\n    height: 100%;\n}\n.table-hover tbody tr:hover input[data-v-7c272539] {\n    color: #212529;\n}\n@-webkit-keyframes check-data-v-7c272539 {\n0% {\n        stroke-dashoffset: 10;\n}\n100% {\n        stroke-dashoffset: 0;\n}\n}\n@keyframes check-data-v-7c272539 {\n0% {\n        stroke-dashoffset: 10;\n}\n100% {\n        stroke-dashoffset: 0;\n}\n}\n.fa-check path[data-v-7c272539] {\n    -webkit-animation-name: check-data-v-7c272539;\n            animation-name: check-data-v-7c272539;\n    -webkit-animation-duration: 2s;\n            animation-duration: 2s;\n    -webkit-transition: stroke-dashoffset 0.35s;\n    transition: stroke-dashoffset 0.35s;\n    -webkit-transform-origin: 50% 50%;\n            transform-origin: 50% 50%;\n}\n", ""]);
 
 // exports
 
@@ -710,15 +575,27 @@ var render = function() {
     _c("thead", [
       _c("tr", { staticClass: "table-active" }, [
         _c("th", { attrs: { scope: "col" } }, [
-          _vm._v(_vm._s(_vm.lang.get("organizer.list.name")))
+          _vm._v(
+            "\n                " +
+              _vm._s(_vm.lang.get("organizer.list.name")) +
+              "\n            "
+          )
         ]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [
-          _vm._v(_vm._s(_vm.lang.get("organizer.list.email")))
+          _vm._v(
+            "\n                " +
+              _vm._s(_vm.lang.get("organizer.list.email")) +
+              "\n            "
+          )
         ]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [
-          _vm._v(_vm._s(_vm.lang.get("organizer.list.status")))
+          _vm._v(
+            "\n                " +
+              _vm._s(_vm.lang.get("organizer.list.status")) +
+              "\n            "
+          )
         ])
       ])
     ]),
@@ -726,7 +603,7 @@ var render = function() {
     _c(
       "tbody",
       _vm._l(_vm.data.participants, function(participant, k) {
-        return _c("tr", [
+        return _c("tr", { key: participant.id }, [
           _c("td", [_vm._v(_vm._s(participant.name))]),
           _vm._v(" "),
           _c(

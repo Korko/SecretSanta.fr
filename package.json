@@ -8,7 +8,9 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "format": "prettier --write 'resources/**/*.{css,js,vue}'"
+        "lint:js": "eslint 'resources/**/*.{js,vue}'",
+        "lint:css": "stylelint 'resources/**/*.{sass,css,vue}' --syntax scss",
+        "fix-style": "prettier --write 'resources/**/*.{js,css,vue,sass}'"
     },
     "devDependencies": {
         "alertify.js": "^1.0.12",
@@ -16,6 +18,10 @@
         "bootstrap": "^4.4.1",
         "cross-env": "^5.2.1",
         "crypto-js": "^3.3.0",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "eslint-plugin-vue": "^7.0.0-alpha.0",
         "jquery": "^3.4.1",
         "jquery-ui": "^1.12.1",
         "jquery.actual": "github:dreamerslab/jquery.actual#master",
@@ -31,6 +37,11 @@
         "resolve-url-loader": "^2.3.2",
         "sass": "^1.26.1",
         "sass-loader": "^7.3.1",
+        "stylelint": "^13.2.1",
+        "stylelint-config-prettier": "^8.0.1",
+        "stylelint-config-standard": "^20.0.0",
+        "stylelint-prettier": "^1.1.2",
+        "stylelint-processor-html": "^1.0.0",
         "vue": "^2.6.11",
         "vue-autosize": "^1.0.2",
         "vue-multiselect": "^2.1.6",
@@ -38,9 +49,6 @@
         "webpack-modernizr-loader": "^4.0.1"
     },
     "dependencies": {
-        "eslint": "^6.8.0",
-        "eslint-plugin-vue": "^6.2.2",
-        "sass-lint": "^1.13.1",
         "vue-autofocus-directive": "^1.0.4",
         "vuex": "^3.1.2"
     }

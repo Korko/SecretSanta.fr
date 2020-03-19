@@ -109,6 +109,5 @@ class DrawHandlerTest extends TestCase
             $this->assertContains($participant->name, array_column($participants, 'name'));
             $this->assertContains($participant->address, array_column($participants, 'email'));
         }
-
     }
 }

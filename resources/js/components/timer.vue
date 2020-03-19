@@ -1,11 +1,11 @@
-<template>
-    <span><slot v-if="show"></slot></span>
-</template>
-
 <script>
     export default {
         props: {
-            delay: Number
+            delay: {
+                type: Number,
+                required: true,
+                default: 100
+            }
         },
         data: () => {
             return {
@@ -19,3 +19,7 @@
         }
     };
 </script>
+
+<template>
+    <span><slot v-if="show"/></span>
+</template>
