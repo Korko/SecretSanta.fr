@@ -64,10 +64,7 @@
             <div class="input-group">
                 <span class="input-group-prepend counter">
                     <span class="input-group-text"
-                        >@{{ idx + 1
-                        }}<template v-if="idx === 0">
-                            - Organisateur</template
-                        ></span
+                        >@{{ idx + 1 }}<template v-if="idx === 0"> - Organisateur</template></span
                     >
                 </span>
                 <input
@@ -92,9 +89,7 @@
                 @input="$emit('input:email', $event.target.value)"
             />
         </td>
-        <td
-            class="border-right text-left participant-exclusions-wrapper align-middle"
-        >
+        <td class="border-right text-left participant-exclusions-wrapper align-middle">
             <multiselect
                 :options="participantNames"
                 :value="exclusions"
@@ -104,18 +99,12 @@
                 :multiple="true"
                 @input="$emit('input:exclusions', $event)"
             />
-            <select
-                style="display:none"
-                :name="'participants[' + idx + '][exclusions][]'"
-                multiple
-            >
+            <select style="display:none" :name="'participants[' + idx + '][exclusions][]'" multiple>
                 <option
                     v-for="participantName in participantNames"
                     :key="participantName.value"
                     :value="participantName.value"
-                    :selected="
-                        exclusions.find(a => a.value === participantName.value)
-                    "
+                    :selected="exclusions.find(a => a.value === participantName.value)"
                 />
             </select>
         </td>
@@ -126,9 +115,7 @@
                 :disabled="participants.length <= 3"
                 @click="$emit('delete')"
             >
-                <i class="fas fa-minus" /><span>
-                    {{ lang.get('form.participant.remove') }}</span
-                >
+                <i class="fas fa-minus" /><span> {{ lang.get('form.participant.remove') }}</span>
             </button>
         </td>
     </tr>

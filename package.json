@@ -9,8 +9,8 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "lint:js": "eslint 'resources/**/*.{js,vue}'",
-        "lint:css": "stylelint 'resources/**/*.{sass,css,vue}' --syntax scss",
-        "fix-style": "prettier --write 'resources/**/*.{js,css,vue,sass}'"
+        "lint:css": "stylelint 'resources/**/*.{scss,css,vue}'",
+        "fix-style": "prettier --write 'resources/**/*.{js,css,vue,scss}' --tab-width 4 --print-width 120"
     },
     "devDependencies": {
         "alertify.js": "^1.0.12",

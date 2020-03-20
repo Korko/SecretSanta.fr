@@ -104,17 +104,12 @@
                 });
                 setTimeout(
                     () =>
-                        (this.participants[n - 1].exclusions = (
-                            exclusions || ''
-                        )
+                        (this.participants[n - 1].exclusions = (exclusions || '')
                             .split(',')
                             .map(s => s.trim())
                             .filter(s => !!s)
                             .map(exclusion => {
-                                var participant = this.participants.find(
-                                    participant =>
-                                        (participant.name = exclusion)
-                                );
+                                var participant = this.participants.find(participant => (participant.name = exclusion));
                                 return {
                                     id: participant.id,
                                     text: participant.name
@@ -139,21 +134,13 @@
                         file.data.forEach(
                             function(participant) {
                                 if (participant[0] !== '') {
-                                    this.addParticipant(
-                                        participant[0],
-                                        participant[1],
-                                        participant[2]
-                                    );
+                                    this.addParticipant(participant[0], participant[1], participant[2]);
                                 }
                             }.bind(this)
                         );
 
                         if (this.participants.length < 3) {
-                            for (
-                                var i = 0;
-                                i < 3 - this.participants.length;
-                                i++
-                            ) {
+                            for (var i = 0; i < 3 - this.participants.length; i++) {
                                 this.addParticipant();
                             }
                         }
@@ -170,55 +157,30 @@
         <div v-cloak class="row text-center form">
             <ajax-form id="randomForm" action="/">
                 <template #default="{ sending, sent, errors }">
-                    <div
-                        v-show="sent"
-                        id="success-wrapper"
-                        class="alert alert-success"
-                    >
+                    <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ lang.get('form.success') }}
                     </div>
 
-                    <div
-                        v-show="errors.length && !sent"
-                        id="errors-wrapper"
-                        class="alert alert-danger"
-                    >
+                    <div v-show="errors.length && !sent" id="errors-wrapper" class="alert alert-danger">
                         <ul id="errors">
-                            <li v-for="(error, idx) in errors" :key="idx">
-                                @{{ error }}
-                            </li>
+                            <li v-for="(error, idx) in errors" :key="idx">@{{ error }}</li>
                         </ul>
                     </div>
 
                     <fieldset>
                         <legend>{{ lang.get('form.participants') }}</legend>
                         <div class="table-responsive form-group">
-                            <table
-                                id="participants"
-                                class="table table-hover table-numbered"
-                            >
+                            <table id="participants" class="table table-hover table-numbered">
                                 <thead>
                                     <tr>
                                         <th style="width: 33%" scope="col">
-                                            {{
-                                                lang.get(
-                                                    'form.participant.name'
-                                                )
-                                            }}
+                                            {{ lang.get('form.participant.name') }}
                                         </th>
                                         <th style="width: 33%" scope="col">
-                                            {{
-                                                lang.get(
-                                                    'form.participant.email'
-                                                )
-                                            }}
+                                            {{ lang.get('form.participant.email') }}
                                         </th>
                                         <th style="width: 30%" scope="col">
-                                            {{
-                                                lang.get(
-                                                    'form.participant.exclusions'
-                                                )
-                                            }}
+                                            {{ lang.get('form.participant.exclusions') }}
                                         </th>
                                         <th style="width: 3%" scope="col" />
                                     </tr>
@@ -227,8 +189,7 @@
                                     <!-- Default is three empty rows to have three entries at any time -->
                                     <tr
                                         is="participant"
-                                        v-for="(participant,
-                                        idx) in participants"
+                                        v-for="(participant, idx) in participants"
                                         :key="participant.id"
                                         :name="participant.name"
                                         :email="participant.email"
@@ -236,21 +197,13 @@
                                         :participants="participants"
                                         :idx="idx"
                                         @input:name="participant.name = $event"
-                                        @input:email="
-                                            participant.email = $event
-                                        "
-                                        @input:exclusions="
-                                            participant.exclusions = $event
-                                        "
+                                        @input:email="participant.email = $event"
+                                        @input:exclusions="participant.exclusions = $event"
                                         @delete="participants.splice(idx, 1)"
                                     />
                                 </tbody>
                             </table>
-                            <button
-                                type="button"
-                                class="btn btn-success participant-add"
-                                @click="addParticipant()"
-                            >
+                            <button type="button" class="btn btn-success participant-add" @click="addParticipant()">
                                 <i class="fas fa-plus" />
                                 {{ lang.get('form.participant.add') }}
                             </button>
@@ -262,15 +215,10 @@
                             >
                                 <span v-if="importing"
                                     ><i class="fas fa-spinner fa-spin" />
-                                    {{
-                                        lang.get('form.participants.importing')
-                                    }}</span
+                                    {{ lang.get('form.participants.importing') }}</span
                                 >
                                 <span v-else
-                                    ><i class="fas fa-list-alt" />
-                                    {{
-                                        lang.get('form.participants.import')
-                                    }}</span
+                                    ><i class="fas fa-list-alt" /> {{ lang.get('form.participants.import') }}</span
                                 >
                             </button>
                         </div>
@@ -281,37 +229,25 @@
                         <div id="contact">
                             <fieldset id="form-mail-group">
                                 <div class="form-group">
-                                    <label for="mailTitle">{{
-                                        lang('form.mail.title')
-                                    }}</label>
+                                    <label for="mailTitle">{{ lang('form.mail.title') }}</label>
                                     <input
                                         id="mailTitle"
                                         type="text"
                                         name="title"
                                         :required="emailUsed"
-                                        :placeholder="
-                                            lang.get(
-                                                'form.mail.title.placeholder'
-                                            )
-                                        "
+                                        :placeholder="lang.get('form.mail.title.placeholder')"
                                         value=""
                                         class="form-control"
                                     />
                                 </div>
                                 <div class="form-group">
-                                    <label for="mailContent">{{
-                                        lang.get('form.mail.content')
-                                    }}</label>
+                                    <label for="mailContent">{{ lang.get('form.mail.content') }}</label>
                                     <textarea
                                         id="mailContent"
                                         v-autosize
                                         name="content-email"
                                         :required="emailUsed"
-                                        :placeholder="
-                                            lang.get(
-                                                'form.mail.content.placeholder'
-                                            )
-                                        "
+                                        :placeholder="lang.get('form.mail.content.placeholder')"
                                         class="form-control"
                                         rows="3"
                                     />
@@ -350,13 +286,9 @@
 
                         <button type="submit" class="btn btn-primary btn-lg">
                             <span v-if="sending"
-                                ><i class="fas fa-spinner fa-spin" />
-                                {{ lang.get('form.sending') }}</span
+                                ><i class="fas fa-spinner fa-spin" /> {{ lang.get('form.sending') }}</span
                             >
-                            <span v-else-if="sent"
-                                ><i class="fas fa-check-circle" />
-                                {{ lang.get('form.sent') }}</span
-                            >
+                            <span v-else-if="sent"><i class="fas fa-check-circle" /> {{ lang.get('form.sent') }}</span>
                             <span v-else>{{ lang.get('form.submit') }}</span>
                         </button>
                     </fieldset>
@@ -366,10 +298,6 @@
         <div id="errors-wrapper" class="alert alert-danger v-rcloak">
             {{ lang.get('form.waiting') }}
         </div>
-        <csv
-            v-if="showModal"
-            @import="importParticipants"
-            @close="showModal = false"
-        />
+        <csv v-if="showModal" @import="importParticipants" @close="showModal = false" />
     </div>
 </template>

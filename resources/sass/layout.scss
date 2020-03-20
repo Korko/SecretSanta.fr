@@ -4,43 +4,48 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-/*  
+/*
 Sticky Footer Solution
-by Steve Hatcher 
+by Steve Hatcher
 http://stever.ca
 http://www.cssstickyfooter.com
 */
 
-* {margin:0;padding:0;} 
+* { margin: 0; padding: 0; }
 
-/* must declare 0 margins on everything, also for main layout components use padding, not 
-vertical margins (top and bottom) to add spacing, else those margins get added to total height 
+/* must declare 0 margins on everything, also for main layout components use padding, not
+vertical margins (top and bottom) to add spacing, else those margins get added to total height
 and your footer gets pushed down a bit more, creating vertical scroll bars in the browser */
 
-html, body {height: 100%;}
+html,
+body { height: 100%; }
 
-#wrap {min-height: 100%;}
+#wrap { min-height: 100%; }
 
 $footer-height: 100px !default;
 
-#main {overflow:auto;
-	padding-bottom: $footer-height + 15px;}  /* must be same height as the footer */
+#main {
+    overflow: auto;
+    padding-bottom: $footer-height + 15px;
+}  /* must be same height as the footer */
 
-footer {position: relative;
-	margin-top: -$footer-height - 15px; /* negative value of footer height */
-	height: $footer-height + 15px;
-	clear:both;}
+footer {
+    position: relative;
+    margin-top: -$footer-height - 15px; /* negative value of footer height */
+    height: $footer-height + 15px;
+    clear: both;
+}
 
-footer .inner {padding-bottom: 15px;}
-footer .row {height: $footer-height;}
+footer .inner { padding-bottom: 15px; }
+footer .row { height: $footer-height; }
 
-/*Opera Fix*/
-body:before {/* thanks to Maleika (Kohoutec)*/
-    content:"";
-    height:100%;
-    float:left;
-    width:0;
-    margin-top:-32767px;/* thank you Erik J - negate effect of float*/
+/* Opera Fix */
+body::before {/* thanks to Maleika (Kohoutec) */
+    content: "";
+    height: 100%;
+    float: left;
+    width: 0;
+    margin-top: -32767px;/* thank you Erik J - negate effect of float */
 }
 
 /* IMPORTANT
@@ -81,29 +86,38 @@ TABLE OF CONTENTS
 html {
     font-size: 14px;
 }
+
 body {
     font-family: 'Kreon', serif;
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
 }
+
 img {
     max-height: 100%;
     max-width: 100%;
 }
+
 .light-wrapper section {
     position: relative;
     padding: 0;
-    background: #F0A830;
-    color: #FFF;
+    background: #f0a830;
+    color: #fff;
     text-align: center;
 }
-.light-wrapper section::before, .light-wrapper section::after, .dark-wrapper section::before, .dark-wrapper section::after {
+
+.light-wrapper section::before,
+.light-wrapper section::after,
+.dark-wrapper section::before,
+.dark-wrapper section::after {
     position: absolute;
     content: '';
 }
+
 @-moz-document url-prefix() {
-  fieldset { display: table-cell; }
+    fieldset { display: table-cell; }
 }
+
 /* Separators Styles */
 .ss-style-top::before {
     left: 0;
@@ -114,10 +128,11 @@ img {
     -o-background-size: 25px 100%;
     background-size: 25px 100%;
     top: 0;
-    background-image: linear-gradient(315deg, #FFF 50%, transparent 50%), linear-gradient(45deg, #FFF 50%, transparent 50%);
+    background-image: linear-gradient(315deg, #fff 50%, transparent 50%), linear-gradient(45deg, #fff 50%, transparent 50%);
     margin-top: -30px;
     z-index: 1;
 }
+
 .ss-style-bottom::before {
     left: 0;
     width: 100%;
@@ -127,8 +142,8 @@ img {
     -o-background-size: 25px 100%;
     background-size: 25px 100%;
     top: 0;
-    background-image: linear-gradient(583deg, #FFF 50%, transparent 50%), linear-gradient(136deg, #FFF 50%, transparent 50%);
-    margin-top: 0px;
+    background-image: linear-gradient(583deg, #fff 50%, transparent 50%), linear-gradient(136deg, #fff 50%, transparent 50%);
+    margin-top: 0;
     z-index: 1;
 }
 
@@ -143,8 +158,9 @@ img {
 .v-rcloak {
     display: none;
 }
+
 [v-cloak] ~ .v-rcloak {
-    display: block
+    display: block;
 }
 
 /* ==========================================================================
@@ -159,28 +175,33 @@ img {
     background-repeat: no-repeat;
     position: relative;
 }
+
 .bg-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(44,33,5,0.2);
+    background: rgba(44, 33, 5, 0.2);
     z-index: 0;
 }
+
 #header .center {
     position: relative;
     z-index: 1;
     color: white;
     padding: 100px 0;
 }
+
 #header .bottom {
     color: white;
 }
+
 #header .center .slogan {
     font-size: 26px;
     text-transform: uppercase;
 }
+
 #header .banner h1 {
     font-size: 100px;
     color: white;
@@ -188,33 +209,37 @@ img {
     font-weight: bold;
     display: inline-block;
     background: #ed0121;
-    padding: 0px 18px;
+    padding: 0 18px;
 }
+
 #header .subtitle h4 {
     display: inline-block;
     background: white;
     color: #ed0121;
     font-size: 38px;
-    padding: 0px 15px;
+    padding: 0 15px;
 }
+
 #header .bottom {
     text-align: center;
     width: 100%;
     position: absolute;
     bottom: 30px;
 }
+
 #header .bottom a {
     font-size: 36px;
     color: whitesmoke;
     position: relative;
     top: -5px;
 }
+
 #logo {
     position: absolute;
     display: block !important;
     width: 110px;
     left: 50%;
-    margin-left: calc(-55px - .5rem);/* Don't forget half the padding of .navbar */ 
+    margin-left: calc(-55px - 0.5rem);/* Don't forget half the padding of .navbar */
     background: black;
     -webkit-border-radius: 0 0 100% 100%;
     -moz-border-radius: 0 0 100% 100%;
@@ -227,23 +252,27 @@ img {
     03. Navigation
 ========================================================================== */
 #menu {
-    background: rgba(33,45,57,0.8);
+    background: rgba(33, 45, 57, 0.8);
     margin-bottom: 0;
 }
+
 nav#navbar {
     width: 100%;
     display: flex;
 }
+
 .navbar-brand h2 {
     margin-top: 0;
     font-weight: bold;
     color: white;
 }
+
 .navbar-brand {
     padding-top: 8px;
     padding-bottom: 0;
 }
-.navbar .navbar-nav>li>a {
+
+.navbar .navbar-nav > li > a {
     -webkit-transition: all 0.4s;
     -moz-transition: all 0.4s;
     -o-transition: all 0.4s;
@@ -254,7 +283,9 @@ nav#navbar {
     line-height: 20px;
     display: block;
 }
-.navbar .navbar-nav>li>a:hover, .narbar .navbar-nav>.active>a {
+
+.navbar .navbar-nav > li > a:hover,
+.narbar .navbar-nav > .active > a {
     background: #ed0121;
     color: white;
     text-shadow: none;
@@ -269,13 +300,16 @@ nav#navbar {
     font-size: 20px;
     font-weight: bold;
 }
+
 .dark-wrapper .ss-style-top::before {
     background-image: linear-gradient(315deg, #ed0121 50%, transparent 50%), linear-gradient(45deg, #ed0121 50%, transparent 50%);
 }
-.themeBy{
+
+.themeBy {
     color: #ed0121;
     background: white;
 }
+
 footer .row {
     display: flex;
     align-items: center;
@@ -288,24 +322,30 @@ footer .row {
     #header .banner h1 {
         font-size: 60px;
     }
+
     #header .subtitle h4 {
         font-size: 22px;
     }
+
     .navbar {
         min-height: 30px;
     }
+
     #logo {
         -webkit-transition: all 0.3s ease;
         transition: all 0.3s ease;
     }
+
     body.scrolled #logo {
         width: 60px;
         margin-left: -30px;
     }
-    .navbar-nav>li.btn-group {
+
+    .navbar-nav > li.btn-group {
         margin: 0 10px;
     }
 }
+
 @media (min-width: 768px) {
     html .navbar-nav {
         float: none !important;
@@ -313,14 +353,17 @@ footer .row {
         text-align: center;
         margin-left: -16px;
     }
+
     html:lang(en) .navbar-nav {
         margin-left: 13px;
     }
-    .navbar-nav>li {
+
+    .navbar-nav > li {
         display: inline-block;
         float: none;
     }
-    .navbar-nav>li.btn-group {
+
+    .navbar-nav > li.btn-group {
         margin: 0 15px;
     }
 }
@@ -343,8 +386,9 @@ footer .row {
         height: 135px;
         z-index: 9999;
     }
+
     #forkongithub a {
-        background: #A00;
+        background: #a00;
         color: #fff;
         text-decoration: none;
         font-family: arial, sans-serif;
@@ -363,13 +407,16 @@ footer .row {
         -ms-transform: rotate(45deg);
         -moz-transform: rotate(45deg);
         -o-transform: rotate(45deg);
-        box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
     }
+
     #forkongithub a:hover {
-        background: #C00;
+        background: #c00;
         color: #fff;
     }
-    #forkongithub a::before,#forkongithub a::after {
+
+    #forkongithub a::before,
+    #forkongithub a::after {
         content: "";
         width: 100%;
         display: block;
@@ -379,6 +426,7 @@ footer .row {
         height: 1px;
         background: #fff;
     }
+
     #forkongithub a::after {
         bottom: 1px;
         top: auto;
@@ -389,44 +437,44 @@ footer .row {
     10. Modal
 ========================================================================== */
 .modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .5);
-  display: table;
-  transition: opacity .3s ease;
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: table;
+    transition: opacity 0.3s ease;
 }
 
 .modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .modal-container {
-  width: 500px;
-  margin: 0px auto;
-  padding: 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-  transition: all .3s ease;
-  font-family: Helvetica, Arial, sans-serif;
+    width: 500px;
+    margin: 0 auto;
+    padding: 20px 30px;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    transition: all 0.3s ease;
+    font-family: Helvetica, Arial, sans-serif;
 }
 
 .modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
+    margin-top: 0;
+    color: #42b983;
 }
 
 .modal-body {
-  margin: 20px 0;
+    margin: 20px 0;
 }
 
 .modal-default-button {
-  float: right;
+    float: right;
 }
 
 /*
@@ -439,45 +487,45 @@ footer .row {
  */
 
 .modal-enter {
-  opacity: 0;
+    opacity: 0;
 }
 
 .modal-leave-active {
-  opacity: 0;
+    opacity: 0;
 }
 
 .modal-enter .modal-container,
 .modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 /* ==========================================================================
     11. Readability
 ========================================================================== */
 .btn-success {
-  background-color: #2C642C;
+    background-color: #2c642c;
 }
 
 .btn-danger {
-  background-color: #A82824;
+    background-color: #a82824;
 }
 
 .btn-primary {
-  background-color: #275C8B;
+    background-color: #275c8b;
 }
 
 .dark-wrapper {
-  background-color: #B50119;
+    background-color: #b50119;
 }
 
 .btn[disabled] {
-  opacity: .35;
+    opacity: 0.35;
 }
 
 .table-hover tbody tr:focus-within {
-  color: #212529;
-  background-color: rgba(0, 0, 0, 0.175);
+    color: #212529;
+    background-color: rgba(0, 0, 0, 0.175);
 }
 
 /* ==========================================================================

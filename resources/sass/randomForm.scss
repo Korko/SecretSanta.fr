@@ -1,11 +1,11 @@
 $footer-height: 120px;
-@import "layout";
 
+@import "layout";
 @import "~alertify.js/src/sass/alertify";
 @import "~vue-multiselect/dist/vue-multiselect.min";
 
-/*@import "~jquery-ui/themes/base/core";
-@import "~jquery-ui/themes/base/theme";*/
+/* @import "~jquery-ui/themes/base/core";
+@import "~jquery-ui/themes/base/theme"; */
 @import "~jquery-ui/themes/base/datepicker";
 
 /* ==========================================================================
@@ -17,6 +17,7 @@ $footer-height: 120px;
     flex: 1;
     margin-right: 60px;
 }
+
 .nav.navbar-nav-right {
     display: inline-flex;
     justify-content: flex-start;
@@ -32,12 +33,14 @@ $footer-height: 120px;
     -moz-background-size: cover;
     background-size: cover;
     position: relative;
-    color: #FFF;
+    color: #fff;
 }
+
 .parallax .inner {
     padding-top: 130px;
     padding-bottom: 130px;
 }
+
 .parallax.parallax2 {
     background-image: url(/images/gifts-3.jpg);
 }
@@ -48,10 +51,12 @@ $footer-height: 120px;
 .light-wrapper {
     background: #fbfbfb;
 }
+
 .light-wrapper .inner {
     padding-top: 100px;
     padding-bottom: 100px;
 }
+
 .section-title {
     font-size: 36px;
     line-height: 40px;
@@ -59,9 +64,11 @@ $footer-height: 120px;
     margin-bottom: 15px;
     font-weight: 600;
 }
+
 .main.lead {
     margin-bottom: 80px;
 }
+
 .lead {
     font-size: 17px;
     line-height: 24px;
@@ -71,7 +78,8 @@ $footer-height: 120px;
     color: #2e2e2e;
     position: relative;
 }
-.lead:after {
+
+.lead::after {
     position: absolute;
     content: ' ';
     background: #ed0121;
@@ -81,19 +89,24 @@ $footer-height: 120px;
     left: 50%;
     margin-left: -40px;
 }
+
 .media-body {
     width: auto;
     text-align: left;
 }
+
 .media-heading {
     font-weight: bold;
 }
+
 .media-body p::first-line {
 }
+
 div.card-body {
     font-style: italic;
 }
-div.card-body:first-line {
+
+div.card-body::first-line {
     font-weight: bold;
     font-style: normal;
     text-transform: uppercase;
@@ -105,17 +118,21 @@ div.card-body:first-line {
 fieldset > div.form-group {
     overflow: visible;
 }
+
 .participant .participant-exclusions-wrapper {
     padding-top: 11px;
 }
+
 .participant .participant-remove-wrapper {
     width: 179px;
     white-space: nowrap;
 }
+
 .input-group-addon.lang {
     padding: 6px 8px;
 }
-.input-group-addon.lang:before {
+
+.input-group-addon.lang::before {
     background-repeat: no-repeat;
     background-image: url(/images/languages.png);
     height: 11px;
@@ -124,52 +141,73 @@ fieldset > div.form-group {
     display: inline-block;
     margin-right: 8px;
 }
-.input-group-addon.lang[lang=fr]:before {
-    background-position: 0px -121px;
+
+.input-group-addon.lang[lang=fr]::before {
+    background-position: 0 -121px;
 }
-#mailContent, #mailPost {
+
+#mailContent,
+#mailPost {
     max-width: 100%;
     resize: none;
 }
+
 #mailPost {
     height: 55px;
 }
+
 #mailPost.extended {
     height: 75px;
 }
+
 #mailContent {
     border-bottom: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
+
 #mailPost {
     border-top: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
 }
+
 #form .container {
     transition: all 0.4s;
     position: relative;
 }
+
 #form.success .success-wrapper {
     display: block;
 }
+
 .col-xs-0 {
     width: 1%;
 }
+
 .border-left {
     border-left: 1px solid #ddd;
 }
+
 .border-right {
     border-right: 1px solid #ddd;
 }
+
 .row.text-only {
     line-height: 34px;
 }
+
 #form-options label > input {
     margin-left: 10px;
 }
-.table-bordered.heavy-borders, .table-bordered.heavy-borders > tbody > tr > td, .table-bordered.heavy-borders > tbody > tr > th, .table-bordered.heavy-borders > tfoot > tr > td, .table-bordered.heavy-borders > tfoot > tr > th, .table-bordered.heavy-borders > thead > tr > td, .table-bordered.heavy-borders > thead > tr > th {
+
+.table-bordered.heavy-borders,
+.table-bordered.heavy-borders > tbody > tr > td,
+.table-bordered.heavy-borders > tbody > tr > th,
+.table-bordered.heavy-borders > tfoot > tr > td,
+.table-bordered.heavy-borders > tfoot > tr > th,
+.table-bordered.heavy-borders > thead > tr > td,
+.table-bordered.heavy-borders > thead > tr > th {
     border-width: 3px;
 }
 
@@ -179,10 +217,11 @@ fieldset > div.form-group {
     box-shadow: 3px 3px 6px 0 #bbb;
     margin: 10px auto 0 auto;
     display: inline-block;
-    border: 1px solid #C0C0C0;
-    background-color: #DDD;
+    border: 1px solid #c0c0c0;
+    background-color: #ddd;
     padding: 10px;
 }
+
 .tips p {
     margin: 0;
 }
