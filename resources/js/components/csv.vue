@@ -6,10 +6,7 @@
         computed: mapState(['lang']),
         methods: {
             emitSubmit: function() {
-                this.$emit(
-                    'import',
-                    $('#uploadCsv input[type=file]')[0].files[0]
-                );
+                this.$emit('import', $('#uploadCsv input[type=file]')[0].files[0]);
                 this.$emit('close');
             },
             emitCancel: function() {
@@ -56,11 +53,7 @@
                 {{ lang.get('form.csv.warning') }}
             </div>
 
-            <form
-                id="uploadCsv"
-                @submit.prevent="emitSubmit"
-                @reset="emitCancel"
-            >
+            <form id="uploadCsv" @submit.prevent="emitSubmit" @reset="emitCancel">
                 <input type="file" accept=".csv" required="required" />
             </form>
         </template>

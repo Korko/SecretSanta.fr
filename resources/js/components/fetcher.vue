@@ -38,14 +38,8 @@
 <template>
     <ajax-form id="fetch" ref="form" :action="fetchurl">
         <timer :delay="2000">
-            <button
-                type="submit"
-                class="btn btn-primary btn-lg"
-                :disabled="loading"
-            >
-                <span v-if="loading">
-                    <span class="fas fa-spinner" /> Chargement en cours...
-                </span>
+            <button type="submit" class="btn btn-primary btn-lg" :disabled="loading">
+                <span v-if="loading"> <span class="fas fa-spinner" /> Chargement en cours... </span>
                 <span v-else>Charger</span>
             </button>
         </timer>

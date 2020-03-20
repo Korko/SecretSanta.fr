@@ -7,8 +7,7 @@ module.exports = {
     },
     "extends": [
         "eslint:recommended",
-        "plugin:vue/vue3-recommended",
-        "plugin:prettier/recommended"
+        "plugin:vue/vue3-recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -22,5 +21,13 @@ module.exports = {
         "vue"
     ],
     "rules": {
+        "vue/html-indent": ["error", 4, {}],
+        "vue/max-attributes-per-line": ["error", {singleline: 10}],
+        "vue/html-self-closing": ["error", {
+            "html": {
+                "void": "always",
+                "normal": "never",
+            }
+        }]
     }
 };

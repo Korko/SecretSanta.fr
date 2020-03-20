@@ -790,9 +790,7 @@ var render = function() {
               { staticClass: "input-group-text" },
               [
                 _vm._v("@" + _vm._s(_vm.idx + 1)),
-                _vm.idx === 0
-                  ? [_vm._v("\n                        - Organisateur")]
-                  : _vm._e()
+                _vm.idx === 0 ? [_vm._v(" - Organisateur")] : _vm._e()
               ],
               2
             )
@@ -898,10 +896,7 @@ var render = function() {
           [
             _c("i", { staticClass: "fas fa-minus" }),
             _c("span", [
-              _vm._v(
-                "\n                " +
-                  _vm._s(_vm.lang.get("form.participant.remove"))
-              )
+              _vm._v(" " + _vm._s(_vm.lang.get("form.participant.remove")))
             ])
           ]
         )
@@ -991,11 +986,7 @@ var render = function() {
                           { attrs: { id: "errors" } },
                           _vm._l(errors, function(error, idx) {
                             return _c("li", { key: idx }, [
-                              _vm._v(
-                                "\n                            @" +
-                                  _vm._s(error) +
-                                  "\n                        "
-                              )
+                              _vm._v("@" + _vm._s(error))
                             ])
                           }),
                           0
@@ -1176,7 +1167,7 @@ var render = function() {
                                 : _c("span", [
                                     _c("i", { staticClass: "fas fa-list-alt" }),
                                     _vm._v(
-                                      "\n                                " +
+                                      " " +
                                         _vm._s(
                                           _vm.lang.get(
                                             "form.participants.import"
@@ -1303,17 +1294,13 @@ var render = function() {
                                   staticClass: "fas fa-spinner fa-spin"
                                 }),
                                 _vm._v(
-                                  "\n                            " +
-                                    _vm._s(_vm.lang.get("form.sending"))
+                                  " " + _vm._s(_vm.lang.get("form.sending"))
                                 )
                               ])
                             : sent
                             ? _c("span", [
                                 _c("i", { staticClass: "fas fa-check-circle" }),
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(_vm.lang.get("form.sent"))
-                                )
+                                _vm._v(" " + _vm._s(_vm.lang.get("form.sent")))
                               ])
                             : _c("span", [
                                 _vm._v(_vm._s(_vm.lang.get("form.submit")))

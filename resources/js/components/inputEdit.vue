@@ -94,8 +94,7 @@
                     success(data, textStatus, jqXHR) {
                         var update = { value: app.newValue };
                         if (jqXHR.responseJSON) {
-                            if (jqXHR.responseJSON.message)
-                                alertify.success(jqXHR.responseJSON.message);
+                            if (jqXHR.responseJSON.message) alertify.success(jqXHR.responseJSON.message);
                             Object.assign(update, jqXHR.responseJSON);
                         }
                         app.$emit('update', update);
@@ -145,18 +144,9 @@
 </script>
 
 <template>
-    <form
-        :action="action"
-        method="post"
-        autocomplete="off"
-        @submit.prevent="send('submit')"
-    >
+    <form :action="action" method="post" autocomplete="off" @submit.prevent="send('submit')">
         <fieldset :disabled="updating">
-            <div
-                class="input-group"
-                :data-state="state"
-                :data-previous-state="previousState"
-            >
+            <div class="input-group" :data-state="state" :data-previous-state="previousState">
                 <div v-if="updating" class="input-group-prepend">
                     <i class="input-group-text fas fa-spinner fa-spin" />
                 </div>
@@ -177,12 +167,7 @@
                     @blur="send('blur')"
                 />
                 <div class="input-group-append">
-                    <button
-                        v-if="state.startsWith('view')"
-                        type="button"
-                        class="btn btn-primary"
-                        @click="send('edit')"
-                    >
+                    <button v-if="state.startsWith('view')" type="button" class="btn btn-primary" @click="send('edit')">
                         <i class="fas fa-edit" />
                     </button>
                     <button

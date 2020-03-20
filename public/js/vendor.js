@@ -30781,17 +30781,12 @@ var render = function() {
                 _vm.sent
                   ? _c("span", [
                       _c("span", { staticClass: "fas fa-check-circle" }),
-                      _vm._v(
-                        "\n                " + _vm._s(_vm.lang.get("form.sent"))
-                      )
+                      _vm._v(" " + _vm._s(_vm.lang.get("form.sent")))
                     ])
                   : _vm.sending
                   ? _c("span", [
                       _c("span", { staticClass: "fas fa-spinner" }),
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(_vm.lang.get("form.sending"))
-                      )
+                      _vm._v(" " + _vm._s(_vm.lang.get("form.sending")))
                     ])
                   : _c("span", [_vm._v(_vm._s(_vm.lang.get("form.send")))])
               ]
@@ -30862,7 +30857,7 @@ var render = function() {
             _vm.loading
               ? _c("span", [
                   _c("span", { staticClass: "fas fa-spinner" }),
-                  _vm._v(" Chargement en cours...\n            ")
+                  _vm._v(" Chargement en cours... ")
                 ])
               : _c("span", [_vm._v("Charger")])
           ]

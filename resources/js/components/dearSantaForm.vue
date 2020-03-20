@@ -8,23 +8,14 @@
         computed: {
             emails() {
                 return Object.values(this.data.emails)
-                    .sort((email1, email2) =>
-                        new Date(email1.created_at) >
-                        new Date(email2.created_at)
-                            ? -1
-                            : 1
-                    )
+                    .sort((email1, email2) => (new Date(email1.created_at) > new Date(email2.created_at) ? -1 : 1))
                     .map(email => {
-                        email.created_at = new Date(
-                            email.created_at
-                        ).toLocaleString('fr-FR');
+                        email.created_at = new Date(email.created_at).toLocaleString('fr-FR');
                         return email;
                     });
             },
             checkUpdates() {
-                return !!Object.values(this.data.emails).find(
-                    email => email.delivery_status === 'created'
-                );
+                return !!Object.values(this.data.emails).find(email => email.delivery_status === 'created');
             },
             ...mapState(['lang'])
         },
@@ -46,17 +37,12 @@
                     success(data) {
                         if (data.emails) {
                             Object.values(data.emails).forEach(email => {
-                                var new_update = new Date(
-                                    email.mail.updated_at
-                                );
-                                var old_update = new Date(
-                                    app.data.emails[email.id].mail.updated_at
-                                );
+                                var new_update = new Date(email.mail.updated_at);
+                                var old_update = new Date(app.data.emails[email.id].mail.updated_at);
                                 app.data.emails[email.id].mail.delivery_status =
                                     new_update > old_update
                                         ? email.mail.delivery_status
-                                        : app.data.emails[email.id].mail
-                                              .delivery_status;
+                                        : app.data.emails[email.id].mail.delivery_status;
                             });
                         }
                     }
@@ -68,11 +54,7 @@
 
 <template>
     <div>
-        <ajax-form
-            :action="`/dearsanta/${data.santa.id}/send`"
-            :button="true"
-            @success="success"
-        >
+        <ajax-form :action="`/dearsanta/${data.santa.id}/send`" :button="true" @success="success">
             <fieldset>
                 <div class="form-group">
                     <label for="mailContent">Contenu du mail</label>

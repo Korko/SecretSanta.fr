@@ -11356,9 +11356,9 @@ a.text-dark:focus {
   }
 }
 
-/*  
+/*
 Sticky Footer Solution
-by Steve Hatcher 
+by Steve Hatcher
 http://stever.ca
 http://www.cssstickyfooter.com
 */
@@ -11368,8 +11368,8 @@ http://www.cssstickyfooter.com
   padding: 0;
 }
 
-/* must declare 0 margins on everything, also for main layout components use padding, not 
-vertical margins (top and bottom) to add spacing, else those margins get added to total height 
+/* must declare 0 margins on everything, also for main layout components use padding, not
+vertical margins (top and bottom) to add spacing, else those margins get added to total height
 and your footer gets pushed down a bit more, creating vertical scroll bars in the browser */
 
 html,
@@ -11404,16 +11404,16 @@ footer .row {
   height: 120px;
 }
 
-/*Opera Fix*/
+/* Opera Fix */
 
-body:before {
-  /* thanks to Maleika (Kohoutec)*/
+body::before {
+  /* thanks to Maleika (Kohoutec) */
   content: "";
   height: 100%;
   float: left;
   width: 0;
   margin-top: -32767px;
-  /* thank you Erik J - negate effect of float*/
+  /* thank you Erik J - negate effect of float */
 }
 
 /* IMPORTANT
@@ -11469,8 +11469,8 @@ img {
 .light-wrapper section {
   position: relative;
   padding: 0;
-  background: #F0A830;
-  color: #FFF;
+  background: #f0a830;
+  color: #fff;
   text-align: center;
 }
 
@@ -11496,7 +11496,7 @@ img {
   height: 30px;
   background-size: 25px 100%;
   top: 0;
-  background-image: linear-gradient(315deg, #FFF 50%, transparent 50%), linear-gradient(45deg, #FFF 50%, transparent 50%);
+  background-image: linear-gradient(315deg, #fff 50%, transparent 50%), linear-gradient(45deg, #fff 50%, transparent 50%);
   margin-top: -30px;
   z-index: 1;
 }
@@ -11507,8 +11507,8 @@ img {
   height: 30px;
   background-size: 25px 100%;
   top: 0;
-  background-image: linear-gradient(583deg, #FFF 50%, transparent 50%), linear-gradient(136deg, #FFF 50%, transparent 50%);
-  margin-top: 0px;
+  background-image: linear-gradient(583deg, #fff 50%, transparent 50%), linear-gradient(136deg, #fff 50%, transparent 50%);
+  margin-top: 0;
   z-index: 1;
 }
 
@@ -11574,7 +11574,7 @@ img {
   font-weight: bold;
   display: inline-block;
   background: #ed0121;
-  padding: 0px 18px;
+  padding: 0 18px;
 }
 
 #header .subtitle h4 {
@@ -11582,7 +11582,7 @@ img {
   background: white;
   color: #ed0121;
   font-size: 38px;
-  padding: 0px 15px;
+  padding: 0 15px;
 }
 
 #header .bottom {
@@ -11604,7 +11604,7 @@ img {
   display: block !important;
   width: 110px;
   left: 50%;
-  margin-left: calc(-55px - .5rem);
+  margin-left: calc(-55px - 0.5rem);
   /* Don't forget half the padding of .navbar */
   background: black;
   border-radius: 0 0 100% 100%;
@@ -11757,7 +11757,7 @@ footer .row {
   }
 
   #forkongithub a {
-    background: #A00;
+    background: #a00;
     color: #fff;
     text-decoration: none;
     font-family: arial, sans-serif;
@@ -11781,7 +11781,7 @@ footer .row {
   }
 
   #forkongithub a:hover {
-    background: #C00;
+    background: #c00;
     color: #fff;
   }
 
@@ -11827,7 +11827,7 @@ footer .row {
 
 .modal-container {
   width: 500px;
-  margin: 0px auto;
+  margin: 0 auto;
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
@@ -11878,19 +11878,19 @@ footer .row {
 ========================================================================== */
 
 .btn-success {
-  background-color: #2C642C;
+  background-color: #2c642c;
 }
 
 .btn-danger {
-  background-color: #A82824;
+  background-color: #a82824;
 }
 
 .btn-primary {
-  background-color: #275C8B;
+  background-color: #275c8b;
 }
 
 .dark-wrapper {
-  background-color: #B50119;
+  background-color: #b50119;
 }
 
 .btn[disabled] {
@@ -12650,8 +12650,8 @@ fieldset[disabled] .multiselect {
   }
 }
 
-/*@import "~jquery-ui/themes/base/core";
-@import "~jquery-ui/themes/base/theme";*/
+/* @import "~jquery-ui/themes/base/core";
+@import "~jquery-ui/themes/base/theme"; */
 
 /*!
  * jQuery UI Datepicker 1.12.1
@@ -12909,7 +12909,7 @@ fieldset[disabled] .multiselect {
   background: url(/images/gifts-2.jpg) fixed no-repeat center center;
   background-size: cover;
   position: relative;
-  color: #FFF;
+  color: #fff;
 }
 
 .parallax .inner {
@@ -12956,7 +12956,7 @@ fieldset[disabled] .multiselect {
   position: relative;
 }
 
-.lead:after {
+.lead::after {
   position: absolute;
   content: " ";
   background: #ed0121;
@@ -12980,7 +12980,7 @@ div.card-body {
   font-style: italic;
 }
 
-div.card-body:first-line {
+div.card-body::first-line {
   font-weight: bold;
   font-style: normal;
   text-transform: uppercase;
@@ -13007,7 +13007,7 @@ fieldset > div.form-group {
   padding: 6px 8px;
 }
 
-.input-group-addon.lang:before {
+.input-group-addon.lang::before {
   background-repeat: no-repeat;
   background-image: url(/images/languages.png);
   height: 11px;
@@ -13017,8 +13017,8 @@ fieldset > div.form-group {
   margin-right: 8px;
 }
 
-.input-group-addon.lang[lang=fr]:before {
-  background-position: 0px -121px;
+.input-group-addon.lang[lang=fr]::before {
+  background-position: 0 -121px;
 }
 
 #mailContent,
@@ -13093,8 +13093,8 @@ fieldset > div.form-group {
   box-shadow: 3px 3px 6px 0 #bbb;
   margin: 10px auto 0 auto;
   display: inline-block;
-  border: 1px solid #C0C0C0;
-  background-color: #DDD;
+  border: 1px solid #c0c0c0;
+  background-color: #ddd;
   padding: 10px;
 }
 

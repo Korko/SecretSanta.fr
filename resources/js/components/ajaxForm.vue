@@ -53,45 +53,27 @@
                               )
                             : Object.assign({}, options.data, keys),
                         success(data, textStatus, jqXHR) {
-                            if (
-                                jqXHR.responseJSON &&
-                                jqXHR.responseJSON.message
-                            )
+                            if (jqXHR.responseJSON && jqXHR.responseJSON.message)
                                 alertify.success(jqXHR.responseJSON.message);
 
                             app.sending = false;
                             app.sent = true;
 
-                            (options.success || options.then || function() {})(
-                                jqXHR.responseJSON
-                            );
-                            (
-                                options.complete ||
-                                options.finally ||
-                                function() {}
-                            )();
+                            (options.success || options.then || function() {})(jqXHR.responseJSON);
+                            (options.complete || options.finally || function() {})();
 
                             app.$emit('success', data);
                         },
                         error(jqXHR) {
-                            if (
-                                jqXHR.responseJSON &&
-                                jqXHR.responseJSON.message
-                            )
+                            if (jqXHR.responseJSON && jqXHR.responseJSON.message)
                                 alertify.error(jqXHR.responseJSON.message);
                             if (jqXHR.responseJSON && jqXHR.responseJSON.errors)
                                 app.fieldErrors = jqXHR.responseJSON.errors;
 
                             app.sending = false;
 
-                            (options.error || options.catch || function() {})(
-                                jqXHR.responseJSON
-                            );
-                            (
-                                options.complete ||
-                                options.finally ||
-                                function() {}
-                            )();
+                            (options.error || options.catch || function() {})(jqXHR.responseJSON);
+                            (options.complete || options.finally || function() {})();
 
                             app.$emit('error');
                         }
@@ -104,10 +86,7 @@
             submit(postData, options) {
                 this.$emit('beforeSubmit');
                 postData = postData || $(this.$el).serializeArray();
-                var ajax = this.call(
-                    this.action,
-                    Object.assign({ data: postData }, options)
-                );
+                var ajax = this.call(this.action, Object.assign({ data: postData }, options));
                 this.$emit('afterSubmit');
                 return ajax;
             }
@@ -116,12 +95,7 @@
 </script>
 
 <template>
-    <form
-        :action="action"
-        method="post"
-        autocomplete="off"
-        @submit.prevent="onSubmit"
-    >
+    <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit">
         <fieldset :disabled="sending || sent">
             <slot v-bind="{ sending, sent, errors, submit, onSubmit }" />
         </fieldset>
@@ -131,14 +105,8 @@
             </div>
 
             <button type="submit" class="btn btn-primary btn-lg">
-                <span v-if="sent"
-                    ><span class="fas fa-check-circle" />
-                    {{ lang.get('form.sent') }}</span
-                >
-                <span v-else-if="sending"
-                    ><span class="fas fa-spinner" />
-                    {{ lang.get('form.sending') }}</span
-                >
+                <span v-if="sent"><span class="fas fa-check-circle" /> {{ lang.get('form.sent') }}</span>
+                <span v-else-if="sending"><span class="fas fa-spinner" /> {{ lang.get('form.sending') }}</span>
                 <span v-else>{{ lang.get('form.send') }}</span>
             </button>
         </fieldset>
