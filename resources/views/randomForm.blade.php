@@ -114,12 +114,7 @@
         <div class="container inner">
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
             <p class="lead main text-center">@lang('form.section.go.subtitle')</p>
-            <div class="row text-center form" v-cloak>
-                <random-form id="randomForm" action="/"></random-form>
-            </div><!-- /.services -->
-
-            <div id="errors-wrapper" class="alert alert-danger v-rcloak">@lang('form.waiting')</div>
-            <csv v-if="showModal" @import="importParticipants" @close="showModal = false"></csv>
+            <random-form id="randomForm" action="/"></random-form>
         </div><!-- /.container -->
         <section class="ss-style-bottom"></section>
     </div>
