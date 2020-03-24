@@ -155,7 +155,7 @@
             <button
                 type="button"
                 class="btn btn-danger participant-remove"
-                :disabled="names.length <= 3"
+                :disabled="idx < 3 && Object.keys(names).length <= 3"
                 @click="$emit('delete')"
             >
                 <i class="fas fa-minus" /><span> {{ Lang.get('form.participant.remove') }}</span>
