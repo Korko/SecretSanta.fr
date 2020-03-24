@@ -1010,7 +1010,10 @@ var render = function() {
           "button",
           {
             staticClass: "btn btn-danger participant-remove",
-            attrs: { type: "button", disabled: _vm.names.length <= 3 },
+            attrs: {
+              type: "button",
+              disabled: _vm.idx < 3 && Object.keys(_vm.names).length <= 3
+            },
             on: {
               click: function($event) {
                 return _vm.$emit("delete")
