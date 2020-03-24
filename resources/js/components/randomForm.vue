@@ -4,14 +4,19 @@
     import alertify from 'alertify.js';
 
     import Vue from 'vue';
+
     import VueAutosize from 'vue-autosize';
     Vue.use(VueAutosize);
+
+    import Vuelidate from 'vuelidate';
+    import { required, minLength } from 'vuelidate/lib/validators'
+    Vue.use(Vuelidate);
 
     import Modernizr from '../partials/modernizr.js';
     import Moment from 'moment';
     import Papa from 'papaparse';
 
-    import { mapState } from 'vuex';
+    import Lang from '../partials/lang.js';
 
     import Csv from './csv.vue';
     import AjaxForm from './ajaxForm.vue';
@@ -27,13 +32,52 @@
         data: function() {
             return {
                 participants: [],
-                date: window.now,
+                title: '',
+                content: '',
+                expiration: Moment(window.now)
+                    .add(1, 'day')
+                    .format('YYYY-MM-DD'),
+                now: window.now,
                 showModal: false,
-                importing: false
+                importing: false,
+                Lang: Lang
             };
         },
 
-        computed: mapState(['lang']),
+        computed: {
+            participantNames: function() {
+                var names = {};
+                this.participants.forEach((participant, idx) => {
+                    if (participant.name) {
+                        names[idx] = participant.name;
+                    }
+                });
+                return names;
+            }
+        },
+
+        validations: {
+            participants: {
+                required,
+                minLength: minLength(3)
+            },
+            title: {
+                required
+            },
+            content: {
+                required,
+                containsTarget(value) {
+                    return value.indexOf('{TARGET}') >= 0;
+                }
+            },
+            expiration: function() {
+                return {
+                    required,
+                    minValue: this.moment(1, 'day'),
+                    maxValue: this.moment(1, 'year')
+                };
+            }
+        },
 
         watch: {
             sending: function(newVal) {
@@ -69,12 +113,8 @@
                         jQuery('input[type=date]', this.$el).datepicker({
                             // Consistent format with the HTML5 picker
                             dateFormat: 'yy-mm-dd',
-                            minDate: Moment(this.now)
-                                .add(1, 'day')
-                                .toDate(),
-                            maxDate: Moment(this.now)
-                                .add(1, 'year')
-                                .toDate()
+                            minDate: this.moment(1, 'day'),
+                            maxDate: this.moment(1, 'year')
                         });
                     }
 
@@ -86,8 +126,8 @@
         },
 
         methods: {
-            moment: function(date, amount, unit) {
-                return Moment(date)
+            moment: function(amount, unit) {
+                return Moment(this.now)
                     .add(amount, unit)
                     .format('YYYY-MM-DD');
             },
@@ -103,18 +143,17 @@
                     id: 'id' + this.participants.length + new Date().getTime()
                 });
                 setTimeout(
-                    () =>
-                        (this.participants[n - 1].exclusions = (exclusions || '')
+                    () => (
+                        this.participants[n - 1].exclusions = (exclusions || '')
                             .split(',')
                             .map(s => s.trim())
                             .filter(s => !!s)
                             .map(exclusion => {
-                                var participant = this.participants.find(participant => (participant.name = exclusion));
-                                return {
-                                    id: participant.id,
-                                    text: participant.name
-                                };
-                            })),
+                                var participant = this.participants.find(participant => (participant.name === exclusion));
+                                if(participant) return ['id', 'text'].map(key => participant[key]);
+                            })
+                            .filter(s => !!s)
+                    ),
                     0
                 );
             },
@@ -124,7 +163,7 @@
                 Papa.parse(file, {
                     error: function() {
                         this.importing = false;
-                        alertify.alert(this.lang.get('csv.importError'));
+                        alertify.alert(this.Lang.get('csv.importError'));
                     },
                     complete: function(file) {
                         this.importing = false;
@@ -144,7 +183,7 @@
                                 this.addParticipant();
                             }
                         }
-                        alertify.alert(this.lang.get('csv.importSuccess'));
+                        alertify.alert(this.Lang.get('csv.importSuccess'));
                     }.bind(this)
                 });
             }
@@ -158,7 +197,7 @@
             <ajax-form id="randomForm" action="/">
                 <template #default="{ sending, sent, errors }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
-                        {{ lang.get('form.success') }}
+                        {{ Lang.get('form.success') }}
                     </div>
 
                     <div v-show="errors.length && !sent" id="errors-wrapper" class="alert alert-danger">
@@ -168,19 +207,19 @@
                     </div>
 
                     <fieldset>
-                        <legend>{{ lang.get('form.participants') }}</legend>
+                        <legend>{{ Lang.get('form.participants') }}</legend>
                         <div class="table-responsive form-group">
                             <table id="participants" class="table table-hover table-numbered">
                                 <thead>
                                     <tr>
                                         <th style="width: 33%" scope="col">
-                                            {{ lang.get('form.participant.name') }}
+                                            {{ Lang.get('form.participant.name') }}
                                         </th>
                                         <th style="width: 33%" scope="col">
-                                            {{ lang.get('form.participant.email') }}
+                                            {{ Lang.get('form.participant.email') }}
                                         </th>
                                         <th style="width: 30%" scope="col">
-                                            {{ lang.get('form.participant.exclusions') }}
+                                            {{ Lang.get('form.participant.exclusions') }}
                                         </th>
                                         <th style="width: 3%" scope="col" />
                                     </tr>
@@ -191,21 +230,19 @@
                                         is="participant"
                                         v-for="(participant, idx) in participants"
                                         :key="participant.id"
-                                        :name="participant.name"
-                                        :email="participant.email"
-                                        :exclusions="participant.exclusions"
-                                        :participants="participants"
+                                        v-bind="participant"
+                                        :names="participantNames"
                                         :idx="idx"
-                                        @input:name="participant.name = $event"
-                                        @input:email="participant.email = $event"
-                                        @input:exclusions="participant.exclusions = $event"
+                                        @input:name="$set(participant, 'name', $event)"
+                                        @input:email="$set(participant, 'email', $event)"
+                                        @input:exclusions="$set(participant, 'exclusions', $event)"
                                         @delete="participants.splice(idx, 1)"
                                     />
                                 </tbody>
                             </table>
                             <button type="button" class="btn btn-success participant-add" @click="addParticipant()">
                                 <i class="fas fa-plus" />
-                                {{ lang.get('form.participant.add') }}
+                                {{ Lang.get('form.participant.add') }}
                             </button>
                             <button
                                 type="button"
@@ -215,10 +252,10 @@
                             >
                                 <span v-if="importing"
                                     ><i class="fas fa-spinner fa-spin" />
-                                    {{ lang.get('form.participants.importing') }}</span
+                                    {{ Lang.get('form.participants.importing') }}</span
                                 >
                                 <span v-else
-                                    ><i class="fas fa-list-alt" /> {{ lang.get('form.participants.import') }}</span
+                                    ><i class="fas fa-list-alt" /> {{ Lang.get('form.participants.import') }}</span
                                 >
                             </button>
                         </div>
@@ -229,39 +266,42 @@
                         <div id="contact">
                             <fieldset id="form-mail-group">
                                 <div class="form-group">
-                                    <label for="mailTitle">{{ lang('form.mail.title') }}</label>
+                                    <label for="mailTitle">{{ Lang.get('form.mail.title') }}</label>
                                     <input
                                         id="mailTitle"
                                         type="text"
                                         name="title"
-                                        :required="emailUsed"
-                                        :placeholder="lang.get('form.mail.title.placeholder')"
-                                        value=""
+                                        :placeholder="Lang.get('form.mail.title.placeholder')"
+                                        v-model="title"
                                         class="form-control"
+                                        :class="{ 'is-invalid': $v.title.$error }"
+                                        :aria-invalid="$v.title.$error"
                                     />
                                 </div>
                                 <div class="form-group">
-                                    <label for="mailContent">{{ lang.get('form.mail.content') }}</label>
+                                    <label for="mailContent">{{ Lang.get('form.mail.content') }}</label>
                                     <textarea
                                         id="mailContent"
                                         v-autosize
                                         name="content-email"
-                                        :required="emailUsed"
-                                        :placeholder="lang.get('form.mail.content.placeholder')"
+                                        :placeholder="Lang.get('form.mail.content.placeholder')"
                                         class="form-control"
+                                        :class="{ 'is-invalid': $v.content.$error }"
+                                        :aria-invalid="$v.content.$error"
                                         rows="3"
+                                        v-model="content"
                                     />
                                     <textarea
                                         id="mailPost"
                                         class="form-control extended"
                                         read-only
                                         disabled
-                                        :value="lang.get('form.mail.post2')"
+                                        :value="Lang.get('form.mail.post2')"
                                     />
 
                                     <blockquote class="tips">
-                                        <p>@lang('form.mail.content.tip1')</p>
-                                        <p>@lang('form.mail.content.tip2')</p>
+                                        <p>{{ Lang.get('form.mail.content.tip1') }}</p>
+                                        <p>{{ Lang.get('form.mail.content.tip2') }}</p>
                                     </blockquote>
                                 </div>
                             </fieldset>
@@ -270,12 +310,13 @@
                     <fieldset>
                         <div id="form-options" class="form-group">
                             <label
-                                >{{ lang.get('form.data-expiration')
+                                >{{ Lang.get('form.data-expiration')
                                 }}<input
                                     type="date"
                                     name="data-expiration"
-                                    :min="moment(date, 1, 'day')"
-                                    :max="moment(date, 1, 'year')"
+                                    v-model="expiration"
+                                    :min="moment(1, 'day')"
+                                    :max="moment(1, 'year')"
                             /></label>
                         </div>
                     </fieldset>
@@ -286,17 +327,17 @@
 
                         <button type="submit" class="btn btn-primary btn-lg">
                             <span v-if="sending"
-                                ><i class="fas fa-spinner fa-spin" /> {{ lang.get('form.sending') }}</span
+                                ><i class="fas fa-spinner fa-spin" /> {{ Lang.get('form.sending') }}</span
                             >
-                            <span v-else-if="sent"><i class="fas fa-check-circle" /> {{ lang.get('form.sent') }}</span>
-                            <span v-else>{{ lang.get('form.submit') }}</span>
+                            <span v-else-if="sent"><i class="fas fa-check-circle" /> {{ Lang.get('form.sent') }}</span>
+                            <span v-else>{{ Lang.get('form.submit') }}</span>
                         </button>
                     </fieldset>
                 </template>
             </ajax-form>
         </div>
         <div id="errors-wrapper" class="alert alert-danger v-rcloak">
-            {{ lang.get('form.waiting') }}
+            {{ Lang.get('form.waiting') }}
         </div>
         <csv v-if="showModal" @import="importParticipants" @close="showModal = false" />
     </div>
