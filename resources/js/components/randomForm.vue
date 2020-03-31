@@ -224,7 +224,7 @@
                                         <th style="width: 3%" scope="col" />
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody is="transition-group" type="transition" name="fade">
                                     <!-- Default is three empty rows to have three entries at any time -->
                                     <tr
                                         is="participant"
@@ -342,3 +342,13 @@
         <csv v-if="showModal" @import="importParticipants" @close="showModal = false" />
     </div>
 </template>
+
+<style>
+  .fade-enter-active, .fade-leave-active, .fade-move {
+    transition: all 1s
+  }
+
+  .fade-enter, .fade-leave-to {
+    opacity: 0
+  }
+</style>
