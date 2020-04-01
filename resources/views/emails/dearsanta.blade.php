@@ -8,7 +8,7 @@
         </td>
 </tr>
 <tr>
-        <td style="text-align:center; font-family: monospace; font-style:italic; padding-bottom:15px;">
+        <td style="text-align:center; font-style:italic; padding-bottom:15px;">
 
                 <p style="border:1px solid #000000;background-color:#dddddd;">Ceci est un message automatique, merci de ne pas y répondre.</p>
 

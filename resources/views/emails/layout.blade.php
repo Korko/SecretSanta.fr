@@ -24,14 +24,17 @@
 	</style>
 	<![endif]-->
 
+        <link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Kreon&display=swap" rel="stylesheet">
+
 	<style type="text/css" media="screen">
 		/* Linked Styles */
-		html { background: #ffffff; color: #000; font-family:Georgia, serif; }
-		body { background: #ffffff; color: #000; font-family:Georgia, serif; padding:0 !important; margin:0 !important; display:block !important; -webkit-text-size-adjust:none; background:#ffffff }
+		html { background: #ffffff; color: #000; font-family:'Kreon', Georgia, serif; }
+		body { background: #ffffff; color: #000; font-family:'Kreon', Georgia, serif; padding:0 !important; margin:0 !important; display:block !important; -webkit-text-size-adjust:none; background:#ffffff }
 		a { color:#e85853; text-decoration:none }
 		p { padding:0 !important; margin:0 !important }
 		img { -ms-interpolation-mode: bicubic; /* Allow smoother rendering of resized image in Internet Explorer */ }
 		.mcnPreviewText { display: none !important; }
+                blockquote { font-family:'Annie Use Your Telescope', cursive; }
 
 		/* Mobile styles */
 		@media only screen and (max-device-width: 480px), only screen and (max-width: 480px) {

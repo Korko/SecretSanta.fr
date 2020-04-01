@@ -6,7 +6,7 @@ return [
     'nav.go'   => 'Allez, c\'est parti !',
     'nav.faq'  => 'FAQ',
 
-    'title'    => 'Secret Santa . fr',
+    'title'    => 'Secret Santa .fr',
     'subtitle' => 'Offrez-vous des cadeaux... secrètement !',
 
     'section.what.title'    => 'Qu\'est-ce que c\'est ?',
@@ -83,7 +83,7 @@ via SecretSanta.fr',
     'mail.post2' => '----
 Pour écrire à votre Secret Santa, allez sur la page suivante : :link
 via SecretSanta.fr',
-    'mail.content.tip1' => 'Utilisez "{SANTA}" pour le nom de celui qui recevra le mail et "{TARGET}" pour le nom de sa cible.',
+    'mail.content.tip1' => 'Utilisez ":open-santa{SANTA}:close" pour le nom de celui qui recevra le mail et ":open-target{TARGET}:close" pour le nom de sa cible.',
     'mail.content.tip2' => 'Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.',
 
     'data-expiration'   => 'Date limite de stockage des emails',

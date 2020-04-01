@@ -39,7 +39,8 @@ mix.js('resources/js/common.js', 'public/js')
    .sass('resources/sass/randomForm.scss', 'public/css')
    .sass('resources/sass/dearSanta.scss', 'public/css')
    .sass('resources/sass/organizer.scss', 'public/css')
-   .copy('resources/img', 'public/images');
+   .copy('resources/img', 'public/images')
+   .copy('resources/fonts', 'public/fonts');
 
 if (mix.inProduction()) {
     mix.version();

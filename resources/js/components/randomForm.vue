@@ -39,13 +39,12 @@
                     .format('YYYY-MM-DD'),
                 now: window.now,
                 showModal: false,
-                importing: false,
-                Lang: Lang
+                importing: false
             };
         },
 
         computed: {
-            participantNames: function() {
+            participantNames() {
                 var names = {};
                 this.participants.forEach((participant, idx) => {
                     if (participant.name) {
@@ -70,7 +69,7 @@
                     return value.indexOf('{TARGET}') >= 0;
                 }
             },
-            expiration: function() {
+            expiration() {
                 return {
                     required,
                     minValue: this.moment(1, 'day'),
@@ -80,21 +79,21 @@
         },
 
         watch: {
-            sending: function(newVal) {
+            sending(newVal) {
                 // If we reset the sending status, reset the captcha
                 if (!newVal) {
                     grecaptcha && grecaptcha.reset(); // eslint-disable-line no-undef
                 }
             },
 
-            sent: function(newVal) {
+            sent(newVal) {
                 // If sent is a success, scroll to the message
                 if (newVal) {
                     jQuery.scrollTo('#form .row', 800, { offset: -120 });
                 }
             },
 
-            errors: function(newVal) {
+            errors(newVal) {
                 // If there's new errors, scroll to them
                 if (newVal.length) {
                     jQuery.scrollTo('#form .row', 800, { offset: -120 });
@@ -126,17 +125,35 @@
         },
 
         methods: {
-            moment: function(amount, unit) {
+            t(key, params) {
+                return Lang.get(key, params);
+            },
+
+            // Only way to have parameters parsing for vuejs events
+            td(key, params) {
+                var data = this.t(key, params);
+                return {
+                    name: "dynamic-string",
+                    template: `<p>${data}</p>`
+                }
+            },
+
+            // Just because I couldn't handle too much depth with quotes
+            anchor(event) {
+                return `<a href="" @click.prevent=\'\$emit("${event}")\'>`;
+            }, 
+
+            moment(amount, unit) {
                 return Moment(this.now)
                     .add(amount, unit)
                     .format('YYYY-MM-DD');
             },
 
-            resetParticipants: function() {
+            resetParticipants() {
                 this.participants = [];
             },
 
-            addParticipant: function(name, email, exclusions) {
+            addParticipant(name, email, exclusions) {
                 var n = this.participants.push({
                     name: name,
                     email: email,
@@ -158,12 +175,12 @@
                 );
             },
 
-            importParticipants: function(file) {
+            importParticipants(file) {
                 this.importing = true;
                 Papa.parse(file, {
                     error: function() {
                         this.importing = false;
-                        alertify.alert(this.Lang.get('csv.importError'));
+                        alertify.alert(this.t('csv.importError'));
                     },
                     complete: function(file) {
                         this.importing = false;
@@ -183,9 +200,17 @@
                                 this.addParticipant();
                             }
                         }
-                        alertify.alert(this.Lang.get('csv.importSuccess'));
+                        alertify.alert(this.t('csv.importSuccess'));
                     }.bind(this)
                 });
+            },
+
+            appendSanta() {
+                this.content += "{SANTA}";
+            },
+
+            appendTarget() {
+                this.content += "{TARGET}";
             }
         }
     };
@@ -194,10 +219,10 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <ajax-form id="randomForm" action="/">
+            <ajax-form id="randomForm" action="/" :button_send="t('form.submit')">
                 <template #default="{ sending, sent, errors }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
-                        {{ Lang.get('form.success') }}
+                        {{ t('form.success') }}
                     </div>
 
                     <div v-show="errors.length && !sent" id="errors-wrapper" class="alert alert-danger">
@@ -207,19 +232,19 @@
                     </div>
 
                     <fieldset>
-                        <legend>{{ Lang.get('form.participants') }}</legend>
+                        <legend>{{ t('form.participants') }}</legend>
                         <div class="table-responsive form-group">
                             <table id="participants" class="table table-hover table-numbered">
                                 <thead>
                                     <tr>
                                         <th style="width: 33%" scope="col">
-                                            {{ Lang.get('form.participant.name') }}
+                                            {{ t('form.participant.name') }}
                                         </th>
                                         <th style="width: 33%" scope="col">
-                                            {{ Lang.get('form.participant.email') }}
+                                            {{ t('form.participant.email') }}
                                         </th>
                                         <th style="width: 30%" scope="col">
-                                            {{ Lang.get('form.participant.exclusions') }}
+                                            {{ t('form.participant.exclusions') }}
                                         </th>
                                         <th style="width: 3%" scope="col" />
                                     </tr>
@@ -242,7 +267,7 @@
                             </table>
                             <button type="button" class="btn btn-success participant-add" @click="addParticipant()">
                                 <i class="fas fa-plus" />
-                                {{ Lang.get('form.participant.add') }}
+                                {{ t('form.participant.add') }}
                             </button>
                             <button
                                 type="button"
@@ -252,10 +277,10 @@
                             >
                                 <span v-if="importing"
                                     ><i class="fas fa-spinner fa-spin" />
-                                    {{ Lang.get('form.participants.importing') }}</span
+                                    {{ t('form.participants.importing') }}</span
                                 >
                                 <span v-else
-                                    ><i class="fas fa-list-alt" /> {{ Lang.get('form.participants.import') }}</span
+                                    ><i class="fas fa-list-alt" /> {{ t('form.participants.import') }}</span
                                 >
                             </button>
                         </div>
@@ -266,12 +291,12 @@
                         <div id="contact">
                             <fieldset id="form-mail-group">
                                 <div class="form-group">
-                                    <label for="mailTitle">{{ Lang.get('form.mail.title') }}</label>
+                                    <label for="mailTitle">{{ t('form.mail.title') }}</label>
                                     <input
                                         id="mailTitle"
                                         type="text"
                                         name="title"
-                                        :placeholder="Lang.get('form.mail.title.placeholder')"
+                                        :placeholder="t('form.mail.title.placeholder')"
                                         v-model="title"
                                         class="form-control"
                                         :class="{ 'is-invalid': $v.title.$error }"
@@ -279,12 +304,12 @@
                                     />
                                 </div>
                                 <div class="form-group">
-                                    <label for="mailContent">{{ Lang.get('form.mail.content') }}</label>
+                                    <label for="mailContent">{{ t('form.mail.content') }}</label>
                                     <textarea
                                         id="mailContent"
                                         v-autosize
                                         name="content-email"
-                                        :placeholder="Lang.get('form.mail.content.placeholder')"
+                                        :placeholder="t('form.mail.content.placeholder')"
                                         class="form-control"
                                         :class="{ 'is-invalid': $v.content.$error }"
                                         :aria-invalid="$v.content.$error"
@@ -296,12 +321,12 @@
                                         class="form-control extended"
                                         read-only
                                         disabled
-                                        :value="Lang.get('form.mail.post2')"
+                                        :value="t('form.mail.post2')"
                                     />
 
                                     <blockquote class="tips">
-                                        <p>{{ Lang.get('form.mail.content.tip1') }}</p>
-                                        <p>{{ Lang.get('form.mail.content.tip2') }}</p>
+                                        <p :is="td('form.mail.content.tip1', {'open-target': anchor('target'), 'open-santa': anchor('santa'), 'close':'</a>'})" @santa="appendSanta" @target="appendTarget"></p>
+                                        <p>{{ t('form.mail.content.tip2') }}</p>
                                     </blockquote>
                                 </div>
                             </fieldset>
@@ -310,7 +335,7 @@
                     <fieldset>
                         <div id="form-options" class="form-group">
                             <label
-                                >{{ Lang.get('form.data-expiration')
+                                >{{ t('form.data-expiration')
                                 }}<input
                                     type="date"
                                     name="data-expiration"
@@ -320,24 +345,11 @@
                             /></label>
                         </div>
                     </fieldset>
-                    <fieldset>
-                        <div class="form-group btn">
-                            <!-- {!! NoCaptcha::display(['data-theme' => 'light']) !!} -->
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            <span v-if="sending"
-                                ><i class="fas fa-spinner fa-spin" /> {{ Lang.get('form.sending') }}</span
-                            >
-                            <span v-else-if="sent"><i class="fas fa-check-circle" /> {{ Lang.get('form.sent') }}</span>
-                            <span v-else>{{ Lang.get('form.submit') }}</span>
-                        </button>
-                    </fieldset>
                 </template>
             </ajax-form>
         </div>
         <div id="errors-wrapper" class="alert alert-danger v-rcloak">
-            {{ Lang.get('form.waiting') }}
+            {{ t('form.waiting') }}
         </div>
         <csv v-if="showModal" @import="importParticipants" @close="showModal = false" />
     </div>
