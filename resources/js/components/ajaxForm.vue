@@ -12,6 +12,18 @@
             button: {
                 type: Boolean,
                 default: true
+            },
+            button_send: {
+                type: String,
+                default: ''
+            },
+            button_sending: {
+                type: String,
+                default: ''
+            },
+            button_sent: {
+                type: String,
+                default: ''
             }
         },
         data: () => {
@@ -105,9 +117,9 @@
             </div>
 
             <button type="submit" class="btn btn-primary btn-lg">
-                <span v-if="sent"><span class="fas fa-check-circle" /> {{ lang.get('form.sent') }}</span>
-                <span v-else-if="sending"><span class="fas fa-spinner" /> {{ lang.get('form.sending') }}</span>
-                <span v-else>{{ lang.get('form.send') }}</span>
+                <span v-if="sent"><span class="fas fa-check-circle" /> {{ button_sent || lang.get('form.sent') }}</span>
+                <span v-else-if="sending"><span class="fas fa-spinner" /> {{ button_sending || lang.get('form.sending') }}</span>
+                <span v-else>{{ button_send || lang.get('form.send') }}</span>
             </button>
         </fieldset>
     </form>

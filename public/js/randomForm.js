@@ -225,8 +225,7 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
       expiration: moment__WEBPACK_IMPORTED_MODULE_7___default()(window.now).add(1, 'day').format('YYYY-MM-DD'),
       now: window.now,
       showModal: false,
-      importing: false,
-      Lang: _partials_lang_js__WEBPACK_IMPORTED_MODULE_9__["default"]
+      importing: false
     };
   },
   computed: {
@@ -306,6 +305,21 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
     }.bind(this));
   },
   methods: {
+    t: function t(key, params) {
+      return _partials_lang_js__WEBPACK_IMPORTED_MODULE_9__["default"].get(key, params);
+    },
+    // Only way to have parameters parsing for vuejs events
+    td: function td(key, params) {
+      var data = this.t(key, params);
+      return {
+        name: "dynamic-string",
+        template: "<p>".concat(data, "</p>")
+      };
+    },
+    // Just because I couldn't handle too much depth with quotes
+    anchor: function anchor(event) {
+      return "<a href=\"\" @click.prevent='$emit(\"".concat(event, "\")'>");
+    },
     moment: function moment(amount, unit) {
       return moment__WEBPACK_IMPORTED_MODULE_7___default()(this.now).add(amount, unit).format('YYYY-MM-DD');
     },
@@ -343,7 +357,7 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
       papaparse__WEBPACK_IMPORTED_MODULE_8___default.a.parse(file, {
         error: function error() {
           this.importing = false;
-          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(this.Lang.get('csv.importError'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(this.t('csv.importError'));
         },
         complete: function (file) {
           this.importing = false;
@@ -361,9 +375,15 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
             }
           }
 
-          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(this.Lang.get('csv.importSuccess'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(this.t('csv.importSuccess'));
         }.bind(this)
       });
+    },
+    appendSanta: function appendSanta() {
+      this.content += "{SANTA}";
+    },
+    appendTarget: function appendTarget() {
+      this.content += "{TARGET}";
     }
   }
 });
@@ -1110,7 +1130,11 @@ var render = function() {
         { staticClass: "row text-center form" },
         [
           _c("ajax-form", {
-            attrs: { id: "randomForm", action: "/" },
+            attrs: {
+              id: "randomForm",
+              action: "/",
+              button_send: _vm.t("form.submit")
+            },
             scopedSlots: _vm._u([
               {
                 key: "default",
@@ -1136,7 +1160,7 @@ var render = function() {
                       [
                         _vm._v(
                           "\n                    " +
-                            _vm._s(_vm.Lang.get("form.success")) +
+                            _vm._s(_vm.t("form.success")) +
                             "\n                "
                         )
                       ]
@@ -1172,7 +1196,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("fieldset", [
                       _c("legend", [
-                        _vm._v(_vm._s(_vm.Lang.get("form.participants")))
+                        _vm._v(_vm._s(_vm.t("form.participants")))
                       ]),
                       _vm._v(" "),
                       _c(
@@ -1198,9 +1222,7 @@ var render = function() {
                                       _vm._v(
                                         "\n                                        " +
                                           _vm._s(
-                                            _vm.Lang.get(
-                                              "form.participant.name"
-                                            )
+                                            _vm.t("form.participant.name")
                                           ) +
                                           "\n                                    "
                                       )
@@ -1217,9 +1239,7 @@ var render = function() {
                                       _vm._v(
                                         "\n                                        " +
                                           _vm._s(
-                                            _vm.Lang.get(
-                                              "form.participant.email"
-                                            )
+                                            _vm.t("form.participant.email")
                                           ) +
                                           "\n                                    "
                                       )
@@ -1236,9 +1256,7 @@ var render = function() {
                                       _vm._v(
                                         "\n                                        " +
                                           _vm._s(
-                                            _vm.Lang.get(
-                                              "form.participant.exclusions"
-                                            )
+                                            _vm.t("form.participant.exclusions")
                                           ) +
                                           "\n                                    "
                                       )
@@ -1329,7 +1347,7 @@ var render = function() {
                               _c("i", { staticClass: "fas fa-plus" }),
                               _vm._v(
                                 "\n                            " +
-                                  _vm._s(_vm.Lang.get("form.participant.add")) +
+                                  _vm._s(_vm.t("form.participant.add")) +
                                   "\n                        "
                               )
                             ]
@@ -1359,9 +1377,7 @@ var render = function() {
                                     _vm._v(
                                       "\n                                " +
                                         _vm._s(
-                                          _vm.Lang.get(
-                                            "form.participants.importing"
-                                          )
+                                          _vm.t("form.participants.importing")
                                         )
                                     )
                                   ])
@@ -1370,9 +1386,7 @@ var render = function() {
                                     _vm._v(
                                       " " +
                                         _vm._s(
-                                          _vm.Lang.get(
-                                            "form.participants.import"
-                                          )
+                                          _vm.t("form.participants.import")
                                         )
                                     )
                                   ])
@@ -1389,7 +1403,7 @@ var render = function() {
                         _c("fieldset", { attrs: { id: "form-mail-group" } }, [
                           _c("div", { staticClass: "form-group" }, [
                             _c("label", { attrs: { for: "mailTitle" } }, [
-                              _vm._v(_vm._s(_vm.Lang.get("form.mail.title")))
+                              _vm._v(_vm._s(_vm.t("form.mail.title")))
                             ]),
                             _vm._v(" "),
                             _c("input", {
@@ -1407,7 +1421,7 @@ var render = function() {
                                 id: "mailTitle",
                                 type: "text",
                                 name: "title",
-                                placeholder: _vm.Lang.get(
+                                placeholder: _vm.t(
                                   "form.mail.title.placeholder"
                                 ),
                                 "aria-invalid": _vm.$v.title.$error
@@ -1426,7 +1440,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
                             _c("label", { attrs: { for: "mailContent" } }, [
-                              _vm._v(_vm._s(_vm.Lang.get("form.mail.content")))
+                              _vm._v(_vm._s(_vm.t("form.mail.content")))
                             ]),
                             _vm._v(" "),
                             _c("textarea", {
@@ -1444,7 +1458,7 @@ var render = function() {
                               attrs: {
                                 id: "mailContent",
                                 name: "content-email",
-                                placeholder: _vm.Lang.get(
+                                placeholder: _vm.t(
                                   "form.mail.content.placeholder"
                                 ),
                                 "aria-invalid": _vm.$v.content.$error,
@@ -1468,24 +1482,36 @@ var render = function() {
                                 "read-only": "",
                                 disabled: ""
                               },
-                              domProps: {
-                                value: _vm.Lang.get("form.mail.post2")
-                              }
+                              domProps: { value: _vm.t("form.mail.post2") }
                             }),
                             _vm._v(" "),
-                            _c("blockquote", { staticClass: "tips" }, [
-                              _c("p", [
-                                _vm._v(
-                                  _vm._s(_vm.Lang.get("form.mail.content.tip1"))
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("p", [
-                                _vm._v(
-                                  _vm._s(_vm.Lang.get("form.mail.content.tip2"))
-                                )
-                              ])
-                            ])
+                            _c(
+                              "blockquote",
+                              { staticClass: "tips" },
+                              [
+                                _c(
+                                  _vm.td("form.mail.content.tip1", {
+                                    "open-target": _vm.anchor("target"),
+                                    "open-santa": _vm.anchor("santa"),
+                                    close: "</a>"
+                                  }),
+                                  {
+                                    tag: "p",
+                                    on: {
+                                      santa: _vm.appendSanta,
+                                      target: _vm.appendTarget
+                                    }
+                                  }
+                                ),
+                                _vm._v(" "),
+                                _c("p", [
+                                  _vm._v(
+                                    _vm._s(_vm.t("form.mail.content.tip2"))
+                                  )
+                                ])
+                              ],
+                              1
+                            )
                           ])
                         ])
                       ])
@@ -1500,9 +1526,7 @@ var render = function() {
                         },
                         [
                           _c("label", [
-                            _vm._v(
-                              _vm._s(_vm.Lang.get("form.data-expiration"))
-                            ),
+                            _vm._v(_vm._s(_vm.t("form.data-expiration"))),
                             _c("input", {
                               directives: [
                                 {
@@ -1531,37 +1555,6 @@ var render = function() {
                           ])
                         ]
                       )
-                    ]),
-                    _vm._v(" "),
-                    _c("fieldset", [
-                      _c("div", { staticClass: "form-group btn" }),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary btn-lg",
-                          attrs: { type: "submit" }
-                        },
-                        [
-                          sending
-                            ? _c("span", [
-                                _c("i", {
-                                  staticClass: "fas fa-spinner fa-spin"
-                                }),
-                                _vm._v(
-                                  " " + _vm._s(_vm.Lang.get("form.sending"))
-                                )
-                              ])
-                            : sent
-                            ? _c("span", [
-                                _c("i", { staticClass: "fas fa-check-circle" }),
-                                _vm._v(" " + _vm._s(_vm.Lang.get("form.sent")))
-                              ])
-                            : _c("span", [
-                                _vm._v(_vm._s(_vm.Lang.get("form.submit")))
-                              ])
-                        ]
-                      )
                     ])
                   ]
                 }
@@ -1578,7 +1571,7 @@ var render = function() {
           staticClass: "alert alert-danger v-rcloak",
           attrs: { id: "errors-wrapper" }
         },
-        [_vm._v("\n        " + _vm._s(_vm.Lang.get("form.waiting")) + "\n    ")]
+        [_vm._v("\n        " + _vm._s(_vm.t("form.waiting")) + "\n    ")]
       ),
       _vm._v(" "),
       _vm.showModal

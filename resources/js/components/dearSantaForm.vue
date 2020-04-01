@@ -54,7 +54,7 @@
 
 <template>
     <div>
-        <ajax-form :action="`/dearsanta/${data.santa.id}/send`" :button="true" @success="success">
+        <ajax-form :action="`/dearsanta/${data.santa.id}/send`" @success="success">
             <fieldset>
                 <div class="form-group">
                     <label for="mailContent">Contenu du mail</label>

@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Kreon:300,400,700);@charset "UTF-8";
+@charset "UTF-8";
 
 /*!
  * Bootstrap v4.4.1 (https://getbootstrap.com/)
@@ -11451,12 +11451,17 @@ TABLE OF CONTENTS
     01. General and Typography
 ========================================================================== */
 
+@font-face {
+  font-family: kreon;
+  src: url(/fonts/Kreon-VariableFont_wght.ttf?9d125cf1a7bc0813fb5533c1efaeac46) format("truetype");
+}
+
 html {
   font-size: 14px;
 }
 
 body {
-  font-family: "Kreon", serif;
+  font-family: kreon, serif;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
 }

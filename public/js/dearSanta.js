@@ -94,10 +94,7 @@ var render = function() {
       _c(
         "ajax-form",
         {
-          attrs: {
-            action: "/dearsanta/" + _vm.data.santa.id + "/send",
-            button: true
-          },
+          attrs: { action: "/dearsanta/" + _vm.data.santa.id + "/send" },
           on: { success: _vm.success }
         },
         [
