@@ -4,6 +4,20 @@ $footer-height: 120px;
 @import "~alertify.js/src/sass/alertify";
 @import "~vue-multiselect/dist/vue-multiselect.min";
 
+/* Fix tiny style glitches */
+.multiselect--active .multiselect__tags {
+    min-height: 41px;
+}
+.multiselect__input, .multiselect__single {
+    padding: 0 !important;
+}
+.multiselect, .multiselect__input, .multiselect__single {
+    font-size: 14px !important;
+}
+.multiselect__placeholder {
+    padding-top: 0 !important;
+}
+
 /* @import "~jquery-ui/themes/base/core";
 @import "~jquery-ui/themes/base/theme"; */
 @import "~jquery-ui/themes/base/datepicker";
