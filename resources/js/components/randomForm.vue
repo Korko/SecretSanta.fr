@@ -1,6 +1,6 @@
 <script>
     import jQuery from 'jquery';
-    window.$ = window.jQuery = $;
+    window.$ = window.jQuery = jQuery;
     import 'jquery-ui/ui/widgets/datepicker.js';
 
     import alertify from 'alertify.js';
@@ -14,7 +14,9 @@
     import { required, minLength } from 'vuelidate/lib/validators'
     Vue.use(Vuelidate);
 
-    import Modernizr from '../partials/modernizr.js';
+    // Still using CommonJS syntax
+    const Modernizr = require("Modernizr");
+
     import Moment from 'moment';
     import Papa from 'papaparse';
 

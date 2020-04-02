@@ -1,5 +1,8 @@
 const mix = require('laravel-mix');
 
+require('laravel-mix-polyfill');
+require('laravel-mix-modernizr');
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -22,10 +25,6 @@ mix.webpackConfig({
         // Matches all PHP or JSON files in `resources/lang` directory.
         test: /resources[\\\/]lang.+\.(php|json)$/,
         loader: 'laravel-localization-loader',
-      },
-      {
-        test: /resources\/js\/partials\/modernizr\.js$/,
-        loader: 'webpack-modernizr-loader'
       }
     ]
   }
@@ -35,6 +34,8 @@ mix.js('resources/js/common.js', 'public/js')
    .js('resources/js/randomForm.js', 'public/js')
    .js('resources/js/dearSanta.js', 'public/js')
    .js('resources/js/organizer.js', 'public/js')
+   .modernizr()
+   .polyfill({ entryPoints: "all" })
    .extract()
    .sass('resources/sass/randomForm.scss', 'public/css')
    .sass('resources/sass/dearSanta.scss', 'public/css')

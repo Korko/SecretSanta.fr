@@ -11911,6 +11911,11 @@ footer .row {
     12. Widgets
 ========================================================================== */
 
+.card-title {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
 .participants-import button .fa-spinner {
   margin-right: 10px;
 }
