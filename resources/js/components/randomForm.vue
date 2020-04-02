@@ -1,5 +1,7 @@
 <script>
     import jQuery from 'jquery';
+    window.$ = window.jQuery = $;
+    import 'jquery-ui/ui/widgets/datepicker.js';
 
     import alertify from 'alertify.js';
 
@@ -160,17 +162,20 @@
                     id: 'id' + this.participants.length + new Date().getTime()
                 });
                 setTimeout(
-                    () => (
-                        this.participants[n - 1].exclusions = (exclusions || '')
-                            .split(',')
-                            .map(s => s.trim())
-                            .filter(s => !!s)
-                            .map(exclusion => {
-                                var participant = this.participants.find(participant => (participant.name === exclusion));
-                                if(participant) return ['id', 'text'].map(key => participant[key]);
-                            })
-                            .filter(s => !!s)
-                    ),
+                    () => {
+                        this.$set(
+                            this.participants[n - 1],
+                            'exclusions',
+                            (exclusions || '')
+                                .split(',')
+                                .map(s => s.trim())
+                                .filter(exclusion => {
+                                    return (
+                                        this.participants.findIndex(participant => (participant.name === exclusion)) !== -1
+                                    );
+                                })
+                        );
+                    },
                     0
                 );
             },
@@ -254,13 +259,19 @@
                                     <tr
                                         is="participant"
                                         v-for="(participant, idx) in participants"
-                                        :key="participant.id"
-                                        v-bind="participant"
-                                        :names="participantNames"
+                                        :key="idx"
                                         :idx="idx"
+                                        :id="participant.id"
+                                        :name="participant.name"
+                                        :email="participant.email"
+                                        :exclusions="participant.exclusions"
+                                        :names="participantNames"
+                                        :required="idx < 3 && participants.length <= 3"
                                         @input:name="$set(participant, 'name', $event)"
                                         @input:email="$set(participant, 'email', $event)"
                                         @input:exclusions="$set(participant, 'exclusions', $event)"
+                                        @removeExclusion="participant.exclusions.remove($event)"
+                                        @addExclusion="participant.exclusions.push($event)"
                                         @delete="participants.splice(idx, 1)"
                                     />
                                 </tbody>

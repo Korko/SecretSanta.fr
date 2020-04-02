@@ -106,3 +106,14 @@ var alertify = require('alertify.js');
 if (window.global && window.global.alert) {
     alertify.alert(window.global.alert);
 }
+
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};

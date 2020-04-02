@@ -59,11 +59,13 @@
         </template>
 
         <template #footer>
-            <button type="reset" form="uploadCsv" class="btn btn-warning">
+            <!-- Duplicate emitCancel onclick and onreset on the form for browser not handler form attribute on buttons -->
+            <button type="reset" form="uploadCsv" class="btn btn-warning" @click="emitCancel">
                 <span class="fas fa-stop-circle" />
                 {{ lang.get('form.csv.cancel') }}
             </button>
-            <button type="submit" form="uploadCsv" class="btn btn-primary">
+            <!-- Duplicate emitSubmit onclick and onsubmit on the form for browser not handler form attribute on buttons -->
+            <button type="submit" form="uploadCsv" class="btn btn-primary" @click="emitSubmit">
                 <span class="fas fa-upload" />
                 {{ lang.get('form.csv.import') }}
             </button>

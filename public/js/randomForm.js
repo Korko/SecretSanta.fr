@@ -65,9 +65,6 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
       type: Number,
       required: true
     },
-    id: {
-      type: String
-    },
     name: {
       type: String,
       "default": ''
@@ -85,36 +82,23 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
     names: {
       type: Object,
       required: true
+    },
+    required: {
+      type: Boolean,
+      required: true
     }
   },
   data: function data() {
-    var _this = this;
-
     return {
-      selectedExclusions: this.exclusions.map(function (exclusion) {
-        return {
-          idx: exclusion,
-          name: _this.names[exclusion]
-        };
-      }),
       Lang: _partials_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"]
     };
   },
-  watch: {
-    selectedExclusions: function selectedExclusions() {
-      this.changeExclusions(this.selectedExclusions.map(function (exclusion) {
-        return exclusion.idx;
-      }));
-    }
-  },
   computed: {
     otherNames: function otherNames() {
-      var _this2 = this;
+      var _this = this;
 
-      return Object.keys(this.names).map(function (idx) {
-        return parseInt(idx, 10);
-      }).filter(function (idx) {
-        return idx !== _this2.idx;
+      return Object.values(this.names).filter(function (name) {
+        return name !== _this.name;
       });
     }
   },
@@ -125,7 +109,7 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
   validations: function validations() {
     return {
       name: {
-        required: this.idx < 3,
+        required: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_4__["requiredIf"])(this.required),
         isUnique: function isUnique(value) {
           // standalone validator ideally should not assume a field is required
           if (value === '') return true;
@@ -135,22 +119,12 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
         }
       },
       email: {
-        required: this.name !== '',
+        required: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_4__["requiredIf"])(this.name !== ''),
         email: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_4__["email"]
       }
     };
   },
   methods: {
-    formatOptions: function formatOptions(ids) {
-      var _this3 = this;
-
-      return ids.map(function (idx) {
-        return {
-          idx: idx,
-          name: _this3.names[idx]
-        };
-      });
-    },
     changeName: function changeName(value) {
       this.$emit('input:name', value);
     },
@@ -174,36 +148,40 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* WEBPACK VAR INJECTION */(function($, __webpack_provided_window_dot_jQuery) {/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
-/* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(alertify_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var vue_autosize__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-autosize */ "./node_modules/vue-autosize/src/index.js");
-/* harmony import */ var vue_autosize__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_autosize__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
-/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _partials_modernizr_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../partials/modernizr.js */ "./resources/js/partials/modernizr.js");
-/* harmony import */ var _partials_modernizr_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_partials_modernizr_js__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! papaparse */ "./node_modules/papaparse/papaparse.min.js");
-/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _partials_lang_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../partials/lang.js */ "./resources/js/partials/lang.js");
-/* harmony import */ var _csv_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./csv.vue */ "./resources/js/components/csv.vue");
-/* harmony import */ var _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ajaxForm.vue */ "./resources/js/components/ajaxForm.vue");
-/* harmony import */ var _participant_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./participant.vue */ "./resources/js/components/participant.vue");
+/* harmony import */ var jquery_ui_ui_widgets_datepicker_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery-ui/ui/widgets/datepicker.js */ "./node_modules/jquery-ui/ui/widgets/datepicker.js");
+/* harmony import */ var jquery_ui_ui_widgets_datepicker_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_widgets_datepicker_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! alertify.js */ "./node_modules/alertify.js/dist/js/alertify.js");
+/* harmony import */ var alertify_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(alertify_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var vue_autosize__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-autosize */ "./node_modules/vue-autosize/src/index.js");
+/* harmony import */ var vue_autosize__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_autosize__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _partials_modernizr_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../partials/modernizr.js */ "./resources/js/partials/modernizr.js");
+/* harmony import */ var _partials_modernizr_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_partials_modernizr_js__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! papaparse */ "./node_modules/papaparse/papaparse.min.js");
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _partials_lang_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../partials/lang.js */ "./resources/js/partials/lang.js");
+/* harmony import */ var _csv_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./csv.vue */ "./resources/js/components/csv.vue");
+/* harmony import */ var _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./ajaxForm.vue */ "./resources/js/components/ajaxForm.vue");
+/* harmony import */ var _participant_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./participant.vue */ "./resources/js/components/participant.vue");
+
+window.$ = __webpack_provided_window_dot_jQuery = $;
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vue_autosize__WEBPACK_IMPORTED_MODULE_3___default.a);
+vue__WEBPACK_IMPORTED_MODULE_3___default.a.use(vue_autosize__WEBPACK_IMPORTED_MODULE_4___default.a);
 
 
-vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_4___default.a);
+vue__WEBPACK_IMPORTED_MODULE_3___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_5___default.a);
 
 
 
@@ -213,16 +191,16 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    AjaxForm: _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
-    Csv: _csv_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
-    Participant: _participant_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
+    AjaxForm: _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
+    Csv: _csv_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
+    Participant: _participant_vue__WEBPACK_IMPORTED_MODULE_13__["default"]
   },
   data: function data() {
     return {
       participants: [],
       title: '',
       content: '',
-      expiration: moment__WEBPACK_IMPORTED_MODULE_7___default()(window.now).add(1, 'day').format('YYYY-MM-DD'),
+      expiration: moment__WEBPACK_IMPORTED_MODULE_8___default()(window.now).add(1, 'day').format('YYYY-MM-DD'),
       now: window.now,
       showModal: false,
       importing: false
@@ -241,21 +219,21 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
   },
   validations: {
     participants: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_5__["required"],
-      minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_5__["minLength"])(3)
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_6__["required"],
+      minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_6__["minLength"])(3)
     },
     title: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_5__["required"]
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_6__["required"]
     },
     content: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_5__["required"],
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_6__["required"],
       containsTarget: function containsTarget(value) {
         return value.indexOf('{TARGET}') >= 0;
       }
     },
     expiration: function expiration() {
       return {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_5__["required"],
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_6__["required"],
         minValue: this.moment(1, 'day'),
         maxValue: this.moment(1, 'year')
       };
@@ -289,8 +267,8 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
     this.addParticipant();
     this.addParticipant();
     this.addParticipant();
-    vue__WEBPACK_IMPORTED_MODULE_2___default.a.nextTick(function () {
-      if (!_partials_modernizr_js__WEBPACK_IMPORTED_MODULE_6___default.a.inputtypes.date) {
+    vue__WEBPACK_IMPORTED_MODULE_3___default.a.nextTick(function () {
+      if (!_partials_modernizr_js__WEBPACK_IMPORTED_MODULE_7___default.a.inputtypes.date) {
         jquery__WEBPACK_IMPORTED_MODULE_0___default()('input[type=date]', this.$el).datepicker({
           // Consistent format with the HTML5 picker
           dateFormat: 'yy-mm-dd',
@@ -299,14 +277,14 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
         });
       }
 
-      if (!_partials_modernizr_js__WEBPACK_IMPORTED_MODULE_6___default.a.filereader) {
+      if (!_partials_modernizr_js__WEBPACK_IMPORTED_MODULE_7___default.a.filereader) {
         jquery__WEBPACK_IMPORTED_MODULE_0___default()('.participants-imports').remove();
       }
     }.bind(this));
   },
   methods: {
     t: function t(key, params) {
-      return _partials_lang_js__WEBPACK_IMPORTED_MODULE_9__["default"].get(key, params);
+      return _partials_lang_js__WEBPACK_IMPORTED_MODULE_10__["default"].get(key, params);
     },
     // Only way to have parameters parsing for vuejs events
     td: function td(key, params) {
@@ -321,7 +299,7 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
       return "<a href=\"\" @click.prevent='$emit(\"".concat(event, "\")'>");
     },
     moment: function moment(amount, unit) {
-      return moment__WEBPACK_IMPORTED_MODULE_7___default()(this.now).add(amount, unit).format('YYYY-MM-DD');
+      return moment__WEBPACK_IMPORTED_MODULE_8___default()(this.now).add(amount, unit).format('YYYY-MM-DD');
     },
     resetParticipants: function resetParticipants() {
       this.participants = [];
@@ -335,29 +313,21 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
         id: 'id' + this.participants.length + new Date().getTime()
       });
       setTimeout(function () {
-        return _this.participants[n - 1].exclusions = (exclusions || '').split(',').map(function (s) {
+        _this.$set(_this.participants[n - 1], 'exclusions', (exclusions || '').split(',').map(function (s) {
           return s.trim();
-        }).filter(function (s) {
-          return !!s;
-        }).map(function (exclusion) {
-          var participant = _this.participants.find(function (participant) {
+        }).filter(function (exclusion) {
+          return _this.participants.findIndex(function (participant) {
             return participant.name === exclusion;
-          });
-
-          if (participant) return ['id', 'text'].map(function (key) {
-            return participant[key];
-          });
-        }).filter(function (s) {
-          return !!s;
-        });
+          }) !== -1;
+        }));
       }, 0);
     },
     importParticipants: function importParticipants(file) {
       this.importing = true;
-      papaparse__WEBPACK_IMPORTED_MODULE_8___default.a.parse(file, {
+      papaparse__WEBPACK_IMPORTED_MODULE_9___default.a.parse(file, {
         error: function error() {
           this.importing = false;
-          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(this.t('csv.importError'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_2___default.a.alert(this.t('csv.importError'));
         },
         complete: function (file) {
           this.importing = false;
@@ -375,7 +345,7 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
             }
           }
 
-          alertify_js__WEBPACK_IMPORTED_MODULE_1___default.a.alert(this.t('csv.importSuccess'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_2___default.a.alert(this.t('csv.importSuccess'));
         }.bind(this)
       });
     },
@@ -387,6 +357,7 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
     }
   }
 });
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
 
@@ -838,7 +809,8 @@ var render = function() {
               "button",
               {
                 staticClass: "btn btn-warning",
-                attrs: { type: "reset", form: "uploadCsv" }
+                attrs: { type: "reset", form: "uploadCsv" },
+                on: { click: _vm.emitCancel }
               },
               [
                 _c("span", { staticClass: "fas fa-stop-circle" }),
@@ -854,7 +826,8 @@ var render = function() {
               "button",
               {
                 staticClass: "btn btn-primary",
-                attrs: { type: "submit", form: "uploadCsv" }
+                attrs: { type: "submit", form: "uploadCsv" },
+                on: { click: _vm.emitSubmit }
               },
               [
                 _c("span", { staticClass: "fas fa-upload" }),
@@ -954,151 +927,152 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "tr",
-    { staticClass: "participant", attrs: { id: "participant_" + _vm.idx } },
-    [
-      _c("td", { staticClass: "align-middle" }, [
-        _c("div", { staticClass: "input-group" }, [
-          _c("span", { staticClass: "input-group-prepend counter" }, [
-            _c(
-              "span",
-              { staticClass: "input-group-text" },
-              [
-                _vm._v(_vm._s(_vm.idx + 1)),
-                _vm.idx === 0 ? [_vm._v(" - Organisateur")] : _vm._e()
-              ],
-              2
-            )
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control participant-name",
-            class: { "is-invalid": _vm.$v.name.$error },
-            attrs: {
-              type: "text",
-              name: "participants[" + _vm.idx + "][name]",
-              placeholder: _vm.Lang.get("form.name.placeholder"),
-              "aria-invalid": _vm.$v.name.$error
-            },
-            domProps: { value: _vm.name },
-            on: {
-              input: function($event) {
-                return _vm.changeName($event.target.value)
-              },
-              blur: function($event) {
-                return _vm.$v.name.$touch()
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "invalid-tooltip" }, [
-            _vm._v("Chaque nom doit être unique.")
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("td", { staticClass: "border-left align-middle" }, [
-        _c("div", { staticClass: "input-group" }, [
-          _c("input", {
-            staticClass: "form-control participant-email",
-            class: { "is-invalid": _vm.$v.email.$error },
-            attrs: {
-              type: "email",
-              name: "participants[" + _vm.idx + "][email]",
-              placeholder: _vm.Lang.get("form.email.placeholder"),
-              "aria-invalid": _vm.$v.email.$error
-            },
-            domProps: { value: _vm.email },
-            on: {
-              input: function($event) {
-                return _vm.changeEmail($event.target.value)
-              },
-              blur: function($event) {
-                return _vm.$v.email.$touch()
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "invalid-tooltip" }, [
-            _vm._v("Veuillez entrer une adresse valide.")
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c(
-        "td",
-        {
-          staticClass:
-            "border-right text-left participant-exclusions-wrapper align-middle"
-        },
-        [
-          _c("multiselect", {
-            attrs: {
-              options: _vm.formatOptions(_vm.otherNames),
-              placeholder: _vm.Lang.get("form.exclusions.placeholder"),
-              multiple: true,
-              "hide-selected": true,
-              "preserve-search": true,
-              label: "name",
-              "track-by": "idx"
-            },
-            model: {
-              value: _vm.selectedExclusions,
-              callback: function($$v) {
-                _vm.selectedExclusions = $$v
-              },
-              expression: "selectedExclusions"
-            }
-          }),
-          _vm._v(" "),
+  return _c("tr", { staticClass: "participant" }, [
+    _c("td", { staticClass: "align-middle" }, [
+      _c("div", { staticClass: "input-group" }, [
+        _c("span", { staticClass: "input-group-prepend counter" }, [
           _c(
-            "select",
-            {
-              staticStyle: { display: "none" },
-              attrs: {
-                name: "participants[" + _vm.idx + "][exclusions][]",
-                multiple: ""
-              }
-            },
-            _vm._l(_vm.selectedExclusions, function(exclusion) {
-              return _c("option", {
-                key: exclusion.idx,
-                attrs: { selected: "" },
-                domProps: { value: exclusion.name }
-              })
-            }),
-            0
+            "span",
+            { staticClass: "input-group-text" },
+            [
+              _vm._v(_vm._s(_vm.idx + 1)),
+              _vm.idx === 0 ? [_vm._v(" - Organisateur")] : _vm._e()
+            ],
+            2
           )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("td", { staticClass: "participant-remove-wrapper align-middle" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-danger participant-remove",
-            attrs: {
-              type: "button",
-              disabled: _vm.idx < 3 && Object.keys(_vm.names).length <= 3
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control participant-name",
+          class: { "is-invalid": _vm.$v.name.$error },
+          attrs: {
+            type: "text",
+            name: "participants[" + _vm.idx + "][name]",
+            placeholder: _vm.Lang.get("form.name.placeholder"),
+            "aria-invalid": _vm.$v.name.$error
+          },
+          domProps: { value: _vm.name },
+          on: {
+            input: function($event) {
+              return _vm.changeName($event.target.value)
             },
-            on: {
-              click: function($event) {
-                return _vm.$emit("delete")
-              }
+            blur: function($event) {
+              return _vm.$v.name.$touch()
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "invalid-tooltip" }, [
+          _vm._v("Chaque nom doit être unique.")
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("td", { staticClass: "border-left align-middle" }, [
+      _c("div", { staticClass: "input-group" }, [
+        _c("input", {
+          staticClass: "form-control participant-email",
+          class: { "is-invalid": _vm.$v.email.$error },
+          attrs: {
+            type: "email",
+            name: "participants[" + _vm.idx + "][email]",
+            placeholder: _vm.Lang.get("form.email.placeholder"),
+            "aria-invalid": _vm.$v.email.$error
+          },
+          domProps: { value: _vm.email },
+          on: {
+            input: function($event) {
+              return _vm.changeEmail($event.target.value)
+            },
+            blur: function($event) {
+              return _vm.$v.email.$touch()
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "invalid-tooltip" }, [
+          _vm._v("Veuillez entrer une adresse valide.")
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "td",
+      {
+        staticClass:
+          "border-right text-left participant-exclusions-wrapper align-middle"
+      },
+      [
+        _c("multiselect", {
+          attrs: {
+            options: _vm.otherNames,
+            value: _vm.exclusions,
+            placeholder: _vm.Lang.get("form.exclusions.placeholder"),
+            multiple: true,
+            "hide-selected": true,
+            "preserve-search": true
+          },
+          on: {
+            select: function($event) {
+              return _vm.$emit("addExclusion", $event)
+            },
+            remove: function($event) {
+              return _vm.$emit("removeExclusion", $event)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            staticStyle: { display: "none" },
+            attrs: {
+              name: "participants[" + _vm.idx + "][exclusions][]",
+              multiple: ""
             }
           },
-          [
-            _c("i", { staticClass: "fas fa-minus" }),
-            _c("span", [
-              _vm._v(" " + _vm._s(_vm.Lang.get("form.participant.remove")))
-            ])
-          ]
+          _vm._l(_vm.exclusions, function(exclusion) {
+            return _c(
+              "option",
+              {
+                key: exclusion,
+                attrs: { selected: "" },
+                domProps: {
+                  value: Object.keys(_vm.names).find(function(idx) {
+                    return _vm.names[idx] === exclusion
+                  })
+                }
+              },
+              [_vm._v(_vm._s(_vm.exclusions))]
+            )
+          }),
+          0
         )
-      ])
-    ]
-  )
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("td", { staticClass: "participant-remove-wrapper align-middle" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger participant-remove",
+          attrs: { type: "button", disabled: _vm.required },
+          on: {
+            click: function($event) {
+              return _vm.$emit("delete")
+            }
+          }
+        },
+        [
+          _c("i", { staticClass: "fas fa-minus" }),
+          _c("span", [
+            _vm._v(" " + _vm._s(_vm.Lang.get("form.participant.remove")))
+          ])
+        ]
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -1280,51 +1254,56 @@ var render = function() {
                                   participant,
                                   idx
                                 ) {
-                                  return _c(
-                                    "participant",
-                                    _vm._b(
-                                      {
-                                        key: participant.id,
-                                        tag: "tr",
-                                        attrs: {
-                                          names: _vm.participantNames,
-                                          idx: idx
-                                        },
-                                        on: {
-                                          "input:name": function($event) {
-                                            return _vm.$set(
-                                              participant,
-                                              "name",
-                                              $event
-                                            )
-                                          },
-                                          "input:email": function($event) {
-                                            return _vm.$set(
-                                              participant,
-                                              "email",
-                                              $event
-                                            )
-                                          },
-                                          "input:exclusions": function($event) {
-                                            return _vm.$set(
-                                              participant,
-                                              "exclusions",
-                                              $event
-                                            )
-                                          },
-                                          delete: function($event) {
-                                            return _vm.participants.splice(
-                                              idx,
-                                              1
-                                            )
-                                          }
-                                        }
+                                  return _c("participant", {
+                                    key: idx,
+                                    tag: "tr",
+                                    attrs: {
+                                      idx: idx,
+                                      id: participant.id,
+                                      name: participant.name,
+                                      email: participant.email,
+                                      exclusions: participant.exclusions,
+                                      names: _vm.participantNames,
+                                      required:
+                                        idx < 3 && _vm.participants.length <= 3
+                                    },
+                                    on: {
+                                      "input:name": function($event) {
+                                        return _vm.$set(
+                                          participant,
+                                          "name",
+                                          $event
+                                        )
                                       },
-                                      "tr",
-                                      participant,
-                                      false
-                                    )
-                                  )
+                                      "input:email": function($event) {
+                                        return _vm.$set(
+                                          participant,
+                                          "email",
+                                          $event
+                                        )
+                                      },
+                                      "input:exclusions": function($event) {
+                                        return _vm.$set(
+                                          participant,
+                                          "exclusions",
+                                          $event
+                                        )
+                                      },
+                                      removeExclusion: function($event) {
+                                        return participant.exclusions.remove(
+                                          $event
+                                        )
+                                      },
+                                      addExclusion: function($event) {
+                                        return participant.exclusions.push(
+                                          $event
+                                        )
+                                      },
+                                      delete: function($event) {
+                                        return _vm.participants.splice(idx, 1)
+                                      }
+                                    }
+                                  })
                                 }),
                                 1
                               )

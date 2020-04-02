@@ -36,9 +36,9 @@
         computed: {
             errors() {
                 var errors = [];
-                for (var field in this.fieldErrors) {
-                    errors = errors.concat(this.fieldErrors[field]);
-                }
+                Object.keys(this.fieldErrors).forEach(field => {
+                    errors = errors.concat(this.fieldErrors[field][0] || this.fieldErrors[field]);
+                });
                 return errors;
             },
             ...mapState(['csrf', 'key', 'lang'])
