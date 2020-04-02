@@ -26,7 +26,7 @@ class OrganizerRecap extends Mailable
 
         $this->organizerName = $draw->organizer->name;
 
-        $this->expirationDate = $draw->expires_at->locale(App::getLocale())->isoFormat('LLLL');
+        $this->expirationDate = $draw->expires_at->locale(App::getLocale())->isoFormat('LL');
 
         $this->panelLink = route('organizerPanel', ['draw' => $draw->id]).'#'.base64_encode(Crypt::getKey());
     }
