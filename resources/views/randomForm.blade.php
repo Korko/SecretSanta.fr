@@ -54,7 +54,12 @@
                         </div>
                     </li>
                 </ul>
-                <div class="card bg-light card-body mb-3 well-lg">{!! nl2br(trans('form.section.what.notice', ['button' => str_replace("\n", '', view('partials.paypalButton'))])) !!}</div>
+                <div class="card w-100">
+                    <div class="bg-light card-body">
+                        <h6 class="card-title">@lang('form.fyi')</h6>
+                        <p class="card-text">{!! nl2br(trans('form.section.what.notice', ['button' => str_replace("\n", '', view('partials.paypalButton'))])) !!}</p>
+                    </div>
+                </div>
             </div>
         </div><!-- /.container -->
         <section class="ss-style-bottom"></section>
@@ -99,7 +104,12 @@
                         </div>
                     </li>
                 </ul>
-                <div class="card bg-light card-body mb-3 well-lg">{!! nl2br(trans('form.section.how.notice', ['link' => '<a href="https://github.com/Korko/SecretSanta">GitHub</a>'])) !!}</div>
+                <div class="card w-100">
+                    <div class="bg-light card-body">
+                        <h6 class="card-title">@lang('form.fyi')</h6>
+                        <p class="card-text">{!! nl2br(trans('form.section.how.notice', ['link' => '<a href="https://github.com/Korko/SecretSanta">GitHub</a>'])) !!}</p>
+                    </div>
+                </div>
             </div>
         </div><!-- /.container -->
         <section class="ss-style-bottom"></section>

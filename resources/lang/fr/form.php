@@ -9,6 +9,8 @@ return [
     'title'    => 'Secret Santa .fr',
     'subtitle' => 'Offrez-vous des cadeaux... secrètement !',
 
+    'fyi'      => 'Pour votre information',
+
     'section.what.title'    => 'Qu\'est-ce que c\'est ?',
     'section.what.subtitle' => 'Description du Secret Santa',
     'section.what.heading1' => 'Le principe',
@@ -16,8 +18,7 @@ return [
 Le déroulement est simple : chaque participant reçoit, de façon aléatoire, le nom de la personne à qui il devra faire un cadeau.
 Le montant du cadeau est généralement fixé au préalable (2€, 5€, 10€...)
 Le but n'est pas forcément de faire un beau cadeau mais d'être créatif !",
-    'section.what.notice' => 'Pour votre information
-secretsanta.fr est entièrement gratuit et sans publicité.
+    'section.what.notice' => 'secretsanta.fr est entièrement gratuit et sans publicité.
 Tout est payé par le développeur lui-même.
 Si cet outil vous plait, pensez à faire un don.
 :button',
@@ -34,8 +35,7 @@ A noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse 
     'section.how.content3' => "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participants recevront.
 Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".
 (Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
-    'section.how.notice' => 'Pour votre information
-secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.
+    'section.how.notice' => 'secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.
 Celles-ci sont chiffrées pour être inutilisables sans action de votre part.
 Aucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.
 Le code source est disponible sur :link',
