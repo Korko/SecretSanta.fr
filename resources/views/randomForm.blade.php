@@ -43,7 +43,7 @@
             <h2 class="section-title text-center">@lang('form.section.what.title')</h2>
             <p class="lead main text-center">@lang('form.section.what.subtitle')</p>
             <div class="row text-center what">
-                <ul class="media-list">
+                <ul class="media-list w-100">
                     <li class="media">
                         <div class="media-left media-middle">
                             <img class="media-object" src="/images/calendar-icon.png" />
@@ -75,7 +75,7 @@
             <h2 class="section-title text-center">@lang('form.section.how.title')</h2>
             <p class="lead main text-center">@lang('form.section.how.subtitle')</p>
             <div class="row text-center how">
-                <ul class="media-list">
+                <ul class="media-list w-100">
                     <li class="media">
                         <div class="media-left media-middle">
                             <img class="media-object" src="/images/user-icon.png" />
