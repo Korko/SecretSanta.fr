@@ -8,7 +8,7 @@
 	</td>
 </tr>
 <tr>
-	<td style="text-align:center; font-family: monospace; font-style:italic; padding-bottom:15px;">
+	<td style="text-align:center; font-style:italic; padding-bottom:15px;">
 		<p style="padding-bottom:10px !important">Bonjour {{ $organizerName }},</p>
 
 		<p style="padding-bottom:10px !important">Merci d'avoir organisé un SecretSanta en utilisant <a href="{{ config('app.url') }}">{{ config('app.name') }}</a>.</p>

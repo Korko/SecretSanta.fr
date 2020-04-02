@@ -6,7 +6,7 @@
     import Vue from 'vue';
 
     import Vuelidate from 'vuelidate';
-    import { required, email, integer, minLength } from 'vuelidate/lib/validators'
+    import { requiredIf, email, integer, minLength } from 'vuelidate/lib/validators'
     Vue.use(Vuelidate);
 
     export default {
@@ -17,9 +17,6 @@
             idx: {
                 type: Number,
                 required: true
-            },
-            id: {
-                type: String
             },
             name: {
                 type: String,
@@ -36,22 +33,20 @@
             names: {
                 type: Object,
                 required: true
+            },
+            required: {
+                type: Boolean,
+                required: true
             }
         },
         data: function() {
             return {
-                selectedExclusions: this.exclusions.map(exclusion => ({ idx: exclusion, name: this.names[exclusion] })),
                 Lang: Lang
             };
         },
-        watch: {
-            selectedExclusions() {
-                this.changeExclusions(this.selectedExclusions.map(exclusion => exclusion.idx));
-            }
-        },
         computed: {
             otherNames() {
-                return Object.keys(this.names).map(idx => parseInt(idx, 10)).filter(idx => idx !== this.idx);
+                return Object.values(this.names).filter(name => name !== this.name);
             }
         },
         created: function() {
@@ -61,7 +56,7 @@
         validations: function() {
             return {
                 name: {
-                    required: (this.idx < 3),
+                    required: requiredIf(this.required),
                     isUnique(value) {
                         // standalone validator ideally should not assume a field is required
                         if (value === '') return true;
@@ -70,15 +65,12 @@
                     }
                 },
                 email: {
-                    required: (this.name !== ''),
+                    required: requiredIf(this.name !== ''),
                     email
                 }
             };
         },
         methods: {
-            formatOptions(ids) {
-                return ids.map(idx => ({ idx: idx, name: this.names[idx] }));
-            },
             changeName(value) {
                 this.$emit('input:name', value);
             },
@@ -93,7 +85,7 @@
 </script>
 
 <template>
-    <tr :id="'participant_' + idx" class="participant">
+    <tr class="participant">
         <td class="align-middle">
             <div class="input-group">
                 <span class="input-group-prepend counter">
@@ -133,29 +125,29 @@
         </td>
         <td class="border-right text-left participant-exclusions-wrapper align-middle">
             <multiselect
-                :options="formatOptions(otherNames)"
-                v-model="selectedExclusions"
+                :options="otherNames"
+                :value="exclusions"
                 :placeholder="Lang.get('form.exclusions.placeholder')"
                 :multiple="true"
                 :hide-selected="true"
                 :preserve-search="true"
-                label="name"
-                track-by="idx"
+                @select="$emit('addExclusion', $event)"
+                @remove="$emit('removeExclusion', $event)"
             />
             <select style="display:none" :name="'participants[' + idx + '][exclusions][]'" multiple>
                 <option
-                    v-for="exclusion in selectedExclusions"
-                    :key="exclusion.idx"
-                    :value="exclusion.name"
+                    v-for="exclusion in exclusions"
+                    :key="exclusion"
+                    :value="Object.keys(names).find(idx => names[idx] === exclusion)"
                     selected
-                />
+                >{{ exclusions }}</option>
             </select>
         </td>
         <td class="participant-remove-wrapper align-middle">
             <button
                 type="button"
                 class="btn btn-danger participant-remove"
-                :disabled="idx < 3 && Object.keys(names).length <= 3"
+                :disabled="required"
                 @click="$emit('delete')"
             >
                 <i class="fas fa-minus" /><span> {{ Lang.get('form.participant.remove') }}</span>
