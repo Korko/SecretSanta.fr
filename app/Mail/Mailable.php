@@ -11,6 +11,8 @@ class Mailable extends BaseMailable
     {
         parent::send($mailer);
 
-        Container::getInstance()->call([$this, 'success']);
+        if (method_exists($this, 'success')) {
+            $this->success();
+        }
     }
 }
