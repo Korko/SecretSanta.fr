@@ -54,7 +54,7 @@
                 required
             },
             content: {
-                required,
+                 required,
                 contains(value) {
                    return value.indexOf('{TARGET}') >= 0;
                 }
@@ -221,15 +221,9 @@
     <div>
         <div v-cloak class="row text-center form">
             <ajax-form id="randomForm" action="/" :button_send="$t('form.submit')">
-                <template #default="{ sending, sent, errors }">
+                <template #default="{ sending, sent, fieldError }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ $t('form.success') }}
-                    </div>
-
-                    <div v-show="errors.length && !sent" id="errors-wrapper" class="alert alert-danger">
-                        <ul id="errors">
-                            <li v-for="(error, idx) in errors" :key="idx">@{{ error }}</li>
-                        </ul>
                     </div>
 
                     <fieldset>
@@ -263,6 +257,7 @@
                                         :exclusions="participant.exclusions"
                                         :names="participantNames"
                                         :required="idx < 3 && participants.length <= 3"
+                                        :fieldError="fieldError"
                                         @input:name="$set(participant, 'name', $event)"
                                         @input:email="$set(participant, 'email', $event)"
                                         @input:exclusions="$set(participant, 'exclusions', $event)"
@@ -307,11 +302,11 @@
                                             :placeholder="$t('form.mail.title.placeholder')"
                                             v-model="title"
                                             class="form-control"
-                                            :class="{ 'is-invalid': $v.title.$error }"
-                                            :aria-invalid="$v.title.$error"
+                                            :class="{ 'is-invalid': $v.title.$error || fieldError('title') }"
+                                            :aria-invalid="$v.title.$error || fieldError('title')"
                                             @blur="$v.title.$touch()"
                                         />
-                                        <div class="invalid-tooltip">{{ $t('form.validation.title.required') }}</div>
+                                        <div class="invalid-tooltip">{{ $t('validation.custom.title.required') }}</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -323,14 +318,15 @@
                                             name="content-email"
                                             :placeholder="$t('form.mail.content.placeholder')"
                                             class="form-control"
-                                            :class="{ 'is-invalid': $v.content.$error }"
-                                            :aria-invalid="$v.content.$error"
+                                            :class="{ 'is-invalid': $v.content.$error || fieldError('content-email') }"
+                                            :aria-invalid="$v.content.$error || fieldError('content-email')"
                                             @blur="$v.content.$touch()"
                                             rows="3"
                                             v-model="content"
                                         />
-                                        <div class="invalid-tooltip" v-if="!$v.content.required">{{ $t('form.validation.content.required') }}</div>
-                                        <div class="invalid-tooltip" v-else-if="!$v.content.contains">{{ $t('form.validation.content.contains') }}</div>
+                                        <div class="invalid-tooltip" v-if="!$v.content.required">{{ $t('validation.custom.content-email.required') }}</div>
+                                        <div class="invalid-tooltip" v-else-if="!$v.content.contains">{{ $t('validation.custom.content-email.contains') }}</div>
+                                        <div class="invalid-tooltip" v-else-if="fieldError('content-email')">{{ fieldError('content-email') }}</div>
                                     </div>
                                     <textarea
                                         id="mailPost"
@@ -357,15 +353,16 @@
                                     name="data-expiration"
                                     id="expiration"
                                     v-model="expiration"
-                                    :class="{ 'is-invalid': $v.expiration.$error }"
-                                    :aria-invalid="$v.expiration.$error"
+                                    :class="{ 'is-invalid': $v.expiration.$error || fieldError('data-expiration') }"
+                                    :aria-invalid="$v.expiration.$error || fieldError('data-expiration')"
                                     @blur="$v.expiration.$touch()"
                                     :min="moment(1, 'day')"
                                     :max="moment(1, 'year')"
                                 />
-                                <div class="invalid-tooltip" v-if="!$v.expiration.required">{{ $t('form.validation.expiration.required') }}</div>
-                                <div class="invalid-tooltip" v-else-if="!$v.expiration.minValue">{{ $t('form.validation.expiration.minValue') }}</div>
-                                <div class="invalid-tooltip" v-else-if="!$v.expiration.maxValue">{{ $t('form.validation.expiration.maxValue') }}</div>
+                                <div class="invalid-tooltip" v-if="!$v.expiration.required">{{ $t('validation.custom.data-expiration.required') }}</div>
+                                <div class="invalid-tooltip" v-else-if="!$v.expiration.minValue">{{ $t('validation.custom.data-expiration.after_or_equal') }}</div>
+                                <div class="invalid-tooltip" v-else-if="!$v.expiration.maxValue">{{ $t('validation.custom.data-expiration.before') }}</div>
+                                <div class="invalid-tooltip" v-else-if="fieldError('data-expiration')">{{ fieldError('data-expiration') }}</div>
                             </div>
                         </div>
                     </fieldset>

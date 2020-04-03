@@ -35,6 +35,10 @@
             required: {
                 type: Boolean,
                 required: true
+            },
+            fieldError: {
+                type: Function,
+                required: true
             }
         },
         computed: {
@@ -94,11 +98,12 @@
                     class="form-control participant-name"
                     @input="changeName($event.target.value)"
                     @blur="$v.name.$touch()"
-                    :class="{ 'is-invalid': $v.name.$error }"
-                    :aria-invalid="$v.name.$error"
+                    :class="{ 'is-invalid': $v.name.$error || fieldError(`participants.${idx}.name`) }"
+                    :aria-invalid="$v.name.$error || fieldError(`participants.${idx}.name`)"
                 />
-                <div class="invalid-tooltip" v-if="!$v.name.required">{{ t('form.validation.participant.name.required') }}</div>
-                <div class="invalid-tooltip" v-else-if="!$v.name.unique">{{ t('form.validation.participant.name.unique') }}</div>
+                <div class="invalid-tooltip" v-if="!$v.name.required">{{ $t('validation.custom["participants.*.name"].required') }}</div>
+                <div class="invalid-tooltip" v-else-if="!$v.name.unique">{{ $t('validation.custom["participants.*.name"].distinct') }}</div>
+                <div class="invalid-tooltip" v-else-if="fieldError(`participants.${idx}.name`)">{{ fieldError(`participants.${idx}.name`) }}</div>
             </div>
         </td>
         <td class="border-left align-middle">
@@ -111,11 +116,12 @@
                     class="form-control participant-email"
                     @input="changeEmail($event.target.value)"
                     @blur="$v.email.$touch()"
-                    :class="{ 'is-invalid': $v.email.$error }"
-                    :aria-invalid="$v.email.$error"
+                    :class="{ 'is-invalid': $v.email.$error || fieldError(`participants.${idx}.email`)}"
+                    :aria-invalid="$v.email.$error || fieldError(`participants.${idx}.email`)"
                 />
-                <div class="invalid-tooltip" v-if="!$v.email.required">{{ t('form.validation.participant.email.required') }}</div>
-                <div class="invalid-tooltip" v-else-if="!$v.email.format">{{ t('form.validation.participant.format.unique') }}</div>
+                <div class="invalid-tooltip" v-if="!$v.email.required">{{ $t('validation.custom["participants.*.email"].required') }}</div>
+                <div class="invalid-tooltip" v-else-if="!$v.email.format">{{ $t('validation.custom["participants.*.email"].email') }}</div>
+                <div class="invalid-tooltip" v-else-if="fieldError(`participants.${idx}.email`)">{{ fieldError(`participants.${idx}.email`) }}</div>
             </div>
         </td>
         <td class="border-right text-left participant-exclusions-wrapper align-middle">
