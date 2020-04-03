@@ -34,21 +34,15 @@
                 sent: false
             };
         },
-        computed: {
-            errors() {
-                var errors = [];
-                Object.keys(this.fieldErrors).forEach(field => {
-                    errors = errors.concat(this.fieldErrors[field][0] || this.fieldErrors[field]);
-                });
-                return errors;
-            }
-        },
         watch: {
             sending() {
                 this.$emit('change', this.sending);
             }
         },
         methods: {
+            fieldError(field) {
+                return this.fieldErrors[field] ? this.fieldErrors[field][0] : null;
+            },
             call(url, options) {
                 if (!this.sending && !this.sent) {
                     this.sending = true;
@@ -109,7 +103,7 @@
 <template>
     <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit">
         <fieldset :disabled="sending || sent">
-            <slot v-bind="{ sending, sent, errors, submit, onSubmit }" />
+            <slot v-bind="{ sending, sent, submit, onSubmit, fieldError }" />
         </fieldset>
         <fieldset v-if="button">
             <div class="form-group btn">

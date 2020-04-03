@@ -95,11 +95,25 @@ return [
             'required'  => 'Le captcha est obligatoire',
             'recaptcha' => 'Le captcha est invalide',
         ],
+        'title' => [
+            'required' => 'Le titre de l\'email est requis.',
+        ],
         'content-email' => [
-            'contains' => 'Le contenu du mail doit inclure le mot clef :values',
+            'required' => 'Le contenu de l\'email est requis.',
+            'contains' => 'Le contenu de l\'email doit contenir le mot {TARGET} pour indiquer la cible.',
         ],
         'data-expiration' => [
-            'required' => 'La date limite de stockage des emails est requise',
+            'required' => 'La date d\'expiration est requise.',
+            'after_or_equal' => 'La date d\'expiration ne peut pas précéder demain.',
+            'before' => 'La date d\'expiration ne peut pas dépasser un an.',
+        ],
+        'participants.*.name' => [
+            'required' => 'Ce participant est requis (au moins 3 personnes).',
+            'distinct' => 'Ce participant n\'a pas un nom unique.',
+        ],
+        'participants.*.email' => [
+            'required' => 'Cette adresse email est requise.',
+            'email'    => 'Le format de cette adresse est invalide.',
         ],
     ],
 

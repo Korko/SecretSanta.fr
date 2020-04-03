@@ -116,30 +116,4 @@ via SecretSanta.fr',
     'paypal' => [
         'alt' => 'PayPal, le réflexe sécurité pour payer en ligne',
     ],
-
-    'validation' => [
-        'title' => [
-            'required' => 'Le titre de l\'email est requis.',
-        ],
-        'content' => [
-            'required' => 'Le contenu de l\'email est requis.',
-            'contains' => 'Le contenu de l\'email doit contenir le mot {TARGET} pour indiquer la cible.',
-        ],
-        'expiration' => [
-            'required' => 'La date d\'expiration est requise.',
-            'minValue' => 'La date d\'expiration ne peut pas précéder demain.',
-            'maxValue' => 'La date d\'expiration ne peut pas dépasser un an.',
-        ],
-        'participant' => [
-            'name' => [
-                'required' => 'Ce participant est requis (au moins 3 personnes).',
-                'unique'   => 'Ce participant n\'a pas un nom unique.',
-            ],
-            'email' => [
-                'required' => 'Cette adresse email est requise.',
-                'format'   => 'Le format de cette adresse est invalide.',
-            ],
-        ],
-    ],
-
 ];

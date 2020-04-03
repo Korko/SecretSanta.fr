@@ -27,7 +27,8 @@ return [
         'common',
         'form',
         'organizer',
-        'dearsanta'
+        'dearsanta',
+        'validation'
     ],
 
     /*

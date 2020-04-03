@@ -1145,6 +1145,10 @@ vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
     required: {
       type: Boolean,
       required: true
+    },
+    fieldError: {
+      type: Function,
+      required: true
     }
   },
   computed: {
@@ -2034,12 +2038,18 @@ var render = function() {
         _vm._v(" "),
         _c("input", {
           staticClass: "form-control participant-name",
-          class: { "is-invalid": _vm.$v.name.$error },
+          class: {
+            "is-invalid":
+              _vm.$v.name.$error ||
+              _vm.fieldError("participants." + _vm.idx + ".name")
+          },
           attrs: {
             type: "text",
             name: "participants[" + _vm.idx + "][name]",
             placeholder: _vm.$t("form.participant.name.placeholder"),
-            "aria-invalid": _vm.$v.name.$error
+            "aria-invalid":
+              _vm.$v.name.$error ||
+              _vm.fieldError("participants." + _vm.idx + ".name")
           },
           domProps: { value: _vm.name },
           on: {
@@ -2054,11 +2064,25 @@ var render = function() {
         _vm._v(" "),
         !_vm.$v.name.required
           ? _c("div", { staticClass: "invalid-tooltip" }, [
-              _vm._v(_vm._s(_vm.t("form.validation.participant.name.required")))
+              _vm._v(
+                _vm._s(
+                  _vm.$t('validation.custom["participants.*.name"].required')
+                )
+              )
             ])
           : !_vm.$v.name.unique
           ? _c("div", { staticClass: "invalid-tooltip" }, [
-              _vm._v(_vm._s(_vm.t("form.validation.participant.name.unique")))
+              _vm._v(
+                _vm._s(
+                  _vm.$t('validation.custom["participants.*.name"].distinct')
+                )
+              )
+            ])
+          : _vm.fieldError("participants." + _vm.idx + ".name")
+          ? _c("div", { staticClass: "invalid-tooltip" }, [
+              _vm._v(
+                _vm._s(_vm.fieldError("participants." + _vm.idx + ".name"))
+              )
             ])
           : _vm._e()
       ])
@@ -2068,12 +2092,18 @@ var render = function() {
       _c("div", { staticClass: "input-group" }, [
         _c("input", {
           staticClass: "form-control participant-email",
-          class: { "is-invalid": _vm.$v.email.$error },
+          class: {
+            "is-invalid":
+              _vm.$v.email.$error ||
+              _vm.fieldError("participants." + _vm.idx + ".email")
+          },
           attrs: {
             type: "email",
             name: "participants[" + _vm.idx + "][email]",
             placeholder: _vm.$t("form.participant.email.placeholder"),
-            "aria-invalid": _vm.$v.email.$error
+            "aria-invalid":
+              _vm.$v.email.$error ||
+              _vm.fieldError("participants." + _vm.idx + ".email")
           },
           domProps: { value: _vm.email },
           on: {
@@ -2089,12 +2119,24 @@ var render = function() {
         !_vm.$v.email.required
           ? _c("div", { staticClass: "invalid-tooltip" }, [
               _vm._v(
-                _vm._s(_vm.t("form.validation.participant.email.required"))
+                _vm._s(
+                  _vm.$t('validation.custom["participants.*.email"].required')
+                )
               )
             ])
           : !_vm.$v.email.format
           ? _c("div", { staticClass: "invalid-tooltip" }, [
-              _vm._v(_vm._s(_vm.t("form.validation.participant.format.unique")))
+              _vm._v(
+                _vm._s(
+                  _vm.$t('validation.custom["participants.*.email"].email')
+                )
+              )
+            ])
+          : _vm.fieldError("participants." + _vm.idx + ".email")
+          ? _c("div", { staticClass: "invalid-tooltip" }, [
+              _vm._v(
+                _vm._s(_vm.fieldError("participants." + _vm.idx + ".email"))
+              )
             ])
           : _vm._e()
       ])
@@ -2217,7 +2259,7 @@ var render = function() {
                 fn: function(ref) {
                   var sending = ref.sending
                   var sent = ref.sent
-                  var errors = ref.errors
+                  var fieldError = ref.fieldError
                   return [
                     _c(
                       "div",
@@ -2238,34 +2280,6 @@ var render = function() {
                           "\n                    " +
                             _vm._s(_vm.$t("form.success")) +
                             "\n                "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: errors.length && !sent,
-                            expression: "errors.length && !sent"
-                          }
-                        ],
-                        staticClass: "alert alert-danger",
-                        attrs: { id: "errors-wrapper" }
-                      },
-                      [
-                        _c(
-                          "ul",
-                          { attrs: { id: "errors" } },
-                          _vm._l(errors, function(error, idx) {
-                            return _c("li", { key: idx }, [
-                              _vm._v("@" + _vm._s(error))
-                            ])
-                          }),
-                          0
                         )
                       ]
                     ),
@@ -2373,7 +2387,8 @@ var render = function() {
                                       exclusions: participant.exclusions,
                                       names: _vm.participantNames,
                                       required:
-                                        idx < 3 && _vm.participants.length <= 3
+                                        idx < 3 && _vm.participants.length <= 3,
+                                      fieldError: fieldError
                                     },
                                     on: {
                                       "input:name": function($event) {
@@ -2504,7 +2519,10 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: { "is-invalid": _vm.$v.title.$error },
+                                class: {
+                                  "is-invalid":
+                                    _vm.$v.title.$error || fieldError("title")
+                                },
                                 attrs: {
                                   id: "mailTitle",
                                   type: "text",
@@ -2512,7 +2530,8 @@ var render = function() {
                                   placeholder: _vm.$t(
                                     "form.mail.title.placeholder"
                                   ),
-                                  "aria-invalid": _vm.$v.title.$error
+                                  "aria-invalid":
+                                    _vm.$v.title.$error || fieldError("title")
                                 },
                                 domProps: { value: _vm.title },
                                 on: {
@@ -2531,7 +2550,7 @@ var render = function() {
                               _c("div", { staticClass: "invalid-tooltip" }, [
                                 _vm._v(
                                   _vm._s(
-                                    _vm.$t("form.validation.title.required")
+                                    _vm.$t("validation.custom.title.required")
                                   )
                                 )
                               ])
@@ -2555,14 +2574,20 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: { "is-invalid": _vm.$v.content.$error },
+                                class: {
+                                  "is-invalid":
+                                    _vm.$v.content.$error ||
+                                    fieldError("content-email")
+                                },
                                 attrs: {
                                   id: "mailContent",
                                   name: "content-email",
                                   placeholder: _vm.$t(
                                     "form.mail.content.placeholder"
                                   ),
-                                  "aria-invalid": _vm.$v.content.$error,
+                                  "aria-invalid":
+                                    _vm.$v.content.$error ||
+                                    fieldError("content-email"),
                                   rows: "3"
                                 },
                                 domProps: { value: _vm.content },
@@ -2587,7 +2612,7 @@ var render = function() {
                                       _vm._v(
                                         _vm._s(
                                           _vm.$t(
-                                            "form.validation.content.required"
+                                            "validation.custom.content-email.required"
                                           )
                                         )
                                       )
@@ -2601,9 +2626,19 @@ var render = function() {
                                       _vm._v(
                                         _vm._s(
                                           _vm.$t(
-                                            "form.validation.content.contains"
+                                            "validation.custom.content-email.contains"
                                           )
                                         )
+                                      )
+                                    ]
+                                  )
+                                : fieldError("content-email")
+                                ? _c(
+                                    "div",
+                                    { staticClass: "invalid-tooltip" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(fieldError("content-email"))
                                       )
                                     ]
                                   )
@@ -2674,12 +2709,18 @@ var render = function() {
                                   expression: "expiration"
                                 }
                               ],
-                              class: { "is-invalid": _vm.$v.expiration.$error },
+                              class: {
+                                "is-invalid":
+                                  _vm.$v.expiration.$error ||
+                                  fieldError("data-expiration")
+                              },
                               attrs: {
                                 type: "date",
                                 name: "data-expiration",
                                 id: "expiration",
-                                "aria-invalid": _vm.$v.expiration.$error,
+                                "aria-invalid":
+                                  _vm.$v.expiration.$error ||
+                                  fieldError("data-expiration"),
                                 min: _vm.moment(1, "day"),
                                 max: _vm.moment(1, "year")
                               },
@@ -2702,7 +2743,7 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(
                                       _vm.$t(
-                                        "form.validation.expiration.required"
+                                        "validation.custom.data-expiration.required"
                                       )
                                     )
                                   )
@@ -2712,7 +2753,7 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(
                                       _vm.$t(
-                                        "form.validation.expiration.minValue"
+                                        "validation.custom.data-expiration.after_or_equal"
                                       )
                                     )
                                   )
@@ -2722,10 +2763,14 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(
                                       _vm.$t(
-                                        "form.validation.expiration.maxValue"
+                                        "validation.custom.data-expiration.before"
                                       )
                                     )
                                   )
+                                ])
+                              : fieldError("data-expiration")
+                              ? _c("div", { staticClass: "invalid-tooltip" }, [
+                                  _vm._v(_vm._s(fieldError("data-expiration")))
                                 ])
                               : _vm._e()
                           ])
