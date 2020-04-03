@@ -22,8 +22,20 @@ class DearSantaRequest extends Request
     public function rules()
     {
         return parent::rules() + [
-            'content'              => 'required|string',
-            'key'                  => 'required|string',
+            'content' => 'required|string',
+            'key'     => 'required|string',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'content.required' => __('validation.custom.dearsanta.content.required'),
         ];
     }
 }
