@@ -1,8 +1,5 @@
 <script>
-    import { mapState } from 'vuex';
-
     import Timer from './timer.vue';
-
     import AjaxForm from './ajaxForm.vue';
 
     export default {

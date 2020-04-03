@@ -1062,13 +1062,11 @@ module.exports=window.Modernizr;if(hadGlobal){window.Modernizr=oldGlobal;}else{d
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _modal_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modal.vue */ "./resources/js/components/modal.vue");
-
+/* harmony import */ var _modal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal.vue */ "./resources/js/components/modal.vue");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Modal: _modal_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    Modal: _modal_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   methods: {
     emitSubmit: function emitSubmit() {
@@ -3063,26 +3061,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_randomForm_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/randomForm.vue */ "./resources/js/components/randomForm.vue");
-/* harmony import */ var _partials_store_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./partials/store.js */ "./resources/js/partials/store.js");
-/* harmony import */ var vue_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-i18n */ "./node_modules/vue-i18n/dist/vue-i18n.esm.js");
-/* harmony import */ var _vue_i18n_locales_generated_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./vue-i18n-locales.generated.js */ "./resources/js/vue-i18n-locales.generated.js");
+/* harmony import */ var vue_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-i18n */ "./node_modules/vue-i18n/dist/vue-i18n.esm.js");
+/* harmony import */ var _vue_i18n_locales_generated_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./vue-i18n-locales.generated.js */ "./resources/js/vue-i18n-locales.generated.js");
 
 
 
-
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE_3__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE_2__["default"]);
 var lang = document.documentElement.lang.substr(0, 2);
 
-var i18n = new vue_i18n__WEBPACK_IMPORTED_MODULE_3__["default"]({
+var i18n = new vue_i18n__WEBPACK_IMPORTED_MODULE_2__["default"]({
   locale: lang,
-  messages: _vue_i18n_locales_generated_js__WEBPACK_IMPORTED_MODULE_4__["default"]
+  messages: _vue_i18n_locales_generated_js__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#form',
   components: {
     RandomForm: _components_randomForm_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  store: _partials_store_js__WEBPACK_IMPORTED_MODULE_2__["default"],
   i18n: i18n
 });
 

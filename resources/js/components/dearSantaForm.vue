@@ -1,6 +1,4 @@
 <script>
-    import { mapState } from 'vuex';
-
     import DefaultForm from './form.vue';
 
     export default {

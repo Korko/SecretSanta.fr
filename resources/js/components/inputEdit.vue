@@ -1,7 +1,8 @@
 <script>
-    import { mapState } from 'vuex';
     import $ from 'jquery';
     import alertify from 'alertify.js';
+
+    import store from '../partials/store.js';
 
     import StateMachine from '../mixins/stateMachine.js';
 
@@ -24,6 +25,7 @@
         },
         data: function() {
             return {
+                ...store,
                 states: Object.freeze({
                     view: {
                         edit: 'editing'
@@ -77,8 +79,7 @@
             },
             updating() {
                 return this.state === 'viewUpdating';
-            },
-            ...mapState(['csrf', 'key'])
+            }
         },
         methods: {
             submit() {
