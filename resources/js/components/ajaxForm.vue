@@ -1,5 +1,5 @@
 <script>
-    import { mapState } from 'vuex';
+    import store from '../partials/store.js';
     import $ from 'jquery';
     import alertify from 'alertify.js';
 
@@ -28,6 +28,7 @@
         },
         data: () => {
             return {
+                ...store,
                 fieldErrors: [],
                 sending: false,
                 sent: false
@@ -40,8 +41,7 @@
                     errors = errors.concat(this.fieldErrors[field][0] || this.fieldErrors[field]);
                 });
                 return errors;
-            },
-            ...mapState(['csrf', 'key'])
+            }
         },
         watch: {
             sending() {

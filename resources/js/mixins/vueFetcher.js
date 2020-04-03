@@ -1,5 +1,3 @@
-import store from '../partials/store.js';
-
 import Failure from '../components/error.vue';
 import Fetcher from '../components/fetcher.vue';
 import DefaultForm from '../components/form.vue';
@@ -18,8 +16,6 @@ export const VueFetcher = Form => {
         },
 
         el: '#form',
-
-        store,
 
         data: {
             state: 'Fetcher',

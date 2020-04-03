@@ -1,20 +1,19 @@
 <script>
-    import { mapState } from 'vuex';
+    import store from '../partials/store.js';
 
     import InputEdit from './inputEdit.vue';
-
     import DefaultForm from './form.vue';
 
     export default {
         components: { InputEdit },
         extends: DefaultForm,
+        data: store,
         computed: {
             checkUpdates() {
                 return !!Object.values(this.data.participants).find(
                     participant => participant.delivery_status === 'created'
                 );
-            },
-            ...mapState(['csrf', 'key'])
+            }
         },
         created() {
             setInterval(() => {

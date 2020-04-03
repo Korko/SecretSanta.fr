@@ -1,5 +1,4 @@
 <script>
-    import { mapState } from 'vuex';
     import Modal from './modal.vue';
     export default {
         components: { Modal },

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import RandomForm from './components/randomForm.vue';
-import store from './partials/store.js';
 
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
@@ -20,6 +19,5 @@ window.app = new Vue({
         RandomForm
     },
 
-    store,
     i18n
 });
