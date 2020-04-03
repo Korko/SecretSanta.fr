@@ -14215,8 +14215,9 @@ fieldset > div.form-group {
   line-height: 34px;
 }
 
-#form-options label > input {
-  margin-left: 10px;
+.input-inline-group {
+  position: relative;
+  display: inline-block;
 }
 
 .table-bordered.heavy-borders,

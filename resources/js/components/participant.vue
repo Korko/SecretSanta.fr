@@ -1,8 +1,6 @@
 <script>
     import Multiselect from 'vue-multiselect';
 
-    import Lang from '../partials/lang.js';
-
     import Vue from 'vue';
 
     import Vuelidate from 'vuelidate';
@@ -39,11 +37,6 @@
                 required: true
             }
         },
-        data: function() {
-            return {
-                Lang: Lang
-            };
-        },
         computed: {
             otherNames() {
                 return Object.values(this.names).filter(name => name !== this.name);
@@ -57,7 +50,7 @@
             return {
                 name: {
                     required: requiredIf(this.required),
-                    isUnique(value) {
+                    unique(value) {
                         // standalone validator ideally should not assume a field is required
                         if (value === '') return true;
 
@@ -65,8 +58,8 @@
                     }
                 },
                 email: {
-                    required: requiredIf(this.name !== ''),
-                    email
+                    required: requiredIf(this.required || this.name !== ''),
+                    format: email
                 }
             };
         },
@@ -90,13 +83,13 @@
             <div class="input-group">
                 <span class="input-group-prepend counter">
                     <span class="input-group-text"
-                        >{{ idx + 1 }}<template v-if="idx === 0"> - Organisateur</template></span
+                        >{{ idx + 1 }}<template v-if="idx === 0"> - {{ $t('form.participant.organizer') }}</template></span
                     >
                 </span>
                 <input
                     type="text"
                     :name="'participants[' + idx + '][name]'"
-                    :placeholder="Lang.get('form.name.placeholder')"
+                    :placeholder="$t('form.participant.name.placeholder')"
                     :value="name"
                     class="form-control participant-name"
                     @input="changeName($event.target.value)"
@@ -104,7 +97,8 @@
                     :class="{ 'is-invalid': $v.name.$error }"
                     :aria-invalid="$v.name.$error"
                 />
-                <div class="invalid-tooltip">Chaque nom doit être unique.</div>
+                <div class="invalid-tooltip" v-if="!$v.name.required">{{ t('form.validation.participant.name.required') }}</div>
+                <div class="invalid-tooltip" v-else-if="!$v.name.unique">{{ t('form.validation.participant.name.unique') }}</div>
             </div>
         </td>
         <td class="border-left align-middle">
@@ -112,7 +106,7 @@
                 <input
                     type="email"
                     :name="'participants[' + idx + '][email]'"
-                    :placeholder="Lang.get('form.email.placeholder')"
+                    :placeholder="$t('form.participant.email.placeholder')"
                     :value="email"
                     class="form-control participant-email"
                     @input="changeEmail($event.target.value)"
@@ -120,14 +114,15 @@
                     :class="{ 'is-invalid': $v.email.$error }"
                     :aria-invalid="$v.email.$error"
                 />
-                <div class="invalid-tooltip">Veuillez entrer une adresse valide.</div>
+                <div class="invalid-tooltip" v-if="!$v.email.required">{{ t('form.validation.participant.email.required') }}</div>
+                <div class="invalid-tooltip" v-else-if="!$v.email.format">{{ t('form.validation.participant.format.unique') }}</div>
             </div>
         </td>
         <td class="border-right text-left participant-exclusions-wrapper align-middle">
             <multiselect
                 :options="otherNames"
                 :value="exclusions"
-                :placeholder="Lang.get('form.exclusions.placeholder')"
+                :placeholder="$t('form.participant.exclusions.placeholder')"
                 :multiple="true"
                 :hide-selected="true"
                 :preserve-search="true"
@@ -150,7 +145,7 @@
                 :disabled="required"
                 @click="$emit('delete')"
             >
-                <i class="fas fa-minus" /><span> {{ Lang.get('form.participant.remove') }}</span>
+                <i class="fas fa-minus" /><span> {{ $t('form.participant.remove') }}</span>
             </button>
         </td>
     </tr>

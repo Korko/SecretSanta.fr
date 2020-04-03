@@ -14,7 +14,7 @@
                     participant => participant.delivery_status === 'created'
                 );
             },
-            ...mapState(['csrf', 'key', 'lang'])
+            ...mapState(['csrf', 'key'])
         },
         created() {
             setInterval(() => {
@@ -56,13 +56,13 @@
         <thead>
             <tr class="table-active">
                 <th scope="col">
-                    {{ lang.get('organizer.list.name') }}
+                    {{ $t('organizer.list.name') }}
                 </th>
                 <th scope="col">
-                    {{ lang.get('organizer.list.email') }}
+                    {{ $t('organizer.list.email') }}
                 </th>
                 <th scope="col">
-                    {{ lang.get('organizer.list.status') }}
+                    {{ $t('organizer.list.status') }}
                 </th>
             </tr>
         </thead>

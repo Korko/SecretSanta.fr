@@ -3,5 +3,5 @@
 </script>
 
 <template id="error-template">
-    <span>Une erreur est survenue</span>
+    <span>{{ $t('common.internal') }}</span>
 </template>

@@ -1070,7 +1070,6 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Modal: _modal_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['lang']),
   methods: {
     emitSubmit: function emitSubmit() {
       this.$emit('import', $('#uploadCsv input[type=file]')[0].files[0]);
@@ -1103,13 +1102,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _partials_lang_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../partials/lang.js */ "./resources/js/partials/lang.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
-/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7__);
 
 
 
@@ -1118,8 +1116,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-vue__WEBPACK_IMPORTED_MODULE_6___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_7___default.a);
+vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_6___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_4___default.a
@@ -1152,11 +1149,6 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
       required: true
     }
   },
-  data: function data() {
-    return {
-      Lang: _partials_lang_js__WEBPACK_IMPORTED_MODULE_5__["default"]
-    };
-  },
   computed: {
     otherNames: function otherNames() {
       var _this = this;
@@ -1173,8 +1165,8 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
   validations: function validations() {
     return {
       name: {
-        required: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__["requiredIf"])(this.required),
-        isUnique: function isUnique(value) {
+        required: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7__["requiredIf"])(this.required),
+        unique: function unique(value) {
           // standalone validator ideally should not assume a field is required
           if (value === '') return true;
           return Object.values(this.names).filter(function (name) {
@@ -1183,8 +1175,8 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
         }
       },
       email: {
-        required: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__["requiredIf"])(this.name !== ''),
-        email: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__["email"]
+        required: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7__["requiredIf"])(this.required || this.name !== ''),
+        format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7__["email"]
       }
     };
   },
@@ -1252,10 +1244,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_18__);
 /* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! papaparse */ "./node_modules/papaparse/papaparse.min.js");
 /* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_19__);
-/* harmony import */ var _partials_lang_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../partials/lang.js */ "./resources/js/partials/lang.js");
-/* harmony import */ var _csv_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./csv.vue */ "./resources/js/components/csv.vue");
-/* harmony import */ var _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./ajaxForm.vue */ "./resources/js/components/ajaxForm.vue");
-/* harmony import */ var _participant_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./participant.vue */ "./resources/js/components/participant.vue");
+/* harmony import */ var _csv_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./csv.vue */ "./resources/js/components/csv.vue");
+/* harmony import */ var _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./ajaxForm.vue */ "./resources/js/components/ajaxForm.vue");
+/* harmony import */ var _participant_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./participant.vue */ "./resources/js/components/participant.vue");
 
 
 
@@ -1286,33 +1277,26 @@ var Modernizr = __webpack_require__(/*! Modernizr */ "./.modernizrrc");
 
 
 
+var formatMoment = function formatMoment(amount, unit) {
+  return moment__WEBPACK_IMPORTED_MODULE_18___default()(window.now).add(amount, unit).format('YYYY-MM-DD');
+};
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    AjaxForm: _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_22__["default"],
-    Csv: _csv_vue__WEBPACK_IMPORTED_MODULE_21__["default"],
-    Participant: _participant_vue__WEBPACK_IMPORTED_MODULE_23__["default"]
+    AjaxForm: _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_21__["default"],
+    Csv: _csv_vue__WEBPACK_IMPORTED_MODULE_20__["default"],
+    Participant: _participant_vue__WEBPACK_IMPORTED_MODULE_22__["default"]
   },
   data: function data() {
     return {
       participants: [],
       title: '',
       content: '',
-      expiration: moment__WEBPACK_IMPORTED_MODULE_18___default()(window.now).add(1, 'day').format('YYYY-MM-DD'),
+      expiration: formatMoment(1, 'day'),
       now: window.now,
       showModal: false,
       importing: false
     };
-  },
-  computed: {
-    participantNames: function participantNames() {
-      var names = {};
-      this.participants.forEach(function (participant, idx) {
-        if (participant.name) {
-          names[idx] = participant.name;
-        }
-      });
-      return names;
-    }
   },
   validations: {
     participants: {
@@ -1324,16 +1308,29 @@ var Modernizr = __webpack_require__(/*! Modernizr */ "./.modernizrrc");
     },
     content: {
       required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["required"],
-      containsTarget: function containsTarget(value) {
+      contains: function contains(value) {
         return value.indexOf('{TARGET}') >= 0;
       }
     },
-    expiration: function expiration() {
-      return {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["required"],
-        minValue: this.moment(1, 'day'),
-        maxValue: this.moment(1, 'year')
-      };
+    expiration: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["required"],
+      minValue: function minValue(value) {
+        return moment__WEBPACK_IMPORTED_MODULE_18___default()(value, 'YYYY-MM-DD').isSameOrAfter(formatMoment(1, 'day'));
+      },
+      maxValue: function maxValue(value) {
+        return moment__WEBPACK_IMPORTED_MODULE_18___default()(value, 'YYYY-MM-DD').isSameOrBefore(formatMoment(1, 'year'));
+      }
+    }
+  },
+  computed: {
+    participantNames: function participantNames() {
+      var names = {};
+      this.participants.forEach(function (participant, idx) {
+        if (participant.name) {
+          names[idx] = participant.name;
+        }
+      });
+      return names;
     }
   },
   watch: {
@@ -1369,8 +1366,8 @@ var Modernizr = __webpack_require__(/*! Modernizr */ "./.modernizrrc");
         jquery__WEBPACK_IMPORTED_MODULE_11___default()('input[type=date]', this.$el).datepicker({
           // Consistent format with the HTML5 picker
           dateFormat: 'yy-mm-dd',
-          minDate: this.moment(1, 'day'),
-          maxDate: this.moment(1, 'year')
+          minDate: formatMoment(1, 'day'),
+          maxDate: formatMoment(1, 'year')
         });
       }
 
@@ -1380,12 +1377,9 @@ var Modernizr = __webpack_require__(/*! Modernizr */ "./.modernizrrc");
     }.bind(this));
   },
   methods: {
-    t: function t(key, params) {
-      return _partials_lang_js__WEBPACK_IMPORTED_MODULE_20__["default"].get(key, params);
-    },
     // Only way to have parameters parsing for vuejs events
-    td: function td(key, params) {
-      var data = this.t(key, params);
+    $td: function $td(key, params) {
+      var data = this.$t(key, params);
       return {
         name: "dynamic-string",
         template: "<p>".concat(data, "</p>")
@@ -1396,7 +1390,7 @@ var Modernizr = __webpack_require__(/*! Modernizr */ "./.modernizrrc");
       return "<a href=\"\" @click.prevent='$emit(\"".concat(event, "\")'>");
     },
     moment: function moment(amount, unit) {
-      return moment__WEBPACK_IMPORTED_MODULE_18___default()(this.now).add(amount, unit).format('YYYY-MM-DD');
+      return formatMoment(amount, unit);
     },
     resetParticipants: function resetParticipants() {
       this.participants = [];
@@ -1424,7 +1418,7 @@ var Modernizr = __webpack_require__(/*! Modernizr */ "./.modernizrrc");
       papaparse__WEBPACK_IMPORTED_MODULE_19___default.a.parse(file, {
         error: function error() {
           this.importing = false;
-          alertify_js__WEBPACK_IMPORTED_MODULE_13___default.a.alert(this.t('csv.importError'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_13___default.a.alert(this.$t('form.csv.importError'));
         },
         complete: function (file) {
           this.importing = false;
@@ -1442,7 +1436,7 @@ var Modernizr = __webpack_require__(/*! Modernizr */ "./.modernizrrc");
             }
           }
 
-          alertify_js__WEBPACK_IMPORTED_MODULE_13___default.a.alert(this.t('csv.importSuccess'));
+          alertify_js__WEBPACK_IMPORTED_MODULE_13___default.a.alert(this.$t('form.csv.importSuccess'));
         }.bind(this)
       });
     },
@@ -1817,7 +1811,7 @@ var render = function() {
       {
         key: "header",
         fn: function() {
-          return [_c("h3", [_vm._v(_vm._s(_vm.lang.get("form.csv.title")))])]
+          return [_c("h3", [_vm._v(_vm._s(_vm.$t("form.csv.title")))])]
         },
         proxy: true
       },
@@ -1834,7 +1828,7 @@ var render = function() {
                 _c("span", {
                   domProps: {
                     innerHTML: _vm._s(
-                      _vm.lang.get("form.csv.help", {
+                      _vm.$t("form.csv.help", {
                         excel:
                           "<a href='https://support.office.com/fr-fr/article/Importer-ou-exporter-des-fichiers-texte-txt-ou-csv-5250ac4c-663c-47ce-937b-339e391393ba' class='alert-link'>",
                         calc:
@@ -1847,18 +1841,16 @@ var render = function() {
               ]
             ),
             _vm._v(
-              "\n\n        " +
-                _vm._s(_vm.lang.get("form.csv.format")) +
-                "\n        "
+              "\n\n        " + _vm._s(_vm.$t("form.csv.format")) + "\n        "
             ),
             _c("table", { staticClass: "table table-bordered heavy-borders" }, [
               _c("tbody", [
                 _c("tr", [
-                  _c("td", [_vm._v(_vm._s(_vm.lang.get("form.csv.column1")))]),
+                  _c("td", [_vm._v(_vm._s(_vm.$t("form.csv.column1")))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.lang.get("form.csv.column2")))]),
+                  _c("td", [_vm._v(_vm._s(_vm.$t("form.csv.column2")))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.lang.get("form.csv.column3")))])
+                  _c("td", [_vm._v(_vm._s(_vm.$t("form.csv.column3")))])
                 ])
               ])
             ]),
@@ -1869,7 +1861,7 @@ var render = function() {
               [
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.lang.get("form.csv.warning")) +
+                    _vm._s(_vm.$t("form.csv.warning")) +
                     "\n        "
                 )
               ]
@@ -1912,7 +1904,7 @@ var render = function() {
                 _c("span", { staticClass: "fas fa-stop-circle" }),
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.lang.get("form.csv.cancel")) +
+                    _vm._s(_vm.$t("form.csv.cancel")) +
                     "\n        "
                 )
               ]
@@ -1929,7 +1921,7 @@ var render = function() {
                 _c("span", { staticClass: "fas fa-upload" }),
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.lang.get("form.csv.import")) +
+                    _vm._s(_vm.$t("form.csv.import")) +
                     "\n        "
                 )
               ]
@@ -1988,7 +1980,9 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                            Close\n                        "
+                      "\n                            " +
+                        _vm._s(_vm.$t("common.modal.close")) +
+                        "\n                        "
                     )
                   ]
                 )
@@ -2032,7 +2026,9 @@ var render = function() {
             { staticClass: "input-group-text" },
             [
               _vm._v(_vm._s(_vm.idx + 1)),
-              _vm.idx === 0 ? [_vm._v(" - Organisateur")] : _vm._e()
+              _vm.idx === 0
+                ? [_vm._v(" - " + _vm._s(_vm.$t("form.participant.organizer")))]
+                : _vm._e()
             ],
             2
           )
@@ -2044,7 +2040,7 @@ var render = function() {
           attrs: {
             type: "text",
             name: "participants[" + _vm.idx + "][name]",
-            placeholder: _vm.Lang.get("form.name.placeholder"),
+            placeholder: _vm.$t("form.participant.name.placeholder"),
             "aria-invalid": _vm.$v.name.$error
           },
           domProps: { value: _vm.name },
@@ -2058,9 +2054,15 @@ var render = function() {
           }
         }),
         _vm._v(" "),
-        _c("div", { staticClass: "invalid-tooltip" }, [
-          _vm._v("Chaque nom doit être unique.")
-        ])
+        !_vm.$v.name.required
+          ? _c("div", { staticClass: "invalid-tooltip" }, [
+              _vm._v(_vm._s(_vm.t("form.validation.participant.name.required")))
+            ])
+          : !_vm.$v.name.unique
+          ? _c("div", { staticClass: "invalid-tooltip" }, [
+              _vm._v(_vm._s(_vm.t("form.validation.participant.name.unique")))
+            ])
+          : _vm._e()
       ])
     ]),
     _vm._v(" "),
@@ -2072,7 +2074,7 @@ var render = function() {
           attrs: {
             type: "email",
             name: "participants[" + _vm.idx + "][email]",
-            placeholder: _vm.Lang.get("form.email.placeholder"),
+            placeholder: _vm.$t("form.participant.email.placeholder"),
             "aria-invalid": _vm.$v.email.$error
           },
           domProps: { value: _vm.email },
@@ -2086,9 +2088,17 @@ var render = function() {
           }
         }),
         _vm._v(" "),
-        _c("div", { staticClass: "invalid-tooltip" }, [
-          _vm._v("Veuillez entrer une adresse valide.")
-        ])
+        !_vm.$v.email.required
+          ? _c("div", { staticClass: "invalid-tooltip" }, [
+              _vm._v(
+                _vm._s(_vm.t("form.validation.participant.email.required"))
+              )
+            ])
+          : !_vm.$v.email.format
+          ? _c("div", { staticClass: "invalid-tooltip" }, [
+              _vm._v(_vm._s(_vm.t("form.validation.participant.format.unique")))
+            ])
+          : _vm._e()
       ])
     ]),
     _vm._v(" "),
@@ -2103,7 +2113,7 @@ var render = function() {
           attrs: {
             options: _vm.otherNames,
             value: _vm.exclusions,
-            placeholder: _vm.Lang.get("form.exclusions.placeholder"),
+            placeholder: _vm.$t("form.participant.exclusions.placeholder"),
             multiple: true,
             "hide-selected": true,
             "preserve-search": true
@@ -2162,9 +2172,7 @@ var render = function() {
         },
         [
           _c("i", { staticClass: "fas fa-minus" }),
-          _c("span", [
-            _vm._v(" " + _vm._s(_vm.Lang.get("form.participant.remove")))
-          ])
+          _c("span", [_vm._v(" " + _vm._s(_vm.$t("form.participant.remove")))])
         ]
       )
     ])
@@ -2203,7 +2211,7 @@ var render = function() {
             attrs: {
               id: "randomForm",
               action: "/",
-              button_send: _vm.t("form.submit")
+              button_send: _vm.$t("form.submit")
             },
             scopedSlots: _vm._u([
               {
@@ -2230,7 +2238,7 @@ var render = function() {
                       [
                         _vm._v(
                           "\n                    " +
-                            _vm._s(_vm.t("form.success")) +
+                            _vm._s(_vm.$t("form.success")) +
                             "\n                "
                         )
                       ]
@@ -2266,7 +2274,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("fieldset", [
                       _c("legend", [
-                        _vm._v(_vm._s(_vm.t("form.participants")))
+                        _vm._v(_vm._s(_vm.$t("form.participants.title")))
                       ]),
                       _vm._v(" "),
                       _c(
@@ -2292,7 +2300,9 @@ var render = function() {
                                       _vm._v(
                                         "\n                                        " +
                                           _vm._s(
-                                            _vm.t("form.participant.name")
+                                            _vm.$t(
+                                              "form.participant.name.label"
+                                            )
                                           ) +
                                           "\n                                    "
                                       )
@@ -2309,7 +2319,9 @@ var render = function() {
                                       _vm._v(
                                         "\n                                        " +
                                           _vm._s(
-                                            _vm.t("form.participant.email")
+                                            _vm.$t(
+                                              "form.participant.email.label"
+                                            )
                                           ) +
                                           "\n                                    "
                                       )
@@ -2326,7 +2338,9 @@ var render = function() {
                                       _vm._v(
                                         "\n                                        " +
                                           _vm._s(
-                                            _vm.t("form.participant.exclusions")
+                                            _vm.$t(
+                                              "form.participant.exclusions.label"
+                                            )
                                           ) +
                                           "\n                                    "
                                       )
@@ -2422,7 +2436,7 @@ var render = function() {
                               _c("i", { staticClass: "fas fa-plus" }),
                               _vm._v(
                                 "\n                            " +
-                                  _vm._s(_vm.t("form.participant.add")) +
+                                  _vm._s(_vm.$t("form.participant.add")) +
                                   "\n                        "
                               )
                             ]
@@ -2452,7 +2466,7 @@ var render = function() {
                                     _vm._v(
                                       "\n                                " +
                                         _vm._s(
-                                          _vm.t("form.participants.importing")
+                                          _vm.$t("form.participants.importing")
                                         )
                                     )
                                   ])
@@ -2461,7 +2475,7 @@ var render = function() {
                                     _vm._v(
                                       " " +
                                         _vm._s(
-                                          _vm.t("form.participants.import")
+                                          _vm.$t("form.participants.import")
                                         )
                                     )
                                   ])
@@ -2478,77 +2492,125 @@ var render = function() {
                         _c("fieldset", { attrs: { id: "form-mail-group" } }, [
                           _c("div", { staticClass: "form-group" }, [
                             _c("label", { attrs: { for: "mailTitle" } }, [
-                              _vm._v(_vm._s(_vm.t("form.mail.title")))
+                              _vm._v(_vm._s(_vm.$t("form.mail.title.label")))
                             ]),
                             _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.title,
-                                  expression: "title"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              class: { "is-invalid": _vm.$v.title.$error },
-                              attrs: {
-                                id: "mailTitle",
-                                type: "text",
-                                name: "title",
-                                placeholder: _vm.t(
-                                  "form.mail.title.placeholder"
-                                ),
-                                "aria-invalid": _vm.$v.title.$error
-                              },
-                              domProps: { value: _vm.title },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
+                            _c("div", { staticClass: "input-group" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.title,
+                                    expression: "title"
                                   }
-                                  _vm.title = $event.target.value
+                                ],
+                                staticClass: "form-control",
+                                class: { "is-invalid": _vm.$v.title.$error },
+                                attrs: {
+                                  id: "mailTitle",
+                                  type: "text",
+                                  name: "title",
+                                  placeholder: _vm.$t(
+                                    "form.mail.title.placeholder"
+                                  ),
+                                  "aria-invalid": _vm.$v.title.$error
+                                },
+                                domProps: { value: _vm.title },
+                                on: {
+                                  blur: function($event) {
+                                    return _vm.$v.title.$touch()
+                                  },
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.title = $event.target.value
+                                  }
                                 }
-                              }
-                            })
+                              }),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "invalid-tooltip" }, [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.$t("form.validation.title.required")
+                                  )
+                                )
+                              ])
+                            ])
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
                             _c("label", { attrs: { for: "mailContent" } }, [
-                              _vm._v(_vm._s(_vm.t("form.mail.content")))
+                              _vm._v(_vm._s(_vm.$t("form.mail.content.label")))
                             ]),
                             _vm._v(" "),
-                            _c("textarea", {
-                              directives: [
-                                { name: "autosize", rawName: "v-autosize" },
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.content,
-                                  expression: "content"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              class: { "is-invalid": _vm.$v.content.$error },
-                              attrs: {
-                                id: "mailContent",
-                                name: "content-email",
-                                placeholder: _vm.t(
-                                  "form.mail.content.placeholder"
-                                ),
-                                "aria-invalid": _vm.$v.content.$error,
-                                rows: "3"
-                              },
-                              domProps: { value: _vm.content },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
+                            _c("div", { staticClass: "input-group" }, [
+                              _c("textarea", {
+                                directives: [
+                                  { name: "autosize", rawName: "v-autosize" },
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.content,
+                                    expression: "content"
                                   }
-                                  _vm.content = $event.target.value
+                                ],
+                                staticClass: "form-control",
+                                class: { "is-invalid": _vm.$v.content.$error },
+                                attrs: {
+                                  id: "mailContent",
+                                  name: "content-email",
+                                  placeholder: _vm.$t(
+                                    "form.mail.content.placeholder"
+                                  ),
+                                  "aria-invalid": _vm.$v.content.$error,
+                                  rows: "3"
+                                },
+                                domProps: { value: _vm.content },
+                                on: {
+                                  blur: function($event) {
+                                    return _vm.$v.content.$touch()
+                                  },
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.content = $event.target.value
+                                  }
                                 }
-                              }
-                            }),
+                              }),
+                              _vm._v(" "),
+                              !_vm.$v.content.required
+                                ? _c(
+                                    "div",
+                                    { staticClass: "invalid-tooltip" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$t(
+                                            "form.validation.content.required"
+                                          )
+                                        )
+                                      )
+                                    ]
+                                  )
+                                : !_vm.$v.content.contains
+                                ? _c(
+                                    "div",
+                                    { staticClass: "invalid-tooltip" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$t(
+                                            "form.validation.content.contains"
+                                          )
+                                        )
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            ]),
                             _vm._v(" "),
                             _c("textarea", {
                               staticClass: "form-control extended",
@@ -2557,7 +2619,7 @@ var render = function() {
                                 "read-only": "",
                                 disabled: ""
                               },
-                              domProps: { value: _vm.t("form.mail.post2") }
+                              domProps: { value: _vm.$t("form.mail.post") }
                             }),
                             _vm._v(" "),
                             _c(
@@ -2565,7 +2627,7 @@ var render = function() {
                               { staticClass: "tips" },
                               [
                                 _c(
-                                  _vm.td("form.mail.content.tip1", {
+                                  _vm.$td("form.mail.content.tip1", {
                                     "open-target": _vm.anchor("target"),
                                     "open-santa": _vm.anchor("santa"),
                                     close: "</a>"
@@ -2581,7 +2643,7 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("p", [
                                   _vm._v(
-                                    _vm._s(_vm.t("form.mail.content.tip2"))
+                                    _vm._s(_vm.$t("form.mail.content.tip2"))
                                   )
                                 ])
                               ],
@@ -2600,8 +2662,11 @@ var render = function() {
                           attrs: { id: "form-options" }
                         },
                         [
-                          _c("label", [
-                            _vm._v(_vm._s(_vm.t("form.data-expiration"))),
+                          _c("div", { staticClass: "input-inline-group" }, [
+                            _c("label", { attrs: { for: "expiration" } }, [
+                              _vm._v(_vm._s(_vm.$t("form.data-expiration")))
+                            ]),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
@@ -2611,14 +2676,20 @@ var render = function() {
                                   expression: "expiration"
                                 }
                               ],
+                              class: { "is-invalid": _vm.$v.expiration.$error },
                               attrs: {
                                 type: "date",
                                 name: "data-expiration",
+                                id: "expiration",
+                                "aria-invalid": _vm.$v.expiration.$error,
                                 min: _vm.moment(1, "day"),
                                 max: _vm.moment(1, "year")
                               },
                               domProps: { value: _vm.expiration },
                               on: {
+                                blur: function($event) {
+                                  return _vm.$v.expiration.$touch()
+                                },
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
@@ -2626,7 +2697,39 @@ var render = function() {
                                   _vm.expiration = $event.target.value
                                 }
                               }
-                            })
+                            }),
+                            _vm._v(" "),
+                            !_vm.$v.expiration.required
+                              ? _c("div", { staticClass: "invalid-tooltip" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$t(
+                                        "form.validation.expiration.required"
+                                      )
+                                    )
+                                  )
+                                ])
+                              : !_vm.$v.expiration.minValue
+                              ? _c("div", { staticClass: "invalid-tooltip" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$t(
+                                        "form.validation.expiration.minValue"
+                                      )
+                                    )
+                                  )
+                                ])
+                              : !_vm.$v.expiration.maxValue
+                              ? _c("div", { staticClass: "invalid-tooltip" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$t(
+                                        "form.validation.expiration.maxValue"
+                                      )
+                                    )
+                                  )
+                                ])
+                              : _vm._e()
                           ])
                         ]
                       )
@@ -2646,7 +2749,7 @@ var render = function() {
           staticClass: "alert alert-danger v-rcloak",
           attrs: { id: "errors-wrapper" }
         },
-        [_vm._v("\n        " + _vm._s(_vm.t("form.waiting")) + "\n    ")]
+        [_vm._v("\n        " + _vm._s(_vm.$t("form.waiting")) + "\n    ")]
       ),
       _vm._v(" "),
       _vm.showModal
@@ -2961,15 +3064,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_randomForm_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/randomForm.vue */ "./resources/js/components/randomForm.vue");
 /* harmony import */ var _partials_store_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./partials/store.js */ "./resources/js/partials/store.js");
+/* harmony import */ var vue_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-i18n */ "./node_modules/vue-i18n/dist/vue-i18n.esm.js");
+/* harmony import */ var _vue_i18n_locales_generated_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./vue-i18n-locales.generated.js */ "./resources/js/vue-i18n-locales.generated.js");
 
 
 
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE_3__["default"]);
+var lang = document.documentElement.lang.substr(0, 2);
+
+var i18n = new vue_i18n__WEBPACK_IMPORTED_MODULE_3__["default"]({
+  locale: lang,
+  messages: _vue_i18n_locales_generated_js__WEBPACK_IMPORTED_MODULE_4__["default"]
+});
 window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#form',
   components: {
     RandomForm: _components_randomForm_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  store: _partials_store_js__WEBPACK_IMPORTED_MODULE_2__["default"]
+  store: _partials_store_js__WEBPACK_IMPORTED_MODULE_2__["default"],
+  i18n: i18n
 });
 
 /***/ }),

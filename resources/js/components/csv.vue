@@ -3,7 +3,6 @@
     import Modal from './modal.vue';
     export default {
         components: { Modal },
-        computed: mapState(['lang']),
         methods: {
             emitSubmit: function() {
                 this.$emit('import', $('#uploadCsv input[type=file]')[0].files[0]);
@@ -19,7 +18,7 @@
 <template>
     <modal @close="$emit('close')">
         <template #header>
-            <h3>{{ lang.get('form.csv.title') }}</h3>
+            <h3>{{ $t('form.csv.title') }}</h3>
         </template>
 
         <template #body>
@@ -27,7 +26,7 @@
                 <span class="fas fa-question-cirle" />
                 <span
                     v-html="
-                        lang.get('form.csv.help', {
+                        $t('form.csv.help', {
                             excel:
                                 '<a href=\'https://support.office.com/fr-fr/article/Importer-ou-exporter-des-fichiers-texte-txt-ou-csv-5250ac4c-663c-47ce-937b-339e391393ba\' class=\'alert-link\'>',
                             calc:
@@ -38,19 +37,19 @@
                 />
             </div>
 
-            {{ lang.get('form.csv.format') }}
+            {{ $t('form.csv.format') }}
             <table class="table table-bordered heavy-borders">
                 <tbody>
                     <tr>
-                        <td>{{ lang.get('form.csv.column1') }}</td>
-                        <td>{{ lang.get('form.csv.column2') }}</td>
-                        <td>{{ lang.get('form.csv.column3') }}</td>
+                        <td>{{ $t('form.csv.column1') }}</td>
+                        <td>{{ $t('form.csv.column2') }}</td>
+                        <td>{{ $t('form.csv.column3') }}</td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="alert alert-danger" role="alert">
-                {{ lang.get('form.csv.warning') }}
+                {{ $t('form.csv.warning') }}
             </div>
 
             <form id="uploadCsv" @submit.prevent="emitSubmit" @reset="emitCancel">
@@ -62,12 +61,12 @@
             <!-- Duplicate emitCancel onclick and onreset on the form for browser not handler form attribute on buttons -->
             <button type="reset" form="uploadCsv" class="btn btn-warning" @click="emitCancel">
                 <span class="fas fa-stop-circle" />
-                {{ lang.get('form.csv.cancel') }}
+                {{ $t('form.csv.cancel') }}
             </button>
             <!-- Duplicate emitSubmit onclick and onsubmit on the form for browser not handler form attribute on buttons -->
             <button type="submit" form="uploadCsv" class="btn btn-primary" @click="emitSubmit">
                 <span class="fas fa-upload" />
-                {{ lang.get('form.csv.import') }}
+                {{ $t('form.csv.import') }}
             </button>
         </template>
     </modal>

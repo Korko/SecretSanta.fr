@@ -280,7 +280,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return participant.delivery_status === 'created';
       });
     }
-  }, Object(vuex__WEBPACK_IMPORTED_MODULE_12__["mapState"])(['csrf', 'key', 'lang'])),
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_12__["mapState"])(['csrf', 'key'])),
   created: function created() {
     var _this = this;
 
@@ -653,7 +653,7 @@ var render = function() {
         _c("th", { attrs: { scope: "col" } }, [
           _vm._v(
             "\n                " +
-              _vm._s(_vm.lang.get("organizer.list.name")) +
+              _vm._s(_vm.$t("organizer.list.name")) +
               "\n            "
           )
         ]),
@@ -661,7 +661,7 @@ var render = function() {
         _c("th", { attrs: { scope: "col" } }, [
           _vm._v(
             "\n                " +
-              _vm._s(_vm.lang.get("organizer.list.email")) +
+              _vm._s(_vm.$t("organizer.list.email")) +
               "\n            "
           )
         ]),
@@ -669,7 +669,7 @@ var render = function() {
         _c("th", { attrs: { scope: "col" } }, [
           _vm._v(
             "\n                " +
-              _vm._s(_vm.lang.get("organizer.list.status")) +
+              _vm._s(_vm.$t("organizer.list.status")) +
               "\n            "
           )
         ])
@@ -888,13 +888,24 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_organizerForm_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/organizerForm.vue */ "./resources/js/components/organizerForm.vue");
-/* harmony import */ var _mixins_vueFetcher_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mixins/vueFetcher.js */ "./resources/js/mixins/vueFetcher.js");
+/* harmony import */ var vue_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-i18n */ "./node_modules/vue-i18n/dist/vue-i18n.esm.js");
+/* harmony import */ var _vue_i18n_locales_generated_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vue-i18n-locales.generated.js */ "./resources/js/vue-i18n-locales.generated.js");
+/* harmony import */ var _components_organizerForm_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/organizerForm.vue */ "./resources/js/components/organizerForm.vue");
+/* harmony import */ var _mixins_vueFetcher_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./mixins/vueFetcher.js */ "./resources/js/mixins/vueFetcher.js");
 
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var lang = document.documentElement.lang.substr(0, 2);
+
+var i18n = new vue_i18n__WEBPACK_IMPORTED_MODULE_1__["default"]({
+  locale: lang,
+  messages: _vue_i18n_locales_generated_js__WEBPACK_IMPORTED_MODULE_2__["default"]
+});
 
 
 window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  mixins: [Object(_mixins_vueFetcher_js__WEBPACK_IMPORTED_MODULE_2__["VueFetcher"])(_components_organizerForm_vue__WEBPACK_IMPORTED_MODULE_1__["default"])]
+  mixins: [Object(_mixins_vueFetcher_js__WEBPACK_IMPORTED_MODULE_4__["VueFetcher"])(_components_organizerForm_vue__WEBPACK_IMPORTED_MODULE_3__["default"])],
+  i18n: i18n
 });
 
 /***/ }),

@@ -27,7 +27,6 @@
         "jquery-ui": "^1.12.1",
         "jquery.actual": "github:dreamerslab/jquery.actual#master",
         "jquery.scrollto": "^2.1.2",
-        "lang.js": "^1.1.14",
         "laravel-localization-loader": "^1.0.5",
         "laravel-mix": "^4.1.4",
         "laravel-mix-modernizr": "^1.0.1",
@@ -53,5 +52,7 @@
         "vuelidate": "^0.7.5",
         "vuex": "^3.1.2"
     },
-    "dependencies": {}
+    "dependencies": {
+        "vue-i18n": "^8.16.0"
+    }
 }

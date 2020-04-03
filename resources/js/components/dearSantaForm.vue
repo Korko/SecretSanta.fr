@@ -16,8 +16,7 @@
             },
             checkUpdates() {
                 return !!Object.values(this.data.emails).find(email => email.delivery_status === 'created');
-            },
-            ...mapState(['lang'])
+            }
         },
         created() {
             setInterval(() => {
@@ -57,12 +56,12 @@
         <ajax-form :action="`/dearsanta/${data.santa.id}/send`" @success="success">
             <fieldset>
                 <div class="form-group">
-                    <label for="mailContent">Contenu du mail</label>
+                    <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
                     <textarea
                         id="mailContent"
                         name="content"
                         required
-                        placeholder="Cher Papa Noël..."
+                        :placeholder="$t('dearsanta.content.placeholder')"
                         class="form-control"
                     />
                 </div>
@@ -72,13 +71,13 @@
             <thead>
                 <tr class="table-active">
                     <th scope="col">
-                        {{ lang.get('dearsanta.list.date') }}
+                        {{ $t('dearsanta.list.date') }}
                     </th>
                     <th scope="col">
-                        {{ lang.get('dearsanta.list.body') }}
+                        {{ $t('dearsanta.list.body') }}
                     </th>
                     <th scope="col">
-                        {{ lang.get('dearsanta.list.status') }}
+                        {{ $t('dearsanta.list.status') }}
                     </th>
                 </tr>
             </thead>
@@ -90,7 +89,7 @@
                 </tr>
                 <tr v-if="emails.length === 0" class="no-email">
                     <td colspan="3">
-                        {{ lang.get('dearsanta.list.empty') }}
+                        {{ $t('dearsanta.list.empty') }}
                     </td>
                 </tr>
             </tbody>
