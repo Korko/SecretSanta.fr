@@ -11,7 +11,7 @@
     Vue.use(VueAutosize);
 
     import Vuelidate from 'vuelidate';
-    import { required, minLength } from 'vuelidate/lib/validators'
+    import { required, minLength, minValue, maxValue } from 'vuelidate/lib/validators'
     Vue.use(Vuelidate);
 
     // Still using CommonJS syntax
@@ -20,11 +20,11 @@
     import Moment from 'moment';
     import Papa from 'papaparse';
 
-    import Lang from '../partials/lang.js';
-
     import Csv from './csv.vue';
     import AjaxForm from './ajaxForm.vue';
     import Participant from './participant.vue';
+
+    const formatMoment = (amount, unit) => Moment(window.now).add(amount, unit).format('YYYY-MM-DD')
 
     export default {
         components: {
@@ -38,25 +38,11 @@
                 participants: [],
                 title: '',
                 content: '',
-                expiration: Moment(window.now)
-                    .add(1, 'day')
-                    .format('YYYY-MM-DD'),
+                expiration: formatMoment(1, 'day'),
                 now: window.now,
                 showModal: false,
-                importing: false
+                importing: false,
             };
-        },
-
-        computed: {
-            participantNames() {
-                var names = {};
-                this.participants.forEach((participant, idx) => {
-                    if (participant.name) {
-                        names[idx] = participant.name;
-                    }
-                });
-                return names;
-            }
         },
 
         validations: {
@@ -69,16 +55,30 @@
             },
             content: {
                 required,
-                containsTarget(value) {
-                    return value.indexOf('{TARGET}') >= 0;
+                contains(value) {
+                   return value.indexOf('{TARGET}') >= 0;
                 }
             },
-            expiration() {
-                return {
-                    required,
-                    minValue: this.moment(1, 'day'),
-                    maxValue: this.moment(1, 'year')
-                };
+            expiration: {
+                required,
+                minValue(value) {
+                    return Moment(value, 'YYYY-MM-DD').isSameOrAfter(formatMoment(1, 'day'));
+                },
+                maxValue(value) {
+                    return Moment(value, 'YYYY-MM-DD').isSameOrBefore(formatMoment(1, 'year'));
+                }
+            }
+        },
+
+        computed: {
+            participantNames() {
+                var names = {};
+                this.participants.forEach((participant, idx) => {
+                    if (participant.name) {
+                        names[idx] = participant.name;
+                    }
+                });
+                return names;
             }
         },
 
@@ -116,8 +116,8 @@
                         jQuery('input[type=date]', this.$el).datepicker({
                             // Consistent format with the HTML5 picker
                             dateFormat: 'yy-mm-dd',
-                            minDate: this.moment(1, 'day'),
-                            maxDate: this.moment(1, 'year')
+                            minDate: formatMoment(1, 'day'),
+                            maxDate: formatMoment(1, 'year')
                         });
                     }
 
@@ -129,13 +129,9 @@
         },
 
         methods: {
-            t(key, params) {
-                return Lang.get(key, params);
-            },
-
             // Only way to have parameters parsing for vuejs events
-            td(key, params) {
-                var data = this.t(key, params);
+            $td(key, params) {
+                var data = this.$t(key, params);
                 return {
                     name: "dynamic-string",
                     template: `<p>${data}</p>`
@@ -148,9 +144,7 @@
             }, 
 
             moment(amount, unit) {
-                return Moment(this.now)
-                    .add(amount, unit)
-                    .format('YYYY-MM-DD');
+                return formatMoment(amount, unit);
             },
 
             resetParticipants() {
@@ -187,7 +181,7 @@
                 Papa.parse(file, {
                     error: function() {
                         this.importing = false;
-                        alertify.alert(this.t('csv.importError'));
+                        alertify.alert(this.$t('form.csv.importError'));
                     },
                     complete: function(file) {
                         this.importing = false;
@@ -207,7 +201,7 @@
                                 this.addParticipant();
                             }
                         }
-                        alertify.alert(this.t('csv.importSuccess'));
+                        alertify.alert(this.$t('form.csv.importSuccess'));
                     }.bind(this)
                 });
             },
@@ -226,10 +220,10 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <ajax-form id="randomForm" action="/" :button_send="t('form.submit')">
+            <ajax-form id="randomForm" action="/" :button_send="$t('form.submit')">
                 <template #default="{ sending, sent, errors }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
-                        {{ t('form.success') }}
+                        {{ $t('form.success') }}
                     </div>
 
                     <div v-show="errors.length && !sent" id="errors-wrapper" class="alert alert-danger">
@@ -239,19 +233,19 @@
                     </div>
 
                     <fieldset>
-                        <legend>{{ t('form.participants') }}</legend>
+                        <legend>{{ $t('form.participants.title') }}</legend>
                         <div class="table-responsive form-group">
                             <table id="participants" class="table table-hover table-numbered">
                                 <thead>
                                     <tr>
                                         <th style="width: 33%" scope="col">
-                                            {{ t('form.participant.name') }}
+                                            {{ $t('form.participant.name.label') }}
                                         </th>
                                         <th style="width: 33%" scope="col">
-                                            {{ t('form.participant.email') }}
+                                            {{ $t('form.participant.email.label') }}
                                         </th>
                                         <th style="width: 30%" scope="col">
-                                            {{ t('form.participant.exclusions') }}
+                                            {{ $t('form.participant.exclusions.label') }}
                                         </th>
                                         <th style="width: 3%" scope="col" />
                                     </tr>
@@ -280,7 +274,7 @@
                             </table>
                             <button type="button" class="btn btn-success participant-add" @click="addParticipant()">
                                 <i class="fas fa-plus" />
-                                {{ t('form.participant.add') }}
+                                {{ $t('form.participant.add') }}
                             </button>
                             <button
                                 type="button"
@@ -290,10 +284,10 @@
                             >
                                 <span v-if="importing"
                                     ><i class="fas fa-spinner fa-spin" />
-                                    {{ t('form.participants.importing') }}</span
+                                    {{ $t('form.participants.importing') }}</span
                                 >
                                 <span v-else
-                                    ><i class="fas fa-list-alt" /> {{ t('form.participants.import') }}</span
+                                    ><i class="fas fa-list-alt" /> {{ $t('form.participants.import') }}</span
                                 >
                             </button>
                         </div>
@@ -304,42 +298,51 @@
                         <div id="contact">
                             <fieldset id="form-mail-group">
                                 <div class="form-group">
-                                    <label for="mailTitle">{{ t('form.mail.title') }}</label>
-                                    <input
-                                        id="mailTitle"
-                                        type="text"
-                                        name="title"
-                                        :placeholder="t('form.mail.title.placeholder')"
-                                        v-model="title"
-                                        class="form-control"
-                                        :class="{ 'is-invalid': $v.title.$error }"
-                                        :aria-invalid="$v.title.$error"
-                                    />
+                                    <label for="mailTitle">{{ $t('form.mail.title.label') }}</label>
+                                    <div class="input-group">
+                                        <input
+                                            id="mailTitle"
+                                            type="text"
+                                            name="title"
+                                            :placeholder="$t('form.mail.title.placeholder')"
+                                            v-model="title"
+                                            class="form-control"
+                                            :class="{ 'is-invalid': $v.title.$error }"
+                                            :aria-invalid="$v.title.$error"
+                                            @blur="$v.title.$touch()"
+                                        />
+                                        <div class="invalid-tooltip">{{ $t('form.validation.title.required') }}</div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="mailContent">{{ t('form.mail.content') }}</label>
-                                    <textarea
-                                        id="mailContent"
-                                        v-autosize
-                                        name="content-email"
-                                        :placeholder="t('form.mail.content.placeholder')"
-                                        class="form-control"
-                                        :class="{ 'is-invalid': $v.content.$error }"
-                                        :aria-invalid="$v.content.$error"
-                                        rows="3"
-                                        v-model="content"
-                                    />
+                                    <label for="mailContent">{{ $t('form.mail.content.label') }}</label>
+                                    <div class="input-group">
+                                        <textarea
+                                            id="mailContent"
+                                            v-autosize
+                                            name="content-email"
+                                            :placeholder="$t('form.mail.content.placeholder')"
+                                            class="form-control"
+                                            :class="{ 'is-invalid': $v.content.$error }"
+                                            :aria-invalid="$v.content.$error"
+                                            @blur="$v.content.$touch()"
+                                            rows="3"
+                                            v-model="content"
+                                        />
+                                        <div class="invalid-tooltip" v-if="!$v.content.required">{{ $t('form.validation.content.required') }}</div>
+                                        <div class="invalid-tooltip" v-else-if="!$v.content.contains">{{ $t('form.validation.content.contains') }}</div>
+                                    </div>
                                     <textarea
                                         id="mailPost"
                                         class="form-control extended"
                                         read-only
                                         disabled
-                                        :value="t('form.mail.post2')"
+                                        :value="$t('form.mail.post')"
                                     />
 
                                     <blockquote class="tips">
-                                        <p :is="td('form.mail.content.tip1', {'open-target': anchor('target'), 'open-santa': anchor('santa'), 'close':'</a>'})" @santa="appendSanta" @target="appendTarget"></p>
-                                        <p>{{ t('form.mail.content.tip2') }}</p>
+                                        <p :is="$td('form.mail.content.tip1', {'open-target': anchor('target'), 'open-santa': anchor('santa'), 'close':'</a>'})" @santa="appendSanta" @target="appendTarget"></p>
+                                        <p>{{ $t('form.mail.content.tip2') }}</p>
                                     </blockquote>
                                 </div>
                             </fieldset>
@@ -347,22 +350,30 @@
                     </fieldset>
                     <fieldset>
                         <div id="form-options" class="form-group">
-                            <label
-                                >{{ t('form.data-expiration')
-                                }}<input
+                            <div class="input-inline-group">
+                                <label for="expiration">{{ $t('form.data-expiration') }}</label>
+                                <input
                                     type="date"
                                     name="data-expiration"
+                                    id="expiration"
                                     v-model="expiration"
+                                    :class="{ 'is-invalid': $v.expiration.$error }"
+                                    :aria-invalid="$v.expiration.$error"
+                                    @blur="$v.expiration.$touch()"
                                     :min="moment(1, 'day')"
                                     :max="moment(1, 'year')"
-                            /></label>
+                                />
+                                <div class="invalid-tooltip" v-if="!$v.expiration.required">{{ $t('form.validation.expiration.required') }}</div>
+                                <div class="invalid-tooltip" v-else-if="!$v.expiration.minValue">{{ $t('form.validation.expiration.minValue') }}</div>
+                                <div class="invalid-tooltip" v-else-if="!$v.expiration.maxValue">{{ $t('form.validation.expiration.maxValue') }}</div>
+                            </div>
                         </div>
                     </fieldset>
                 </template>
             </ajax-form>
         </div>
         <div id="errors-wrapper" class="alert alert-danger v-rcloak">
-            {{ t('form.waiting') }}
+            {{ $t('form.waiting') }}
         </div>
         <csv v-if="showModal" @import="importParticipants" @close="showModal = false" />
     </div>

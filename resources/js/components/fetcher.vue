@@ -18,7 +18,6 @@
                 loading: false
             };
         },
-        computed: mapState(['lang']),
         mounted() {
             this.$nextTick(() => {
                 this.loading = true;
@@ -39,8 +38,8 @@
     <ajax-form id="fetch" ref="form" :action="fetchurl">
         <timer :delay="2000">
             <button type="submit" class="btn btn-primary btn-lg" :disabled="loading">
-                <span v-if="loading"> <span class="fas fa-spinner" /> Chargement en cours... </span>
-                <span v-else>Charger</span>
+                <span v-if="loading"><span class="fas fa-spinner" /> {{ $t('common.fetcher.loading') }}</span>
+                <span v-else>{{ $t('common.fetcher.load') }}</span>
             </button>
         </timer>
     </ajax-form>
