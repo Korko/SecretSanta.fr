@@ -101,8 +101,8 @@
                     :class="{ 'is-invalid': $v.name.$error || fieldError(`participants.${idx}.name`) }"
                     :aria-invalid="$v.name.$error || fieldError(`participants.${idx}.name`)"
                 />
-                <div class="invalid-tooltip" v-if="!$v.name.required">{{ $t('validation.custom["participants.*.name"].required') }}</div>
-                <div class="invalid-tooltip" v-else-if="!$v.name.unique">{{ $t('validation.custom["participants.*.name"].distinct') }}</div>
+                <div class="invalid-tooltip" v-if="!$v.name.required">{{ $t('validation.custom.randomform.participant.name.required') }}</div>
+                <div class="invalid-tooltip" v-else-if="!$v.name.unique">{{ $t('validation.custom.randomform.participant.name.distinct') }}</div>
                 <div class="invalid-tooltip" v-else-if="fieldError(`participants.${idx}.name`)">{{ fieldError(`participants.${idx}.name`) }}</div>
             </div>
         </td>
@@ -119,8 +119,8 @@
                     :class="{ 'is-invalid': $v.email.$error || fieldError(`participants.${idx}.email`)}"
                     :aria-invalid="$v.email.$error || fieldError(`participants.${idx}.email`)"
                 />
-                <div class="invalid-tooltip" v-if="!$v.email.required">{{ $t('validation.custom["participants.*.email"].required') }}</div>
-                <div class="invalid-tooltip" v-else-if="!$v.email.format">{{ $t('validation.custom["participants.*.email"].email') }}</div>
+                <div class="invalid-tooltip" v-if="!$v.email.required">{{ $t('validation.custom.randomform.participant.email.required') }}</div>
+                <div class="invalid-tooltip" v-else-if="!$v.email.format">{{ $t('validation.custom.randomform.participant.email.format') }}</div>
                 <div class="invalid-tooltip" v-else-if="fieldError(`participants.${idx}.email`)">{{ fieldError(`participants.${idx}.email`) }}</div>
             </div>
         </td>

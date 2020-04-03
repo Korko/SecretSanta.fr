@@ -22,8 +22,21 @@ class OrganizerChangeEmailRequest extends Request
     public function rules()
     {
         return parent::rules() + [
-            'email'                => 'required|string',
+            'email'                => 'required|email',
             'key'                  => 'required|string',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'email.required' => __('validation.custom.organizer.email.required'),
+            'email.email'    => __('validation.custom.organizer.email.format'),
         ];
     }
 }

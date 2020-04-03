@@ -2066,7 +2066,9 @@ var render = function() {
           ? _c("div", { staticClass: "invalid-tooltip" }, [
               _vm._v(
                 _vm._s(
-                  _vm.$t('validation.custom["participants.*.name"].required')
+                  _vm.$t(
+                    "validation.custom.randomform.participant.name.required"
+                  )
                 )
               )
             ])
@@ -2074,7 +2076,9 @@ var render = function() {
           ? _c("div", { staticClass: "invalid-tooltip" }, [
               _vm._v(
                 _vm._s(
-                  _vm.$t('validation.custom["participants.*.name"].distinct')
+                  _vm.$t(
+                    "validation.custom.randomform.participant.name.distinct"
+                  )
                 )
               )
             ])
@@ -2120,7 +2124,9 @@ var render = function() {
           ? _c("div", { staticClass: "invalid-tooltip" }, [
               _vm._v(
                 _vm._s(
-                  _vm.$t('validation.custom["participants.*.email"].required')
+                  _vm.$t(
+                    "validation.custom.randomform.participant.email.required"
+                  )
                 )
               )
             ])
@@ -2128,7 +2134,9 @@ var render = function() {
           ? _c("div", { staticClass: "invalid-tooltip" }, [
               _vm._v(
                 _vm._s(
-                  _vm.$t('validation.custom["participants.*.email"].email')
+                  _vm.$t(
+                    "validation.custom.randomform.participant.email.format"
+                  )
                 )
               )
             ])
@@ -2550,7 +2558,9 @@ var render = function() {
                               _c("div", { staticClass: "invalid-tooltip" }, [
                                 _vm._v(
                                   _vm._s(
-                                    _vm.$t("validation.custom.title.required")
+                                    _vm.$t(
+                                      "validation.custom.randomform.title.required"
+                                    )
                                   )
                                 )
                               ])
@@ -2612,7 +2622,7 @@ var render = function() {
                                       _vm._v(
                                         _vm._s(
                                           _vm.$t(
-                                            "validation.custom.content-email.required"
+                                            "validation.custom.randomform.content.required"
                                           )
                                         )
                                       )
@@ -2626,7 +2636,7 @@ var render = function() {
                                       _vm._v(
                                         _vm._s(
                                           _vm.$t(
-                                            "validation.custom.content-email.contains"
+                                            "validation.custom.randomform.content.contains"
                                           )
                                         )
                                       )
@@ -2743,7 +2753,7 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(
                                       _vm.$t(
-                                        "validation.custom.data-expiration.required"
+                                        "validation.custom.randomform.expiration.required"
                                       )
                                     )
                                   )
@@ -2753,7 +2763,7 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(
                                       _vm.$t(
-                                        "validation.custom.data-expiration.after_or_equal"
+                                        "validation.custom.randomform.expiration.min"
                                       )
                                     )
                                   )
@@ -2763,7 +2773,7 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(
                                       _vm.$t(
-                                        "validation.custom.data-expiration.before"
+                                        "validation.custom.randomform.expiration.max"
                                       )
                                     )
                                   )

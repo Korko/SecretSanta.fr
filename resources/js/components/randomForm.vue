@@ -306,7 +306,7 @@
                                             :aria-invalid="$v.title.$error || fieldError('title')"
                                             @blur="$v.title.$touch()"
                                         />
-                                        <div class="invalid-tooltip">{{ $t('validation.custom.title.required') }}</div>
+                                        <div class="invalid-tooltip">{{ $t('validation.custom.randomform.title.required') }}</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -324,8 +324,8 @@
                                             rows="3"
                                             v-model="content"
                                         />
-                                        <div class="invalid-tooltip" v-if="!$v.content.required">{{ $t('validation.custom.content-email.required') }}</div>
-                                        <div class="invalid-tooltip" v-else-if="!$v.content.contains">{{ $t('validation.custom.content-email.contains') }}</div>
+                                        <div class="invalid-tooltip" v-if="!$v.content.required">{{ $t('validation.custom.randomform.content.required') }}</div>
+                                        <div class="invalid-tooltip" v-else-if="!$v.content.contains">{{ $t('validation.custom.randomform.content.contains') }}</div>
                                         <div class="invalid-tooltip" v-else-if="fieldError('content-email')">{{ fieldError('content-email') }}</div>
                                     </div>
                                     <textarea
@@ -359,9 +359,9 @@
                                     :min="moment(1, 'day')"
                                     :max="moment(1, 'year')"
                                 />
-                                <div class="invalid-tooltip" v-if="!$v.expiration.required">{{ $t('validation.custom.data-expiration.required') }}</div>
-                                <div class="invalid-tooltip" v-else-if="!$v.expiration.minValue">{{ $t('validation.custom.data-expiration.after_or_equal') }}</div>
-                                <div class="invalid-tooltip" v-else-if="!$v.expiration.maxValue">{{ $t('validation.custom.data-expiration.before') }}</div>
+                                <div class="invalid-tooltip" v-if="!$v.expiration.required">{{ $t('validation.custom.randomform.expiration.required') }}</div>
+                                <div class="invalid-tooltip" v-else-if="!$v.expiration.minValue">{{ $t('validation.custom.randomform.expiration.min') }}</div>
+                                <div class="invalid-tooltip" v-else-if="!$v.expiration.maxValue">{{ $t('validation.custom.randomform.expiration.max') }}</div>
                                 <div class="invalid-tooltip" v-else-if="fieldError('data-expiration')">{{ fieldError('data-expiration') }}</div>
                             </div>
                         </div>
