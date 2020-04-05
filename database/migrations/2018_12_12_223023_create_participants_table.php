@@ -17,7 +17,7 @@ class CreateParticipantsTable extends Migration
             $table->id();
             $table->foreignId('draw_id');
             $table->longText('name');
-            $table->longText('address');
+            $table->longText('email');
             $table->foreignId('target_id')->nullable();
             $table->foreignId('mail_id');
             $table->timestamps();
