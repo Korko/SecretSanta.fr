@@ -1102,19 +1102,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
-/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7__);
 
 
 
 
 
 
-
-
-vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_6___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_4___default.a
@@ -1149,6 +1142,10 @@ vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
     fieldError: {
       type: Function,
       required: true
+    },
+    $v: {
+      type: Object,
+      required: true
     }
   },
   computed: {
@@ -1163,24 +1160,6 @@ vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
   created: function created() {
     if (this.name) this.$v.name.$touch();
     if (this.email) this.$v.email.$touch();
-  },
-  validations: function validations() {
-    return {
-      name: {
-        required: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7__["requiredIf"])(this.required),
-        unique: function unique(value) {
-          // standalone validator ideally should not assume a field is required
-          if (value === '') return true;
-          return Object.values(this.names).filter(function (name) {
-            return name === value;
-          }).length === 1;
-        }
-      },
-      email: {
-        required: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7__["requiredIf"])(this.required || this.name !== ''),
-        format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_7__["email"]
-      }
-    };
   },
   methods: {
     changeName: function changeName(value) {
@@ -1303,7 +1282,24 @@ var formatMoment = function formatMoment(amount, unit) {
   validations: {
     participants: {
       required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["required"],
-      minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["minLength"])(3)
+      minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["minLength"])(3),
+      $each: {
+        $trackBy: 'id',
+        name: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["required"],
+          unique: function unique(value) {
+            // standalone validator ideally should not assume a field is required
+            if (value === '') return true;
+            return this.participants.filter(function (participant) {
+              return participant.name === value;
+            }).length === 1;
+          }
+        },
+        email: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["required"],
+          format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["email"]
+        }
+      }
     },
     title: {
       required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["required"]
@@ -2259,7 +2255,8 @@ var render = function() {
             attrs: {
               id: "randomForm",
               action: "/",
-              button_send: _vm.$t("form.submit")
+              button_send: _vm.$t("form.submit"),
+              $v: _vm.$v
             },
             scopedSlots: _vm._u([
               {
@@ -2396,7 +2393,8 @@ var render = function() {
                                       names: _vm.participantNames,
                                       required:
                                         idx < 3 && _vm.participants.length <= 3,
-                                      fieldError: fieldError
+                                      fieldError: fieldError,
+                                      $v: _vm.$v.participants.$each[idx]
                                     },
                                     on: {
                                       "input:name": function($event) {

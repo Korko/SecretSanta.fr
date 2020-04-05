@@ -3,10 +3,6 @@
 
     import Vue from 'vue';
 
-    import Vuelidate from 'vuelidate';
-    import { requiredIf, email, integer, minLength } from 'vuelidate/lib/validators'
-    Vue.use(Vuelidate);
-
     export default {
         components: {
             Multiselect
@@ -39,6 +35,10 @@
             fieldError: {
                 type: Function,
                 required: true
+            },
+            $v: {
+                type: Object,
+                required: true
             }
         },
         computed: {
@@ -49,23 +49,6 @@
         created: function() {
             if(this.name) this.$v.name.$touch();
             if(this.email) this.$v.email.$touch();
-        },
-        validations: function() {
-            return {
-                name: {
-                    required: requiredIf(this.required),
-                    unique(value) {
-                        // standalone validator ideally should not assume a field is required
-                        if (value === '') return true;
-
-                        return Object.values(this.names).filter(name => (name === value)).length === 1;
-                    }
-                },
-                email: {
-                    required: requiredIf(this.required || this.name !== ''),
-                    format: email
-                }
-            };
         },
         methods: {
             changeName(value) {

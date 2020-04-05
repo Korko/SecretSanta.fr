@@ -24,6 +24,10 @@
             button_sent: {
                 type: String,
                 default: ''
+            },
+            $v: {
+                type: Object,
+                default: null
             }
         },
         data: () => {
@@ -45,6 +49,12 @@
             },
             call(url, options) {
                 if (!this.sending && !this.sent) {
+                    this.$v && this.$v.$touch();
+
+                    if (this.$v && this.$v.$invalid) {
+                        return false;
+                    }
+
                     this.sending = true;
                     var keys = { _token: this.csrf, key: this.key };
                     var app = this;

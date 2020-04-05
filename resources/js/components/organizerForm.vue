@@ -1,13 +1,31 @@
 <script>
     import store from '../partials/store.js';
 
+    import { required, email } from 'vuelidate/lib/validators';
+
     import InputEdit from './inputEdit.vue';
     import DefaultForm from './form.vue';
 
     export default {
         components: { InputEdit },
         extends: DefaultForm,
-        data: store,
+        props: {
+            data: {
+                type: Object,
+                default: {}
+            }
+        },
+        data() {
+            return {
+                ...store,
+                validations: {
+                    address: {
+                        required,
+                        format: email
+                    }
+                }
+            };
+        },
         computed: {
             checkUpdates() {
                 return !!Object.values(this.data.participants).find(
@@ -72,10 +90,15 @@
                     <input-edit
                         :action="`/org/${data.draw}/${participant.id}/changeEmail`"
                         :value="participant.address"
-                        type="email"
                         name="email"
+                        :validation="validations.address"
                         @update="update(k, $event)"
-                    />
+                    >
+                        <template #errors="{ $v: $v }">
+                            <div class="invalid-tooltip" v-if="!$v.required">{{ $t('validation.custom.organizer.email.required') }}</div>
+                            <div class="invalid-tooltip" v-else-if="!$v.format">{{ $t('validation.custom.organizer.email.format') }}</div>
+                        </template>
+                    </input-edit>
                 </td>
                 <td>{{ participant.mail.delivery_status }}</td>
             </tr>

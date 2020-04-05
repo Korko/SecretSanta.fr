@@ -32,7 +32,7 @@
 </script>
 
 <template>
-    <ajax-form id="fetch" ref="form" :action="fetchurl">
+    <ajax-form id="fetch" ref="form" :action="fetchurl" :button="false">
         <timer :delay="2000">
             <button type="submit" class="btn btn-primary btn-lg" :disabled="loading">
                 <span v-if="loading"><span class="fas fa-spinner" /> {{ $t('common.fetcher.loading') }}</span>
