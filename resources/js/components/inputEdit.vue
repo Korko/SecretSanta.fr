@@ -1,4 +1,9 @@
 <script>
+    import Vue from 'vue';
+
+    import Vuelidate from 'vuelidate';
+    Vue.use(Vuelidate);
+
     import $ from 'jquery';
     import alertify from 'alertify.js';
 
@@ -21,7 +26,16 @@
             action: {
                 type: String,
                 required: true
+            },
+            validation: {
+                type: Object,
+                default: null
             }
+        },
+        validations() {
+            return {
+                newValue: this.validation || {}
+            };
         },
         data: function() {
             return {
@@ -82,6 +96,22 @@
             }
         },
         methods: {
+            onBlur() {
+                this.$v.$touch();
+                this.send('blur');
+            },
+            onCancel() {
+                this.$v.$reset();
+                this.send('cancel');
+            },
+            onInput() {
+                this.$v.$error && this.$v.$touch();
+                this.send('validate');
+            },
+            onSubmit() {
+                this.$v.$touch();
+                this.send('submit');
+            },
             submit() {
                 var app = this;
                 return $.ajax({
@@ -120,7 +150,7 @@
                 }
             },
             stateEditingValidating() {
-                if (this.$el.querySelectorAll('input:invalid').length > 0) {
+                if (this.$v.$invalid || this.$el.querySelectorAll('input:invalid').length > 0) {
                     this.send('invalid');
                 } else {
                     this.send('valid');
@@ -145,7 +175,7 @@
 </script>
 
 <template>
-    <form :action="action" method="post" autocomplete="off" @submit.prevent="send('submit')">
+    <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit" @focusout="onBlur">
         <fieldset :disabled="updating">
             <div class="input-group" :data-state="state" :data-previous-state="previousState">
                 <div v-if="updating" class="input-group-prepend">
@@ -162,11 +192,12 @@
                     v-model="newValue"
                     :name="name"
                     v-bind="$attrs"
-                    class="form-control"
+                    :class="{ 'form-control': true, 'is-invalid': $v.$error }"
                     :disabled="view"
-                    @input="send('validate')"
-                    @blur="send('blur')"
+                    :aria-invalid="$v.$error"
+                    @input="onInput"
                 />
+                <slot name="errors" :$v="$v.newValue"></slot>
                 <div class="input-group-append">
                     <button v-if="state.startsWith('view')" type="button" class="btn btn-primary" @click="send('edit')">
                         <i class="fas fa-edit" />
@@ -176,7 +207,7 @@
                         type="button"
                         class="btn btn-success"
                         :disabled="isSame || !state.endsWith('Valid')"
-                        @click="send('submit')"
+                        @click="onSubmit"
                     >
                         <i class="fas fa-check-circle" />
                     </button>
@@ -184,7 +215,7 @@
                         v-if="state.startsWith('edit')"
                         type="button"
                         class="btn btn-danger"
-                        @click="send('cancel')"
+                        @click="onCancel"
                     >
                         <i class="fas fa-times-circle" />
                     </button>

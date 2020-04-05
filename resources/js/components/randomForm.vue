@@ -11,7 +11,7 @@
     Vue.use(VueAutosize);
 
     import Vuelidate from 'vuelidate';
-    import { required, minLength, minValue, maxValue } from 'vuelidate/lib/validators'
+    import { required, minLength, minValue, maxValue, email } from 'vuelidate/lib/validators'
     Vue.use(Vuelidate);
 
     // Still using CommonJS syntax
@@ -48,13 +48,29 @@
         validations: {
             participants: {
                 required,
-                minLength: minLength(3)
+                minLength: minLength(3),
+                $each: {
+                    $trackBy: 'id',
+                    name: {
+                        required,
+                        unique(value) {
+                            // standalone validator ideally should not assume a field is required
+                            if (value === '') return true;
+
+                            return (this.participants.filter(participant => (participant.name === value)).length === 1);
+                        }
+                    },
+                    email: {
+                        required,
+                        format: email
+                    }
+                }
             },
             title: {
                 required
             },
             content: {
-                 required,
+                required,
                 contains(value) {
                    return value.indexOf('{TARGET}') >= 0;
                 }
@@ -220,7 +236,7 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <ajax-form id="randomForm" action="/" :button_send="$t('form.submit')">
+            <ajax-form id="randomForm" action="/" :button_send="$t('form.submit')" :$v="$v">
                 <template #default="{ sending, sent, fieldError }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ $t('form.success') }}
@@ -258,6 +274,7 @@
                                         :names="participantNames"
                                         :required="idx < 3 && participants.length <= 3"
                                         :fieldError="fieldError"
+                                        :$v="$v.participants.$each[idx]"
                                         @input:name="$set(participant, 'name', $event)"
                                         @input:email="$set(participant, 'email', $event)"
                                         @input:exclusions="$set(participant, 'exclusions', $event)"

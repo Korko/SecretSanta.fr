@@ -500,6 +500,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     button_sent: {
       type: String,
       default: ''
+    },
+    $v: {
+      type: Object,
+      default: null
     }
   },
   data: function data() {
@@ -520,6 +524,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     call: function call(url, options) {
       if (!this.sending && !this.sent) {
+        this.$v && this.$v.$touch();
+
+        if (this.$v && this.$v.$invalid) {
+          return false;
+        }
+
         this.sending = true;
         var keys = {
           _token: this.csrf,
@@ -39481,7 +39491,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "ajax-form",
-    { ref: "form", attrs: { id: "fetch", action: _vm.fetchurl } },
+    {
+      ref: "form",
+      attrs: { id: "fetch", action: _vm.fetchurl, button: false }
+    },
     [
       _c("timer", { attrs: { delay: 2000 } }, [
         _c(

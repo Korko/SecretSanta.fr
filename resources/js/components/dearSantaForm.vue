@@ -1,8 +1,25 @@
 <script>
+    import Vue from 'vue';
+
+    import Vuelidate from 'vuelidate';
+    import { required } from 'vuelidate/lib/validators'
+    Vue.use(Vuelidate);
+
     import DefaultForm from './form.vue';
 
     export default {
         extends: DefaultForm,
+        props: {
+            data: {
+                type: Object,
+                default: {}
+            }
+        },
+        data() {
+            return {
+                content: ''
+            };
+        },
         computed: {
             emails() {
                 return Object.values(this.data.emails)
@@ -20,6 +37,11 @@
             setInterval(() => {
                 if (this.checkUpdates) this.fetchState();
             }, 5000);
+        },
+        validations: {
+            content: {
+                required
+            }
         },
         methods: {
             success(data) {
@@ -51,17 +73,22 @@
 
 <template>
     <div>
-        <ajax-form :action="`/dearsanta/${data.santa.id}/send`" @success="success">
+        <ajax-form :action="`/dearsanta/${data.santa.id}/send`" @success="success" :$v="$v">
             <fieldset>
                 <div class="form-group">
                     <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
-                    <textarea
-                        id="mailContent"
-                        name="content"
-                        required
-                        :placeholder="$t('dearsanta.content.placeholder')"
-                        class="form-control"
-                    />
+                    <div class="input-group">
+                        <textarea
+                            id="mailContent"
+                            name="content"
+                            v-model="content"
+                            :placeholder="$t('dearsanta.content.placeholder')"
+                            :class="{ 'form-control': true, 'is-invalid': $v.content.$error }"
+                            :aria-invalid="$v.content.$error"
+                            @blur="$v.content.$touch()"
+                        />
+                        <div class="invalid-tooltip" v-if="!$v.content.required">{{ $t('validation.custom.dearsanta.content.required') }}</div>
+                    </div>
                 </div>
             </fieldset>
         </ajax-form>

@@ -23,7 +23,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
 
 
 
@@ -31,9 +37,24 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+vue__WEBPACK_IMPORTED_MODULE_7___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_8___default.a);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  extends: _form_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
+  extends: _form_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
+  props: {
+    data: {
+      type: Object,
+      default: {}
+    }
+  },
+  data: function data() {
+    return {
+      content: ''
+    };
+  },
   computed: {
     emails: function emails() {
       return Object.values(this.data.emails).sort(function (email1, email2) {
@@ -55,6 +76,11 @@ __webpack_require__.r(__webpack_exports__);
     setInterval(function () {
       if (_this.checkUpdates) _this.fetchState();
     }, 5000);
+  },
+  validations: {
+    content: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_9__["required"]
+    }
   },
   methods: {
     success: function success(data) {
@@ -106,7 +132,10 @@ var render = function() {
       _c(
         "ajax-form",
         {
-          attrs: { action: "/dearsanta/" + _vm.data.santa.id + "/send" },
+          attrs: {
+            action: "/dearsanta/" + _vm.data.santa.id + "/send",
+            $v: _vm.$v
+          },
           on: { success: _vm.success }
         },
         [
@@ -116,15 +145,50 @@ var render = function() {
                 _vm._v(_vm._s(_vm.$t("dearsanta.content.label")))
               ]),
               _vm._v(" "),
-              _c("textarea", {
-                staticClass: "form-control",
-                attrs: {
-                  id: "mailContent",
-                  name: "content",
-                  required: "",
-                  placeholder: _vm.$t("dearsanta.content.placeholder")
-                }
-              })
+              _c("div", { staticClass: "input-group" }, [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.content,
+                      expression: "content"
+                    }
+                  ],
+                  class: {
+                    "form-control": true,
+                    "is-invalid": _vm.$v.content.$error
+                  },
+                  attrs: {
+                    id: "mailContent",
+                    name: "content",
+                    placeholder: _vm.$t("dearsanta.content.placeholder"),
+                    "aria-invalid": _vm.$v.content.$error
+                  },
+                  domProps: { value: _vm.content },
+                  on: {
+                    blur: function($event) {
+                      return _vm.$v.content.$touch()
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.content = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                !_vm.$v.content.required
+                  ? _c("div", { staticClass: "invalid-tooltip" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.$t("validation.custom.dearsanta.content.required")
+                        )
+                      )
+                    ])
+                  : _vm._e()
+              ])
             ])
           ])
         ]
