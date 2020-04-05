@@ -26,7 +26,7 @@ class OrganizerController extends Controller
             'draw' => $draw->id,
             'participants' => $draw->participants->mapWithKeys(function ($participant) {
                 return [$participant->id => $participant->only([
-                    'id', 'name', 'address', 'mail',
+                    'id', 'name', 'email', 'mail',
                 ])];
             }),
         ]);
@@ -43,7 +43,7 @@ class OrganizerController extends Controller
 
     public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
     {
-        $participant->address = $request->input('email');
+        $participant->email = $request->input('email');
         $participant->save();
 
         $participant->mail->updateDeliveryStatus(MailModel::CREATED);

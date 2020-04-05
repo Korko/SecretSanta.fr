@@ -15,7 +15,7 @@ abstract class TestCase extends BaseTestCase
         Queue::assertPushed(SendMail::class, function ($job) use ($class, $recipient, $callback) {
             if (
                 $job->getMailable() instanceof $class &&
-                ($recipient === null || $job->getRecipient()->address === $recipient)
+                ($recipient === null || $job->getRecipient()->email === $recipient)
             ) {
                 if ($callback !== null) {
                     $callback($job->getMailable());

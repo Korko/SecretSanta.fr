@@ -54303,6 +54303,14 @@ __webpack_require__.r(__webpack_exports__);
       },
       "modal": {
         "close": "Fermer"
+      },
+      "email": {
+        "status": {
+          "created": "En attente d'envoi",
+          "sent": "Envoyé",
+          "received": "Reçu",
+          "error": "Erreur"
+        }
       }
     },
     "dearsanta": {

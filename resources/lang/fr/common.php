@@ -4,7 +4,7 @@ return [
     'internal' => 'Une erreur est survenue',
 
     'fetcher' => [
-        'load' => 'Charger',
+        'load'    => 'Charger',
         'loading' => 'Chargement en cours...',
     ],
 
@@ -16,5 +16,14 @@ return [
 
     'modal' => [
         'close' => 'Fermer',
+    ],
+
+    'email' => [
+        'status' => [
+            'created'  => 'En attente d\'envoi',
+            'sent'     => 'Envoyé',
+            'received' => 'Reçu',
+            'error'    => 'Erreur',
+        ],
     ],
 ];
