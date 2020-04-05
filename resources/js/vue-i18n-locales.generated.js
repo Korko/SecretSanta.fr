@@ -163,6 +163,14 @@ export default {
             },
             "modal": {
                 "close": "Fermer"
+            },
+            "email": {
+                "status": {
+                    "created": "En attente d'envoi",
+                    "sent": "Envoyé",
+                    "received": "Reçu",
+                    "error": "Erreur"
+                }
             }
         },
         "dearsanta": {

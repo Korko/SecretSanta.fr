@@ -107,7 +107,7 @@ class DrawHandlerTest extends TestCase
 
         foreach ($draw->participants as $participant) {
             $this->assertContains($participant->name, array_column($participants, 'name'));
-            $this->assertContains($participant->address, array_column($participants, 'email'));
+            $this->assertContains($participant->email, array_column($participants, 'email'));
         }
     }
 }

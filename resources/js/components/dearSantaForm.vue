@@ -23,6 +23,7 @@
         computed: {
             emails() {
                 return Object.values(this.data.emails)
+                    .map(email => Object.assign(email, email.mail))
                     .sort((email1, email2) => (new Date(email1.created_at) > new Date(email2.created_at) ? -1 : 1))
                     .map(email => {
                         email.created_at = new Date(email.created_at).toLocaleString('fr-FR');
@@ -108,9 +109,9 @@
             </thead>
             <tbody>
                 <tr v-for="email in emails" :key="email.id" class="email">
-                    <td>{{ email.mail.created_at }}</td>
+                    <td>{{ email.created_at }}</td>
                     <td>{{ email.mail_body }}</td>
-                    <td>{{ email.mail.delivery_status }}</td>
+                    <td>{{ $t(`common.email.status.${email.delivery_status}`) }}</td>
                 </tr>
                 <tr v-if="emails.length === 0" class="no-email">
                     <td colspan="3">

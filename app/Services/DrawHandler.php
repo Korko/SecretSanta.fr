@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Draw;
-use App\Events\DrawDone;
+use App\Jobs\SendMail;
 use App\Mail as MailModel;
+use App\Mail\TargetDrawn;
+use App\Mail\OrganizerRecap;
+use App\Mail\OrganizerFinalRecap;
 use App\Participant;
 use Arr;
 use Facades\App\Services\HatSolver as Solver;
@@ -39,10 +42,13 @@ class DrawHandler
         $this->createParticipants($draw, $this->participants, $this->hat);
         Metrics::increment('participants', count($this->participants));
 
-        event(new DrawDone($draw));
+        $this->contactOrganizer($draw);
+        foreach ($draw->participants as $participant) {
+            $this->contactParticipant($participant);
+        }
     }
 
-    protected function createDraw($title, $body, $dataExpiration): Draw
+    public function createDraw($title, $body, $dataExpiration): Draw
     {
         $draw = new Draw();
         $draw->expires_at = $dataExpiration;
@@ -53,14 +59,14 @@ class DrawHandler
         return $draw;
     }
 
-    protected function createParticipants(Draw $draw, array $participants, array $hat): void
+    public function createParticipants(Draw $draw, array $participants, array $hat): void
     {
         $draw->participants = collect();
         foreach ($participants as $idx => $santa) {
             $participant = new Participant();
             $participant->draw()->associate($draw);
             $participant->name = $santa['name'];
-            $participant->address = Arr::get($santa, 'email');
+            $participant->email = Arr::get($santa, 'email');
             $participant->exclusions = $santa['exclusions'];
             $participant->mail()->associate(MailModel::create());
             $participant->save();
@@ -76,5 +82,46 @@ class DrawHandler
             $draw->participants[$santaIdx]->target()->save($participants[$targetIdx]);
             $draw->participants[$santaIdx]->save();
         }
+    }
+
+    public function contactOrganizer(Draw $draw, bool $withDelayedEmail = true)
+    {
+        $this->sendOrganizerEmail($draw);
+
+        if ($withDelayedEmail) {
+            $this->sendDelayedOrganizerEmail($draw);
+        }
+    }
+
+    protected function sendOrganizerEmail(Draw $draw)
+    {
+        SendMail::dispatch($draw->organizer, new OrganizerRecap($draw));
+    }
+
+    protected function sendDelayedOrganizerEmail(Draw $draw)
+    {
+        $draw->participants->each(function (&$participant) {
+            $participant->exclusions[] = $participant->target->id;
+        });
+
+        try {
+            // Check if there's a solution with the previous exclusions + the actual target
+            Solver::one($draw->participants->all(), $draw->participants->pluck('exclusions', 'id')->all());
+        } catch (SolverException $e) {
+            // If not, reset all the exclusions
+            $draw->participants->each(function (&$participant) {
+                $participant->exclusions = [];
+            });
+        }
+
+        SendMail::dispatch($draw->organizer, new OrganizerFinalRecap($draw))
+            ->delay($draw->expires_at->addDays(2));
+    }
+
+    public function contactParticipant(Participant $participant)
+    {
+        Metrics::increment('email');
+
+        SendMail::dispatch($participant, new TargetDrawn($participant));
     }
 }

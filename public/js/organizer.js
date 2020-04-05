@@ -318,7 +318,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return _objectSpread({}, _partials_store_js__WEBPACK_IMPORTED_MODULE_12__["default"], {
       validations: {
-        address: {
+        email: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13__["required"],
           format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13__["email"]
         }
@@ -341,7 +341,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     update: function update(k, data) {
-      this.data.participants[k].address = data.value;
+      this.data.participants[k].email = data.value;
       this.data.participants[k].mail.delivery_status = data.participant.mail.delivery_status;
       this.data.participants[k].mail.updated_at = data.participant.mail.updated_at;
     },
@@ -737,9 +737,9 @@ var render = function() {
                     "/" +
                     participant.id +
                     "/changeEmail",
-                  value: participant.address,
+                  value: participant.email,
                   name: "email",
-                  validation: _vm.validations.address
+                  validation: _vm.validations.email
                 },
                 on: {
                   update: function($event) {
@@ -786,7 +786,15 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(participant.mail.delivery_status))])
+          _c("td", [
+            _vm._v(
+              _vm._s(
+                _vm.$t(
+                  "common.email.status." + participant.mail.delivery_status
+                )
+              )
+            )
+          ])
         ])
       }),
       0

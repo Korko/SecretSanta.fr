@@ -49,7 +49,7 @@ class RequestOrganizerTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        $this->assertQueueHasMailPushed(TargetDrawn::class, $participant->address);
+        $this->assertQueueHasMailPushed(TargetDrawn::class, $participant->email);
     }
 
     public function testChangeEmail(): void
@@ -75,13 +75,13 @@ class RequestOrganizerTest extends RequestCase
                 'message' => 'Modifié avec succès !',
             ]);
 
-        $before = $participant->address;
+        $before = $participant->email;
         $participant = Participant::find($participant->id);
-        $after = $participant->address;
+        $after = $participant->email;
 
         $this->assertNotEquals($before, $after);
         $this->assertEquals('test@test2.com', $after);
 
-        $this->assertQueueHasMailPushed(TargetDrawn::class, $participant->address);
+        $this->assertQueueHasMailPushed(TargetDrawn::class, $participant->email);
     }
 }

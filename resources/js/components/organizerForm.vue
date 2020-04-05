@@ -19,7 +19,7 @@
             return {
                 ...store,
                 validations: {
-                    address: {
+                    email: {
                         required,
                         format: email
                     }
@@ -40,7 +40,7 @@
         },
         methods: {
             update(k, data) {
-                this.data.participants[k].address = data.value;
+                this.data.participants[k].email = data.value;
                 this.data.participants[k].mail.delivery_status = data.participant.mail.delivery_status;
                 this.data.participants[k].mail.updated_at = data.participant.mail.updated_at;
             },
@@ -89,9 +89,9 @@
                 <td>
                     <input-edit
                         :action="`/org/${data.draw}/${participant.id}/changeEmail`"
-                        :value="participant.address"
+                        :value="participant.email"
                         name="email"
-                        :validation="validations.address"
+                        :validation="validations.email"
                         @update="update(k, $event)"
                     >
                         <template #errors="{ $v: $v }">
@@ -100,7 +100,7 @@
                         </template>
                     </input-edit>
                 </td>
-                <td>{{ participant.mail.delivery_status }}</td>
+                <td>{{ $t(`common.email.status.${participant.mail.delivery_status}`) }}</td>
             </tr>
         </tbody>
     </table>

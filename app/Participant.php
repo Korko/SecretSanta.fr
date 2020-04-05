@@ -15,7 +15,7 @@ class Participant extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'address', 'draw_id', 'target_id', 'mail_id'];
+    protected $fillable = ['name', 'email', 'draw_id', 'target_id', 'mail_id'];
 
     // Fake property
     public $exclusions;
@@ -27,7 +27,7 @@ class Participant extends Model
      */
     protected $casts = [
         'name' => EncryptedString::class,
-        'address' => EncryptedString::class,
+        'email' => EncryptedString::class,
     ];
 
     public function draw()

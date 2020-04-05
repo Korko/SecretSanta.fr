@@ -50,7 +50,6 @@ class SendMail implements ShouldQueue
     public function handle()
     {
         Crypt::setKey(base64_decode($this->key));
-        Mail::to([['email' => $this->participant->address, 'name' => $this->participant->name]])
-            ->send($this->mailable);
+        Mail::to($this->participant)->send($this->mailable);
     }
 }
