@@ -116,7 +116,7 @@ jquery__WEBPACK_IMPORTED_MODULE_2___default()(document).ready(function () {
       axis: 'y'
     });
   });
-  jquery__WEBPACK_IMPORTED_MODULE_2___default()('.nav > li > a, #logo a').click(function (e) {
+  jquery__WEBPACK_IMPORTED_MODULE_2___default()('.nav > li > a[href^=\'#\'], #logo a[href^=\'#\']').click(function (e) {
     e.preventDefault();
     jquery__WEBPACK_IMPORTED_MODULE_2___default.a.scrollTo(jquery__WEBPACK_IMPORTED_MODULE_2___default()(this).attr('href'), 400, {
       offset: -jquery__WEBPACK_IMPORTED_MODULE_2___default()('#header #menu').height(),
@@ -161,6 +161,17 @@ Array.prototype.remove = function () {
 
 /***/ }),
 
+/***/ "./resources/sass/faq.scss":
+/*!*********************************!*\
+  !*** ./resources/sass/faq.scss ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ "./resources/sass/organizer.scss":
 /*!***************************************!*\
   !*** ./resources/sass/organizer.scss ***!
@@ -184,16 +195,17 @@ Array.prototype.remove = function () {
 /***/ }),
 
 /***/ 0:
-/*!***************************************************************************************************************************************!*\
-  !*** multi ./resources/js/common.js ./resources/sass/randomForm.scss ./resources/sass/dearSanta.scss ./resources/sass/organizer.scss ***!
-  \***************************************************************************************************************************************/
+/*!*****************************************************************************************************************************************************************!*\
+  !*** multi ./resources/js/common.js ./resources/sass/randomForm.scss ./resources/sass/dearSanta.scss ./resources/sass/organizer.scss ./resources/sass/faq.scss ***!
+  \*****************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/js/common.js */"./resources/js/common.js");
 __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/randomForm.scss */"./resources/sass/randomForm.scss");
 __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/dearSanta.scss */"./resources/sass/dearSanta.scss");
-module.exports = __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/organizer.scss */"./resources/sass/organizer.scss");
+__webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/organizer.scss */"./resources/sass/organizer.scss");
+module.exports = __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/faq.scss */"./resources/sass/faq.scss");
 
 
 /***/ })

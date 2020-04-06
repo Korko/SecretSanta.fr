@@ -61,7 +61,7 @@
         </div><!-- menu -->
 
         @section('body')
-            <div>
+            <div id="content">
                 @yield('content')
             </div>
         @show
