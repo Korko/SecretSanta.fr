@@ -62,19 +62,8 @@ class RandomFormController extends Controller
 
     public function faq()
     {
-        $questions = [
-            [
-                'question' => 'Pourquoi ?',
-                'answer' => 'Parce que',
-            ],
-            [
-                'question' => 'Et pourquoi pas ?',
-                'answer' => 'On a dit, parce que',
-            ],
-        ];
-
         return view('faq', [
-            'questions' => $questions,
+            'questions' => __('faq.questions')
         ]);
     }
 }

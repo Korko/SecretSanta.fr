@@ -9,17 +9,39 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.keys */ "./node_modules/core-js/modules/es.object.keys.js");
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.object.values */ "./node_modules/core-js/modules/es.object.values.js");
+/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_1__);
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     questions: {
-      type: Array,
+      type: Object,
       required: true
     }
   },
   data: function data() {
     return {
-      qnas: this.questions
+      selectedCategory: Object.keys(this.questions)[0],
+      categories: Object.keys(this.questions),
+      qnas: this.questions,
+      showed: {}
     };
+  },
+  computed: {
+    selectedQuestions: function selectedQuestions() {
+      return Object.keys(this.qnas[this.selectedCategory]);
+    },
+    selectedAnswers: function selectedAnswers() {
+      return Object.values(this.qnas[this.selectedCategory]);
+    }
+  },
+  watch: {
+    selectedCategory: function selectedCategory() {
+      this.showed = {};
+    }
   }
 });
 
@@ -91,52 +113,80 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(_vm.qnas, function(qna, i) {
-      return _c(
-        "div",
-        { key: i, staticClass: "card" },
-        [
-          _c(
-            "p",
-            {
-              staticClass: "card-header",
-              attrs: {
-                id: "question" + i,
-                "aria-expanded": qna.showed,
-                "aria-controls": "answer" + i
-              },
-              on: {
-                click: function($event) {
-                  return _vm.$set(qna, "showed", !qna.showed)
-                }
-              }
-            },
-            [_vm._v(_vm._s(qna.question))]
-          ),
-          _vm._v(" "),
-          _c("transition", { attrs: { name: "fade" } }, [
+    [
+      _c(
+        "ul",
+        { staticClass: "nav nav-tabs" },
+        _vm._l(_vm.categories, function(category) {
+          return _c("li", { staticClass: "nav-item" }, [
             _c(
-              "div",
+              "a",
               {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: qna.showed,
-                    expression: "qna.showed"
+                class: {
+                  "nav-link": true,
+                  active: _vm.selectedCategory === category
+                },
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    _vm.selectedCategory = category
                   }
-                ],
-                staticClass: "card-body",
-                attrs: { id: "answer" + i }
+                }
               },
-              [_c("p", [_vm._v(_vm._s(qna.answer))])]
+              [_vm._v(_vm._s(_vm.$t("faq.categories." + category)))]
             )
           ])
-        ],
-        1
-      )
-    }),
-    0
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _vm._l(_vm.selectedQuestions, function(question, i) {
+        return _c(
+          "div",
+          { key: _vm.selectedCategory + "_" + i, staticClass: "card" },
+          [
+            _c(
+              "p",
+              {
+                staticClass: "card-header",
+                attrs: {
+                  id: "question" + i,
+                  "aria-expanded": _vm.showed[i],
+                  "aria-controls": "answer" + i
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.$set(_vm.showed, i, !_vm.showed[i])
+                  }
+                }
+              },
+              [_vm._v(_vm._s(question))]
+            ),
+            _vm._v(" "),
+            _c("transition", { attrs: { name: "fade" } }, [
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.showed[i],
+                      expression: "showed[i]"
+                    }
+                  ],
+                  staticClass: "card-body",
+                  attrs: { id: "answer" + i }
+                },
+                [_c("p", [_vm._v(_vm._s(_vm.selectedAnswers[i]))])]
+              )
+            ])
+          ],
+          1
+        )
+      })
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -244,14 +294,25 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_faq_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/faq.vue */ "./resources/js/components/faq.vue");
+/* harmony import */ var vue_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-i18n */ "./node_modules/vue-i18n/dist/vue-i18n.esm.js");
+/* harmony import */ var _vue_i18n_locales_generated_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vue-i18n-locales.generated.js */ "./resources/js/vue-i18n-locales.generated.js");
+/* harmony import */ var _components_faq_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/faq.vue */ "./resources/js/components/faq.vue");
 
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var lang = document.documentElement.lang.substr(0, 2);
+
+var i18n = new vue_i18n__WEBPACK_IMPORTED_MODULE_1__["default"]({
+  locale: lang,
+  messages: _vue_i18n_locales_generated_js__WEBPACK_IMPORTED_MODULE_2__["default"]
+});
 
 window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#content',
   components: {
-    Faq: _components_faq_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
-  }
+    Faq: _components_faq_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
+  i18n: i18n
 });
 
 /***/ }),

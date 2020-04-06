@@ -116,7 +116,7 @@ jquery__WEBPACK_IMPORTED_MODULE_2___default()(document).ready(function () {
       axis: 'y'
     });
   });
-  jquery__WEBPACK_IMPORTED_MODULE_2___default()('.nav > li > a[href^=\'#\'], #logo a[href^=\'#\']').click(function (e) {
+  jquery__WEBPACK_IMPORTED_MODULE_2___default()('#navbar .nav > li > a[href^=\'#\'], #logo a[href^=\'#\']').click(function (e) {
     e.preventDefault();
     jquery__WEBPACK_IMPORTED_MODULE_2___default.a.scrollTo(jquery__WEBPACK_IMPORTED_MODULE_2___default()(this).attr('href'), 400, {
       offset: -jquery__WEBPACK_IMPORTED_MODULE_2___default()('#header #menu').height(),

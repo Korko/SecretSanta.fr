@@ -2,26 +2,41 @@
 export default {
     props: {
         questions: {
-            type: Array,
+            type: Object,
             required: true
         }
     },
     data() {
         return {
-            qnas: this.questions
+            selectedCategory: Object.keys(this.questions)[0],
+            categories: Object.keys(this.questions),
+            qnas: this.questions,
+            showed: {}
         };
+    },
+    computed: {
+        selectedQuestions() { return Object.keys(this.qnas[this.selectedCategory]); },
+        selectedAnswers() { return Object.values(this.qnas[this.selectedCategory]); }
+    },
+    watch: {
+        selectedCategory() { this.showed = {}; }
     }
 }
 </script>
 
 <template>
     <div>
-        <div class="card" v-for="(qna, i) in qnas" :key="i">
-            <p :id="`question${i}`" class="card-header" @click="$set(qna, 'showed', !qna.showed)" :aria-expanded="qna.showed" :aria-controls="`answer${i}`">{{ qna.question }}</p>
-            
+        <ul class="nav nav-tabs">
+            <li class="nav-item" v-for="category in categories">
+                <a :class="{ 'nav-link': true, 'active': (selectedCategory === category) }" href="#" @click="selectedCategory = category">{{ $t(`faq.categories.${category}`) }}</a>
+            </li>
+        </ul>
+        <div class="card" v-for="(question, i) in selectedQuestions" :key="`${selectedCategory}_${i}`">
+            <p :id="`question${i}`" class="card-header" @click="$set(showed, i, !showed[i])" :aria-expanded="showed[i]" :aria-controls="`answer${i}`">{{ question }}</p>
+
             <transition name="fade">
-                <div :id="`answer${i}`" class="card-body" v-show="qna.showed">
-                    <p>{{ qna.answer }}</p>
+                <div :id="`answer${i}`" class="card-body" v-show="showed[i]">
+                    <p>{{ selectedAnswers[i] }}</p>
                 </div>
             </transition>
         </div>
