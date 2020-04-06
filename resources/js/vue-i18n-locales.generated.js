@@ -173,6 +173,25 @@ export default {
                 }
             }
         },
+        "faq": {
+            "nav": {
+                "go": "Allez, c'est parti !",
+                "contact": "J'ai encore une question"
+            },
+            "categories": {
+                "general": "Générales",
+                "technical": "Techniques"
+            },
+            "questions": {
+                "general": {
+                    "Pourquoi ?": "Parce que",
+                    "Et pourquoi pas ?": "On a dit, parce que"
+                },
+                "technical": {
+                    "Quelle est la grande question ?": "42"
+                }
+            }
+        },
         "dearsanta": {
             "list": {
                 "date": "Date d'envoi",
@@ -190,7 +209,7 @@ export default {
                 "what": "Qu'est-ce que c'est ?",
                 "how": "Comment faire ?",
                 "go": "Allez, c'est parti !",
-                "faq": "FAQ"
+                "faq": "Foire aux questions"
             },
             "title": "Secret Santa .fr",
             "subtitle": "Offrez-vous des cadeaux... secrètement !",
