@@ -18,6 +18,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-nav-right">
         <li><a href="#form">@lang('form.nav.go')</a></li>
+        <li><a href="{{ route('faq') }}" target="_blank">@lang('form.nav.faq')</a></li>
     </ul>
 @stop
 

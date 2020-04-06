@@ -11949,22 +11949,8 @@ footer .row {
   margin-right: 10px;
 }
 
-#form {
+#content {
   padding-top: 140px;
   padding-bottom: 60px;
-}
-
-#form form {
-  margin-bottom: 20px;
-}
-
-.email td:nth-child(2) {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.no-email {
-  text-align: center;
 }
 

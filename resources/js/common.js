@@ -93,7 +93,7 @@ jQuery(document).ready(function() {
             axis: 'y'
         });
     });
-    jQuery('.nav > li > a, #logo a').click(function(e) {
+    jQuery('.nav > li > a[href^=\'#\'], #logo a[href^=\'#\']').click(function(e) {
         e.preventDefault();
         jQuery.scrollTo(jQuery(this).attr('href'), 400, {
             offset: -jQuery('#header #menu').height(),

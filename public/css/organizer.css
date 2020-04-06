@@ -11660,6 +11660,35 @@ nav#navbar {
   text-shadow: none;
 }
 
+.nav.navbar-nav-left {
+  display: -webkit-inline-box;
+  display: inline-flex;
+  -webkit-box-pack: end;
+          justify-content: flex-end;
+  -webkit-box-flex: 1;
+          flex: 1;
+  margin-right: 60px;
+}
+
+.nav.navbar-nav-right {
+  display: -webkit-inline-box;
+  display: inline-flex;
+  -webkit-box-pack: start;
+          justify-content: flex-start;
+  -webkit-box-flex: 1;
+          flex: 1;
+  margin-left: 60px;
+}
+
+/* ==========================================================================
+    06. Content
+========================================================================== */
+
+#content {
+  padding-top: 140px;
+  padding-bottom: 60px;
+}
+
 /* ==========================================================================
     07. Footer
 ========================================================================== */

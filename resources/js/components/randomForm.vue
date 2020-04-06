@@ -395,10 +395,10 @@
 
 <style>
   .fade-enter-active, .fade-leave-active, .fade-move {
-    transition: all 1s
+    transition: all 1s;
   }
 
   .fade-enter, .fade-leave-to {
-    opacity: 0
+    opacity: 0;
   }
 </style>

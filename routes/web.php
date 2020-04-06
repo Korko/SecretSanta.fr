@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'RandomFormController@view');
 Route::post('/', 'RandomFormController@handle'); //->middleware('decrypt.input');
 
+Route::get('/faq', 'RandomFormController@faq')->name('faq');
+
 Route::pattern('santa', '[0-9a-zA-Z]{'.config('hashids.connections')[config('hashids.default')]['length'].'}');
 
 Route::get('/dearsanta/{santa}', 'DearSantaController@view')->name('dearsanta');
