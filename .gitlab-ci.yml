@@ -1,8 +1,14 @@
 image: lorisleiva/laravel-docker:latest
 
-.before_script_npm:
+.before_script_composer:
+  rules:
+    - changes:
+      - "**/*.php"
   before_script:
-    - npm install
+    - apk add --no-cache imap-dev krb5-dev openssl-dev
+    - PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl
+    - docker-php-ext-install imap
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
 
 phpunit:
   extends: .before_script_composer
