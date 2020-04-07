@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use Illuminate\Container\Container;
 use Illuminate\Mail\Mailable as BaseMailable;
 
 class Mailable extends BaseMailable

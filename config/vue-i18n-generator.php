@@ -29,7 +29,7 @@ return [
         'faq',
         'form',
         'organizer',
-        'validation'
+        'validation',
     ],
 
     /*
