@@ -12,7 +12,7 @@
         props: {
             data: {
                 type: Object,
-                default: {}
+                default() { return {}; }
             }
         },
         data() {
@@ -74,21 +74,21 @@
 
 <template>
     <div>
-        <ajax-form :action="`/dearsanta/${data.santa.id}/send`" @success="success" :$v="$v">
+        <ajax-form :action="`/dearsanta/${data.santa.id}/send`" :$v="$v" @success="success">
             <fieldset>
                 <div class="form-group">
                     <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
                     <div class="input-group">
                         <textarea
                             id="mailContent"
-                            name="content"
                             v-model="content"
+                            name="content"
                             :placeholder="$t('dearsanta.content.placeholder')"
                             :class="{ 'form-control': true, 'is-invalid': $v.content.$error }"
                             :aria-invalid="$v.content.$error"
                             @blur="$v.content.$touch()"
                         />
-                        <div class="invalid-tooltip" v-if="!$v.content.required">{{ $t('validation.custom.dearsanta.content.required') }}</div>
+                        <div v-if="!$v.content.required" class="invalid-tooltip">{{ $t('validation.custom.dearsanta.content.required') }}</div>
                     </div>
                 </div>
             </fieldset>

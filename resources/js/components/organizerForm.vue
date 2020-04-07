@@ -12,7 +12,7 @@
         props: {
             data: {
                 type: Object,
-                default: {}
+                default() { return {}; }
             }
         },
         data() {
@@ -95,8 +95,8 @@
                         @update="update(k, $event)"
                     >
                         <template #errors="{ $v: $v }">
-                            <div class="invalid-tooltip" v-if="!$v.required">{{ $t('validation.custom.organizer.email.required') }}</div>
-                            <div class="invalid-tooltip" v-else-if="!$v.format">{{ $t('validation.custom.organizer.email.format') }}</div>
+                            <div v-if="!$v.required" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.required') }}</div>
+                            <div v-else-if="!$v.format" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.format') }}</div>
                         </template>
                     </input-edit>
                 </td>

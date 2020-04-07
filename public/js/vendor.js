@@ -489,15 +489,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       type: Boolean,
       default: true
     },
-    button_send: {
+    buttonSend: {
       type: String,
       default: ''
     },
-    button_sending: {
+    buttonSending: {
       type: String,
       default: ''
     },
-    button_sent: {
+    buttonSent: {
       type: String,
       default: ''
     },
@@ -39418,7 +39418,7 @@ var render = function() {
                       _c("span", { staticClass: "fas fa-check-circle" }),
                       _vm._v(
                         " " +
-                          _vm._s(_vm.button_sent || _vm.$t("common.form.sent"))
+                          _vm._s(_vm.buttonSent || _vm.$t("common.form.sent"))
                       )
                     ])
                   : _vm.sending
@@ -39427,13 +39427,13 @@ var render = function() {
                       _vm._v(
                         " " +
                           _vm._s(
-                            _vm.button_sending || _vm.$t("common.form.sending")
+                            _vm.buttonSending || _vm.$t("common.form.sending")
                           )
                       )
                     ])
                   : _c("span", [
                       _vm._v(
-                        _vm._s(_vm.button_send || _vm.$t("common.form.send"))
+                        _vm._s(_vm.buttonSend || _vm.$t("common.form.send"))
                       )
                     ])
               ]

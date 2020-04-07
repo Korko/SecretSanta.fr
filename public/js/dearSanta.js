@@ -50,7 +50,9 @@ vue__WEBPACK_IMPORTED_MODULE_8___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
   props: {
     data: {
       type: Object,
-      default: {}
+      default: function _default() {
+        return {};
+      }
     }
   },
   data: function data() {

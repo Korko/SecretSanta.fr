@@ -11,7 +11,7 @@
     Vue.use(VueAutosize);
 
     import Vuelidate from 'vuelidate';
-    import { required, minLength, minValue, maxValue, email } from 'vuelidate/lib/validators'
+    import { required, minLength, email } from 'vuelidate/lib/validators'
     Vue.use(Vuelidate);
 
     // Still using CommonJS syntax
@@ -156,7 +156,7 @@
 
             // Just because I couldn't handle too much depth with quotes
             anchor(event) {
-                return `<a href="" @click.prevent=\'\$emit("${event}")\'>`;
+                return `<a href="" @click.prevent='\$emit("${event}")'>`;
             }, 
 
             moment(amount, unit) {
@@ -236,7 +236,7 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <ajax-form id="randomForm" action="/" :button_send="$t('form.submit')" :$v="$v">
+            <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :$v="$v">
                 <template #default="{ sending, sent, fieldError }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ $t('form.success') }}
@@ -266,14 +266,14 @@
                                         is="participant"
                                         v-for="(participant, idx) in participants"
                                         :key="idx"
-                                        :idx="idx"
                                         :id="participant.id"
+                                        :idx="idx"
                                         :name="participant.name"
                                         :email="participant.email"
                                         :exclusions="participant.exclusions"
                                         :names="participantNames"
                                         :required="idx < 3 && participants.length <= 3"
-                                        :fieldError="fieldError"
+                                        :field-error="fieldError"
                                         :$v="$v.participants.$each[idx]"
                                         @input:name="$set(participant, 'name', $event)"
                                         @input:email="$set(participant, 'email', $event)"
@@ -316,8 +316,8 @@
                                             id="mailTitle"
                                             type="text"
                                             name="title"
-                                            :placeholder="$t('form.mail.title.placeholder')"
                                             v-model="title"
+                                            :placeholder="$t('form.mail.title.placeholder')"
                                             class="form-control"
                                             :class="{ 'is-invalid': $v.title.$error || fieldError('title') }"
                                             :aria-invalid="$v.title.$error || fieldError('title')"
@@ -333,17 +333,17 @@
                                             id="mailContent"
                                             v-autosize
                                             name="content-email"
+                                            v-model="content"
                                             :placeholder="$t('form.mail.content.placeholder')"
+                                            rows="3"
                                             class="form-control"
                                             :class="{ 'is-invalid': $v.content.$error || fieldError('content-email') }"
                                             :aria-invalid="$v.content.$error || fieldError('content-email')"
                                             @blur="$v.content.$touch()"
-                                            rows="3"
-                                            v-model="content"
                                         />
-                                        <div class="invalid-tooltip" v-if="!$v.content.required">{{ $t('validation.custom.randomform.content.required') }}</div>
-                                        <div class="invalid-tooltip" v-else-if="!$v.content.contains">{{ $t('validation.custom.randomform.content.contains') }}</div>
-                                        <div class="invalid-tooltip" v-else-if="fieldError('content-email')">{{ fieldError('content-email') }}</div>
+                                        <div v-if="!$v.content.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.required') }}</div>
+                                        <div v-else-if="!$v.content.contains" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.contains') }}</div>
+                                        <div v-else-if="fieldError('content-email')" class="invalid-tooltip">{{ fieldError('content-email') }}</div>
                                     </div>
                                     <textarea
                                         id="mailPost"
@@ -394,11 +394,11 @@
 </template>
 
 <style>
-  .fade-enter-active, .fade-leave-active, .fade-move {
-    transition: all 1s;
-  }
+    .fade-enter-active, .fade-leave-active, .fade-move {
+        transition: all 1s;
+    }
 
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-  }
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
+    }
 </style>

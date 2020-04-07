@@ -229,6 +229,7 @@
     .input-group > .input-group-prepend > .input-group-text {
         border-right: 0;
     }
+
     .input-group::after {
         content: '';
         box-sizing: border-box;
@@ -243,33 +244,41 @@
         transition: width 0.285s ease-out;
         z-index: 4;
     }
+
     .input-group-append {
         z-index: 5;
     }
+
     .input-group[data-state='viewUpdated'] .input-group-text {
         color: var(--success);
         background: none;
     }
+
     .input-group[data-state='viewError'] .input-group-text {
         color: var(--danger);
         background: none;
     }
+
     .input-group[data-state='viewUpdated']::after {
         width: 100%;
         background-color: var(--success);
     }
+
     .input-group[data-state='viewError']::after {
         width: 100%;
         background-color: var(--danger);
     }
+
     input {
         background: none;
         box-shadow: none !important;
         height: 100%;
     }
+
     .table-hover tbody tr:hover input {
         color: #212529;
     }
+
     @keyframes check {
         0% {
             stroke-dashoffset: 10;
@@ -278,6 +287,7 @@
             stroke-dashoffset: 0;
         }
     }
+
     .fa-check path {
         animation-name: check;
         animation-duration: 2s;

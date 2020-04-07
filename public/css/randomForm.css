@@ -14174,14 +14174,6 @@ fieldset > div.form-group {
   resize: none;
 }
 
-#mailPost {
-  height: 55px;
-}
-
-#mailPost.extended {
-  height: 75px;
-}
-
 #mailContent {
   border-bottom: 0;
   border-bottom-right-radius: 0;
@@ -14192,6 +14184,11 @@ fieldset > div.form-group {
   border-top: 0;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
+  height: 55px;
+}
+
+#mailPost.extended {
+  height: 75px;
 }
 
 #form .container {

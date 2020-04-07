@@ -312,7 +312,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   props: {
     data: {
       type: Object,
-      default: {}
+      default: function _default() {
+        return {};
+      }
     }
   },
   data: function data() {
