@@ -27,15 +27,15 @@ export default {
 <template>
     <div>
         <ul class="nav nav-tabs">
-            <li class="nav-item" v-for="category in categories">
+            <li v-for="(category, i) in categories" :key="i" class="nav-item">
                 <a :class="{ 'nav-link': true, 'active': (selectedCategory === category) }" href="#" @click="selectedCategory = category">{{ $t(`faq.categories.${category}`) }}</a>
             </li>
         </ul>
-        <div class="card" v-for="(question, i) in selectedQuestions" :key="`${selectedCategory}_${i}`">
-            <p :id="`question${i}`" class="card-header" @click="$set(showed, i, !showed[i])" :aria-expanded="showed[i]" :aria-controls="`answer${i}`">{{ question }}</p>
+        <div v-for="(question, i) in selectedQuestions" :key="`${selectedCategory}_${i}`" class="card">
+            <p :id="`question${i}`" class="card-header" :aria-expanded="showed[i]" :aria-controls="`answer${i}`" @click="$set(showed, i, !showed[i])">{{ question }}</p>
 
             <transition name="fade">
-                <div :id="`answer${i}`" class="card-body" v-show="showed[i]">
+                <div v-show="showed[i]" :id="`answer${i}`" class="card-body">
                     <p>{{ selectedAnswers[i] }}</p>
                 </div>
             </transition>
@@ -45,7 +45,7 @@ export default {
 
 <style>
     .fade-enter-active, .fade-leave-active {
-        transition: all .5s;
+        transition: all 0.5s;
     }
     .fade-enter, .fade-leave-to {
         opacity: 0;
@@ -63,8 +63,8 @@ export default {
         height: 1.5rem;
         border-style: solid;
         border-color: #000;
-        border-width: .2rem 0 0 .2rem;
-        transform-origin: .5rem .5rem; /* 1/3 width 1/3 height */
+        border-width: 0.2rem 0 0 0.2rem;
+        transform-origin: 0.5rem 0.5rem; /* 1/3 width 1/3 height */
         right: 1.25rem; /* right padding of card-header */
         top: 1rem; /* top padding of card-header + transform-origin / 2 */
         transform: rotate(45deg);

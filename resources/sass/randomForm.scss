@@ -8,13 +8,16 @@ $footer-height: 120px;
 .multiselect--active .multiselect__tags {
     min-height: 41px;
 }
+
 .multiselect__input, .multiselect__single {
     padding: 0 !important;
     line-height: 1.5 !important;
 }
+
 .multiselect, .multiselect__input, .multiselect__single {
     font-size: 14px !important;
 }
+
 .multiselect__placeholder {
     padding-top: 0 !important;
 }
@@ -97,9 +100,6 @@ $footer-height: 120px;
     font-weight: bold;
 }
 
-.media-body p::first-line {
-}
-
 div.card-body {
     font-style: italic;
 }
@@ -150,14 +150,6 @@ fieldset > div.form-group {
     resize: none;
 }
 
-#mailPost {
-    height: 55px;
-}
-
-#mailPost.extended {
-    height: 75px;
-}
-
 #mailContent {
     border-bottom: 0;
     border-bottom-right-radius: 0;
@@ -168,6 +160,11 @@ fieldset > div.form-group {
     border-top: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
+    height: 55px;
+}
+
+#mailPost.extended {
+    height: 75px;
 }
 
 #form .container {

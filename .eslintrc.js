@@ -22,12 +22,8 @@ module.exports = {
     ],
     "rules": {
         "vue/html-indent": ["error", 4, {}],
-        "vue/max-attributes-per-line": ["error", {singleline: 10}],
-        "vue/html-self-closing": ["error", {
-            "html": {
-                "void": "always",
-                "normal": "never",
-            }
-        }]
+        "vue/max-attributes-per-line": ["warn", {singleline: 10}],
+        "vue/html-self-closing": ["off"],
+        "vue/singleline-html-element-content-newline": ["off"]
     }
 };

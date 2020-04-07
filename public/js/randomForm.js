@@ -1100,9 +1100,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_5__);
-
 
 
 
@@ -1461,7 +1458,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.fade-enter-active, .fade-leave-active, .fade-move {\n  -webkit-transition: all 1s;\n  transition: all 1s;\n}\n.fade-enter, .fade-leave-to {\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n.fade-enter-active, .fade-leave-active, .fade-move {\n    -webkit-transition: all 1s;\n    transition: all 1s;\n}\n.fade-enter, .fade-leave-to {\n    opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -2255,7 +2252,7 @@ var render = function() {
             attrs: {
               id: "randomForm",
               action: "/",
-              button_send: _vm.$t("form.submit"),
+              "button-send": _vm.$t("form.submit"),
               $v: _vm.$v
             },
             scopedSlots: _vm._u([
@@ -2385,15 +2382,15 @@ var render = function() {
                                     key: idx,
                                     tag: "tr",
                                     attrs: {
-                                      idx: idx,
                                       id: participant.id,
+                                      idx: idx,
                                       name: participant.name,
                                       email: participant.email,
                                       exclusions: participant.exclusions,
                                       names: _vm.participantNames,
                                       required:
                                         idx < 3 && _vm.participants.length <= 3,
-                                      fieldError: fieldError,
+                                      "field-error": fieldError,
                                       $v: _vm.$v.participants.$each[idx]
                                     },
                                     on: {
@@ -2593,10 +2590,10 @@ var render = function() {
                                   placeholder: _vm.$t(
                                     "form.mail.content.placeholder"
                                   ),
+                                  rows: "3",
                                   "aria-invalid":
                                     _vm.$v.content.$error ||
-                                    fieldError("content-email"),
-                                  rows: "3"
+                                    fieldError("content-email")
                                 },
                                 domProps: { value: _vm.content },
                                 on: {

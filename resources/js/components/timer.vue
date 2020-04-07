@@ -21,5 +21,5 @@
 </script>
 
 <template>
-    <span><slot v-if="show"/></span>
+    <span><slot v-if="show" /></span>
 </template>

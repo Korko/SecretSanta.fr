@@ -13,15 +13,15 @@
                 type: Boolean,
                 default: true
             },
-            button_send: {
+            buttonSend: {
                 type: String,
                 default: ''
             },
-            button_sending: {
+            buttonSending: {
                 type: String,
                 default: ''
             },
-            button_sent: {
+            buttonSent: {
                 type: String,
                 default: ''
             },
@@ -121,9 +121,9 @@
             </div>
 
             <button type="submit" class="btn btn-primary btn-lg">
-                <span v-if="sent"><span class="fas fa-check-circle" /> {{ button_sent || $t('common.form.sent') }}</span>
-                <span v-else-if="sending"><span class="fas fa-spinner" /> {{ button_sending || $t('common.form.sending') }}</span>
-                <span v-else>{{ button_send || $t('common.form.send') }}</span>
+                <span v-if="sent"><span class="fas fa-check-circle" /> {{ buttonSent || $t('common.form.sent') }}</span>
+                <span v-else-if="sending"><span class="fas fa-spinner" /> {{ buttonSending || $t('common.form.sending') }}</span>
+                <span v-else>{{ buttonSend || $t('common.form.send') }}</span>
             </button>
         </fieldset>
     </form>

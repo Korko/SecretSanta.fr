@@ -59,7 +59,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.fade-enter-active, .fade-leave-active {\n    -webkit-transition: all .5s;\n    transition: all .5s;\n}\n.fade-enter, .fade-leave-to {\n    opacity: 0;\n}\n.card {\n    margin: 10px 60px;\n}\n.card .card-header {\n    cursor: pointer;\n}\n.card .card-header:after {\n    content: '';\n    position: absolute;\n    width: 1.5rem;\n    height: 1.5rem;\n    border-style: solid;\n    border-color: #000;\n    border-width: .2rem 0 0 .2rem;\n    -webkit-transform-origin: .5rem .5rem;\n            transform-origin: .5rem .5rem; /* 1/3 width 1/3 height */\n    right: 1.25rem; /* right padding of card-header */\n    top: 1rem; /* top padding of card-header + transform-origin / 2 */\n    -webkit-transform: rotate(45deg);\n            transform: rotate(45deg);\n    -webkit-transition: all 1s;\n    transition: all 1s; /* twice the fade delay */\n}\n.card .card-header[aria-expanded='true']:after {\n    -webkit-transform: rotate(45deg) scaleX(-1) scaleY(-1);\n            transform: rotate(45deg) scaleX(-1) scaleY(-1);\n}\n", ""]);
+exports.push([module.i, "\n.fade-enter-active, .fade-leave-active {\n    -webkit-transition: all 0.5s;\n    transition: all 0.5s;\n}\n.fade-enter, .fade-leave-to {\n    opacity: 0;\n}\n.card {\n    margin: 10px 60px;\n}\n.card .card-header {\n    cursor: pointer;\n}\n.card .card-header:after {\n    content: '';\n    position: absolute;\n    width: 1.5rem;\n    height: 1.5rem;\n    border-style: solid;\n    border-color: #000;\n    border-width: 0.2rem 0 0 0.2rem;\n    -webkit-transform-origin: 0.5rem 0.5rem;\n            transform-origin: 0.5rem 0.5rem; /* 1/3 width 1/3 height */\n    right: 1.25rem; /* right padding of card-header */\n    top: 1rem; /* top padding of card-header + transform-origin / 2 */\n    -webkit-transform: rotate(45deg);\n            transform: rotate(45deg);\n    -webkit-transition: all 1s;\n    transition: all 1s; /* twice the fade delay */\n}\n.card .card-header[aria-expanded='true']:after {\n    -webkit-transform: rotate(45deg) scaleX(-1) scaleY(-1);\n            transform: rotate(45deg) scaleX(-1) scaleY(-1);\n}\n", ""]);
 
 // exports
 
@@ -117,8 +117,8 @@ var render = function() {
       _c(
         "ul",
         { staticClass: "nav nav-tabs" },
-        _vm._l(_vm.categories, function(category) {
-          return _c("li", { staticClass: "nav-item" }, [
+        _vm._l(_vm.categories, function(category, i) {
+          return _c("li", { key: i, staticClass: "nav-item" }, [
             _c(
               "a",
               {
