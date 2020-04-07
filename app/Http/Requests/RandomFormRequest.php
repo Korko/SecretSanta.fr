@@ -57,5 +57,4 @@ class RandomFormRequest extends Request
             'data-expiration.before'         => __('validation.custom.randomform.expiration.max'),
         ];
     }
-
 }

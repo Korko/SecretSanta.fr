@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Arr;
 use App\Participant;
+use Arr;
 use Crypt;
 use DrawHandler;
 use Hashids;

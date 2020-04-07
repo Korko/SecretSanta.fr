@@ -63,7 +63,7 @@ class RandomFormController extends Controller
     public function faq()
     {
         return view('faq', [
-            'questions' => __('faq.questions')
+            'questions' => __('faq.questions'),
         ]);
     }
 }
