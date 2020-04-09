@@ -1003,16 +1003,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v7.4.0",
+            "version": "v7.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "dafdd1e19f86add02e48fa9f6cac9be2c5329772"
+                "reference": "3a3b3f7fea69813f5a03449c6314bfb42c3ccf78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/dafdd1e19f86add02e48fa9f6cac9be2c5329772",
-                "reference": "dafdd1e19f86add02e48fa9f6cac9be2c5329772",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/3a3b3f7fea69813f5a03449c6314bfb42c3ccf78",
+                "reference": "3a3b3f7fea69813f5a03449c6314bfb42c3ccf78",
                 "shasum": ""
             },
             "require": {
@@ -1150,7 +1150,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-03-31T15:01:12+00:00"
+            "time": "2020-04-08T15:54:18+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -1482,9 +1482,9 @@
             "authors": [
                 {
                     "name": "Marc Qualie",
-                    "role": "Developer",
                     "email": "marc@marcqualie.com",
-                    "homepage": "http://marcqualie.com"
+                    "homepage": "http://marcqualie.com",
+                    "role": "Developer"
                 }
             ],
             "description": "A simple library for working with StatsD in PHP.",
@@ -4817,7 +4817,7 @@
                 "psr-2"
             ],
             "support": {
-                "source": "https://github.com/Korko/laravel-code-style/tree/master"
+                "source": "https://github.com/Korko/laravel-code-style/tree/0.6.0"
             },
             "time": "2020-03-04T14:05:18+00:00"
         },
