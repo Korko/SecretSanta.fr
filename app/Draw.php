@@ -52,4 +52,21 @@ class Draw extends Model
     {
         return $this->participants->first();
     }
+
+    public function getDrawFromDearSantaUrl($url)
+    {
+        $route = app('router')
+            ->getRoutes()
+            ->getByName('dearsanta');
+
+        $request = app('request')
+            ->create($this->argument('url'));
+
+        $hash = $route->bind($request)->santa;
+        if (!$hash || ! ($ids = Hashids::decode($hash))) {
+            throw (new ModelNotFoundException())->setModel(Participant::class);
+        }
+
+        return Participant::findOrFail($id[0])->draw;
+    }
 }
