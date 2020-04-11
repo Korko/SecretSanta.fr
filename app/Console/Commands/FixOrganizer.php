@@ -2,12 +2,13 @@
 
 namespace App\Console\Commands;
 
-use App\Participant;
+use App\Draw;
 use Arr;
 use Crypt;
 use DrawHandler;
 use Hashids;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FixOrganizer extends Command
 {
@@ -42,19 +43,9 @@ class FixOrganizer extends Command
      */
     public function handle()
     {
-        // Too much copy paste of code from routes and middleware. Need to find a way to regroup those.
-        sscanf(
-            str_replace('#', ' ', $this->argument('url')), // sscanf will not split with '#' but will with a space
-            route('dearsanta', ['santa' => '%s']).' %s',
-            $id,
-            $hash
-        );
+        $this->setCryptKeyFromUrl($this->argument('url'));
 
-        $key = base64_decode($hash);
-        Crypt::setKey($key);
-
-        $id = Arr::get(Hashids::connection(config('hashids.default'))->decode($id), 0, $id);
-        $draw = Participant::find($id)->draw;
+        $draw = Draw::getDrawFromDearSantaUrl($this->argument('url'));
 
         $draw->organizer->email = $this->argument('email');
         $draw->organizer->save();
@@ -64,5 +55,12 @@ class FixOrganizer extends Command
 
         DrawHandler::contactParticipant($draw->organizer);
         $this->info('Organizer Participant mail sent');
+    }
+
+    protected function setCryptKeyFromUrl($url)
+    {
+        $hash = Arr::get(explode('#', $url, 2), 1);
+        $key = base64_decode($hash);
+        Crypt::setKey($key);
     }
 }
