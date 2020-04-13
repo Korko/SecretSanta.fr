@@ -23,14 +23,14 @@ Route::pattern('santa', '[0-9a-zA-Z]{'.config('hashids.connections')[config('has
 Route::get('/dearsanta/{santa}', 'DearSantaController@view')->name('dearsanta');
 Route::middleware(['decrypt.key'])->group(function () {
     Route::post('/dearsanta/{santa}', 'DearSantaController@fetch')->name('dearsanta.fetch');
-    Route::post('/dearsanta/{santa}/fetchState', 'DearSantaController@fetchState')->name('dearsanta.fetchState');
     Route::post('/dearsanta/{santa}/send', 'DearSantaController@handle')->name('dearsanta.contact');
 });
+Route::post('/dearsanta/{santa}/fetchState', 'DearSantaController@fetchState')->name('dearsanta.fetchState');
 
 Route::get('/org/{draw}', 'OrganizerController@view')->name('organizerPanel');
 Route::middleware(['decrypt.key'])->group(function () {
     Route::post('/org/{draw}', 'OrganizerController@fetch')->name('organizerPanel.fetch');
-    Route::post('/org/{draw}/fetchState', 'OrganizerController@fetchState')->name('organizerPanel.fetchState');
     Route::post('/org/{draw}/{participant}/changeEmail', 'OrganizerController@changeEmail')->name('organizerPanel.changeEmail');
     Route::post('/org/{draw}/{participant}/resendEmail', 'OrganizerController@resendEmail')->name('organizerPanel.resendEmail');
 });
+Route::post('/org/{draw}/fetchState', 'OrganizerController@fetchState')->name('organizerPanel.fetchState');
