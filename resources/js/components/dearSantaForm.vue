@@ -1,4 +1,8 @@
 <script>
+    import jQuery from 'jquery';
+
+    import store from '../partials/store.js';
+
     import Vue from 'vue';
 
     import Vuelidate from 'vuelidate';
@@ -17,6 +21,7 @@
         },
         data() {
             return {
+                ...store,
                 content: ''
             };
         },
@@ -31,13 +36,13 @@
                     });
             },
             checkUpdates() {
-                return !!Object.values(this.data.emails).find(email => email.delivery_status === 'created');
+                return !!Object.values(this.data.emails).find(email => email.mail.delivery_status === 'created');
             }
         },
         created() {
             setInterval(() => {
                 if (this.checkUpdates) this.fetchState();
-            }, 5000);
+            }, 1000);
         },
         validations: {
             content: {
@@ -50,10 +55,10 @@
             },
             fetchState() {
                 var app = this;
-                return $.ajax({
+                return jQuery.ajax({
                     url: `/dearsanta/${this.data.santa.id}/fetchState`,
                     type: 'POST',
-                    data: { _token: this.csrf, key: this.key },
+                    data: { _token: this.csrf },
                     success(data) {
                         if (data.emails) {
                             Object.values(data.emails).forEach(email => {

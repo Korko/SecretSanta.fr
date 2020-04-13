@@ -1,4 +1,6 @@
 <script>
+    import jQuery from 'jquery';
+
     import store from '../partials/store.js';
 
     import { required, email } from 'vuelidate/lib/validators';
@@ -29,14 +31,14 @@
         computed: {
             checkUpdates() {
                 return !!Object.values(this.data.participants).find(
-                    participant => participant.delivery_status === 'created'
+                    participant => participant.mail.delivery_status === 'created'
                 );
             }
         },
         created() {
             setInterval(() => {
                 if (this.checkUpdates) this.fetchState();
-            }, 5000);
+            }, 1000);
         },
         methods: {
             update(k, data) {
@@ -46,10 +48,10 @@
             },
             fetchState() {
                 var app = this;
-                return $.ajax({
+                return jQuery.ajax({
                     url: `/org/${this.data.draw}/fetchState`,
                     type: 'POST',
-                    data: { _token: this.csrf, key: this.key },
+                    data: { _token: this.csrf },
                     success(data) {
                         if (data.participants) {
                             Object.values(data.participants).forEach(participant => {

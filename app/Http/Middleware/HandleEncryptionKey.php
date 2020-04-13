@@ -17,7 +17,9 @@ class HandleEncryptionKey
     public function handle($request, Closure $next)
     {
         $key = base64_decode($request->input('key'));
-        Crypt::setKey($key);
+        if ($key) {
+            Crypt::setKey($key);
+        }
 
         return $next($request);
     }

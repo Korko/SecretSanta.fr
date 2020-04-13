@@ -276,11 +276,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _partials_store_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../partials/store.js */ "./resources/js/partials/store.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var _inputEdit_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./inputEdit.vue */ "./resources/js/components/inputEdit.vue");
-/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _partials_store_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../partials/store.js */ "./resources/js/partials/store.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _inputEdit_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./inputEdit.vue */ "./resources/js/components/inputEdit.vue");
+/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
 
 
 
@@ -304,11 +306,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
+    InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
   },
-  extends: _form_vue__WEBPACK_IMPORTED_MODULE_15__["default"],
+  extends: _form_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
   props: {
     data: {
       type: Object,
@@ -318,11 +321,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   data: function data() {
-    return _objectSpread({}, _partials_store_js__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    return _objectSpread({}, _partials_store_js__WEBPACK_IMPORTED_MODULE_13__["default"], {
       validations: {
         email: {
-          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13__["required"],
-          format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13__["email"]
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__["required"],
+          format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__["email"]
         }
       }
     });
@@ -330,7 +333,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: {
     checkUpdates: function checkUpdates() {
       return !!Object.values(this.data.participants).find(function (participant) {
-        return participant.delivery_status === 'created';
+        return participant.mail.delivery_status === 'created';
       });
     }
   },
@@ -339,7 +342,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     setInterval(function () {
       if (_this.checkUpdates) _this.fetchState();
-    }, 5000);
+    }, 1000);
   },
   methods: {
     update: function update(k, data) {
@@ -349,12 +352,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     fetchState: function fetchState() {
       var app = this;
-      return $.ajax({
+      return jquery__WEBPACK_IMPORTED_MODULE_12___default.a.ajax({
         url: "/org/".concat(this.data.draw, "/fetchState"),
         type: 'POST',
         data: {
-          _token: this.csrf,
-          key: this.key
+          _token: this.csrf
         },
         success: function success(data) {
           if (data.participants) {
