@@ -31,13 +31,16 @@ class ParseBounces implements ShouldQueue
                 [$hash] = sscanf($to, str_replace('*', '%s', config('mail.return_path')));
 
                 if ($hash !== null) {
-                    [$id] = Hashids::connection('bounce')->decode($hash);
+                    try {
+                        [$id] = Hashids::connection('bounce')->decode($hash);
 
-                    $mail = MailModel::find($id);
-                    $mail->delivery_status = MailModel::ERROR;
-                    $mail->save();
-
-                    $unseenMail->delete();
+                        $mail = MailModel::findOrFail($id);
+                        $mail->delivery_status = MailModel::ERROR;
+                        $mail->save();
+                    } catch (Exception $e) {
+                        //
+                    } finally {
+                        $unseenMail->delete();
                 }
             }
         }
