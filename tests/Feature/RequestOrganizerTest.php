@@ -36,7 +36,7 @@ class RequestOrganizerTest extends RequestCase
 
         // Check data can be changed
         $path = route('organizerPanel.resendEmail', [
-            'draw' => $draw->id,
+            'draw' => $draw->hash,
             'participant' => $participant,
         ]);
         $response = $this->ajaxPost($path, [
@@ -61,7 +61,7 @@ class RequestOrganizerTest extends RequestCase
 
         // Check data can be changed
         $path = route('organizerPanel.changeEmail', [
-            'draw' => $draw->id,
+            'draw' => $draw->hash,
             'participant' => $participant,
         ]);
         $response = $this->ajaxPost($path, [
