@@ -7,12 +7,6 @@
     ],
     "license": "MIT",
     "type": "project",
-    "repositories": [
-        { "type": "vcs", "url": "https://framagit.org/korko/laravel-encrypter" },
-        { "type": "vcs", "url": "https://framagit.org/korko/laravel-input-encrypter" },
-        { "type": "vcs", "url": "https://github.com/korko/laravel-database-encryption" },
-        { "type": "vcs", "url": "https://github.com/korko/laravel-code-style" }
-    ],
     "require": {
         "php": "^7.2.5",
         "fideloper/proxy": "^4.2",
