@@ -10,12 +10,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Draw extends Model
 {
+    use HashId;
+
+    protected static $hashConnection = 'draw';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = ['mail_title', 'mail_body', 'expires_at'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $append = ['hash'];
 
     protected $dates = [
         'expires_at',
@@ -51,22 +62,5 @@ class Draw extends Model
     public function getOrganizerAttribute()
     {
         return $this->participants->first();
-    }
-
-    public function getDrawFromDearSantaUrl($url)
-    {
-        $route = app('router')
-            ->getRoutes()
-            ->getByName('dearsanta');
-
-        $request = app('request')
-            ->create($this->argument('url'));
-
-        $hash = $route->bind($request)->santa;
-        if (!$hash || ! ($ids = Hashids::decode($hash))) {
-            throw (new ModelNotFoundException())->setModel(Participant::class);
-        }
-
-        return Participant::findOrFail($id[0])->draw;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use App\Draw;
 use App\Participant;
-use Hashids;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -26,10 +26,11 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         Route::bind('santa', function ($value) {
-            if (($ids = Hashids::decode($value)) && ($santa = Participant::find($ids[0]))) {
-                return $santa;
-            }
-            abort(404);
+            return Participant::findByHashOrFail($value);
+        });
+
+        Route::bind('draw', function ($value) {
+            return Draw::findByHashOrFail($value);
         });
 
         parent::boot();

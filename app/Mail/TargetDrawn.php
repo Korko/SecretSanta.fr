@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Participant;
 use Crypt;
-use Hashids;
 use Illuminate\Bus\Queueable;
 
 class TargetDrawn extends TrackedMailable
@@ -28,7 +27,7 @@ class TargetDrawn extends TrackedMailable
 
         $this->content = $this->parseKeywords($santa->draw->mail_body, $santa);
 
-        $this->dearSantaLink = route('dearsanta', ['santa' => Hashids::encode($santa->id)]).'#'.base64_encode(Crypt::getKey());
+        $this->dearSantaLink = route('dearsanta', ['santa' => $santa->hash]).'#'.base64_encode(Crypt::getKey());
 
         $this->track($santa->mail);
     }

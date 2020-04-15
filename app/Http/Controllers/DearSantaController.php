@@ -8,7 +8,6 @@ use App\Jobs\SendMail;
 use App\Mail as MailModel;
 use App\Mail\DearSanta as DearSantaEmail;
 use App\Participant;
-use Hashids;
 use Metrics;
 
 class DearSantaController extends Controller
@@ -16,7 +15,7 @@ class DearSantaController extends Controller
     public function view(Participant $participant)
     {
         return view('dearSanta', [
-            'santa' => Hashids::encode($participant->id),
+            'santa' => $participant->hash,
         ]);
     }
 
@@ -24,7 +23,7 @@ class DearSantaController extends Controller
     {
         return response()->json([
             'santa' => [
-                'id' => Hashids::encode($participant->id),
+                'id' => $participant->hash,
                 'name' => $participant->name,
             ],
             'draw' => $participant->draw->mail_title,
