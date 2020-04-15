@@ -99,9 +99,9 @@ class DrawHandlerTest extends TestCase
 
         // Check data stored are decryptable
         $path = parse_url($link, PHP_URL_PATH);
-        $pathTheorical = parse_url(route('organizerPanel', ['draw' => '%d']), PHP_URL_PATH);
+        $pathTheorical = parse_url(route('organizerPanel', ['draw' => '%s']), PHP_URL_PATH);
         $data = sscanf($path, $pathTheorical);
-        $draw = Draw::find($data[0]);
+        $draw = Draw::findByHashOrFail($data[0]);
 
         $this->assertNotEquals(0, $draw->participants->count());
 
