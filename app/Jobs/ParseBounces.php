@@ -38,6 +38,7 @@ class ParseBounces implements ShouldQueue
                         //
                     } finally {
                         $unseenMail->delete();
+                    }
                 }
             }
         }

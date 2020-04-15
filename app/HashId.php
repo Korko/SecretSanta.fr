@@ -26,7 +26,7 @@ trait HashId
 
     public static function findByHashOrFail($hash)
     {
-        if (!$hash || ! ($ids = Hashids::connection(static::getHashConnection())->decode($hash))) {
+        if (! $hash || ! ($ids = Hashids::connection(static::getHashConnection())->decode($hash))) {
             throw (new ModelNotFoundException())->setModel(__CLASS__);
         }
 
