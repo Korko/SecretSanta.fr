@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 class Participant extends Model
 {
     use Notifiable;
+    use HashId;
+
+    protected static $hashConnection = 'santa';
 
     /**
      * The attributes that are mass assignable.
@@ -53,5 +56,19 @@ class Participant extends Model
     public function mail()
     {
         return $this->belongsTo(Mail::class, 'mail_id');
+    }
+
+    public static function getFromDearSantaUrl($url)
+    {
+        $route = app('router')
+            ->getRoutes()
+            ->getByName('dearsanta');
+
+        $request = app('request')
+            ->create($this->argument('url'));
+
+        $hash = $route->bind($request)->santa;
+
+        return static::findByHashOrFail($hash);
     }
 }

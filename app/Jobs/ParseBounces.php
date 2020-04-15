@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Mail as MailModel;
-use Hashids;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -32,9 +31,7 @@ class ParseBounces implements ShouldQueue
 
                 if ($hash !== null) {
                     try {
-                        [$id] = Hashids::connection('bounce')->decode($hash);
-
-                        $mail = MailModel::findOrFail($id);
+                        $mail = MailModel::findByHashOrFail($hash);
                         $mail->delivery_status = MailModel::ERROR;
                         $mail->save();
                     } catch (Exception $e) {

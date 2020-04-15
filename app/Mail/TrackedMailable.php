@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use App\Mail as MailModel;
-use Hashids;
 
 class TrackedMailable extends Mailable
 {
@@ -40,7 +39,7 @@ class TrackedMailable extends Mailable
     public function send($mailer)
     {
         $this->withSwiftMessage(function ($message) {
-            $hash = Hashids::connection('bounce')->encode($this->mailId);
+            $hash = MailModel::find($this->mailId)->hash;
 
             $message->getHeaders()
                     ->addPathHeader('Return-Path', str_replace('*', $hash, config('mail.return_path')));

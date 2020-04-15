@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mail extends Model
 {
+    use HashId;
+
+    protected static $hashConnection = 'bounce';
+
     /**
      * The attributes that are mass assignable.
      *

@@ -2,13 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Draw;
+use App\Participant;
 use Arr;
 use Crypt;
 use DrawHandler;
-use Hashids;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FixOrganizer extends Command
 {
@@ -45,7 +43,7 @@ class FixOrganizer extends Command
     {
         $this->setCryptKeyFromUrl($this->argument('url'));
 
-        $draw = Draw::getDrawFromDearSantaUrl($this->argument('url'));
+        $draw = Participant::getFromDearSantaUrl($this->argument('url'))->draw;
 
         $draw->organizer->email = $this->argument('email');
         $draw->organizer->save();
