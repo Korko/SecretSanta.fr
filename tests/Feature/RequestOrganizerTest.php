@@ -37,7 +37,7 @@ class RequestOrganizerTest extends RequestCase
         // Check data can be changed
         $path = route('organizerPanel.resendEmail', [
             'draw' => $draw->hash,
-            'participant' => $participant,
+            'participant' => $participant->hash,
         ]);
         $response = $this->ajaxPost($path, [
             'key' => base64_encode(Crypt::getKey()),
@@ -62,7 +62,7 @@ class RequestOrganizerTest extends RequestCase
         // Check data can be changed
         $path = route('organizerPanel.changeEmail', [
             'draw' => $draw->hash,
-            'participant' => $participant,
+            'participant' => $participant->hash,
         ]);
         $response = $this->ajaxPost($path, [
             'key' => base64_encode(Crypt::getKey()),

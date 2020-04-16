@@ -14,9 +14,9 @@ trait HashId
      */
     protected $append = ['hash'];
 
-    protected static function getHashConnection()
+    protected function getHashConnection()
     {
-        return property_exists(new static, 'hashConnection') ? static::$hashConnection : null;
+        return property_exists($this, 'hashConnection') ? $this->hashConnection : null;
     }
 
     public function getHashAttribute()
@@ -24,12 +24,24 @@ trait HashId
         return Hashids::connection($this->getHashConnection())->encode($this->id);
     }
 
-    public static function findByHashOrFail($hash)
+    public function scopeFindByHashOrFail($query, $hash)
     {
-        if (! $hash || ! ($ids = Hashids::connection(static::getHashConnection())->decode($hash))) {
+        if (! $hash || ! ($ids = Hashids::connection($this->getHashConnection())->decode($hash))) {
             throw (new ModelNotFoundException())->setModel(__CLASS__);
         }
 
-        return static::findOrFail($ids[0]);
+        return $query->findOrFail($ids[0]);
+    }
+
+    /**
+     * Retrieve the model for a bound value.
+     *
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->findByHashOrFail($value);
     }
 }

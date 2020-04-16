@@ -27,7 +27,7 @@ class TargetDrawn extends TrackedMailable
 
         $this->content = $this->parseKeywords($santa->draw->mail_body, $santa);
 
-        $this->dearSantaLink = route('dearsanta', ['santa' => $santa->hash]).'#'.base64_encode(Crypt::getKey());
+        $this->dearSantaLink = route('dearsanta', ['participant' => $santa->hash]).'#'.base64_encode(Crypt::getKey());
 
         $this->track($santa->mail);
     }

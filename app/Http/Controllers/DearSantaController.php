@@ -15,14 +15,14 @@ class DearSantaController extends Controller
     public function view(Participant $participant)
     {
         return view('dearSanta', [
-            'santa' => $participant->hash,
+            'participant' => $participant->hash,
         ]);
     }
 
     public function fetch(Participant $participant)
     {
         return response()->json([
-            'santa' => [
+            'participant' => [
                 'id' => $participant->hash,
                 'name' => $participant->name,
             ],
@@ -61,7 +61,7 @@ class DearSantaController extends Controller
                     'id', 'mail_body', 'mail',
                 ]),
             ]) :
-            redirect('/dearsanta/'.$participant->id)->with('message', $message);
+            redirect('/dearsanta/'.$participant->hash)->with('message', $message);
     }
 
     protected function sendMail(DearSanta $dearSanta)

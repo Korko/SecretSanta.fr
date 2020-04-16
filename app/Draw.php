@@ -15,24 +15,6 @@ class Draw extends Model
     protected static $hashConnection = 'draw';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['mail_title', 'mail_body', 'expires_at'];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $append = ['hash'];
-
-    protected $dates = [
-        'expires_at',
-    ];
-
-    /**
      * The attributes that should be cast.
      *
      * @var array
@@ -41,6 +23,22 @@ class Draw extends Model
         'mail_title' => EncryptedString::class,
         'mail_body' => EncryptedString::class,
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'expires_at',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['mail_title', 'mail_body', 'expires_at'];
 
     public function save(array $options = [])
     {
