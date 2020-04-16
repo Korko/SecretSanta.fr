@@ -49,7 +49,8 @@ class Draw extends Model
 
     public static function cleanup()
     {
-        self::where('expires_at', '<=', DB::raw('CURRENT_TIMESTAMP'))->delete();
+        // Recap is sent 2 days after so remove everything 3 days after
+        self::where('expires_at', '<=', DB::raw('DATE_SUB(CURRENT_DATE, INTERVAL 3 DAY)'))->delete();
     }
 
     public function participants()
