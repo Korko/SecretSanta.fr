@@ -1,7 +1,7 @@
 image: lorisleiva/laravel-docker:latest
 
 environment:
-  stage: prepare
+  stage: .pre
   script:
     - apk add --no-cache imap-dev krb5-dev openssl-dev
     - PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl
