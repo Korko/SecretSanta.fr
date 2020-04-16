@@ -40,7 +40,6 @@ npm:
 phpunit:
   stage: test
   dependencies:
-    - environment
     - composer
   script:
     - cp .env.example .env
