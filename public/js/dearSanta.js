@@ -129,7 +129,7 @@ vue__WEBPACK_IMPORTED_MODULE_17___default.a.use(vuelidate__WEBPACK_IMPORTED_MODU
     fetchState: function fetchState() {
       var app = this;
       return jquery__WEBPACK_IMPORTED_MODULE_15___default.a.ajax({
-        url: "/dearsanta/".concat(this.data.santa.id, "/fetchState"),
+        url: "/dearsanta/".concat(this.data.participant.hash, "/fetchState"),
         type: 'POST',
         data: {
           _token: this.csrf
@@ -172,7 +172,7 @@ var render = function() {
         "ajax-form",
         {
           attrs: {
-            action: "/dearsanta/" + _vm.data.santa.id + "/send",
+            action: "/dearsanta/" + _vm.data.participant.hash + "/send",
             $v: _vm.$v
           },
           on: { success: _vm.success }

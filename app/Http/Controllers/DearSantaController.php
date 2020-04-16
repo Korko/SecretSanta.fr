@@ -22,10 +22,7 @@ class DearSantaController extends Controller
     public function fetch(Participant $participant)
     {
         return response()->json([
-            'participant' => [
-                'id' => $participant->hash,
-                'name' => $participant->name,
-            ],
+            'participant' => $participant->only(['hash', 'name']),
             'draw' => $participant->draw->mail_title,
             'organizer' => $participant->draw->organizer->name,
             'emails' => $participant->dearSanta->mapWithKeys(function ($email) {
