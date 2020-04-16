@@ -21,7 +21,7 @@ Route::get('/faq', 'RandomFormController@faq')->name('faq');
 Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').'}');
 
 Route::get('/dearsanta/{participant}', 'DearSantaController@view')->name('dearsanta');
-Route::middleware(['decrypt.key'])->group(function () {
+Route::middleware(['decrypt.key:participant,name'])->group(function () {
     Route::post('/dearsanta/{participant}', 'DearSantaController@fetch')->name('dearsanta.fetch');
     Route::post('/dearsanta/{participant}/send', 'DearSantaController@handle')->name('dearsanta.contact');
     Route::post('/dearsanta/{participant}/fetchState', 'DearSantaController@fetchState')->name('dearsanta.fetchState');
@@ -30,7 +30,7 @@ Route::middleware(['decrypt.key'])->group(function () {
 Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').'}');
 
 Route::get('/org/{draw}', 'OrganizerController@view')->name('organizerPanel');
-Route::middleware(['decrypt.key'])->group(function () {
+Route::middleware(['decrypt.key:draw,mail_title'])->group(function () {
     Route::post('/org/{draw}', 'OrganizerController@fetch')->name('organizerPanel.fetch');
     Route::delete('/org/{draw}', 'OrganizerController@delete')->name('organizerPanel.delete');
     Route::post('/org/{draw}/fetchState', 'OrganizerController@fetchState')->name('organizerPanel.fetchState');

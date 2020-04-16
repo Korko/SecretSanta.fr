@@ -51,7 +51,7 @@
                 return jQuery.ajax({
                     url: `/org/${this.data.draw}/fetchState`,
                     type: 'POST',
-                    data: { _token: this.csrf },
+                    data: { _token: this.csrf, key: this.key },
                     success(data) {
                         if (data.participants) {
                             Object.values(data.participants).forEach(participant => {

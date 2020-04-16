@@ -132,7 +132,8 @@ vue__WEBPACK_IMPORTED_MODULE_17___default.a.use(vuelidate__WEBPACK_IMPORTED_MODU
         url: "/dearsanta/".concat(this.data.participant.hash, "/fetchState"),
         type: 'POST',
         data: {
-          _token: this.csrf
+          _token: this.csrf,
+          key: this.key
         },
         success: function success(data) {
           if (data.emails) {
