@@ -69,7 +69,7 @@ class RequestDearSantaTest extends RequestCase
             $santa = $participants[$santaId];
 
             // Check data stored are decryptable
-            $pathTheorical = parse_url(route('dearsanta', ['santa' => '%s']), PHP_URL_PATH);
+            $pathTheorical = parse_url(route('dearsanta', ['participant' => '%s']), PHP_URL_PATH);
             $data = sscanf($path, $pathTheorical);
             $id = Hashids::decode($data[0])[0];
             $santaTheorical = Participant::find($id);
@@ -78,7 +78,7 @@ class RequestDearSantaTest extends RequestCase
             $this->assertEquals($santa['email'], $santaTheorical->santa->email);
 
             // Try to contact santa
-            $response = $this->ajaxPost(route('dearsanta.contact', ['santa' => $data[0]]), [
+            $response = $this->ajaxPost(route('dearsanta.contact', ['participant' => $data[0]]), [
                 'key'     => base64_encode(Crypt::getKey()),
                 'content' => 'test dearsanta mail content',
             ]);

@@ -1,4 +1,4 @@
-@extends('templates/fetcher', ['styles' => '/css/dearSanta.css', 'fetchUrl' => route('dearsanta.fetch', ['santa' => $santa])])
+@extends('templates/fetcher', ['styles' => '/css/dearSanta.css', 'fetchUrl' => route('dearsanta.fetch', ['participant' => $participant])])
 
 @section('script')
     @parent

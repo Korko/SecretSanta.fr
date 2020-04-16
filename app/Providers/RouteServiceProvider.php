@@ -25,13 +25,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Route::bind('santa', function ($value) {
-            return Participant::findByHashOrFail($value);
-        });
-
-        Route::bind('draw', function ($value) {
-            return Draw::findByHashOrFail($value);
-        });
+        //
 
         parent::boot();
     }

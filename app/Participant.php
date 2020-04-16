@@ -14,16 +14,6 @@ class Participant extends Model
     protected static $hashConnection = 'santa';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['name', 'email', 'draw_id', 'target_id', 'mail_id'];
-
-    // Fake property
-    public $exclusions;
-
-    /**
      * The attributes that should be cast.
      *
      * @var array
@@ -32,6 +22,16 @@ class Participant extends Model
         'name' => EncryptedString::class,
         'email' => EncryptedString::class,
     ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'email', 'draw_id', 'target_id', 'mail_id'];
+
+    // Fake property
+    public $exclusions;
 
     public function draw()
     {
@@ -58,7 +58,7 @@ class Participant extends Model
         return $this->belongsTo(Mail::class, 'mail_id');
     }
 
-    public static function getFromDearSantaUrl($url)
+    public function getFromDearSantaUrl($url)
     {
         $route = app('router')
             ->getRoutes()
