@@ -78,4 +78,17 @@ class OrganizerController extends Controller
 
         SendMail::dispatch($participant, new TargetDrawn($participant));
     }
+
+    public function delete(Draw $draw)
+    {
+        $draw->delete();
+
+        $message = trans('organizer.deleted');
+
+        return $request->ajax() ?
+            response()->json([
+                'message' => $message,
+            ]) :
+            redirect('/')->with('message', $message);
+    }
 }
