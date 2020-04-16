@@ -1,21 +1,51 @@
 image: lorisleiva/laravel-docker:latest
 
-.before_script_composer:
-  rules:
-    - changes:
-      - "**/*.php"
-  before_script:
+environment:
+  stage: prepare
+  script:
     - apk add --no-cache imap-dev krb5-dev openssl-dev
     - PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl
     - docker-php-ext-install imap
-    - pecl install xdebug    
-    - docker-php-ext-enable xdebug
-    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+
+composer:
+  stage: build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-composer
+    paths:
+      - vendor/
+  script:
+      - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+      - cp .env.example .env
+      - php artisan key:generate
+  artifacts:
+    expire_in: 1 month
+    paths:
+      - vendor/
+      - .env
+
+npm:
+  stage: build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-npm
+    paths:
+      - node_modules/
+  script:
+      - npm install
+      - npm run production
+  artifacts:
+    expire_in: 1 month
+    paths:
+      - node_modules/
+      - public/css/
+      - public/js/
 
 phpunit:
-  extends: .before_script_composer
   stage: test
+  dependencies:
+    - environment
+    - composer
   script:
     - cp .env.example .env
     - php artisan key:generate
-    - ./vendor/bin/phpunit --coverage-text --colors=never
+    - phpunit --coverage-text --colors=never
+
