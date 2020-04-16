@@ -58,7 +58,7 @@
                 return jQuery.ajax({
                     url: `/dearsanta/${this.data.participant.hash}/fetchState`,
                     type: 'POST',
-                    data: { _token: this.csrf },
+                    data: { _token: this.csrf, key: this.key },
                     success(data) {
                         if (data.emails) {
                             Object.values(data.emails).forEach(email => {

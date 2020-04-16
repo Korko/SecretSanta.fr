@@ -356,7 +356,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         url: "/org/".concat(this.data.draw, "/fetchState"),
         type: 'POST',
         data: {
-          _token: this.csrf
+          _token: this.csrf,
+          key: this.key
         },
         success: function success(data) {
           if (data.participants) {
