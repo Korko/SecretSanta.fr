@@ -56,7 +56,7 @@
             fetchState() {
                 var app = this;
                 return jQuery.ajax({
-                    url: `/dearsanta/${this.data.santa.id}/fetchState`,
+                    url: `/dearsanta/${this.data.participant.hash}/fetchState`,
                     type: 'POST',
                     data: { _token: this.csrf },
                     success(data) {
@@ -79,7 +79,7 @@
 
 <template>
     <div>
-        <ajax-form :action="`/dearsanta/${data.santa.id}/send`" :$v="$v" @success="success">
+        <ajax-form :action="`/dearsanta/${data.participant.hash}/send`" :$v="$v" @success="success">
             <fieldset>
                 <div class="form-group">
                     <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
