@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Draw extends Model
 {
-    use HashId;
+    use HashId {
+        resolveRouteBinding as resolveDraw;
+    }
 
     protected static $hashConnection = 'draw';
 
@@ -61,5 +63,26 @@ class Draw extends Model
     public function getOrganizerAttribute()
     {
         return $this->participants->first();
+    }
+
+    public function getExpiredAttribute()
+    {
+        return $this->expires_at->isPast() || $this->expires_at->isToday();
+    }
+
+    /**
+     * Retrieve the model for a bound value.
+     *
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $draw = $this->resolveDraw($value);
+
+        abort_if($draw->expired, 404);
+
+        return $draw->load(['participants', 'participants.mail']);
     }
 }
