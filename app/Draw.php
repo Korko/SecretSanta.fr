@@ -83,6 +83,6 @@ class Draw extends Model
 
         abort_if($draw->expired, 404);
 
-        return $draw->load(['participants', 'participants.mail']);
+        return $draw->load('participants');
     }
 }

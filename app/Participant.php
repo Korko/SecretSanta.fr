@@ -9,7 +9,9 @@ use Illuminate\Notifications\Notifiable;
 class Participant extends Model
 {
     use Notifiable;
-    use HashId;
+    use HashId {
+        resolveRouteBinding as resolveParticipant;
+    };
 
     protected static $hashConnection = 'santa';
 
@@ -70,5 +72,19 @@ class Participant extends Model
         $hash = $route->bind($request)->santa;
 
         return static::findByHashOrFail($hash);
+    }
+
+    /**
+     * Retrieve the model for a bound value.
+     *
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $participant = $this->resolveParticipant($value);
+
+        return $participant->load(['dearsanta']);
     }
 }
