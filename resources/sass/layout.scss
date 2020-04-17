@@ -527,16 +527,37 @@ footer .row {
 /* ==========================================================================
     11. Readability
 ========================================================================== */
-.btn-success {
+.btn-outline-success {
+    color: #2c642c;
+    border-color: #2c642c;
+}
+.btn-success,.btn-outline-success:not([disabled]):hover {
     background-color: #2c642c;
+    border-color: #2c642c;
 }
 
-.btn-danger {
+.btn-outline-danger {
+    color: #a82824;
+    border-color: #a82824;
+}
+.btn-danger,.btn-outline-danger:not([disabled]):hover {
     background-color: #a82824;
+    border-color: #a82824;
 }
 
-.btn-primary {
+.btn-outline-warning {
+    color: #9c5a05;
+    border-color: #9c5a05;
+}
+.btn-warning,.btn-outline-warning:not([disabled]):hover {
+    background-color: #9c5a05;
+    border-color: #9c5a05;
+    color: #fff;
+}
+
+.btn-primary,.btn-outline-primary:not([disabled]):hover {
     background-color: #275c8b;
+    border-color: #275c8b;
 }
 
 .dark-wrapper {

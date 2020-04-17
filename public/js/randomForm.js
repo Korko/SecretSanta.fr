@@ -2203,7 +2203,7 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn btn-danger participant-remove",
+          staticClass: "btn btn-outline-danger participant-remove",
           attrs: { type: "button", disabled: _vm.required },
           on: {
             click: function($event) {
@@ -2440,7 +2440,8 @@ var render = function() {
                           _c(
                             "button",
                             {
-                              staticClass: "btn btn-success participant-add",
+                              staticClass:
+                                "btn btn-outline-success participant-add",
                               attrs: { type: "button" },
                               on: {
                                 click: function($event) {
@@ -2462,7 +2463,7 @@ var render = function() {
                             "button",
                             {
                               staticClass:
-                                "btn btn-warning participants-import",
+                                "btn btn-outline-warning participants-import",
                               attrs: {
                                 type: "button",
                                 disabled: _vm.importing

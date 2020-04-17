@@ -284,13 +284,13 @@
                                     />
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-success participant-add" @click="addParticipant()">
+                            <button type="button" class="btn btn-outline-success participant-add" @click="addParticipant()">
                                 <i class="fas fa-plus" />
                                 {{ $t('form.participant.add') }}
                             </button>
                             <button
                                 type="button"
-                                class="btn btn-warning participants-import"
+                                class="btn btn-outline-warning participants-import"
                                 :disabled="importing"
                                 @click="showModal = true"
                             >
