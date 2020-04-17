@@ -128,7 +128,7 @@
         <td class="participant-remove-wrapper align-middle">
             <button
                 type="button"
-                class="btn btn-danger participant-remove"
+                class="btn btn-outline-danger participant-remove"
                 :disabled="required"
                 @click="$emit('delete')"
             >

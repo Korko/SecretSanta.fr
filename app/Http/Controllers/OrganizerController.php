@@ -9,6 +9,7 @@ use App\Jobs\SendMail;
 use App\Mail as MailModel;
 use App\Mail\TargetDrawn;
 use App\Participant;
+use Illuminate\Http\Request;
 use Metrics;
 
 class OrganizerController extends Controller
@@ -24,6 +25,7 @@ class OrganizerController extends Controller
     {
         return response()->json([
             'draw' => $draw->hash,
+            'expires_at' => $draw->expires_at,
             'participants' => $draw->participants->mapWithKeys(function ($participant) {
                 return [$participant->id => $participant->only([
                     'id', 'name', 'email', 'mail',
@@ -79,7 +81,7 @@ class OrganizerController extends Controller
         SendMail::dispatch($participant, new TargetDrawn($participant));
     }
 
-    public function delete(Draw $draw)
+    public function delete(Request $request, Draw $draw)
     {
         $draw->delete();
 

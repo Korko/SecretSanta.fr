@@ -278,11 +278,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_11__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var _partials_store_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../partials/store.js */ "./resources/js/partials/store.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var _inputEdit_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./inputEdit.vue */ "./resources/js/components/inputEdit.vue");
-/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var vuejs_dialog__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vuejs-dialog */ "./node_modules/vuejs-dialog/dist/vuejs-dialog.min.js");
+/* harmony import */ var vuejs_dialog__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vuejs_dialog__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vuejs-dialog/dist/vuejs-dialog.min.css */ "./node_modules/vuejs-dialog/dist/vuejs-dialog.min.css");
+/* harmony import */ var vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _partials_store_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../partials/store.js */ "./resources/js/partials/store.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var _inputEdit_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./inputEdit.vue */ "./resources/js/components/inputEdit.vue");
+/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
 
 
 
@@ -306,12 +312,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+vue__WEBPACK_IMPORTED_MODULE_13___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_MODULE_14___default.a);
+
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
+    InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_18__["default"]
   },
-  extends: _form_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
+  extends: _form_vue__WEBPACK_IMPORTED_MODULE_19__["default"],
   props: {
     data: {
       type: Object,
@@ -321,11 +331,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   data: function data() {
-    return _objectSpread({}, _partials_store_js__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    return _objectSpread({}, _partials_store_js__WEBPACK_IMPORTED_MODULE_16__["default"], {
       validations: {
         email: {
-          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__["required"],
-          format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__["email"]
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["required"],
+          format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__["email"]
         }
       }
     });
@@ -367,6 +377,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               app.data.participants[participant.id].mail.delivery_status = new_update > old_update ? participant.mail.delivery_status : app.data.participants[participant.id].mail.delivery_status;
             });
           }
+        }
+      });
+    },
+    confirmPurge: function confirmPurge() {
+      var options = {
+        okText: this.$t('organizer.purge.confirm.ok'),
+        cancelText: this.$t('organizer.purge.confirm.cancel'),
+        verification: this.$t('organizer.purge.confirm.value'),
+        verificationHelp: this.$t('organizer.purge.confirm.help'),
+        type: 'hard'
+      };
+      var message = {
+        title: this.$t('organizer.purge.confirm.title', {
+          expiration: new Date(this.data.expires_at).toLocaleString('fr-FR', {
+            day: 'numeric',
+            month: 'long'
+          })
+        }),
+        body: this.$t('organizer.purge.confirm.body')
+      };
+      this.$dialog.confirm(message, options).then(this.purge);
+    },
+    purge: function purge() {
+      var app = this;
+      return jquery__WEBPACK_IMPORTED_MODULE_12___default.a.ajax({
+        url: "/org/".concat(this.data.draw, "/"),
+        type: 'DELETE',
+        data: {
+          _token: this.csrf,
+          key: this.key
+        },
+        success: function success(data) {
+          app.$dialog.alert(data.message).then(function () {
+            return window.location.pathname = '/';
+          });
         }
       });
     }
@@ -628,7 +673,7 @@ var render = function() {
                 ? _c(
                     "button",
                     {
-                      staticClass: "btn btn-primary",
+                      staticClass: "btn btn-outline-primary",
                       attrs: { type: "button" },
                       on: {
                         click: function($event) {
@@ -644,7 +689,7 @@ var render = function() {
                 ? _c(
                     "button",
                     {
-                      staticClass: "btn btn-success",
+                      staticClass: "btn btn-outline-success",
                       attrs: {
                         type: "button",
                         disabled: _vm.isSame || !_vm.state.endsWith("Valid")
@@ -659,7 +704,7 @@ var render = function() {
                 ? _c(
                     "button",
                     {
-                      staticClass: "btn btn-danger",
+                      staticClass: "btn btn-outline-danger",
                       attrs: { type: "button" },
                       on: { click: _vm.onCancel }
                     },
@@ -696,113 +741,125 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("table", { staticClass: "table table-hover" }, [
-    _c("thead", [
-      _c("tr", { staticClass: "table-active" }, [
-        _c("th", { attrs: { scope: "col" } }, [
-          _vm._v(
-            "\n                " +
-              _vm._s(_vm.$t("organizer.list.name")) +
-              "\n            "
-          )
-        ]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [
-          _vm._v(
-            "\n                " +
-              _vm._s(_vm.$t("organizer.list.email")) +
-              "\n            "
-          )
-        ]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [
-          _vm._v(
-            "\n                " +
-              _vm._s(_vm.$t("organizer.list.status")) +
-              "\n            "
-          )
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "tbody",
-      _vm._l(_vm.data.participants, function(participant, k) {
-        return _c("tr", { key: participant.id }, [
-          _c("td", [_vm._v(_vm._s(participant.name))]),
-          _vm._v(" "),
-          _c(
-            "td",
-            [
-              _c("input-edit", {
-                attrs: {
-                  action:
-                    "/org/" +
-                    _vm.data.draw +
-                    "/" +
-                    participant.id +
-                    "/changeEmail",
-                  value: participant.email,
-                  name: "email",
-                  validation: _vm.validations.email
-                },
-                on: {
-                  update: function($event) {
-                    return _vm.update(k, $event)
-                  }
-                },
-                scopedSlots: _vm._u(
-                  [
-                    {
-                      key: "errors",
-                      fn: function(ref) {
-                        var $v = ref.$v
-                        return [
-                          !$v.required
-                            ? _c("div", { staticClass: "invalid-tooltip" }, [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.$t(
-                                      "validation.custom.organizer.email.required"
-                                    )
-                                  )
-                                )
-                              ])
-                            : !$v.format
-                            ? _c("div", { staticClass: "invalid-tooltip" }, [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.$t(
-                                      "validation.custom.organizer.email.format"
-                                    )
-                                  )
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      }
-                    }
-                  ],
-                  null,
-                  true
-                )
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("td", [
+  return _c("div", [
+    _c("table", { staticClass: "table table-hover" }, [
+      _c("thead", [
+        _c("tr", { staticClass: "table-active" }, [
+          _c("th", { attrs: { scope: "col" } }, [
             _vm._v(
-              _vm._s(
-                _vm.$t(
-                  "common.email.status." + participant.mail.delivery_status
-                )
-              )
+              "\n                    " +
+                _vm._s(_vm.$t("organizer.list.name")) +
+                "\n                "
+            )
+          ]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [
+            _vm._v(
+              "\n                    " +
+                _vm._s(_vm.$t("organizer.list.email")) +
+                "\n                "
+            )
+          ]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [
+            _vm._v(
+              "\n                    " +
+                _vm._s(_vm.$t("organizer.list.status")) +
+                "\n                "
             )
           ])
         ])
-      }),
-      0
+      ]),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        _vm._l(_vm.data.participants, function(participant, k) {
+          return _c("tr", { key: participant.id }, [
+            _c("td", [_vm._v(_vm._s(participant.name))]),
+            _vm._v(" "),
+            _c(
+              "td",
+              [
+                _c("input-edit", {
+                  attrs: {
+                    action:
+                      "/org/" +
+                      _vm.data.draw +
+                      "/" +
+                      participant.id +
+                      "/changeEmail",
+                    value: participant.email,
+                    name: "email",
+                    validation: _vm.validations.email
+                  },
+                  on: {
+                    update: function($event) {
+                      return _vm.update(k, $event)
+                    }
+                  },
+                  scopedSlots: _vm._u(
+                    [
+                      {
+                        key: "errors",
+                        fn: function(ref) {
+                          var $v = ref.$v
+                          return [
+                            !$v.required
+                              ? _c("div", { staticClass: "invalid-tooltip" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$t(
+                                        "validation.custom.organizer.email.required"
+                                      )
+                                    )
+                                  )
+                                ])
+                              : !$v.format
+                              ? _c("div", { staticClass: "invalid-tooltip" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$t(
+                                        "validation.custom.organizer.email.format"
+                                      )
+                                    )
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        }
+                      }
+                    ],
+                    null,
+                    true
+                  )
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("td", [
+              _vm._v(
+                _vm._s(
+                  _vm.$t(
+                    "common.email.status." + participant.mail.delivery_status
+                  )
+                )
+              )
+            ])
+          ])
+        }),
+        0
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-danger",
+        attrs: { type: "button" },
+        on: { click: _vm.confirmPurge }
+      },
+      [_vm._v(_vm._s(_vm.$t("organizer.purge.button")))]
     )
   ])
 }

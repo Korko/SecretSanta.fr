@@ -199,13 +199,18 @@
                 />
                 <slot name="errors" :$v="$v.newValue"></slot>
                 <div class="input-group-append">
-                    <button v-if="state.startsWith('view')" type="button" class="btn btn-primary" @click="send('edit')">
+                    <button
+                        v-if="state.startsWith('view')"
+                        type="button"
+                        class="btn btn-outline-primary"
+                        @click="send('edit')"
+                    >
                         <i class="fas fa-edit" />
                     </button>
                     <button
                         v-if="state.startsWith('edit')"
                         type="button"
-                        class="btn btn-success"
+                        class="btn btn-outline-success"
                         :disabled="isSame || !state.endsWith('Valid')"
                         @click="onSubmit"
                     >
@@ -214,7 +219,7 @@
                     <button
                         v-if="state.startsWith('edit')"
                         type="button"
-                        class="btn btn-danger"
+                        class="btn btn-outline-danger"
                         @click="onCancel"
                     >
                         <i class="fas fa-times-circle" />
