@@ -11,7 +11,7 @@ class Participant extends Model
     use Notifiable;
     use HashId {
         resolveRouteBinding as resolveParticipant;
-    };
+    }
 
     protected static $hashConnection = 'santa';
 
