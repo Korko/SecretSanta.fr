@@ -26,11 +26,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            Draw::cleanup();
-        })->daily();
+        $schedule
+            ->call(function () {
+                Draw::cleanup();
+            })
+            ->daily()
+            ->environments('prod');
 
-        $schedule->job(new ParseBounces)->everyMinute()->withoutOverlapping();
+        $schedule
+            ->job(new ParseBounces)
+            ->everyMinute()
+            ->withoutOverlapping()
+            ->environments('prod');
     }
 
     /**

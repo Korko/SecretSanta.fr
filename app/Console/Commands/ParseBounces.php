@@ -2,24 +2,24 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\ParseBounces;
+use App\Jobs\ParseBounces as Job;
 use Illuminate\Console\Command;
 
-class ListEmail extends Command
+class ParseBounces extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'email:list';
+    protected $signature = 'bounces:parse';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Check Email Inbox for bounces';
 
     /**
      * Create a new command instance.
@@ -38,6 +38,6 @@ class ListEmail extends Command
      */
     public function handle()
     {
-        ParseBounces::dispatchNow();
+        Job::dispatchNow();
     }
 }
