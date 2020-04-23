@@ -23,6 +23,7 @@
     import Csv from './csv.vue';
     import AjaxForm from './ajaxForm.vue';
     import Participant from './participant.vue';
+    import VueRecaptcha from 'vue-recaptcha';
 
     const formatMoment = (amount, unit) => Moment(window.now).add(amount, unit).format('YYYY-MM-DD')
 
@@ -30,7 +31,8 @@
         components: {
             AjaxForm,
             Csv,
-            Participant
+            Participant,
+            VueRecaptcha
         },
 
         data: function() {
@@ -99,13 +101,6 @@
         },
 
         watch: {
-            sending(newVal) {
-                // If we reset the sending status, reset the captcha
-                if (!newVal) {
-                    grecaptcha && grecaptcha.reset(); // eslint-disable-line no-undef
-                }
-            },
-
             sent(newVal) {
                 // If sent is a success, scroll to the message
                 if (newVal) {
@@ -354,7 +349,7 @@
                                     />
 
                                     <blockquote class="tips">
-                                        <p :is="$td('form.mail.content.tip1', {'open-target': anchor('target'), 'open-santa': anchor('santa'), 'close':'</a>'})" @santa="appendSanta" @target="appendTarget"></p>
+                                        <p :is="$td('form.mail.content.tip1', {'target': anchor('target'), 'santa': anchor('santa'), 'close':'</a>'})" @santa="appendSanta" @target="appendTarget"></p>
                                         <p>{{ $t('form.mail.content.tip2') }}</p>
                                     </blockquote>
                                 </div>

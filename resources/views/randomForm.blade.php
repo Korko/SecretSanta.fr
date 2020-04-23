@@ -7,7 +7,8 @@
     @javascript([
         'now'   => time(),
         'lang'  => App::getLocale(),
-        'alert' => session('message', '')
+        'alert' => session('message', ''),
+        'api'   => config('captcha.sitekey'),
     ])
 @stop
 
@@ -142,6 +143,4 @@
 
     <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
     <script type="text/javascript" src="{{ mix('/js/randomForm.js') }}"></script>
-
-    {!! NoCaptcha::renderJs(App::getLocale()) !!}
 @stop

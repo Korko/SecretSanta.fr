@@ -101,7 +101,7 @@ Le code source est disponible sur :link',
         'content' => [
             'label'       => 'Contenu du mail',
             'placeholder' => 'ex : Salut {SANTA}, pour la soirée secret santa, ta cible c\'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !',
-            'tip1' => 'Utilisez ":open-santa{SANTA}:close" pour le nom de celui qui recevra le mail et ":open-target{TARGET}:close" pour le nom de sa cible.',
+            'tip1' => 'Utilisez ":santa&#123;SANTA&#125;:close" pour le nom de celui qui recevra le mail et ":target&#123;TARGET&#125;:close" pour le nom de sa cible.',
             'tip2' => 'Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.',
         ],
         'post' => '----
