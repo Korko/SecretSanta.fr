@@ -40,6 +40,9 @@
         },
         watch: {
             sending() {
+                if (!this.sending) {
+                    this.onCaptchaExpired();
+                }
                 this.$emit('change', this.sending);
             }
         },
@@ -96,6 +99,9 @@
                     });
                 }
             },
+            onCaptchaExpired() {
+                grecaptcha && grecaptcha.reset(); // eslint-disable-line no-undef
+            },
             onSubmit() {
                 this.submit();
             },
@@ -116,9 +122,14 @@
             <slot v-bind="{ sending, sent, submit, onSubmit, fieldError }" />
         </fieldset>
         <fieldset v-if="button">
-            <div class="form-group btn">
-                <!-- {!! NoCaptcha::display(['data-theme' => 'light']) !!} -->
-            </div>
+            <vue-recaptcha
+                v-if="api"
+                :sitekey="api"
+                :loadRecaptchaScript="true"
+                ref="recaptcha"
+                @expired="onCaptchaExpired"
+                size="invisible"
+            ></vue-recaptcha>
 
             <button type="submit" class="btn btn-primary btn-lg">
                 <span v-if="sent"><span class="fas fa-check-circle" /> {{ buttonSent || $t('common.form.sent') }}</span>

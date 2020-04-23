@@ -1225,6 +1225,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _csv_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./csv.vue */ "./resources/js/components/csv.vue");
 /* harmony import */ var _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./ajaxForm.vue */ "./resources/js/components/ajaxForm.vue");
 /* harmony import */ var _participant_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./participant.vue */ "./resources/js/components/participant.vue");
+/* harmony import */ var vue_recaptcha__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! vue-recaptcha */ "./node_modules/vue-recaptcha/dist/vue-recaptcha.es.js");
 
 
 
@@ -1255,6 +1256,7 @@ var Modernizr = __webpack_require__(/*! Modernizr */ "./.modernizrrc");
 
 
 
+
 var formatMoment = function formatMoment(amount, unit) {
   return moment__WEBPACK_IMPORTED_MODULE_18___default()(window.now).add(amount, unit).format('YYYY-MM-DD');
 };
@@ -1263,7 +1265,8 @@ var formatMoment = function formatMoment(amount, unit) {
   components: {
     AjaxForm: _ajaxForm_vue__WEBPACK_IMPORTED_MODULE_21__["default"],
     Csv: _csv_vue__WEBPACK_IMPORTED_MODULE_20__["default"],
-    Participant: _participant_vue__WEBPACK_IMPORTED_MODULE_22__["default"]
+    Participant: _participant_vue__WEBPACK_IMPORTED_MODULE_22__["default"],
+    VueRecaptcha: vue_recaptcha__WEBPACK_IMPORTED_MODULE_23__["default"]
   },
   data: function data() {
     return {
@@ -1329,12 +1332,6 @@ var formatMoment = function formatMoment(amount, unit) {
     }
   },
   watch: {
-    sending: function sending(newVal) {
-      // If we reset the sending status, reset the captcha
-      if (!newVal) {
-        grecaptcha && grecaptcha.reset(); // eslint-disable-line no-undef
-      }
-    },
     sent: function sent(newVal) {
       // If sent is a success, scroll to the message
       if (newVal) {
@@ -2667,8 +2664,8 @@ var render = function() {
                               [
                                 _c(
                                   _vm.$td("form.mail.content.tip1", {
-                                    "open-target": _vm.anchor("target"),
-                                    "open-santa": _vm.anchor("santa"),
+                                    target: _vm.anchor("target"),
+                                    santa: _vm.anchor("santa"),
                                     close: "</a>"
                                   }),
                                   {
