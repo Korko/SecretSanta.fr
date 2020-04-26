@@ -87,6 +87,6 @@ class Participant extends Model
 
         abort_if($participant->draw->expired, 404);
 
-        return $participant->load(['dearsanta']);
+        return $participant;
     }
 }
