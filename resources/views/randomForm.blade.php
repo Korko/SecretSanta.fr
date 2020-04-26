@@ -5,8 +5,6 @@
 
     <!-- config js -->
     @javascript([
-        'now'   => time(),
-        'lang'  => App::getLocale(),
         'alert' => session('message', ''),
         'api'   => config('captcha.sitekey'),
     ])
