@@ -85,6 +85,8 @@ class Participant extends Model
     {
         $participant = $this->resolveParticipant($value);
 
+        abort_if($participant->draw->expired, 404);
+
         return $participant->load(['dearsanta']);
     }
 }
