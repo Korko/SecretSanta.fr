@@ -1,5 +1,14 @@
 @extends('templates/layout', isset($styles) ? ['styles' => $styles] : [])
 
+@section('header')
+    @parent
+
+    <!-- config js -->
+    @javascript([
+        'api'   => config('captcha.sitekey'),
+    ])
+@stop
+
 @section('body')
     <div id="form" v-cloak>
         <component :is="state" v-if="state === 'Form'" :data="data">

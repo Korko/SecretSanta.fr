@@ -3,7 +3,12 @@
     import $ from 'jquery';
     import alertify from 'alertify.js';
 
+    import VueRecaptcha from 'vue-recaptcha';
+
     export default {
+        components: {
+            VueRecaptcha
+        },
         props: {
             action: {
                 type: String,
