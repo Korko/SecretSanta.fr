@@ -39,10 +39,40 @@ npm:
 
 phpunit:
   stage: test
-  dependencies:
-    - composer
   script:
     - cp .env.example .env
     - php artisan key:generate
     - phpunit --coverage-text --colors=never
+
+phpstan:
+    image: jakzal/phpqa
+    stage: tests
+    script: phpstan analyse --level 2 -c ./ci/phpstan.neon src
+    allow_failure: true
+
+php-metrics:
+  image: jakzal/phpqa
+  stage: test
+  script: phpmetrics --report-html=var/php-metrics src
+  artifacts:
+    paths:
+      - var/php-metrics/
+  allow_failure: true
+
+php-phpmd:
+    image: jakzal/phpqa
+    stage: tests
+    script: phpmd src text ./ci/phpmd.xml
+    artifacts:
+        paths:
+            - var/phpmd.html
+    allow_failure: true
+
+php-deprecation-detector:
+    image: jakzal/phpqa
+    stage: tests
+    script:
+        - deprecation-detector check src vendor
+    allow_failure: true
+
 
