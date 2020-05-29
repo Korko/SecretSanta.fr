@@ -5,6 +5,11 @@ before_script:
   - PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl
   - docker-php-ext-install imap
 
+stages:
+  - build
+  - tests
+  - metrics
+
 composer:
   stage: build
   cache:
@@ -38,7 +43,7 @@ npm:
       - public/js/
 
 phpunit:
-  stage: test
+  stage: tests
   script:
     - cp .env.example .env
     - php artisan key:generate
@@ -46,13 +51,13 @@ phpunit:
 
 phpstan:
     image: jakzal/phpqa
-    stage: tests
+    stage: metrics
     script: phpstan analyse --level 2 -c ./ci/phpstan.neon src
     allow_failure: true
 
 php-metrics:
   image: jakzal/phpqa
-  stage: test
+  stage: metrics
   script: phpmetrics --report-html=var/php-metrics src
   artifacts:
     paths:
@@ -61,7 +66,7 @@ php-metrics:
 
 php-phpmd:
     image: jakzal/phpqa
-    stage: tests
+    stage: metrics
     script: phpmd src text ./ci/phpmd.xml
     artifacts:
         paths:
@@ -70,7 +75,7 @@ php-phpmd:
 
 php-deprecation-detector:
     image: jakzal/phpqa
-    stage: tests
+    stage: metrics
     script:
         - deprecation-detector check src vendor
     allow_failure: true
