@@ -16,7 +16,6 @@
         "laravel/tinker": "^2.0",
         "anhskohbo/no-captcha": "^3.0",
         "korko/validator": "dev-master",
-        "laravelcollective/html": "^6.0",
         "league/statsd": "1.5.*",
         "spatie/laravel-blade-javascript": "^2.0",
         "vinkla/hashids": "^8.0",
