@@ -50,34 +50,35 @@ phpunit:
     - phpunit --coverage-text --colors=never
 
 phpstan:
-    image: jakzal/phpqa
-    stage: metrics
-    script: phpstan analyse --level 2 -c ./ci/phpstan.neon src
-    allow_failure: true
+  stage: metrics
+  script:
+    - composer require --dev phpstan/phpstan 
+    - phpstan analyse --level 2 -c ./ci/phpstan.neon src
+  allow_failure: true
 
 php-metrics:
-  image: jakzal/phpqa
   stage: metrics
-  script: phpmetrics --report-html=var/php-metrics src
+  script:
+    - composer require --dev phpmetrics/phpmetrics
+    - phpmetrics --report-html=var/php-metrics src
   artifacts:
     paths:
       - var/php-metrics/
   allow_failure: true
 
 php-phpmd:
-    image: jakzal/phpqa
-    stage: metrics
-    script: phpmd src text ./ci/phpmd.xml
-    artifacts:
-        paths:
-            - var/phpmd.html
-    allow_failure: true
+  stage: metrics
+  script:
+    - composer require --dev phpmd/phpmd
+    - phpmd src text ./ci/phpmd.xml
+  artifacts:
+    paths:
+      - var/phpmd.html
+  allow_failure: true
 
 php-deprecation-detector:
-    image: jakzal/phpqa
-    stage: metrics
-    script:
-        - deprecation-detector check src vendor
-    allow_failure: true
-
-
+  stage: metrics
+  script:
+    - composer require --dev sensiolabs-de/deprecation-detector
+    - deprecation-detector check src vendor
+  allow_failure: true
