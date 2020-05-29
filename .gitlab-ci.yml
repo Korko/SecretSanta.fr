@@ -60,7 +60,7 @@ php-metrics:
   stage: metrics
   script:
     - COMPOSER_MEMORY_LIMIT=2G composer require --dev phpmetrics/phpmetrics
-    - phpmetrics --report-html=var/php-metrics src
+    - phpmetrics --report-html=var/php-metrics app
   artifacts:
     paths:
       - var/php-metrics/
@@ -70,7 +70,7 @@ php-phpmd:
   stage: metrics
   script:
     - COMPOSER_MEMORY_LIMIT=2G composer require --dev phpmd/phpmd
-    - phpmd src text ./ci/phpmd.xml
+    - phpmd app text
   artifacts:
     paths:
       - var/phpmd.html
@@ -80,21 +80,21 @@ php-deprecation-detector:
   stage: metrics
   script:
     - COMPOSER_MEMORY_LIMIT=2G composer require --dev sensiolabs-de/deprecation-detector
-    - deprecation-detector check src vendor
+    - deprecation-detector check app vendor
   allow_failure: true
 
 php-assumptions:
   stage: metrics
   script:
     - COMPOSER_MEMORY_LIMIT=2G composer require --dev rskuipers/php-assumptions
-    - phpa
+    - phpa app
   allow_failure: true
 
 php-mnd:
   stage: metrics
   script:
-    - COMPOSER_MEMORY_LIMIT=2G composer require --dev povils/phpmnd
-    - phpmnd
+    - COMPOSER_MEMORY_LIMIT=3G composer require --dev povils/phpmnd
+    - phpmnd app
   allow_failure: true
 
 composer-unused:
