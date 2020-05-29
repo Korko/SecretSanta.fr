@@ -52,14 +52,14 @@ phpunit:
 phpstan:
   stage: metrics
   script:
-    - composer require --dev nunomaduro/larastan 
+    - COMPOSER_MEMORY_LIMIT=1G composer require --dev nunomaduro/larastan 
     - phpstan analyse --level 5 --memory-limit=1G app
   allow_failure: true
 
 php-metrics:
   stage: metrics
   script:
-    - composer require --dev phpmetrics/phpmetrics
+    - COMPOSER_MEMORY_LIMIT=1G composer require --dev phpmetrics/phpmetrics
     - phpmetrics --report-html=var/php-metrics src
   artifacts:
     paths:
@@ -69,7 +69,7 @@ php-metrics:
 php-phpmd:
   stage: metrics
   script:
-    - composer require --dev phpmd/phpmd
+    - COMPOSER_MEMORY_LIMIT=1G composer require --dev phpmd/phpmd
     - phpmd src text ./ci/phpmd.xml
   artifacts:
     paths:
@@ -79,27 +79,27 @@ php-phpmd:
 php-deprecation-detector:
   stage: metrics
   script:
-    - composer require --dev sensiolabs-de/deprecation-detector
+    - COMPOSER_MEMORY_LIMIT=1G composer require --dev sensiolabs-de/deprecation-detector
     - deprecation-detector check src vendor
   allow_failure: true
 
 php-assumptions:
   stage: metrics
   script:
-    - composer require --dev rskuipers/php-assumptions
+    - COMPOSER_MEMORY_LIMIT=1G composer require --dev rskuipers/php-assumptions
     - phpa
   allow_failure: true
 
 php-mnd:
   stage: metrics
   script:
-    - composer require --dev povils/phpmnd
+    - COMPOSER_MEMORY_LIMIT=1G composer require --dev povils/phpmnd
     - phpmnd
   allow_failure: true
 
 composer-unused:
   stage: metrics
   script:
-    - composer require --dev icanhazstring/composer-unused
+    - COMPOSER_MEMORY_LIMIT=1G composer require --dev icanhazstring/composer-unused
     - composer unused --no-progress
   allow_failure: true
