@@ -52,8 +52,8 @@ phpunit:
 phpstan:
   stage: metrics
   script:
-    - composer require --dev phpstan/phpstan 
-    - phpstan analyse --level 2 -c ./ci/phpstan.neon src
+    - composer require --dev nunomaduro/larastan 
+    - phpstan analyse --level 5 --memory-limit=1G app
   allow_failure: true
 
 php-metrics:
@@ -81,4 +81,25 @@ php-deprecation-detector:
   script:
     - composer require --dev sensiolabs-de/deprecation-detector
     - deprecation-detector check src vendor
+  allow_failure: true
+
+php-assumptions:
+  stage: metrics
+  script:
+    - composer require --dev rskuipers/php-assumptions
+    - phpa
+  allow_failure: true
+
+php-mnd:
+  stage: metrics
+  script:
+    - composer require --dev povils/phpmnd
+    - phpmnd
+  allow_failure: true
+
+composer-unused:
+  stage: metrics
+  script:
+    - composer require --dev icanhazstring/composer-unused
+    - composer unused --no-progress
   allow_failure: true
