@@ -52,54 +52,90 @@ phpunit:
 phpstan:
   stage: metrics
   script:
-    - COMPOSER_MEMORY_LIMIT=2G composer require --dev nunomaduro/larastan 
-    - phpstan analyse --level 5 --memory-limit=1G app
+    - composer global require --dev nunomaduro/larastan
+    - phpstan analyse --level 5 --memory-limit=1G app tests
   allow_failure: true
 
 php-metrics:
   stage: metrics
   script:
-    - COMPOSER_MEMORY_LIMIT=2G composer require --dev phpmetrics/phpmetrics
-    - phpmetrics --report-html=var/php-metrics app
+    - composer global require --dev phpmetrics/phpmetrics
+    - phpmetrics --report-html=var/php-metrics app tests
   artifacts:
     paths:
       - var/php-metrics/
   allow_failure: true
 
-php-phpmd:
+php-mess-detector:
   stage: metrics
   script:
-    - COMPOSER_MEMORY_LIMIT=2G composer require --dev phpmd/phpmd
-    - phpmd app text
+    - wget -c https://phpmd.org/static/latest/phpmd.phar
+    - php phpmd.phar app text
+    - php phpmd.phar tests text
   artifacts:
     paths:
       - var/phpmd.html
   allow_failure: true
 
-php-deprecation-detector:
-  stage: metrics
-  script:
-    - COMPOSER_MEMORY_LIMIT=2G composer require --dev sensiolabs-de/deprecation-detector
-    - deprecation-detector check app vendor
-  allow_failure: true
-
 php-assumptions:
   stage: metrics
   script:
-    - COMPOSER_MEMORY_LIMIT=2G composer require --dev rskuipers/php-assumptions
-    - phpa app
-  allow_failure: true
-
-php-mnd:
-  stage: metrics
-  script:
-    - COMPOSER_MEMORY_LIMIT=3G composer require --dev povils/phpmnd
-    - phpmnd app
+    - composer global require --dev rskuipers/php-assumptions
+    - phpa app tests
   allow_failure: true
 
 composer-unused:
   stage: metrics
   script:
-    - COMPOSER_MEMORY_LIMIT=2G composer require --dev icanhazstring/composer-unused
-    - composer unused --no-progress
+    - wget https://github.com/icanhazstring/composer-unused/releases/latest/download/composer-unused.phar
+    - php composer-unused.phar --no-progress
+  allow_failure: true
+
+php-copypaste-detector:
+  stage: metrics
+  script:
+    - wget https://phar.phpunit.de/phpcpd.phar
+    - php phpcpd.phar --fuzzy app tests
+  allow_failure: true
+
+php-security-checker:
+  stage: metrics
+  script:
+    - wget https://get.sensiolabs.org/security-checker.phar
+    - php security-checker.phar security:check composer.lock
+  allow_failure: true
+
+php-churn:
+  stage: metrics
+  script:
+    - composer global require --dev bmitch/churn-php
+    - churn run src tests
+  allow_failure: true
+
+php-coupling-detector:
+  stage: metrics
+  script:
+    - composer global require --dev akeneo/php-coupling-detector
+    - php-coupling-detector detect app
+  allow_failure: true
+
+php-code-analyzer:
+  stage: metrics
+  script:
+    - wget https://github.com/wapmorgan/PhpCodeAnalyzer/releases/download/1.0.6/phpca.phar
+    - php phpca.phar app
+  allow_failure: true
+
+php-code-fixer:
+  stage: metrics
+  script:
+    - wget https://github.com/wapmorgan/PhpCodeFixer/releases/download/2.0.23/phpcf-2.0.23.phar
+    - php phpcf-2.0.23.phar app tests
+  allow_failure: true
+
+php-insights:
+  stage: metrics
+  script:
+    - composer global require --dev nunomaduro/phpinsights
+    - phpinsights
   allow_failure: true
