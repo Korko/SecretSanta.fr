@@ -26,9 +26,9 @@ class ParseBounces implements ShouldQueue
         $unseenMails = $emailClient->getUnseenMails();
         foreach ($unseenMails as $unseenMail) {
             try {
-                $to = $this->getFirstRecipientAddress($unseenMail);
+                $recipient = $this->getFirstRecipientAddress($unseenMail);
 
-                $mail = $this->getMailFromReturnPath($to);
+                $mail = $this->getMailFromReturnPath($recipient);
                 $mail->delivery_status = MailModel::ERROR;
                 $mail->save();
             } catch (Exception $e) {
@@ -39,9 +39,9 @@ class ParseBounces implements ShouldQueue
         }
     }
 
-    protected function getMailFromReturnPath(string $to): MailModel
+    protected function getMailFromReturnPath(string $recipient): MailModel
     {
-        $params = sscanf($to, str_replace('*', '%[0-9a-zA-Z]', config('mail.return_path')));
+        $params = sscanf($recipient, str_replace('*', '%[0-9a-zA-Z]', config('mail.return_path')));
 
         return MailModel::findByHashOrFail(collect((array) $params)->first());
     }

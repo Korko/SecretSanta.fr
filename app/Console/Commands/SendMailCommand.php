@@ -29,12 +29,12 @@ class SendMailCommand extends Command
     {
         $this->line('Sending eMail to: '.$this->argument('to'));
 
-        $to = $this->argument('to');
+        $recipient = $this->argument('to');
         $subject = $this->argument('subject');
         $body = $this->argument('text');
 
-        Mail::send([], [], function (Message $message) use ($to, $subject, $body) {
-            $message->to($to)
+        Mail::send([], [], function (Message $message) use ($recipient, $subject, $body) {
+            $message->to($recipient)
                 ->subject($subject)
                 ->setBody($body, 'text/html');
         });

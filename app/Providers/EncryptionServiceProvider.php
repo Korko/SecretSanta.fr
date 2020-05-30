@@ -14,7 +14,7 @@ class EncryptionServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('encrypter', function ($app) {
+        $this->app->singleton('encrypter', function () {
             return new Encrypter(Encrypter::generateKey('AES-256-CBC'), 'AES-256-CBC');
         });
     }
