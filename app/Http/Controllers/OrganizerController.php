@@ -45,6 +45,10 @@ class OrganizerController extends Controller
 
     public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
     {
+        if ($draw->id !== $participant->draw->id) {
+            abort(404);
+        }
+
         $participant->email = $request->input('email');
         $participant->save();
 
@@ -63,6 +67,10 @@ class OrganizerController extends Controller
 
     public function resendEmail(OrganizerResendEmailRequest $request, Draw $draw, Participant $participant)
     {
+        if ($draw->id !== $participant->draw->id) {
+            abort(404);
+        }
+
         $participant->mail->updateDeliveryStatus(MailModel::CREATED);
 
         $this->doResendEmail($participant);
