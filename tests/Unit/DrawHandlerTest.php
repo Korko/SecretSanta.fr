@@ -12,7 +12,7 @@ use App\Participant;
 use DrawHandler;
 use Exception;
 use Metrics;
-use Queue;
+use Mail;
 use Tests\TestCase;
 
 class DrawHandlerTest extends TestCase
@@ -22,8 +22,8 @@ class DrawHandlerTest extends TestCase
 
     public function test_invalid_case(): void
     {
-        Queue::fake();
-        Queue::assertNotPushed(SendMail::class);
+        Mail::fake();
+        Mail::assertNothingSent();
 
         Metrics::shouldReceive('increment')
             ->never();
@@ -64,7 +64,7 @@ class DrawHandlerTest extends TestCase
             ->with('email')
             ->andReturn(true);
 
-        Queue::fake();
+        Mail::fake();
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
@@ -80,19 +80,19 @@ class DrawHandlerTest extends TestCase
             ->sendMail('test mail {SANTA} => {TARGET} title', 'test mail {SANTA} => {TARGET} body');
 
         // Ensure Organizer receives his recap
-        $this->assertQueueHasMailPushed(OrganizerRecap::class, 'test@test.com', function ($m) use (&$link) {
+        $this->assertHasMailPushed(OrganizerRecap::class, 'test@test.com', function ($m) use (&$link) {
             $link = $m->panelLink;
         });
-        $this->assertQueueHasMailPushed(OrganizerFinalRecap::class, 'test@test.com');
+        $this->assertHasMailPushed(OrganizerFinalRecap::class, 'test@test.com');
 
         // TODO: assert body
         // Ensure Participants receive their own recap
         $title = null;
-        $this->assertQueueHasMailPushed(TargetDrawn::class, 'test@test.com', function ($m) use (&$title, &$body) {
+        $this->assertHasMailPushed(TargetDrawn::class, 'test@test.com', function ($m) use (&$title, &$body) {
             $title = $m->subject;
         });
         $this->assertStringContainsString('test mail toto => tata title', html_entity_decode($title));
-        $this->assertQueueHasMailPushed(TargetDrawn::class, 'test2@test.com');
+        $this->assertHasMailPushed(TargetDrawn::class, 'test2@test.com');
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());

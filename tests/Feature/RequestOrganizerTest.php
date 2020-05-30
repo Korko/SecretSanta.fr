@@ -6,7 +6,7 @@ use App\Draw;
 use App\Mail\TargetDrawn;
 use App\Participant;
 use Crypt;
-use Queue;
+use Mail;
 
 class RequestOrganizerTest extends RequestCase
 {
@@ -29,7 +29,8 @@ class RequestOrganizerTest extends RequestCase
 
     public function test_send_again(): void
     {
-        Queue::fake();
+        Mail::fake();
+        Mail::assertNothingSent();
 
         $draw = $this->createDrawWithParticipants(3);
         $participant = $draw->participants->first();
@@ -49,12 +50,13 @@ class RequestOrganizerTest extends RequestCase
                 'message' => 'Envoyé avec succès !',
             ]);
 
-        $this->assertQueueHasMailPushed(TargetDrawn::class, $participant->email);
+        $this->assertHasMailPushed(TargetDrawn::class, $participant->email);
     }
 
-    public function testChangeEmail(): void
+    public function test_change_email(): void
     {
-        Queue::fake();
+        Mail::fake();
+        Mail::assertNothingSent();
 
         $draw = $this->createDrawWithParticipants(3);
         $participant = $draw->participants->first();
@@ -82,6 +84,6 @@ class RequestOrganizerTest extends RequestCase
         $this->assertNotEquals($before, $after);
         $this->assertEquals('test@test2.com', $after);
 
-        $this->assertQueueHasMailPushed(TargetDrawn::class, $participant->email);
+        $this->assertHasMailPushed(TargetDrawn::class, $participant->email);
     }
 }
