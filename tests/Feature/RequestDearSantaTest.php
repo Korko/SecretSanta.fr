@@ -2,59 +2,27 @@
 
 namespace Tests\Feature;
 
+use App\Mail\DearSanta;
+use App\Mail\TargetDrawn;
 use App\Participant;
 use Crypt;
 use Hashids;
-use Queue;
+use Mail;
 
 class RequestDearSantaTest extends RequestCase
 {
-    public function testDearsanta(): void
+    public function test_dearsanta(): void
     {
-        Queue::fake();
+        Mail::fake();
+        Mail::assertNothingSent();
 
-        // Participants can only select one person, all the others will be excluded
-        $participants = $this->formatParticipants([
-            [
-                'name'   => 'toto',
-                'email'  => 'test@test.com',
-                'target' => 1,
-            ],
-            [
-                'name'   => 'tata',
-                'email'  => 'test2@test.com',
-                'target' => 2,
-            ],
-            [
-                'name'   => 'tutu',
-                'email'  => 'test3@test.com',
-                'target' => 0,
-            ],
-        ]);
-
-        // Initiate DearSanta
-        $response = $this->ajaxPost('/', [
-            'participants'    => $participants,
-            'title'           => 'test mail title',
-            'content-email'   => 'test mail {SANTA} => {TARGET}',
-            'data-expiration' => date('Y-m-d', strtotime('+2 days')),
-        ]);
-
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'message' => 'Envoyé avec succès !',
-            ]);
+        $participants = $this->createNewDraw(3);
 
         // For security issues, the key is only sent by mail and never stored
         // So fetch it from the mail
         $links = [];
-        Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) use (&$links) {
-            if ($job->getMailable() instanceof \App\Mail\TargetDrawn) {
-                $links[] = $job->getMailable()->dearSantaLink;
-            }
-
-            return true;
+        Mail::assertSent(function (TargetDrawn $mail) use (&$links) {
+            return $links[] = $mail->dearSantaLink;
         });
         $this->assertEquals(count($participants), count($links));
 
@@ -70,15 +38,14 @@ class RequestDearSantaTest extends RequestCase
 
             // Check data stored are decryptable
             $pathTheorical = parse_url(route('dearsanta', ['participant' => '%s']), PHP_URL_PATH);
-            $data = sscanf($path, $pathTheorical);
-            $id = Hashids::decode($data[0])[0];
-            $santaTheorical = Participant::find($id);
+            [$hash] = sscanf($path, $pathTheorical);
+            $santaTheorical = Participant::findByHashOrFail($hash);
 
             $this->assertEquals($santa['name'], $santaTheorical->santa->name);
             $this->assertEquals($santa['email'], $santaTheorical->santa->email);
 
             // Try to contact santa
-            $response = $this->ajaxPost(route('dearsanta.contact', ['participant' => $data[0]]), [
+            $response = $this->ajaxPost(route('dearsanta.contact', ['participant' => $hash]), [
                 'key'     => base64_encode(Crypt::getKey()),
                 'content' => 'test dearsanta mail content',
             ]);
@@ -89,9 +56,7 @@ class RequestDearSantaTest extends RequestCase
                     'message' => 'Envoyé avec succès !',
                 ]);
 
-            Queue::assertPushed(\App\Jobs\SendMail::class, function ($job) {
-                return $job->getMailable() instanceof \App\Mail\DearSanta;
-            });
+            $this->assertHasMailPushed(DearSanta::class, $santaTheorical->santa->email);
         }
     }
 }

@@ -3,95 +3,71 @@
 namespace Tests\Feature;
 
 use App\Draw;
+use App\Jobs\ParseBounces;
+use App\Mail as MailModel;
+use App\Mail\TargetDrawn;
 use App\Participant;
-use Config;
-use NoCaptcha;
+use App\Services\EmailClient;
+use Mail;
+use Webklex\IMAP\Message as EmailMessage;
 
 class RequestBounceTest extends RequestCase
 {
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
     use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
-    /**
-     * @group large
-     */
-    public function testBounce(): void
+    public function test_bounce(): void
     {
-        Config::set('mail.driver', 'smtp');
+        Mail::fake();
+        Mail::assertNothingSent();
 
-        NoCaptcha::shouldReceive('verifyResponse')->once()->andReturn(true);
+        $participants = $this->createNewDraw(3);
 
-        $this->assertEquals(0, Draw::count());
-        $this->assertEquals(0, Participant::count());
+        // Fake emails as bounces
+        $emailClient = $this->mock(EmailClient::class, function ($mock) use ($participants) {
+            // Get all the return path defined by the app
+            $links = [];
+            Mail::assertSent(function (TargetDrawn $mail) use (&$links) {
+                return $links[] = $mail->returnPath;
+            });
+            $this->assertEquals(count($participants), count($links));
 
-        $response = $this->ajaxPost('/', [
-            'participants'         => [
-                [
-                    'name'       => 'toto',
-                    'email'      => 'success@simulator.amazonses.com',
-                    'exclusions' => ['2'],
-                ],
-                [
-                    'name'       => 'tata',
-                    'email'      => 'bounce@simulator.amazonses.com',
-                    'exclusions' => ['0'],
-                ],
-                [
-                    'name'       => 'tutu',
-                    'email'      => 'bounce@simulator.amazonses.com',
-                    'exclusions' => ['1'],
-                ],
-            ],
-            'title'                => 'test mail title',
-            'content-email'        => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
-        ]);
+            // Fake the list of "unseen mails"
+            $messages = [];
+            foreach($links as $link) {
+                $messages[] = $this->mock(EmailMessage::class, function ($mock) use ($link) {
+                    $mock
+                        ->shouldReceive('getTo')
+                        ->once()
+                        ->andReturn([
+                            (object) ['mailbox' => $link]
+                        ]);
 
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'message' => 'Envoyé avec succès !',
-            ]);
+                    $mock->shouldReceive('delete')->once();
+                });
+            }
 
-        $this->assertEquals(1, Draw::count());
-        $this->assertEquals(3, Participant::count());
+            $mock
+                ->shouldReceive('getUnseenMails')
+                ->once()
+                ->andReturn($messages);
+        });
 
-        /*
-                // Simulate a bounce, note which mail should be sent
-                Mail::shouldReceive('to')
-                    ->once()
-                    ->with('test@test.com', 'toto')
-                    ->andReturn(Mockery::self());
+        // Ensure all participants are marked as bounced
+        // Database is cleared, only 1 Draw available
+        $draw = Draw::findOrFail(1);
+        foreach ($draw->participants as $participant) {
+            $this->assertEquals(MailModel::CREATED, $participant->mail->delivery_status);
+        }
 
-                Mail::shouldReceive('send')
-                    ->once()
-                    ->with(\Mockery::type(\App\Mail\MailBounced::class))
-                    ->andReturn(Mockery::self());
+        // Parse bounces and mark them as bounced
+        $job = new ParseBounces();
+        $job->handle($emailClient);
 
-                Metrics::shouldReceive('increment')
-                    ->once()
-                    ->with('email_bounced')
-                    ->andReturn(true);
-
-                Metrics::shouldReceive('increment')
-                    ->once()
-                    ->with('email')
-                    ->andReturn(true);
-        */
-        $response = $this->rawAjaxPost('/event', [
-             'data'          => '{}',
-             'email'         => 'test2@test.com',
-             'event'         => 'dropped',
-             'reason'        => 'Unsubscribed Address',
-             'sg_event_id'   => 'wu3pyy4hQ4qo4TUGJ-E5KA',
-             'sg_message_id' => 'QygG4vV9TL2uRMEPLh1mlg.filter0002p2iad2-29875-5C05903B-1D',
-             'smtp-id'       => '<QygG4vV9TL2uRMEPLh1mlg@ismtpd0001p1lon1.sendgrid.net>',
-             'timestamp'     => 1543868476,
-        ]);
-
-        $response->assertStatus(200);
-
-        $this->assertEquals(1, Draw::count());
-        $this->assertEquals(3, Participant::count());
+        // Ensure all participants are marked as bounced
+        foreach ($draw->participants as $participant) {
+            // Get the last delivery_status from DB via the "fresh" method
+            $this->assertEquals(MailModel::ERROR, $participant->mail->fresh()->delivery_status);
+        }
     }
 }
