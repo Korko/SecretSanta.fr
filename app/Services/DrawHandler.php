@@ -108,7 +108,7 @@ class DrawHandler
         try {
             // Check if there's a solution with the previous exclusions + the actual target
             Solver::one($draw->participants->all(), $draw->participants->pluck('exclusions', 'id')->all());
-        } catch (SolverException $e) {
+        } catch (SolverException $exception) {
             // If not, reset all the exclusions
             $draw->participants->each(function (&$participant) {
                 $participant->exclusions = [];

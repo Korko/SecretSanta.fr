@@ -26,11 +26,9 @@ trait HashId
 
     public function scopeFindByHashOrFail($query, $hash)
     {
-        if (! $hash || ! ($ids = Hashids::connection($this->getHashConnection())->decode($hash))) {
-            throw (new ModelNotFoundException())->setModel(__CLASS__);
-        }
+        $ids = Hashids::connection($this->getHashConnection())->decode($hash);
 
-        return $query->findOrFail($ids[0]);
+        return $query->findOrFail(collect((array) $ids)->first());
     }
 
     /**

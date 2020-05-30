@@ -52,17 +52,17 @@ class OrganizerFinalRecap extends Mailable
                     ]);
     }
 
-    protected function formatCsv(iterable $data, $delimiter = ',', $enclosure = '"', $escape_char = '\\')
+    protected function formatCsv(iterable $data, $delimiter = ',', $enclosure = '"', $escapeChar = '\\')
     {
-        $f = fopen('php://memory', 'r+');
+        $fileHandler = fopen('php://memory', 'r+');
         foreach ($data as $fields) {
-            if (fputcsv($f, $fields, $delimiter, $enclosure, $escape_char) === false) {
+            if (fputcsv($fileHandler, $fields, $delimiter, $enclosure, $escapeChar) === false) {
                 return false;
             }
         }
-        rewind($f);
-        $csv_line = stream_get_contents($f);
+        rewind($fileHandler);
+        $csvLine = stream_get_contents($fileHandler);
 
-        return rtrim($csv_line);
+        return rtrim($csvLine);
     }
 }

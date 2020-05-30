@@ -6,13 +6,15 @@ use App\Mail as MailModel;
 
 class TrackedMailable extends Mailable
 {
-    protected $mailId;
-    protected $updateDatetime;
+    public $mailId;
+    public $updateDatetime;
+    public $returnPath;
 
     protected function track(MailModel $mailModel)
     {
         $this->mailId = $mailModel->id;
         $this->updateDatetime = $mailModel->updated_at;
+        $this->returnPath = str_replace('*', $mailModel->hash, config('mail.return_path'));
     }
 
     protected function updateDeliveryStatus($status)
@@ -20,7 +22,7 @@ class TrackedMailable extends Mailable
         if (isset($this->mailId)) {
             $mailModel = MailModel::find($this->mailId);
 
-            if ($mailModel->updated_at == $this->updateDatetime) {
+            if ($mailModel->updated_at->equalTo($this->updateDatetime)) {
                 $mailModel->updateDeliveryStatus($status);
             }
         }
@@ -39,12 +41,12 @@ class TrackedMailable extends Mailable
     public function send($mailer)
     {
         $this->withSwiftMessage(function ($message) {
-            $hash = MailModel::find($this->mailId)->hash;
-
-            $message->getHeaders()
-                    ->addPathHeader('Return-Path', str_replace('*', $hash, config('mail.return_path')));
+            $message
+                ->getHeaders()
+                ->addPathHeader('Return-Path', $this->returnPath);
         });
 
         return parent::send($mailer);
     }
+
 }
