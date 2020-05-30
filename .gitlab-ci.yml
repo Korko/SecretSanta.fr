@@ -3,7 +3,7 @@ image: lorisleiva/laravel-docker:latest
 before_script:
   - apk add --no-cache imap-dev krb5-dev openssl-dev
   - PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl
-  - docker-php-ext-install imap
+  - docker-php-ext-install imap bz2
 
 stages:
   - build
@@ -70,8 +70,7 @@ php-mess-detector:
   stage: metrics
   script:
     - wget -c https://phpmd.org/static/latest/phpmd.phar
-    - php phpmd.phar app text
-    - php phpmd.phar tests text
+    - php phpmd.phar app,tests text cleancode,codesize,controversial,design,naming,unusedcode
   artifacts:
     paths:
       - var/phpmd.html
@@ -109,7 +108,7 @@ php-churn:
   stage: metrics
   script:
     - composer global require --dev bmitch/churn-php
-    - churn run src tests
+    - churn run app tests
   allow_failure: true
 
 php-coupling-detector:
