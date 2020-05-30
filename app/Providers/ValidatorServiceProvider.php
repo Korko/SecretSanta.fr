@@ -16,16 +16,33 @@ class ValidatorServiceProvider extends ServiceProvider
             });
         });
 
+        // If any of the given data exists, the attribute we validate is required
+        // e.g. ['content' => 'required_with_any:users.*.name']
         Validator::extendImplicit('required_with_any', function ($attribute, $value, $parameters, $validator) {
-            $data = $validator->getData();
+            $rawData = $validator->getData();
 
-            $parts = explode('.*.', $parameters[0]);
-            $data = (array) Arr::get($data, $parts[0]);
-            for ($i = 1; $i < count($parts); $i++) {
-                $data = array_column($data, $parts[$i]);
+            // Only considere the first parameter
+            $parameter = reset($parameters);
+
+            // Split the parameter in subgroups
+            // e.g. users.list.*.name.value => users.list, name.value
+            $parts = explode('.*.', $parameter);
+            $totalParts = count($parts);
+
+            $data = (array) Arr::get($rawData, $parts[0]);
+            foreach ($parts as $part) {
+                // Simulate an array_column with an Arr::get
+                foreach ($data as $key => $value) {
+                    $value = Arr::get($value, $part);
+
+                    if ($value !== null) {
+                        $data[$key] = $value;
+                    }
+                }
             }
 
-            return ! empty($validator->getData()[$attribute]) || empty(array_filter($data));
+            // Either there's nothing requiring or there's the required data
+            return ($data === [] || ! empty($rawData[$attribute]));
         });
     }
 

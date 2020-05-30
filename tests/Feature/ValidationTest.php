@@ -8,19 +8,43 @@ class ValidationTest extends RequestCase
 {
     public function testRuleRequiredWithAny(): void
     {
+        // True, no users.*.name
         $validator = Validator::make([
             'users' => [],
         ], ['content' => 'required_with_any:users.*.name']);
         $this->assertTrue($validator->passes());
 
+        // True, still no users.*.name
         $validator = Validator::make([
         ], ['content' => 'required_with_any:users.*.name']);
         $this->assertTrue($validator->passes());
 
+        // False, users.*.name defined but no content
         $validator = Validator::make([
             'users' => [['name' => 'Foo']],
         ], ['content' => 'required_with_any:users.*.name']);
         $this->assertFalse($validator->passes());
+
+        // False, users.list.*.name.txt defined but no content
+        $validator = Validator::make([
+            'users' => [
+                'list' => [
+                    ['name' => ['txt' => 'Foo']]
+                ]
+            ],
+        ], ['content' => 'required_with_any:users.list.*.name.txt']);
+        $this->assertFalse($validator->passes());
+
+        // True, users.list.*.name.txt and content defined
+        $validator = Validator::make([
+            'users' => [
+                'list' => [
+                    ['name' => ['txt' => 'Foo']]
+                ]
+            ],
+            'content' => 'foobar'
+        ], ['content' => 'required_with_any:users.list.*.name.txt']);
+        $this->assertTrue($validator->passes());
     }
 
     // Nothing sent, need at least a name
