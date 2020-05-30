@@ -3,12 +3,13 @@
 namespace App\Jobs;
 
 use App\Mail as MailModel;
+use App\Services\EmailClient;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Webklex\IMAP\Facades\Client as EmailClient;
 use Webklex\IMAP\Message as EmailMessage;
 
 class ParseBounces implements ShouldQueue
@@ -20,47 +21,40 @@ class ParseBounces implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(EmailClient $emailClient)
     {
-        $unseenMails = $this->getUnseenMails();
+        $unseenMails = $emailClient->getUnseenMails();
         foreach ($unseenMails as $unseenMail) {
-            $to = $this->getFirstRecipientAddress($unseenMail);
+            try {
+                $to = $this->getFirstRecipientAddress($unseenMail);
 
-            if (! empty($to)) {
-                [$hash] = sscanf($to, str_replace('*', '%s', config('mail.return_path')));
-
-                if ($hash !== null) {
-                    try {
-                        $mail = MailModel::findByHashOrFail($hash);
-                        $mail->delivery_status = MailModel::ERROR;
-                        $mail->save();
-                    } catch (Exception $e) {
-                        //
-                    } finally {
-                        $unseenMail->delete();
-                    }
-                }
+                $mail = $this->getMailFromReturnPath($to);
+                $mail->delivery_status = MailModel::ERROR;
+                $mail->save();
+            } catch (Exception $e) {
+                // Just ignore the exception
+            } finally {
+                $unseenMail->delete();
             }
         }
     }
 
-    protected function getUnseenMails(): Iterable
+    protected function getMailFromReturnPath(string $to): MailModel
     {
-        // Connect to the IMAP/POP folder
-        $oClient = EmailClient::account('default');
-        $oClient->connect();
-        $oFolder = $oClient->getFolder('INBOX');
+        $params = sscanf($to, str_replace('*', '%[0-9a-zA-Z]', config('mail.return_path')));
 
-        return $oFolder->query()->unseen()->get();
+        return MailModel::findByHashOrFail(collect((array) $params)->first());
     }
 
-    protected function getFirstRecipientAddress(EmailMessage $message)
+    protected function getFirstRecipientAddress(EmailMessage $message): string
     {
         $recipient = collect($message->getTo())
             ->first();
 
-        return $recipient !== null ?
-            $recipient->mailbox :
-            null;
+        if (! is_object($recipient)) {
+            throw new Exception('No recipient available');
+        }
+
+        return $recipient->mailbox;
     }
 }
