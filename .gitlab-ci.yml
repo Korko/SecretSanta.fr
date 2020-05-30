@@ -49,13 +49,6 @@ phpunit:
     - php artisan key:generate
     - phpunit --coverage-text --colors=never
 
-phpstan:
-  stage: metrics
-  script:
-    - composer global require --dev nunomaduro/larastan
-    - phpstan analyse --level 5 --memory-limit=1G app tests
-  allow_failure: true
-
 php-metrics:
   stage: metrics
   script:
@@ -109,13 +102,6 @@ php-churn:
   script:
     - composer global require --dev bmitch/churn-php
     - churn run app tests
-  allow_failure: true
-
-php-coupling-detector:
-  stage: metrics
-  script:
-    - composer global require --dev akeneo/php-coupling-detector
-    - php-coupling-detector detect app
   allow_failure: true
 
 php-code-analyzer:
