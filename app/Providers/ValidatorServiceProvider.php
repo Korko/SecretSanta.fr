@@ -27,8 +27,6 @@ class ValidatorServiceProvider extends ServiceProvider
             // Split the parameter in subgroups
             // e.g. users.list.*.name.value => users.list, name.value
             $parts = explode('.*.', $parameter);
-            $totalParts = count($parts);
-
             $data = (array) Arr::get($rawData, $parts[0]);
             foreach ($parts as $part) {
                 // Simulate an array_column with an Arr::get

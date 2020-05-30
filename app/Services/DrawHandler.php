@@ -43,9 +43,10 @@ class DrawHandler
         $this->createParticipants($draw, $this->participants, $this->hat);
         Metrics::increment('participants', count($this->participants));
 
-        $this->contactOrganizer($draw);
+        $this->sendOrganizerEmail($draw);
+        $this->sendDelayedOrganizerEmail($draw);
         foreach ($draw->participants as $participant) {
-            $this->contactParticipant($participant);
+            $this->sendParticipantEmail($participant);
         }
     }
 
@@ -85,21 +86,12 @@ class DrawHandler
         }
     }
 
-    public function contactOrganizer(Draw $draw, bool $withDelayedEmail = true)
-    {
-        $this->sendOrganizerEmail($draw);
-
-        if ($withDelayedEmail === true) {
-            $this->sendDelayedOrganizerEmail($draw);
-        }
-    }
-
-    protected function sendOrganizerEmail(Draw $draw)
+    public function sendOrganizerEmail(Draw $draw)
     {
         SendMail::dispatch($draw->organizer, new OrganizerRecap($draw));
     }
 
-    protected function sendDelayedOrganizerEmail(Draw $draw)
+    public function sendDelayedOrganizerEmail(Draw $draw)
     {
         $draw->participants->each(function (&$participant) {
             $participant->exclusions[] = $participant->target->id;
@@ -119,7 +111,7 @@ class DrawHandler
             ->delay($draw->expires_at->addDays(2));
     }
 
-    public function contactParticipant(Participant $participant)
+    public function sendParticipantEmail(Participant $participant)
     {
         Metrics::increment('email');
 

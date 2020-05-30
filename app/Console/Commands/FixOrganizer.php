@@ -48,10 +48,10 @@ class FixOrganizer extends Command
         $draw->organizer->email = $this->argument('email');
         $draw->organizer->save();
 
-        DrawHandler::contactOrganizer($draw, false);
+        DrawHandler::sendOrganizerEmail($draw, false);
         $this->info('Organizer Recap sent');
 
-        DrawHandler::contactParticipant($draw->organizer);
+        DrawHandler::sendParticipantEmail($draw->organizer);
         $this->info('Organizer Participant mail sent');
     }
 
