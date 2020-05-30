@@ -87,7 +87,7 @@ composer-unused:
   stage: metrics
   script:
     - wget https://github.com/icanhazstring/composer-unused/releases/latest/download/composer-unused.phar
-    - php composer-unused.phar --no-progress
+    - php composer-unused.phar --no-progress --excludePackage=spatie/laravel-blade-javascript
   allow_failure: true
 
 php-copypaste-detector:
