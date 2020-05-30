@@ -27,16 +27,16 @@ class Mail extends Model
         'delivery_status' => self::CREATED,
     ];
 
-    const CREATED = 'created';
-    const SENT = 'sent';
-    const RECEIVED = 'received';
-    const ERROR = 'error';
+    public const CREATED = 'created';
+    public const SENT = 'sent';
+    public const RECEIVED = 'received';
+    public const ERROR = 'error';
 
     public static $deliveryStatuses = [
-         self::CREATED,
-         self::SENT,
-         self::RECEIVED,
-         self::ERROR,
+        self::CREATED,
+        self::SENT,
+        self::RECEIVED,
+        self::ERROR,
     ];
 
     public function updateDeliveryStatus($status)

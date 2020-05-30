@@ -50,12 +50,12 @@ class RandomFormController extends Controller
 
     protected function formatParticipants(array $participants): array
     {
-        for ($i = 0; $i < count($participants); $i++) {
+        $totalParticipants = count($participants);
+        for ($i = 0; $i < $totalParticipants; $i++) {
             $participant = &$participants[$i];
 
             $participant['exclusions'] = array_map('intval', Arr::get($participant, 'exclusions', []));
         }
-        unset($participant);
 
         return $participants;
     }
