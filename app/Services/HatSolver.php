@@ -32,22 +32,19 @@ class HatSolver
 
     private function solve(int $participantIdx, array $combination, array $exclusions, array $hat) : Generator
     {
+        // End of a loop, we've found a possible combination
+        if ($hat === []) {
+            yield $combination;
+        }
+
         $actualExclusions = array_key_exists($participantIdx, $exclusions) ? $exclusions[$participantIdx] : [];
         $actualHat = array_diff($hat, $actualExclusions, [$participantIdx]);
 
-        if ($actualHat !== []) {
-            foreach ($actualHat as $possibleParticipant) {
-                $possibilityCombination = $combination + [$participantIdx => $possibleParticipant];
-                $possibilityHat = array_diff($hat, [$possibleParticipant]);
+        foreach ($actualHat as $possibleParticipant) {
+            $possibilityCombination = $combination + [$participantIdx => $possibleParticipant];
+            $possibilityHat = array_diff($hat, [$possibleParticipant]);
 
-                if ($possibilityHat === []) {
-                    yield $possibilityCombination;
-                } else {
-                    yield from $this->solve($participantIdx + 1, $possibilityCombination, $exclusions, $possibilityHat);
-                }
-            }
-        } else {
-            return;
+            yield from $this->solve($participantIdx + 1, $possibilityCombination, $exclusions, $possibilityHat);
         }
     }
 }
