@@ -89,7 +89,7 @@ class DrawHandler
     {
         $this->sendOrganizerEmail($draw);
 
-        if ($withDelayedEmail) {
+        if ($withDelayedEmail === true) {
             $this->sendDelayedOrganizerEmail($draw);
         }
     }

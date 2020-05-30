@@ -33,10 +33,8 @@ class ValidatorServiceProvider extends ServiceProvider
             foreach ($parts as $part) {
                 // Simulate an array_column with an Arr::get
                 foreach ($data as $key => $value) {
-                    $value = Arr::get($value, $part);
-
-                    if ($value !== null) {
-                        $data[$key] = $value;
+                    if (Arr::has($value, $part)) {
+                        $data[$key] = Arr::get($value, $part);
                     }
                 }
             }
