@@ -75,8 +75,8 @@ class SolverTest extends TestCase
             for ($i = 0; $i < self::LOOP_NUMBER; $i++) {
                 $solution = Solver::one(['A', 'B', 'C']);
 
-                $solution_position = array_search($solution, $solutions);
-                $valid[$solution_position] = true;
+                $solutionIdx = array_search($solution, $solutions);
+                $valid[$solutionIdx] = true;
 
                 if (count($valid) === count($solutions)) {
                     return true;

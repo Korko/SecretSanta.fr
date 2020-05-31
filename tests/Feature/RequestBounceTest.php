@@ -16,7 +16,7 @@ class RequestBounceTest extends RequestCase
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
     use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
-    public function test_bounce(): void
+    public function testBounce(): void
     {
         Mail::fake();
         Mail::assertNothingSent();

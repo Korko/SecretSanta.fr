@@ -89,33 +89,44 @@ class RequestCase extends TestCase
     }
 
     /**
+     * Expected $participants array format:
+     *
      * $participants = [
-     * [
-     * 'name'   => 'toto',
-     * 'email'  => 'test@test.com',
-     * 'target' => 1,
-     * ],
-     * [
-     * 'name'   => 'tata',
-     * 'email'  => 'test2@test.com',
-     * 'target' => 2,
-     * ],
-     * [
-     * 'name'   => 'tutu',
-     * 'email'  => 'test3@test.com',
-     * 'target' => 0,
-     * ],
-     * ];.
+     *  [
+     *      'name'   => 'foo',
+     *      'email'  => 'test@test.com',
+     *      'target' => 1,
+     *  ],
+     *  [
+     *      'name'   => 'bar',
+     *      'email'  => 'test2@test.com',
+     *      'target' => 2,
+     *  ],
+     *  [
+     *      'name'   => 'foobar',
+     *      'email'  => 'test3@test.com',
+     *      'target' => 0,
+     *  ],
+     * ];
      */
     public function formatParticipants($participants): array
     {
-        $participants = array_map(function ($id) use ($participants) {
-            if (isset($participants[$id]['target'])) {
-                $participants[$id] += [
-                    'exclusions' => array_values(array_map('strval', array_diff(array_keys($participants), [$id], [$participants[$id]['target']]))),
+        $participants = array_map(function ($idx) use ($participants) {
+            if (isset($participants[$idx]['target'])) {
+                $participants[$idx] += [
+                    // Remove the keys and cast as string to simulate an html form submission
+                    'exclusions' => array_values(
+                        array_map('strval',
+                            // Get all the participants idx but the current one and the target
+                            // (this participant will only draw their target and nobody else)
+                            array_diff(array_keys($participants), [$idx], [$participants[$idx]['target']])
+                        )
+                    ),
                 ];
+
+                unset($participants[$idx]['target']);
             }
-            return $participants[$id];
+            return $participants[$idx];
         }, array_keys($participants));
 
         return $participants;

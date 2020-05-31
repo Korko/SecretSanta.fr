@@ -11,7 +11,7 @@ use Mail;
 
 class RequestDearSantaTest extends RequestCase
 {
-    public function test_dearsanta(): void
+    public function testDearSanta(): void
     {
         Mail::fake();
         Mail::assertNothingSent();
