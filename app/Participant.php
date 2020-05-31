@@ -60,18 +60,18 @@ class Participant extends Model
         return $this->belongsTo(Mail::class, 'mail_id');
     }
 
-    public function getFromDearSantaUrl($url)
+    public function scopeFindByDearSantaUrlOrFail($query, $url)
     {
         $route = app('router')
             ->getRoutes()
             ->getByName('dearsanta');
 
         $request = app('request')
-            ->create($this->argument('url'));
+            ->create($url);
 
-        $hash = $route->bind($request)->santa;
+        $hash = $route->bind($request)->participant;
 
-        return static::findByHashOrFail($hash);
+        return $query->findByHashOrFail($hash);
     }
 
     /**

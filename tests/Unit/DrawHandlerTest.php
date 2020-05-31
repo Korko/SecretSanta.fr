@@ -88,7 +88,7 @@ class DrawHandlerTest extends TestCase
         // TODO: assert body
         // Ensure Participants receive their own recap
         $title = null;
-        $this->assertHasMailPushed(TargetDrawn::class, 'test@test.com', function ($m) use (&$title, &$body) {
+        $this->assertHasMailPushed(TargetDrawn::class, 'test@test.com', function ($m) use (&$title) {
             $title = $m->subject;
         });
         $this->assertStringContainsString('test mail toto => tata title', html_entity_decode($title));
