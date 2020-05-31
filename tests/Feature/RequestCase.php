@@ -123,8 +123,6 @@ class RequestCase extends TestCase
                         )
                     ),
                 ];
-
-                unset($participants[$idx]['target']);
             }
             return $participants[$idx];
         }, array_keys($participants));
