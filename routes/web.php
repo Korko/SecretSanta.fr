@@ -34,6 +34,8 @@ Route::middleware(['decrypt.key:draw,mail_title'])->group(function () {
     Route::post('/org/{draw}', 'OrganizerController@fetch')->name('organizerPanel.fetch');
     Route::delete('/org/{draw}', 'OrganizerController@delete')->name('organizerPanel.delete');
     Route::post('/org/{draw}/fetchState', 'OrganizerController@fetchState')->name('organizerPanel.fetchState');
+});
+Route::middleware(['decrypt.key:participant,name'])->group(function () {
     Route::post('/org/{participant}/changeEmail', 'OrganizerController@changeEmail')->name('organizerPanel.changeEmail');
     Route::post('/org/{participant}/resendEmail', 'OrganizerController@resendEmail')->name('organizerPanel.resendEmail');
 });
