@@ -52,7 +52,7 @@ class Draw extends Model
     public static function cleanup()
     {
         // Recap is sent 2 days after so remove everything 3 days after
-        self::where('expires_at', '<=', (new DateTime('now'))->add(new DateInterval('P3D')))->delete();
+        self::where('expires_at', '<=', (new DateTime('now'))->sub(new DateInterval('P3D')))->delete();
     }
 
     public function participants()
