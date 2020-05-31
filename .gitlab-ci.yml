@@ -63,7 +63,8 @@ php-mess-detector:
   stage: metrics
   script:
     - wget -c https://phpmd.org/static/latest/phpmd.phar
-    - php phpmd.phar app,tests text cleancode,codesize,controversial,design,naming,unusedcode
+    - wget -c https://gist.githubusercontent.com/slayerfat/2b3cc4faf94d2863b505/raw/5229a520c69010c6c13fd9a66d14309c214c241a/phpmd-ruleset.xml
+    - php phpmd.phar app,tests text phpmd-ruleset.xml
   artifacts:
     paths:
       - var/phpmd.html
