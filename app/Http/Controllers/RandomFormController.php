@@ -43,7 +43,7 @@ class RandomFormController extends Controller
         $title = $request->input('title');
         $body = $request->input('content-email');
 
-        return DrawHandler::toParticipants($participants)
+        DrawHandler::toParticipants($participants)
             ->expiresAt($dataExpiration)
             ->sendMail($title, $body);
     }

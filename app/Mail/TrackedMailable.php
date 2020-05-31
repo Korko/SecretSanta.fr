@@ -38,7 +38,14 @@ class TrackedMailable extends Mailable
         $this->updateDeliveryStatus(MailModel::ERROR);
     }
 
-    public function send($mailer)
+    /**
+     * Define the return-path in case of bounce
+     * and send the mail
+     *
+     * @param  \Illuminate\Contracts\Mail\Factory|\Illuminate\Contracts\Mail\Mailer  $mailer
+     * @return void
+     */
+    public function send($mailer): void
     {
         $this->withSwiftMessage(function ($message) {
             $message
@@ -46,7 +53,7 @@ class TrackedMailable extends Mailable
                 ->addPathHeader('Return-Path', $this->returnPath);
         });
 
-        return parent::send($mailer);
+        parent::send($mailer);
     }
 
 }

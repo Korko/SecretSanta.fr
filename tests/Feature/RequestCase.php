@@ -20,17 +20,6 @@ class RequestCase extends TestCase
         NoCaptcha::makePartial(); // We don't want to mock the display
     }
 
-    public function rawAjaxPost($url, array $postArgs = [], $headers = [])
-    {
-        $headers = $headers + [
-            'Content-Type' => 'application/json',
-        ];
-
-        $postArgs = json_encode($postArgs);
-
-        return $this->ajaxPost($url, $postArgs, $headers);
-    }
-
     public function ajaxPost($url, array $postArgs = [], $headers = [])
     {
         $headers = $headers + [
