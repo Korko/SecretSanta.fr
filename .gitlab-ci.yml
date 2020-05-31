@@ -125,3 +125,11 @@ php-insights:
     - composer global require --dev nunomaduro/phpinsights
     - phpinsights
   allow_failure: true
+
+phpstan:
+  stage: metrics
+  script:
+    - composer global require --dev nunomaduro/larastan
+    - wget https://gist.githubusercontent.com/Korko/19ad2705a8a8632819aa8370fcb631b8/raw/d79f918004273b8823a5530e57141119eba69ac6/phpstan.neon
+    - phpstan analyse -c phpstan.neon
+  allow_failure: true
