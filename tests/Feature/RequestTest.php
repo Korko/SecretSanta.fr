@@ -9,7 +9,7 @@ class RequestTest extends RequestCase
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
     use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
-    public function test_service_format(): void
+    public function testServiceFormat(): void
     {
         $mock = DrawHandler::partialMock();
 
@@ -26,7 +26,7 @@ class RequestTest extends RequestCase
             ->once()
             ->andReturn(true);
 
-        $response = $this->ajaxPost('/', [
+        $this->ajaxPost('/', [
             'participants'         => [
                 [
                     'name'       => 'toto',

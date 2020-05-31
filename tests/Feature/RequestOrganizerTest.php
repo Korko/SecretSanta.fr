@@ -27,7 +27,7 @@ class RequestOrganizerTest extends RequestCase
         return $draw;
     }
 
-    public function test_send_again(): void
+    public function testSendAgain(): void
     {
         Mail::fake();
         Mail::assertNothingSent();
@@ -53,7 +53,7 @@ class RequestOrganizerTest extends RequestCase
         $this->assertHasMailPushed(TargetDrawn::class, $participant->email);
     }
 
-    public function test_change_email(): void
+    public function testChangeEmail(): void
     {
         Mail::fake();
         Mail::assertNothingSent();

@@ -20,7 +20,7 @@ class DrawHandlerTest extends TestCase
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
     use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
-    public function test_invalid_case(): void
+    public function testInvalidCase(): void
     {
         Mail::fake();
         Mail::assertNothingSent();
@@ -47,7 +47,7 @@ class DrawHandlerTest extends TestCase
         $this->assertEquals(0, Participant::count());
     }
 
-    public function test_classic(): void
+    public function testClassic(): void
     {
         Metrics::shouldReceive('increment')
             ->once()
