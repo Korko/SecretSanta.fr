@@ -89,7 +89,9 @@
     @section('script')
         <script src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" data-auto-replace-svg="nest"></script>
         <script src="{{ mix('/js/manifest.js') }}"></script>
-        <script src="{{ mix('/js/vendor.js') }}"></script>
+        <script src="{{ mix('/js/vendors-vue.js') }}"></script>
+        <script src="{{ mix('/js/vendors-jquery.js') }}"></script>
+        <script src="{{ mix('/js/vendors-ui.js') }}"></script>
     @show
 </body>
 </html>

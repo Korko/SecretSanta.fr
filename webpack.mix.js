@@ -37,7 +37,16 @@ mix.js('resources/js/common.js', 'public/js')
    .js('resources/js/faq.js', 'public/js')
    .modernizr()
    .polyfill({ entryPoints: "all" })
-   .extract()
+   .extract([
+      'vue', 'vue-autosize', 'vue-multiselect',
+      'vuelidate', 'vue-i18n', 'vue-recaptcha', 'vuejs-dialog'
+    ], 'public/js/vendors-vue.js')
+   .extract([
+      'jquery', 'jquery-ui', 'jquery.actual', 'jquery.scrollto', 'bootstrap'
+    ], 'public/js/vendors-jquery.js')
+   .extract([
+      'alertify.js', 'moment', 'papaparse', 'crypto-js'
+    ], 'public/js/vendors-ui.js')
    .sass('resources/sass/randomForm.scss', 'public/css')
    .sass('resources/sass/dearSanta.scss', 'public/css')
    .sass('resources/sass/organizer.scss', 'public/css')

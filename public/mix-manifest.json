@@ -1,13 +1,15 @@
 {
-    "/js/common.js": "/js/common.js",
-    "/css/randomForm.css": "/css/randomForm.css",
-    "/css/dearSanta.css": "/css/dearSanta.css",
-    "/css/organizer.css": "/css/organizer.css",
-    "/css/faq.css": "/css/faq.css",
-    "/js/dearSanta.js": "/js/dearSanta.js",
-    "/js/faq.js": "/js/faq.js",
-    "/js/manifest.js": "/js/manifest.js",
-    "/js/organizer.js": "/js/organizer.js",
-    "/js/randomForm.js": "/js/randomForm.js",
-    "/js/vendor.js": "/js/vendor.js"
+    "/js/manifest.js": "/js/manifest.js?id=7db827d654313dce4250",
+    "/js/vendors-jquery.js": "/js/vendors-jquery.js?id=ff6f38b64d007d076e54",
+    "/js/vendors-ui.js": "/js/vendors-ui.js?id=fa8e331aff83a75c4445",
+    "/js/vendors-vue.js": "/js/vendors-vue.js?id=0cb09ab7cec170326959",
+    "/js/common.js": "/js/common.js?id=38c078f40a16e2efc2e7",
+    "/css/randomForm.css": "/css/randomForm.css?id=25a5f7433cfd4efe510e",
+    "/css/dearSanta.css": "/css/dearSanta.css?id=6ec96f68d22465f82242",
+    "/css/organizer.css": "/css/organizer.css?id=8f8e1599a1880f4277c2",
+    "/css/faq.css": "/css/faq.css?id=7b0758d90ced8cc1babc",
+    "/js/dearSanta.js": "/js/dearSanta.js?id=2454e85086ba983b9562",
+    "/js/faq.js": "/js/faq.js?id=efd69d82b212bab5e95c",
+    "/js/organizer.js": "/js/organizer.js?id=2846dc7622ba64831876",
+    "/js/randomForm.js": "/js/randomForm.js?id=5543fa48c965b9e35e2b"
 }
