@@ -53,17 +53,17 @@
 
             <form id="uploadCsv" @submit.prevent="emitSubmit" @reset="emitCancel">
                 <input type="file" accept=".csv" required="required" />
+                <button class="hidden" type="submit" ref="submit"></button>
+                <button class="hidden" type="reset" ref="reset"></button>
             </form>
         </template>
 
         <template #footer>
-            <!-- Duplicate emitCancel onclick and onreset on the form for browser not handler form attribute on buttons -->
-            <button type="reset" form="uploadCsv" class="btn btn-warning" @click="emitCancel">
+            <button class="btn btn-warning" @click="$refs.reset.click()">
                 <span class="fas fa-stop-circle" />
                 {{ $t('form.csv.cancel') }}
             </button>
-            <!-- Duplicate emitSubmit onclick and onsubmit on the form for browser not handler form attribute on buttons -->
-            <button type="submit" form="uploadCsv" class="btn btn-primary" @click="emitSubmit">
+            <button class="btn btn-primary" @click="$refs.submit.click()">
                 <span class="fas fa-upload" />
                 {{ $t('form.csv.import') }}
             </button>
