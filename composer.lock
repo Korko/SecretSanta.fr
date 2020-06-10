@@ -68,16 +68,16 @@
         },
         {
             "name": "asm89/stack-cors",
-            "version": "2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asm89/stack-cors.git",
-                "reference": "1913589c6de3cc09de5a9bdb4f46fbd550246b40"
+                "reference": "23f469e81c65e2fb7fc7bce371fbdc363fe32adf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/1913589c6de3cc09de5a9bdb4f46fbd550246b40",
-                "reference": "1913589c6de3cc09de5a9bdb4f46fbd550246b40",
+                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/23f469e81c65e2fb7fc7bce371fbdc363fe32adf",
+                "reference": "23f469e81c65e2fb7fc7bce371fbdc363fe32adf",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
                 "cors",
                 "stack"
             ],
-            "time": "2020-04-20T10:11:31+00:00"
+            "time": "2020-05-31T07:17:05+00:00"
         },
         {
             "name": "brick/math",
@@ -504,20 +504,20 @@
         },
         {
             "name": "fruitcake/laravel-cors",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruitcake/laravel-cors.git",
-                "reference": "8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c"
+                "reference": "dbfc311b25d4873c3c2382b26860be3567492bd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruitcake/laravel-cors/zipball/8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c",
-                "reference": "8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c",
+                "url": "https://api.github.com/repos/fruitcake/laravel-cors/zipball/dbfc311b25d4873c3c2382b26860be3567492bd6",
+                "reference": "dbfc311b25d4873c3c2382b26860be3567492bd6",
                 "shasum": ""
             },
             "require": {
-                "asm89/stack-cors": "^2",
+                "asm89/stack-cors": "^2.0.1",
                 "illuminate/contracts": "^5.6|^6.0|^7.0|^8.0",
                 "illuminate/support": "^5.6|^6.0|^7.0|^8.0",
                 "php": ">=7.1",
@@ -570,7 +570,7 @@
                 "crossdomain",
                 "laravel"
             ],
-            "time": "2020-05-11T09:29:18+00:00"
+            "time": "2020-05-31T07:30:16+00:00"
         },
         {
             "name": "graham-campbell/manager",
@@ -2431,6 +2431,52 @@
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
             "time": "2020-05-20T17:43:50+00:00"
+        },
+        {
+            "name": "symfony/deprecation-contracts",
+            "version": "v2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/deprecation-contracts.git",
+                "reference": "dd99cb3a0aff6cadd2a8d7d7ed72c2161e218337"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/dd99cb3a0aff6cadd2a8d7d7ed72c2161e218337",
+                "reference": "dd99cb3a0aff6cadd2a8d7d7ed72c2161e218337",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "function.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "A generic function and convention to trigger deprecation notices",
+            "homepage": "https://symfony.com",
+            "time": "2020-05-27T08:34:37+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
