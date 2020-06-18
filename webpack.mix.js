@@ -1,5 +1,6 @@
 const mix = require('laravel-mix');
 
+require('laravel-mix-purgecss');
 require('laravel-mix-polyfill');
 require('laravel-mix-modernizr');
 
@@ -51,6 +52,7 @@ mix.js('resources/js/common.js', 'public/js')
    .sass('resources/sass/dearSanta.scss', 'public/css')
    .sass('resources/sass/organizer.scss', 'public/css')
    .sass('resources/sass/faq.scss', 'public/css')
+   .purgeCss()
    .copy('resources/img', 'public/images')
    .copy('resources/fonts', 'public/fonts');
 
