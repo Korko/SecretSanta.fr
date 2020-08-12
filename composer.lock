@@ -162,6 +162,12 @@
                 "brick",
                 "math"
             ],
+            "funding": [
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/brick/math",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-04-15T15:59:35+00:00"
         },
         {
@@ -347,6 +353,20 @@
                 "lexer",
                 "parser",
                 "php"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Flexer",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-05-25T17:44:05+00:00"
         },
@@ -2375,6 +2395,12 @@
                 "laravel",
                 "laravel-blade-javascript",
                 "spatie"
+            ],
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                }
             ],
             "time": "2020-03-04T10:22:39+00:00"
         },
@@ -4903,29 +4929,30 @@
     "packages-dev": [
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.3.3",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "57f2219f6d9efe41ed1bc880d86701c52f261bf5"
+                "reference": "9e785aa5584e8839fd43070202dd7f2e912db51c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/57f2219f6d9efe41ed1bc880d86701c52f261bf5",
-                "reference": "57f2219f6d9efe41ed1bc880d86701c52f261bf5",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/9e785aa5584e8839fd43070202dd7f2e912db51c",
+                "reference": "9e785aa5584e8839fd43070202dd7f2e912db51c",
                 "shasum": ""
             },
             "require": {
                 "illuminate/routing": "^5.5|^6|^7",
                 "illuminate/session": "^5.5|^6|^7",
                 "illuminate/support": "^5.5|^6|^7",
-                "maximebf/debugbar": "^1.15.1",
+                "maximebf/debugbar": "^1.16.3",
                 "php": ">=7.0",
                 "symfony/debug": "^3|^4|^5",
                 "symfony/finder": "^3|^4|^5"
             },
             "require-dev": {
-                "laravel/framework": "5.5.x"
+                "orchestra/testbench": "^3.5|^4.0|^5.0",
+                "phpunit/phpunit": "^6.0|^7.0|^8.5|^9.0"
             },
             "type": "library",
             "extra": {
@@ -4967,7 +4994,13 @@
                 "profiler",
                 "webprofiler"
             ],
-            "time": "2020-05-05T10:53:32+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/barryvdh",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-08-11T10:30:51+00:00"
         },
         {
             "name": "composer/semver",
@@ -6030,6 +6063,20 @@
                 "php",
                 "symfony"
             ],
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/nunomaduro",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/nunomaduro",
+                    "type": "patreon"
+                }
+            ],
             "time": "2020-04-04T19:56:08+00:00"
         },
         {
@@ -6857,6 +6904,12 @@
                 "highlight.js",
                 "highlight.php",
                 "syntax"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/allejo",
+                    "type": "github"
+                }
             ],
             "time": "2020-03-02T05:59:21+00:00"
         },
