@@ -4,6 +4,13 @@ require('laravel-mix-purgecss');
 require('laravel-mix-polyfill');
 require('laravel-mix-modernizr');
 
+const webpack = require('webpack');
+mix.webpackConfig({
+  plugins: [
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+  ]
+});
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management

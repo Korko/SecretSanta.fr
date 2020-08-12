@@ -18,6 +18,9 @@
     const Modernizr = require("Modernizr");
 
     import Moment from 'moment';
+    import 'moment/locale/fr';
+    Moment.locale('fr');
+
     import Papa from 'papaparse';
 
     import Csv from './csv.vue';
