@@ -1,15 +1,15 @@
 {
     "/js/manifest.js": "/js/manifest.js?id=7db827d654313dce4250",
-    "/js/vendors-jquery.js": "/js/vendors-jquery.js?id=ff6f38b64d007d076e54",
-    "/js/vendors-ui.js": "/js/vendors-ui.js?id=fa8e331aff83a75c4445",
-    "/js/vendors-vue.js": "/js/vendors-vue.js?id=37d8b1016814fba3457e",
+    "/js/vendors-jquery.js": "/js/vendors-jquery.js?id=f8041fad472d8b550480",
+    "/js/vendors-ui.js": "/js/vendors-ui.js?id=3bb24b2f2d0478fd14e0",
+    "/js/vendors-vue.js": "/js/vendors-vue.js?id=c5826f5f913188526d04",
     "/js/common.js": "/js/common.js?id=38c078f40a16e2efc2e7",
-    "/css/randomForm.css": "/css/randomForm.css?id=e33b3c3b51658de4b76b",
-    "/css/dearSanta.css": "/css/dearSanta.css?id=5f66506f3aa0d450b562",
-    "/css/organizer.css": "/css/organizer.css?id=dfa391ce5e4c45bb24a8",
-    "/css/faq.css": "/css/faq.css?id=786c87b732bbe3f14858",
+    "/css/randomForm.css": "/css/randomForm.css?id=5c11ebf22b571eda9df3",
+    "/css/dearSanta.css": "/css/dearSanta.css?id=bcec3dda77343aaebcd7",
+    "/css/organizer.css": "/css/organizer.css?id=7bf6f16779cbb3c842a6",
+    "/css/faq.css": "/css/faq.css?id=9018899ffcc6faeb43b2",
     "/js/dearSanta.js": "/js/dearSanta.js?id=2454e85086ba983b9562",
     "/js/faq.js": "/js/faq.js?id=efd69d82b212bab5e95c",
     "/js/organizer.js": "/js/organizer.js?id=2846dc7622ba64831876",
-    "/js/randomForm.js": "/js/randomForm.js?id=f66d3e330aa610147d47"
+    "/js/randomForm.js": "/js/randomForm.js?id=d2438f7de73154cb0da9"
 }
