@@ -1,10 +1,10 @@
 const mix = require('laravel-mix');
+const webpack = require('webpack');
 
 require('laravel-mix-purgecss');
 require('laravel-mix-polyfill');
 require('laravel-mix-modernizr');
 
-const webpack = require('webpack');
 mix.webpackConfig({
   plugins: [
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
@@ -59,7 +59,20 @@ mix.js('resources/js/common.js', 'public/js')
    .sass('resources/sass/dearSanta.scss', 'public/css')
    .sass('resources/sass/organizer.scss', 'public/css')
    .sass('resources/sass/faq.scss', 'public/css')
-   .purgeCss()
+   .purgeCss({
+      content: [
+        "app/**/*.php",
+        "resources/**/*.html",
+        "resources/**/*.js",
+        "resources/**/*.jsx",
+        "resources/**/*.ts",
+        "resources/**/*.tsx",
+        "resources/**/*.php",
+        "resources/**/*.vue",
+        "resources/**/*.twig",
+        "node_modules/**/*.vue", // Added line, all the rest is copied from postcss-purgecss-laravel plugin
+      ]
+   })
    .copy('resources/img', 'public/images')
    .copy('resources/fonts', 'public/fonts');
 
