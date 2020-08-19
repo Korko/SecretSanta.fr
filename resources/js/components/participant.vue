@@ -115,7 +115,14 @@
                 :preserve-search="true"
                 @select="$emit('addExclusion', $event)"
                 @remove="$emit('removeExclusion', $event)"
-            />
+            >
+                <template #noOptions>
+                    {{ $t('form.participant.exclusions.noOptions') }}
+                </template>
+                <template #noResult>
+                    {{ $t('form.participant.exclusions.noResult') }}
+                </template>
+            </multiselect>
             <select style="display:none" :name="'participants[' + idx + '][exclusions][]'" multiple>
                 <option
                     v-for="exclusion in exclusions"

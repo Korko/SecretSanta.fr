@@ -278,7 +278,9 @@ export default {
                 },
                 "exclusions": {
                     "label": "Exclusions",
-                    "placeholder": "Aucune exclusion"
+                    "placeholder": "Aucune exclusion",
+                    "noOptions": "Liste vide",
+                    "noResult": "Aucun résultat"
                 },
                 "remove": "Enlever",
                 "add": "Ajouter un participant"

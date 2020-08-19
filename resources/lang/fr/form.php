@@ -74,6 +74,8 @@ Le code source est disponible sur :link',
         'exclusions' => [
             'label'       => 'Exclusions',
             'placeholder' => 'Aucune exclusion',
+            'noOptions'   => 'Liste vide',
+            'noResult'    => 'Aucun résultat',
         ],
         'remove'     => 'Enlever',
         'add'        => 'Ajouter un participant',
