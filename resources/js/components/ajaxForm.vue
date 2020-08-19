@@ -89,8 +89,8 @@
                             app.$emit('success', data);
                         },
                         error(jqXHR) {
-                            if (jqXHR.responseJSON && jqXHR.responseJSON.message)
-                                alertify.error(jqXHR.responseJSON.message);
+                            if (jqXHR.responseJSON && jqXHR.responseJSON.error)
+                                alertify.error(jqXHR.responseJSON.error);
                             if (jqXHR.responseJSON && jqXHR.responseJSON.errors)
                                 app.fieldErrors = jqXHR.responseJSON.errors;
 
@@ -105,7 +105,7 @@
                 }
             },
             onCaptchaExpired() {
-                grecaptcha && grecaptcha.reset(); // eslint-disable-line no-undef
+                if(grecaptcha) grecaptcha.reset(); // eslint-disable-line no-undef
             },
             onSubmit() {
                 this.submit();
