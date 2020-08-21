@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Mail;
+namespace App\Models\Mail;
 
-use App\Participant;
+use App\Models\Participant;
 use Crypt;
 use Illuminate\Bus\Queueable;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Mail;
+namespace App\Models\Mail;
 
-use App\Mail as MailModel;
+use App\Models\Mail as MailModel;
 
 class TrackedMailable extends Mailable
 {

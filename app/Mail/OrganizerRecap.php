@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Mail;
+namespace App\Models\Mail;
 
 use App;
-use App\Draw;
+use App\Models\Draw;
 use Crypt;
 use Illuminate\Bus\Queueable;
 

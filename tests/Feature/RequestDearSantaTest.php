@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Mail\DearSanta;
-use App\Mail\TargetDrawn;
-use App\Participant;
+use App\Models\Mail\DearSanta;
+use App\Models\Mail\TargetDrawn;
+use App\Models\Participant;
 use Crypt;
 use Hashids;
 use Mail;

@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use App\Draw;
+use App\Models\Draw;
 use App\Exceptions\SolverException;
 use App\Jobs\SendMail;
-use App\Mail as MailModel;
-use App\Mail\OrganizerFinalRecap;
-use App\Mail\OrganizerRecap;
-use App\Mail\TargetDrawn;
-use App\Participant;
+use App\Models\Mail as MailModel;
+use App\Models\Mail\OrganizerFinalRecap;
+use App\Models\Mail\OrganizerRecap;
+use App\Models\Mail\TargetDrawn;
+use App\Models\Participant;
 use Arr;
 use Facades\App\Services\HatSolver as Solver;
 use Metrics;

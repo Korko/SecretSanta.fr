@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Draw;
+use App\Models\Draw;
 use App\Http\Requests\OrganizerChangeEmailRequest;
 use App\Http\Requests\OrganizerResendEmailRequest;
 use App\Jobs\SendMail;
-use App\Mail as MailModel;
-use App\Mail\TargetDrawn;
-use App\Participant;
+use App\Models\Mail as MailModel;
+use App\Models\Mail\TargetDrawn;
+use App\Models\Participant;
 use Illuminate\Http\Request;
 use Metrics;
 
