@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class Draw extends Model
 {
     use HashId {
-        resolveRouteBinding as resolveDraw;
+        resolveRouteBinding as resolveHash;
     }
 
     protected static $hashConnection = 'draw';
@@ -79,9 +79,11 @@ class Draw extends Model
      */
     public function resolveRouteBinding($value, $field = null)
     {
-        $draw = $this->resolveDraw($value);
+        $draw = $field === 'hash' ?
+            $this->resolveHash($value) :
+            parent::resolveRouteBinding($value, $field);
 
-        abort_if($draw->expired, 404);
+        abort_if($draw === null || $draw->expired, 404);
 
         return $draw;
     }
