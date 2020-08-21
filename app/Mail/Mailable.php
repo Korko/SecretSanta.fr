@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Models\Mail;
 
 use Illuminate\Mail\Mailable as BaseMailable;
 

@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Draw;
+use App\Models\Draw;
 use App\Jobs\ParseBounces;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;

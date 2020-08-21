@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Mail;
+namespace App\Models\Mail;
 
-use App\DearSanta as DearSantaEntry;
+use App\Models\DearSanta as DearSantaEntry;
 use Illuminate\Bus\Queueable;
 
 class DearSanta extends TrackedMailable

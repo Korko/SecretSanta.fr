@@ -1,7 +1,7 @@
 <?php
 
-$factory->define(App\Mail::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Mail::class, function (Faker\Generator $faker) {
     return [
-        'delivery_status' => App\Mail::CREATED,
+        'delivery_status' => App\Models\Mail::CREATED,
     ];
 });

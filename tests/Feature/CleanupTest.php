@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Draw;
+use App\Models\Draw;
 
 class CleanupTest extends RequestCase
 {

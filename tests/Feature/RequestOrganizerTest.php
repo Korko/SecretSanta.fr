@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Draw;
-use App\Mail\TargetDrawn;
-use App\Participant;
+use App\Models\Draw;
+use App\Models\Mail\TargetDrawn;
+use App\Models\Participant;
 use Crypt;
 use Mail;
 

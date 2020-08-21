@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Draw;
-use App\Participant;
+use App\Models\Draw;
+use App\Models\Participant;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 

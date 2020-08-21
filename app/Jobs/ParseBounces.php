@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail as MailModel;
+use App\Models\Mail as MailModel;
 use App\Services\EmailClient;
 use Exception;
 use Illuminate\Bus\Queueable;
