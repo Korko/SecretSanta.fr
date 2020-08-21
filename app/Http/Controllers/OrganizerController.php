@@ -43,7 +43,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function changeEmail(OrganizerChangeEmailRequest $request, Participant $participant)
+    public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
     {
         $participant->email = $request->input('email');
         $participant->save();
@@ -61,7 +61,7 @@ class OrganizerController extends Controller
             redirect('/')->with('message', $message);
     }
 
-    public function resendEmail(OrganizerResendEmailRequest $request, Participant $participant)
+    public function resendEmail(OrganizerResendEmailRequest $request, Draw $draw, Participant $participant)
     {
         $participant->mail->updateDeliveryStatus(MailModel::CREATED);
 
