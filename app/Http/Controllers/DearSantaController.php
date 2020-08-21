@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\DearSanta;
 use App\Http\Requests\DearSantaRequest;
 use App\Jobs\SendMail;
-use App\Mail as MailModel;
 use App\Mail\DearSanta as DearSantaEmail;
-use App\Participant;
+use App\Models\DearSanta;
+use App\Models\Mail as MailModel;
+use App\Models\Participant;
 use Metrics;
 
 class DearSantaController extends Controller

@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Participant;
+use App\Models\Participant;
 use Crypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

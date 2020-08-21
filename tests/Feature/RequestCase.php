@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Draw;
-use App\Participant;
+use App\Models\Draw;
+use App\Models\Participant;
 use Arr;
 use Faker\Generator as Faker;
 use NoCaptcha;

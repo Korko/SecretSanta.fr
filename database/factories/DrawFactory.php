@@ -1,6 +1,6 @@
 <?php
 
-$factory->define(App\Draw::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Draw::class, function (Faker\Generator $faker) {
     return [
         'mail_title' => $faker->sentence,
         'mail_body'  => $faker->text,
@@ -8,7 +8,7 @@ $factory->define(App\Draw::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->state(App\Draw::class, 'expired', function ($faker) {
+$factory->state(App\Models\Draw::class, 'expired', function ($faker) {
     return [
         'expires_at' => $faker->dateTime('-1 hour'),
     ];

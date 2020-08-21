@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Draw;
-use App\Jobs\ParseBounces;
-use App\Mail as MailModel;
 use App\Mail\TargetDrawn;
-use App\Participant;
+use App\Models\Draw;
+use App\Models\Mail as MailModel;
+use App\Models\Participant;
+use App\Jobs\ParseBounces;
 use App\Services\EmailClient;
 use Mail;
 use Webklex\IMAP\Message as EmailMessage;
