@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Hashids;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

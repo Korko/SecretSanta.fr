@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Participant;
+use App\Models\Participant;
 use Arr;
 use Crypt;
 use DrawHandler;

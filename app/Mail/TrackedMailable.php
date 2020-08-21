@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Mail as MailModel;
+use App\Models\Mail as MailModel;
 
 class TrackedMailable extends Mailable
 {

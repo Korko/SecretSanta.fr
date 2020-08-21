@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Mail\DearSanta;
 use App\Mail\TargetDrawn;
-use App\Participant;
+use App\Models\Participant;
 use Crypt;
 use Hashids;
 use Mail;
