@@ -4987,16 +4987,16 @@
         },
         {
             "name": "webklex/laravel-imap",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Webklex/laravel-imap.git",
-                "reference": "b7e3369f71c01bd3215b4c04b0b99f60ed2282a9"
+                "reference": "b99c9f8ddd14924b31b1caa4a3d8f85b2ee73363"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Webklex/laravel-imap/zipball/b7e3369f71c01bd3215b4c04b0b99f60ed2282a9",
-                "reference": "b7e3369f71c01bd3215b4c04b0b99f60ed2282a9",
+                "url": "https://api.github.com/repos/Webklex/laravel-imap/zipball/b99c9f8ddd14924b31b1caa4a3d8f85b2ee73363",
+                "reference": "b99c9f8ddd14924b31b1caa4a3d8f85b2ee73363",
                 "shasum": ""
             },
             "require": {
@@ -5046,7 +5046,7 @@
                 "mail",
                 "webklex"
             ],
-            "time": "2020-08-20T18:57:50+00:00"
+            "time": "2020-08-23T17:42:36+00:00"
         }
     ],
     "packages-dev": [
@@ -5875,6 +5875,7 @@
                 "laravel",
                 "vue-i18n"
             ],
+            "abandoned": true,
             "time": "2020-03-10T18:55:52+00:00"
         },
         {
