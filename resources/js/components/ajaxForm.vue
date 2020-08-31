@@ -40,9 +40,6 @@
         },
         watch: {
             sending() {
-                if (!this.sending) {
-                    this.onCaptchaExpired();
-                }
                 this.$emit('change', this.sending);
             }
         },
