@@ -25,13 +25,12 @@ Route::get('/faq', [RandomFormController::class, 'faq'])->name('faq');
 Route::pattern('draw:hash', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
 Route::pattern('participant:hash', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
 
-Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta');#TODO: Use signed urls?
+Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta');
 Route::middleware(['decrypt.key:participant,name'])->group(function () {
     Route::post('/dearsanta/{participant:hash}', [DearSantaController::class, 'fetch'])->name('dearsanta.fetch');
     Route::post('/dearsanta/{participant:hash}/send', [DearSantaController::class, 'handle'])->name('dearsanta.contact');
     Route::post('/dearsanta/{participant:hash}/fetchState', [DearSantaController::class, 'fetchState'])->name('dearsanta.fetchState');
 });
-
 
 Route::get('/draw/{draw:hash}', [OrganizerController::class, 'view'])->name('organizerPanel');
 Route::middleware(['decrypt.key:draw,mail_title'])->group(function () {
