@@ -46,6 +46,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'bindings'      => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'signed'        => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle'      => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'decrypt.key'   => \App\Http\Middleware\HandleEncryptionKey::class,
     ];

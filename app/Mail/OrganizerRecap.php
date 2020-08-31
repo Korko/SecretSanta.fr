@@ -6,6 +6,7 @@ use App;
 use App\Models\Draw;
 use Crypt;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\URL;
 
 class OrganizerRecap extends Mailable
 {
@@ -28,7 +29,7 @@ class OrganizerRecap extends Mailable
 
         $this->expirationDate = $draw->expires_at->locale(App::getLocale())->isoFormat('LL');
 
-        $this->panelLink = route('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(Crypt::getKey());
+        $this->panelLink = URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(Crypt::getKey());
     }
 
     /**

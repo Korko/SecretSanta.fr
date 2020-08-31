@@ -6,6 +6,7 @@ use App\Mail\TargetDrawn;
 use App\Models\Draw;
 use App\Models\Participant;
 use Crypt;
+use Illuminate\Support\Facades\URL;
 use Mail;
 
 class RequestOrganizerTest extends RequestCase
@@ -36,7 +37,7 @@ class RequestOrganizerTest extends RequestCase
         $participant = $draw->participants->first();
 
         // Check data can be changed
-        $path = route('organizerPanel.resendEmail', [
+        $path = URL::signedRoute('organizerPanel.resendEmail', [
             'draw' => $draw->hash,
             'participant' => $participant->id,
         ]);
@@ -62,7 +63,7 @@ class RequestOrganizerTest extends RequestCase
         $participant = $draw->participants->first();
 
         // Check data can be changed
-        $path = route('organizerPanel.changeEmail', [
+        $path = URL::signedRoute('organizerPanel.changeEmail', [
             'draw' => $draw->hash,
             'participant' => $participant->id,
         ]);
