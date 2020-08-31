@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Solvers;
 
 use App\Exceptions\SolverException;
 use Arr;
 use Generator;
 
-class HatSolver
+class HatSolver implements SolverInterface
 {
     public function one(array $participants, array $exclusions = []) : array
     {
