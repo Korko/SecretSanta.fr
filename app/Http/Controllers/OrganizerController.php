@@ -10,6 +10,7 @@ use App\Models\Draw;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Metrics;
 
 class OrganizerController extends Controller
@@ -31,6 +32,12 @@ class OrganizerController extends Controller
                     'id', 'name', 'email', 'mail',
                 ])];
             }),
+            'changeEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
+                return [$participant->id => URL::signedRoute('organizerPanel.changeEmail', ['participant' => $participant])];
+            }),
+            'resendEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
+                return [$participant->id => URL::signedRoute('organizerPanel.resendEmail', ['participant' => $participant])];
+            }),
         ]);
     }
 
@@ -43,7 +50,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
+    public function changeEmail(OrganizerChangeEmailRequest $request, Participant $participant)
     {
         $participant->email = $request->input('email');
         $participant->save();
@@ -61,7 +68,7 @@ class OrganizerController extends Controller
             redirect('/')->with('message', $message);
     }
 
-    public function resendEmail(OrganizerResendEmailRequest $request, Draw $draw, Participant $participant)
+    public function resendEmail(OrganizerResendEmailRequest $request, Participant $participant)
     {
         $participant->mail->updateDeliveryStatus(MailModel::CREATED);
 

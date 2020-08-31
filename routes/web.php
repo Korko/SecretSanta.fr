@@ -40,7 +40,7 @@ Route::middleware(['signed'])->group(function () {
 	    Route::post('/draw/{draw:hash}/fetchState', [OrganizerController::class, 'fetchState'])->name('organizerPanel.fetchState');
 	});
 	Route::middleware(['decrypt.key:participant,name'])->group(function () {
-	    Route::post('/draw/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
-	    Route::post('/draw/{draw:hash}/{participant:id}/resendEmail', [OrganizerController::class, 'resendEmail'])->name('organizerPanel.resendEmail');
+	    Route::post('/participant/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
+	    Route::post('/participant/{participant:id}/resendEmail', [OrganizerController::class, 'resendEmail'])->name('organizerPanel.resendEmail');
 	});
 });

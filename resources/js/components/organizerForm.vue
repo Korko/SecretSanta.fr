@@ -21,6 +21,10 @@
             data: {
                 type: Object,
                 default() { return {}; }
+            },
+            routes: {
+                type: Object,
+                required: true
             }
         },
         data() {
@@ -55,7 +59,7 @@
             fetchState() {
                 var app = this;
                 return jQuery.ajax({
-                    url: `/org/${this.data.draw}/fetchState`,
+                    url: this.routes.fetchStateUrl,
                     type: 'POST',
                     data: { _token: this.csrf, key: this.key },
                     success(data) {
@@ -92,7 +96,7 @@
             purge() {
 		var app = this;
                 return jQuery.ajax({
-                    url: `/org/${this.data.draw}/`,
+                    url: this.routes.deleteUrl,
                     type: 'DELETE',
                     data: { _token: this.csrf, key: this.key },
                     success(data) {
@@ -126,7 +130,7 @@
                     <td>{{ participant.name }}</td>
                     <td>
                         <input-edit
-                            :action="`/org/${data.draw}/${participant.id}/changeEmail`"
+                            :action="data.changeEmailUrls[participant.id]"
                             :value="participant.email"
                             name="email"
                             :validation="validations.email"

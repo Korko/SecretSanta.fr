@@ -17,6 +17,10 @@
             data: {
                 type: Object,
                 default() { return {}; }
+            },
+            routes: {
+                type: Object,
+                required: true
             }
         },
         data() {
@@ -56,7 +60,7 @@
             fetchState() {
                 var app = this;
                 return jQuery.ajax({
-                    url: `/dearsanta/${this.data.participant.hash}/fetchState`,
+                    url: this.routes.fetchStateUrl,
                     type: 'POST',
                     data: { _token: this.csrf, key: this.key },
                     success(data) {
@@ -79,7 +83,7 @@
 
 <template>
     <div>
-        <ajax-form :action="`/dearsanta/${data.participant.hash}/send`" :$v="$v" @success="success">
+        <ajax-form :action="routes.contactUrl" :$v="$v" @success="success">
             <fieldset>
                 <div class="form-group">
                     <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>

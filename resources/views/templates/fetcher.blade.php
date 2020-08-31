@@ -11,12 +11,12 @@
 
 @section('body')
     <div id="form" v-cloak>
-        <component :is="state" v-if="state === 'Form'" :data="data">
+        <component :is="state" v-if="state === 'Form'" v-bind="$data">
             <template v-slot:default="$slot">
                 @yield('form')
             </template>
         </component>
-        <component :is="state" v-else v-on:success="send('success', $event)" v-on:error="send('failure', $event)" fetchurl="{{ $fetchUrl }}" :data="data"></component>
+        <component :is="state" v-else v-on:success="send('success', $event)" v-on:error="send('failure', $event)" fetchurl="{{ $fetchUrl }}" v-bind="$data"></component>
     </div>
 @stop
 
