@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\RandomFormController;
+use App\Http\Controllers\DearSantaController;
+use App\Http\Controllers\OrganizerController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,28 +17,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'RandomFormController@view');
-Route::post('/', 'RandomFormController@handle');
+Route::get('/', [RandomFormController::class, 'view']);
+Route::post('/', [RandomFormController::class, 'handle']);
 
-Route::get('/faq', 'RandomFormController@faq')->name('faq');
+Route::get('/faq', [RandomFormController::class, 'faq'])->name('faq');
 
 Route::pattern('draw:hash', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
 Route::pattern('participant:hash', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
 
-Route::get('/dearsanta/{participant:hash}', 'DearSantaController@view')->name('dearsanta');
+Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta');#TODO: Use signed urls?
 Route::middleware(['decrypt.key:participant,name'])->group(function () {
-    Route::post('/dearsanta/{participant:hash}', 'DearSantaController@fetch')->name('dearsanta.fetch');
-    Route::post('/dearsanta/{participant:hash}/send', 'DearSantaController@handle')->name('dearsanta.contact');
-    Route::post('/dearsanta/{participant:hash}/fetchState', 'DearSantaController@fetchState')->name('dearsanta.fetchState');
+    Route::post('/dearsanta/{participant:hash}', [DearSantaController::class, 'fetch'])->name('dearsanta.fetch');
+    Route::post('/dearsanta/{participant:hash}/send', [DearSantaController::class, 'handle'])->name('dearsanta.contact');
+    Route::post('/dearsanta/{participant:hash}/fetchState', [DearSantaController::class, 'fetchState'])->name('dearsanta.fetchState');
 });
 
-Route::get('/org/{draw:hash}', 'OrganizerController@view')->name('organizerPanel');
+
+Route::get('/draw/{draw:hash}', [OrganizerController::class, 'view'])->name('organizerPanel');
 Route::middleware(['decrypt.key:draw,mail_title'])->group(function () {
-    Route::post('/org/{draw:hash}', 'OrganizerController@fetch')->name('organizerPanel.fetch');
-    Route::delete('/org/{draw:hash}', 'OrganizerController@delete')->name('organizerPanel.delete');
-    Route::post('/org/{draw:hash}/fetchState', 'OrganizerController@fetchState')->name('organizerPanel.fetchState');
+    Route::post('/draw/{draw:hash}', [OrganizerController::class, 'fetch'])->name('organizerPanel.fetch');
+    Route::delete('/draw/{draw:hash}', [OrganizerController::class, 'delete'])->name('organizerPanel.delete');
+    Route::post('/draw/{draw:hash}/fetchState', [OrganizerController::class, 'fetchState'])->name('organizerPanel.fetchState');
 });
 Route::middleware(['decrypt.key:participant,name'])->group(function () {
-    Route::post('/org/{draw:hash}/{participant:id}/changeEmail', 'OrganizerController@changeEmail')->name('organizerPanel.changeEmail');
-    Route::post('/org/{draw:hash}/{participant:id}/resendEmail', 'OrganizerController@resendEmail')->name('organizerPanel.resendEmail');
+    Route::post('/draw/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
+    Route::post('/draw/{draw:hash}/{participant:id}/resendEmail', [OrganizerController::class, 'resendEmail'])->name('organizerPanel.resendEmail');
 });
