@@ -26,15 +26,12 @@ Route::pattern('draw:hash', '[0-9a-zA-Z]{'.config('hashids.connections.draw.leng
 Route::pattern('participant:hash', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
 
 Route::middleware(['signed'])->group(function () {
-
-	Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta');#TODO: Use signed urls?
+	Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta');
 	Route::middleware(['decrypt.key:participant,name'])->group(function () {
 	    Route::post('/dearsanta/{participant:hash}', [DearSantaController::class, 'fetch'])->name('dearsanta.fetch');
 	    Route::post('/dearsanta/{participant:hash}/send', [DearSantaController::class, 'handle'])->name('dearsanta.contact');
 	    Route::post('/dearsanta/{participant:hash}/fetchState', [DearSantaController::class, 'fetchState'])->name('dearsanta.fetchState');
 	});
-
-	#TODO: Weak security with same key for organizer and participants (dear santa) so only protection is hash
 
 	Route::get('/draw/{draw:hash}', [OrganizerController::class, 'view'])->name('organizerPanel');
 	Route::middleware(['decrypt.key:draw,mail_title'])->group(function () {
@@ -42,10 +39,8 @@ Route::middleware(['signed'])->group(function () {
 	    Route::delete('/draw/{draw:hash}', [OrganizerController::class, 'delete'])->name('organizerPanel.delete');
 	    Route::post('/draw/{draw:hash}/fetchState', [OrganizerController::class, 'fetchState'])->name('organizerPanel.fetchState');
 	});
-	#TODO: use /participant instead of /draw but different system from /dearsanta maybe signed route?
 	Route::middleware(['decrypt.key:participant,name'])->group(function () {
 	    Route::post('/draw/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
 	    Route::post('/draw/{draw:hash}/{participant:id}/resendEmail', [OrganizerController::class, 'resendEmail'])->name('organizerPanel.resendEmail');
 	});
-
 });
