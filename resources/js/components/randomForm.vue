@@ -26,7 +26,6 @@
     import Csv from './csv.vue';
     import AjaxForm from './ajaxForm.vue';
     import Participant from './participant.vue';
-    import VueRecaptcha from 'vue-recaptcha';
 
     const formatMoment = (amount, unit) => Moment(window.now).add(amount, unit).format('YYYY-MM-DD')
 
@@ -34,8 +33,7 @@
         components: {
             AjaxForm,
             Csv,
-            Participant,
-            VueRecaptcha
+            Participant
         },
 
         data: function() {
@@ -155,7 +153,7 @@
             // Just because I couldn't handle too much depth with quotes
             anchor(event) {
                 return `<a href="" @click.prevent='\$emit("${event}")'>`;
-            }, 
+            },
 
             moment(amount, unit) {
                 return formatMoment(amount, unit);
