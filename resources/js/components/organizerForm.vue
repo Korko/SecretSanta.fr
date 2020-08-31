@@ -21,6 +21,10 @@
             data: {
                 type: Object,
                 default() { return {}; }
+            },
+            routes: {
+                type: Object,
+                required: true
             }
         },
         data() {
@@ -58,7 +62,6 @@
                     .then(response => {
                         if (response.data.participants) {
                             Object.values(response.data.participants).forEach(participant => {
-
                                 var new_update = new Date(participant.mail.updated_at);
                                 var old_update = new Date(this.data.participants[participant.id].mail.updated_at);
                                 this.data.participants[participant.id].mail.delivery_status =
@@ -87,11 +90,21 @@
                     .then(this.purge);
             },
             purge() {
+<<<<<<< HEAD
                 return axios
                     .delete(this.routes.deleteUrl, { _token: this.csrf, key: this.key })
                     .then(data => {
                         this.$dialog
                             .alert(data.message)
+=======
+		var app = this;
+                return jQuery.ajax({
+                    url: this.routes.deleteUrl,
+                    type: 'DELETE',
+                    data: { _token: this.csrf, key: this.key },
+                    success(data) {
+                        app.$dialog.alert(data.message)
+>>>>>>> 30aef01ff... Fix routes url in vue files
                             .then(() => window.location.pathname = '/');
                     });
             }
@@ -120,7 +133,7 @@
                     <td>{{ participant.name }}</td>
                     <td>
                         <input-edit
-                            :action="`/org/${data.draw}/${participant.id}/changeEmail`"
+                            :action="data.changeEmailUrls[participant.id]"
                             :value="participant.email"
                             name="email"
                             :validation="validations.email"

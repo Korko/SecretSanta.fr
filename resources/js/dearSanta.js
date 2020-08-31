@@ -16,5 +16,11 @@ import { VueFetcher } from './mixins/vueFetcher.js';
 
 window.app = new Vue({
     mixins: [VueFetcher(DearSantaForm)],
-    i18n
+    i18n,
+    data: {
+        routes: {
+            fetchStateUrl: window.global.routes.fetchStateUrl,
+            contactUrl: window.global.routes.contactUrl
+        }
+    }
 });

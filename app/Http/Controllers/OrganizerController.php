@@ -10,6 +10,7 @@ use App\Models\Draw;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Metrics;
 
 class OrganizerController extends Controller
@@ -30,6 +31,12 @@ class OrganizerController extends Controller
                 return [$participant->id => $participant->only([
                     'id', 'name', 'email', 'mail',
                 ])];
+            }),
+            'changeEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
+                return [$participant->id => URL::signedRoute('organizerPanel.changeEmail', ['participant' => $participant])];
+            }),
+            'resendEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
+                return [$participant->id => URL::signedRoute('organizerPanel.resendEmail', ['participant' => $participant])];
             }),
         ]);
     }
