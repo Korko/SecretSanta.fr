@@ -10,8 +10,8 @@ use App\Mail\OrganizerFinalRecap;
 use App\Mail\OrganizerRecap;
 use App\Mail\TargetDrawn;
 use App\Models\Participant;
+use App\Solvers\Solver;
 use Arr;
-use Facades\App\Services\HatSolver as Solver;
 use Metrics;
 
 class DrawHandler
