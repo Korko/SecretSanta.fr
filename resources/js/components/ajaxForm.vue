@@ -3,12 +3,7 @@
     import $ from 'jquery';
     import alertify from 'alertify.js';
 
-    import VueRecaptcha from 'vue-recaptcha';
-
     export default {
-        components: {
-            VueRecaptcha
-        },
         props: {
             action: {
                 type: String,
@@ -104,9 +99,6 @@
                     });
                 }
             },
-            onCaptchaExpired() {
-                if(grecaptcha) grecaptcha.reset(); // eslint-disable-line no-undef
-            },
             onSubmit() {
                 this.submit();
             },
@@ -127,15 +119,6 @@
             <slot v-bind="{ sending, sent, submit, onSubmit, fieldError }" />
         </fieldset>
         <fieldset v-if="button">
-            <vue-recaptcha
-                v-if="api"
-                :sitekey="api"
-                :loadRecaptchaScript="true"
-                ref="recaptcha"
-                @expired="onCaptchaExpired"
-                size="invisible"
-            ></vue-recaptcha>
-
             <button type="submit" class="btn btn-primary btn-lg">
                 <span v-if="sent"><span class="fas fa-check-circle" /> {{ buttonSent || $t('common.form.sent') }}</span>
                 <span v-else-if="sending"><span class="fas fa-spinner" /> {{ buttonSending || $t('common.form.sending') }}</span>

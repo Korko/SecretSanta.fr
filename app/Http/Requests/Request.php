@@ -9,11 +9,6 @@ abstract class Request extends FormRequest
 {
     public function rules()
     {
-        $rules = [];
-        if (! App::environment('local', 'dev')) {
-            $rules['g-recaptcha-response'] = 'required|captcha';
-        }
-
-        return $rules;
+        return [];
     }
 }
