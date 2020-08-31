@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\Models\Participant;
 use Crypt;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\URL;
 
 class TargetDrawn extends TrackedMailable
 {
@@ -27,7 +28,7 @@ class TargetDrawn extends TrackedMailable
 
         $this->content = $this->parseKeywords($santa->draw->mail_body, $santa);
 
-        $this->dearSantaLink = route('dearsanta', ['participant' => $santa->hash]).'#'.base64_encode(Crypt::getKey());
+        $this->dearSantaLink = URL::signedRoute('dearsanta', ['participant' => $santa->hash]).'#'.base64_encode(Crypt::getKey());
 
         $this->track($santa->mail);
     }
