@@ -4988,16 +4988,16 @@
         },
         {
             "name": "webklex/laravel-imap",
-            "version": "1.5.3",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Webklex/laravel-imap.git",
-                "reference": "d27f53c1ab3a059b5cfb7ed867ab49aae209806a"
+                "reference": "41e8579c2bee1f13cf0d3097f30c89dbe6a71c25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Webklex/laravel-imap/zipball/d27f53c1ab3a059b5cfb7ed867ab49aae209806a",
-                "reference": "d27f53c1ab3a059b5cfb7ed867ab49aae209806a",
+                "url": "https://api.github.com/repos/Webklex/laravel-imap/zipball/41e8579c2bee1f13cf0d3097f30c89dbe6a71c25",
+                "reference": "41e8579c2bee1f13cf0d3097f30c89dbe6a71c25",
                 "shasum": ""
             },
             "require": {
@@ -5047,7 +5047,7 @@
                 "mail",
                 "webklex"
             ],
-            "time": "2020-08-24T19:07:25+00:00"
+            "time": "2020-09-04T17:49:45+00:00"
         }
     ],
     "packages-dev": [
