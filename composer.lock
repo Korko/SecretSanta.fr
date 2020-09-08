@@ -4988,16 +4988,16 @@
         },
         {
             "name": "webklex/laravel-imap",
-            "version": "1.5.3",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Webklex/laravel-imap.git",
-                "reference": "d27f53c1ab3a059b5cfb7ed867ab49aae209806a"
+                "reference": "310f4630ce792fdde388e2a850a1769853241a33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Webklex/laravel-imap/zipball/d27f53c1ab3a059b5cfb7ed867ab49aae209806a",
-                "reference": "d27f53c1ab3a059b5cfb7ed867ab49aae209806a",
+                "url": "https://api.github.com/repos/Webklex/laravel-imap/zipball/310f4630ce792fdde388e2a850a1769853241a33",
+                "reference": "310f4630ce792fdde388e2a850a1769853241a33",
                 "shasum": ""
             },
             "require": {
@@ -5047,7 +5047,7 @@
                 "mail",
                 "webklex"
             ],
-            "time": "2020-08-24T19:07:25+00:00"
+            "time": "2020-09-07T10:03:36+00:00"
         }
     ],
     "packages-dev": [
@@ -5885,22 +5885,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/matt-allan/laravel-code-style.git",
-                "reference": "1ee0fda4a25b08352506d4cf3e07a6f56a7dfe34"
+                "reference": "51efc868f934157fb63812d8f48406df30251f0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/1ee0fda4a25b08352506d4cf3e07a6f56a7dfe34",
-                "reference": "1ee0fda4a25b08352506d4cf3e07a6f56a7dfe34",
+                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/51efc868f934157fb63812d8f48406df30251f0c",
+                "reference": "51efc868f934157fb63812d8f48406df30251f0c",
                 "shasum": ""
             },
             "require": {
                 "friendsofphp/php-cs-fixer": "^2.14",
-                "illuminate/support": "5.7.x|5.8.x|^6.0|^7.0",
+                "illuminate/support": "5.7.x|5.8.x|^6.0|^7.0|^8.0",
                 "php": ">=7.2"
             },
             "require-dev": {
-                "laravel/framework": "^7.0",
-                "phpunit/phpunit": "^7.0"
+                "laravel/framework": "^7.0|^8.0",
+                "orchestra/testbench": "^5.0|^6.0",
+                "phpunit/phpunit": "^7.0|^8.0"
             },
             "type": "library",
             "extra": {
@@ -5936,7 +5937,7 @@
                 "laravel",
                 "php-cs-fixer"
             ],
-            "time": "2020-04-08T21:32:59+00:00"
+            "time": "2020-09-07T14:57:29+00:00"
         },
         {
             "name": "maximebf/debugbar",
