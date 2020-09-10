@@ -2458,26 +2458,26 @@
         },
         {
             "name": "spatie/laravel-blade-javascript",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-blade-javascript.git",
-                "reference": "1f6c95d14c958d71a54e216e790c0fd111cfac02"
+                "reference": "26717b4f1661c6046921f83e102a1433c108cf0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-blade-javascript/zipball/1f6c95d14c958d71a54e216e790c0fd111cfac02",
-                "reference": "1f6c95d14c958d71a54e216e790c0fd111cfac02",
+                "url": "https://api.github.com/repos/spatie/laravel-blade-javascript/zipball/26717b4f1661c6046921f83e102a1433c108cf0e",
+                "reference": "26717b4f1661c6046921f83e102a1433c108cf0e",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "~5.8|^6.0|^7.0",
-                "illuminate/support": "~5.8|^6.0|^7.0",
+                "illuminate/contracts": "~5.8|^6.0|^7.0|^8.0",
+                "illuminate/support": "~5.8|^6.0|^7.0|^8.0",
                 "php": "^7.2"
             },
             "require-dev": {
-                "orchestra/testbench": "~3.8.0|^4.0|^5.0",
-                "phpunit/phpunit": "^8.0|^9.0"
+                "orchestra/testbench": "~3.8.0|^4.0|^5.0|^6.0",
+                "phpunit/phpunit": "^8.0|^9.0|^9.3"
             },
             "type": "library",
             "extra": {
@@ -2526,7 +2526,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-03-04T10:22:39+00:00"
+            "time": "2020-09-09T08:43:18+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -5885,22 +5885,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/matt-allan/laravel-code-style.git",
-                "reference": "1ee0fda4a25b08352506d4cf3e07a6f56a7dfe34"
+                "reference": "e372af725ec19318479a92d9bf2355ca09fc80be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/1ee0fda4a25b08352506d4cf3e07a6f56a7dfe34",
-                "reference": "1ee0fda4a25b08352506d4cf3e07a6f56a7dfe34",
+                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/e372af725ec19318479a92d9bf2355ca09fc80be",
+                "reference": "e372af725ec19318479a92d9bf2355ca09fc80be",
                 "shasum": ""
             },
             "require": {
                 "friendsofphp/php-cs-fixer": "^2.14",
-                "illuminate/support": "5.7.x|5.8.x|^6.0|^7.0",
+                "illuminate/support": "5.7.x|5.8.x|^6.0|^7.0|^8.0",
                 "php": ">=7.2"
             },
             "require-dev": {
-                "laravel/framework": "^7.0",
-                "phpunit/phpunit": "^7.0"
+                "laravel/framework": "^7.0|^8.0",
+                "orchestra/testbench": "^5.0|^6.0",
+                "phpunit/phpunit": "^7.0|^8.0"
             },
             "type": "library",
             "extra": {
@@ -5936,7 +5937,7 @@
                 "laravel",
                 "php-cs-fixer"
             ],
-            "time": "2020-04-08T21:32:59+00:00"
+            "time": "2020-09-09T23:13:42+00:00"
         },
         {
             "name": "maximebf/debugbar",
