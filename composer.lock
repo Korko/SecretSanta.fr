@@ -8,21 +8,21 @@
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
-            "version": "3.2.1",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anhskohbo/no-captcha.git",
-                "reference": "6386365b76cfa6a6043dc2783a2a615c8574faf9"
+                "reference": "f654a4093bd2e9ddbdfad3297bb7aa142a55e611"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anhskohbo/no-captcha/zipball/6386365b76cfa6a6043dc2783a2a615c8574faf9",
-                "reference": "6386365b76cfa6a6043dc2783a2a615c8574faf9",
+                "url": "https://api.github.com/repos/anhskohbo/no-captcha/zipball/f654a4093bd2e9ddbdfad3297bb7aa142a55e611",
+                "reference": "f654a4093bd2e9ddbdfad3297bb7aa142a55e611",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.2|^7.0",
-                "illuminate/support": "^5.0|^6.0|^7.0",
+                "illuminate/support": "^5.0|^6.0|^7.0|^8.0",
                 "php": ">=5.5.5"
             },
             "require-dev": {
@@ -64,7 +64,7 @@
                 "no-captcha",
                 "recaptcha"
             ],
-            "time": "2020-08-06T05:45:09+00:00"
+            "time": "2020-09-10T02:31:52+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -5885,22 +5885,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/matt-allan/laravel-code-style.git",
-                "reference": "1ee0fda4a25b08352506d4cf3e07a6f56a7dfe34"
+                "reference": "e372af725ec19318479a92d9bf2355ca09fc80be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/1ee0fda4a25b08352506d4cf3e07a6f56a7dfe34",
-                "reference": "1ee0fda4a25b08352506d4cf3e07a6f56a7dfe34",
+                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/e372af725ec19318479a92d9bf2355ca09fc80be",
+                "reference": "e372af725ec19318479a92d9bf2355ca09fc80be",
                 "shasum": ""
             },
             "require": {
                 "friendsofphp/php-cs-fixer": "^2.14",
-                "illuminate/support": "5.7.x|5.8.x|^6.0|^7.0",
+                "illuminate/support": "5.7.x|5.8.x|^6.0|^7.0|^8.0",
                 "php": ">=7.2"
             },
             "require-dev": {
-                "laravel/framework": "^7.0",
-                "phpunit/phpunit": "^7.0"
+                "laravel/framework": "^7.0|^8.0",
+                "orchestra/testbench": "^5.0|^6.0",
+                "phpunit/phpunit": "^7.0|^8.0"
             },
             "type": "library",
             "extra": {
@@ -5936,7 +5937,7 @@
                 "laravel",
                 "php-cs-fixer"
             ],
-            "time": "2020-04-08T21:32:59+00:00"
+            "time": "2020-09-09T23:13:42+00:00"
         },
         {
             "name": "maximebf/debugbar",
