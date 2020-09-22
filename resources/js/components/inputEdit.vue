@@ -4,9 +4,6 @@
     import Vuelidate from 'vuelidate';
     Vue.use(Vuelidate);
 
-    import $ from 'jquery';
-    import alertify from '../partials/alertify.js';
-
     import store from '../partials/store.js';
 
     import StateMachine from '../mixins/stateMachine.js';
@@ -112,28 +109,27 @@
                 this.$v.$touch();
                 this.send('submit');
             },
+            onResend() {
+                this.send('resend');
+            },
             submit() {
-                var app = this;
-                return $.ajax({
-                    url: this.action,
-                    type: 'POST',
-                    data: {
-                        _token: this.csrf,
-                        key: this.key,
-                        [this.name]: this.newValue
-                    },
-                    success(data, textStatus, jqXHR) {
-                        var update = { value: app.newValue };
-                        if (jqXHR.responseJSON) {
-                            if (jqXHR.responseJSON.message) alertify.success(jqXHR.responseJSON.message);
-                            Object.assign(update, jqXHR.responseJSON);
-                        }
-                        app.$emit('update', update);
-                    },
-                    error(jqXHR) {
-                        if (jqXHR.responseJSON && jqXHR.responseJSON.message)
-                            alertify.error(jqXHR.responseJSON.message);
-                    }
+                return new Promise((resolve, reject) => {
+                    axios
+                        .post(this.action, {
+                            [this.name]: this.newValue
+                        })
+                        .then(response => {
+                            var update = { value: this.newValue };
+                            if (response.data) {
+                                Object.assign(update, response.data);
+                            }
+                            this.$emit('update', update);
+
+                            resolve();
+                        })
+                        .catch(error => {
+                            reject();
+                        });
                 });
             },
             stateView() {
@@ -199,6 +195,14 @@
                 />
                 <slot name="errors" :$v="$v.newValue"></slot>
                 <div class="input-group-append">
+                    <button
+                        v-if="state === 'viewError'"
+                        type="button"
+                        class="btn btn-outline-primary"
+                        @click="onResend"
+                    >
+                        <i class="fas fa-sync" />
+                    </button>
                     <button
                         v-if="state.startsWith('view')"
                         type="button"

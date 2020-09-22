@@ -23,7 +23,6 @@ class DearSantaRequest extends Request
     {
         return parent::rules() + [
             'content' => 'required|string',
-            'key'     => 'required|string',
         ];
     }
 
