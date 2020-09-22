@@ -1,7 +1,8 @@
 <script>
+    import jQuery from 'jquery';
+
+    import axios from '../partials/axios.js';
     import store from '../partials/store.js';
-    import $ from 'jquery';
-    import alertify from '../partials/alertify.js';
 
     export default {
         props: {
@@ -60,43 +61,43 @@
                     }
 
                     this.sending = true;
-                    var keys = { _token: this.csrf, key: this.key };
-                    var app = this;
-                    return $.ajax({
+
+                    var data = null;
+                    if(Array.isArray(options.data)) {
+                        data = (options.data.length) ?
+                            options.data.concat(
+                                Object.keys(keys).map(key => {
+                                    return { name: key, value: keys[key] };
+                                })
+                            ) : null;
+                    } else {
+                        data = Object.assign({}, options.data);
+                    }
+
+                    return axios({
                         url: url,
-                        type: options.data ? 'POST' : 'GET',
-                        data: Array.isArray(options.data)
-                            ? options.data.concat(
-                                  Object.keys(keys).map(key => {
-                                      return { name: key, value: keys[key] };
-                                  })
-                              )
-                            : Object.assign({}, options.data, keys),
-                        success(data, textStatus, jqXHR) {
-                            if (jqXHR.responseJSON && jqXHR.responseJSON.message)
-                                alertify.success(jqXHR.responseJSON.message);
+                        method: data ? 'POST' : 'GET',
+                        data: data
+                    })
+                    .then(response => {
+                        this.sending = false;
+                        this.sent = true;
 
-                            app.sending = false;
-                            app.sent = true;
+                        (options.success || options.then || function() {})(response.data);
+                        (options.complete || options.finally || function() {})();
 
-                            (options.success || options.then || function() {})(jqXHR.responseJSON);
-                            (options.complete || options.finally || function() {})();
+                        this.$emit('success', data);
+                    })
+                    .catch(error => {
+                        if (error.response.data && error.response.data.errors)
+                            this.fieldErrors = error.response.data.errors;
 
-                            app.$emit('success', data);
-                        },
-                        error(jqXHR) {
-                            if (jqXHR.responseJSON && jqXHR.responseJSON.error)
-                                alertify.errorAlert(jqXHR.responseJSON.error);
-                            if (jqXHR.responseJSON && jqXHR.responseJSON.errors)
-                                app.fieldErrors = jqXHR.responseJSON.errors;
+                        this.sending = false;
 
-                            app.sending = false;
+                        (options.error || options.catch || function() {})(error.response.data);
+                        (options.complete || options.finally || function() {})();
 
-                            (options.error || options.catch || function() {})(jqXHR.responseJSON);
-                            (options.complete || options.finally || function() {})();
-
-                            app.$emit('error');
-                        }
+                        this.$emit('error');
                     });
                 }
             },
@@ -111,7 +112,7 @@
             },
             submit(postData, options) {
                 this.$emit('beforeSubmit');
-                postData = postData || $(this.$el).serializeArray();
+                postData = postData || jQuery(this.$el).serializeArray();
                 var ajax = this.call(this.action, Object.assign({ data: postData }, options));
                 this.$emit('afterSubmit');
                 return ajax;
