@@ -22,10 +22,6 @@ mix.webpackConfig({
  |
  */
 
-mix.autoload({
-  jquery: ['$', 'jQuery', 'window.jQuery']
-});
-
 mix.webpackConfig({
   module: {
     rules: [
@@ -53,7 +49,7 @@ mix.js('resources/js/common.js', 'public/js')
       'jquery', 'jquery-ui', 'jquery.actual', 'jquery.scrollto', 'bootstrap'
     ], 'public/js/vendors-jquery.js')
    .extract([
-      'alertify.js', 'moment', 'papaparse', 'crypto-js'
+      'alertify.js', 'moment', 'papaparse', 'crypto-js', 'axios'
     ], 'public/js/vendors-ui.js')
    .sass('resources/sass/randomForm.scss', 'public/css')
    .sass('resources/sass/dearSanta.scss', 'public/css')
