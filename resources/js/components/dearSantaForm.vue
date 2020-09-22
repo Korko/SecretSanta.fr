@@ -8,9 +8,11 @@
     import axios from '../partials/axios.js';
     import store from '../partials/store.js';
 
+    import EmailStatus from './emailStatus.vue';
     import DefaultForm from './form.vue';
 
     export default {
+        components: { EmailStatus },
         extends: DefaultForm,
         props: {
             data: {
@@ -115,7 +117,7 @@
                 <tr v-for="email in emails" :key="email.id" class="email">
                     <td>{{ email.created_at }}</td>
                     <td>{{ email.mail_body }}</td>
-                    <td>{{ $t(`common.email.status.${email.delivery_status}`) }}</td>
+                    <td><email-status :delivery_status="email.delivery_status" /></td>
                 </tr>
                 <tr v-if="emails.length === 0" class="no-email">
                     <td colspan="3">

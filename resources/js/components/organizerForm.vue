@@ -11,10 +11,11 @@
     import store from '../partials/store.js';
 
     import InputEdit from './inputEdit.vue';
+    import EmailStatus from './emailStatus.vue';
     import DefaultForm from './form.vue';
 
     export default {
-        components: { InputEdit },
+        components: { InputEdit, EmailStatus },
         extends: DefaultForm,
         props: {
             data: {
@@ -134,7 +135,7 @@
                             </template>
                         </input-edit>
                     </td>
-                    <td>{{ $t(`common.email.status.${participant.mail.delivery_status}`) }}</td>
+                    <td><email-status :delivery_status="participant.mail.delivery_status" /></td>
                 </tr>
             </tbody>
         </table>

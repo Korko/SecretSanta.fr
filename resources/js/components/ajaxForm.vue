@@ -29,6 +29,10 @@
             $v: {
                 type: Object,
                 default: null
+            },
+            sendIcon: {
+                type: String,
+                default: 'paper-plane'
             }
         },
         data: () => {
@@ -120,7 +124,7 @@
             <button type="submit" class="btn btn-primary btn-lg">
                 <span v-if="sent"><span class="fas fa-check-circle" /> {{ buttonSent || $t('common.form.sent') }}</span>
                 <span v-else-if="sending"><span class="fas fa-spinner" /> {{ buttonSending || $t('common.form.sending') }}</span>
-                <span v-else>{{ buttonSend || $t('common.form.send') }}</span>
+                <span v-else><span :class="'fas fa-'+sendIcon" /> {{ buttonSend || $t('common.form.send') }}</span>
             </button>
         </fieldset>
     </form>
