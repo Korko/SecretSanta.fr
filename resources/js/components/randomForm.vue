@@ -232,7 +232,7 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :$v="$v">
+            <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :$v="$v" send-icon="dice">
                 <template #default="{ sending, sent, fieldError }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ $t('form.success') }}
