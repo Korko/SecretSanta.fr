@@ -3353,6 +3353,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     $v: {
       type: Object,
       default: null
+    },
+    sendIcon: {
+      type: String,
+      default: 'paper-plane'
     }
   },
   data: function data() {
@@ -9623,8 +9627,10 @@ var render = function() {
                       )
                     ])
                   : _c("span", [
+                      _c("span", { class: "fas fa-" + _vm.sendIcon }),
                       _vm._v(
-                        _vm._s(_vm.buttonSend || _vm.$t("common.form.send"))
+                        " " +
+                          _vm._s(_vm.buttonSend || _vm.$t("common.form.send"))
                       )
                     ])
               ]
@@ -10179,7 +10185,8 @@ var render = function() {
               id: "randomForm",
               action: "/",
               "button-send": _vm.$t("form.submit"),
-              $v: _vm.$v
+              $v: _vm.$v,
+              "send-icon": "dice"
             },
             on: { reset: _vm.reset },
             scopedSlots: _vm._u([
