@@ -1,13 +1,12 @@
 <script>
-    import jQuery from 'jquery';
-
-    import store from '../partials/store.js';
-
     import Vue from 'vue';
 
     import Vuelidate from 'vuelidate';
     import { required } from 'vuelidate/lib/validators'
     Vue.use(Vuelidate);
+
+    import axios from '../partials/axios.js';
+    import store from '../partials/store.js';
 
     import DefaultForm from './form.vue';
 
@@ -58,24 +57,20 @@
                 this.$set(this.data.emails, data.email.id, data.email);
             },
             fetchState() {
-                var app = this;
-                return jQuery.ajax({
-                    url: this.routes.fetchStateUrl,
-                    type: 'POST',
-                    data: { _token: this.csrf, key: this.key },
-                    success(data) {
-                        if (data.emails) {
-                            Object.values(data.emails).forEach(email => {
+                return axios
+                    .get(this.routes.fetchStateUrl)
+                    .then(response => {
+                        if (response.data.emails) {
+                            Object.values(response.data.emails).forEach(email => {
                                 var new_update = new Date(email.mail.updated_at);
-                                var old_update = new Date(app.data.emails[email.id].mail.updated_at);
-                                app.data.emails[email.id].mail.delivery_status =
+                                var old_update = new Date(this.data.emails[email.id].mail.updated_at);
+                                this.data.emails[email.id].mail.delivery_status =
                                     new_update > old_update
                                         ? email.mail.delivery_status
-                                        : app.data.emails[email.id].mail.delivery_status;
+                                        : this.data.emails[email.id].mail.delivery_status;
                             });
                         }
-                    }
-                });
+                    });
             }
         }
     };

@@ -1,15 +1,14 @@
 <script>
-    import jQuery from 'jquery';
-
     import Vue from "vue";
 
     import VuejsDialog from "vuejs-dialog";
     import 'vuejs-dialog/dist/vuejs-dialog.min.css';
     Vue.use(VuejsDialog);
 
-    import store from '../partials/store.js';
-
     import { required, email } from 'vuelidate/lib/validators';
+
+    import axios from '../partials/axios.js';
+    import store from '../partials/store.js';
 
     import InputEdit from './inputEdit.vue';
     import DefaultForm from './form.vue';
@@ -57,24 +56,20 @@
                 this.data.participants[k].mail.updated_at = data.participant.mail.updated_at;
             },
             fetchState() {
-                var app = this;
-                return jQuery.ajax({
-                    url: this.routes.fetchStateUrl,
-                    type: 'POST',
-                    data: { _token: this.csrf, key: this.key },
-                    success(data) {
-                        if (data.participants) {
-                            Object.values(data.participants).forEach(participant => {
+                return axios
+                    .get(this.routes.fetchStateUrl)
+                    .then(response => {
+                        if (response.data.participants) {
+                            Object.values(response.data.participants).forEach(participant => {
                                 var new_update = new Date(participant.mail.updated_at);
-                                var old_update = new Date(app.data.participants[participant.id].mail.updated_at);
-                                app.data.participants[participant.id].mail.delivery_status =
+                                var old_update = new Date(this.data.participants[participant.id].mail.updated_at);
+                                this.data.participants[participant.id].mail.delivery_status =
                                     new_update > old_update
                                         ? participant.mail.delivery_status
-                                        : app.data.participants[participant.id].mail.delivery_status;
+                                        : this.data.participants[participant.id].mail.delivery_status;
                             });
                         }
-                    }
-                });
+                    });
             },
             confirmPurge() {
                 let options = {
@@ -94,16 +89,13 @@
                     .then(this.purge);
             },
             purge() {
-		var app = this;
-                return jQuery.ajax({
-                    url: this.routes.deleteUrl,
-                    type: 'DELETE',
-                    data: { _token: this.csrf, key: this.key },
-                    success(data) {
-                        app.$dialog.alert(data.message)
+                return axios
+                    .delete(this.routes.deleteUrl, { _token: this.csrf, key: this.key })
+                    .then(data => {
+                        this.$dialog
+                            .alert(data.message)
                             .then(() => window.location.pathname = '/');
-                    }
-                });
+                    });
             }
         }
     };
@@ -146,6 +138,9 @@
                 </tr>
             </tbody>
         </table>
-        <button type="button" class="btn btn-danger" @click="confirmPurge">{{ $t('organizer.purge.button') }}</button>
+        <button type="button" class="btn btn-danger" @click="confirmPurge">
+            <i class="fas fa-trash" />
+            {{ $t('organizer.purge.button') }}
+        </button>
     </div>
 </template>

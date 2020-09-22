@@ -17,8 +17,8 @@ class HandleEncryptionKey
      */
     public function handle($request, Closure $next, $parameterToCheck, $fieldToCheck)
     {
-        $key = base64_decode($request->input('key'));
-        if (is_string($key)) {
+        $key = base64_decode($request->input('key') ?: $request->header('X-HASH-KEY'));
+        if (!empty($key)) {
             Crypt::setKey($key);
         }
 

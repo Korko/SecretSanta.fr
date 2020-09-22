@@ -1,10 +1,12 @@
 <script>
     import Modal from './modal.vue';
+    import jQuery from 'jquery';
+
     export default {
         components: { Modal },
         methods: {
             emitSubmit: function() {
-                this.$emit('import', $('#uploadCsv input[type=file]')[0].files[0]);
+                this.$emit('import', jQuery('#uploadCsv input[type=file]')[0].files[0]);
                 this.$emit('close');
             },
             emitCancel: function() {
