@@ -43,7 +43,7 @@ class FixOrganizer extends Command
     {
         $this->setCryptKeyFromUrl($this->argument('url'));
 
-        $draw = Participant::findByDearSantaUrlOrFail($this->argument('url'))->draw;
+        $draw = Participant::findByDearSantaUrl($this->argument('url'))->draw;
 
         $draw->organizer->email = $this->argument('email');
         $draw->organizer->save();

@@ -22,7 +22,8 @@ class OrganizerChangeEmailRequest extends Request
     public function rules()
     {
         return parent::rules() + [
-            'email' => 'required|email',
+            'email'                => 'required|email',
+            'key'                  => 'required|string',
         ];
     }
 

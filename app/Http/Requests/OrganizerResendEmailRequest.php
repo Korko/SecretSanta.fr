@@ -13,4 +13,16 @@ class OrganizerResendEmailRequest extends Request
     {
         return true;
     }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return parent::rules() + [
+            'key'                  => 'required|string',
+        ];
+    }
 }
