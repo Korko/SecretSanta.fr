@@ -28,16 +28,16 @@ Route::pattern('participant:hash', '[0-9a-zA-Z]{'.config('hashids.connections.sa
 Route::middleware(['signed'])->group(function () {
 	Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta');
 	Route::middleware(['decrypt.key:participant,name'])->group(function () {
-	    Route::post('/dearsanta/{participant:hash}', [DearSantaController::class, 'fetch'])->name('dearsanta.fetch');
-	    Route::post('/dearsanta/{participant:hash}/send', [DearSantaController::class, 'handle'])->name('dearsanta.contact');
-	    Route::post('/dearsanta/{participant:hash}/fetchState', [DearSantaController::class, 'fetchState'])->name('dearsanta.fetchState');
+	    Route::get('/santa/{participant:hash}', [DearSantaController::class, 'fetch'])->name('dearsanta.fetch');
+	    Route::post('/santa/{participant:hash}/send', [DearSantaController::class, 'handle'])->name('dearsanta.contact');
+	    Route::get('/santa/{participant:hash}/fetchState', [DearSantaController::class, 'fetchState'])->name('dearsanta.fetchState');
 	});
 
-	Route::get('/draw/{draw:hash}', [OrganizerController::class, 'view'])->name('organizerPanel');
+	Route::get('/org/{draw:hash}', [OrganizerController::class, 'view'])->name('organizerPanel');
 	Route::middleware(['decrypt.key:draw,mail_title'])->group(function () {
-	    Route::post('/draw/{draw:hash}', [OrganizerController::class, 'fetch'])->name('organizerPanel.fetch');
+	    Route::get('/draw/{draw:hash}', [OrganizerController::class, 'fetch'])->name('organizerPanel.fetch');
 	    Route::delete('/draw/{draw:hash}', [OrganizerController::class, 'delete'])->name('organizerPanel.delete');
-	    Route::post('/draw/{draw:hash}/fetchState', [OrganizerController::class, 'fetchState'])->name('organizerPanel.fetchState');
+	    Route::get('/draw/{draw:hash}/fetchState', [OrganizerController::class, 'fetchState'])->name('organizerPanel.fetchState');
 	});
 	Route::middleware(['decrypt.key:participant,name'])->group(function () {
 	    Route::post('/participant/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
