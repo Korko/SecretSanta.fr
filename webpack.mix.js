@@ -29,6 +29,11 @@ mix.webpackConfig({
         // Matches all PHP or JSON files in `resources/lang` directory.
         test: /resources[\\\/]lang.+\.(php|json)$/,
         loader: 'laravel-localization-loader',
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "babel-loader"
       }
     ]
   }
