@@ -24,6 +24,7 @@ class HandleEncryptionKey
 
         try {
             // Accessing the attribute is enough
+            // @phpstan-ignore-next-line
             $request->route()->parameters()[$parameterToCheck]->$fieldToCheck;
         } catch (DecryptException $e) {
             abort(500, "Invalid encryption key");
