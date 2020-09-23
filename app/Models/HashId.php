@@ -34,6 +34,8 @@ trait HashId
     /**
      * Retrieve the model for a bound value.
      *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
      * @param  mixed  $value
      * @param  string|null  $field
      * @return \Illuminate\Database\Eloquent\Model|null

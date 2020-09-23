@@ -10,6 +10,8 @@ class EncryptedString implements CastsAttributes
     /**
      * Cast the given value.
      *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
      * @param  mixed  $value
@@ -23,6 +25,8 @@ class EncryptedString implements CastsAttributes
 
     /**
      * Prepare the given value for storage.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
