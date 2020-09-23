@@ -130,6 +130,6 @@ phpstan:
   stage: metrics
   script:
     - composer global require --dev nunomaduro/larastan
-    - wget https://gist.githubusercontent.com/Korko/19ad2705a8a8632819aa8370fcb631b8/raw/d79f918004273b8823a5530e57141119eba69ac6/phpstan.neon
+    - wget https://gist.githubusercontent.com/Korko/19ad2705a8a8632819aa8370fcb631b8/raw/a1843fa75eab4fd16296306b00264037f5328d22/phpstan.neon    
     - phpstan analyse -c phpstan.neon
   allow_failure: true
