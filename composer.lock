@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e94216f786bac39208a52112748d121c",
+    "content-hash": "b7c755dec84940e0955db5e94d58d8fe",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -353,6 +353,20 @@
                 "lexer",
                 "parser",
                 "php"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Flexer",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-05-25T17:44:05+00:00"
         },
@@ -4971,25 +4985,25 @@
         },
         {
             "name": "webklex/laravel-imap",
-            "version": "1.6.2",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Webklex/laravel-imap.git",
-                "reference": "310f4630ce792fdde388e2a850a1769853241a33"
+                "reference": "645557df4d70ed71fdca380ea3c3427b62547c01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Webklex/laravel-imap/zipball/310f4630ce792fdde388e2a850a1769853241a33",
-                "reference": "310f4630ce792fdde388e2a850a1769853241a33",
+                "url": "https://api.github.com/repos/Webklex/laravel-imap/zipball/645557df4d70ed71fdca380ea3c3427b62547c01",
+                "reference": "645557df4d70ed71fdca380ea3c3427b62547c01",
                 "shasum": ""
             },
             "require": {
                 "ext-fileinfo": "*",
                 "ext-iconv": "*",
-                "ext-imap": "*",
                 "ext-mbstring": "*",
                 "laravel/framework": ">=5.0.0",
-                "php": ">=5.5.9"
+                "php": ">=5.5.9",
+                "webklex/php-imap": "^2.1"
             },
             "type": "library",
             "extra": {
@@ -5007,7 +5021,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Webklex\\IMAP\\": "src/IMAP"
+                    "Webklex\\IMAP\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5024,13 +5038,74 @@
             "description": "Laravel IMAP client",
             "homepage": "https://github.com/webklex/laravel-imap",
             "keywords": [
+                "idle",
                 "imap",
                 "laravel",
                 "laravel-imap",
                 "mail",
+                "oauth",
+                "pop3",
                 "webklex"
             ],
-            "time": "2020-09-07T10:03:36+00:00"
+            "time": "2020-10-15T04:45:14+00:00"
+        },
+        {
+            "name": "webklex/php-imap",
+            "version": "2.1.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Webklex/php-imap.git",
+                "reference": "a08fd06c81e312cdb5df6dc5f03a844b974f7883"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Webklex/php-imap/zipball/a08fd06c81e312cdb5df6dc5f03a844b974f7883",
+                "reference": "a08fd06c81e312cdb5df6dc5f03a844b974f7883",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "ext-iconv": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "illuminate/pagination": ">=5.0.0",
+                "nesbot/carbon": ">=1.0",
+                "php": ">=5.5.9",
+                "symfony/http-foundation": ">=2.8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webklex\\PHPIMAP\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Malte Goldenbaum",
+                    "email": "github@webklex.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP IMAP client",
+            "homepage": "https://github.com/webklex/php-imap",
+            "keywords": [
+                "imap",
+                "mail",
+                "php-imap",
+                "pop3",
+                "webklex"
+            ],
+            "time": "2020-10-13T18:06:48+00:00"
         }
     ],
     "packages-dev": [
@@ -5874,6 +5949,7 @@
                 "laravel",
                 "vue-i18n"
             ],
+            "abandoned": true,
             "time": "2020-03-10T18:55:52+00:00"
         },
         {
@@ -5882,12 +5958,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/matt-allan/laravel-code-style.git",
-                "reference": "e372af725ec19318479a92d9bf2355ca09fc80be"
+                "reference": "e021c5bfe5e3a534b2988aa0ab372a6a743e1fd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/e372af725ec19318479a92d9bf2355ca09fc80be",
-                "reference": "e372af725ec19318479a92d9bf2355ca09fc80be",
+                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/e021c5bfe5e3a534b2988aa0ab372a6a743e1fd6",
+                "reference": "e021c5bfe5e3a534b2988aa0ab372a6a743e1fd6",
                 "shasum": ""
             },
             "require": {
@@ -5934,7 +6010,7 @@
                 "laravel",
                 "php-cs-fixer"
             ],
-            "time": "2020-09-09T23:13:42+00:00"
+            "time": "2020-09-27T16:47:09+00:00"
         },
         {
             "name": "maximebf/debugbar",
