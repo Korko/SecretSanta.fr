@@ -34,7 +34,7 @@ class ParseBounces implements ShouldQueue
             } catch (Exception $e) {
                 // Just ignore the exception
             } finally {
-                $unseenMail->delete();
+                $unseenMail->move(config('imap.folders.trash'));
             }
         }
     }

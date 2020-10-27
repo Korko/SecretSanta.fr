@@ -16,7 +16,7 @@ class EmailClient
 
     public function getUnseenMails(): Iterable
     {
-        $oFolder = $this->delegate->getFolder('INBOX');
+        $oFolder = $this->delegate->getFolder(config('imap.folders.inbox'));
 
         return $oFolder->query()->whereUnseen()->get();
     }
