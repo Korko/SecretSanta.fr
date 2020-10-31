@@ -103,6 +103,15 @@
                             <p>{!! nl2br(trans('form.section.how.content3')) !!}</p>
                         </div>
                     </li>
+                    <li class="media">
+                        <div class="media-body">
+                            <h4 class="media-heading">@lang('form.section.how.heading4')</h4>
+                            <p>{!! nl2br(trans('form.section.how.content4')) !!}</p>
+                        </div>
+                        <div class="media-right media-middle">
+                            <img class="media-object" src="/images/clock-icon.png" />
+                        </div>
+                    </li>
                 </ul>
                 <div class="card w-100">
                     <div class="bg-light card-body">
