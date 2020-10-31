@@ -1,7 +1,7 @@
 <script>
     import store from '../partials/store.js';
     import $ from 'jquery';
-    import alertify from 'alertify.js';
+    import alertify from '../partials/alertify.js';
 
     export default {
         props: {
@@ -82,7 +82,7 @@
                         },
                         error(jqXHR) {
                             if (jqXHR.responseJSON && jqXHR.responseJSON.error)
-                                alertify.error(jqXHR.responseJSON.error);
+                                alertify.errorAlert(jqXHR.responseJSON.error);
                             if (jqXHR.responseJSON && jqXHR.responseJSON.errors)
                                 app.fieldErrors = jqXHR.responseJSON.errors;
 

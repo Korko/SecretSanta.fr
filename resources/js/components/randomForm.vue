@@ -3,7 +3,7 @@
     window.$ = window.jQuery = jQuery;
     import 'jquery-ui/ui/widgets/datepicker.js';
 
-    import alertify from 'alertify.js';
+    import alertify from '../partials/alertify.js';
 
     import Vue from 'vue';
 

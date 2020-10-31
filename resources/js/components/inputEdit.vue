@@ -5,7 +5,7 @@
     Vue.use(Vuelidate);
 
     import $ from 'jquery';
-    import alertify from 'alertify.js';
+    import alertify from '../partials/alertify.js';
 
     import store from '../partials/store.js';
 
