@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'solution' => 'Aucune solution possible',
+    'solution' => 'Les exclusions que vous avez choisies ne permettent pas d\'attribuer une cible par participant.',
 ];
