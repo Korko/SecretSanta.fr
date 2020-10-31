@@ -102,7 +102,7 @@ jQuery(document).ready(function() {
     });
 });
 
-var alertify = require('alertify.js');
+import alertify from './partials/alertify.js';
 if (window.global && window.global.alert) {
     alertify.alert(window.global.alert);
 }

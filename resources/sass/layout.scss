@@ -1,6 +1,15 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import '~alertifyjs/build/css/alertify.min';
+@import '~alertifyjs/build/css/themes/bootstrap.min';
+
+.alertify .ajs-dialog {
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+}
+
 /*
 Sticky Footer Solution
 by Steve Hatcher
