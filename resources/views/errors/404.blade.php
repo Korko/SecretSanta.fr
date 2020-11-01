@@ -14,8 +14,8 @@
     </div>
     <div class="error-content">
 
-        <h1 class="section-title text-center">Oups, cette page n'existe pas</h1>
-        <p class="lead main text-center">Votre évènement SecretSanta est probablement terminé</p>
+        <h1 class="section-title text-center">@lang('404.title')</h1>
+        <p class="lead main text-center">@lang('404.subtitle')</p>
 
     </div>
 @stop
