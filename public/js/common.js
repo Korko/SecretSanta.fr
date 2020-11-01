@@ -2182,7 +2182,7 @@ vue__WEBPACK_IMPORTED_MODULE_7___default.a.directive('tooltip', {
   inserted: function inserted(el, binding) {
     el.className = (el.className + " tip").trim();
     var div = document.createElement('div');
-    div.innerHTML = '<div class="tip-content ' + (binding.arg || 'right') + '">' + '<img src="/images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" />' + '<div class="text-content">' + binding.value + '</div>' + '<i></i>' + '</div>';
+    div.innerHTML = '<div class="tip-content ' + (binding.arg || 'right') + '">' + '<img src="/images/srikanta-h-u-TrGVhbsUf40-unsplash.png" />' + '<div class="text-content">' + binding.value + '</div>' + '<i></i>' + '</div>';
 
     while (div.children.length > 0) {
       el.appendChild(div.children[0]);

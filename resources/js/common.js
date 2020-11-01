@@ -125,7 +125,7 @@ Vue.directive('tooltip', {
 
         var div = document.createElement('div');
         div.innerHTML = '<div class="tip-content ' + (binding.arg || 'right') + '">'
-            + '<img src="/images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" />'
+            + '<img src="/images/srikanta-h-u-TrGVhbsUf40-unsplash.png" />'
             + '<div class="text-content">' + binding.value + '</div>'
             + '<i></i>'
             + '</div>';
