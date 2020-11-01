@@ -12040,25 +12040,26 @@ body {
 
 #main {
   overflow: auto;
-  padding-bottom: 180px;
+  padding-bottom: 100px;
 }
 
 /* must be same height as the footer */
 
 footer {
   position: relative;
-  margin-top: -180px;
+  margin-top: -100px;
   /* negative value of footer height */
-  height: 180px;
+  height: 100px;
+  font-size: 15px;
   clear: both;
 }
 
 footer .inner {
-  padding-bottom: 15px;
+  padding-bottom: 10px;
 }
 
 footer .row {
-  height: 165px;
+  height: 90px;
 }
 
 /* Opera Fix */
@@ -12280,14 +12281,13 @@ nav#navbar {
 ========================================================================== */
 
 .dark-wrapper {
-  background: #ed0121;
+  background: #b50119;
   color: white;
-  font-size: 20px;
   font-weight: bold;
 }
 
 .dark-wrapper .ss-style-top::before {
-  background-image: linear-gradient(315deg, #ed0121 50%, transparent 50%), linear-gradient(45deg, #ed0121 50%, transparent 50%);
+  background-image: linear-gradient(315deg, #b50119 50%, transparent 50%), linear-gradient(45deg, #b50119 50%, transparent 50%);
 }
 
 .themeBy {
@@ -12297,7 +12297,6 @@ nav#navbar {
 
 footer .row {
   display: flex;
-  align-items: center;
 }
 
 /* ==========================================================================
@@ -12519,10 +12518,6 @@ footer .row {
 .btn-outline-primary:not([disabled]):hover {
   background-color: #275c8b;
   border-color: #275c8b;
-}
-
-.dark-wrapper {
-  background-color: #b50119;
 }
 
 .btn[disabled] {

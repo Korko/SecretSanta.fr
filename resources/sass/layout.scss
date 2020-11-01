@@ -28,21 +28,22 @@ body { height: 100%; }
 
 #wrap { min-height: 100%; }
 
-$footer-height: 135px !default;
+$footer-height: 90px !default;
 
 #main {
     overflow: auto;
-    padding-bottom: $footer-height + 15px;
+    padding-bottom: $footer-height + 10px;
 }  /* must be same height as the footer */
 
 footer {
     position: relative;
-    margin-top: -$footer-height - 15px; /* negative value of footer height */
-    height: $footer-height + 15px;
+    margin-top: -$footer-height - 10px; /* negative value of footer height */
+    height: $footer-height + 10px;
+    font-size: 15px;
     clear: both;
 }
 
-footer .inner { padding-bottom: 15px; }
+footer .inner { padding-bottom: 10px; }
 footer .row { height: $footer-height; }
 
 /* Opera Fix */
@@ -265,14 +266,13 @@ nav#navbar {
     07. Footer
 ========================================================================== */
 .dark-wrapper {
-    background: #ed0121;
+    background: #b50119;
     color: white;
-    font-size: 20px;
     font-weight: bold;
 }
 
 .dark-wrapper .ss-style-top::before {
-    background-image: linear-gradient(315deg, #ed0121 50%, transparent 50%), linear-gradient(45deg, #ed0121 50%, transparent 50%);
+    background-image: linear-gradient(315deg, #b50119 50%, transparent 50%), linear-gradient(45deg, #b50119 50%, transparent 50%);
 }
 
 .themeBy {
@@ -282,7 +282,6 @@ nav#navbar {
 
 footer .row {
     display: flex;
-    align-items: center;
 }
 
 /* ==========================================================================
@@ -495,10 +494,6 @@ footer .row {
 .btn-primary,.btn-outline-primary:not([disabled]):hover {
     background-color: #275c8b;
     border-color: #275c8b;
-}
-
-.dark-wrapper {
-    background-color: #b50119;
 }
 
 .btn[disabled] {
