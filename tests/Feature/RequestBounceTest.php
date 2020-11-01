@@ -43,7 +43,7 @@ class RequestBounceTest extends RequestCase
                             (object) ['mailbox' => $link]
                         ]);
 
-                    $mock->shouldReceive('delete')->once();
+                    $mock->shouldReceive('move')->once();
                 });
             }
 
