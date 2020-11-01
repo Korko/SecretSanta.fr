@@ -45,7 +45,7 @@ Celles-ci sont chiffrées pour être inutilisables sans action de votre part.
 Aucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.
 Le code source est disponible sur :link',
             'heading4' => 'Et après ?',
-            'content4' => "Les participants peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email. Mais celui-ci ne peut pas répondre, au risque de dévoiler son identité.
+            'content4' => "Jusqu'au jour de l'évènement spécifiée à la fin, les participants peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email. Mais celui-ci ne peut pas répondre, au risque de dévoiler son identité.
 L'organisateur dispose aussi d'une interface dédiée pour retrouver le récapitulatif des participants et des exclusions.",
             'notice' => 'secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.
 Celles-ci sont chiffrées pour être inutilisables sans action de votre part.
@@ -105,7 +105,7 @@ Le code source est disponible sur :link',
     'mail' => [
         'title' => [
             'label'       => 'Titre du mail',
-            'placeholder' => 'ex : Soirée secretsanta du 23 décembre chez Martin',
+            'placeholder' => 'ex : Soirée secretsanta du 23 décembre chez Martin, {SANTA} ta cible est...',
         ],
         'content' => [
             'label'       => 'Contenu du mail',
@@ -118,7 +118,8 @@ Pour écrire à votre Secret Santa, allez sur la page suivante : :link
 via SecretSanta.fr',
     ],
 
-    'data-expiration'   => 'Date limite de stockage des emails',
+    'data-expiration' => 'Date de l\'évènement : ',
+    'data-expiration-tooltip' => '<h3>Date de l\'évènement</h3><ul><li>Une interface dédiée vous permettra d\'accéder à un récapitulatif des participants jusqu\'au jour de l\'évènement.</li><li>Toutes les données stockées seront supprimées une semaine après.</li></ul>',
 
     'submit'  => 'Lancez l\'aléatoire !',
 

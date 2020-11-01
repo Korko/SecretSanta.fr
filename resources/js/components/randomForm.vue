@@ -41,7 +41,7 @@
                 participants: [],
                 title: '',
                 content: '',
-                expiration: formatMoment(1, 'day'),
+                expiration: null,
                 now: window.now,
                 showModal: false,
                 importing: false,
@@ -152,7 +152,7 @@
 
             // Just because I couldn't handle too much depth with quotes
             anchor(event) {
-                return `<a href="" @click.prevent='\$emit("${event}")'>`;
+                return `<a class="link" @click.prevent='\$emit("${event}")'>`;
             },
 
             moment(amount, unit) {
@@ -224,6 +224,17 @@
 
             appendTarget() {
                 this.content += "{TARGET}";
+            },
+
+            reset() {
+                this.participants = [];
+                this.title = '';
+                this.content = '';
+                this.expiration = null;
+
+                this.addParticipant();
+                this.addParticipant();
+                this.addParticipant();
             }
         }
     };
@@ -232,7 +243,7 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :$v="$v">
+            <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :$v="$v" @reset="reset">
                 <template #default="{ sending, sent, fieldError }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ $t('form.success') }}
@@ -360,7 +371,7 @@
                     <fieldset>
                         <div id="form-options" class="form-group">
                             <div class="input-inline-group">
-                                <label for="expiration">{{ $t('form.data-expiration') }}</label>
+                                <label for="expiration" v-tooltip:top="$t('form.data-expiration-tooltip')">{{ $t('form.data-expiration') }}</label>
                                 <input
                                     type="date"
                                     name="data-expiration"

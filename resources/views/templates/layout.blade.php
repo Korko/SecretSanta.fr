@@ -75,6 +75,8 @@
                 <div class="col-md-6">
                     @section('copyright')
                         &copy; Copyright SecretSanta.fr 2015
+                        <br />{!! trans('footer.fork', ['git' => '<a class="themeBy" href="https://framagit.org/Korko/SecretSanta">GitLab</a>']) !!}
+                        <br />{!! trans('footer.version', ['version' => $version]) !!}
                         <br />{!! trans('footer.project', ['author' => '<a class="themeBy" href="https://www.korko.fr">Korko</a>']) !!}
                         <br />{!! trans('footer.theme', ['author' => '<a class="themeBy" href="https://www.themewagon.com">ThemeWagon</a>']) !!}
                     @show
@@ -83,8 +85,6 @@
         </div>
         <!-- /.container -->
     </footer>
-
-    <span id="forkongithub" class="hidden-sm"><a href="https://framagit.org/Korko/SecretSanta" title="Fork me on GitLab">Fork me on GitLab<br/>Current version {{ $version }}</a></span>
 
     @section('script')
         <script src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" data-auto-replace-svg="nest"></script>

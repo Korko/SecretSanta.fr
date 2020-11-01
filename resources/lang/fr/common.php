@@ -12,6 +12,7 @@ return [
         'send'    => 'Envoyer',
         'sending' => 'Envoi en cours',
         'sent'    => 'Envoyé',
+        'reset'   => 'Recommencer'
     ],
 
     'modal' => [

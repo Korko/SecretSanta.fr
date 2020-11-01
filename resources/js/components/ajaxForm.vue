@@ -25,6 +25,10 @@
                 type: String,
                 default: ''
             },
+            buttonReset: {
+                type: String,
+                default: ''
+            },
             $v: {
                 type: Object,
                 default: null
@@ -99,6 +103,12 @@
             onSubmit() {
                 this.submit();
             },
+            onReset() {
+                this.$emit('reset');
+                this.fieldErrors = [];
+                this.sending = false;
+                this.sent = false;
+            },
             submit(postData, options) {
                 this.$emit('beforeSubmit');
                 postData = postData || $(this.$el).serializeArray();
@@ -111,15 +121,18 @@
 </script>
 
 <template>
-    <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit">
+    <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit" @reset.prevent="onReset">
         <fieldset :disabled="sending || sent">
-            <slot v-bind="{ sending, sent, submit, onSubmit, fieldError }" />
+            <slot v-bind="{ sending, sent, submit, onSubmit, onReset, fieldError }" />
         </fieldset>
         <fieldset v-if="button">
-            <button type="submit" class="btn btn-primary btn-lg">
+            <button type="submit" class="btn btn-primary btn-lg" :disabled="sent || sending">
                 <span v-if="sent"><span class="fas fa-check-circle" /> {{ buttonSent || $t('common.form.sent') }}</span>
                 <span v-else-if="sending"><span class="fas fa-spinner" /> {{ buttonSending || $t('common.form.sending') }}</span>
                 <span v-else>{{ buttonSend || $t('common.form.send') }}</span>
+            </button>
+            <button v-if="sent" type="reset" class="btn btn-primary btn-lg">
+                <span><span class="fas fa-backward" /> {{ buttonReset || $t('common.form.reset') }}</span>
             </button>
         </fieldset>
     </form>
