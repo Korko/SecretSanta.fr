@@ -22,7 +22,6 @@
 @stop
 
 @section('body')
-    <span id="ribbon" class="d-none d-md-block"><a href="{{ route('faq') }}" target="_blank">@lang('form.nav.faq')</a></span>
     <div id="header">
         <div class="bg-overlay"></div>
         <div class="center text-center">

@@ -26,6 +26,77 @@ $footer-height: 165px;
 @import "~jquery-ui/themes/base/datepicker";
 
 /* ==========================================================================
+    02. Header
+========================================================================== */
+#header {
+    background-image: url(/images/gifts-1.jpg);
+    -moz-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+#header .center {
+    position: relative;
+    z-index: 1;
+    color: white;
+    padding: 100px 0;
+}
+
+#header .bottom {
+    color: white;
+}
+
+#header .center .slogan {
+    font-size: 26px;
+    text-transform: uppercase;
+}
+
+#header .banner h1 {
+    font-size: 100px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: inline-block;
+    background: #ed0121;
+    padding: 0 18px;
+}
+
+#header .subtitle h4 {
+    display: inline-block;
+    background: white;
+    color: #ed0121;
+    font-size: 38px;
+    padding: 0 15px;
+}
+
+#header .bottom {
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    bottom: 30px;
+}
+
+#header .bottom a {
+    font-size: 36px;
+    color: whitesmoke;
+    position: relative;
+    top: -5px;
+}
+
+.bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(44, 33, 5, 0.2);
+    z-index: 0;
+}
+
+/* ==========================================================================
     04. Parallax
 ========================================================================== */
 .parallax {
@@ -229,4 +300,21 @@ fieldset > div.form-group {
     .participant-remove span {
         display: none;
     }
+}
+
+@media (max-width: 767px) {
+    #header .banner h1 {
+        font-size: 60px;
+    }
+
+    #header .subtitle h4 {
+        font-size: 22px;
+    }
+}
+
+/* ==========================================================================
+    12. Widgets
+========================================================================== */
+.participants-import button .fa-spinner {
+    margin-right: 10px;
 }

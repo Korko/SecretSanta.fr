@@ -12040,16 +12040,16 @@ body {
 
 #main {
   overflow: auto;
-  padding-bottom: 115px;
+  padding-bottom: 150px;
 }
 
 /* must be same height as the footer */
 
 footer {
   position: relative;
-  margin-top: -115px;
+  margin-top: -150px;
   /* negative value of footer height */
-  height: 115px;
+  height: 150px;
   clear: both;
 }
 
@@ -12058,7 +12058,7 @@ footer .inner {
 }
 
 footer .row {
-  height: 100px;
+  height: 135px;
 }
 
 /* Opera Fix */
@@ -12199,90 +12199,6 @@ a.link {
 }
 
 /* ==========================================================================
-    02. Header
-========================================================================== */
-
-#header {
-  background-image: url(/images/gifts-1.jpg);
-  background-size: cover;
-  background-position: center center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  position: relative;
-}
-
-.bg-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(44, 33, 5, 0.2);
-  z-index: 0;
-}
-
-#header .center {
-  position: relative;
-  z-index: 1;
-  color: white;
-  padding: 100px 0;
-}
-
-#header .bottom {
-  color: white;
-}
-
-#header .center .slogan {
-  font-size: 26px;
-  text-transform: uppercase;
-}
-
-#header .banner h1 {
-  font-size: 100px;
-  color: white;
-  text-transform: uppercase;
-  font-weight: bold;
-  display: inline-block;
-  background: #ed0121;
-  padding: 0 18px;
-}
-
-#header .subtitle h4 {
-  display: inline-block;
-  background: white;
-  color: #ed0121;
-  font-size: 38px;
-  padding: 0 15px;
-}
-
-#header .bottom {
-  text-align: center;
-  width: 100%;
-  position: absolute;
-  bottom: 30px;
-}
-
-#header .bottom a {
-  font-size: 36px;
-  color: whitesmoke;
-  position: relative;
-  top: -5px;
-}
-
-#logo {
-  position: absolute;
-  display: block !important;
-  width: 110px;
-  left: 50%;
-  margin-left: calc(-55px - 0.5rem);
-  /* Don't forget half the padding of .navbar */
-  background: black;
-  border-radius: 0 0 100% 100%;
-  padding: 12px;
-  top: 0;
-}
-
-/* ==========================================================================
     03. Navigation
 ========================================================================== */
 
@@ -12337,6 +12253,19 @@ nav#navbar {
   margin-left: 60px;
 }
 
+#logo {
+  position: absolute;
+  display: block !important;
+  width: 110px;
+  left: 50%;
+  margin-left: calc(-55px - 0.5rem);
+  /* Don't forget half the padding of .navbar */
+  background: black;
+  border-radius: 0 0 100% 100%;
+  padding: 12px;
+  top: 0;
+}
+
 /* ==========================================================================
     06. Content
 ========================================================================== */
@@ -12376,14 +12305,6 @@ footer .row {
 ========================================================================== */
 
 @media (max-width: 767px) {
-  #header .banner h1 {
-    font-size: 60px;
-  }
-
-  #header .subtitle h4 {
-    font-size: 22px;
-  }
-
   .navbar {
     min-height: 30px;
   }
@@ -12620,10 +12541,6 @@ footer .row {
 .card-title {
   font-weight: bold;
   text-transform: uppercase;
-}
-
-.participants-import button .fa-spinner {
-  margin-right: 10px;
 }
 
 /* ==========================================================================

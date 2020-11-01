@@ -9,7 +9,7 @@
     ])
 @stop
 
-@section('body')
+@section('content')
     <div id="form" v-cloak>
         <component :is="state" v-if="state === 'Form'" :data="data">
             <template v-slot:default="$slot">
