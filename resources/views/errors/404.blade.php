@@ -1,11 +1,22 @@
-@extends('errors::illustrated-layout')
+@extends('templates/layout', ['styles' => ['/css/404.css']])
 
-@section('code', '404')
-@section('title', __('Page Not Found'))
+@section('content')
+    <div class="polaroid-wrapper">
 
-@section('image')
-<div style="background-image: url({{ asset('/svg/404.svg') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center">
-</div>
-@endsection
+        <div class="item">
+            <div class="polaroid">
+                <img src="/images/404-1.jpg">
+                <div class="caption">@lang('404.photo1')</div>
+            </div>
+            <p class="wasted">Wasted</p>
+        </div>
 
-@section('message', __('Sorry, the page you are looking for could not be found.'))
+    </div>
+    <div class="error-content">
+
+        <h1 class="section-title text-center">Oups, cette page n'existe pas</h1>
+        <p class="lead main text-center">Votre évènement SecretSanta est probablement terminé</p>
+
+    </div>
+@stop
+

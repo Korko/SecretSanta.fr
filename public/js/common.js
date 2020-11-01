@@ -2587,6 +2587,17 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/sass/404.scss":
+/*!*********************************!*\
+  !*** ./resources/sass/404.scss ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ "./resources/sass/dearSanta.scss":
 /*!***************************************!*\
   !*** ./resources/sass/dearSanta.scss ***!
@@ -2632,9 +2643,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 0:
-/*!*****************************************************************************************************************************************************************!*\
-  !*** multi ./resources/js/common.js ./resources/sass/randomForm.scss ./resources/sass/dearSanta.scss ./resources/sass/organizer.scss ./resources/sass/faq.scss ***!
-  \*****************************************************************************************************************************************************************/
+/*!*******************************************************************************************************************************************************************************************!*\
+  !*** multi ./resources/js/common.js ./resources/sass/randomForm.scss ./resources/sass/dearSanta.scss ./resources/sass/organizer.scss ./resources/sass/faq.scss ./resources/sass/404.scss ***!
+  \*******************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2642,7 +2653,8 @@ __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/js/common.js */"./
 __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/randomForm.scss */"./resources/sass/randomForm.scss");
 __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/dearSanta.scss */"./resources/sass/dearSanta.scss");
 __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/organizer.scss */"./resources/sass/organizer.scss");
-module.exports = __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/faq.scss */"./resources/sass/faq.scss");
+__webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/faq.scss */"./resources/sass/faq.scss");
+module.exports = __webpack_require__(/*! /var/www/secretsanta.fr/dev/resources/sass/404.scss */"./resources/sass/404.scss");
 
 
 /***/ })

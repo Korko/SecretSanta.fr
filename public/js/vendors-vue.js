@@ -398,9 +398,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ }),
 
 /***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuejs-dialog/dist/vuejs-dialog.min.css":
-/*!*********************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--9-1!./node_modules/postcss-loader/src??ref--9-2!./node_modules/vuejs-dialog/dist/vuejs-dialog.min.css ***!
-  \*********************************************************************************************************************************************/
+/*!***********************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--10-1!./node_modules/postcss-loader/src??ref--10-2!./node_modules/vuejs-dialog/dist/vuejs-dialog.min.css ***!
+  \***********************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15342,7 +15342,7 @@ if (false) {} else {
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--9-1!../../postcss-loader/src??ref--9-2!./vuejs-dialog.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuejs-dialog/dist/vuejs-dialog.min.css");
+var content = __webpack_require__(/*! !../../css-loader??ref--10-1!../../postcss-loader/src??ref--10-2!./vuejs-dialog.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuejs-dialog/dist/vuejs-dialog.min.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 

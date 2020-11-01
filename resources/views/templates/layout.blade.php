@@ -49,6 +49,8 @@
     @show
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
+    <span id="ribbon" class="d-none d-md-block"><a href="{{ route('faq') }}" target="_blank">@lang('form.nav.faq')</a></span>
+
     <div id="wrap">
     <div id="main">
         <div id="menu" class="navbar navbar-dark fixed-top navbar-expand-md" role="navigation">
