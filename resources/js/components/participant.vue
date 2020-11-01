@@ -113,6 +113,7 @@
                 :multiple="true"
                 :hide-selected="true"
                 :preserve-search="true"
+                :close-on-select="false"
                 @select="$emit('addExclusion', $event)"
                 @remove="$emit('removeExclusion', $event)"
             >

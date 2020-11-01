@@ -117,3 +117,21 @@ Array.prototype.remove = function() {
     }
     return this;
 };
+
+import Vue from 'vue';
+Vue.directive('tooltip', {
+    inserted: function (el, binding) {
+        el.className = (el.className + " tip").trim();
+
+        var div = document.createElement('div');
+        div.innerHTML = '<div class="tip-content ' + (binding.arg || 'right') + '">'
+            + '<img src="/images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" />'
+            + '<div class="text-content">' + binding.value + '</div>'
+            + '<i></i>'
+            + '</div>';
+
+        while(div.children.length > 0) {
+            el.appendChild(div.children[0]);
+        }
+    }
+});

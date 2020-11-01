@@ -12102,6 +12102,10 @@ TABLE OF CONTENTS
     07 - Footer
     08 - Responsive styles
     09 - Ribbon
+    10 - Modal
+    11 - Readability
+    12 - Widgets
+    13 - Tooltip
 */
 
 /* ==========================================================================
@@ -12188,6 +12192,10 @@ img {
 
 [v-cloak] ~ .v-rcloak {
   display: block;
+}
+
+a.link {
+  cursor: pointer;
 }
 
 /* ==========================================================================
@@ -12420,12 +12428,12 @@ footer .row {
     09. Ribbon
 ========================================================================== */
 
-#forkongithub {
+#ribbon {
   display: none;
 }
 
 @media screen and (min-width: 768px) {
-  #forkongithub {
+  #ribbon {
     position: fixed;
     display: block;
     top: -30px;
@@ -12436,7 +12444,7 @@ footer .row {
     z-index: 9999;
   }
 
-  #forkongithub a {
+  #ribbon a {
     background: #a00;
     color: #fff;
     text-decoration: none;
@@ -12444,7 +12452,6 @@ footer .row {
     text-align: center;
     font-weight: bold;
     padding: 5px 40px;
-    font-size: 10px;
     line-height: 20px;
     transition: 0.5s;
     width: 200px;
@@ -12459,13 +12466,13 @@ footer .row {
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
   }
 
-  #forkongithub a:hover {
+  #ribbon a:hover {
     background: #c00;
     color: #fff;
   }
 
-  #forkongithub a::before,
-  #forkongithub a::after {
+  #ribbon a::before,
+  #ribbon a::after {
     content: "";
     width: 100%;
     display: block;
@@ -12476,7 +12483,7 @@ footer .row {
     background: #fff;
   }
 
-  #forkongithub a::after {
+  #ribbon a::after {
     bottom: 1px;
     top: auto;
   }
@@ -12617,6 +12624,165 @@ footer .row {
 
 .participants-import button .fa-spinner {
   margin-right: 10px;
+}
+
+/* ==========================================================================
+    13. Tooltip
+========================================================================== */
+
+.tip {
+  display: inline-block;
+  position: relative;
+  border-bottom: 1px dotted #666;
+  text-align: left;
+}
+
+.tip h3 {
+  margin: 12px 0;
+}
+
+.tip .tip-content {
+  min-width: 200px;
+  max-width: 400px;
+  color: #EEEEEE;
+  background-color: #444444;
+  font-weight: normal;
+  font-size: 13px;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 99999999;
+  box-sizing: border-box;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.8s;
+  padding: 0;
+}
+
+.tip .right {
+  top: 50%;
+  left: 100%;
+  margin-left: 20px;
+  transform: translate(0, -50%);
+}
+
+.tip .left {
+  top: 50%;
+  right: 100%;
+  margin-right: 20px;
+  transform: translate(0, -50%);
+}
+
+.tip .top {
+  top: -20px;
+  left: 50%;
+  transform: translate(-30%, -100%);
+}
+
+.tip .bottom {
+  top: 40px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.tip:hover .tip-content {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tip .tip-content img {
+  width: 400px;
+  border-radius: 8px 8px 0 0;
+}
+
+.tip .text-content {
+  padding: 10px 20px;
+}
+
+.tip .right i {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -12px;
+  width: 12px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.tip .right i::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 0;
+  top: 50%;
+  transform: translate(50%, -50%) rotate(-45deg);
+  background-color: #444444;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.tip .left i {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -12px;
+  width: 12px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.tip .left i::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 0;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  background-color: #444444;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.tip .top i {
+  position: absolute;
+  top: 100%;
+  left: 30%;
+  margin-left: -12px;
+  width: 24px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.tip .top i::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background-color: #444444;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.tip .bottom i {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -12px;
+  width: 24px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.tip .bottom i::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 50%;
+  transform: translate(-50%, 50%) rotate(45deg);
+  background-color: #444444;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 
 #content {
