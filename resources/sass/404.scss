@@ -52,6 +52,7 @@ Polaroid
     font-size: 1.8rem;
     text-align: center;
     line-height: 2em;
+    min-height: 2em;
 }
 .polaroid-wrapper .item {
     width: 30%;
@@ -163,6 +164,7 @@ Polaroid
     text-transform: uppercase;
     color: #2e2e2e;
     position: relative;
+    margin-bottom: 44px;
 }
 
 .lead::after {

@@ -139,12 +139,6 @@
     </div>
 @stop
 
-@section('copyright')
-    @parent
-
-    <br />{!! trans('footer.icons', ['author' => '<a class="themeBy" href="https://www.iconfinder.com/iconsets/doublejdesign-free-icon-handy_color">Double-J Designs</a>']) !!}
-@stop
-
 @section('script')
     @parent
 

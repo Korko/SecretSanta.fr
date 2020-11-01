@@ -56,7 +56,7 @@
         <div id="menu" class="navbar navbar-dark fixed-top navbar-expand-md" role="navigation">
             <nav id="navbar">
                 <div id="logo">
-                    <a href="#header"><img src="/images/logo.png" /></a>
+                    <a href="/"><img src="/images/logo.png" /></a>
                 </div>
                 @yield('navbar')
             </nav><!--/.navbar-collapse -->
@@ -77,10 +77,15 @@
                 <div class="col-md-6">
                     @section('copyright')
                         &copy; Copyright SecretSanta.fr 2015
+                        <br />{!! trans('footer.project', ['author' => '<a class="themeBy" href="https://www.korko.fr">Korko</a>']) !!}
                         <br />{!! trans('footer.fork', ['git' => '<a class="themeBy" href="https://framagit.org/Korko/SecretSanta">GitLab</a>']) !!}
                         <br />{!! trans('footer.version', ['version' => $version]) !!}
-                        <br />{!! trans('footer.project', ['author' => '<a class="themeBy" href="https://www.korko.fr">Korko</a>']) !!}
-                        <br />{!! trans('footer.theme', ['author' => '<a class="themeBy" href="https://www.themewagon.com">ThemeWagon</a>']) !!}
+                    @show
+                </div>
+                <div class="col-md-6">
+                    @section('copyright2')
+                        {!! trans('footer.theme', ['author' => '<a class="themeBy" href="https://www.themewagon.com">ThemeWagon</a>']) !!}
+                        <br />{!! trans('footer.icons', ['author' => '<a class="themeBy" href="https://www.iconfinder.com/iconsets/doublejdesign-free-icon-handy_color">Double-J Designs</a>']) !!}
                     @show
                 </div>
             </div>
