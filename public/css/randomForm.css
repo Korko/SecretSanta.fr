@@ -12554,7 +12554,7 @@ footer .row {
 }
 
 .tip .tip-content {
-  min-width: 200px;
+  min-width: 300px;
   max-width: 400px;
   color: #EEEEEE;
   background-color: #444444;
@@ -14556,7 +14556,7 @@ a.ui-button:active,
   position: relative;
   z-index: 1;
   color: white;
-  padding: 100px 0;
+  padding: 70px 0;
 }
 
 #header .bottom {
@@ -14639,8 +14639,8 @@ a.ui-button:active,
 }
 
 .light-wrapper .inner {
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 .section-title {
@@ -14752,6 +14752,10 @@ fieldset > div.form-group {
 
 #mailPost.extended {
   height: 75px;
+}
+
+#form {
+  padding-bottom: 20px;
 }
 
 #form .container {
