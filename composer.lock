@@ -354,6 +354,20 @@
                 "parser",
                 "php"
             ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Flexer",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-05-25T17:44:05+00:00"
         },
         {
@@ -2441,16 +2455,16 @@
         },
         {
             "name": "spatie/laravel-blade-javascript",
-            "version": "2.5.1",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-blade-javascript.git",
-                "reference": "26717b4f1661c6046921f83e102a1433c108cf0e"
+                "reference": "fdc39f0c0f63eee16ec3d3bbe69d8bd5402d2bc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-blade-javascript/zipball/26717b4f1661c6046921f83e102a1433c108cf0e",
-                "reference": "26717b4f1661c6046921f83e102a1433c108cf0e",
+                "url": "https://api.github.com/repos/spatie/laravel-blade-javascript/zipball/fdc39f0c0f63eee16ec3d3bbe69d8bd5402d2bc4",
+                "reference": "fdc39f0c0f63eee16ec3d3bbe69d8bd5402d2bc4",
                 "shasum": ""
             },
             "require": {
@@ -2509,7 +2523,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-09-09T08:43:18+00:00"
+            "time": "2020-10-30T13:13:28+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -5772,6 +5786,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
@@ -5874,6 +5889,7 @@
                 "laravel",
                 "vue-i18n"
             ],
+            "abandoned": true,
             "time": "2020-03-10T18:55:52+00:00"
         },
         {
@@ -5882,12 +5898,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/matt-allan/laravel-code-style.git",
-                "reference": "e372af725ec19318479a92d9bf2355ca09fc80be"
+                "reference": "e021c5bfe5e3a534b2988aa0ab372a6a743e1fd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/e372af725ec19318479a92d9bf2355ca09fc80be",
-                "reference": "e372af725ec19318479a92d9bf2355ca09fc80be",
+                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/e021c5bfe5e3a534b2988aa0ab372a6a743e1fd6",
+                "reference": "e021c5bfe5e3a534b2988aa0ab372a6a743e1fd6",
                 "shasum": ""
             },
             "require": {
@@ -5934,7 +5950,7 @@
                 "laravel",
                 "php-cs-fixer"
             ],
-            "time": "2020-09-09T23:13:42+00:00"
+            "time": "2020-09-27T16:47:09+00:00"
         },
         {
             "name": "maximebf/debugbar",
