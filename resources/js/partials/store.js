@@ -1,3 +1,4 @@
 export default {
-    api: window.global.api
+    api: window.global.api,
+    csrf: window.global.csrf
 };
