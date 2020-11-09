@@ -33,10 +33,18 @@ class OrganizerController extends Controller
                 ])];
             }),
             'changeEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
-                return [$participant->id => URL::signedRoute('organizerPanel.changeEmail', ['participant' => $participant])];
+                return [
+                    $participant->id => URL::signedRoute('organizerPanel.changeEmail', [
+                        'draw' => $participant->draw, 'participant' => $participant
+                    ])
+                ];
             }),
             'resendEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
-                return [$participant->id => URL::signedRoute('organizerPanel.resendEmail', ['participant' => $participant])];
+                return [
+                    $participant->id => URL::signedRoute('organizerPanel.resendEmail', [
+                        'draw' => $participant->draw, 'participant' => $participant
+                    ])
+                ];
             }),
         ]);
     }
