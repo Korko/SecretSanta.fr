@@ -93,6 +93,7 @@
             }
         },
         methods: {
+            none() {},
             onBlur() {
                 this.$v.$touch();
                 this.send('blur');
@@ -171,7 +172,7 @@
 </script>
 
 <template>
-    <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit" @focusout="onBlur">
+    <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit">
         <fieldset :disabled="updating">
             <div class="input-group" :data-state="state" :data-previous-state="previousState">
                 <div v-if="updating" class="input-group-prepend">
@@ -194,7 +195,7 @@
                     @input="onInput"
                 />
                 <slot name="errors" :$v="$v.newValue"></slot>
-                <div class="input-group-append">
+                <div class="input-group-append" @focusout.prevent="none">
                     <button
                         v-if="state === 'viewError'"
                         type="button"
