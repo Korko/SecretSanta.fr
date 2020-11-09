@@ -14704,6 +14704,10 @@ fieldset > div.form-group {
   overflow: visible;
 }
 
+#participants caption {
+  display: none;
+}
+
 .participant .participant-exclusions-wrapper {
   padding-top: 11px;
 }

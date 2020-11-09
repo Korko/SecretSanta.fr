@@ -4,6 +4,10 @@
     import axios from '../partials/axios.js';
     import store from '../partials/store.js';
 
+    setInterval(function() {
+        axios.get('/xsrf');
+    }, 5 * 60 * 1000); // Call every 5min
+
     export default {
         props: {
             action: {
@@ -66,22 +70,10 @@
 
                     this.sending = true;
 
-                    var data = null;
-                    if(Array.isArray(options.data)) {
-                        data = (options.data.length) ?
-                            options.data.concat(
-                                Object.keys(keys).map(key => {
-                                    return { name: key, value: keys[key] };
-                                })
-                            ) : null;
-                    } else {
-                        data = Object.assign({}, options.data);
-                    }
-
                     return axios({
                         url: url,
-                        method: data ? 'POST' : 'GET',
-                        data: data
+                        method: options.data ? 'POST' : 'GET',
+                        data: options.data
                     })
                     .then(response => {
                         this.sending = false;
@@ -90,7 +82,7 @@
                         (options.success || options.then || function() {})(response.data);
                         (options.complete || options.finally || function() {})();
 
-                        this.$emit('success', data);
+                        this.$emit('success', response.data);
                     })
                     .catch(error => {
                         if (error.response.data && error.response.data.errors)

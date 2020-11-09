@@ -2408,7 +2408,8 @@ __webpack_require__.r(__webpack_exports__);
       "list": {
         "name": "Nom",
         "email": "Adresse Email",
-        "status": "Status de réception de l'email"
+        "status": "Status d'envoi de l'email",
+        "caption": "Liste des participants"
       },
       "up_and_sent": "Modifié avec succès !",
       "deleted": "Toutes les données ont été supprimées",
@@ -2481,7 +2482,8 @@ __webpack_require__.r(__webpack_exports__);
         "date": "Date d'envoi",
         "body": "Corps du message",
         "status": "Status de réception de l'email",
-        "empty": "Aucun email envoyé pour le moment"
+        "empty": "Aucun email envoyé pour le moment",
+        "caption": "Liste des emails envoyés au Père Noël"
       },
       "content": {
         "label": "Contenu du mail",
@@ -2529,7 +2531,8 @@ __webpack_require__.r(__webpack_exports__);
       "participants": {
         "title": "Détails des participants",
         "import": "Importer depuis un fichier",
-        "importing": "Import en cours"
+        "importing": "Import en cours",
+        "caption": "Liste des participats"
       },
       "participant": {
         "organizer": "Organisateur",

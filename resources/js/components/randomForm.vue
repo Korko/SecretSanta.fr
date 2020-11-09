@@ -253,6 +253,7 @@
                         <legend>{{ $t('form.participants.title') }}</legend>
                         <div class="table-responsive form-group">
                             <table id="participants" class="table table-hover table-numbered">
+                                <caption>{{ $t('form.participants.caption') }}</caption>
                                 <thead>
                                     <tr>
                                         <th style="width: 33%" scope="col">

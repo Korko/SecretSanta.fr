@@ -66,6 +66,7 @@ Le code source est disponible sur :link',
         'title'     => 'Détails des participants',
         'import'    => 'Importer depuis un fichier',
         'importing' => 'Import en cours',
+        'caption'   => 'Liste des participats',
     ],
 
     'participant' => [

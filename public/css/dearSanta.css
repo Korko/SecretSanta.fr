@@ -12711,3 +12711,7 @@ footer .row {
   text-align: center;
 }
 
+table caption {
+  display: none;
+}
+

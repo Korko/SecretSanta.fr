@@ -42,3 +42,6 @@ Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function ()
     Route::post('/org/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
     Route::post('/org/{draw:hash}/{participant:id}/resendEmail', [OrganizerController::class, 'resendEmail'])->name('organizerPanel.resendEmail');
 });
+
+// Blank page, should only set XSRF-Token cookie
+Route::get('/xsrf', function() {});
