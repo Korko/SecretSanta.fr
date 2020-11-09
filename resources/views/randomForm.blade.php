@@ -7,6 +7,7 @@
     @javascript([
         'alert' => session('message', ''),
         'api'   => config('captcha.sitekey'),
+        'csrf'  => csrf_token(),
     ])
 @stop
 

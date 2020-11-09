@@ -6,6 +6,7 @@
     <!-- config js -->
     @javascript([
         'api'   => config('captcha.sitekey'),
+        'csrf'  => csrf_token(),
     ])
 @stop
 

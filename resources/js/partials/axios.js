@@ -7,11 +7,28 @@ import axios from 'axios';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+/**
+ * Transmit Hash Key via request headers
+ */
 const key = window.location.hash.substr(1);
-
 if (key) {
     axios.defaults.headers.common['X-HASH-KEY'] = key;
 }
+
+/**
+ * Transmit CSRF via request headers
+ * Also, to avoid timeout, request csrf frequently
+ */
+const setCsrf = function(csrf) { axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf; };
+
+import store from './store.js';
+if (store.csrf) {
+    setCsrf(store.csrf);
+}
+
+setInterval(function() {
+    axios.get('/csrf').then(response => setCsrf(response.data));
+}, 5 * 60 * 1000); // Call every 5min
 
 import alertify from '../partials/alertify.js';
 

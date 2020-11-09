@@ -5,7 +5,7 @@ return [
         'what' => 'Qu\'est-ce que c\'est ?',
         'how'  => 'Comment faire ?',
         'go'   => 'Allez, c\'est parti !',
-        'faq'  => 'Foire aux questions',
+        'faq'  => 'Foire Aux Questions',
     ],
 
     'title'    => 'Secret Santa .fr',

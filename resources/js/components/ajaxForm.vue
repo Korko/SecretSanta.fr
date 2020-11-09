@@ -4,10 +4,6 @@
     import axios from '../partials/axios.js';
     import store from '../partials/store.js';
 
-    setInterval(function() {
-        axios.get('/xsrf');
-    }, 5 * 60 * 1000); // Call every 5min
-
     export default {
         props: {
             action: {
