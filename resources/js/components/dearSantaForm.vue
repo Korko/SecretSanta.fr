@@ -100,6 +100,7 @@
             </fieldset>
         </ajax-form>
         <table class="table table-hover">
+            <caption>{{ $t('dearsanta.list.caption') }}</caption>
             <thead>
                 <tr class="table-active">
                     <th scope="col">

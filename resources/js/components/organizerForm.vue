@@ -90,21 +90,11 @@
                     .then(this.purge);
             },
             purge() {
-<<<<<<< HEAD
                 return axios
                     .delete(this.routes.deleteUrl, { _token: this.csrf, key: this.key })
                     .then(data => {
                         this.$dialog
                             .alert(data.message)
-=======
-		var app = this;
-                return jQuery.ajax({
-                    url: this.routes.deleteUrl,
-                    type: 'DELETE',
-                    data: { _token: this.csrf, key: this.key },
-                    success(data) {
-                        app.$dialog.alert(data.message)
->>>>>>> 30aef01ff... Fix routes url in vue files
                             .then(() => window.location.pathname = '/');
                     });
             }
@@ -115,6 +105,7 @@
 <template>
     <div>
         <table class="table table-hover">
+            <caption>{{ $t('organizer.list.caption') }}</caption>
             <thead>
                 <tr class="table-active">
                     <th scope="col">
