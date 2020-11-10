@@ -38,15 +38,15 @@
         },
         computed: {
             checkUpdates() {
-                return !!Object.values(this.data.participants).find(
-                    participant => participant.mail.delivery_status === 'created'
+                return Object.values(this.data.participants).find(
+                    participant => participant.mail.delivery_status !== 'error'
                 );
             }
         },
         created() {
             setInterval(() => {
                 if (this.checkUpdates) this.fetchState();
-            }, 1000);
+            }, 2000);
         },
         methods: {
             update(k, data) {
@@ -56,7 +56,7 @@
             },
             fetchState() {
                 return axios
-                    .get(this.routes.fetchStateUrl)
+                    .post(this.routes.fetchStateUrl)
                     .then(response => {
                         if (response.data.participants) {
                             Object.values(response.data.participants).forEach(participant => {

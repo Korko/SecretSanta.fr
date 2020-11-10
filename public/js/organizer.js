@@ -1964,7 +1964,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     icon: function icon() {
       return {
-        waiting: "fas fa-spinner",
+        created: "fas fa-spinner",
         error: "fas fa-exclamation-triangle",
         sent: "fas fa-check"
       }[this.delivery_status];
@@ -2336,8 +2336,8 @@ vue__WEBPACK_IMPORTED_MODULE_4___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_MO
   },
   computed: {
     checkUpdates: function checkUpdates() {
-      return !!Object.values(this.data.participants).find(function (participant) {
-        return participant.mail.delivery_status === 'created';
+      return Object.values(this.data.participants).find(function (participant) {
+        return participant.mail.delivery_status !== 'error';
       });
     }
   },
@@ -2346,7 +2346,7 @@ vue__WEBPACK_IMPORTED_MODULE_4___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_MO
 
     setInterval(function () {
       if (_this.checkUpdates) _this.fetchState();
-    }, 1000);
+    }, 2000);
   },
   methods: {
     update: function update(k, data) {
@@ -2357,7 +2357,7 @@ vue__WEBPACK_IMPORTED_MODULE_4___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_MO
     fetchState: function fetchState() {
       var _this2 = this;
 
-      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_8__["default"].get(this.routes.fetchStateUrl).then(function (response) {
+      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_8__["default"].post(this.routes.fetchStateUrl).then(function (response) {
         if (response.data.participants) {
           Object.values(response.data.participants).forEach(function (participant) {
             var new_update = new Date(participant.mail.updated_at);

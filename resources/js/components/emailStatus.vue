@@ -9,7 +9,7 @@
         computed: {
             icon() {
                 return {
-                    waiting: "fas fa-spinner",
+                    created: "fas fa-spinner",
                     error: "fas fa-exclamation-triangle",
                     sent: "fas fa-check"
                 }[this.delivery_status];

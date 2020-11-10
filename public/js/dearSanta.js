@@ -2080,7 +2080,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     icon: function icon() {
       return {
-        waiting: "fas fa-spinner",
+        created: "fas fa-spinner",
         error: "fas fa-exclamation-triangle",
         sent: "fas fa-check"
       }[this.delivery_status];
