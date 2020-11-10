@@ -1,9 +1,16 @@
 <?php
 
-namespace App\Solvers;
+namespace App\Facades;
 
+use App\Solvers\SolverInterface;
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @method static array one(array $participants, array $exclusions = [])
+ * @method static Generator all(array $participants, array $exclusions = [])
+ *
+ * @see \App\Solvers\SolverInterface
+ */
 class Solver extends Facade
 {
     /**
