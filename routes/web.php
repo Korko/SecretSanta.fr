@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\RandomFormController;
 use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\OrganizerController;
@@ -43,4 +44,4 @@ Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function ()
     Route::post('/org/{draw:hash}/{participant:id}/resendEmail', [OrganizerController::class, 'resendEmail'])->name('organizerPanel.resendEmail');
 });
 
-Route::get('/csrf', function() { return csrf_token(); });
+Route::get('/xsrf', [Controller::class, 'noop']);

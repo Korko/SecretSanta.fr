@@ -2,7 +2,6 @@
     import jQuery from 'jquery';
 
     import axios from '../partials/axios.js';
-    import store from '../partials/store.js';
 
     export default {
         props: {
@@ -41,7 +40,6 @@
         },
         data: () => {
             return {
-                ...store,
                 fieldErrors: [],
                 sending: false,
                 sent: false
