@@ -76,11 +76,12 @@
                     cancelText: this.$t('organizer.purge.confirm.cancel'),
                     verification: this.$t('organizer.purge.confirm.value'),
                     verificationHelp: this.$t('organizer.purge.confirm.help'),
-                    type: 'hard'
+                    type: 'hard',
+                    customClass: 'purge'
                 };
 
                 let message = {
-                    title: this.$t('organizer.purge.confirm.title', {expiration: new Date(this.data.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long'})}),
+                    title: this.$t('organizer.purge.confirm.title', {expiration: new Date(this.data.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'})}),
                     body: this.$t('organizer.purge.confirm.body')
                 };
 
@@ -144,3 +145,11 @@
         </button>
     </div>
 </template>
+
+<style>
+.purge .dg-btn--ok {
+  color: #a82824;
+  background-color: #fefefe;
+  border-color: #a82824;
+}
+</style>
