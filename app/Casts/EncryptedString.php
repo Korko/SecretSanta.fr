@@ -2,7 +2,7 @@
 
 namespace App\Casts;
 
-use Crypt;
+use DrawCrypt;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class EncryptedString implements CastsAttributes
@@ -18,7 +18,7 @@ class EncryptedString implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        return Crypt::decrypt($value);
+        return DrawCrypt::decrypt($value);
     }
 
     /**
@@ -32,6 +32,6 @@ class EncryptedString implements CastsAttributes
      */
     public function set($model, $key, $value, $attributes)
     {
-        return Crypt::encrypt($value);
+        return DrawCrypt::encrypt($value);
     }
 }

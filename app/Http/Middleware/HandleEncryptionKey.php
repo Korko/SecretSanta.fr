@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
+use DrawCrypt;
 
 class HandleEncryptionKey
 {
@@ -19,7 +19,7 @@ class HandleEncryptionKey
     {
         $key = base64_decode($request->input('key') ?: $request->header('X-HASH-KEY'));
         if (!empty($key)) {
-            Crypt::setKey($key);
+            DrawCrypt::setKey($key);
         }
 
         try {

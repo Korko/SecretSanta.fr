@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\Participant;
-use Crypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -11,6 +10,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Mail;
+use DrawCrypt;
 
 class SendMail implements ShouldQueue
 {
@@ -29,7 +29,7 @@ class SendMail implements ShouldQueue
     {
         $this->participant = $participant;
         $this->mailable = $mailable;
-        $this->key = base64_encode(Crypt::getKey());
+        $this->key = base64_encode(DrawCrypt::getKey());
     }
 
     public function getRecipient()
@@ -49,7 +49,7 @@ class SendMail implements ShouldQueue
      */
     public function handle()
     {
-        Crypt::setKey(base64_decode($this->key));
+        DrawCrypt::setKey(base64_decode($this->key));
         Mail::to($this->participant)->send($this->mailable);
     }
 }

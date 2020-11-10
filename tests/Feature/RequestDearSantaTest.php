@@ -43,12 +43,9 @@ class RequestDearSantaTest extends RequestCase
             $this->assertEquals($santa['email'], $santaTheorical->santa->email);
 
             // Try to contact santa
-            $response = $this->ajaxPost(URL::signedRoute('dearsanta.contact', ['participant' => $santaTheorical->hash]), [
-                'key'     => base64_encode(Crypt::getKey()),
-                'content' => 'test dearsanta mail content',
-            ]);
-
-            $response
+            $this->ajaxPost(URL::signedRoute('dearsanta.contact', ['participant' => $santaTheorical->hash]), [
+                    'content' => 'test dearsanta mail content',
+                ])
                 ->assertStatus(200)
                 ->assertJson([
                     'message' => 'Envoyé avec succès !',
