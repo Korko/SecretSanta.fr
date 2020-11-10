@@ -3785,9 +3785,11 @@ var formatMoment = function formatMoment(amount, unit) {
     },
     appendSanta: function appendSanta() {
       this.content += "{SANTA}";
+      this.$v.content.$touch();
     },
     appendTarget: function appendTarget() {
       this.content += "{TARGET}";
+      this.$v.content.$touch();
     },
     reset: function reset() {
       this.participants = [];
@@ -10404,9 +10406,6 @@ var render = function() {
                                 },
                                 domProps: { value: _vm.title },
                                 on: {
-                                  blur: function($event) {
-                                    return _vm.$v.title.$touch()
-                                  },
                                   input: function($event) {
                                     if ($event.target.composing) {
                                       return
@@ -10463,9 +10462,6 @@ var render = function() {
                                 },
                                 domProps: { value: _vm.content },
                                 on: {
-                                  blur: function($event) {
-                                    return _vm.$v.content.$touch()
-                                  },
                                   input: function($event) {
                                     if ($event.target.composing) {
                                       return
