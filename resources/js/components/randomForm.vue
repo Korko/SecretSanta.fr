@@ -220,10 +220,12 @@
 
             appendSanta() {
                 this.content += "{SANTA}";
+                this.$v.content.$touch();
             },
 
             appendTarget() {
                 this.content += "{TARGET}";
+                this.$v.content.$touch();
             },
 
             reset() {
@@ -329,7 +331,6 @@
                                             class="form-control"
                                             :class="{ 'is-invalid': $v.title.$error || fieldError('title') }"
                                             :aria-invalid="$v.title.$error || fieldError('title')"
-                                            @blur="$v.title.$touch()"
                                         />
                                         <div class="invalid-tooltip">{{ $t('validation.custom.randomform.title.required') }}</div>
                                     </div>
@@ -347,7 +348,6 @@
                                             class="form-control"
                                             :class="{ 'is-invalid': $v.content.$error || fieldError('content-email') }"
                                             :aria-invalid="$v.content.$error || fieldError('content-email')"
-                                            @blur="$v.content.$touch()"
                                         />
                                         <div v-if="!$v.content.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.required') }}</div>
                                         <div v-else-if="!$v.content.contains" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.contains') }}</div>
