@@ -8,7 +8,6 @@
     import { required, email } from 'vuelidate/lib/validators';
 
     import axios from '../partials/axios.js';
-    import store from '../partials/store.js';
 
     import InputEdit from './inputEdit.vue';
     import EmailStatus from './emailStatus.vue';
@@ -29,7 +28,6 @@
         },
         data() {
             return {
-                ...store,
                 validations: {
                     email: {
                         required,
@@ -91,7 +89,7 @@
             },
             purge() {
                 return axios
-                    .delete(this.routes.deleteUrl, { _token: this.csrf, key: this.key })
+                    .delete(this.routes.deleteUrl)
                     .then(data => {
                         this.$dialog
                             .alert(data.message)

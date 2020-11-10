@@ -6,7 +6,6 @@
     Vue.use(Vuelidate);
 
     import axios from '../partials/axios.js';
-    import store from '../partials/store.js';
 
     import EmailStatus from './emailStatus.vue';
     import DefaultForm from './form.vue';
@@ -26,7 +25,6 @@
         },
         data() {
             return {
-                ...store,
                 content: ''
             };
         },

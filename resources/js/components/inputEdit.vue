@@ -4,8 +4,6 @@
     import Vuelidate from 'vuelidate';
     Vue.use(Vuelidate);
 
-    import store from '../partials/store.js';
-
     import StateMachine from '../mixins/stateMachine.js';
 
     export default {
@@ -36,7 +34,6 @@
         },
         data: function() {
             return {
-                ...store,
                 states: Object.freeze({
                     view: {
                         edit: 'editing'
