@@ -41,11 +41,8 @@ class RequestOrganizerTest extends RequestCase
             'draw' => $draw->hash,
             'participant' => $participant->id,
         ]);
-        $response = $this->ajaxPost($path, [
-            'key' => base64_encode(Crypt::getKey()),
-        ]);
 
-        $response
+        $this->ajaxPost($path)
             ->assertStatus(200)
             ->assertJson([
                 'message' => 'Envoyé avec succès !',
@@ -67,12 +64,10 @@ class RequestOrganizerTest extends RequestCase
             'draw' => $draw->hash,
             'participant' => $participant->id,
         ]);
-        $response = $this->ajaxPost($path, [
-            'key' => base64_encode(Crypt::getKey()),
-            'email' => 'test@test2.com',
-        ]);
 
-        $response
+        $this->ajaxPost($path, [
+                'email' => 'test@test2.com',
+            ])
             ->assertStatus(200)
             ->assertJson([
                 'message' => 'Modifié avec succès !',

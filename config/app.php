@@ -218,6 +218,7 @@ return [
         'Cookie'       => Illuminate\Support\Facades\Cookie::class,
         'Crypt'        => Illuminate\Support\Facades\Crypt::class,
         'DB'           => Illuminate\Support\Facades\DB::class,
+        'DrawCrypt'    => App\Facades\DrawCrypt::class,
         'DrawHandler'  => Facades\App\Services\DrawHandler::class,
         'Eloquent'     => Illuminate\Database\Eloquent\Model::class,
         'Event'        => Illuminate\Support\Facades\Event::class,

@@ -61,23 +61,19 @@ class ValidationTest extends RequestCase
     public function testContactInfo(): void
     {
         // At least 2 names!
-        $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto'],
-        ]]);
-
-        $response
+        $this->ajaxPost('/', ['participants' => [
+                ['name' => 'toto'],
+            ]])
             ->assertStatus(422)
             ->assertJsonValidationErrors([
                 'participants', 'participants.0.email', 'title', 'content-email', 'data-expiration',
             ]);
 
         // Ok for names but duplicates this time but no contact infos
-        $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto'],
-            ['name' => 'toto'],
-        ]]);
-
-        $response
+        $this->ajaxPost('/', ['participants' => [
+                ['name' => 'toto'],
+                ['name' => 'toto'],
+            ]])
             ->assertStatus(422)
             ->assertJsonValidationErrors([
                 'participants',
@@ -87,12 +83,10 @@ class ValidationTest extends RequestCase
             ]);
 
         // Ok for names but not enough participants and no contact infos
-        $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto'],
-            ['name' => 'tata'],
-        ]]);
-
-        $response
+        $this->ajaxPost('/', ['participants' => [
+                ['name' => 'toto'],
+                ['name' => 'tata'],
+            ]])
             ->assertStatus(422)
             ->assertJsonValidationErrors([
                 'participants', 'participants.0.email', 'participants.1.email',
@@ -100,13 +94,11 @@ class ValidationTest extends RequestCase
             ]);
 
         // Ok for names but no contact infos
-        $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto'],
-            ['name' => 'tata'],
-            ['name' => 'tutu'],
-        ]]);
-
-        $response
+        $this->ajaxPost('/', ['participants' => [
+                ['name' => 'toto'],
+                ['name' => 'tata'],
+                ['name' => 'tutu'],
+            ]])
             ->assertStatus(422)
             ->assertJsonValidationErrors([
                 'participants.0.email', 'participants.1.email', 'participants.2.email',
@@ -114,13 +106,11 @@ class ValidationTest extends RequestCase
             ]);
 
         // Ok for names but partial contact infos (mail)
-        $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto'],
-            ['name' => 'tata', 'email' => 'test@test.com'],
-            ['name' => 'tutu'],
-        ]]);
-
-        $response
+        $this->ajaxPost('/', ['participants' => [
+                ['name' => 'toto'],
+                ['name' => 'tata', 'email' => 'test@test.com'],
+                ['name' => 'tutu'],
+            ]])
             ->assertStatus(422)
             ->assertJsonValidationErrors([
                 'participants.0.email', 'participants.2.email',
@@ -131,26 +121,22 @@ class ValidationTest extends RequestCase
     // Names and contact infos but no mail body
     public function testContactBodiesMail(): void
     {
-        $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'email' => 'invalidformat'],
-            ['name' => 'tata', 'email' => 'test@test.com'],
-            ['name' => 'tutu', 'email' => 'tata@test.com'],
-        ]]);
-
-        $response
+        $this->ajaxPost('/', ['participants' => [
+                ['name' => 'toto', 'email' => 'invalidformat'],
+                ['name' => 'tata', 'email' => 'test@test.com'],
+                ['name' => 'tutu', 'email' => 'tata@test.com'],
+            ]])
             ->assertStatus(422)
             ->assertJsonValidationErrors([
                 'participants.0.email',
                 'title', 'content-email', 'data-expiration',
             ]);
 
-        $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'email' => 'test@est.com'],
-            ['name' => 'tata', 'email' => 'test@test.com'],
-            ['name' => 'tutu', 'email' => 'test@test.com'],
-        ]]);
-
-        $response
+        $this->ajaxPost('/', ['participants' => [
+                ['name' => 'toto', 'email' => 'test@est.com'],
+                ['name' => 'tata', 'email' => 'test@test.com'],
+                ['name' => 'tutu', 'email' => 'test@test.com'],
+            ]])
             ->assertStatus(422)
             ->assertJsonValidationErrors([
                 'title', 'content-email', 'data-expiration',
@@ -160,13 +146,11 @@ class ValidationTest extends RequestCase
     // Names and exclusionss
     public function testExclusionss(): void
     {
-        $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'exclusions' => ['87']],
-            ['name' => 'tata'],
-            ['name' => 'tutu'],
-        ]]);
-
-        $response
+        $this->ajaxPost('/', ['participants' => [
+                ['name' => 'toto', 'exclusions' => ['87']],
+                ['name' => 'tata'],
+                ['name' => 'tutu'],
+            ]])
             ->assertStatus(422)
             ->assertJsonValidationErrors([
                 'participants.0.exclusions.0', 'participants.0.email',
@@ -174,13 +158,11 @@ class ValidationTest extends RequestCase
                 'participants.2.email',
             ]);
 
-        $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'exclusions' => ['1']],
-            ['name' => 'tata'],
-            ['name' => 'tutu'],
-        ]]);
-
-        $response
+        $this->ajaxPost('/', ['participants' => [
+                ['name' => 'toto', 'exclusions' => ['1']],
+                ['name' => 'tata'],
+                ['name' => 'tutu'],
+            ]])
             ->assertStatus(422)
             ->assertJsonValidationErrors([
                 'participants.0.email',
@@ -193,23 +175,19 @@ class ValidationTest extends RequestCase
     public function testDataLimit(): void
     {
         // invalid limit (too soon)
-        $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'email' => 'test@test.com'],
-            ['name' => 'tata', 'email' => 'test@test.com'],
-            ['name' => 'tutu', 'email' => 'test@test.com'],
-        ], 'data-expiration' => date('Y-m-d')]);
-
-        $response
+        $this->ajaxPost('/', ['participants' => [
+                ['name' => 'toto', 'email' => 'test@test.com'],
+                ['name' => 'tata', 'email' => 'test@test.com'],
+                ['name' => 'tutu', 'email' => 'test@test.com'],
+            ], 'data-expiration' => date('Y-m-d')])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['title', 'content-email', 'data-expiration']);
 
-        $response = $this->ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'email' => 'test@test.com'],
-            ['name' => 'tata', 'email' => 'test@test.com'],
-            ['name' => 'tutu', 'email' => 'test@test.com'],
-        ], 'data-expiration' => date('Y-m-d', strtotime('+3 day'))]);
-
-        $response
+        $this->ajaxPost('/', ['participants' => [
+                ['name' => 'toto', 'email' => 'test@test.com'],
+                ['name' => 'tata', 'email' => 'test@test.com'],
+                ['name' => 'tutu', 'email' => 'test@test.com'],
+            ], 'data-expiration' => date('Y-m-d', strtotime('+3 day'))])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['title', 'content-email']);
     }

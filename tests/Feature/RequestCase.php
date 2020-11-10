@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Draw;
 use App\Models\Participant;
 use Arr;
+use DrawCrypt;
 use Faker\Generator as Faker;
 use NoCaptcha;
 use Tests\TestCase;
@@ -25,6 +26,7 @@ class RequestCase extends TestCase
         $headers = $headers + [
             'Accept'           => 'application/json',
             'X-Requested-With' => 'XMLHttpRequest',
+            'X-HASH-KEY'       => base64_encode(DrawCrypt::getKey())
         ];
 
         $postArgs = $postArgs + [
@@ -42,14 +44,12 @@ class RequestCase extends TestCase
         $participants = $this->generateParticipants($totalParticipants);
 
         // Initiate DearSanta
-        $response = $this->ajaxPost('/', [
-            'participants'    => $participants,
-            'title'           => 'test mail title',
-            'content-email'   => 'test mail {SANTA} => {TARGET}',
-            'data-expiration' => date('Y-m-d', strtotime('+2 days')),
-        ]);
-
-        $response
+        $this->ajaxPost('/', [
+                'participants'    => $participants,
+                'title'           => 'test mail title',
+                'content-email'   => 'test mail {SANTA} => {TARGET}',
+                'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+            ])
             ->assertStatus(200)
             ->assertJson([
                 'message' => 'Envoyé avec succès !',

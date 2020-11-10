@@ -4,9 +4,9 @@ namespace App\Console\Commands;
 
 use App\Models\Participant;
 use Arr;
-use Crypt;
 use DrawHandler;
 use Illuminate\Console\Command;
+use DrawCrypt;
 
 class FixOrganizer extends Command
 {
@@ -23,16 +23,6 @@ class FixOrganizer extends Command
      * @var string
      */
     protected $description = 'Fix an organizer email';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * Execute the console command.
@@ -59,6 +49,6 @@ class FixOrganizer extends Command
     {
         $hash = Arr::get(explode('#', $url, 2), 1);
         $key = base64_decode($hash);
-        Crypt::setKey($key);
+        DrawCrypt::setKey($key);
     }
 }

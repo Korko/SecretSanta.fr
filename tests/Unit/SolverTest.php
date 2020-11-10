@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Exceptions\SolverException;
-use App\Solvers\Solver;
+use Solver;
 use Tests\TestCase;
 
 class SolverTest extends TestCase
