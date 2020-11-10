@@ -16,7 +16,7 @@
 
                 <hr/>
 
-		<p style="padding-bottom:10px !important">Pour écrire à votre Père Noël Secret : <a href="{{ $dearSantaLink }}">{{ $dearSantaLink }}</a></p>
+		<p style="padding-bottom:10px !important">Vous pouvez écrire à votre Père Noël Secret ! Ca se passe ici : <a href="{{ $dearSantaLink }}">{{ $dearSantaLink }}</a></p>
 
 		<p style="padding-bottom:10px !important">Secrètement votre,</p>
 
