@@ -38,7 +38,7 @@
         },
         computed: {
             checkUpdates() {
-                return Object.values(this.data.participants).find(
+                return !!Object.values(this.data.participants).find(
                     participant => participant.mail.delivery_status !== 'error'
                 );
             }
@@ -46,7 +46,7 @@
         created() {
             setInterval(() => {
                 if (this.checkUpdates) this.fetchState();
-            }, 2000);
+            }, 5000);
         },
         methods: {
             update(k, data) {

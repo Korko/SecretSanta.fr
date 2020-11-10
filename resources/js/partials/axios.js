@@ -22,26 +22,20 @@ setInterval(function() {
 
 import alertify from '../partials/alertify.js';
 
-var myAxios = function (config) {
-    return new Promise((resolve, reject) => {
-        axios(config)
-            .then(response => {
-                if (response.data?.message)
-                    alertify.success(response.data.message);
+axios.interceptors.response.use(function (response) {
+    if (response.data?.message)
+        alertify.success(response.data.message);
 
-                resolve(response);
-            })
-            .catch(error => {
-                if (error.response?.data?.message)
-                    alertify.errorAlert(error.response.data.message);
+    return response;
+}, function (error) {
+    if (error.response?.data?.message)
+        alertify.errorAlert(error.response.data.message);
 
-                reject(error);
-            });
-    });
-};
+    return error;
+});
 
 ['get', 'delete', 'head', 'options'].forEach(method => {
-    myAxios[method] = (url, config) => myAxios({
+    axios[method] = (url, config) => axios({
         method: method,
         url: url,
         ...config
@@ -49,7 +43,7 @@ var myAxios = function (config) {
 });
 
 ['post', 'put', 'patch'].forEach(method => {
-    myAxios[method] = (url, data, config) => myAxios({
+    axios[method] = (url, data, config) => axios({
         method: method,
         url: url,
         data: data,
@@ -57,6 +51,6 @@ var myAxios = function (config) {
     });
 });
 
-myAxios.request = myAxios;
+axios.request = axios;
 
-export default myAxios;
+export default axios;

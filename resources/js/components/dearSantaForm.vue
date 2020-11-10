@@ -36,16 +36,18 @@
                     .map(email => {
                         email.created_at = new Date(email.created_at).toLocaleString('fr-FR');
                         return email;
-                    });
+                    }) || [];
             },
             checkUpdates() {
-                return !!Object.values(this.data.emails).find(email => email.mail.delivery_status === 'created');
+                return !!Object.values(this.data.emails).find(
+                    email => email.mail.delivery_status !== 'error'
+                );
             }
         },
         created() {
             setInterval(() => {
                 if (this.checkUpdates) this.fetchState();
-            }, 1000);
+            }, 5000);
         },
         validations: {
             content: {
@@ -56,9 +58,12 @@
             success(data) {
                 this.$set(this.data.emails, data.email.id, data.email);
             },
+            reset() {
+                this.content = '';
+            },
             fetchState() {
                 return axios
-                    .get(this.routes.fetchStateUrl)
+                    .post(this.routes.fetchStateUrl)
                     .then(response => {
                         if (response.data.emails) {
                             Object.values(response.data.emails).forEach(email => {
@@ -78,7 +83,7 @@
 
 <template>
     <div>
-        <ajax-form :action="routes.contactUrl" :$v="$v" @success="success">
+        <ajax-form :action="routes.contactUrl" :$v="$v" @success="success" @reset="reset" :autoReset="true">
             <fieldset>
                 <div class="form-group">
                     <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>

@@ -36,6 +36,10 @@
             sendIcon: {
                 type: String,
                 default: 'paper-plane'
+            },
+            autoReset: {
+                type: Boolean,
+                default: false
             }
         },
         data: () => {
@@ -64,31 +68,36 @@
 
                     this.sending = true;
 
-                    return axios({
-                        url: url,
-                        method: options.data ? 'POST' : 'GET',
-                        data: options.data
-                    })
-                    .then(response => {
-                        this.sending = false;
-                        this.sent = true;
+                    return axios
+                        .post(url, options.data)
+                        .then(response => {
+                            this.fieldErrors = [];
+                            this.sending = false;
 
-                        (options.success || options.then || function() {})(response.data);
-                        (options.complete || options.finally || function() {})();
+                            if(!this.autoReset) {
+                                this.sent = true;
+                            }
 
-                        this.$emit('success', response.data);
-                    })
-                    .catch(error => {
-                        if (error.response.data && error.response.data.errors)
-                            this.fieldErrors = error.response.data.errors;
+                            (options.success || options.then || function() {})(response.data);
+                            (options.complete || options.finally || function() {})();
 
-                        this.sending = false;
+                            this.$emit('success', response.data);
 
-                        (options.error || options.catch || function() {})(error.response.data);
-                        (options.complete || options.finally || function() {})();
+                            if(this.autoReset) {
+                                this.onReset();
+                            }
+                        })
+                        .catch(error => {
+                            if (error.response.data && error.response.data.errors)
+                                this.fieldErrors = error.response.data.errors;
 
-                        this.$emit('error');
-                    });
+                            this.sending = false;
+
+                            (options.error || options.catch || function() {})(error.response.data);
+                            (options.complete || options.finally || function() {})();
+
+                            this.$emit('error');
+                        });
                 }
             },
             onSubmit() {
@@ -97,12 +106,13 @@
             onReset() {
                 this.$emit('reset');
                 this.fieldErrors = [];
+                this.$v.$reset();
                 this.sending = false;
                 this.sent = false;
             },
             submit(postData, options) {
                 this.$emit('beforeSubmit');
-                postData = postData || jQuery(this.$el).serializeArray();
+                postData = postData || jQuery(this.$el).serialize();
                 var ajax = this.call(this.action, Object.assign({ data: postData }, options));
                 this.$emit('afterSubmit');
                 return ajax;
