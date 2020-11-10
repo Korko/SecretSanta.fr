@@ -1872,6 +1872,10 @@ __webpack_require__.r(__webpack_exports__);
     sendIcon: {
       type: String,
       default: 'paper-plane'
+    },
+    autoReset: {
+      type: Boolean,
+      default: false
     }
   },
   data: function data() {
@@ -1901,17 +1905,22 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         this.sending = true;
-        return Object(_partials_axios_js__WEBPACK_IMPORTED_MODULE_5__["default"])({
-          url: url,
-          method: options.data ? 'POST' : 'GET',
-          data: options.data
-        }).then(function (response) {
+        return _partials_axios_js__WEBPACK_IMPORTED_MODULE_5__["default"].post(url, options.data).then(function (response) {
+          _this.fieldErrors = [];
           _this.sending = false;
-          _this.sent = true;
+
+          if (!_this.autoReset) {
+            _this.sent = true;
+          }
+
           (options.success || options.then || function () {})(response.data);
           (options.complete || options.finally || function () {})();
 
           _this.$emit('success', response.data);
+
+          if (_this.autoReset) {
+            _this.onReset();
+          }
         }).catch(function (error) {
           if (error.response.data && error.response.data.errors) _this.fieldErrors = error.response.data.errors;
           _this.sending = false;
@@ -1928,12 +1937,13 @@ __webpack_require__.r(__webpack_exports__);
     onReset: function onReset() {
       this.$emit('reset');
       this.fieldErrors = [];
+      this.$v.$reset();
       this.sending = false;
       this.sent = false;
     },
     submit: function submit(postData, options) {
       this.$emit('beforeSubmit');
-      postData = postData || jquery__WEBPACK_IMPORTED_MODULE_4___default()(this.$el).serializeArray();
+      postData = postData || jquery__WEBPACK_IMPORTED_MODULE_4___default()(this.$el).serialize();
       var ajax = this.call(this.action, Object.assign({
         data: postData
       }, options));
@@ -2019,11 +2029,11 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
       }).map(function (email) {
         email.created_at = new Date(email.created_at).toLocaleString('fr-FR');
         return email;
-      });
+      }) || [];
     },
     checkUpdates: function checkUpdates() {
       return !!Object.values(this.data.emails).find(function (email) {
-        return email.mail.delivery_status === 'created';
+        return email.mail.delivery_status !== 'error';
       });
     }
   },
@@ -2032,7 +2042,7 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
 
     setInterval(function () {
       if (_this.checkUpdates) _this.fetchState();
-    }, 1000);
+    }, 5000);
   },
   validations: {
     content: {
@@ -2043,10 +2053,13 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
     success: function success(data) {
       this.$set(this.data.emails, data.email.id, data.email);
     },
+    reset: function reset() {
+      this.content = '';
+    },
     fetchState: function fetchState() {
       var _this2 = this;
 
-      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_9__["default"].get(this.routes.fetchStateUrl).then(function (response) {
+      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_9__["default"].post(this.routes.fetchStateUrl).then(function (response) {
         if (response.data.emails) {
           Object.values(response.data.emails).forEach(function (email) {
             var new_update = new Date(email.mail.updated_at);
@@ -7500,8 +7513,8 @@ var render = function() {
       _c(
         "ajax-form",
         {
-          attrs: { action: _vm.routes.contactUrl, $v: _vm.$v },
-          on: { success: _vm.success }
+          attrs: { action: _vm.routes.contactUrl, $v: _vm.$v, autoReset: true },
+          on: { success: _vm.success, reset: _vm.reset }
         },
         [
           _c("fieldset", [
@@ -8650,17 +8663,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/modules/es.object.keys */ "./node_modules/core-js/modules/es.object.keys.js");
 /* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
-/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _partials_alertify_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../partials/alertify.js */ "./resources/js/partials/alertify.js");
-
-
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _partials_alertify_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../partials/alertify.js */ "./resources/js/partials/alertify.js");
 
 
 
@@ -8681,7 +8688,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-axios__WEBPACK_IMPORTED_MODULE_9___default.a.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios__WEBPACK_IMPORTED_MODULE_7___default.a.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /**
  * Transmit Hash Key via request headers
  */
@@ -8689,51 +8696,45 @@ axios__WEBPACK_IMPORTED_MODULE_9___default.a.defaults.headers.common['X-Requeste
 var key = window.location.hash.substr(1);
 
 if (key) {
-  axios__WEBPACK_IMPORTED_MODULE_9___default.a.defaults.headers.common['X-HASH-KEY'] = key;
+  axios__WEBPACK_IMPORTED_MODULE_7___default.a.defaults.headers.common['X-HASH-KEY'] = key;
 }
 
 setInterval(function () {
   // Nothing to do, this call will update the cookie if needed
-  axios__WEBPACK_IMPORTED_MODULE_9___default.a.get('/xsrf');
+  axios__WEBPACK_IMPORTED_MODULE_7___default.a.get('/xsrf');
 }, 5 * 60 * 1000); // Call every 5min
 
 
+axios__WEBPACK_IMPORTED_MODULE_7___default.a.interceptors.response.use(function (response) {
+  var _response$data;
 
-var myAxios = function myAxios(config) {
-  return new Promise(function (resolve, reject) {
-    axios__WEBPACK_IMPORTED_MODULE_9___default()(config).then(function (response) {
-      var _response$data;
+  if ((_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.message) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_8__["default"].success(response.data.message);
+  return response;
+}, function (error) {
+  var _error$response, _error$response$data;
 
-      if ((_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.message) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_10__["default"].success(response.data.message);
-      resolve(response);
-    }).catch(function (error) {
-      var _error$response, _error$response$data;
-
-      if ((_error$response = error.response) === null || _error$response === void 0 ? void 0 : (_error$response$data = _error$response.data) === null || _error$response$data === void 0 ? void 0 : _error$response$data.message) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_10__["default"].errorAlert(error.response.data.message);
-      reject(error);
-    });
-  });
-};
-
+  if ((_error$response = error.response) === null || _error$response === void 0 ? void 0 : (_error$response$data = _error$response.data) === null || _error$response$data === void 0 ? void 0 : _error$response$data.message) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_8__["default"].errorAlert(error.response.data.message);
+  return error;
+});
 ['get', 'delete', 'head', 'options'].forEach(function (method) {
-  myAxios[method] = function (url, config) {
-    return myAxios(_objectSpread({
+  axios__WEBPACK_IMPORTED_MODULE_7___default.a[method] = function (url, config) {
+    return axios__WEBPACK_IMPORTED_MODULE_7___default()(_objectSpread({
       method: method,
       url: url
     }, config));
   };
 });
 ['post', 'put', 'patch'].forEach(function (method) {
-  myAxios[method] = function (url, data, config) {
-    return myAxios(_objectSpread({
+  axios__WEBPACK_IMPORTED_MODULE_7___default.a[method] = function (url, data, config) {
+    return axios__WEBPACK_IMPORTED_MODULE_7___default()(_objectSpread({
       method: method,
       url: url,
       data: data
     }, config));
   };
 });
-myAxios.request = myAxios;
-/* harmony default export */ __webpack_exports__["default"] = (myAxios);
+axios__WEBPACK_IMPORTED_MODULE_7___default.a.request = axios__WEBPACK_IMPORTED_MODULE_7___default.a;
+/* harmony default export */ __webpack_exports__["default"] = (axios__WEBPACK_IMPORTED_MODULE_7___default.a);
 
 /***/ }),
 
