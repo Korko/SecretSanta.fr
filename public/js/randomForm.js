@@ -10157,6 +10157,23 @@ var render = function() {
                         { staticClass: "table-responsive form-group" },
                         [
                           _c(
+                            "div",
+                            {
+                              staticClass: "alert alert-warning",
+                              attrs: { role: "alert" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            Les adresses @laposte.net et @sfr.fr ne fonctionnent malheureusement pas bien avec SecretSanta.fr en ce moment. Les destinataires ne reçoivent pas leurs emails."
+                              ),
+                              _c("br"),
+                              _vm._v(
+                                "Autant que possible, évitez d'utilisez ces adresses.\n                        "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
                             "table",
                             {
                               staticClass: "table table-hover table-numbered",
