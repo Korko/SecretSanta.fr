@@ -72,6 +72,9 @@
                         }
                     }
                 });
+            },
+            nl2br(str) {
+                return str.replace("\n", '<br />');
             }
         }
     };
@@ -115,7 +118,7 @@
             <tbody>
                 <tr v-for="email in emails" :key="email.id" class="email">
                     <td>{{ email.created_at }}</td>
-                    <td>{{ email.mail_body }}</td>
+                    <td><p>{{ nl2br(email.mail_body) }}</p></td>
                     <td>{{ $t(`common.email.status.${email.delivery_status}`) }}</td>
                 </tr>
                 <tr v-if="emails.length === 0" class="no-email">
