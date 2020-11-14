@@ -107,6 +107,9 @@
 
 <template>
     <div>
+        <div class="alert alert-warning" role="alert">
+            Les adresses @laposte.net et @sfr.fr ne fonctionnent malheureusement pas bien avec SecretSanta.fr en ce moment. Les destinataires ne reçoivent pas leurs emails.<br />Autant que possible, évitez d'utilisez ces adresses.
+        </div>
         <table class="table table-hover">
             <thead>
                 <tr class="table-active">
