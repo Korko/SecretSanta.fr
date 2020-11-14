@@ -8371,6 +8371,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
     _c("table", { staticClass: "table table-hover" }, [
       _c("caption", [_vm._v(_vm._s(_vm.$t("organizer.list.caption")))]),
       _vm._v(" "),
@@ -8494,7 +8496,24 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+      [
+        _vm._v(
+          "\n        Les adresses @laposte.net et @sfr.fr ne fonctionnent malheureusement pas bien avec SecretSanta.fr en ce moment. Les destinataires ne reçoivent pas leurs emails."
+        ),
+        _c("br"),
+        _vm._v("Autant que possible, évitez d'utilisez ces adresses.\n    ")
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
