@@ -20,7 +20,8 @@ window.app = new Vue({
     data: {
         routes: {
             fetchStateUrl: window.global.routes.fetchStateUrl,
-            deleteUrl: window.global.routes.deleteUrl
+            deleteUrl: window.global.routes.deleteUrl,
+            csvUrl: window.global.routes.csvUrl
         }
     }
 });

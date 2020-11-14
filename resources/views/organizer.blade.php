@@ -5,6 +5,7 @@
 
     @javascript([
         'routes' => [
+            'csvUrl' => URL::signedRoute('organizerPanel.csv', ['draw' => $draw]),
             'fetchStateUrl' => URL::signedRoute('organizerPanel.fetchState', ['draw' => $draw]),
             'deleteUrl' => URL::signedRoute('organizerPanel.delete', ['draw' => $draw]),
         ]

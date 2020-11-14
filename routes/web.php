@@ -37,6 +37,7 @@ Route::get('/org/{draw:hash}', [OrganizerController::class, 'view'])->name('orga
 Route::middleware(['signed', 'decrypt.key:draw,mail_title'])->group(function () {
     Route::post('/org/{draw:hash}', [OrganizerController::class, 'fetch'])->name('organizerPanel.fetch');
     Route::delete('/org/{draw:hash}', [OrganizerController::class, 'delete'])->name('organizerPanel.delete');
+    Route::get('/org/{draw:hash}/csv', [OrganizerController::class, 'csv'])->name('organizerPanel.csv');
     Route::post('/org/{draw:hash}/fetchState', [OrganizerController::class, 'fetchState'])->name('organizerPanel.fetchState');
 });
 Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function () {

@@ -151,6 +151,9 @@ export default {
             },
             "up_and_sent": "Modifié avec succès !",
             "deleted": "Toutes les données ont été supprimées",
+            "download": {
+                "button": "Télécharger"
+            },
             "purge": {
                 "button": "Supprimer tout",
                 "confirm": {
