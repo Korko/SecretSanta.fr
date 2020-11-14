@@ -11,6 +11,7 @@ class OrganizerFinalRecap extends Mailable
     use Queueable, SerializesModels;
 
     public $organizerName;
+    public $expirationDate;
     public $csv;
 
     /**
@@ -23,6 +24,8 @@ class OrganizerFinalRecap extends Mailable
         $this->subject = __('emails.organizer_final_recap_title', ['draw' => $draw->id]);
 
         $this->organizerName = $draw->organizer->name;
+
+        $this->expirationDate = $draw->expires_at->locale(App::getLocale())->isoFormat('LL');
 
         $participantNames = $draw->participants->pluck('name', 'id');
         $this->csv = $this->formatCsv($draw->participants->map(function ($participant) use ($participantNames) {

@@ -1,11 +1,14 @@
 Bonjour {{ $organizerName }},
 
-Merci d'avoir organisé un SecretSanta en utilisant {{ config('app.name') }}.
+Merci d'avoir organisé votre évènement en utilisant {{ config('app.name') }}.
 
-Vous trouverez en pièce jointe un récapitulatif des participants que vous avez défini sur le site. Vous pourrez le réutiliser lors de votre
-prochain SecretSanta pour accélérer la rentrée des informations. En cas de problème durant votre tirage, vous pouvez aussi vérifier si il y a eu une erreur dans les données entrées.
+Afin de surveiller si tous les participants ont bien reçu leur email ou modifier une adresse en cas d'erreur, rendez vous sur votre interface personnalisée : {{ $panelLink }}
+
+Cette interface ne sera plus disponible à compter du {{ $expirationDate }}, à cette date vous recevrez un email contenant un fichier récapitulatif des participants ainsi que des exclusions que vous avez définies pour cet évènement. Ce fichier pourra être réutilisé sur SecretSanta.fr pour gagner du temps lors de l'organisation de votre prochain évènement.
 
 Amusez-vous bien !
+
+Secrètement votre,
 
 {{ config('app.name') }} - {{ config('app.url') }}
 
