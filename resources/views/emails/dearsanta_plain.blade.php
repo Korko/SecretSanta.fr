@@ -6,4 +6,6 @@ Ceci est un message automatique, merci de ne pas y répondre.
 
 ---
 
+Secrètement votre,
+
 {{ config('app.name') }} - {{ config('app.url') }}

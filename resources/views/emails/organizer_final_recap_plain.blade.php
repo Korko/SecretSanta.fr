@@ -1,13 +1,10 @@
 Bonjour {{ $organizerName }},
 
-Merci d'avoir organisé un SecretSanta en utilisant {{ config('app.name') }}.
+Merci d'avoir organisé votre évènement en utilisant {{ config('app.name') }}.
 
-Vous trouverez en pièce jointe un récapitulatif des participants que vous avez défini sur le site.
-Si cela est possible, il inclut les exclusions comprenant la cible de chacun pour éviter de repiocher la même personne.
-Vous pourrez le réutiliser lors de votre prochain SecretSanta pour accélérer la rentrée des informations.
-En cas de problème durant votre tirage, vous pouvez aussi vérifier si il y a eu une erreur dans les données entrées.
+Vous trouverez en pièce jointe un récapitulatif des participants et exclusions définies pour l'évènement du {{ $expirationDate }}, ainsi que le résultat du tirage. Le fichier récapitulatif peut être réutilisé sur {{ config('app.name') }} pour gagner du temps lors de l'organisation de votre prochain évènement. Le fichier avec les résultats vous permettra de définir de nouvelles exclusions si vous ne souhaitez pas pouvoir retomber sur la même personne la prochaine fois !
 
-Amusez-vous bien !
+Secrètement votre,
 
 {{ config('app.name') }} - {{ config('app.url') }}
 

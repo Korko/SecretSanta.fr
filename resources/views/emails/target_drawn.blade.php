@@ -18,6 +18,8 @@
 
 		<p style="padding-bottom:10px !important">Vous pouvez écrire à votre Père Noël Secret ! Ca se passe ici : <a href="{{ $dearSantaLink }}">{{ $dearSantaLink }}</a></p>
 
+		<p style="padding-bottom:10px !important">Secrètement votre,</p>
+
 		<p><a href="{{ config('app.url') }}">{{ config('app.name') }}</a></p>
 
 	</td>

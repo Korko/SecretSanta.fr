@@ -16,6 +16,8 @@
 
                 <hr />
 
+				<p style="padding-bottom:10px !important">Secrètement votre,</p>
+
                 <p><a href="{{ config('app.url') }}">{{ config('app.name') }}</a></p>
 
         </td>
