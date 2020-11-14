@@ -96,6 +96,11 @@ class OrganizerController extends Controller
         SendMail::dispatch($participant, new TargetDrawn($participant));
     }
 
+    public function csv(Draw $draw)
+    {
+        return response($draw->participants->toCsv(['name', 'email', 'exclusionsNames']));
+    }
+
     public function delete(Request $request, Draw $draw)
     {
         $draw->delete();

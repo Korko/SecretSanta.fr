@@ -74,6 +74,17 @@ class Participant extends Model
         return $query->findByHashOrFail($hash);
     }
 
+    public function getExclusionsNamesAttribute()
+    {
+        $participantNames = $this->draw->participants->pluck('name', 'id');
+
+        return collect($this->exclusions)
+            ->map(function ($participantId) use ($participantNames) {
+                return $participantNames[$participantId];
+            })
+            ->all();
+    }
+
     /**
      * Retrieve the model for a bound value.
      *

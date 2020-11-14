@@ -7,6 +7,8 @@
 
     import { required, email } from 'vuelidate/lib/validators';
 
+    import Moment from 'moment';
+
     import axios from '../partials/axios.js';
 
     import InputEdit from './inputEdit.vue';
@@ -96,6 +98,21 @@
                             .alert(data.message)
                             .then(() => window.location.pathname = '/');
                     });
+            },
+            download() {
+                axios
+                    .get(this.routes.csvUrl, {responseType: 'blob'})
+                    .then(response => {
+                        var blob = new Blob([response.data]);
+                        blob = blob.slice(0, blob.size, "text/csv");
+
+                        const url = window.URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'secretsanta_'+(Moment(this.data.expires_at).format('YYYY-MM-DD'))+'.csv');
+                        document.body.appendChild(link);
+                        link.click();
+                    });
             }
         }
     };
@@ -142,6 +159,10 @@
                 </tr>
             </tbody>
         </table>
+        <button type="button" class="btn btn-primary" @click="download">
+            <i class="fas fa-download" />
+            {{ $t('organizer.download.button') }}
+        </button>
         <button type="button" class="btn btn-danger" @click="confirmPurge">
             <i class="fas fa-trash" />
             {{ $t('organizer.purge.button') }}

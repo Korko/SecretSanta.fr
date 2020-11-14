@@ -28,18 +28,7 @@ class OrganizerFinalRecap extends Mailable
 
         $this->expirationDate = $draw->expires_at->locale(App::getLocale())->isoFormat('LL');
 
-        $participantNames = $draw->participants->pluck('name', 'id');
-        $this->csv = $this->formatCsv($draw->participants->map(function ($participant) use ($participantNames) {
-            return [
-                $participant->name,
-                $participant->email,
-                collect($participant->exclusions)
-                    ->map(function ($participantId) use ($participantNames) {
-                        return $participantNames[$participantId];
-                    })
-                    ->implode(','),
-            ];
-        }));
+        $this->csv = $draw->participants->toCsv(['name', 'email', 'exclusionsNames']);
     }
 
     /**
@@ -54,19 +43,5 @@ class OrganizerFinalRecap extends Mailable
                     ->attachData($this->csv, 'secretsanta.csv', [
                         'mime' => 'text/csv',
                     ]);
-    }
-
-    protected function formatCsv(iterable $data, $delimiter = ',', $enclosure = '"', $escapeChar = '\\')
-    {
-        $fileHandler = fopen('php://memory', 'r+');
-        foreach ($data as $fields) {
-            if (fputcsv($fileHandler, $fields, $delimiter, $enclosure, $escapeChar) === false) {
-                return false;
-            }
-        }
-        rewind($fileHandler);
-        $csvLine = stream_get_contents($fileHandler);
-
-        return rtrim($csvLine);
     }
 }

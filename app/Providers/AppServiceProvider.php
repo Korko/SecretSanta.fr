@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\CsvGenerator;
+use App\Services\Response;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Solvers\SolverInterface::class,
             \App\Solvers\HatSolver::class
         );
+
+        $this->app->singleton('csv', function ($app) {
+            return $app->make(CsvGenerator::class);
+        });
     }
 
     /**

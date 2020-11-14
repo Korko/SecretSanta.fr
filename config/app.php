@@ -185,9 +185,11 @@ return [
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
+        App\Providers\CollectionMacroServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
         App\Providers\EncryptionServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\ResponseMacroServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ValidatorServiceProvider::class,
 
@@ -216,6 +218,7 @@ return [
         'Cache'        => Illuminate\Support\Facades\Cache::class,
         'Config'       => Illuminate\Support\Facades\Config::class,
         'Cookie'       => Illuminate\Support\Facades\Cookie::class,
+        'Csv'          => App\Facades\Csv::class,
         'Crypt'        => Illuminate\Support\Facades\Crypt::class,
         'DB'           => Illuminate\Support\Facades\DB::class,
         'DrawCrypt'    => App\Facades\DrawCrypt::class,
