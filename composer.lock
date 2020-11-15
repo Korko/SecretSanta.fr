@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e94216f786bac39208a52112748d121c",
+    "content-hash": "94d8617e92060d3b4a54236cb33c7169",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -952,6 +952,53 @@
                 "youtube"
             ],
             "time": "2019-04-03T13:40:29+00:00"
+        },
+        {
+            "name": "korko/laravel-dkim",
+            "version": "0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Korko/laravel-dkim.git",
+                "reference": "e912368c4e61a29c7438233f4c6792a3e13692d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Korko/laravel-dkim/zipball/e912368c4e61a29c7438233f4c6792a3e13692d4",
+                "reference": "e912368c4e61a29c7438233f4c6792a3e13692d4",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~7.0",
+                "php": "^7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Vitalybaev\\LaravelDkim\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vitaly Baev",
+                    "email": "hello@vitalybaev.ru"
+                },
+                {
+                    "name": "Ricardo Boss",
+                    "email": "contact@ricardoboss.de"
+                },
+                {
+                    "name": "Jeremy 'Korko' Lemesle",
+                    "email": "jeremy.lemesle@korko.fr"
+                }
+            ],
+            "description": "Laravel package for signing outgoing messages with DKIM.",
+            "support": {
+                "source": "https://github.com/Korko/laravel-dkim/tree/master"
+            },
+            "time": "2020-11-15T14:56:54+00:00"
         },
         {
             "name": "korko/validator",
@@ -5685,6 +5732,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2019-12-12T13:22:17+00:00"
         },
         {

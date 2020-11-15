@@ -132,4 +132,16 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | DKIM Settings
+    |--------------------------------------------------------------------------
+    */
+    'dkim_selector' => env('MAIL_DKIM_SELECTOR'), // selector, required
+    'dkim_domain' => env('MAIL_DKIM_DOMAIN'), // domain, required
+    'dkim_private_key' => env('MAIL_DKIM_PRIVATE_KEY'), // path to private key, required
+    'dkim_identity' => env('MAIL_DKIM_IDENTITY'), // identity (optional)
+    'dkim_algo' => env('MAIL_DKIM_ALGO', 'rsa-sha256'), // sign algorithm (defaults to rsa-sha256)
+    'dkim_passphrase' => env('MAIL_DKIM_PASSPHRASE'), // private key passphrase (optional)
+
 ];
