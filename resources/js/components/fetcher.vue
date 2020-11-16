@@ -1,9 +1,10 @@
 <script>
+    import axios from '../partials/axios.js';
+
     import Timer from './timer.vue';
-    import AjaxForm from './ajaxForm.vue';
 
     export default {
-        components: { Timer, AjaxForm },
+        components: { Timer },
         props: {
             fetchurl: {
                 type: String,
@@ -16,28 +17,24 @@
             };
         },
         mounted() {
-            this.$nextTick(() => {
-                this.loading = true;
-                this.$refs.form.submit(undefined, {
-                    success: json => {
-                        this.$emit('success', json);
-                    },
-                    error: () => {
-                        this.$emit('error');
-                    }
+            this.loading = true;
+            axios
+                .get(this.fetchurl)
+                .then(response => {
+                    this.$emit('success', response.data);
+                })
+                .catch(error => {
+                    this.$emit('error');
+                })
+                .finally(() => {
+                    this.loading = false;
                 });
-            });
         }
     };
 </script>
 
 <template>
-    <ajax-form id="fetch" ref="form" :action="fetchurl" :button="false">
-        <timer :delay="2000">
-            <button type="submit" class="btn btn-primary btn-lg" :disabled="loading">
-                <span v-if="loading"><span class="fas fa-spinner" /> {{ $t('common.fetcher.loading') }}</span>
-                <span v-else>{{ $t('common.fetcher.load') }}</span>
-            </button>
-        </timer>
-    </ajax-form>
+    <timer :delay="2000">
+        <!-- TODO Erreur -->
+    </timer>
 </template>

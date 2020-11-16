@@ -10,3 +10,11 @@
 | used to check if an authenticated user can listen to the channel.
 |
 */
+
+Broadcast::channel('draw.{draw:hash}', function () {
+    return true;
+});
+
+Broadcast::channel('participant.{participant:hash}', function () {
+    return true;
+});

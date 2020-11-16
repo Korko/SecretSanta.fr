@@ -39,13 +39,6 @@ class OrganizerController extends Controller
                     ])
                 ];
             }),
-            'resendEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
-                return [
-                    $participant->id => URL::signedRoute('organizerPanel.resendEmail', [
-                        'draw' => $participant->draw, 'participant' => $participant
-                    ])
-                ];
-            }),
         ]);
     }
 
@@ -60,14 +53,18 @@ class OrganizerController extends Controller
 
     public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
     {
-        $participant->email = $request->input('email');
-        $participant->save();
+        if ($participant->email === $request->input('email')) {
+            $message = trans('message.sent');
+        } else {
+            $participant->email = $request->input('email');
+            $participant->save();
+
+            $message = trans('organizer.up_and_sent');
+        }
 
         $participant->mail->updateDeliveryStatus(MailModel::CREATED);
 
-        $this->doResendEmail($participant);
-
-        $message = trans('organizer.up_and_sent');
+        $this->sendEmail($participant);
 
         return $request->ajax() ?
             response()->json([
@@ -76,20 +73,7 @@ class OrganizerController extends Controller
             redirect('/')->with('message', $message);
     }
 
-    public function resendEmail(OrganizerResendEmailRequest $request, Draw $draw, Participant $participant)
-    {
-        $participant->mail->updateDeliveryStatus(MailModel::CREATED);
-
-        $this->doResendEmail($participant);
-
-        $message = trans('message.sent');
-
-        return $request->ajax() ?
-            response()->json(['message' => $message, 'status' => $participant->mail->delivery_status]) :
-            redirect('/')->with('message', $message);
-    }
-
-    protected function doResendEmail(Participant $participant)
+    protected function sendEmail(Participant $participant)
     {
         Metrics::increment('email');
 

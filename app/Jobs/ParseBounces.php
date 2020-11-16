@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\MailStatusUpdated;
 use App\Models\Mail as MailModel;
 use App\Services\EmailClient;
 use Exception;
@@ -29,8 +30,7 @@ class ParseBounces implements ShouldQueue
                 $recipient = $this->getFirstRecipientAddress($unseenMail);
 
                 $mail = $this->getMailFromReturnPath($recipient);
-                $mail->delivery_status = MailModel::ERROR;
-                $mail->save();
+                $mail->failed();
             } catch (Exception $e) {
                 // Just ignore the exception
             } finally {

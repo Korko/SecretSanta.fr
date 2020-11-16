@@ -19,7 +19,6 @@ window.app = new Vue({
     i18n,
     data: {
         routes: {
-            fetchStateUrl: window.global.routes.fetchStateUrl,
             contactUrl: window.global.routes.contactUrl
         }
     }

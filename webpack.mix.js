@@ -1,6 +1,8 @@
 const mix = require('laravel-mix');
 const webpack = require('webpack');
 
+require('dotenv').config();
+
 require('laravel-mix-purgecss');
 require('laravel-mix-polyfill');
 require('laravel-mix-modernizr');
