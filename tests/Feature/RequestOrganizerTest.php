@@ -37,12 +37,14 @@ class RequestOrganizerTest extends RequestCase
         $participant = $draw->participants->first();
 
         // Check data can be changed
-        $path = URL::signedRoute('organizerPanel.resendEmail', [
+        $path = URL::signedRoute('organizerPanel.changeEmail', [
             'draw' => $draw->hash,
             'participant' => $participant->id,
         ]);
 
-        $this->ajaxPost($path)
+        $this->ajaxPost($path, [
+                'email' => $participant->email,
+            ])
             ->assertStatus(200)
             ->assertJson([
                 'message' => 'Envoyé avec succès !',
