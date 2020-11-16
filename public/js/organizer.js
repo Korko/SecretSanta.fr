@@ -1975,8 +1975,9 @@ __webpack_require__.r(__webpack_exports__);
     icon: function icon() {
       return {
         created: "fas fa-spinner",
-        error: "fas fa-exclamation-triangle",
-        sent: "fas fa-check"
+        sending: "fas fa-spinner",
+        sent: "fas fa-check",
+        error: "fas fa-exclamation-triangle"
       }[this.delivery_status];
     }
   }
@@ -22331,8 +22332,8 @@ __webpack_require__.r(__webpack_exports__);
       "email": {
         "status": {
           "created": "En attente d'envoi",
+          "sending": "Envoi en cours",
           "sent": "Envoyé",
-          "received": "Reçu",
           "error": "Erreur"
         }
       }
