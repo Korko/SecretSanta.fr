@@ -2455,8 +2455,8 @@ __webpack_require__.r(__webpack_exports__);
       "email": {
         "status": {
           "created": "En attente d'envoi",
+          "sending": "Envoi en cours",
           "sent": "Envoyé",
-          "received": "Reçu",
           "error": "Erreur"
         }
       }

@@ -184,8 +184,8 @@ export default {
             "email": {
                 "status": {
                     "created": "En attente d'envoi",
+                    "sending": "Envoi en cours",
                     "sent": "Envoyé",
-                    "received": "Reçu",
                     "error": "Erreur"
                 }
             }

@@ -10,8 +10,9 @@
             icon() {
                 return {
                     created: "fas fa-spinner",
-                    error: "fas fa-exclamation-triangle",
-                    sent: "fas fa-check"
+                    sending: "fas fa-spinner",
+                    sent: "fas fa-check",
+                    error: "fas fa-exclamation-triangle"
                 }[this.delivery_status];
             }
         }
