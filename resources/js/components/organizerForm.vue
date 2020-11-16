@@ -48,9 +48,12 @@
         },
         created() {
             Echo.channel('draw.'+this.data.draw)
-                .listen('.mail.update', (e) => {
-                    this.$set(this.data.participants[e.id].mail, 'delivery_status', e.delivery_status);
-                    this.$set(this.data.participants[e.id].mail, 'updated_at', e.updated_at);
+                .listen('.pusher:subscription_succeeded', () => {
+                    this.fetchState();
+                })
+                .listen('.mail.update', data => {
+                    this.$set(this.data.participants[data.id].mail, 'delivery_status', data.delivery_status);
+                    this.$set(this.data.participants[data.id].mail, 'updated_at', data.updated_at);
                 });
         },
         methods: {
@@ -61,7 +64,7 @@
             },
             fetchState() {
                 return axios
-                    .post(this.routes.fetchStateUrl)
+                    .get(this.routes.fetchStateUrl)
                     .then(response => {
                         if (response.data.participants) {
                             Object.values(response.data.participants).forEach(participant => {
