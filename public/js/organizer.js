@@ -2346,10 +2346,12 @@ vue__WEBPACK_IMPORTED_MODULE_10___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
   created: function created() {
     var _this = this;
 
-    _partials_echo_js__WEBPACK_IMPORTED_MODULE_16__["default"].channel('draw.' + this.data.draw).listen('.mail.update', function (e) {
-      _this.$set(_this.data.participants[e.id].mail, 'delivery_status', e.delivery_status);
+    _partials_echo_js__WEBPACK_IMPORTED_MODULE_16__["default"].channel('draw.' + this.data.draw).listen('.pusher:subscription_succeeded', function () {
+      _this.fetchState();
+    }).listen('.mail.update', function (data) {
+      _this.$set(_this.data.participants[data.id].mail, 'delivery_status', data.delivery_status);
 
-      _this.$set(_this.data.participants[e.id].mail, 'updated_at', e.updated_at);
+      _this.$set(_this.data.participants[data.id].mail, 'updated_at', data.updated_at);
     });
   },
   methods: {
@@ -2361,7 +2363,7 @@ vue__WEBPACK_IMPORTED_MODULE_10___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
     fetchState: function fetchState() {
       var _this2 = this;
 
-      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_15__["default"].post(this.routes.fetchStateUrl).then(function (response) {
+      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_15__["default"].get(this.routes.fetchStateUrl).then(function (response) {
         if (response.data.participants) {
           Object.values(response.data.participants).forEach(function (participant) {
             var new_update = new Date(participant.mail.updated_at);

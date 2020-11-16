@@ -5,7 +5,8 @@
 
     @javascript([
         'routes' => [
-            'contactUrl' => URL::signedRoute('dearsanta.contact', ['participant' => $participant])
+            'contactUrl' => URL::signedRoute('dearsanta.contact', ['participant' => $participant]),
+            'fetchStateUrl' => URL::signedRoute('dearsanta.fetchState', ['participant' => $participant]),
         ]
     ])
 
