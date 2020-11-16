@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Events\TargetDrawnMailStatusUpdated;
+use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use Crypt;
 use Illuminate\Bus\Queueable;
@@ -10,6 +12,8 @@ use Illuminate\Support\Facades\URL;
 class TargetDrawn extends TrackedMailable
 {
     use Queueable;
+
+    protected $santa;
 
     public $content;
     public $dearSantaLink;
@@ -21,6 +25,8 @@ class TargetDrawn extends TrackedMailable
      */
     public function __construct(Participant $santa)
     {
+        $this->santa = $santa;
+
         $this->subject = $this->parseKeywords(__('emails.target_draw.title', [
             'draw' => $santa->draw->id,
             'subject' => $santa->draw->mail_title,
@@ -47,5 +53,10 @@ class TargetDrawn extends TrackedMailable
     {
         return $this->view('emails.target_drawn')
                     ->text('emails.target_drawn_plain');
+    }
+
+    public function onMailUpdate(MailModel $mail)
+    {
+        event(new TargetDrawnMailStatusUpdated($this->santa, $mail));
     }
 }

@@ -6,25 +6,23 @@
 
     import StateMachine from '../mixins/stateMachine.js';
 
+    import axios from '../partials/axios.js';
+
     export default {
         mixins: [StateMachine],
         inheritAttrs: false,
         props: {
-            name: {
-                type: String,
-                required: true
-            },
             value: {
-                type: String,
-                required: true
-            },
-            action: {
                 type: String,
                 required: true
             },
             validation: {
                 type: Object,
                 default: null
+            },
+            update: {
+                type: Function,
+                required: true
             }
         },
         validations() {
@@ -111,24 +109,7 @@
                 this.send('resend');
             },
             submit() {
-                return new Promise((resolve, reject) => {
-                    axios
-                        .post(this.action, {
-                            [this.name]: this.newValue
-                        })
-                        .then(response => {
-                            var update = { value: this.newValue };
-                            if (response.data) {
-                                Object.assign(update, response.data);
-                            }
-                            this.$emit('update', update);
-
-                            resolve();
-                        })
-                        .catch(error => {
-                            reject();
-                        });
-                });
+                return this.update(this.newValue);
             },
             stateView() {
                 this.newValue = this.value;
@@ -169,7 +150,7 @@
 </script>
 
 <template>
-    <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit">
+    <form method="post" autocomplete="off" @submit.prevent="onSubmit">
         <fieldset :disabled="updating">
             <div class="input-group" :data-state="state" :data-previous-state="previousState">
                 <div v-if="updating" class="input-group-prepend">
@@ -184,7 +165,7 @@
                 <input
                     ref="input"
                     v-model="newValue"
-                    :name="name"
+                    name="input"
                     v-bind="$attrs"
                     :class="{ 'form-control': true, 'is-invalid': $v.$error }"
                     :disabled="view"

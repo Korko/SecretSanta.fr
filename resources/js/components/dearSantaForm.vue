@@ -6,6 +6,7 @@
     Vue.use(Vuelidate);
 
     import axios from '../partials/axios.js';
+    import Echo from '../partials/echo.js';
 
     import EmailStatus from './emailStatus.vue';
     import DefaultForm from './form.vue';
@@ -45,9 +46,11 @@
             }
         },
         created() {
-            setInterval(() => {
-                if (this.checkUpdates) this.fetchState();
-            }, 5000);
+            Echo.channel('participant.'+this.data.draw)
+                .listen('.mail.update', (e) => {
+                    this.$set(this.data.emails[e.id].mail, 'delivery_status', e.delivery_status);
+                    this.$set(this.data.emails[e.id].mail, 'updated_at', e.updated_at);
+                });
         },
         validations: {
             content: {

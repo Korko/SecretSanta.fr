@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Events\MailStatusUpdated;
 use App\Models\Mail as MailModel;
 
 class TrackedMailable extends Mailable
@@ -17,6 +18,11 @@ class TrackedMailable extends Mailable
         $this->returnPath = str_replace('*', $mailModel->hash, config('mail.return_path'));
     }
 
+    public function onMailUpdate(MailModel $mail)
+    {
+        return null;
+    }
+
     protected function updateDeliveryStatus($status)
     {
         if (isset($this->mailId)) {
@@ -25,6 +31,8 @@ class TrackedMailable extends Mailable
             if ($mailModel->updated_at->equalTo($this->updateDatetime)) {
                 $mailModel->updateDeliveryStatus($status);
             }
+
+            $this->onMailUpdate($mailModel);
         }
     }
 

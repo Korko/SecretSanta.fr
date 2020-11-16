@@ -10,6 +10,7 @@
     import Moment from 'moment';
 
     import axios from '../partials/axios.js';
+    import Echo from '../partials/echo.js';
 
     import InputEdit from './inputEdit.vue';
     import EmailStatus from './emailStatus.vue';
@@ -46,9 +47,11 @@
             }
         },
         created() {
-            setInterval(() => {
-                if (this.checkUpdates) this.fetchState();
-            }, 5000);
+            Echo.channel('draw.'+this.data.draw)
+                .listen('.mail.update', (e) => {
+                    this.$set(this.data.participants[e.id].mail, 'delivery_status', e.delivery_status);
+                    this.$set(this.data.participants[e.id].mail, 'updated_at', e.updated_at);
+                });
         },
         methods: {
             update(k, data) {
@@ -99,6 +102,15 @@
                             .then(() => window.location.pathname = '/');
                     });
             },
+            updateEmail(k, email) {
+                this.$set(this.data.participants[k], 'email', email);
+                this.$set(this.data.participants[k].mail, 'delivery_status', 'created');
+
+                return axios
+                    .post(this.data.changeEmailUrls[this.data.participants[k].id], {
+                        email: email
+                    });
+            },
             download() {
                 axios
                     .get(this.routes.csvUrl, {responseType: 'blob'})
@@ -143,11 +155,9 @@
                     <td>{{ participant.name }}</td>
                     <td>
                         <input-edit
-                            :action="data.changeEmailUrls[participant.id]"
                             :value="participant.email"
-                            name="email"
                             :validation="validations.email"
-                            @update="update(k, $event)"
+                            :update="(email) => updateEmail(k, email)"
                         >
                             <template #errors="{ $v: $v }">
                                 <div v-if="!$v.required" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.required') }}</div>
@@ -155,7 +165,7 @@
                             </template>
                         </input-edit>
                     </td>
-                    <td><email-status :delivery_status="participant.mail.delivery_status" /></td>
+                    <td><email-status :delivery_status="participant.mail.delivery_status" @redo="updateEmail(k, participant.email)" /></td>
                 </tr>
             </tbody>
         </table>

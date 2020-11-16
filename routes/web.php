@@ -28,21 +28,18 @@ Route::pattern('participant:hash', '[0-9a-zA-Z]{'.config('hashids.connections.sa
 
 Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta');
 Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function () {
-    Route::post('/dearsanta/{participant:hash}', [DearSantaController::class, 'fetch'])->name('dearsanta.fetch');
-    Route::post('/dearsanta/{participant:hash}/send', [DearSantaController::class, 'handle'])->name('dearsanta.contact');
-    Route::post('/dearsanta/{participant:hash}/fetchState', [DearSantaController::class, 'fetchState'])->name('dearsanta.fetchState');
+    Route::get('/participant/{participant:hash}', [DearSantaController::class, 'fetch'])->name('dearsanta.fetch');
+    Route::post('/dearsanta/{participant:hash}', [DearSantaController::class, 'handle'])->name('dearsanta.contact');
 });
 
 Route::get('/org/{draw:hash}', [OrganizerController::class, 'view'])->name('organizerPanel');
 Route::middleware(['signed', 'decrypt.key:draw,mail_title'])->group(function () {
-    Route::post('/org/{draw:hash}', [OrganizerController::class, 'fetch'])->name('organizerPanel.fetch');
-    Route::delete('/org/{draw:hash}', [OrganizerController::class, 'delete'])->name('organizerPanel.delete');
-    Route::get('/org/{draw:hash}/csv', [OrganizerController::class, 'csv'])->name('organizerPanel.csv');
-    Route::post('/org/{draw:hash}/fetchState', [OrganizerController::class, 'fetchState'])->name('organizerPanel.fetchState');
+    Route::get('/draw/{draw:hash}', [OrganizerController::class, 'fetch'])->name('organizerPanel.fetch');
+    Route::delete('/draw/{draw:hash}', [OrganizerController::class, 'delete'])->name('organizerPanel.delete');
+    Route::get('/draw/{draw:hash}/csv', [OrganizerController::class, 'csv'])->name('organizerPanel.csv');
 });
 Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function () {
     Route::post('/org/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
-    Route::post('/org/{draw:hash}/{participant:id}/resendEmail', [OrganizerController::class, 'resendEmail'])->name('organizerPanel.resendEmail');
 });
 
 Route::get('/xsrf', [Controller::class, 'noop']);
