@@ -13,7 +13,7 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0",
-        "korko/laravel-dkim": "^0.6.0",
+        "korko/laravel-dkim": "^0.6.2",
         "korko/validator": "dev-master",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
