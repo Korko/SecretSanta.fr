@@ -13,6 +13,13 @@ class Mail extends Model
     protected static $hashConnection = 'bounce';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['draw_id'];
+
+    /**
      * The model's default values for attributes.
      *
      * @var array

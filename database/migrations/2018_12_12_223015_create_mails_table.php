@@ -17,6 +17,8 @@ class CreateMailsTable extends Migration
         Schema::create('mails', function (Blueprint $table) {
             $table->id();
             $table->enum('delivery_status', Mail::$deliveryStatuses);
+            $table->foreignId('draw_id')->constrained();
+            $table->unsignedTinyInteger('version')->default(0);
             $table->timestamps();
         });
     }

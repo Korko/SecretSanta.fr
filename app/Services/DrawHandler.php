@@ -65,12 +65,15 @@ class DrawHandler
     {
         $draw->participants = collect();
         foreach ($participants as $idx => $santa) {
+            $mail = (new MailModel())->draw()->associate($draw);
+            $mail->save();
+
             $participant = new Participant();
             $participant->draw()->associate($draw);
             $participant->name = $santa['name'];
             $participant->email = Arr::get($santa, 'email');
             $participant->exclusions = $santa['exclusions'];
-            $participant->mail()->associate(MailModel::create());
+            $participant->mail()->associate($mail);
             $participant->save();
 
             $participants[$idx] = $participant;
