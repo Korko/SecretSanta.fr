@@ -46,13 +46,17 @@
             }
         },
         created() {
-            Echo.channel('participant.'+this.data.draw)
+            Echo.channel('draw.'+this.data.draw)
                 .listen('.pusher:subscription_succeeded', () => {
                     this.fetchState();
                 })
                 .listen('.mail.update', data => {
-                    this.$set(this.data.emails[data.id].mail, 'delivery_status', data.delivery_status);
-                    this.$set(this.data.emails[data.id].mail, 'updated_at', data.updated_at);
+                    var key = Object.keys(this.data.emails).find(key => this.data.emails[key].mail.id === data.id);
+
+                    if(key) {
+                        this.$set(this.data.emails[key].mail, 'delivery_status', data.delivery_status);
+                        this.$set(this.data.emails[key].mail, 'updated_at', data.updated_at);
+                    }
                 });
         },
         validations: {

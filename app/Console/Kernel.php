@@ -36,8 +36,7 @@ class Kernel extends ConsoleKernel
         $schedule
             ->job(new ParseBounces)
             ->everyMinute()
-            ->withoutOverlapping()
-            ->environments('prod');
+            ->withoutOverlapping();
     }
 
     /**

@@ -15,21 +15,12 @@ class CreateParticipantsTable extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('draw_id');
+            $table->foreignId('draw_id')->constrained();
             $table->longText('name');
             $table->longText('email');
-            $table->foreignId('target_id')->nullable();
-            $table->foreignId('mail_id');
+            $table->foreignId('target_id')->nullable()->constrained();
+            $table->foreignId('mail_id')->constrained();
             $table->timestamps();
-
-            $table->foreign('draw_id')
-                ->references('id')->on('draws')->onDelete('cascade');
-
-            $table->foreign('target_id')
-                ->references('id')->on('participants')->onDelete('cascade');
-
-            $table->foreign('mail_id')
-                ->references('id')->on('mails')->onDelete('cascade');
         });
     }
 

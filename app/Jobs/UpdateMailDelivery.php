@@ -2,27 +2,29 @@
 
 namespace App\Jobs;
 
-use App\Mail\TrackedMailable;
 use App\Models\Mail as MailModel;
+use App\Traits\UpdatesMailDelivery;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ValidateEmailDelivery implements ShouldQueue
+class UpdateMailDelivery implements ShouldQueue
 {
-    use Dispatchable, SerializesModels, Queueable;
+    use Dispatchable, Queueable, SerializesModels, UpdatesMailDelivery;
 
-    protected $mailable;
+    protected $status;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(TrackedMailable $mailable)
+    public function __construct(MailModel $mail, $status)
     {
-        $this->mailable = $mailable;
+        $this->store($mail);
+
+        $this->status = $status;
     }
 
     /**
@@ -32,6 +34,6 @@ class ValidateEmailDelivery implements ShouldQueue
      */
     public function handle()
     {
-        $this->mailable->updateDeliveryStatus(MailModel::SENT);
+        $this->delayedUpdateDelivery($this->status);
     }
 }

@@ -3,60 +3,27 @@
 namespace App\Mail;
 
 use App\Events\MailStatusUpdated;
-use App\Jobs\ValidateEmailDelivery;
+use App\Jobs\UpdateMailDelivery;
 use App\Models\Mail as MailModel;
+use App\Traits\UpdatesMailDelivery;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class TrackedMailable extends Mailable
 {
-    use DispatchesJobs;
+    use DispatchesJobs, UpdatesMailDelivery;
 
-    public $mailId;
-    public $updateDatetime;
     public $returnPath;
 
-    protected function track(MailModel $mailModel)
+    protected function track(MailModel $mail)
     {
-        $this->mailId = $mailModel->id;
-        $this->updateDatetime = $mailModel->updated_at;
-        $this->returnPath = str_replace('*', $mailModel->hash, config('mail.return_path'));
-    }
+        $this->store($mail);
 
-    public function onMailUpdate(MailModel $mail)
-    {
-        return null;
-    }
-
-    public function updateDeliveryStatus($status)
-    {
-        if (isset($this->mailId)) {
-            $mailModel = MailModel::find($this->mailId);
-
-            if ($mailModel->updated_at->equalTo($this->updateDatetime)) {
-                $mailModel->updateDeliveryStatus($status);
-
-                $this->updateDatetime = $mailModel->updated_at;
-            }
-
-            $this->onMailUpdate($mailModel);
-        }
-    }
-
-    public function success()
-    {
-        $this->updateDeliveryStatus(MailModel::SENDING);
-
-        // Cannot serialize with callbacks
-        // We won't need those
-        $this->callbacks = [];
-
-        $job = (new ValidateEmailDelivery($this))->delay(10);
-        $this->dispatch($job);
+        $this->returnPath = str_replace('*', $mail->hash.'-'.$mail->version, config('mail.return_path'));
     }
 
     public function failed()
     {
-        $this->updateDeliveryStatus(MailModel::ERROR);
+        $this->delayedUpdateDelivery(MailModel::ERROR);
     }
 
     /**
@@ -68,10 +35,13 @@ class TrackedMailable extends Mailable
      */
     public function send($mailer): void
     {
-        $this->withSwiftMessage(function ($message) {
-            $message
-                ->getHeaders()
-                ->addPathHeader('Return-Path', $this->returnPath);
+        $mail = $this->delayedUpdateDelivery(MailModel::SENDING);
+
+        dispatch((new UpdateMailDelivery($mail, MailModel::SENT))->delay(120));
+
+        $this->withSwiftMessage(function ($message) use ($mail) {
+            $message->getHeaders()->addPathHeader('Return-Path', $this->returnPath);
+            $message->getHeaders()->addDateHeader('X-Updated-At', $mail->updated_at);
         });
 
         parent::send($mailer);

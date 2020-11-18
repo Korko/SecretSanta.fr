@@ -52,8 +52,12 @@
                     this.fetchState();
                 })
                 .listen('.mail.update', data => {
-                    this.$set(this.data.participants[data.id].mail, 'delivery_status', data.delivery_status);
-                    this.$set(this.data.participants[data.id].mail, 'updated_at', data.updated_at);
+                    var key = Object.keys(this.data.participants).find(key => this.data.participants[key].mail.id === data.id);
+
+                    if(key) {
+                        this.$set(this.data.participants[key].mail, 'delivery_status', data.delivery_status);
+                        this.$set(this.data.participants[key].mail, 'updated_at', data.updated_at);
+                    }
                 });
         },
         methods: {
@@ -118,6 +122,7 @@
                 axios
                     .get(this.routes.csvUrl, {responseType: 'blob'})
                     .then(response => {
+// TODO move from there to a separate method
                         var blob = new Blob([response.data]);
                         blob = blob.slice(0, blob.size, "text/csv");
 

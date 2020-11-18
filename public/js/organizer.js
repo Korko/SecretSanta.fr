@@ -2261,33 +2261,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.array.slice */ "./node_modules/core-js/modules/es.array.slice.js");
 /* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/modules/es.object.values */ "./node_modules/core-js/modules/es.object.values.js");
-/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! core-js/modules/es.string.iterator */ "./node_modules/core-js/modules/es.string.iterator.js");
-/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! core-js/modules/web.url */ "./node_modules/core-js/modules/web.url.js");
-/* harmony import */ var core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var vuejs_dialog__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vuejs-dialog */ "./node_modules/vuejs-dialog/dist/vuejs-dialog.min.js");
-/* harmony import */ var vuejs_dialog__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(vuejs_dialog__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vuejs-dialog/dist/vuejs-dialog.min.css */ "./node_modules/vuejs-dialog/dist/vuejs-dialog.min.css");
-/* harmony import */ var vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var _partials_axios_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../partials/axios.js */ "./resources/js/partials/axios.js");
-/* harmony import */ var _partials_echo_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../partials/echo.js */ "./resources/js/partials/echo.js");
-/* harmony import */ var _inputEdit_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./inputEdit.vue */ "./resources/js/components/inputEdit.vue");
-/* harmony import */ var _emailStatus_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./emailStatus.vue */ "./resources/js/components/emailStatus.vue");
-/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es.object.keys */ "./node_modules/core-js/modules/es.object.keys.js");
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! core-js/modules/es.object.values */ "./node_modules/core-js/modules/es.object.values.js");
+/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! core-js/modules/es.string.iterator */ "./node_modules/core-js/modules/es.string.iterator.js");
+/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! core-js/modules/web.url */ "./node_modules/core-js/modules/web.url.js");
+/* harmony import */ var core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var vuejs_dialog__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vuejs-dialog */ "./node_modules/vuejs-dialog/dist/vuejs-dialog.min.js");
+/* harmony import */ var vuejs_dialog__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(vuejs_dialog__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vuejs-dialog/dist/vuejs-dialog.min.css */ "./node_modules/vuejs-dialog/dist/vuejs-dialog.min.css");
+/* harmony import */ var vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _partials_axios_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../partials/axios.js */ "./resources/js/partials/axios.js");
+/* harmony import */ var _partials_echo_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../partials/echo.js */ "./resources/js/partials/echo.js");
+/* harmony import */ var _inputEdit_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./inputEdit.vue */ "./resources/js/components/inputEdit.vue");
+/* harmony import */ var _emailStatus_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./emailStatus.vue */ "./resources/js/components/emailStatus.vue");
+/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
 
 
 
@@ -2301,7 +2303,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_10___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_MODULE_11___default.a);
+
+vue__WEBPACK_IMPORTED_MODULE_11___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_MODULE_12___default.a);
 
 
 
@@ -2311,10 +2314,10 @@ vue__WEBPACK_IMPORTED_MODULE_10___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_17__["default"],
-    EmailStatus: _emailStatus_vue__WEBPACK_IMPORTED_MODULE_18__["default"]
+    InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_18__["default"],
+    EmailStatus: _emailStatus_vue__WEBPACK_IMPORTED_MODULE_19__["default"]
   },
-  extends: _form_vue__WEBPACK_IMPORTED_MODULE_19__["default"],
+  extends: _form_vue__WEBPACK_IMPORTED_MODULE_20__["default"],
   props: {
     data: {
       type: Object,
@@ -2331,8 +2334,8 @@ vue__WEBPACK_IMPORTED_MODULE_10___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
     return {
       validations: {
         email: {
-          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13__["required"],
-          format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_13__["email"]
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__["required"],
+          format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__["email"]
         }
       }
     };
@@ -2347,12 +2350,18 @@ vue__WEBPACK_IMPORTED_MODULE_10___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
   created: function created() {
     var _this = this;
 
-    _partials_echo_js__WEBPACK_IMPORTED_MODULE_16__["default"].channel('draw.' + this.data.draw).listen('.pusher:subscription_succeeded', function () {
+    _partials_echo_js__WEBPACK_IMPORTED_MODULE_17__["default"].channel('draw.' + this.data.draw).listen('.pusher:subscription_succeeded', function () {
       _this.fetchState();
     }).listen('.mail.update', function (data) {
-      _this.$set(_this.data.participants[data.id].mail, 'delivery_status', data.delivery_status);
+      var key = Object.keys(_this.data.participants).find(function (key) {
+        return _this.data.participants[key].mail.id === data.id;
+      });
 
-      _this.$set(_this.data.participants[data.id].mail, 'updated_at', data.updated_at);
+      if (key) {
+        _this.$set(_this.data.participants[key].mail, 'delivery_status', data.delivery_status);
+
+        _this.$set(_this.data.participants[key].mail, 'updated_at', data.updated_at);
+      }
     });
   },
   methods: {
@@ -2364,7 +2373,7 @@ vue__WEBPACK_IMPORTED_MODULE_10___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
     fetchState: function fetchState() {
       var _this2 = this;
 
-      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_15__["default"].get(this.routes.fetchStateUrl).then(function (response) {
+      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_16__["default"].get(this.routes.fetchStateUrl).then(function (response) {
         if (response.data.participants) {
           Object.values(response.data.participants).forEach(function (participant) {
             var new_update = new Date(participant.mail.updated_at);
@@ -2398,7 +2407,7 @@ vue__WEBPACK_IMPORTED_MODULE_10___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
     purge: function purge() {
       var _this3 = this;
 
-      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_15__["default"].delete(this.routes.deleteUrl).then(function (data) {
+      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_16__["default"].delete(this.routes.deleteUrl).then(function (data) {
         _this3.$dialog.alert(data.message).then(function () {
           return window.location.pathname = '/';
         });
@@ -2407,14 +2416,14 @@ vue__WEBPACK_IMPORTED_MODULE_10___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
     updateEmail: function updateEmail(k, email) {
       this.$set(this.data.participants[k], 'email', email);
       this.$set(this.data.participants[k].mail, 'delivery_status', 'created');
-      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_15__["default"].post(this.data.changeEmailUrls[this.data.participants[k].id], {
+      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_16__["default"].post(this.data.changeEmailUrls[this.data.participants[k].id], {
         email: email
       });
     },
     download: function download() {
       var _this4 = this;
 
-      _partials_axios_js__WEBPACK_IMPORTED_MODULE_15__["default"].get(this.routes.csvUrl, {
+      _partials_axios_js__WEBPACK_IMPORTED_MODULE_16__["default"].get(this.routes.csvUrl, {
         responseType: 'blob'
       }).then(function (response) {
         // TODO move from there to a separate method
@@ -2423,7 +2432,7 @@ vue__WEBPACK_IMPORTED_MODULE_10___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
         var url = window.URL.createObjectURL(blob);
         var link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'secretsanta_' + moment__WEBPACK_IMPORTED_MODULE_14___default()(_this4.data.expires_at).format('YYYY-MM-DD') + '.csv');
+        link.setAttribute('download', 'secretsanta_' + moment__WEBPACK_IMPORTED_MODULE_15___default()(_this4.data.expires_at).format('YYYY-MM-DD') + '.csv');
         document.body.appendChild(link);
         link.click();
       });

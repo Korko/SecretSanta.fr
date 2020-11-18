@@ -14,7 +14,3 @@
 Broadcast::channel('draw.{draw:hash}', function () {
     return true;
 });
-
-Broadcast::channel('participant.{participant:hash}', function () {
-    return true;
-});
