@@ -21,7 +21,7 @@
         "pusher/pusher-php-server": "~3.0",
         "spatie/laravel-blade-javascript": "^2.0",
         "vinkla/hashids": "^8.0",
-        "webklex/laravel-imap": "^1.4"
+        "webklex/laravel-imap": "^2.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
