@@ -50,10 +50,10 @@ class RequestCase extends TestCase
                 'content-email'   => 'test mail {SANTA} => {TARGET}',
                 'data-expiration' => date('Y-m-d', strtotime('+2 days')),
             ])
-            ->assertStatus(200)
             ->assertJson([
                 'message' => 'Envoyé avec succès !',
-            ]);
+            ])
+            ->assertStatus(200);
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals($totalParticipants, Participant::count());

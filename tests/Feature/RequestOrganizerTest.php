@@ -45,10 +45,10 @@ class RequestOrganizerTest extends RequestCase
         $this->ajaxPost($path, [
                 'email' => $participant->email,
             ])
-            ->assertStatus(200)
             ->assertJson([
                 'message' => 'Envoyé avec succès !',
-            ]);
+            ])
+            ->assertStatus(200);
 
         $this->assertHasMailPushed(TargetDrawn::class, $participant->email);
     }
@@ -70,10 +70,10 @@ class RequestOrganizerTest extends RequestCase
         $this->ajaxPost($path, [
                 'email' => 'test@test2.com',
             ])
-            ->assertStatus(200)
             ->assertJson([
                 'message' => 'Modifié avec succès !',
-            ]);
+            ])
+            ->assertStatus(200);
 
         $before = $participant->email;
         $participant = Participant::find($participant->id);
