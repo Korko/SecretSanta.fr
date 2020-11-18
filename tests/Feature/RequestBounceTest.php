@@ -9,7 +9,7 @@ use App\Models\Participant;
 use App\Jobs\ParseBounces;
 use App\Services\EmailClient;
 use Mail;
-use Webklex\IMAP\Message as EmailMessage;
+use Webklex\PHPIMAP\Message as EmailMessage;
 
 class RequestBounceTest extends RequestCase
 {
