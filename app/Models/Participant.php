@@ -13,7 +13,7 @@ class Participant extends Model
         resolveRouteBinding as resolveHash;
     }
 
-    protected static $hashConnection = 'santa';
+    protected $hashConnection = 'santa';
 
     /**
      * The attributes that should be cast.
