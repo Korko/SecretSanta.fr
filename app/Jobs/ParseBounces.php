@@ -11,7 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Webklex\IMAP\Message as EmailMessage;
+use Webklex\PHPIMAP\Message as EmailMessage;
 
 class ParseBounces implements ShouldQueue
 {
@@ -29,6 +29,8 @@ class ParseBounces implements ShouldQueue
             try {
                 $recipient = $this->getFirstRecipientAddress($unseenMail);
 
+                // TODO: Determine depending on the bounce error, if the failure is temporary (4xx) or final (5xx)
+                // Auto-retry or not
                 $params = collect((array) sscanf(
                     $recipient,
                     str_replace('*', '%[0-9a-zA-Z]-%d', config('mail.return_path'))
