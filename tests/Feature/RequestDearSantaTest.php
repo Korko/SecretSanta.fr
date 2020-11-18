@@ -46,10 +46,10 @@ class RequestDearSantaTest extends RequestCase
             $this->ajaxPost(URL::signedRoute('dearsanta.contact', ['participant' => $santaTheorical->hash]), [
                     'content' => 'test dearsanta mail content',
                 ])
-                ->assertStatus(200)
                 ->assertJson([
                     'message' => 'Envoyé avec succès !',
-                ]);
+                ])
+                ->assertStatus(200);
 
             $this->assertHasMailPushed(DearSanta::class, $santaTheorical->santa->email);
         }
