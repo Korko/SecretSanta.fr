@@ -2,29 +2,22 @@
 
 namespace App\Events;
 
-use App\Models\DearSanta;
+use App\Models\Mail as MailModel;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class DearSantaMailStatusUpdated implements ShouldBroadcast
+class MailStatusUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $dearSanta;
     protected $mail;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct(DearSanta $dearSanta, MailModel $mail)
+    public function __construct(MailModel $mail)
     {
-        $this->dearSanta = $dearSanta;
         $this->mail = $mail;
     }
 
@@ -46,7 +39,7 @@ class DearSantaMailStatusUpdated implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'id' => $this->dearSanta->id,
+            'id' => $this->mail->id,
             'delivery_status' => $this->mail->delivery_status,
             'updated_at' => $this->mail->updated_at
         ];
@@ -59,6 +52,6 @@ class DearSantaMailStatusUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('participant.'.$this->dearSanta->sender->hash);
+        return new Channel('draw.'.$this->mail->draw->hash);
     }
 }

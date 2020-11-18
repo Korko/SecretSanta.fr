@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
-use App\Events\MailStatusUpdated;
 use App\Models\Mail as MailModel;
 use App\Services\EmailClient;
+use App\Traits\UpdatesMailDelivery;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,7 +15,7 @@ use Webklex\IMAP\Message as EmailMessage;
 
 class ParseBounces implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, UpdatesMailDelivery;
 
     /**
      * Execute the job.
@@ -29,21 +29,20 @@ class ParseBounces implements ShouldQueue
             try {
                 $recipient = $this->getFirstRecipientAddress($unseenMail);
 
-                $mail = $this->getMailFromReturnPath($recipient);
-                $mail->failed();
+                $params = collect((array) sscanf(
+                    $recipient,
+                    str_replace('*', '%[0-9a-zA-Z]-%d', config('mail.return_path'))
+                ));
+
+                $mail = MailModel::findByHashOrFail($params[0]);
+
+                $this->updateDelivery($mail, MailModel::ERROR, $params[1]);
             } catch (Exception $e) {
                 // Just ignore the exception
             } finally {
                 $unseenMail->move(config('imap.folders.trash'));
             }
         }
-    }
-
-    protected function getMailFromReturnPath(string $recipient): MailModel
-    {
-        $params = sscanf($recipient, str_replace('*', '%[0-9a-zA-Z]', config('mail.return_path')));
-
-        return MailModel::findByHashOrFail(collect((array) $params)->first());
     }
 
     protected function getFirstRecipientAddress(EmailMessage $message): string

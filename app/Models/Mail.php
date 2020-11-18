@@ -4,19 +4,13 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class Mail extends Model
 {
-    use HashId;
+    use HashId, DispatchesJobs;
 
     protected static $hashConnection = 'bounce';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['delivery_status'];
 
     /**
      * The model's default values for attributes.
@@ -42,8 +36,19 @@ class Mail extends Model
     public function updateDeliveryStatus($status)
     {
         $this->delivery_status = $status;
+
         // Force update, in case the delivery_status did not change
         $this->updated_at = Carbon::now();
+
+        if ($status === self::CREATED) {
+            $this->version++;
+        }
+
         $this->save();
+    }
+
+    public function draw()
+    {
+        return $this->belongsTo(Draw::class);
     }
 }

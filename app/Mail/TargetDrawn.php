@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Events\TargetDrawnMailStatusUpdated;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use Crypt;
@@ -53,10 +52,5 @@ class TargetDrawn extends TrackedMailable
     {
         return $this->view('emails.target_drawn')
                     ->text('emails.target_drawn_plain');
-    }
-
-    public function onMailUpdate(MailModel $mail)
-    {
-        event(new TargetDrawnMailStatusUpdated($this->santa, $mail));
     }
 }

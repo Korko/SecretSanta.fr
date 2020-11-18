@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Events\DearSantaMailStatusUpdated;
+use App\Events\MailStatusUpdated;
 use App\Models\DearSanta as DearSantaEntry;
 use App\Models\Mail as MailModel;
 use Illuminate\Bus\Queueable;
@@ -43,10 +43,5 @@ class DearSanta extends TrackedMailable
     {
         return $this->view('emails.dearsanta')
                     ->text('emails.dearsanta_plain');
-    }
-
-    public function onMailUpdate(MailModel $mail)
-    {
-        event(new DearSantaMailStatusUpdated($this->dearSanta, $mail));
     }
 }
