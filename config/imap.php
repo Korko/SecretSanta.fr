@@ -54,6 +54,7 @@ return [
             'validate_cert' => env('IMAP_VALIDATE_CERT', true),
             'username' => env('IMAP_USERNAME', 'root@example.com'),
             'password' => env('IMAP_PASSWORD', ''),
+            'authentication' => null,
         ],
 
         /*
@@ -64,6 +65,7 @@ return [
             'validate_cert' => true,
             'username' => 'example@gmail.com',
             'password' => 'PASSWORD',
+            'authentication' => 'oauth',
         ],
 
         'another' => [ // account identifier
@@ -73,6 +75,7 @@ return [
             'validate_cert' => true,
             'username' => '',
             'password' => '',
+            'authentication' => null,
         ]
         */
     ],
@@ -87,11 +90,9 @@ return [
     |       This option is only used when calling $oClient->
     |       You can use any supported char such as ".", "/", (...)
     |   -Fetch option:
-    |       IMAP::FT_UID  - Message marked as read by fetching the message
-    |       IMAP::FT_PEEK - Fetch the message without setting the "read" flag
+    |       IMAP::FT_UID  - Message marked as read by fetching the message body
+    |       IMAP::FT_PEEK - Fetch the message without setting the "seen" flag
     |   -Body download option
-    |       Default TRUE
-    |   -Attachment download option
     |       Default TRUE
     |   -Flag download option
     |       Default TRUE
@@ -112,28 +113,47 @@ return [
     |   -Decoder options (currently only the message subject and attachment name decoder can be set)
     |       'utf-8' - Uses imap_utf8($string) to decode a string
     |       'mimeheader' - Uses mb_decode_mimeheader($string) to decode a string
-    |       'iconv' - Uses iconv_mime_decode($string) to decode a string
     |
     */
     'options' => [
         'delimiter' => '/',
-        'fetch' => \Webklex\IMAP\IMAP::FT_UID,
+        'fetch' => \Webklex\PHPIMAP\IMAP::FT_UID,
         'fetch_body' => true,
-        'fetch_attachment' => true,
         'fetch_flags' => true,
-        'message_key' => 'id',
+        'message_key' => 'list',
         'fetch_order' => 'asc',
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
         ],
         'decoder' => [
-            'message' => [
-                'subject' => 'utf-8'
-            ],
-            'attachment' => [
-                'name' => 'utf-8'
-            ]
+            'message' => 'utf-8', // mimeheader
+            'attachment' => 'utf-8' // mimeheader
         ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Available events
+    |--------------------------------------------------------------------------
+    |
+    */
+    'events' => [
+        "message" => [
+            'new' => \Webklex\IMAP\Events\MessageNewEvent::class,
+            'moved' => \Webklex\IMAP\Events\MessageMovedEvent::class,
+            'copied' => \Webklex\IMAP\Events\MessageCopiedEvent::class,
+            'deleted' => \Webklex\IMAP\Events\MessageDeletedEvent::class,
+            'restored' => \Webklex\IMAP\Events\MessageRestoredEvent::class,
+        ],
+        "folder" => [
+            'new' => \Webklex\IMAP\Events\FolderNewEvent::class,
+            'moved' => \Webklex\IMAP\Events\FolderMovedEvent::class,
+            'deleted' => \Webklex\IMAP\Events\FolderDeletedEvent::class,
+        ],
+        "flag" => [
+            'new' => \Webklex\IMAP\Events\FlagNewEvent::class,
+            'deleted' => \Webklex\IMAP\Events\FlagDeletedEvent::class,
+        ],
     ],
 
     /*
@@ -150,8 +170,8 @@ return [
     | The provided masks below are used as the default masks.
     */
     'masks' => [
-        'message' => \Webklex\IMAP\Support\Masks\MessageMask::class,
-        'attachment' => \Webklex\IMAP\Support\Masks\AttachmentMask::class
+        'message' => \Webklex\PHPIMAP\Support\Masks\MessageMask::class,
+        'attachment' => \Webklex\PHPIMAP\Support\Masks\AttachmentMask::class
     ],
 
     /*
