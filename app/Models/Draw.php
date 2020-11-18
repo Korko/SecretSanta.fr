@@ -14,7 +14,7 @@ class Draw extends Model
         resolveRouteBinding as resolveHash;
     }
 
-    protected static $hashConnection = 'draw';
+    protected $hashConnection = 'draw';
 
     /**
      * The attributes that should be cast.
