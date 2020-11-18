@@ -42,10 +42,13 @@ class DearSantaController extends Controller
 
     public function handle(Participant $participant, DearSantaRequest $request)
     {
+        $mail = (new MailModel())->draw()->associate($participant->draw);
+        $mail->save();
+
         $dearSanta = new DearSanta();
         $dearSanta->sender()->associate($participant);
         $dearSanta->mail_body = $request->input('content');
-        $dearSanta->mail()->associate(MailModel::create());
+        $dearSanta->mail()->associate($mail);
         $dearSanta->save();
 
         $this->sendMail($dearSanta);
