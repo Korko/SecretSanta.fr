@@ -8,6 +8,7 @@ use App\Mail\OrganizerFinalRecap;
 use App\Mail\OrganizerRecap;
 use App\Mail\TargetDrawn;
 use App\Models\Draw;
+use App\Models\Exclusion;
 use App\Models\Participant;
 use DrawHandler;
 use Exception;
@@ -68,11 +69,12 @@ class DrawHandlerTest extends TestCase
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
+        $this->assertEquals(0, Exclusion::count());
 
         $participants = [
-            ['name' => 'toto', 'email' => 'test@test.com', 'exclusions' => [2]],
-            ['name' => 'tata', 'email' => 'test3@test.com', 'exclusions' => [0]],
-            ['name' => 'tutu', 'email' => 'test2@test.com', 'exclusions' => [1]],
+            ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => [2]],
+            ['name' => uniqid(), 'email' => 'test3@test.com', 'exclusions' => [0]],
+            ['name' => uniqid(), 'email' => 'test2@test.com', 'exclusions' => [1]],
         ];
 
         DrawHandler::toParticipants($participants)
@@ -91,11 +93,16 @@ class DrawHandlerTest extends TestCase
         $this->assertHasMailPushed(TargetDrawn::class, 'test@test.com', function ($m) use (&$title) {
             $title = $m->subject;
         });
-        $this->assertStringContainsString('test mail toto => tata title', html_entity_decode($title));
+        $this->assertStringContainsString('test mail '.$participants[0]['name'].' => '.$participants[1]['name'].' title', html_entity_decode($title));
         $this->assertHasMailPushed(TargetDrawn::class, 'test2@test.com');
 
         $this->assertEquals(1, Draw::count());
         $this->assertEquals(3, Participant::count());
+        $this->assertEquals(3, Exclusion::count());
+
+        // Carreful, array is 0..n, Db is 1..n
+        $this->assertEquals($participants[0]['name'], Participant::find(1)->name);
+        $this->assertEquals(Participant::find(3)->id, Participant::find(1)->exclusions[0]->id);
 
         // Check data stored are decryptable
         $path = parse_url($link, PHP_URL_PATH);

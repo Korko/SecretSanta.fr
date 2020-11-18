@@ -32,9 +32,6 @@ class Participant extends Model
      */
     protected $fillable = ['name', 'email', 'draw_id', 'target_id', 'mail_id'];
 
-    // Fake property
-    public $exclusions;
-
     public function draw()
     {
         return $this->belongsTo(Draw::class);
@@ -60,6 +57,11 @@ class Participant extends Model
         return $this->belongsTo(Mail::class, 'mail_id');
     }
 
+    public function exclusions()
+    {
+        return $this->belongsToMany(Participant::class, 'exclusions', 'participant_id', 'exclusion_id');
+    }
+
     public function scopeFindByDearSantaUrlOrFail($query, $url)
     {
         $route = app('router')
@@ -76,13 +78,7 @@ class Participant extends Model
 
     public function getExclusionsNamesAttribute()
     {
-        $participantNames = $this->draw->participants->pluck('name', 'id');
-
-        return collect($this->exclusions)
-            ->map(function ($participantId) use ($participantNames) {
-                return $participantNames[$participantId];
-            })
-            ->all();
+        return $this->exclusions->pluck('name', 'id')->all();
     }
 
     /**
