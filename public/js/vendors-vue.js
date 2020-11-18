@@ -933,7 +933,7 @@ exports.install = function(Vue) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /*!
- * vue-i18n v8.22.1 
+ * vue-i18n v8.22.2 
  * (c) 2020 kazuya kawaguchi
  * Released under the MIT License.
  */
@@ -944,18 +944,23 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 var numberFormatKeys = [
-  'style',
+  'compactDisplay',
   'currency',
   'currencyDisplay',
+  'currencySign',
+  'localeMatcher',
+  'notation',
+  'numberingSystem',
+  'signDisplay',
+  'style',
+  'unit',
+  'unitDisplay',
   'useGrouping',
   'minimumIntegerDigits',
   'minimumFractionDigits',
   'maximumFractionDigits',
   'minimumSignificantDigits',
-  'maximumSignificantDigits',
-  'localeMatcher',
-  'formatMatcher',
-  'unit'
+  'maximumSignificantDigits'
 ];
 
 /**
@@ -3115,7 +3120,7 @@ Object.defineProperty(VueI18n, 'availabilities', {
 });
 
 VueI18n.install = install;
-VueI18n.version = '8.22.1';
+VueI18n.version = '8.22.2';
 
 /* harmony default export */ __webpack_exports__["default"] = (VueI18n);
 
