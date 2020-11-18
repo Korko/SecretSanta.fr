@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e94216f786bac39208a52112748d121c",
+    "content-hash": "94d8617e92060d3b4a54236cb33c7169",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -931,6 +931,53 @@
             "time": "2019-04-03T13:40:29+00:00"
         },
         {
+            "name": "korko/laravel-dkim",
+            "version": "0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Korko/laravel-dkim.git",
+                "reference": "b94ba2b0b0d53ef40fb9307b0d07049f2dae3d53"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Korko/laravel-dkim/zipball/b94ba2b0b0d53ef40fb9307b0d07049f2dae3d53",
+                "reference": "b94ba2b0b0d53ef40fb9307b0d07049f2dae3d53",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~7.0",
+                "php": "^7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Vitalybaev\\LaravelDkim\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vitaly Baev",
+                    "email": "hello@vitalybaev.ru"
+                },
+                {
+                    "name": "Ricardo Boss",
+                    "email": "contact@ricardoboss.de"
+                },
+                {
+                    "name": "Jeremy 'Korko' Lemesle",
+                    "email": "jeremy.lemesle@korko.fr"
+                }
+            ],
+            "description": "Laravel package for signing outgoing messages with DKIM.",
+            "support": {
+                "source": "https://github.com/Korko/laravel-dkim/tree/0.6.0"
+            },
+            "time": "2020-11-15T15:47:32+00:00"
+        },
+        {
             "name": "korko/validator",
             "version": "dev-master",
             "source": {
@@ -1465,9 +1512,9 @@
             "authors": [
                 {
                     "name": "Marc Qualie",
+                    "role": "Developer",
                     "email": "marc@marcqualie.com",
-                    "homepage": "http://marcqualie.com",
-                    "role": "Developer"
+                    "homepage": "http://marcqualie.com"
                 }
             ],
             "description": "A simple library for working with StatsD in PHP.",
@@ -5772,6 +5819,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
