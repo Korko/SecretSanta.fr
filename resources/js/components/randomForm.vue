@@ -41,7 +41,7 @@
                 participants: [],
                 title: '',
                 content: '',
-                expiration: formatMoment(1, 'day'),
+                expiration: null,
                 now: window.now,
                 showModal: false,
                 importing: false,

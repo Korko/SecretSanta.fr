@@ -111,7 +111,7 @@ Pour écrire à votre Secret Santa, allez sur la page suivante : :link
 via SecretSanta.fr',
     ],
 
-    'data-expiration'   => 'Date limite de stockage des emails',
+    'data-expiration'   => 'Date de l\'évènement :',
 
     'submit'  => 'Lancez l\'aléatoire !',
 

@@ -154,10 +154,10 @@ export default {
                 "button": "Supprimer tout",
                 "confirm": {
                     "title": "Êtes-vous sûr de vouloir supprimer la totalité des données avant leur expiration le {expiration} ?",
-                    "body": "Vous ne recevrez pas le récapitulatif des tirages de cet évènement et les participants ne pourront plus écrire à leur père noël secret. Cette action ne peut être annulée.",
+                    "body": "Vous ne recevrez pas le récapitulatif des tirages de cet évènement et les participants ne pourront plus écrire à leur père noël secrêt. Cette action ne peut être annulée.",
                     "value": "Supprimer toutes les données",
-                    "help": "Saisir \"[+:verification]\" en dessous pour confirmer.",
-                    "ok": "Ok",
+                    "help": "Entrez \"[+:verification]\" en dessous pour confirmer",
+                    "ok": "Purger",
                     "cancel": "Annuler"
                 }
             }
@@ -230,7 +230,7 @@ export default {
                 "what": "Qu'est-ce que c'est ?",
                 "how": "Comment faire ?",
                 "go": "Allez, c'est parti !",
-                "faq": "Foire Aux Questions"
+                "faq": "Foire aux questions"
             },
             "title": "Secret Santa .fr",
             "subtitle": "Offrez-vous des cadeaux... secrètement !",
@@ -311,7 +311,7 @@ export default {
                 },
                 "post": "----\nPour écrire à votre Secret Santa, allez sur la page suivante : {link}\nvia SecretSanta.fr"
             },
-            "data-expiration": "Date limite de stockage des emails",
+            "data-expiration": "Date de l'évènement :",
             "submit": "Lancez l'aléatoire !",
             "paypal": {
                 "alt": "PayPal, le réflexe sécurité pour payer en ligne"
