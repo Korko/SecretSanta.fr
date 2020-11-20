@@ -32,13 +32,21 @@ Route::middleware(['decrypt.key:participant,name'])->group(function () {
     Route::post('/dearsanta/{participant:hash}/fetchState', [DearSantaController::class, 'fetchState'])->name('dearsanta.fetchState');
 });
 
-Route::get('/draw/{draw:hash}', [OrganizerController::class, 'view'])->name('organizerPanel');
+Route::get('/org/{draw:hash}', [OrganizerController::class, 'view'])->name('organizerPanel');
+Route::get('/draw/{draw:hash}', [OrganizerController::class, 'view']);
 Route::middleware(['decrypt.key:draw,mail_title'])->group(function () {
+    Route::post('/org/{draw:hash}', [OrganizerController::class, 'fetch']);
+    Route::delete('/org/{draw:hash}', [OrganizerController::class, 'delete']);
+    Route::post('/org/{draw:hash}/fetchState', [OrganizerController::class, 'fetchState']);
+
     Route::post('/draw/{draw:hash}', [OrganizerController::class, 'fetch'])->name('organizerPanel.fetch');
     Route::delete('/draw/{draw:hash}', [OrganizerController::class, 'delete'])->name('organizerPanel.delete');
     Route::post('/draw/{draw:hash}/fetchState', [OrganizerController::class, 'fetchState'])->name('organizerPanel.fetchState');
 });
 Route::middleware(['decrypt.key:participant,name'])->group(function () {
+    Route::post('/org/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail']);
+    Route::post('/org/{draw:hash}/{participant:id}/resendEmail', [OrganizerController::class, 'resendEmail']);
+
     Route::post('/draw/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
     Route::post('/draw/{draw:hash}/{participant:id}/resendEmail', [OrganizerController::class, 'resendEmail'])->name('organizerPanel.resendEmail');
 });
