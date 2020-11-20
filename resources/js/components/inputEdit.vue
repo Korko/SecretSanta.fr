@@ -175,7 +175,7 @@
 </script>
 
 <template>
-    <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit" @focusout="onBlur">
+    <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit">
         <fieldset :disabled="updating">
             <div class="input-group" :data-state="state" :data-previous-state="previousState">
                 <div v-if="updating" class="input-group-prepend">
