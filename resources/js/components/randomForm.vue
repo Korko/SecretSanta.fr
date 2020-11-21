@@ -202,7 +202,7 @@
                         // Set participants
                         file.data.forEach(
                             function(participant) {
-                                if (participant[0] !== '' && participant[0][0] !== '#') {
+                                if (participant[0] !== '' && participant.length >= 2) {
                                     this.addParticipant(participant[0], participant[1], participant[2]);
                                 }
                             }.bind(this)
