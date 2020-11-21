@@ -27,8 +27,6 @@ class OrganizerFinalRecap extends Mailable
         $this->organizerName = $draw->organizer->name;
 
         $this->expirationDate = $draw->expires_at->locale(App::getLocale())->isoFormat('LL');
-
-        $this->csv = $draw->participants->toCsv(['name', 'email', 'exclusionsNames']);
     }
 
     /**
@@ -39,9 +37,6 @@ class OrganizerFinalRecap extends Mailable
     public function build()
     {
         return $this->view('emails.organizer_final_recap')
-                    ->text('emails.organizer_final_recap_plain')
-                    ->attachData($this->csv, 'secretsanta.csv', [
-                        'mime' => 'text/csv',
-                    ]);
+                    ->text('emails.organizer_final_recap_plain');
     }
 }

@@ -4,11 +4,49 @@ namespace App\Services;
 
 class CsvGenerator
 {
-    public function format(iterable $data, $delimiter = ',', $enclosure = '"', $escapeChar = '\\')
+    public $data;
+    public $delimiter;
+    public $enclosure;
+    public $escapeChar;
+
+    public function __construct(array $data, $delimiter = ',', $enclosure = '"', $escapeChar = '\\')
+    {
+        $this->data = $data;
+        $this->delimiter = $delimiter;
+        $this->enclosure = $enclosure;
+        $this->escapeChar = $escapeChar;
+    }
+
+    public function prepend(array $data)
+    {
+        $this->data = array_merge(
+            $data,
+            $this->data
+        );
+
+        return $this;
+    }
+
+    public function append(array $data)
+    {
+        $this->data = array_merge(
+            $this->data,
+            $data
+        );
+
+        return $this;
+    }
+
+    public function format()
+    {
+        return (string) $this;
+    }
+
+    public function __toString()
     {
         $fileHandler = fopen('php://memory', 'r+');
-        foreach ($data as $fields) {
-            if (fputcsv($fileHandler, $fields, $delimiter, $enclosure, $escapeChar) === false) {
+        foreach ($this->data as $fields) {
+            if (fputcsv($fileHandler, $fields, $this->delimiter, $this->enclosure, $this->escapeChar) === false) {
                 return false;
             }
         }

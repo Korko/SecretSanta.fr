@@ -9,6 +9,7 @@ use App\Mail\TargetDrawn;
 use App\Models\Draw;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
+use Csv;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Metrics;
@@ -82,7 +83,15 @@ class OrganizerController extends Controller
 
     public function csv(Draw $draw)
     {
-        return response($draw->participants->toCsv(['name', 'email', 'exclusionsNames']));
+        return response(
+            "\xEF\xBB\xBF".// UTF-8 BOM
+            $draw->participants
+                ->toCsv(['name', 'email', 'exclusionsNames'])
+                ->prepend([
+                    ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
+                    ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
+                ])
+        );
     }
 
     public function delete(Request $request, Draw $draw)

@@ -1,5 +1,7 @@
 @extends('emails/layout')
 
+// TODO review text
+
 @section('content')
 
 <tr>
