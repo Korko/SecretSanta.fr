@@ -28,7 +28,7 @@ class CollectionMacroServiceProvider extends ServiceProvider
                 })->all();
             });
 
-            return Csv::format($collection);
+            return new Csv($collection->all());
         });
     }
 }

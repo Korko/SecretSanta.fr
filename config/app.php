@@ -220,7 +220,7 @@ return [
         'Cache'        => Illuminate\Support\Facades\Cache::class,
         'Config'       => Illuminate\Support\Facades\Config::class,
         'Cookie'       => Illuminate\Support\Facades\Cookie::class,
-        'Csv'          => App\Facades\Csv::class,
+        'Csv'          => App\Services\CsvGenerator::class,
         'Crypt'        => Illuminate\Support\Facades\Crypt::class,
         'DB'           => Illuminate\Support\Facades\DB::class,
         'DrawCrypt'    => App\Facades\DrawCrypt::class,

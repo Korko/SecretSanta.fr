@@ -20,10 +20,6 @@ class AppServiceProvider extends ServiceProvider
             \App\Solvers\SolverInterface::class,
             \App\Solvers\HatSolver::class
         );
-
-        $this->app->singleton('csv', function ($app) {
-            return $app->make(CsvGenerator::class);
-        });
     }
 
     /**
