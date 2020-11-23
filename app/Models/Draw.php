@@ -67,7 +67,7 @@ class Draw extends Model
 
     public function getExpiredAttribute()
     {
-        return $this->expires_at->isPast() || $this->expires_at->isToday();
+        return $this->expires_at->isPast();
     }
 
     /**
