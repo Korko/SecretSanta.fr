@@ -23,7 +23,7 @@ class HatSolver implements SolverInterface
         $hat = array_keys($participants);
         shuffle($hat);
 
-        return $this->solve(0, [], $exclusions, $hat);
+        return $this->solve(array_keys($participants)[0], [], $exclusions, $hat);
     }
 
     private function solve(int $participantIdx, array $combination, array $allExclusions, array $currentHat) : Generator

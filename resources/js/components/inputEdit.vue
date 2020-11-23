@@ -23,6 +23,10 @@
             update: {
                 type: Function,
                 required: true
+            },
+            disabled: {
+                type: Boolean,
+                default: false
             }
         },
         validations() {
@@ -88,7 +92,6 @@
             }
         },
         methods: {
-            none() {},
             onBlur() {
                 this.$v.$touch();
                 this.send('blur');
@@ -151,7 +154,7 @@
 
 <template>
     <form method="post" autocomplete="off" @submit.prevent="onSubmit">
-        <fieldset :disabled="updating">
+        <fieldset :disabled="updating || disabled">
             <div class="input-group" :data-state="state" :data-previous-state="previousState">
                 <div v-if="updating" class="input-group-prepend">
                     <i class="input-group-text fas fa-spinner fa-spin" />
@@ -173,11 +176,12 @@
                     @input="onInput"
                 />
                 <slot name="errors" :$v="$v.newValue"></slot>
-                <div class="input-group-append" @focusout.prevent="none">
+                <div class="input-group-append">
                     <button
                         v-if="state === 'viewError'"
                         type="button"
                         class="btn btn-outline-primary"
+                        :disabled="disabled"
                         @click="onResend"
                     >
                         <i class="fas fa-sync" />
@@ -186,6 +190,7 @@
                         v-if="state.startsWith('view')"
                         type="button"
                         class="btn btn-outline-primary"
+                        :disabled="disabled"
                         @click="send('edit')"
                     >
                         <i class="fas fa-edit" />
@@ -194,7 +199,7 @@
                         v-if="state.startsWith('edit')"
                         type="button"
                         class="btn btn-outline-success"
-                        :disabled="isSame || !state.endsWith('Valid')"
+                        :disabled="isSame || !state.endsWith('Valid') || disabled"
                         @click="onSubmit"
                     >
                         <i class="fas fa-check-circle" />

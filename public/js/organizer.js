@@ -1969,6 +1969,10 @@ __webpack_require__.r(__webpack_exports__);
     delivery_status: {
       type: String,
       required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -2111,6 +2115,10 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
     update: {
       type: Function,
       required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   validations: function validations() {
@@ -2176,7 +2184,6 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODUL
     }
   },
   methods: {
-    none: function none() {},
     onBlur: function onBlur() {
       this.$v.$touch();
       this.send('blur');
@@ -2257,39 +2264,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_array_find__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_find__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.array.for-each */ "./node_modules/core-js/modules/es.array.for-each.js");
 /* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.array.iterator */ "./node_modules/core-js/modules/es.array.iterator.js");
-/* harmony import */ var core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.array.slice */ "./node_modules/core-js/modules/es.array.slice.js");
-/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es.object.keys */ "./node_modules/core-js/modules/es.object.keys.js");
-/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! core-js/modules/es.object.values */ "./node_modules/core-js/modules/es.object.values.js");
-/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! core-js/modules/es.string.iterator */ "./node_modules/core-js/modules/es.string.iterator.js");
-/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! core-js/modules/web.url */ "./node_modules/core-js/modules/web.url.js");
-/* harmony import */ var core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var vuejs_dialog__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vuejs-dialog */ "./node_modules/vuejs-dialog/dist/vuejs-dialog.min.js");
-/* harmony import */ var vuejs_dialog__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(vuejs_dialog__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vuejs-dialog/dist/vuejs-dialog.min.css */ "./node_modules/vuejs-dialog/dist/vuejs-dialog.min.css");
-/* harmony import */ var vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var _partials_axios_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../partials/axios.js */ "./resources/js/partials/axios.js");
-/* harmony import */ var _partials_echo_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../partials/echo.js */ "./resources/js/partials/echo.js");
-/* harmony import */ var _inputEdit_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./inputEdit.vue */ "./resources/js/components/inputEdit.vue");
-/* harmony import */ var _emailStatus_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./emailStatus.vue */ "./resources/js/components/emailStatus.vue");
-/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.object.keys */ "./node_modules/core-js/modules/es.object.keys.js");
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.object.values */ "./node_modules/core-js/modules/es.object.values.js");
+/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vuejs_dialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuejs-dialog */ "./node_modules/vuejs-dialog/dist/vuejs-dialog.min.js");
+/* harmony import */ var vuejs_dialog__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vuejs_dialog__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuejs-dialog/dist/vuejs-dialog.min.css */ "./node_modules/vuejs-dialog/dist/vuejs-dialog.min.css");
+/* harmony import */ var vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vuejs_dialog_dist_vuejs_dialog_min_css__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _partials_helpers_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../partials/helpers.js */ "./resources/js/partials/helpers.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _partials_axios_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../partials/axios.js */ "./resources/js/partials/axios.js");
+/* harmony import */ var _partials_echo_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../partials/echo.js */ "./resources/js/partials/echo.js");
+/* harmony import */ var _inputEdit_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./inputEdit.vue */ "./resources/js/components/inputEdit.vue");
+/* harmony import */ var _emailStatus_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./emailStatus.vue */ "./resources/js/components/emailStatus.vue");
+/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
 
 
 
@@ -2298,13 +2294,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_MODULE_6___default.a);
 
-
-
-
-
-
-vue__WEBPACK_IMPORTED_MODULE_11___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_MODULE_12___default.a);
 
 
 
@@ -2314,10 +2305,10 @@ vue__WEBPACK_IMPORTED_MODULE_11___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_18__["default"],
-    EmailStatus: _emailStatus_vue__WEBPACK_IMPORTED_MODULE_19__["default"]
+    InputEdit: _inputEdit_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
+    EmailStatus: _emailStatus_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
   },
-  extends: _form_vue__WEBPACK_IMPORTED_MODULE_20__["default"],
+  extends: _form_vue__WEBPACK_IMPORTED_MODULE_15__["default"],
   props: {
     data: {
       type: Object,
@@ -2334,8 +2325,8 @@ vue__WEBPACK_IMPORTED_MODULE_11___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
     return {
       validations: {
         email: {
-          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__["required"],
-          format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_14__["email"]
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__["required"],
+          format: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__["email"]
         }
       }
     };
@@ -2345,12 +2336,25 @@ vue__WEBPACK_IMPORTED_MODULE_11___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
       return !!Object.values(this.data.participants).find(function (participant) {
         return participant.mail.delivery_status !== 'error';
       });
+    },
+    expired: function expired() {
+      return moment__WEBPACK_IMPORTED_MODULE_10___default()(this.data.expires_at).isBefore(moment__WEBPACK_IMPORTED_MODULE_10___default()(), "day");
+    },
+    expirationDateShort: function expirationDateShort() {
+      return moment__WEBPACK_IMPORTED_MODULE_10___default()(this.data.expires_at).format('YYYY-MM-DD');
+    },
+    expirationDateLong: function expirationDateLong() {
+      return new Date(this.data.expires_at).toLocaleString('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
     }
   },
   created: function created() {
     var _this = this;
 
-    _partials_echo_js__WEBPACK_IMPORTED_MODULE_17__["default"].channel('draw.' + this.data.draw).listen('.pusher:subscription_succeeded', function () {
+    _partials_echo_js__WEBPACK_IMPORTED_MODULE_12__["default"].channel('draw.' + this.data.draw).listen('.pusher:subscription_succeeded', function () {
       _this.fetchState();
     }).listen('.mail.update', function (data) {
       var key = Object.keys(_this.data.participants).find(function (key) {
@@ -2373,7 +2377,7 @@ vue__WEBPACK_IMPORTED_MODULE_11___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
     fetchState: function fetchState() {
       var _this2 = this;
 
-      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_16__["default"].get(this.routes.fetchStateUrl).then(function (response) {
+      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_11__["default"].get(this.routes.fetchStateUrl).then(function (response) {
         if (response.data.participants) {
           Object.values(response.data.participants).forEach(function (participant) {
             var new_update = new Date(participant.mail.updated_at);
@@ -2394,11 +2398,7 @@ vue__WEBPACK_IMPORTED_MODULE_11___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
       };
       var message = {
         title: this.$t('organizer.purge.confirm.title', {
-          expiration: new Date(this.data.expires_at).toLocaleString('fr-FR', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          })
+          expiration: this.expirationDateLong
         }),
         body: this.$t('organizer.purge.confirm.body')
       };
@@ -2407,7 +2407,7 @@ vue__WEBPACK_IMPORTED_MODULE_11___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
     purge: function purge() {
       var _this3 = this;
 
-      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_16__["default"].delete(this.routes.deleteUrl).then(function (data) {
+      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_11__["default"].delete(this.routes.deleteUrl).then(function (data) {
         _this3.$dialog.alert(data.message).then(function () {
           return window.location.pathname = '/';
         });
@@ -2416,25 +2416,26 @@ vue__WEBPACK_IMPORTED_MODULE_11___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_M
     updateEmail: function updateEmail(k, email) {
       this.$set(this.data.participants[k], 'email', email);
       this.$set(this.data.participants[k].mail, 'delivery_status', 'created');
-      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_16__["default"].post(this.data.changeEmailUrls[this.data.participants[k].id], {
+      return _partials_axios_js__WEBPACK_IMPORTED_MODULE_11__["default"].post(this.data.changeEmailUrls[this.data.participants[k].id], {
         email: email
       });
     },
     download: function download() {
       var _this4 = this;
 
-      _partials_axios_js__WEBPACK_IMPORTED_MODULE_16__["default"].get(this.routes.csvUrl, {
+      _partials_axios_js__WEBPACK_IMPORTED_MODULE_11__["default"].get(this.routes.csvInitUrl, {
         responseType: 'blob'
       }).then(function (response) {
-        // TODO move from there to a separate method
-        var blob = new Blob([response.data]);
-        blob = blob.slice(0, blob.size, "text/csv");
-        var url = window.URL.createObjectURL(blob);
-        var link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'secretsanta_' + moment__WEBPACK_IMPORTED_MODULE_15___default()(_this4.data.expires_at).format('YYYY-MM-DD') + '.csv');
-        document.body.appendChild(link);
-        link.click();
+        if (response.data) Object(_partials_helpers_js__WEBPACK_IMPORTED_MODULE_9__["download"])(response.data, 'secretsanta_' + _this4.expirationDateShort + '_init.csv', 'text/csv');
+      });
+    },
+    downloadPlus: function downloadPlus() {
+      var _this5 = this;
+
+      _partials_axios_js__WEBPACK_IMPORTED_MODULE_11__["default"].get(this.routes.csvFinalUrl, {
+        responseType: 'blob'
+      }).then(function (response) {
+        if (response.data) Object(_partials_helpers_js__WEBPACK_IMPORTED_MODULE_9__["download"])(response.data, 'secretsanta_' + _this5.expirationDateShort + '_full.csv', 'text/csv');
       });
     }
   }
@@ -20488,7 +20489,10 @@ var render = function() {
       "button",
       {
         staticClass: "btn btn-outline-secondary",
-        attrs: { disabled: _vm.delivery_status === "created", type: "button" },
+        attrs: {
+          disabled: _vm.delivery_status === "created" || _vm.disabled,
+          type: "button"
+        },
         on: {
           click: function($event) {
             return _vm.$emit("redo")
@@ -20605,7 +20609,7 @@ var render = function() {
       }
     },
     [
-      _c("fieldset", { attrs: { disabled: _vm.updating } }, [
+      _c("fieldset", { attrs: { disabled: _vm.updating || _vm.disabled } }, [
         _c(
           "div",
           {
@@ -20776,74 +20780,65 @@ var render = function() {
             _vm._v(" "),
             _vm._t("errors", null, { $v: _vm.$v.newValue }),
             _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "input-group-append",
-                on: {
-                  focusout: function($event) {
-                    $event.preventDefault()
-                    return _vm.none($event)
-                  }
-                }
-              },
-              [
-                _vm.state === "viewError"
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-outline-primary",
-                        attrs: { type: "button" },
-                        on: { click: _vm.onResend }
-                      },
-                      [_c("i", { staticClass: "fas fa-sync" })]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.state.startsWith("view")
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-outline-primary",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.send("edit")
-                          }
+            _c("div", { staticClass: "input-group-append" }, [
+              _vm.state === "viewError"
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-primary",
+                      attrs: { type: "button", disabled: _vm.disabled },
+                      on: { click: _vm.onResend }
+                    },
+                    [_c("i", { staticClass: "fas fa-sync" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.state.startsWith("view")
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-primary",
+                      attrs: { type: "button", disabled: _vm.disabled },
+                      on: {
+                        click: function($event) {
+                          return _vm.send("edit")
                         }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-edit" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.state.startsWith("edit")
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-success",
+                      attrs: {
+                        type: "button",
+                        disabled:
+                          _vm.isSame ||
+                          !_vm.state.endsWith("Valid") ||
+                          _vm.disabled
                       },
-                      [_c("i", { staticClass: "fas fa-edit" })]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.state.startsWith("edit")
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-outline-success",
-                        attrs: {
-                          type: "button",
-                          disabled: _vm.isSame || !_vm.state.endsWith("Valid")
-                        },
-                        on: { click: _vm.onSubmit }
-                      },
-                      [_c("i", { staticClass: "fas fa-check-circle" })]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.state.startsWith("edit")
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-outline-danger",
-                        attrs: { type: "button" },
-                        on: { click: _vm.onCancel }
-                      },
-                      [_c("i", { staticClass: "fas fa-times-circle" })]
-                    )
-                  : _vm._e()
-              ]
-            )
+                      on: { click: _vm.onSubmit }
+                    },
+                    [_c("i", { staticClass: "fas fa-check-circle" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.state.startsWith("edit")
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-danger",
+                      attrs: { type: "button" },
+                      on: { click: _vm.onCancel }
+                    },
+                    [_c("i", { staticClass: "fas fa-times-circle" })]
+                  )
+                : _vm._e()
+            ])
           ],
           2
         )
@@ -20875,6 +20870,20 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _vm._m(0),
+    _vm._v(" "),
+    _vm.expired
+      ? _c(
+          "div",
+          { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+          [
+            _vm._v(
+              "\n        Votre évènement est passé (" +
+                _vm._s(_vm.expirationDateLong) +
+                "). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un participant.\n    "
+            )
+          ]
+        )
+      : _vm._e(),
     _vm._v(" "),
     _c("table", { staticClass: "table table-hover" }, [
       _c("caption", [_vm._v(_vm._s(_vm.$t("organizer.list.caption")))]),
@@ -20922,7 +20931,8 @@ var render = function() {
                     validation: _vm.validations.email,
                     update: function(email) {
                       return _vm.updateEmail(k, email)
-                    }
+                    },
+                    disabled: _vm.expired
                   },
                   scopedSlots: _vm._u(
                     [
@@ -20968,7 +20978,10 @@ var render = function() {
               "td",
               [
                 _c("email-status", {
-                  attrs: { delivery_status: participant.mail.delivery_status },
+                  attrs: {
+                    delivery_status: participant.mail.delivery_status,
+                    disabled: _vm.expired
+                  },
                   on: {
                     redo: function($event) {
                       return _vm.updateEmail(k, participant.email)
@@ -20987,6 +21000,34 @@ var render = function() {
     _c(
       "button",
       {
+        staticClass: "btn btn-danger",
+        attrs: { type: "button" },
+        on: { click: _vm.confirmPurge }
+      },
+      [
+        _c("i", { staticClass: "fas fa-trash" }),
+        _vm._v(
+          "\n        " + _vm._s(_vm.$t("organizer.purge.button")) + "\n    "
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        directives: [
+          {
+            name: "tooltip",
+            rawName: "v-tooltip.top",
+            value: {
+              img: "rune-haugseng-UCzjZPCGV1Y-unsplash.jpg",
+              text: _vm.$t("organizer.download.button-tooltip")
+            },
+            expression:
+              "{ img: 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg', text: $t('organizer.download.button-tooltip') }",
+            modifiers: { top: true }
+          }
+        ],
         staticClass: "btn btn-primary",
         attrs: { type: "button" },
         on: { click: _vm.download }
@@ -20999,20 +21040,37 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-danger",
-        attrs: { type: "button" },
-        on: { click: _vm.confirmPurge }
-      },
-      [
-        _c("i", { staticClass: "fas fa-trash" }),
-        _vm._v(
-          "\n        " + _vm._s(_vm.$t("organizer.purge.button")) + "\n    "
+    _vm.data.finalCsvAvailable
+      ? _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "tooltip",
+                rawName: "v-tooltip.top",
+                value: {
+                  img: "mike-arney-9r-_2gzP37k-unsplash.jpg",
+                  text: _vm.$t("organizer.download.button2-tooltip")
+                },
+                expression:
+                  "{ img: 'mike-arney-9r-_2gzP37k-unsplash.jpg', text: $t('organizer.download.button2-tooltip') }",
+                modifiers: { top: true }
+              }
+            ],
+            staticClass: "btn btn-primary",
+            attrs: { disabled: !_vm.expired, type: "button" },
+            on: { click: _vm.downloadPlus }
+          },
+          [
+            _c("i", { staticClass: "fas fa-download" }),
+            _vm._v(
+              "\n        " +
+                _vm._s(_vm.$t("organizer.download.button2")) +
+                "\n    "
+            )
+          ]
         )
-      ]
-    )
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -21961,7 +22019,8 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     routes: {
       fetchStateUrl: window.global.routes.fetchStateUrl,
       deleteUrl: window.global.routes.deleteUrl,
-      csvUrl: window.global.routes.csvUrl
+      csvInitUrl: window.global.routes.csvInitUrl,
+      csvFinalUrl: window.global.routes.csvFinalUrl
     }
   }
 });
@@ -22146,6 +22205,86 @@ window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/d
 
 /***/ }),
 
+/***/ "./resources/js/partials/helpers.js":
+/*!******************************************!*\
+  !*** ./resources/js/partials/helpers.js ***!
+  \******************************************/
+/*! exports provided: download */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "download", function() { return download; });
+/* harmony import */ var core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.iterator */ "./node_modules/core-js/modules/es.array.iterator.js");
+/* harmony import */ var core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.array.slice */ "./node_modules/core-js/modules/es.array.slice.js");
+/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.string.iterator */ "./node_modules/core-js/modules/es.string.iterator.js");
+/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/modules/web.url */ "./node_modules/core-js/modules/web.url.js");
+/* harmony import */ var core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_url__WEBPACK_IMPORTED_MODULE_5__);
+
+
+
+
+
+
+
+/*const getMimeTypeFromData = function(data) {
+
+    var mimes = [
+        {
+            mime: 'image/jpeg',
+            pattern: [0xFF, 0xD8, 0xFF],
+            mask: [0xFF, 0xFF, 0xFF],
+        },
+        {
+            mime: 'image/png',
+            pattern: [0x89, 0x50, 0x4E, 0x47],
+            mask: [0xFF, 0xFF, 0xFF, 0xFF],
+        }
+        // you can expand this list @see https://mimesniff.spec.whatwg.org/#matching-an-image-type-pattern
+    ];
+
+    var bytes = new Uint8Array(data);
+    return mimes.find(mime => {
+        for (var i = 0, l = mime.mask.length; i < l; ++i) {
+            if ((bytes[i] & mime.mask[i]) - mime.pattern[i] !== 0) {
+                return false;
+            }
+        }
+        return true;
+    }).mime || "application/unknown";
+
+};
+
+const getExtensionFromMime = function(mime) {
+	switch(mime) {
+		case 'text/csv':
+		case 'image/png':
+		case 'image/jpeg':
+			return mime.split('/')[1];
+	}
+};*/
+var download = function download(data, fileName, mimeType) {
+  var blob = new Blob([data]);
+  blob = blob.slice(0, blob.size, mimeType);
+  var url = window.URL.createObjectURL(blob);
+  var link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', fileName);
+  document.body.appendChild(link);
+  link.click();
+};
+
+
+
+/***/ }),
+
 /***/ "./resources/js/vue-i18n-locales.generated.js":
 /*!****************************************************!*\
   !*** ./resources/js/vue-i18n-locales.generated.js ***!
@@ -22309,7 +22448,10 @@ __webpack_require__.r(__webpack_exports__);
       "up_and_sent": "Modifié avec succès !",
       "deleted": "Toutes les données ont été supprimées",
       "download": {
-        "button": "Télécharger"
+        "button": "Télécharger le récapitulatif initial",
+        "button-tooltip": "<h3>Récapitulatif initial</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
+        "button2": "Télécharger le récapitulatif complété",
+        "button2-tooltip": "<h3>Récapitulatif complété</h3><p>Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.</p>"
       },
       "purge": {
         "button": "Supprimer tout",

@@ -40,6 +40,7 @@ class OrganizerController extends Controller
                     ])
                 ];
             }),
+            'finalCsvAvailable' => $draw->next_solvable
         ]);
     }
 
@@ -81,11 +82,28 @@ class OrganizerController extends Controller
         SendMail::dispatch($participant, new TargetDrawn($participant));
     }
 
-    public function csv(Draw $draw)
+    public function csvInit(Draw $draw)
     {
         return response(
             "\xEF\xBB\xBF".// UTF-8 BOM
             $draw->participants
+                ->toCsv(['name', 'email', 'exclusionsNames'])
+                ->prepend([
+                    ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
+                    ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
+                ])
+        );
+    }
+
+    public function csvFinal(Draw $draw)
+    {
+        abort_unless($draw->expired, 403, 'Cet évènement n\'est pas encore terminé');
+        abort_unless($draw->next_solvable, 404, 'Cet évènement ne permet pas cette génération');
+
+        return response(
+            "\xEF\xBB\xBF".// UTF-8 BOM
+            $draw->participants
+                ->appendTargetToExclusions()
                 ->toCsv(['name', 'email', 'exclusionsNames'])
                 ->prepend([
                     ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],

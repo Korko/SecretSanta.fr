@@ -27,7 +27,8 @@ trait UpdatesMailDelivery
 
     public function updateDelivery(MailModel $mail, $status, $version = null)
     {
-        if (! isset($version) or $mail->version === (int)$version) {
+        // SQLite does not cast $mail->version as int and $version may be a string too so cast both
+        if (! isset($version) or (int)$mail->version === (int)$version) {
             $mail->updateDeliveryStatus($status);
 
             event(new MailStatusUpdated($mail));

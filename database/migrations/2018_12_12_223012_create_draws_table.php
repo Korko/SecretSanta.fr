@@ -18,6 +18,7 @@ class CreateDrawsTable extends Migration
             $table->longText('mail_title');
             $table->longText('mail_body');
             $table->date('expires_at');
+            $table->boolean('next_solvable')->default(true);
             $table->timestamps();
         });
     }

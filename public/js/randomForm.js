@@ -10586,13 +10586,17 @@ var render = function() {
                                 directives: [
                                   {
                                     name: "tooltip",
-                                    rawName: "v-tooltip:top",
-                                    value: _vm.$t(
-                                      "form.data-expiration-tooltip"
-                                    ),
+                                    rawName: "v-tooltip.top",
+                                    value: {
+                                      img:
+                                        "srikanta-h-u-TrGVhbsUf40-unsplash.jpg",
+                                      text: _vm.$t(
+                                        "form.data-expiration-tooltip"
+                                      )
+                                    },
                                     expression:
-                                      "$t('form.data-expiration-tooltip')",
-                                    arg: "top"
+                                      "{ img: 'srikanta-h-u-TrGVhbsUf40-unsplash.jpg', text: $t('form.data-expiration-tooltip') }",
+                                    modifiers: { top: true }
                                   }
                                 ],
                                 attrs: { for: "expiration" }
@@ -11591,7 +11595,10 @@ __webpack_require__.r(__webpack_exports__);
       "up_and_sent": "Modifié avec succès !",
       "deleted": "Toutes les données ont été supprimées",
       "download": {
-        "button": "Télécharger"
+        "button": "Télécharger le récapitulatif initial",
+        "button-tooltip": "<h3>Récapitulatif initial</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
+        "button2": "Télécharger le récapitulatif complété",
+        "button2-tooltip": "<h3>Récapitulatif complété</h3><p>Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.</p>"
       },
       "purge": {
         "button": "Supprimer tout",

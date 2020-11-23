@@ -120,18 +120,27 @@ Array.prototype.remove = function() {
 
 import Vue from 'vue';
 Vue.directive('tooltip', {
-    inserted: function (el, binding) {
-        el.className = (el.className + " tip").trim();
+    inserted: function (el, binding, vnode) {
+        el.className = (el.className + " tip-handler").trim();
+
+        var direction =
+            binding.modifiers.top ? 'top' :
+            (binding.modifiers.left ? 'left' :
+            (binding.modifiers.bottom ? 'bottom' :
+            'right'));
 
         var div = document.createElement('div');
-        div.innerHTML = '<div class="tip-content ' + (binding.arg || 'right') + '">'
-            + '<img src="/images/srikanta-h-u-TrGVhbsUf40-unsplash.png" />'
-            + '<div class="text-content">' + binding.value + '</div>'
-            + '<i></i>'
-            + '</div>';
+        div.className = 'tip-wrapper';
 
-        while(div.children.length > 0) {
-            el.appendChild(div.children[0]);
-        }
+        // Replace the element by the div and add the element in the div
+        el.after(div);
+        div.appendChild(el);
+
+        var div2 = document.createElement('div');
+        div2.className = "tip-content " + direction;
+        div2.innerHTML = (binding.value.img ? '<img src="/images/' + binding.value.img + '" />' : '')
+            + '<div class="text-content">' + (binding.value.text || binding.value) + '</div>'
+            + '<i></i>';
+        div.appendChild(div2);
     }
 });
