@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\EncryptedString;
+use App\Collections\ParticipantsCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -97,5 +98,16 @@ class Participant extends Model
         abort_if($participant === null || $participant->draw->expired, 404);
 
         return $participant;
+    }
+
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array  $models
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function newCollection(array $models = [])
+    {
+        return new ParticipantsCollection($models);
     }
 }

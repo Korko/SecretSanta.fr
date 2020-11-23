@@ -43,6 +43,11 @@ class DrawHandler
         $this->createParticipants($draw, $this->participants, $this->hat);
         Metrics::increment('participants', count($this->participants));
 
+        if (! $this->isNextDrawSolvable($draw)) {
+            $draw->next_solvable = false;
+            $draw->save();
+        }
+
         $this->sendOrganizerEmail($draw);
         $this->sendDelayedOrganizerEmail($draw);
         foreach ($draw->participants as $participant) {
@@ -63,7 +68,6 @@ class DrawHandler
 
     public function createParticipants(Draw $draw, array $participants, array $hat): void
     {
-        $draw->participants = collect();
         foreach ($participants as $idx => $santa) {
             $mail = (new MailModel())->draw()->associate($draw);
             $mail->save();
@@ -76,7 +80,7 @@ class DrawHandler
             $participant->save();
 
             $participants[$idx]['model'] = $participant;
-            $draw->participants->add($participant);
+            $draw->participants()->save($participant);
         }
 
         foreach ($hat as $santaIdx => $targetIdx) {
@@ -85,7 +89,26 @@ class DrawHandler
             }
 
             $draw->participants[$santaIdx]->target()->save($participants[$targetIdx]['model']);
-            $draw->participants[$santaIdx]->save();
+        }
+    }
+
+    public function isNextDrawSolvable(Draw $draw): bool
+    {
+        try {
+            $exclusions = [];
+
+            $draw->participants->each(function (Participant $participant) use (&$exclusions) {
+                $exclusions[$participant->id] = array_merge(
+                    $participant->exclusions->pluck('id')->all(),
+                    [$participant->target->id]
+                );
+            });
+
+            Solver::one($draw->participants->pluck(null, 'id')->all(), $exclusions);
+
+            return true;
+        } catch (SolverException $exception) {
+            return false;
         }
     }
 
@@ -96,23 +119,8 @@ class DrawHandler
 
     public function sendDelayedOrganizerEmail(Draw $draw)
     {
-        $exclusions = [];
-        $draw->participants->each(function (&$participant) use (&$exclusions) {
-            // We don't attach so not in DB, just in the Collection
-            $participant->exclusions->push($participant->target);
-
-            $exclusions[$participant->id] = $participant->exclusions->pluck('id')->all();
-        });
-
-        try {
-            // Check if there's a solution with the previous exclusions + the actual target
-            Solver::one($draw->participants->all(), $exclusions);
-        } catch (SolverException $exception) {
-            $exclusions = [];
-        }
-
         SendMail::dispatch($draw->organizer, new OrganizerFinalRecap($draw))
-            ->delay($draw->expires_at->addDays(2));
+            ->delay($draw->expires_at->addDay());
     }
 
     public function sendParticipantEmail(Participant $participant)

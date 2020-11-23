@@ -35,13 +35,6 @@ class Draw extends Model
         'expires_at',
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['mail_title', 'mail_body', 'expires_at'];
-
     public function save(array $options = [])
     {
         $this->expires_at = $this->expires_at ?: (new DateTime('now'))->add(new DateInterval('P7D'));
@@ -83,7 +76,7 @@ class Draw extends Model
             $this->resolveHash($value) :
             parent::resolveRouteBinding($value, $field);
 
-        abort_if($draw === null || $draw->expired, 404);
+        abort_if($draw === null, 404);
 
         return $draw;
     }

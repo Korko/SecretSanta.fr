@@ -4,6 +4,10 @@
             delivery_status: {
                 type: String,
                 required: true
+            },
+            disabled: {
+                type: Boolean,
+                default: false
             }
         },
         computed: {
@@ -22,7 +26,7 @@
 <template>
     <div>
         <span>{{ $t(`common.email.status.${delivery_status}`) }} <i :class="[icon, delivery_status]"></i></span>
-        <button :disabled="delivery_status === 'created'" type="button" class="btn btn-outline-secondary" @click="$emit('redo')">
+        <button :disabled="delivery_status === 'created' || disabled" type="button" class="btn btn-outline-secondary" @click="$emit('redo')">
             <i class="fas fa-redo" />
             Redo
         </button>

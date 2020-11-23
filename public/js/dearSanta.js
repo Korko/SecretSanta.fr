@@ -2112,6 +2112,10 @@ __webpack_require__.r(__webpack_exports__);
     delivery_status: {
       type: String,
       required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -18684,7 +18688,10 @@ var render = function() {
       "button",
       {
         staticClass: "btn btn-outline-secondary",
-        attrs: { disabled: _vm.delivery_status === "created", type: "button" },
+        attrs: {
+          disabled: _vm.delivery_status === "created" || _vm.disabled,
+          type: "button"
+        },
         on: {
           click: function($event) {
             return _vm.$emit("redo")
@@ -19904,7 +19911,10 @@ __webpack_require__.r(__webpack_exports__);
       "up_and_sent": "Modifié avec succès !",
       "deleted": "Toutes les données ont été supprimées",
       "download": {
-        "button": "Télécharger"
+        "button": "Télécharger le récapitulatif initial",
+        "button-tooltip": "<h3>Récapitulatif initial</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
+        "button2": "Télécharger le récapitulatif complété",
+        "button2-tooltip": "<h3>Récapitulatif complété</h3><p>Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.</p>"
       },
       "purge": {
         "button": "Supprimer tout",

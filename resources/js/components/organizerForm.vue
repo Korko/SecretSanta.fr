@@ -7,6 +7,8 @@
 
     import { required, email } from 'vuelidate/lib/validators';
 
+    import { download } from '../partials/helpers.js';
+
     import Moment from 'moment';
 
     import axios from '../partials/axios.js';
@@ -44,6 +46,15 @@
                 return !!Object.values(this.data.participants).find(
                     participant => participant.mail.delivery_status !== 'error'
                 );
+            },
+            expired() {
+                return Moment(this.data.expires_at).isBefore(Moment(), "day");
+            },
+            expirationDateShort() {
+                return Moment(this.data.expires_at).format('YYYY-MM-DD');
+            },
+            expirationDateLong() {
+                return new Date(this.data.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             }
         },
         created() {
@@ -93,7 +104,7 @@
                 };
 
                 let message = {
-                    title: this.$t('organizer.purge.confirm.title', {expiration: new Date(this.data.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'})}),
+                    title: this.$t('organizer.purge.confirm.title', {expiration: this.expirationDateLong}),
                     body: this.$t('organizer.purge.confirm.body')
                 };
 
@@ -120,18 +131,18 @@
             },
             download() {
                 axios
-                    .get(this.routes.csvUrl, {responseType: 'blob'})
+                    .get(this.routes.csvInitUrl, {responseType: 'blob'})
                     .then(response => {
-// TODO move from there to a separate method
-                        var blob = new Blob([response.data]);
-                        blob = blob.slice(0, blob.size, "text/csv");
-
-                        const url = window.URL.createObjectURL(blob);
-                        const link = document.createElement('a');
-                        link.href = url;
-                        link.setAttribute('download', 'secretsanta_'+(Moment(this.data.expires_at).format('YYYY-MM-DD'))+'.csv');
-                        document.body.appendChild(link);
-                        link.click();
+                        if(response.data)
+                            download(response.data, 'secretsanta_'+this.expirationDateShort+'_init.csv', 'text/csv');
+                    });
+            },
+            downloadPlus() {
+                axios
+                    .get(this.routes.csvFinalUrl, {responseType: 'blob'})
+                    .then(response => {
+                        if(response.data)
+                            download(response.data, 'secretsanta_'+this.expirationDateShort+'_full.csv', 'text/csv');
                     });
             }
         }
@@ -142,6 +153,9 @@
     <div>
         <div class="alert alert-warning" role="alert">
             Les adresses @laposte.net et @sfr.fr ne fonctionnent malheureusement pas bien avec SecretSanta.fr en ce moment. Les destinataires ne reçoivent pas leurs emails.<br />Autant que possible, évitez d'utilisez ces adresses.
+        </div>
+        <div v-if="expired" class="alert alert-warning" role="alert">
+            Votre évènement est passé ({{ expirationDateLong }}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un participant.
         </div>
         <table class="table table-hover">
             <caption>{{ $t('organizer.list.caption') }}</caption>
@@ -166,6 +180,7 @@
                             :value="participant.email"
                             :validation="validations.email"
                             :update="(email) => updateEmail(k, email)"
+                            :disabled="expired"
                         >
                             <template #errors="{ $v: $v }">
                                 <div v-if="!$v.required" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.required') }}</div>
@@ -173,17 +188,21 @@
                             </template>
                         </input-edit>
                     </td>
-                    <td><email-status :delivery_status="participant.mail.delivery_status" @redo="updateEmail(k, participant.email)" /></td>
+                    <td><email-status :delivery_status="participant.mail.delivery_status" :disabled="expired" @redo="updateEmail(k, participant.email)" /></td>
                 </tr>
             </tbody>
         </table>
-        <button type="button" class="btn btn-primary" @click="download">
-            <i class="fas fa-download" />
-            {{ $t('organizer.download.button') }}
-        </button>
         <button type="button" class="btn btn-danger" @click="confirmPurge">
             <i class="fas fa-trash" />
             {{ $t('organizer.purge.button') }}
+        </button>
+        <button type="button" class="btn btn-primary" @click="download" v-tooltip.top="{ img: 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg', text: $t('organizer.download.button-tooltip') }">
+            <i class="fas fa-download" />
+            {{ $t('organizer.download.button') }}
+        </button>
+        <button v-if="data.finalCsvAvailable" :disabled="!expired" type="button" class="btn btn-primary" @click="downloadPlus" v-tooltip.top="{ img: 'mike-arney-9r-_2gzP37k-unsplash.jpg', text: $t('organizer.download.button2-tooltip') }">
+            <i class="fas fa-download" />
+            {{ $t('organizer.download.button2') }}
         </button>
     </div>
 </template>

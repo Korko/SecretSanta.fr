@@ -2188,14 +2188,18 @@ Array.prototype.remove = function () {
 
 
 vue__WEBPACK_IMPORTED_MODULE_7___default.a.directive('tooltip', {
-  inserted: function inserted(el, binding) {
-    el.className = (el.className + " tip").trim();
+  inserted: function inserted(el, binding, vnode) {
+    el.className = (el.className + " tip-handler").trim();
+    var direction = binding.modifiers.top ? 'top' : binding.modifiers.left ? 'left' : binding.modifiers.bottom ? 'bottom' : 'right';
     var div = document.createElement('div');
-    div.innerHTML = '<div class="tip-content ' + (binding.arg || 'right') + '">' + '<img src="/images/srikanta-h-u-TrGVhbsUf40-unsplash.png" />' + '<div class="text-content">' + binding.value + '</div>' + '<i></i>' + '</div>';
+    div.className = 'tip-wrapper'; // Replace the element by the div and add the element in the div
 
-    while (div.children.length > 0) {
-      el.appendChild(div.children[0]);
-    }
+    el.after(div);
+    div.appendChild(el);
+    var div2 = document.createElement('div');
+    div2.className = "tip-content " + direction;
+    div2.innerHTML = (binding.value.img ? '<img src="/images/' + binding.value.img + '" />' : '') + '<div class="text-content">' + (binding.value.text || binding.value) + '</div>' + '<i></i>';
+    div.appendChild(div2);
   }
 });
 
@@ -2423,7 +2427,10 @@ __webpack_require__.r(__webpack_exports__);
       "up_and_sent": "Modifié avec succès !",
       "deleted": "Toutes les données ont été supprimées",
       "download": {
-        "button": "Télécharger"
+        "button": "Télécharger le récapitulatif initial",
+        "button-tooltip": "<h3>Récapitulatif initial</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
+        "button2": "Télécharger le récapitulatif complété",
+        "button2-tooltip": "<h3>Récapitulatif complété</h3><p>Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.</p>"
       },
       "purge": {
         "button": "Supprimer tout",
