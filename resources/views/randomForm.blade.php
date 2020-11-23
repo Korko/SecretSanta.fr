@@ -55,7 +55,7 @@
                 <div class="card w-100">
                     <div class="bg-light card-body">
                         <h6 class="card-title">@lang('form.fyi')</h6>
-                        <p class="card-text">{!! nl2br(trans('form.section.what.notice', ['button' => str_replace("\n", '', view('partials.paypalButton'))])) !!}</p>
+                        <p class="card-text">{!! nl2br(trans('form.section.what.notice', ['button' => str_replace("\n", '', view('partials.bmcButton'))])) !!}</p>
                     </div>
                 </div>
             </div>
