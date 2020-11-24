@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Draw extends Model
 {
+    // Remove everything N weeks after the expiration_date
+    const WEEKS_BEFORE_DELETION = 3;
+
     use HashId {
         resolveRouteBinding as resolveHash;
     }
@@ -44,8 +47,8 @@ class Draw extends Model
 
     public static function cleanup()
     {
-        // Recap is sent 2 days after so remove everything 3 days after
-        self::where('expires_at', '<=', (new DateTime('now'))->sub(new DateInterval('P3D')))->delete();
+        self::where('expires_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.(self::WEEKS_BEFORE_DELETION * 7).'D')))
+            ->delete();
     }
 
     public function participants()
@@ -61,6 +64,11 @@ class Draw extends Model
     public function getExpiredAttribute()
     {
         return $this->expires_at->isPast();
+    }
+
+    public function getDeletedAtAttribute()
+    {
+        return $this->expires_at->addWeeks(self::WEEKS_BEFORE_DELETION);
     }
 
     /**

@@ -55,6 +55,9 @@
             },
             expirationDateLong() {
                 return new Date(this.data.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+            },
+            deletionDateLong() {
+                return new Date(this.data.deleted_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             }
         },
         created() {
@@ -104,9 +107,16 @@
                 };
 
                 let message = {
-                    title: this.$t('organizer.purge.confirm.title', {expiration: this.expirationDateLong}),
-                    body: this.$t('organizer.purge.confirm.body')
+                    title: this.$t('organizer.purge.confirm.title', {deletion: this.deletionDateLong}),
+                    body: ''
                 };
+                if(this.data.finalCsvAvailable && !this.expired) {
+                    message.body = this.$t('organizer.purge.confirm.body_final'); // Won't be able to download final recap + dearsanta
+                } else if(this.expired) {
+                    message.body = this.$t('organizer.purge.confirm.body_expired'); // Won't be able to download recap anymore
+                } else {
+                    message.body = this.$t('organizer.purge.confirm.body_nofinal'); // Won't be able to download recap anymore + Dearsanta
+                }
 
                 this.$dialog.confirm(message, options)
                     .then(this.purge);
@@ -196,13 +206,19 @@
             <i class="fas fa-trash" />
             {{ $t('organizer.purge.button') }}
         </button>
-        <button type="button" class="btn btn-primary" @click="download" v-tooltip.top="{ img: 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg', text: $t('organizer.download.button-tooltip') }">
+        <template v-if="data.finalCsvAvailable">
+            <button type="button" class="btn btn-primary" @click="download" v-tooltip.top="{ img: 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg', text: $t('organizer.download.button_initial-tooltip') }">
+                <i class="fas fa-download" />
+                {{ $t('organizer.download.button_initial') }}
+            </button>
+            <button :disabled="!expired" type="button" class="btn btn-primary" @click="downloadPlus" v-tooltip.top="{ img: 'mike-arney-9r-_2gzP37k-unsplash.jpg', text: $t('organizer.download.button_final-tooltip', {expires_at: expirationDateLong, deleted_at: deletionDateLong}) }">
+                <i class="fas fa-download" />
+                {{ $t('organizer.download.button_final') }}
+            </button>
+        </template>
+        <button v-else type="button" class="btn btn-primary" @click="download" v-tooltip.top="{ img: 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg', text: $t('organizer.download.button-tooltip') }">
             <i class="fas fa-download" />
             {{ $t('organizer.download.button') }}
-        </button>
-        <button v-if="data.finalCsvAvailable" :disabled="!expired" type="button" class="btn btn-primary" @click="downloadPlus" v-tooltip.top="{ img: 'mike-arney-9r-_2gzP37k-unsplash.jpg', text: $t('organizer.download.button2-tooltip') }">
-            <i class="fas fa-download" />
-            {{ $t('organizer.download.button2') }}
         </button>
     </div>
 </template>
