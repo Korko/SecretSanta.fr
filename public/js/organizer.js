@@ -2349,6 +2349,13 @@ vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_MO
         month: 'long',
         year: 'numeric'
       });
+    },
+    deletionDateLong: function deletionDateLong() {
+      return new Date(this.data.deleted_at).toLocaleString('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
     }
   },
   created: function created() {
@@ -2398,10 +2405,19 @@ vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vuejs_dialog__WEBPACK_IMPORTED_MO
       };
       var message = {
         title: this.$t('organizer.purge.confirm.title', {
-          expiration: this.expirationDateLong
+          deletion: this.deletionDateLong
         }),
-        body: this.$t('organizer.purge.confirm.body')
+        body: ''
       };
+
+      if (this.data.finalCsvAvailable && !this.expired) {
+        message.body = this.$t('organizer.purge.confirm.body_final'); // Won't be able to download final recap + dearsanta
+      } else if (this.expired) {
+        message.body = this.$t('organizer.purge.confirm.body_expired'); // Won't be able to download recap anymore
+      } else {
+        message.body = this.$t('organizer.purge.confirm.body_nofinal'); // Won't be able to download recap anymore + Dearsanta
+      }
+
       this.$dialog.confirm(message, options).then(this.purge);
     },
     purge: function purge() {
@@ -20868,210 +20884,257 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm._m(0),
-    _vm._v(" "),
-    _vm.expired
-      ? _c(
-          "div",
-          { staticClass: "alert alert-warning", attrs: { role: "alert" } },
-          [
-            _vm._v(
-              "\n        Votre évènement est passé (" +
-                _vm._s(_vm.expirationDateLong) +
-                "). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un participant.\n    "
-            )
-          ]
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c("table", { staticClass: "table table-hover" }, [
-      _c("caption", [_vm._v(_vm._s(_vm.$t("organizer.list.caption")))]),
+  return _c(
+    "div",
+    [
+      _vm._m(0),
       _vm._v(" "),
-      _c("thead", [
-        _c("tr", { staticClass: "table-active" }, [
-          _c("th", { attrs: { scope: "col" } }, [
-            _vm._v(
-              "\n                    " +
-                _vm._s(_vm.$t("organizer.list.name")) +
-                "\n                "
-            )
-          ]),
-          _vm._v(" "),
-          _c("th", { attrs: { scope: "col" } }, [
-            _vm._v(
-              "\n                    " +
-                _vm._s(_vm.$t("organizer.list.email")) +
-                "\n                "
-            )
-          ]),
-          _vm._v(" "),
-          _c("th", { attrs: { scope: "col" } }, [
-            _vm._v(
-              "\n                    " +
-                _vm._s(_vm.$t("organizer.list.status")) +
-                "\n                "
-            )
+      _vm.expired
+        ? _c(
+            "div",
+            { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+            [
+              _vm._v(
+                "\n        Votre évènement est passé (" +
+                  _vm._s(_vm.expirationDateLong) +
+                  "). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un participant.\n    "
+              )
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("table", { staticClass: "table table-hover" }, [
+        _c("caption", [_vm._v(_vm._s(_vm.$t("organizer.list.caption")))]),
+        _vm._v(" "),
+        _c("thead", [
+          _c("tr", { staticClass: "table-active" }, [
+            _c("th", { attrs: { scope: "col" } }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.$t("organizer.list.name")) +
+                  "\n                "
+              )
+            ]),
+            _vm._v(" "),
+            _c("th", { attrs: { scope: "col" } }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.$t("organizer.list.email")) +
+                  "\n                "
+              )
+            ]),
+            _vm._v(" "),
+            _c("th", { attrs: { scope: "col" } }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.$t("organizer.list.status")) +
+                  "\n                "
+              )
+            ])
           ])
-        ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.data.participants, function(participant, k) {
+            return _c("tr", { key: participant.id }, [
+              _c("td", [_vm._v(_vm._s(participant.name))]),
+              _vm._v(" "),
+              _c(
+                "td",
+                [
+                  _c("input-edit", {
+                    attrs: {
+                      value: participant.email,
+                      validation: _vm.validations.email,
+                      update: function(email) {
+                        return _vm.updateEmail(k, email)
+                      },
+                      disabled: _vm.expired
+                    },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "errors",
+                          fn: function(ref) {
+                            var $v = ref.$v
+                            return [
+                              !$v.required
+                                ? _c(
+                                    "div",
+                                    { staticClass: "invalid-tooltip" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$t(
+                                            "validation.custom.organizer.email.required"
+                                          )
+                                        )
+                                      )
+                                    ]
+                                  )
+                                : !$v.format
+                                ? _c(
+                                    "div",
+                                    { staticClass: "invalid-tooltip" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$t(
+                                            "validation.custom.organizer.email.format"
+                                          )
+                                        )
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            ]
+                          }
+                        }
+                      ],
+                      null,
+                      true
+                    )
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "td",
+                [
+                  _c("email-status", {
+                    attrs: {
+                      delivery_status: participant.mail.delivery_status,
+                      disabled: _vm.expired
+                    },
+                    on: {
+                      redo: function($event) {
+                        return _vm.updateEmail(k, participant.email)
+                      }
+                    }
+                  })
+                ],
+                1
+              )
+            ])
+          }),
+          0
+        )
       ]),
       _vm._v(" "),
       _c(
-        "tbody",
-        _vm._l(_vm.data.participants, function(participant, k) {
-          return _c("tr", { key: participant.id }, [
-            _c("td", [_vm._v(_vm._s(participant.name))]),
-            _vm._v(" "),
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          attrs: { type: "button" },
+          on: { click: _vm.confirmPurge }
+        },
+        [
+          _c("i", { staticClass: "fas fa-trash" }),
+          _vm._v(
+            "\n        " + _vm._s(_vm.$t("organizer.purge.button")) + "\n    "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm.data.finalCsvAvailable
+        ? [
             _c(
-              "td",
-              [
-                _c("input-edit", {
-                  attrs: {
-                    value: participant.email,
-                    validation: _vm.validations.email,
-                    update: function(email) {
-                      return _vm.updateEmail(k, email)
+              "button",
+              {
+                directives: [
+                  {
+                    name: "tooltip",
+                    rawName: "v-tooltip.top",
+                    value: {
+                      img: "rune-haugseng-UCzjZPCGV1Y-unsplash.jpg",
+                      text: _vm.$t("organizer.download.button_initial-tooltip")
                     },
-                    disabled: _vm.expired
-                  },
-                  scopedSlots: _vm._u(
-                    [
-                      {
-                        key: "errors",
-                        fn: function(ref) {
-                          var $v = ref.$v
-                          return [
-                            !$v.required
-                              ? _c("div", { staticClass: "invalid-tooltip" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.$t(
-                                        "validation.custom.organizer.email.required"
-                                      )
-                                    )
-                                  )
-                                ])
-                              : !$v.format
-                              ? _c("div", { staticClass: "invalid-tooltip" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.$t(
-                                        "validation.custom.organizer.email.format"
-                                      )
-                                    )
-                                  )
-                                ])
-                              : _vm._e()
-                          ]
-                        }
-                      }
-                    ],
-                    null,
-                    true
-                  )
-                })
-              ],
-              1
+                    expression:
+                      "{ img: 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg', text: $t('organizer.download.button_initial-tooltip') }",
+                    modifiers: { top: true }
+                  }
+                ],
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: { click: _vm.download }
+              },
+              [
+                _c("i", { staticClass: "fas fa-download" }),
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.$t("organizer.download.button_initial")) +
+                    "\n        "
+                )
+              ]
             ),
             _vm._v(" "),
             _c(
-              "td",
-              [
-                _c("email-status", {
-                  attrs: {
-                    delivery_status: participant.mail.delivery_status,
-                    disabled: _vm.expired
-                  },
-                  on: {
-                    redo: function($event) {
-                      return _vm.updateEmail(k, participant.email)
-                    }
-                  }
-                })
-              ],
-              1
-            )
-          ])
-        }),
-        0
-      )
-    ]),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-danger",
-        attrs: { type: "button" },
-        on: { click: _vm.confirmPurge }
-      },
-      [
-        _c("i", { staticClass: "fas fa-trash" }),
-        _vm._v(
-          "\n        " + _vm._s(_vm.$t("organizer.purge.button")) + "\n    "
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        directives: [
-          {
-            name: "tooltip",
-            rawName: "v-tooltip.top",
-            value: {
-              img: "rune-haugseng-UCzjZPCGV1Y-unsplash.jpg",
-              text: _vm.$t("organizer.download.button-tooltip")
-            },
-            expression:
-              "{ img: 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg', text: $t('organizer.download.button-tooltip') }",
-            modifiers: { top: true }
-          }
-        ],
-        staticClass: "btn btn-primary",
-        attrs: { type: "button" },
-        on: { click: _vm.download }
-      },
-      [
-        _c("i", { staticClass: "fas fa-download" }),
-        _vm._v(
-          "\n        " + _vm._s(_vm.$t("organizer.download.button")) + "\n    "
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _vm.data.finalCsvAvailable
-      ? _c(
-          "button",
-          {
-            directives: [
+              "button",
               {
-                name: "tooltip",
-                rawName: "v-tooltip.top",
-                value: {
-                  img: "mike-arney-9r-_2gzP37k-unsplash.jpg",
-                  text: _vm.$t("organizer.download.button2-tooltip")
-                },
-                expression:
-                  "{ img: 'mike-arney-9r-_2gzP37k-unsplash.jpg', text: $t('organizer.download.button2-tooltip') }",
-                modifiers: { top: true }
-              }
-            ],
-            staticClass: "btn btn-primary",
-            attrs: { disabled: !_vm.expired, type: "button" },
-            on: { click: _vm.downloadPlus }
-          },
-          [
-            _c("i", { staticClass: "fas fa-download" }),
-            _vm._v(
-              "\n        " +
-                _vm._s(_vm.$t("organizer.download.button2")) +
-                "\n    "
+                directives: [
+                  {
+                    name: "tooltip",
+                    rawName: "v-tooltip.top",
+                    value: {
+                      img: "mike-arney-9r-_2gzP37k-unsplash.jpg",
+                      text: _vm.$t("organizer.download.button_final-tooltip", {
+                        expires_at: _vm.expirationDateLong,
+                        deleted_at: _vm.deletionDateLong
+                      })
+                    },
+                    expression:
+                      "{ img: 'mike-arney-9r-_2gzP37k-unsplash.jpg', text: $t('organizer.download.button_final-tooltip', {expires_at: expirationDateLong, deleted_at: deletionDateLong}) }",
+                    modifiers: { top: true }
+                  }
+                ],
+                staticClass: "btn btn-primary",
+                attrs: { disabled: !_vm.expired, type: "button" },
+                on: { click: _vm.downloadPlus }
+              },
+              [
+                _c("i", { staticClass: "fas fa-download" }),
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.$t("organizer.download.button_final")) +
+                    "\n        "
+                )
+              ]
             )
           ]
-        )
-      : _vm._e()
-  ])
+        : _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "tooltip",
+                  rawName: "v-tooltip.top",
+                  value: {
+                    img: "rune-haugseng-UCzjZPCGV1Y-unsplash.jpg",
+                    text: _vm.$t("organizer.download.button-tooltip")
+                  },
+                  expression:
+                    "{ img: 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg', text: $t('organizer.download.button-tooltip') }",
+                  modifiers: { top: true }
+                }
+              ],
+              staticClass: "btn btn-primary",
+              attrs: { type: "button" },
+              on: { click: _vm.download }
+            },
+            [
+              _c("i", { staticClass: "fas fa-download" }),
+              _vm._v(
+                "\n        " +
+                  _vm._s(_vm.$t("organizer.download.button")) +
+                  "\n    "
+              )
+            ]
+          )
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
@@ -22448,16 +22511,20 @@ __webpack_require__.r(__webpack_exports__);
       "up_and_sent": "Modifié avec succès !",
       "deleted": "Toutes les données ont été supprimées",
       "download": {
-        "button": "Télécharger le récapitulatif initial",
-        "button-tooltip": "<h3>Récapitulatif initial</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
-        "button2": "Télécharger le récapitulatif complété",
-        "button2-tooltip": "<h3>Récapitulatif complété</h3><p>Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.</p>"
+        "button": "Télécharger le récapitulatif",
+        "button-tooltip": "<h3>Récapitulatif</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
+        "button_initial": "Télécharger le récapitulatif initial",
+        "button_initial-tooltip": "<h3>Récapitulatif initial</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
+        "button_final": "Télécharger le récapitulatif complété",
+        "button_final-tooltip": "<h3>Récapitulatif complété</h3><p>Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.</p><p class=\"font-italic\">Cette fonctionnalité n'est disponible que du {expires_at} au {deleted_at}.</p>"
       },
       "purge": {
         "button": "Supprimer tout",
         "confirm": {
-          "title": "Êtes-vous sûr de vouloir supprimer la totalité des données avant leur expiration le {expiration} ?",
-          "body": "Vous ne recevrez pas le récapitulatif des tirages de cet évènement et les participants ne pourront plus écrire à leur père noël secret. Cette action ne peut être annulée.",
+          "title": "Êtes-vous sûr de vouloir supprimer la totalité des données avant le nettoyage automatique le {deletion} ?",
+          "body_final": "Vous ne pourrez plus télécharger le récapitulatif des tirages de cet évènement et les participants ne pourront plus écrire à leur père noël secret. Cette action ne peut être annulée.",
+          "body_expired": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement. Cette action ne peut être annulée.",
+          "body_nofinal": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement et les participants ne pourront plus écrire à leur père noël secret. Cette action ne peut être annulée.",
           "value": "Supprimer toutes les données",
           "help": "Saisir \"[+:verification]\" en dessous pour confirmer.",
           "ok": "Ok",

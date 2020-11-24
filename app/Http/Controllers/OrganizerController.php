@@ -28,6 +28,7 @@ class OrganizerController extends Controller
         return response()->json([
             'draw' => $draw->hash,
             'expires_at' => $draw->expires_at,
+            'deleted_at' => $draw->deleted_at,
             'participants' => $draw->participants->mapWithKeys(function ($participant) {
                 return [$participant->id => $participant->only([
                     'id', 'name', 'email', 'mail',
