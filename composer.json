@@ -25,6 +25,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
+        "chinleung/laravel-browserstack": "dev-master",
         "facade/ignition": "^2.0",
         "fzaninotto/faker": "^1.9.1",
         "martinlindhe/laravel-vue-i18n-generator": "^0.1.46",
@@ -79,6 +80,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/korko/laravel-dkim"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/korko/laravel-browserstack"
         }
     ]
 }

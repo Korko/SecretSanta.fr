@@ -15,11 +15,6 @@ if (key) {
     axios.defaults.headers.common['X-HASH-KEY'] = key;
 }
 
-setInterval(function() {
-    // Nothing to do, this call will update the cookie if needed
-    axios.get('/xsrf');
-}, 5 * 60 * 1000); // Call every 5min
-
 import alertify from '../partials/alertify.js';
 
 axios.interceptors.response.use(function (response) {
@@ -28,8 +23,8 @@ axios.interceptors.response.use(function (response) {
 
     return response;
 }, function (error) {
-    if (error.response?.data?.message)
-        alertify.errorAlert(error.response.data.message);
+    if (error.response?.data?.error)
+        alertify.errorAlert(error.response.data.error);
 
     return error;
 });

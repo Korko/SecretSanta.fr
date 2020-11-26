@@ -44,5 +44,3 @@ Route::middleware(['signed', 'decrypt.key:draw,mail_title'])->group(function () 
 Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function () {
     Route::post('/org/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
 });
-
-Route::get('/xsrf', [Controller::class, 'noop']);

@@ -17,7 +17,6 @@
         <meta name="description" content="@lang('headers.description')">
         <meta name="keywords" content="@lang('headers.keywords')">
         <meta name="author" content="Korko <webmaster@secretsanta.fr>">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- opengraph/facebook -->
         <meta property="og:title" content="SecretSanta">

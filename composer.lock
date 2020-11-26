@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d47b49302a68a527d779817286b90c46",
+    "content-hash": "c910e71948f1d188011c06d842dd092e",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -5326,6 +5326,126 @@
             "time": "2020-09-07T19:32:39+00:00"
         },
         {
+            "name": "browserstack/browserstack-local",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/browserstack/browserstack-local-php.git",
+                "reference": "491c6e31960ce8111d2cb70cb84d03e73f270dbb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/browserstack/browserstack-local-php/zipball/491c6e31960ce8111d2cb70cb84d03e73f270dbb",
+                "reference": "491c6e31960ce8111d2cb70cb84d03e73f270dbb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.19"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.6.*"
+            },
+            "suggest": {
+                "phpdocumentor/phpdocumentor": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BrowserStack\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP bindings for BrowserStack Local",
+            "homepage": "https://github.com/browserstack/browserstack-local-php",
+            "keywords": [
+                "BrowserStack",
+                "browserstacklocal",
+                "local",
+                "php",
+                "selenium"
+            ],
+            "time": "2016-09-19T13:39:06+00:00"
+        },
+        {
+            "name": "chinleung/laravel-browserstack",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Korko/laravel-browserstack.git",
+                "reference": "0e24ffeb94c96c44b7fc67f126d7e18b2a64c5d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Korko/laravel-browserstack/zipball/0e24ffeb94c96c44b7fc67f126d7e18b2a64c5d6",
+                "reference": "0e24ffeb94c96c44b7fc67f126d7e18b2a64c5d6",
+                "shasum": ""
+            },
+            "require": {
+                "browserstack/browserstack-local": "^1.1",
+                "guzzlehttp/guzzle": "^6.5|^7.0.1",
+                "illuminate/support": "~5.8.0|^6.0|^7.0",
+                "laravel/dusk": "^6.0",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.8.*",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ChinLeung\\BrowserStack\\BrowserStackServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ChinLeung\\BrowserStack\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "ChinLeung\\BrowserStack\\Tests\\": "tests"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit"
+                ],
+                "test-coverage": [
+                    "vendor/bin/phpunit --coverage-html coverage"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chin Leung",
+                    "email": "hello@chinleung.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Run Laravel Dusk tests on BrowserStack.",
+            "homepage": "https://github.com/chinleung/laravel-browserstack",
+            "keywords": [
+                "automate",
+                "browserstack",
+                "chinleung",
+                "laravel-browserstack",
+                "laravel-dusk",
+                "testing"
+            ],
+            "support": {
+                "source": "https://github.com/Korko/laravel-browserstack/tree/master"
+            },
+            "time": "2020-11-25T17:32:15+00:00"
+        },
+        {
             "name": "composer/semver",
             "version": "3.2.4",
             "source": {
@@ -6033,6 +6153,74 @@
             "time": "2020-07-09T08:09:16+00:00"
         },
         {
+            "name": "laravel/dusk",
+            "version": "v6.9.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/dusk.git",
+                "reference": "13b22f13f4f18f9524e523ec5f06bbb3b2b3fdd9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/13b22f13f4f18f9524e523ec5f06bbb3b2b3fdd9",
+                "reference": "13b22f13f4f18f9524e523ec5f06bbb3b2b3fdd9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-zip": "*",
+                "illuminate/console": "^6.0|^7.0|^8.0",
+                "illuminate/support": "^6.0|^7.0|^8.0",
+                "nesbot/carbon": "^2.0",
+                "php": "^7.2|^8.0",
+                "php-webdriver/webdriver": "^1.9.0",
+                "symfony/console": "^4.3|^5.0",
+                "symfony/finder": "^4.3|^5.0",
+                "symfony/process": "^4.3|^5.0",
+                "vlucas/phpdotenv": "^3.0|^4.0|^5.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^7.5.15|^8.4|^9.0"
+            },
+            "suggest": {
+                "ext-pcntl": "Used to gracefully terminate Dusk when tests are running."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Dusk\\DuskServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Dusk\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel Dusk provides simple end-to-end testing and browser automation.",
+            "keywords": [
+                "laravel",
+                "testing",
+                "webdriver"
+            ],
+            "time": "2020-11-24T16:48:27+00:00"
+        },
+        {
             "name": "martinlindhe/laravel-vue-i18n-generator",
             "version": "0.1.46",
             "source": {
@@ -6570,6 +6758,73 @@
                 "diff"
             ],
             "time": "2020-10-14T08:39:05+00:00"
+        },
+        {
+            "name": "php-webdriver/webdriver",
+            "version": "1.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-webdriver/php-webdriver.git",
+                "reference": "e3633154554605274cc9d59837f55a7427d72003"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-webdriver/php-webdriver/zipball/e3633154554605274cc9d59837f55a7427d72003",
+                "reference": "e3633154554605274cc9d59837f55a7427d72003",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-zip": "*",
+                "php": "^5.6 || ~7.0 || ^8.0",
+                "symfony/polyfill-mbstring": "^1.12",
+                "symfony/process": "^2.8 || ^3.1 || ^4.0 || ^5.0"
+            },
+            "replace": {
+                "facebook/webdriver": "*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "ondram/ci-detector": "^2.1 || ^3.5",
+                "php-coveralls/php-coveralls": "^2.4",
+                "php-mock/php-mock-phpunit": "^1.1 || ^2.0",
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpunit/phpunit": "^5.7 || ^7 || ^8 || ^9",
+                "squizlabs/php_codesniffer": "^3.5",
+                "symfony/var-dumper": "^3.3 || ^4.0 || ^5.0"
+            },
+            "suggest": {
+                "ext-SimpleXML": "For Firefox profile creation"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.8.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Facebook\\WebDriver\\": "lib/"
+                },
+                "files": [
+                    "lib/Exception/TimeoutException.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A PHP client for Selenium WebDriver. Previously facebook/webdriver.",
+            "homepage": "https://github.com/php-webdriver/php-webdriver",
+            "keywords": [
+                "Chromedriver",
+                "geckodriver",
+                "php",
+                "selenium",
+                "webdriver"
+            ],
+            "time": "2020-11-19T15:21:05+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -8491,6 +8746,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "korko/validator": 20,
+        "chinleung/laravel-browserstack": 20,
         "matt-allan/laravel-code-style": 20
     },
     "prefer-stable": true,

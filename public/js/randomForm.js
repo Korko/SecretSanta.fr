@@ -9842,241 +9842,253 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("tr", { staticClass: "participant" }, [
-    _c("td", { staticClass: "align-middle" }, [
-      _c("div", { staticClass: "input-group" }, [
-        _c("span", { staticClass: "input-group-prepend counter" }, [
-          _c(
-            "span",
-            { staticClass: "input-group-text" },
-            [
-              _vm._v(_vm._s(_vm.idx + 1)),
-              _vm.idx === 0
-                ? [_vm._v(" - " + _vm._s(_vm.$t("form.participant.organizer")))]
-                : _vm._e()
-            ],
-            2
-          )
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control participant-name",
-          class: {
-            "is-invalid":
-              _vm.$v.name.$error ||
-              _vm.fieldError("participants." + _vm.idx + ".name")
-          },
-          attrs: {
-            type: "text",
-            name: "participants[" + _vm.idx + "][name]",
-            placeholder: _vm.$t("form.participant.name.placeholder"),
-            "aria-invalid":
-              _vm.$v.name.$error ||
-              _vm.fieldError("participants." + _vm.idx + ".name")
-          },
-          domProps: { value: _vm.name },
-          on: {
-            input: function($event) {
-              return _vm.changeName($event.target.value)
-            },
-            blur: function($event) {
-              return _vm.$v.name.$touch()
-            }
-          }
-        }),
-        _vm._v(" "),
-        !_vm.$v.name.required
-          ? _c("div", { staticClass: "invalid-tooltip" }, [
-              _vm._v(
-                _vm._s(
-                  _vm.$t(
-                    "validation.custom.randomform.participant.name.required"
-                  )
-                )
-              )
-            ])
-          : !_vm.$v.name.unique
-          ? _c("div", { staticClass: "invalid-tooltip" }, [
-              _vm._v(
-                _vm._s(
-                  _vm.$t(
-                    "validation.custom.randomform.participant.name.distinct"
-                  )
-                )
-              )
-            ])
-          : _vm.fieldError("participants." + _vm.idx + ".name")
-          ? _c("div", { staticClass: "invalid-tooltip" }, [
-              _vm._v(
-                _vm._s(_vm.fieldError("participants." + _vm.idx + ".name"))
-              )
-            ])
-          : _vm._e()
-      ])
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "border-left align-middle" }, [
-      _c("div", { staticClass: "input-group" }, [
-        _c("input", {
-          staticClass: "form-control participant-email",
-          class: {
-            "is-invalid":
-              _vm.$v.email.$error ||
-              _vm.fieldError("participants." + _vm.idx + ".email")
-          },
-          attrs: {
-            type: "email",
-            name: "participants[" + _vm.idx + "][email]",
-            placeholder: _vm.$t("form.participant.email.placeholder"),
-            "aria-invalid":
-              _vm.$v.email.$error ||
-              _vm.fieldError("participants." + _vm.idx + ".email")
-          },
-          domProps: { value: _vm.email },
-          on: {
-            input: function($event) {
-              return _vm.changeEmail($event.target.value)
-            },
-            blur: function($event) {
-              return _vm.$v.email.$touch()
-            }
-          }
-        }),
-        _vm._v(" "),
-        !_vm.$v.email.required
-          ? _c("div", { staticClass: "invalid-tooltip" }, [
-              _vm._v(
-                _vm._s(
-                  _vm.$t(
-                    "validation.custom.randomform.participant.email.required"
-                  )
-                )
-              )
-            ])
-          : !_vm.$v.email.format
-          ? _c("div", { staticClass: "invalid-tooltip" }, [
-              _vm._v(
-                _vm._s(
-                  _vm.$t(
-                    "validation.custom.randomform.participant.email.format"
-                  )
-                )
-              )
-            ])
-          : _vm.fieldError("participants." + _vm.idx + ".email")
-          ? _c("div", { staticClass: "invalid-tooltip" }, [
-              _vm._v(
-                _vm._s(_vm.fieldError("participants." + _vm.idx + ".email"))
-              )
-            ])
-          : _vm._e()
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "td",
-      {
-        staticClass:
-          "border-right text-left participant-exclusions-wrapper align-middle"
-      },
-      [
-        _c("multiselect", {
-          attrs: {
-            options: _vm.otherNames,
-            value: _vm.exclusions,
-            placeholder: _vm.$t("form.participant.exclusions.placeholder"),
-            multiple: true,
-            "hide-selected": true,
-            "preserve-search": true,
-            "close-on-select": false
-          },
-          on: {
-            select: function($event) {
-              return _vm.$emit("addExclusion", $event)
-            },
-            remove: function($event) {
-              return _vm.$emit("removeExclusion", $event)
-            }
-          },
-          scopedSlots: _vm._u([
-            {
-              key: "noOptions",
-              fn: function() {
-                return [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.$t("form.participant.exclusions.noOptions")) +
-                      "\n            "
-                  )
-                ]
-              },
-              proxy: true
-            },
-            {
-              key: "noResult",
-              fn: function() {
-                return [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.$t("form.participant.exclusions.noResult")) +
-                      "\n            "
-                  )
-                ]
-              },
-              proxy: true
-            }
-          ])
-        }),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            staticStyle: { display: "none" },
-            attrs: {
-              name: "participants[" + _vm.idx + "][exclusions][]",
-              multiple: ""
-            }
-          },
-          _vm._l(_vm.exclusions, function(exclusion) {
-            return _c(
-              "option",
-              {
-                key: exclusion,
-                attrs: { selected: "" },
-                domProps: {
-                  value: Object.keys(_vm.names).find(function(idx) {
-                    return _vm.names[idx] === exclusion
-                  })
-                }
-              },
-              [_vm._v(_vm._s(_vm.exclusions))]
+  return _c(
+    "tr",
+    { staticClass: "participant", attrs: { dusk: "participant" + _vm.idx } },
+    [
+      _c("td", { staticClass: "align-middle" }, [
+        _c("div", { staticClass: "input-group" }, [
+          _c("span", { staticClass: "input-group-prepend counter" }, [
+            _c(
+              "span",
+              { staticClass: "input-group-text" },
+              [
+                _vm._v(_vm._s(_vm.idx + 1)),
+                _vm.idx === 0
+                  ? [
+                      _vm._v(
+                        " - " + _vm._s(_vm.$t("form.participant.organizer"))
+                      )
+                    ]
+                  : _vm._e()
+              ],
+              2
             )
-          }),
-          0
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("td", { staticClass: "participant-remove-wrapper align-middle" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-outline-danger participant-remove",
-          attrs: { type: "button", disabled: _vm.required },
-          on: {
-            click: function($event) {
-              return _vm.$emit("delete")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control participant-name",
+            class: {
+              "is-invalid":
+                _vm.$v.name.$error ||
+                _vm.fieldError("participants." + _vm.idx + ".name")
+            },
+            attrs: {
+              type: "text",
+              name: "participants[" + _vm.idx + "][name]",
+              placeholder: _vm.$t("form.participant.name.placeholder"),
+              "aria-invalid":
+                _vm.$v.name.$error ||
+                _vm.fieldError("participants." + _vm.idx + ".name")
+            },
+            domProps: { value: _vm.name },
+            on: {
+              input: function($event) {
+                return _vm.changeName($event.target.value)
+              },
+              blur: function($event) {
+                return _vm.$v.name.$touch()
+              }
             }
-          }
+          }),
+          _vm._v(" "),
+          !_vm.$v.name.required
+            ? _c("div", { staticClass: "invalid-tooltip" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm.$t(
+                      "validation.custom.randomform.participant.name.required"
+                    )
+                  )
+                )
+              ])
+            : !_vm.$v.name.unique
+            ? _c("div", { staticClass: "invalid-tooltip" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm.$t(
+                      "validation.custom.randomform.participant.name.distinct"
+                    )
+                  )
+                )
+              ])
+            : _vm.fieldError("participants." + _vm.idx + ".name")
+            ? _c("div", { staticClass: "invalid-tooltip" }, [
+                _vm._v(
+                  _vm._s(_vm.fieldError("participants." + _vm.idx + ".name"))
+                )
+              ])
+            : _vm._e()
+        ])
+      ]),
+      _vm._v(" "),
+      _c("td", { staticClass: "border-left align-middle" }, [
+        _c("div", { staticClass: "input-group" }, [
+          _c("input", {
+            staticClass: "form-control participant-email",
+            class: {
+              "is-invalid":
+                _vm.$v.email.$error ||
+                _vm.fieldError("participants." + _vm.idx + ".email")
+            },
+            attrs: {
+              type: "email",
+              name: "participants[" + _vm.idx + "][email]",
+              placeholder: _vm.$t("form.participant.email.placeholder"),
+              "aria-invalid":
+                _vm.$v.email.$error ||
+                _vm.fieldError("participants." + _vm.idx + ".email")
+            },
+            domProps: { value: _vm.email },
+            on: {
+              input: function($event) {
+                return _vm.changeEmail($event.target.value)
+              },
+              blur: function($event) {
+                return _vm.$v.email.$touch()
+              }
+            }
+          }),
+          _vm._v(" "),
+          !_vm.$v.email.required
+            ? _c("div", { staticClass: "invalid-tooltip" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm.$t(
+                      "validation.custom.randomform.participant.email.required"
+                    )
+                  )
+                )
+              ])
+            : !_vm.$v.email.format
+            ? _c("div", { staticClass: "invalid-tooltip" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm.$t(
+                      "validation.custom.randomform.participant.email.format"
+                    )
+                  )
+                )
+              ])
+            : _vm.fieldError("participants." + _vm.idx + ".email")
+            ? _c("div", { staticClass: "invalid-tooltip" }, [
+                _vm._v(
+                  _vm._s(_vm.fieldError("participants." + _vm.idx + ".email"))
+                )
+              ])
+            : _vm._e()
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "td",
+        {
+          staticClass:
+            "border-right text-left participant-exclusions-wrapper align-middle"
         },
         [
-          _c("i", { staticClass: "fas fa-minus" }),
-          _c("span", [_vm._v(" " + _vm._s(_vm.$t("form.participant.remove")))])
-        ]
-      )
-    ])
-  ])
+          _c("multiselect", {
+            attrs: {
+              options: _vm.otherNames,
+              value: _vm.exclusions,
+              placeholder: _vm.$t("form.participant.exclusions.placeholder"),
+              multiple: true,
+              "hide-selected": true,
+              "preserve-search": true,
+              "close-on-select": false
+            },
+            on: {
+              select: function($event) {
+                return _vm.$emit("addExclusion", $event)
+              },
+              remove: function($event) {
+                return _vm.$emit("removeExclusion", $event)
+              }
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "noOptions",
+                fn: function() {
+                  return [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(
+                          _vm.$t("form.participant.exclusions.noOptions")
+                        ) +
+                        "\n            "
+                    )
+                  ]
+                },
+                proxy: true
+              },
+              {
+                key: "noResult",
+                fn: function() {
+                  return [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.$t("form.participant.exclusions.noResult")) +
+                        "\n            "
+                    )
+                  ]
+                },
+                proxy: true
+              }
+            ])
+          }),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              staticStyle: { display: "none" },
+              attrs: {
+                name: "participants[" + _vm.idx + "][exclusions][]",
+                multiple: ""
+              }
+            },
+            _vm._l(_vm.exclusions, function(exclusion) {
+              return _c(
+                "option",
+                {
+                  key: exclusion,
+                  attrs: { selected: "" },
+                  domProps: {
+                    value: Object.keys(_vm.names).find(function(idx) {
+                      return _vm.names[idx] === exclusion
+                    })
+                  }
+                },
+                [_vm._v(_vm._s(_vm.exclusions))]
+              )
+            }),
+            0
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("td", { staticClass: "participant-remove-wrapper align-middle" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-outline-danger participant-remove",
+            attrs: { type: "button", disabled: _vm.required },
+            on: {
+              click: function($event) {
+                return _vm.$emit("delete")
+              }
+            }
+          },
+          [
+            _c("i", { staticClass: "fas fa-minus" }),
+            _c("span", [
+              _vm._v(" " + _vm._s(_vm.$t("form.participant.remove")))
+            ])
+          ]
+        )
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -11359,11 +11371,6 @@ if (key) {
   axios__WEBPACK_IMPORTED_MODULE_7___default.a.defaults.headers.common['X-HASH-KEY'] = key;
 }
 
-setInterval(function () {
-  // Nothing to do, this call will update the cookie if needed
-  axios__WEBPACK_IMPORTED_MODULE_7___default.a.get('/xsrf');
-}, 5 * 60 * 1000); // Call every 5min
-
 
 axios__WEBPACK_IMPORTED_MODULE_7___default.a.interceptors.response.use(function (response) {
   var _response$data;
@@ -11373,7 +11380,7 @@ axios__WEBPACK_IMPORTED_MODULE_7___default.a.interceptors.response.use(function 
 }, function (error) {
   var _error$response, _error$response$data;
 
-  if ((_error$response = error.response) === null || _error$response === void 0 ? void 0 : (_error$response$data = _error$response.data) === null || _error$response$data === void 0 ? void 0 : _error$response$data.message) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_8__["default"].errorAlert(error.response.data.message);
+  if ((_error$response = error.response) === null || _error$response === void 0 ? void 0 : (_error$response$data = _error$response.data) === null || _error$response$data === void 0 ? void 0 : _error$response$data.error) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_8__["default"].errorAlert(error.response.data.error);
   return error;
 });
 ['get', 'delete', 'head', 'options'].forEach(function (method) {
