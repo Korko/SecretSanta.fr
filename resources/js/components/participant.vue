@@ -63,7 +63,7 @@
 </script>
 
 <template>
-    <tr class="participant">
+    <tr class="participant" :dusk="'participant'+idx">
         <td class="align-middle">
             <div class="input-group">
                 <span class="input-group-prepend counter">

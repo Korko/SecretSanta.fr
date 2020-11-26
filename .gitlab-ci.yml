@@ -49,6 +49,29 @@ phpunit:
     - php artisan key:generate
     - phpunit --coverage-text --colors=never
 
+dusk-main:
+  stage: tests
+  script:
+    - cp .env.example .env
+    - php artisan key:generate
+    - BROWSERSTACK_BROWSER=WINDOWS_10_CHROME php artisan dusk
+    - BROWSERSTACK_BROWSER=WINDOWS_10_FIREFOX php artisan dusk
+    - BROWSERSTACK_BROWSER=WINDOWS_7_CHROME php artisan dusk
+    - BROWSERSTACK_BROWSER=WINDOWS_7_FIREFOX php artisan dusk
+    - BROWSERSTACK_BROWSER=MACOS_CATALINA_CHROME php artisan dusk
+    - BROWSERSTACK_BROWSER=MACOS_CATALINA_FIREFOX php artisan dusk
+
+dusk:
+  stage: tests
+  script:
+    - cp .env.example .env
+    - php artisan key:generate
+    - BROWSERSTACK_BROWSER=WINDOWS_10_EDGE php artisan dusk
+    - BROWSERSTACK_BROWSER=WINDOWS_10_IE php artisan dusk
+    - BROWSERSTACK_BROWSER=MACOS_CATALINA_SAFARI php artisan dusk
+    - BROWSERSTACK_BROWSER=MACOS_CATALINA_EDGE php artisan dusk
+  allow_failure: true
+
 php-metrics:
   stage: metrics
   script:

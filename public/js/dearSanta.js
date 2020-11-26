@@ -19686,11 +19686,6 @@ if (key) {
   axios__WEBPACK_IMPORTED_MODULE_7___default.a.defaults.headers.common['X-HASH-KEY'] = key;
 }
 
-setInterval(function () {
-  // Nothing to do, this call will update the cookie if needed
-  axios__WEBPACK_IMPORTED_MODULE_7___default.a.get('/xsrf');
-}, 5 * 60 * 1000); // Call every 5min
-
 
 axios__WEBPACK_IMPORTED_MODULE_7___default.a.interceptors.response.use(function (response) {
   var _response$data;
@@ -19700,7 +19695,7 @@ axios__WEBPACK_IMPORTED_MODULE_7___default.a.interceptors.response.use(function 
 }, function (error) {
   var _error$response, _error$response$data;
 
-  if ((_error$response = error.response) === null || _error$response === void 0 ? void 0 : (_error$response$data = _error$response.data) === null || _error$response$data === void 0 ? void 0 : _error$response$data.message) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_8__["default"].errorAlert(error.response.data.message);
+  if ((_error$response = error.response) === null || _error$response === void 0 ? void 0 : (_error$response$data = _error$response.data) === null || _error$response$data === void 0 ? void 0 : _error$response$data.error) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_8__["default"].errorAlert(error.response.data.error);
   return error;
 });
 ['get', 'delete', 'head', 'options'].forEach(function (method) {
