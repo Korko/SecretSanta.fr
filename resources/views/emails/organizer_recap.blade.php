@@ -15,7 +15,11 @@
 
         <p style="padding-bottom:10px !important">Afin de surveiller si tous les participants ont bien reçu leur email ou modifier une adresse en cas d'erreur, rendez vous sur votre interface personnalisée : <a href="{{ $panelLink }}">{{ $panelLink }}</a>
 
-        <p style="padding-bottom:10px !important">Cette interface ne sera plus disponible à compter du {{ $expirationDate }}, à cette date vous recevrez un email contenant un fichier récapitulatif des participants ainsi que des exclusions que vous avez définies pour cet évènement. Ce fichier pourra être réutilisé sur SecretSanta.fr pour gagner du temps lors de l'organisation de votre prochain évènement.</p>
+        <p style="padding-bottom:10px !important">Vous y trouverez aussi un moyen de récupérer un récapitulatif des participants ainsi que des exclusions que vous avez définies pour cet évènement. Ce fichier pourra être réutilisé sur SecretSanta.fr pour gagner du temps lors de l'organisation de votre prochain évènement.</p>
+
+        @if($next_solvable)<p style="padding-bottom:10px !important">À compter du {{ $expirationDate }}, un second récapitulatif sera disponible contenant parmi les exclusions de chaque participant, la cible tirée au hasard cette fois-ci. Améliorant encore plus l'expérience pour le prochain évènement.</p>@endif
+
+        <p style="padding-bottom:10px !important">Toutes les informations relatives à cet évènement seront supprimées le {{ $deletionDate }}. Cette interface ne sera alors plus disponible.</p>
 
         <p style="padding-bottom:10px !important">Amusez-vous bien !</p>
 
