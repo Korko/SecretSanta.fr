@@ -89,18 +89,6 @@
             }
         },
 
-        computed: {
-            participantNames() {
-                var names = {};
-                this.participants.forEach((participant, idx) => {
-                    if (participant.name) {
-                        names[idx] = participant.name;
-                    }
-                });
-                return names;
-            }
-        },
-
         watch: {
             sent(newVal) {
                 // If sent is a success, scroll to the message
@@ -284,7 +272,7 @@
                                         :name="participant.name"
                                         :email="participant.email"
                                         :exclusions="participant.exclusions"
-                                        :names="participantNames"
+                                        :all="participants"
                                         :required="idx < 3 && participants.length <= 3"
                                         :field-error="fieldError"
                                         :$v="$v.participants.$each[idx]"

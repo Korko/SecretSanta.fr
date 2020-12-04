@@ -28,7 +28,7 @@
         <span>{{ $t(`common.email.status.${delivery_status}`) }} <i :class="[icon, delivery_status]"></i></span>
         <button :disabled="delivery_status === 'created' || disabled" type="button" class="btn btn-outline-secondary" @click="$emit('redo')">
             <i class="fas fa-redo" />
-            Redo
+            {{ $t(`common.email.redo`) }}
         </button>
     </div>
 </template>
