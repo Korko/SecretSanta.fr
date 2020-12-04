@@ -6,7 +6,6 @@ use App\Models\Draw;
 use App\Exceptions\SolverException;
 use App\Jobs\SendMail;
 use App\Models\Mail as MailModel;
-use App\Mail\OrganizerFinalRecap;
 use App\Mail\OrganizerRecap;
 use App\Mail\TargetDrawn;
 use App\Models\Participant;
@@ -49,7 +48,6 @@ class DrawHandler
         }
 
         $this->sendOrganizerEmail($draw);
-        $this->sendDelayedOrganizerEmail($draw);
         foreach ($draw->participants as $participant) {
             $this->sendParticipantEmail($participant);
         }
@@ -115,12 +113,6 @@ class DrawHandler
     public function sendOrganizerEmail(Draw $draw)
     {
         SendMail::dispatch($draw->organizer, new OrganizerRecap($draw));
-    }
-
-    public function sendDelayedOrganizerEmail(Draw $draw)
-    {
-        SendMail::dispatch($draw->organizer, new OrganizerFinalRecap($draw))
-            ->delay($draw->expires_at->addDay());
     }
 
     public function sendParticipantEmail(Participant $participant)
