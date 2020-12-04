@@ -11,13 +11,13 @@ stages:
   - metrics
 
 variables:
-  APP_ENV=local
-  APP_KEY=base64:GiV6POMQ3sJ98JfJjUrLp82zEGrzO7afosXaYG7n+Vo=
-  APP_DEBUG=true
-  DB_DATABASE=laravel
-  DB_USERNAME=root
-  GITHUB_SHA=$CI_COMMIT_SHA
-  GITHUB_REF=$CI_COMMIT_REF_NAME
+  APP_ENV: "local"
+  APP_KEY: "base64:GiV6POMQ3sJ98JfJjUrLp82zEGrzO7afosXaYG7n+Vo="
+  APP_DEBUG: "true"
+  DB_DATABASE: "laravel"
+  DB_USERNAME: "root"
+  GITHUB_SHA: $CI_COMMIT_SHA
+  GITHUB_REF: $CI_COMMIT_REF_NAME
 
 composer:
   stage: build
