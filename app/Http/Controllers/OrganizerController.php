@@ -69,11 +69,9 @@ class OrganizerController extends Controller
 
         $this->sendEmail($participant);
 
-        return $request->ajax() ?
-            response()->json([
-                'message' => $message, 'participant' => $participant->only(['id', 'mail']),
-            ]) :
-            redirect('/')->with('message', $message);
+        return response()->json([
+            'message' => $message, 'participant' => $participant->only(['id', 'mail']),
+        ]);
     }
 
     protected function sendEmail(Participant $participant)
@@ -117,12 +115,8 @@ class OrganizerController extends Controller
     {
         $draw->delete();
 
-        $message = trans('organizer.deleted');
-
-        return $request->ajax() ?
-            response()->json([
-                'message' => $message,
-            ]) :
-            redirect('/')->with('message', $message);
+        return response()->json([
+            'message' => trans('organizer.deleted'),
+        ]);
     }
 }

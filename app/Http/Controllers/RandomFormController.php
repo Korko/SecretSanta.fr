@@ -20,17 +20,13 @@ class RandomFormController extends Controller
         try {
             $this->drawAndInform($request);
 
-            $message = trans('message.sent');
-
-            return $request->ajax() ?
-                response()->json(['message' => $message]) :
-                redirect('/')->with('message', $message);
+            return response()->json([
+                'message' => trans('message.sent')
+            ]);
         } catch (SolverException $e) {
-            $error = trans('error.solution');
-
-            return $request->ajax() ?
-                response()->json(['error' => $error], 500) :
-                redirect('/')->with('error', $error);
+            return response()->json([
+                'message' => trans('error.solution')
+            ], 500);
         }
     }
 
