@@ -2092,13 +2092,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
 /* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _mixins_stateMachine_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/stateMachine.js */ "./resources/js/mixins/stateMachine.js");
-/* harmony import */ var _partials_axios_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../partials/axios.js */ "./resources/js/partials/axios.js");
 
 
 
 
 vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_3___default.a);
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [_mixins_stateMachine_js__WEBPACK_IMPORTED_MODULE_4__["default"]],
@@ -22170,11 +22168,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/modules/es.object.keys */ "./node_modules/core-js/modules/es.object.keys.js");
 /* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _partials_alertify_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../partials/alertify.js */ "./resources/js/partials/alertify.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _partials_alertify_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../partials/alertify.js */ "./resources/js/partials/alertify.js");
+
+
 
 
 
@@ -22195,7 +22199,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-axios__WEBPACK_IMPORTED_MODULE_7___default.a.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios__WEBPACK_IMPORTED_MODULE_9___default.a.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /**
  * Transmit Hash Key via request headers
  */
@@ -22203,40 +22207,40 @@ axios__WEBPACK_IMPORTED_MODULE_7___default.a.defaults.headers.common['X-Requeste
 var key = window.location.hash.substr(1);
 
 if (key) {
-  axios__WEBPACK_IMPORTED_MODULE_7___default.a.defaults.headers.common['X-HASH-KEY'] = key;
+  axios__WEBPACK_IMPORTED_MODULE_9___default.a.defaults.headers.common['X-HASH-KEY'] = key;
 }
 
 
-axios__WEBPACK_IMPORTED_MODULE_7___default.a.interceptors.response.use(function (response) {
+axios__WEBPACK_IMPORTED_MODULE_9___default.a.interceptors.response.use(function (response) {
   var _response$data;
 
-  if ((_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.message) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_8__["default"].success(response.data.message);
+  if ((_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.message) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_10__["default"].success(response.data.message);
   return response;
 }, function (error) {
   var _error$response, _error$response$data;
 
-  if ((_error$response = error.response) === null || _error$response === void 0 ? void 0 : (_error$response$data = _error$response.data) === null || _error$response$data === void 0 ? void 0 : _error$response$data.error) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_8__["default"].errorAlert(error.response.data.error);
-  return error;
+  if ((_error$response = error.response) === null || _error$response === void 0 ? void 0 : (_error$response$data = _error$response.data) === null || _error$response$data === void 0 ? void 0 : _error$response$data.message) _partials_alertify_js__WEBPACK_IMPORTED_MODULE_10__["default"].errorAlert(error.response.data.message);
+  return Promise.reject(error);
 });
 ['get', 'delete', 'head', 'options'].forEach(function (method) {
-  axios__WEBPACK_IMPORTED_MODULE_7___default.a[method] = function (url, config) {
-    return axios__WEBPACK_IMPORTED_MODULE_7___default()(_objectSpread({
+  axios__WEBPACK_IMPORTED_MODULE_9___default.a[method] = function (url, config) {
+    return axios__WEBPACK_IMPORTED_MODULE_9___default()(_objectSpread({
       method: method,
       url: url
     }, config));
   };
 });
 ['post', 'put', 'patch'].forEach(function (method) {
-  axios__WEBPACK_IMPORTED_MODULE_7___default.a[method] = function (url, data, config) {
-    return axios__WEBPACK_IMPORTED_MODULE_7___default()(_objectSpread({
+  axios__WEBPACK_IMPORTED_MODULE_9___default.a[method] = function (url, data, config) {
+    return axios__WEBPACK_IMPORTED_MODULE_9___default()(_objectSpread({
       method: method,
       url: url,
       data: data
     }, config));
   };
 });
-axios__WEBPACK_IMPORTED_MODULE_7___default.a.request = axios__WEBPACK_IMPORTED_MODULE_7___default.a;
-/* harmony default export */ __webpack_exports__["default"] = (axios__WEBPACK_IMPORTED_MODULE_7___default.a);
+axios__WEBPACK_IMPORTED_MODULE_9___default.a.request = axios__WEBPACK_IMPORTED_MODULE_9___default.a;
+/* harmony default export */ __webpack_exports__["default"] = (axios__WEBPACK_IMPORTED_MODULE_9___default.a);
 
 /***/ }),
 

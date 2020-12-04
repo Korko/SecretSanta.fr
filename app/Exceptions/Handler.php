@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\SolverException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Routing\Exceptions\InvalidSignatureException;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -25,4 +28,34 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $exception
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof ValidationException) {
+            return response()->json([
+                'message' => trans('error.validation'),
+            ], 500);
+        }
+
+        if ($exception instanceof SolverException) {
+            return response()->json([
+                'message' => trans('error.solution')
+            ], 500);
+        }
+
+        if ($exception instanceof InvalidSignatureException) {
+            return response()->json([
+                'message' => trans('error.signature'),
+            ], 500);
+        }
+
+        return parent::render($request, $exception);
+    }
 }

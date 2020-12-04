@@ -118,7 +118,8 @@
                     message.body = this.$t('organizer.purge.confirm.body_nofinal'); // Won't be able to download recap anymore + Dearsanta
                 }
 
-                this.$dialog.confirm(message, options)
+                this.$dialog
+                    .confirm(message, options)
                     .then(this.purge);
             },
             purge() {

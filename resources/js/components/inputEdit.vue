@@ -6,8 +6,6 @@
 
     import StateMachine from '../mixins/stateMachine.js';
 
-    import axios from '../partials/axios.js';
-
     export default {
         mixins: [StateMachine],
         inheritAttrs: false,
