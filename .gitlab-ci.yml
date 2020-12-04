@@ -3,7 +3,7 @@ image: lorisleiva/laravel-docker:7.4
 before_script:
   - apk add --no-cache imap-dev krb5-dev openssl-dev bzip2-dev
   - PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl
-  - docker-php-ext-install imap bz2
+  - docker-php-ext-install imap bz2 memcached
 
 stages:
   - build
