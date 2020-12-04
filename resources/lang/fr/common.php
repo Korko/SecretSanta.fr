@@ -20,6 +20,7 @@ return [
     ],
 
     'email' => [
+        'redo' => 'Ré-envoyer',
         'status' => [
             'created'  => 'En attente d\'envoi',
             'sending'  => 'Envoi en cours',

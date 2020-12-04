@@ -22,8 +22,8 @@
                 type: Array,
                 default: () => []
             },
-            names: {
-                type: Object,
+            all: {
+                type: Array,
                 required: true
             },
             required: {
@@ -40,8 +40,10 @@
             }
         },
         computed: {
-            otherNames() {
-                return Object.values(this.names).filter(name => name !== this.name);
+            otherParticipants() {
+                var participants = this.all.map((participant, idx) => {participant.idx = idx; return participant;});
+                participants.splice(this.idx, 1);
+                return participants;
             }
         },
         created: function() {
@@ -107,7 +109,9 @@
         </td>
         <td class="border-right text-left participant-exclusions-wrapper align-middle">
             <multiselect
-                :options="otherNames"
+                :options="otherParticipants"
+                label="name"
+                track-by="idx"
                 :value="exclusions"
                 :placeholder="$t('form.participant.exclusions.placeholder')"
                 :multiple="true"
@@ -127,10 +131,10 @@
             <select style="display:none" :name="'participants[' + idx + '][exclusions][]'" multiple>
                 <option
                     v-for="exclusion in exclusions"
-                    :key="exclusion"
-                    :value="Object.keys(names).find(idx => names[idx] === exclusion)"
+                    :key="exclusion.idx"
+                    :value="exclusion.idx"
                     selected
-                >{{ exclusions }}</option>
+                >{{ exclusion.idx }}</option>
             </select>
         </td>
         <td class="participant-remove-wrapper align-middle">
