@@ -41,13 +41,14 @@ class Handler extends ExceptionHandler
         if ($exception instanceof ValidationException) {
             return response()->json([
                 'message' => trans('error.validation'),
-            ], 500);
+                'errors' => $exception->errors(),
+            ], 422);
         }
 
         if ($exception instanceof SolverException) {
             return response()->json([
-                'message' => trans('error.solution')
-            ], 500);
+                'message' => trans('error.solution'),
+            ], 422);
         }
 
         if ($exception instanceof InvalidSignatureException) {
