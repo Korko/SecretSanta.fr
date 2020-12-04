@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
 use Arr;
 use DrawHandler;
@@ -17,17 +16,11 @@ class RandomFormController extends Controller
 
     public function handle(RandomFormRequest $request)
     {
-        try {
-            $this->drawAndInform($request);
+        $this->drawAndInform($request);
 
-            return response()->json([
-                'message' => trans('message.sent')
-            ]);
-        } catch (SolverException $e) {
-            return response()->json([
-                'message' => trans('error.solution')
-            ], 500);
-        }
+        return response()->json([
+            'message' => trans('message.sent')
+        ]);
     }
 
     protected function drawAndInform(Request $request)

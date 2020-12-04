@@ -23,10 +23,10 @@ axios.interceptors.response.use(function (response) {
 
     return response;
 }, function (error) {
-    if (error.response?.data?.error)
-        alertify.errorAlert(error.response.data.error);
+    if (error.response?.data?.message)
+        alertify.errorAlert(error.response.data.message);
 
-    return error;
+    return Promise.reject(error);
 });
 
 ['get', 'delete', 'head', 'options'].forEach(method => {
