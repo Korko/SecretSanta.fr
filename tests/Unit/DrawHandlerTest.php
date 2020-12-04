@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\Exceptions\SolverException;
 use App\Jobs\SendMail;
-use App\Mail\OrganizerFinalRecap;
 use App\Mail\OrganizerRecap;
 use App\Mail\TargetDrawn;
 use App\Models\Draw;
@@ -85,7 +84,6 @@ class DrawHandlerTest extends TestCase
         $this->assertHasMailPushed(OrganizerRecap::class, 'test@test.com', function ($m) use (&$link) {
             $link = $m->panelLink;
         });
-        $this->assertHasMailPushed(OrganizerFinalRecap::class, 'test@test.com');
 
         // TODO: assert body
         // Ensure Participants receive their own recap
