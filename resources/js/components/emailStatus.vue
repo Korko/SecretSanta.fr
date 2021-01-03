@@ -16,6 +16,7 @@
                     created: "fas fa-spinner",
                     sending: "fas fa-spinner",
                     sent: "fas fa-check",
+                    received: "fas fa-check",
                     error: "fas fa-exclamation-triangle"
                 }[this.delivery_status];
             }
@@ -42,6 +43,9 @@
         color: red;
     }
     .sent {
+        color: orange;
+    }
+    .received {
         color: green;
     }
 </style>

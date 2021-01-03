@@ -3,9 +3,10 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\RandomFormController;
 use App\Http\Controllers\DearSantaController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\OrganizerController;
+use App\Http\Controllers\RandomFormController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,8 @@ Route::get('/faq', [RandomFormController::class, 'faq'])->name('faq');
 
 Route::pattern('draw:hash', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
 Route::pattern('participant:hash', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
+Route::pattern('email:hash', '[0-9a-zA-Z]{'.config('hashids.connections.bounce.length').',}');
+Route::pattern('version', '[0-9]+');
 
 Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta');
 Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function () {
@@ -44,3 +47,5 @@ Route::middleware(['signed', 'decrypt.key:draw,mail_title'])->group(function () 
 Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function () {
     Route::post('/org/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
 });
+
+Route::get('/email/{mail:hash}/{version}.png', [MailController::class, 'updateStatus'])->name('pixel')->middleware('signed');

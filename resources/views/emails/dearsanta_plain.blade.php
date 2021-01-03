@@ -1,11 +1,5 @@
-Ceci est un message automatique, merci de ne pas y répondre.
+@extends('emails/layout_plain')
 
----
-
+@section('content')
 {{ $content }}
-
----
-
-Secrètement votre,
-
-{{ config('app.name') }} - {{ config('app.url') }}
+@endsection

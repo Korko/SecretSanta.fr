@@ -137,5 +137,6 @@
 			</td>
 		</tr>
 	</table>
+	@yield('body')
 </body>
 </html>

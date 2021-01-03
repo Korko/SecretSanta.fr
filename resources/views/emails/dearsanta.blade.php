@@ -1,26 +1,26 @@
-@extends('emails/layout')
+@extends('emails/tracked_layout')
 
 @section('content')
 
 <tr>
-        <td class="h2" style="font-size:35px; line-height:46px; text-align:center; font-style:italic; padding-bottom:15px;">
-                Message de {{ $targetName }}
-        </td>
+    <td class="h2" style="font-size:35px; line-height:46px; text-align:center; font-style:italic; padding-bottom:15px;">
+        Message de {{ $targetName }}
+    </td>
 </tr>
 <tr>
-        <td style="text-align:center; font-style:italic; padding-bottom:15px;">
+    <td style="text-align:center; font-style:italic; padding-bottom:15px;">
 
-                <p style="border:1px solid #000000;background-color:#dddddd;">Ceci est un message automatique, merci de ne pas y répondre.</p>
+        <p style="border:1px solid #000000;background-color:#dddddd;">Ceci est un message automatique, merci de ne pas y répondre.</p>
 
-                <blockquote>{!! nl2br(htmlentities( $content )) !!}</blockquote>
+        <blockquote>{!! nl2br(htmlentities( $content )) !!}</blockquote>
 
-                <hr />
+        <hr />
 
-				<p style="padding-bottom:10px !important">Secrètement votre,</p>
+        <p style="padding-bottom:10px !important">Secrètement votre,</p>
 
-                <p><a href="{{ config('app.url') }}">{{ config('app.name') }}</a></p>
+        <p><a href="{{ config('app.url') }}">{{ config('app.name') }}</a></p>
 
-        </td>
+    </td>
 </tr>
 
 @endsection

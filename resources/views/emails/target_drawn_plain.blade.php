@@ -1,13 +1,5 @@
-Ceci est un message automatique, merci de ne pas y répondre.
+@extends('emails/layout_plain')
 
----
-
+@section('content')
 {{ $content }}
-
----
-
-Vous pouvez écrire à votre Père Noël Secret ! Ca se passe ici : {{ $dearSantaLink }}
-
-Secrètement votre,
-
-{{ config('app.name') }} - {{ config('app.url') }}
+@endsection
