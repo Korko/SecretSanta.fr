@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Casts\EncryptedString;
 use DateInterval;
 use DateTime;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Draw extends Model
 {
+    use HasFactory;
+
     // Remove everything N weeks after the expiration_date
     const WEEKS_BEFORE_DELETION = 3;
 

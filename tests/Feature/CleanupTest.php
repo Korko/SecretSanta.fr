@@ -12,7 +12,7 @@ class CleanupTest extends RequestCase
     public function testDrawNotExpired(): void
     {
         $this->assertEquals(0, Draw::count());
-        $draw = factory(Draw::class)->create();
+        $draw = Draw::factory()->create();
         $this->assertEquals(1, Draw::count());
         $this->assertDatabaseHas('draws', ['id' => $draw->id]);
 
@@ -25,7 +25,7 @@ class CleanupTest extends RequestCase
     public function testDrawExpired(): void
     {
         $this->assertEquals(0, Draw::count());
-        $draw = factory(Draw::class)->states('expired')->create();
+        $draw = Draw::factory()->expired()->create();
         $this->assertEquals(1, Draw::count());
         $this->assertDatabaseHas('draws', ['id' => $draw->id]);
 

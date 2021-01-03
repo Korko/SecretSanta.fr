@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class Mail extends Model
 {
+    use HasFactory;
+
     use HashId, DispatchesJobs;
 
     protected static $hashConnection = 'bounce';
