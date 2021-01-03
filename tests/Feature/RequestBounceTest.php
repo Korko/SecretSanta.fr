@@ -8,6 +8,7 @@ use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use App\Jobs\ParseBounces;
 use App\Services\EmailClient;
+use Event;
 use Mail;
 use Webklex\PHPIMAP\Message as EmailMessage;
 
@@ -16,19 +17,22 @@ class RequestBounceTest extends RequestCase
     use \Illuminate\Foundation\Testing\DatabaseMigrations;
     use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
-    public function testBounce(): void
+    protected function assertReturnPath($prop, $status)
     {
+        Event::fake();
         Mail::fake();
         Mail::assertNothingSent();
 
         $participants = $this->createNewDraw(3);
 
         // Fake emails as bounces
-        $emailClient = $this->mock(EmailClient::class, function ($mock) use ($participants) {
+        $emailClient = $this->mock(EmailClient::class, function ($mock) use ($participants, $prop) {
             // Get all the return path defined by the app
             $links = [];
-            Mail::assertSent(function (TargetDrawn $mail) use (&$links) {
-                return $links[] = $mail->returnPath;
+            Mail::assertSent(function (TargetDrawn $mail) use (&$links, $prop) {
+                $links[] = $mail->$prop;
+
+                return true;
             });
             $this->assertEquals(count($participants), count($links));
 
@@ -67,7 +71,17 @@ class RequestBounceTest extends RequestCase
         // Ensure all participants are marked as bounced
         foreach ($draw->participants as $participant) {
             // Get the last delivery_status from DB via the "fresh" method
-            $this->assertEquals(MailModel::ERROR, $participant->mail->fresh()->delivery_status);
+            $this->assertEquals($status, $participant->mail->fresh()->delivery_status);
         }
+    }
+
+    public function testBounce(): void
+    {
+        $this->assertReturnPath('bounceReturnPath', MailModel::ERROR);
+    }
+
+    public function testConfirm(): void
+    {
+        $this->assertReturnPath('confirmReturnPath', MailModel::RECEIVED);
     }
 }
