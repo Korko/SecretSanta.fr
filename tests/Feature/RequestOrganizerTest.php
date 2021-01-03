@@ -17,7 +17,7 @@ class RequestOrganizerTest extends RequestCase
 
         $draw = Draw::factory()->create();
         $draw->participants()->createMany(
-            Participant::factory()->count($participants)->make()->toArray()
+            Participant::factory($participants)->make()->toArray()
         );
 
         foreach ($draw->participants as $idx => $participant) {

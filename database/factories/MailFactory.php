@@ -1,5 +1,9 @@
 <?php
+
 namespace Database\Factories;
+
+use App\Models\Draw;
+use App\Models\Mail as MailModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MailFactory extends Factory
@@ -9,7 +13,7 @@ class MailFactory extends Factory
      *
      * @var string
      */
-    protected $model = \App\Models\Mail::class;
+    protected $model = MailModel::class;
 
     /**
      * Define the model's default state.
@@ -19,8 +23,8 @@ class MailFactory extends Factory
     public function definition()
     {
         return [
-        'delivery_status' => App\Models\Mail::CREATED,
-        'draw_id' => \App\Models\Draw::factory(),
+        'delivery_status' => MailModel::CREATED,
+        'draw_id' => Draw::factory(),
         'version' => $this->faker->numberBetween(0, 255),
     ];
     }

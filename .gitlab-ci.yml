@@ -59,31 +59,10 @@ phpunit:
     expire_in: 7 days
     when: always
 
-dusk-main:
-  stage: tests
-  script:
-    - BROWSERSTACK_BROWSER=WINDOWS_10_CHROME php artisan dusk
-    - BROWSERSTACK_BROWSER=WINDOWS_10_FIREFOX php artisan dusk
-    - BROWSERSTACK_BROWSER=WINDOWS_7_CHROME php artisan dusk
-    - BROWSERSTACK_BROWSER=WINDOWS_7_FIREFOX php artisan dusk
-    - BROWSERSTACK_BROWSER=MACOS_CATALINA_CHROME php artisan dusk
-    - BROWSERSTACK_BROWSER=MACOS_CATALINA_FIREFOX php artisan dusk
-  artifacts:
-    paths:
-      - ./storage/logs # for debugging
-      - ./tests/Browser/screenshots
-      - ./tests/Browser/console
-    expire_in: 7 days
-    when: always
-
 dusk:
   stage: tests
   script:
-    - BROWSERSTACK_BROWSER=WINDOWS_10_EDGE php artisan dusk
-    - BROWSERSTACK_BROWSER=WINDOWS_10_IE php artisan dusk
-    - BROWSERSTACK_BROWSER=MACOS_CATALINA_SAFARI php artisan dusk
-    - BROWSERSTACK_BROWSER=MACOS_CATALINA_EDGE php artisan dusk
-  allow_failure: true
+    - php artisan dusk
   artifacts:
     paths:
       - ./storage/logs # for debugging
