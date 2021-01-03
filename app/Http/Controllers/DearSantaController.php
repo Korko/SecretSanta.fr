@@ -8,10 +8,13 @@ use App\Mail\DearSanta as DearSantaEmail;
 use App\Models\DearSanta;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
+use App\Traits\UpdatesMailDelivery;
 use Metrics;
 
 class DearSantaController extends Controller
 {
+    use UpdatesMailDelivery;
+
     public function view(Participant $participant)
     {
         return view('dearSanta', [
@@ -21,6 +24,9 @@ class DearSantaController extends Controller
 
     public function fetch(Participant $participant)
     {
+        // The hash was validated in middleware so we can validate that the email was received
+        $this->updateDelivery($participant->mail, MailModel::RECEIVED);
+
         return response()->json([
             'participant' => $participant->only(['hash', 'name']),
             'draw' => $participant->draw->mail_title,

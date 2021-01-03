@@ -32,12 +32,14 @@ class Mail extends Model
     public const SENDING = 'sending';
     public const SENT = 'sent';
     public const ERROR = 'error';
+    public const RECEIVED = 'received';
 
     public static $deliveryStatuses = [
         self::CREATED,
         self::SENDING,
         self::SENT,
         self::ERROR,
+        self::RECEIVED,
     ];
 
     public function updateDeliveryStatus($status)

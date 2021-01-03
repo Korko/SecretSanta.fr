@@ -26,6 +26,7 @@ return [
             'sending'  => 'Envoi en cours',
             'sent'     => 'Envoyé',
             'error'    => 'Erreur',
+            'received' => 'Reçu',
         ],
     ],
 ];

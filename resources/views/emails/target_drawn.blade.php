@@ -1,4 +1,4 @@
-@extends('emails/layout')
+@extends('emails/tracked_layout')
 
 @section('content')
 

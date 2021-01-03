@@ -11,7 +11,7 @@ class Participant extends Model
 {
     use Notifiable;
     use HashId {
-        resolveRouteBinding as resolveHash;
+        resolveRouteBinding as public baseResolver;
     }
 
     protected $hashConnection = 'santa';
@@ -91,11 +91,9 @@ class Participant extends Model
      */
     public function resolveRouteBinding($value, $field = null)
     {
-        $participant = $field === 'hash' ?
-            $this->resolveHash($value) :
-            parent::resolveRouteBinding($value, $field);
+        $participant = $this->baseResolver($value, $field);
 
-        abort_if($participant === null || $participant->draw->expired, 404);
+        abort_if($participant->draw->expired, 404);
 
         return $participant;
     }

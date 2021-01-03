@@ -13,9 +13,7 @@ class Draw extends Model
     // Remove everything N weeks after the expiration_date
     const WEEKS_BEFORE_DELETION = 3;
 
-    use HashId {
-        resolveRouteBinding as resolveHash;
-    }
+    use HashId;
 
     protected $hashConnection = 'draw';
 
@@ -69,23 +67,5 @@ class Draw extends Model
     public function getDeletedAtAttribute()
     {
         return $this->expires_at->addWeeks(self::WEEKS_BEFORE_DELETION);
-    }
-
-    /**
-     * Retrieve the model for a bound value.
-     *
-     * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function resolveRouteBinding($value, $field = null)
-    {
-        $draw = $field === 'hash' ?
-            $this->resolveHash($value) :
-            parent::resolveRouteBinding($value, $field);
-
-        abort_if($draw === null, 404);
-
-        return $draw;
     }
 }
