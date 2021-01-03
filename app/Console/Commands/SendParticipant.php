@@ -42,7 +42,7 @@ class SendParticipant extends Command
     public function handle()
     {
         $key = base64_decode($this->argument('key'));
-        Crypt::setKey($key);
+        DrawCrypt::setKey($key);
 
         $participant = Participant::find($this->argument('participant'));
 
