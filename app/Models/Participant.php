@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,8 @@ use Illuminate\Notifications\Notifiable;
 
 class Participant extends Model
 {
+    use HasFactory;
+
     use Notifiable;
     use HashId {
         resolveRouteBinding as public baseResolver;

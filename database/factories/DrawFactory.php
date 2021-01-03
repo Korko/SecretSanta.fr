@@ -1,15 +1,36 @@
 <?php
+namespace Database\Factories;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(App\Models\Draw::class, function (Faker\Generator $faker) {
-    return [
-        'mail_title' => $faker->sentence,
-        'mail_body'  => $faker->text,
-        'expires_at' => $faker->dateTimeBetween('+1 day', '+1 month'),
-    ];
-});
+class DrawFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = \App\Models\Draw::class;
 
-$factory->state(App\Models\Draw::class, 'expired', function ($faker) {
-    return [
-        'expires_at' => $faker->dateTime('-1 hour'),
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+        'mail_title' => $this->faker->sentence,
+        'mail_body'  => $this->faker->text,
+        'expires_at' => $this->faker->dateTimeBetween('+1 day', '+1 month'),
     ];
-});
+    }
+
+    public function expired()
+    {
+        return $this->state(function () {
+            return [
+        'expires_at' => $this->faker->dateTime('-1 hour'),
+    ];
+        });
+    }
+}

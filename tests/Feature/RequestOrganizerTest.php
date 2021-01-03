@@ -15,9 +15,9 @@ class RequestOrganizerTest extends RequestCase
     {
         $this->assertGreaterThan(1, $participants);
 
-        $draw = factory(Draw::class)->create();
+        $draw = Draw::factory()->create();
         $draw->participants()->createMany(
-            factory(Participant::class, $participants)->make()->toArray()
+            Participant::factory()->count($participants)->make()->toArray()
         );
 
         foreach ($draw->participants as $idx => $participant) {
