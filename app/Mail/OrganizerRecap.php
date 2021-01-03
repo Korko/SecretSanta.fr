@@ -4,7 +4,7 @@ namespace App\Mail;
 
 use App;
 use App\Models\Draw;
-use Crypt;
+use DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\URL;
 
@@ -14,7 +14,9 @@ class OrganizerRecap extends Mailable
 
     public $organizerName;
     public $expirationDate;
+    public $deletionDate;
     public $panelLink;
+    public $nextSolvable;
 
     /**
      * Create a new message instance.
@@ -32,7 +34,7 @@ class OrganizerRecap extends Mailable
 
         $this->nextSolvable = $draw->next_solvable;
 
-        $this->panelLink = URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(Crypt::getKey());
+        $this->panelLink = URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getKey());
     }
 
     /**
