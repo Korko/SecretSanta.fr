@@ -26,6 +26,7 @@ class Mail extends Model
      */
     protected $attributes = [
         'delivery_status' => self::CREATED,
+        'version' => 0,
     ];
 
     public const CREATED = 'created';

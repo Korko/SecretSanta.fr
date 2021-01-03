@@ -27,7 +27,7 @@ class TrackedMailable extends Mailable
         $this->bounceReturnPath = str_replace('*', self::BOUNCE.'-'.$mail->hash.'-'.$mail->version, config('mail.return_path'));
         $this->confirmReturnPath = str_replace('*', self::CONFIRM.'-'.$mail->hash.'-'.$mail->version, config('mail.return_path'));
         $this->trackedPixel = URL::signedRoute('pixel', [
-            'mail' => $mail,
+            'mail' => $mail->hash,
             'version' => $mail->version,
         ]);
     }
