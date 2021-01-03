@@ -14,7 +14,7 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "korko/laravel-dkim": "^0.6.2",
+        "korko/laravel-dkim": "dev-master",
         "korko/validator": "dev-master",
         "laravel/framework": "^8.18",
         "laravel/tinker": "^2.5",
@@ -26,14 +26,14 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
-        "chinleung/laravel-browserstack": "dev-master",
         "facade/ignition": "^2.5",
-        "martinlindhe/laravel-vue-i18n-generator": "^0.1.46",
+        "fakerphp/faker": "^1.9.1",
+        "laravel/sail": "^1.0.1",
         "matt-allan/laravel-code-style": "dev-master",
+        "martinlindhe/laravel-vue-i18n-generator": "dev-master",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3",
-        "fakerphp/faker": "^1.9.1"
+        "phpunit/phpunit": "^9.3.3"
     },
     "config": {
         "optimize-autoloader": true,
@@ -50,8 +50,7 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        },
-        "files": []
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -81,7 +80,7 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/korko/laravel-browserstack"
+            "url": "https://github.com/korko/laravel-vue-i18n-generator"
         }
     ]
 }
