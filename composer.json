@@ -47,14 +47,11 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
         },
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ],
-        "files": [
-        ]
+        "files": []
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
