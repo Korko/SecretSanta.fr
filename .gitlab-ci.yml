@@ -1,4 +1,4 @@
-image: laravelsail/php80-composer
+image: alpine:latest
 
 variables:
   APP_ENV: "local"
@@ -13,10 +13,18 @@ variables:
 cache:
   key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
 
+before_script:
+  - apk add --no-cache docker-compose
+
 stages:
   - build
   - tests
   - metrics
+
+sail:
+  stage: build
+  script:
+    - docker-compose up --build -d
 
 composer:
   stage: build
@@ -51,7 +59,7 @@ npm:
 phpunit:
   stage: tests
   script:
-    - phpunit --coverage-text --colors=never
+    - ./vendor/bin/sail php phpunit --coverage-text --colors=never
   artifacts:
     paths:
       - ./storage/logs # for debugging
@@ -61,7 +69,7 @@ phpunit:
 dusk:
   stage: tests
   script:
-    - php artisan dusk
+    - ./vendor/bin/sail dusk
   artifacts:
     paths:
       - ./storage/logs # for debugging
@@ -123,7 +131,7 @@ php-churn:
   stage: metrics
   script:
     - composer global require --dev bmitch/churn-php
-    - php ./vendor/bin/churn run app tests
+    - churn run app tests
   allow_failure: true
 
 php-code-analyzer:
