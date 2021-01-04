@@ -1,16 +1,19 @@
-image: lorisleiva/laravel-docker:7.4
+# This .gitlab-ci.yml is an extension of the example provided in:
+# https://github.com/jonashackt/restexamples/blob/master/.gitlab-ci.yml
+# We use Docker in Docker here with a docker executor instead of the shell one
+# --> Pinning the right Docker version for the service
+image: docker:19.03.1
 
-before_script:
-  - apk add --no-cache imap-dev krb5-dev openssl-dev bzip2-dev
-  - PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl
-  - docker-php-ext-install imap bz2
-
-stages:
-  - build
-  - tests
-  - metrics
+# Pinning the right Docker version for the service also
+services:
+  - docker:19.03.1-dind
 
 variables:
+  # see https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled for Dind configuration
+  # DOCKER_HOST: tcp://docker:2375 --> this should only be configured when using Kubernetes runners
+  # When using dind, it's wise to use the overlayfs driver for
+  # improved performance.
+  DOCKER_DRIVER: overlay2
   APP_ENV: "local"
   APP_KEY: "base64:GiV6POMQ3sJ98JfJjUrLp82zEGrzO7afosXaYG7n+Vo="
   APP_DEBUG: "true"
@@ -19,6 +22,17 @@ variables:
   GITHUB_SHA: $CI_COMMIT_SHA
   GITHUB_REF: $CI_COMMIT_REF_NAME
 
+stages:
+  - prebuild
+  - build
+  - tests
+  - metrics
+
+sail:
+  stage: prebuild
+  script:
+    - sail up -d
+
 composer:
   stage: build
   cache:
@@ -26,7 +40,7 @@ composer:
     paths:
       - vendor/
   script:
-      - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+      - sail composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
   artifacts:
     expire_in: 1 month
     paths:
@@ -40,8 +54,8 @@ npm:
     paths:
       - node_modules/
   script:
-      - npm install
-      - npm run production
+      - sail npm install
+      - sail npm run production
   artifacts:
     expire_in: 1 month
     paths:
@@ -52,7 +66,7 @@ npm:
 phpunit:
   stage: tests
   script:
-    - phpunit --coverage-text --colors=never
+    - sail php ./vendor/bin/phpunit --coverage-text --colors=never
   artifacts:
     paths:
       - ./storage/logs # for debugging
@@ -61,12 +75,8 @@ phpunit:
 
 dusk:
   stage: tests
-  image: docker:latest
-  before_script:
   script:
-    - sail up -d
     - sail dusk
-    - sail down
   artifacts:
     paths:
       - ./storage/logs # for debugging
@@ -78,8 +88,8 @@ dusk:
 php-metrics:
   stage: metrics
   script:
-    - composer global require --dev phpmetrics/phpmetrics
-    - phpmetrics --report-html=var/php-metrics app tests
+    - sail composer global require --dev phpmetrics/phpmetrics
+    - sail php ./vendor/bin/phpmetrics --report-html=var/php-metrics app tests
   artifacts:
     paths:
       - var/php-metrics/
