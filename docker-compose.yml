@@ -19,16 +19,14 @@ services:
             - sail
         depends_on:
             - mysql
-            - redis
-            # - selenium
-    # selenium:
-    #     image: 'selenium/standalone-chrome'
-    #     volumes:
-    #         - '/dev/shm:/dev/shm'
-    #     networks:
-    #         - sail
-    #     depends_on:
-    #         - laravel.test
+            # - redis
+            - selenium
+    selenium:
+        image: 'selenium/standalone-chrome'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - sail
     mysql:
         image: 'mysql:8.0'
         ports:
@@ -43,14 +41,14 @@ services:
             - 'sailmysql:/var/lib/mysql'
         networks:
             - sail
-    redis:
-        image: 'redis:alpine'
-        ports:
-            - '${FORWARD_REDIS_PORT:-6379}:6379'
-        volumes:
-            - 'sailredis:/data'
-        networks:
-            - sail
+    # redis:
+    #     image: 'redis:alpine'
+    #     ports:
+    #         - '${FORWARD_REDIS_PORT:-6379}:6379'
+    #     volumes:
+    #         - 'sailredis:/data'
+    #     networks:
+    #         - sail
     # memcached:
     #     image: 'memcached:alpine'
     #     ports:
@@ -70,5 +68,5 @@ networks:
 volumes:
     sailmysql:
         driver: local
-    sailredis:
-        driver: local
+    # sailredis:
+    #     driver: local

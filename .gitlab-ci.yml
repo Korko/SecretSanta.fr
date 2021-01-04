@@ -62,7 +62,9 @@ phpunit:
 dusk:
   stage: tests
   script:
-    - php artisan dusk
+    - sail up -d
+    - sail dusk
+    - sail down
   artifacts:
     paths:
       - ./storage/logs # for debugging

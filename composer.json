@@ -16,6 +16,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "korko/laravel-dkim": "dev-master",
         "korko/validator": "dev-master",
+        "laravel/dusk": "^6.11",
         "laravel/framework": "^8.18",
         "laravel/tinker": "^2.5",
         "league/statsd": "1.5.*",
@@ -29,8 +30,8 @@
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
-        "matt-allan/laravel-code-style": "dev-master",
         "martinlindhe/laravel-vue-i18n-generator": "dev-master",
+        "matt-allan/laravel-code-style": "dev-master",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3"
