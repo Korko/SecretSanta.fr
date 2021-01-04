@@ -30,17 +30,13 @@ stages:
 
 sail:
   stage: prebuild
-  script:
-    - ./vendor/bin/sail up -d
-
-composer:
-  stage: build
   cache:
     key: ${CI_COMMIT_REF_SLUG}-composer
     paths:
       - vendor/
   script:
-      - ./vendor/bin/sail composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - docker-compose up -d
+    - docker-compose exec -u sail ${APP_SERVICE:-"laravel.test"} composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
   artifacts:
     expire_in: 1 month
     paths:

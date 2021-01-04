@@ -6749,16 +6749,16 @@
         },
         {
             "name": "webklex/php-imap",
-            "version": "2.3.1",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Webklex/php-imap.git",
-                "reference": "1bd367ed0bc1a0dc31bded1664c32272ca66f5bf"
+                "reference": "6c2c54f9f99a1f5fff99f98bfacc2dcd706c9c9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Webklex/php-imap/zipball/1bd367ed0bc1a0dc31bded1664c32272ca66f5bf",
-                "reference": "1bd367ed0bc1a0dc31bded1664c32272ca66f5bf",
+                "url": "https://api.github.com/repos/Webklex/php-imap/zipball/6c2c54f9f99a1f5fff99f98bfacc2dcd706c9c9a",
+                "reference": "6c2c54f9f99a1f5fff99f98bfacc2dcd706c9c9a",
                 "shasum": ""
             },
             "require": {
@@ -6771,6 +6771,9 @@
                 "nesbot/carbon": ">=1.0",
                 "php": ">=5.5.9",
                 "symfony/http-foundation": ">=2.8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
             },
             "type": "library",
             "extra": {
@@ -6805,9 +6808,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Webklex/php-imap/issues",
-                "source": "https://github.com/Webklex/php-imap/tree/2.3.1"
+                "source": "https://github.com/Webklex/php-imap/tree/2.4.0"
             },
-            "time": "2020-12-30T23:54:50+00:00"
+            "time": "2021-01-03T21:52:25+00:00"
         },
         {
             "name": "webmozart/assert",
