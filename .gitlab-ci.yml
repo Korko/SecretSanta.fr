@@ -5,14 +5,16 @@ services:
   - docker:dind
 
 variables:
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_DRIVER: overlay2
+  WWWUSER: "www-data"
+  WWWGROUP: "www-data"
+  DOCKER_DRIVER: "overlay2"
   APP_ENV: "local"
   APP_KEY: "base64:GiV6POMQ3sJ98JfJjUrLp82zEGrzO7afosXaYG7n+Vo="
   APP_DEBUG: "true"
   APP_SERVICE: ${APP_SERVICE:-"laravel.test"}
   DB_DATABASE: "laravel"
   DB_USERNAME: "root"
+  DB_PASSWORD: ""
   GITHUB_SHA: $CI_COMMIT_SHA
   GITHUB_REF: $CI_COMMIT_REF_NAME
 
