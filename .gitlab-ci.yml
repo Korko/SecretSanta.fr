@@ -61,6 +61,7 @@ phpunit:
 
 dusk:
   stage: tests
+  image: docker:latest
   script:
     - sail up -d
     - sail dusk
