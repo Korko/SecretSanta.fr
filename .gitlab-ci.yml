@@ -1,8 +1,5 @@
 image: laravelsail/php80-composer
 
-before_script:
-  - apt-get install php8.0-bz2
-
 variables:
   APP_ENV: "local"
   APP_KEY: "base64:GiV6POMQ3sJ98JfJjUrLp82zEGrzO7afosXaYG7n+Vo="
