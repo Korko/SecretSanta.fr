@@ -7,6 +7,7 @@ services:
 variables:
   WWWUSER: "www-data"
   WWWGROUP: "www-data"
+  DOCKER_HOST: tcp://localhost:2375
   DOCKER_DRIVER: "overlay2"
   APP_ENV: "local"
   APP_KEY: "base64:GiV6POMQ3sJ98JfJjUrLp82zEGrzO7afosXaYG7n+Vo="
