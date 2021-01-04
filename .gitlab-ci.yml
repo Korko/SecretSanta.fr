@@ -1,35 +1,25 @@
-image:
-  name: docker/compose:latest
+image: laravelsail/php80-composer
 
-services:
-  - docker:dind
+before_script:
+  - apt-get install php8.0-bz2
 
 variables:
-  WWWUSER: "www-data"
-  WWWGROUP: "www-data"
-  DOCKER_HOST: tcp://localhost:2375
-  DOCKER_DRIVER: "overlay2"
   APP_ENV: "local"
   APP_KEY: "base64:GiV6POMQ3sJ98JfJjUrLp82zEGrzO7afosXaYG7n+Vo="
   APP_DEBUG: "true"
-  APP_SERVICE: ${APP_SERVICE:-"laravel.test"}
   DB_DATABASE: "laravel"
   DB_USERNAME: "root"
   DB_PASSWORD: ""
   GITHUB_SHA: $CI_COMMIT_SHA
   GITHUB_REF: $CI_COMMIT_REF_NAME
 
+cache:
+  key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+
 stages:
-  - build_image
   - build
   - tests
   - metrics
-
-build:
-  stage: build_image
-  script:
-    - docker-compose build
-    - docker-compose up
 
 composer:
   stage: build
@@ -38,7 +28,7 @@ composer:
     paths:
       - vendor/
   script:
-    - docker-compose exec -u sail $APP_SERVICE composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
   artifacts:
     expire_in: 1 month
     paths:
@@ -52,8 +42,8 @@ npm:
     paths:
       - node_modules/
   script:
-      - ./vendor/bin/sail npm install
-      - ./vendor/bin/sail npm run production
+      - npm install
+      - npm run production
   artifacts:
     expire_in: 1 month
     paths:
@@ -64,7 +54,7 @@ npm:
 phpunit:
   stage: tests
   script:
-    - ./vendor/bin/sail phpunit --coverage-text --colors=never
+    - phpunit --coverage-text --colors=never
   artifacts:
     paths:
       - ./storage/logs # for debugging
@@ -74,7 +64,7 @@ phpunit:
 dusk:
   stage: tests
   script:
-    - ./vendor/bin/sail dusk
+    - php artisan dusk
   artifacts:
     paths:
       - ./storage/logs # for debugging
@@ -86,8 +76,8 @@ dusk:
 php-metrics:
   stage: metrics
   script:
-    - ./vendor/bin/sail composer global require --dev phpmetrics/phpmetrics
-    - ./vendor/bin/sail phpmetrics --report-html=var/php-metrics app tests
+    - composer global require --dev phpmetrics/phpmetrics
+    - phpmetrics --report-html=var/php-metrics app tests
   artifacts:
     paths:
       - var/php-metrics/
@@ -98,7 +88,7 @@ php-mess-detector:
   script:
     - wget -c https://phpmd.org/static/latest/phpmd.phar
     - wget -c https://gist.githubusercontent.com/slayerfat/2b3cc4faf94d2863b505/raw/5229a520c69010c6c13fd9a66d14309c214c241a/phpmd-ruleset.xml
-    - ./vendor/bin/sail php phpmd.phar app,tests text phpmd-ruleset.xml
+    - php phpmd.phar app,tests text phpmd-ruleset.xml
   artifacts:
     paths:
       - var/phpmd.html
@@ -107,57 +97,57 @@ php-mess-detector:
 php-assumptions:
   stage: metrics
   script:
-    - ./vendor/bin/sail composer global require --dev rskuipers/php-assumptions
-    - ./vendor/bin/sail phpa app tests
+    - composer global require --dev rskuipers/php-assumptions
+    - phpa app tests
   allow_failure: true
 
 composer-unused:
   stage: metrics
   script:
     - wget https://github.com/icanhazstring/composer-unused/releases/latest/download/composer-unused.phar
-    - ./vendor/bin/sail php composer-unused.phar --no-progress --excludePackage=spatie/laravel-blade-javascript
+    - php composer-unused.phar --no-progress --excludePackage=spatie/laravel-blade-javascript
   allow_failure: true
 
 php-copypaste-detector:
   stage: metrics
   script:
     - wget https://phar.phpunit.de/phpcpd.phar
-    - ./vendor/bin/sail php phpcpd.phar --fuzzy app tests
+    - php phpcpd.phar --fuzzy app tests
   allow_failure: true
 
 php-security-checker:
   stage: metrics
   script:
     - wget https://get.sensiolabs.org/security-checker.phar
-    - ./vendor/bin/sail php security-checker.phar security:check composer.lock
+    - php security-checker.phar security:check composer.lock
   allow_failure: true
 
 php-churn:
   stage: metrics
   script:
     - composer global require --dev bmitch/churn-php
-    - ./vendor/bin/sail php ./vendor/bin/churn run app tests
+    - php ./vendor/bin/churn run app tests
   allow_failure: true
 
 php-code-analyzer:
   stage: metrics
   script:
     - wget https://github.com/wapmorgan/PhpCodeAnalyzer/releases/download/1.0.6/phpca.phar
-    - ./vendor/bin/sail php phpca.phar app
+    - php phpca.phar app
   allow_failure: true
 
 php-code-fixer:
   stage: metrics
   script:
     - wget https://github.com/wapmorgan/PhpCodeFixer/releases/download/2.0.23/phpcf-2.0.23.phar
-    - ./vendor/bin/sail php phpcf-2.0.23.phar app tests
+    - php phpcf-2.0.23.phar app tests
   allow_failure: true
 
 php-insights:
   stage: metrics
   script:
-    - ./vendor/bin/sail composer global require --dev nunomaduro/phpinsights
-    - ./vendor/bin/sail phpinsights
+    - composer global require --dev nunomaduro/phpinsights
+    - phpinsights
   allow_failure: true
 
 phpstan:
@@ -165,5 +155,5 @@ phpstan:
   script:
     - composer global require --dev nunomaduro/larastan
     - wget https://gist.githubusercontent.com/Korko/19ad2705a8a8632819aa8370fcb631b8/raw/d79f918004273b8823a5530e57141119eba69ac6/phpstan.neon
-    - ./vendor/bin/sail phpstan analyse -c phpstan.neon
+    - phpstan analyse -c phpstan.neon
   allow_failure: true
