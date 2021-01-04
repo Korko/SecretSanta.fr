@@ -1,42 +1,42 @@
-# This .gitlab-ci.yml is an extension of the example provided in:
-# https://github.com/jonashackt/restexamples/blob/master/.gitlab-ci.yml
-# We use Docker in Docker here with a docker executor instead of the shell one
-# --> Pinning the right Docker version for the service
-image: docker:19.03.1
+image:
+  name: docker/compose:latest
 
-# Pinning the right Docker version for the service also
 services:
-  - docker:19.03.1-dind
+  - docker:dind
 
 variables:
-  # see https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled for Dind configuration
-  # DOCKER_HOST: tcp://docker:2375 --> this should only be configured when using Kubernetes runners
-  # When using dind, it's wise to use the overlayfs driver for
-  # improved performance.
+  DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
   APP_ENV: "local"
   APP_KEY: "base64:GiV6POMQ3sJ98JfJjUrLp82zEGrzO7afosXaYG7n+Vo="
   APP_DEBUG: "true"
+  APP_SERVICE: ${APP_SERVICE:-"laravel.test"}
   DB_DATABASE: "laravel"
   DB_USERNAME: "root"
   GITHUB_SHA: $CI_COMMIT_SHA
   GITHUB_REF: $CI_COMMIT_REF_NAME
 
 stages:
-  - prebuild
+  - build_image
   - build
   - tests
   - metrics
 
-sail:
-  stage: prebuild
+build:
+  stage: build_image
+  script:
+    - docker-compose down
+    - docker-compose build
+    - docker-compose up
+
+composer:
+  stage: build
   cache:
     key: ${CI_COMMIT_REF_SLUG}-composer
     paths:
       - vendor/
   script:
-    - docker-compose up -d
-    - docker-compose exec -u sail ${APP_SERVICE:-"laravel.test"} composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - docker-compose exec -u sail $APP_SERVICE composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
   artifacts:
     expire_in: 1 month
     paths:
