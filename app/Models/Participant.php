@@ -10,10 +10,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Participant extends Model
 {
-    use HasFactory;
-
-    use Notifiable;
-    use HashId {
+    use HasFactory, Notifiable, HashId {
         resolveRouteBinding as public baseResolver;
     }
 

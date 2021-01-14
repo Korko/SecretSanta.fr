@@ -11,12 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Draw extends Model
 {
-    use HasFactory;
+    use HasFactory, HashId;
 
     // Remove everything N weeks after the expiration_date
     const WEEKS_BEFORE_DELETION = 3;
-
-    use HashId;
 
     protected $hashConnection = 'draw';
 

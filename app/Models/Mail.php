@@ -9,9 +9,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class Mail extends Model
 {
-    use HasFactory;
-
-    use HashId, DispatchesJobs;
+    use HasFactory, HashId, DispatchesJobs;
 
     protected static $hashConnection = 'bounce';
 
