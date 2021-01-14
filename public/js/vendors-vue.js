@@ -933,8 +933,8 @@ exports.install = function(Vue) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /*!
- * vue-i18n v8.22.2 
- * (c) 2020 kazuya kawaguchi
+ * vue-i18n v8.22.3 
+ * (c) 2021 kazuya kawaguchi
  * Released under the MIT License.
  */
 /*  */
@@ -3120,7 +3120,7 @@ Object.defineProperty(VueI18n, 'availabilities', {
 });
 
 VueI18n.install = install;
-VueI18n.version = '8.22.2';
+VueI18n.version = '8.22.3';
 
 /* harmony default export */ __webpack_exports__["default"] = (VueI18n);
 

@@ -8,7 +8,7 @@
 /***/ (function(module, exports) {
 
 ;(function(window){var hadGlobal='Modernizr' in window;var oldGlobal=window.Modernizr;/*!
- * modernizr v3.11.4
+ * modernizr v3.11.3
  * Build https://modernizr.com/download?-filesystem-inputtypes-setclasses-dontmin
  *
  * Copyright (c)
@@ -44,7 +44,7 @@
    * @access public
    */
   var ModernizrProto = {
-    _version: '3.11.4',
+    _version: '3.11.3',
 
     // Any settings that don't work as separate modules
     // can go in here as configuration.
