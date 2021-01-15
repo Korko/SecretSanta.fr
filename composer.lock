@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "62bb4f549a9bc3e55885846d73717e47",
+    "content-hash": "286c275bf9c846c8c2946534c7525b7f",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -1338,61 +1338,6 @@
                 "source": "https://github.com/vinkla/hashids/tree/4.1.0"
             },
             "time": "2020-11-26T19:24:33+00:00"
-        },
-        {
-            "name": "korko/laravel-dkim",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Korko/laravel-dkim.git",
-                "reference": "a43fd47e7418bea4b6a0e5e42b155cd523350e9f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Korko/laravel-dkim/zipball/a43fd47e7418bea4b6a0e5e42b155cd523350e9f",
-                "reference": "a43fd47e7418bea4b6a0e5e42b155cd523350e9f",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": "~7.0|~8.0",
-                "php": "^7.1|^8.0"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Vitalybaev\\LaravelDkim\\DkimMailServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Vitalybaev\\LaravelDkim\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Vitaly Baev",
-                    "email": "hello@vitalybaev.ru"
-                },
-                {
-                    "name": "Ricardo Boss",
-                    "email": "contact@ricardoboss.de"
-                },
-                {
-                    "name": "Jeremy 'Korko' Lemesle",
-                    "email": "jeremy.lemesle@korko.fr"
-                }
-            ],
-            "description": "Laravel package for signing outgoing messages with DKIM.",
-            "support": {
-                "source": "https://github.com/Korko/laravel-dkim/tree/master"
-            },
-            "time": "2021-01-04T19:07:08+00:00"
         },
         {
             "name": "korko/validator",
@@ -10277,7 +10222,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "korko/laravel-dkim": 20,
         "korko/validator": 20,
         "martinlindhe/laravel-vue-i18n-generator": 20,
         "matt-allan/laravel-code-style": 20
