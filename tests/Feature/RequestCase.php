@@ -16,9 +16,6 @@ class RequestCase extends TestCase
     {
         parent::setUp();
         $this->artisan('migrate');
-
-        NoCaptcha::shouldReceive('verifyResponse')->andReturn(true);
-        NoCaptcha::makePartial(); // We don't want to mock the display
     }
 
     public function ajaxPost($url, array $postArgs = [], $headers = [])
@@ -27,10 +24,6 @@ class RequestCase extends TestCase
             'Accept'           => 'application/json',
             'X-Requested-With' => 'XMLHttpRequest',
             'X-HASH-KEY'       => base64_encode(DrawCrypt::getKey())
-        ];
-
-        $postArgs = $postArgs + [
-            'g-recaptcha-response' => 'mocked',
         ];
 
         return $this->withHeaders($headers)->json('POST', $url, $postArgs);
