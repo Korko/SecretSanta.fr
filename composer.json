@@ -76,10 +76,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/korko/laravel-dkim"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/korko/laravel-vue-i18n-generator"
         }
     ]
