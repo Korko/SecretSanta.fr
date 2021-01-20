@@ -1,87 +1,44 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Mail\TargetDrawn;
-use App\Models\Draw;
 use App\Models\Participant;
-use Crypt;
-use Illuminate\Support\Facades\URL;
-use Mail;
 
-class RequestOrganizerTest extends RequestCase
-{
-    public function createDrawWithParticipants(int $participants): Draw
-    {
-        $this->assertGreaterThan(1, $participants);
+test('the organizer can send again the target drawn email', function () {
+    Mail::fake();
 
-        $draw = Draw::factory()->create();
-        $draw->participants()->createMany(
-            Participant::factory($participants)->make()->toArray()
-        );
+    $draw = createDrawWithParticipants(3);
+    $participant = $draw->participants->first();
 
-        foreach ($draw->participants as $idx => $participant) {
-            $target = $draw->participants[$idx - 1 >= 0 ? $idx - 1 : $participants - 1];
-            $participant->target()->save($target);
-        }
+    // Check data can be changed
+    $path = URL::signedRoute('organizerPanel.changeEmail', [
+        'draw' => $draw->hash,
+        'participant' => $participant->id,
+    ]);
 
-        return $draw;
-    }
+    ajaxPost($path, ['email' => $participant->email])->assertJsonStructure(['message'])->assertStatus(200);
+    assertHasMailPushed(TargetDrawn::class, $participant->email);
+});
 
-    public function testSendAgain(): void
-    {
-        Mail::fake();
-        Mail::assertNothingSent();
+test('the organizer can change a participant\'s email', function () {
+    Mail::fake();
 
-        $draw = $this->createDrawWithParticipants(3);
-        $participant = $draw->participants->first();
+    $draw = createDrawWithParticipants(3);
+    $participant = $draw->participants->first();
 
-        // Check data can be changed
-        $path = URL::signedRoute('organizerPanel.changeEmail', [
-            'draw' => $draw->hash,
-            'participant' => $participant->id,
-        ]);
+    // Check data can be changed
+    $path = URL::signedRoute('organizerPanel.changeEmail', [
+        'draw' => $draw->hash,
+        'participant' => $participant->id,
+    ]);
 
-        $this->ajaxPost($path, [
-                'email' => $participant->email,
-            ])
-            ->assertJson([
-                'message' => 'Envoyé avec succès !',
-            ])
-            ->assertStatus(200);
+    ajaxPost($path, ['email' => 'test@test2.com'])->assertJsonStructure(['message'])->assertStatus(200);
 
-        $this->assertHasMailPushed(TargetDrawn::class, $participant->email);
-    }
+    $before = $participant->email;
+    $participant = Participant::find($participant->id);
+    $after = $participant->email;
 
-    public function testChangeEmail(): void
-    {
-        Mail::fake();
-        Mail::assertNothingSent();
+    assertNotEquals($before, $after);
+    assertEquals('test@test2.com', $after);
 
-        $draw = $this->createDrawWithParticipants(3);
-        $participant = $draw->participants->first();
-
-        // Check data can be changed
-        $path = URL::signedRoute('organizerPanel.changeEmail', [
-            'draw' => $draw->hash,
-            'participant' => $participant->id,
-        ]);
-
-        $this->ajaxPost($path, [
-                'email' => 'test@test2.com',
-            ])
-            ->assertJson([
-                'message' => 'Modifié avec succès !',
-            ])
-            ->assertStatus(200);
-
-        $before = $participant->email;
-        $participant = Participant::find($participant->id);
-        $after = $participant->email;
-
-        $this->assertNotEquals($before, $after);
-        $this->assertEquals('test@test2.com', $after);
-
-        $this->assertHasMailPushed(TargetDrawn::class, $participant->email);
-    }
-}
+    assertHasMailPushed(TargetDrawn::class, $participant->email);
+});
