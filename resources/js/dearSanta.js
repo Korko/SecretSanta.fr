@@ -18,8 +18,6 @@ window.app = new Vue({
     mixins: [VueFetcher(DearSantaForm)],
     i18n,
     data: {
-        routes: {
-            contactUrl: window.global.routes.contactUrl
-        }
+        routes: window.global.routes
     }
 });

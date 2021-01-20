@@ -18,11 +18,6 @@ window.app = new Vue({
     mixins: [VueFetcher(OrganizerForm)],
     i18n,
     data: {
-        routes: {
-            fetchStateUrl: window.global.routes.fetchStateUrl,
-            deleteUrl: window.global.routes.deleteUrl,
-            csvInitUrl: window.global.routes.csvInitUrl,
-            csvFinalUrl: window.global.routes.csvFinalUrl
-        }
+        routes: window.global.routes
     }
 });
