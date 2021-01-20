@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
-use exussum12\xxhash\Ffi\V32 as xxHash;
+use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
