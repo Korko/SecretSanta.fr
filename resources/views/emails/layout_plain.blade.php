@@ -1,6 +1,4 @@
-Ceci est un message automatique, merci de ne pas y répondre.
-
----
+>> Ceci est un message automatique, merci de ne pas y répondre. <<
 
 @yield('content')
 
