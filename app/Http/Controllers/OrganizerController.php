@@ -12,7 +12,6 @@ use App\Models\Participant;
 use Csv;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
-use Metrics;
 
 class OrganizerController extends Controller
 {
@@ -58,9 +57,13 @@ class OrganizerController extends Controller
     {
         if ($participant->email === $request->input('email')) {
             $message = trans('message.sent');
+
+            $participant->createMetric('resend_email');
         } else {
             $participant->email = $request->input('email');
             $participant->save();
+
+            $participant->createMetric('change_email');
 
             $message = trans('organizer.up_and_sent');
         }
@@ -76,13 +79,13 @@ class OrganizerController extends Controller
 
     protected function sendEmail(Participant $participant)
     {
-        Metrics::increment('email');
-
         SendMail::dispatch($participant, new TargetDrawn($participant));
     }
 
     public function csvInit(Draw $draw)
     {
+        $draw->createMetric('csv_initial_download');
+
         return response(
             "\xEF\xBB\xBF".// UTF-8 BOM
             $draw->participants
@@ -99,6 +102,8 @@ class OrganizerController extends Controller
         abort_unless($draw->expired, 403, 'Cet évènement n\'est pas encore terminé');
         abort_unless($draw->next_solvable, 404, 'Cet évènement ne permet pas cette génération');
 
+        $draw->createMetric('csv_final_download');
+
         return response(
             "\xEF\xBB\xBF".// UTF-8 BOM
             $draw->participants
@@ -114,6 +119,8 @@ class OrganizerController extends Controller
     public function delete(Request $request, Draw $draw)
     {
         $draw->delete();
+
+        $draw->createMetric('delete');
 
         return response()->json([
             'message' => trans('organizer.deleted'),

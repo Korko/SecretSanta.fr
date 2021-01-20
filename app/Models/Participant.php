@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
+use exussum12\xxhash\Ffi\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Metrics;
 
 class Participant extends Model
 {
@@ -107,5 +109,20 @@ class Participant extends Model
     public function newCollection(array $models = [])
     {
         return new ParticipantsCollection($models);
+    }
+
+    public function getMetricIdAttribute()
+    {
+        return (new xxHash($this->draw->id))->hash($this->id);
+    }
+
+    public function createMetric($name, $value = 1)
+    {
+        return Metrics::create($name, $value)
+            ->setTags([
+                'draw' => $this->draw->metricId,
+                'participant' => $this->metricId,
+                'is_organizer' => $this->is($this->draw->organizer)
+            ]);
     }
 }

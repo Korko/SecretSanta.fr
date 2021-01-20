@@ -11,7 +11,6 @@ use App\Models\Exclusion;
 use App\Models\Participant;
 use DrawHandler;
 use Exception;
-use Metrics;
 use Mail;
 use Tests\TestCase;
 
@@ -24,9 +23,6 @@ class DrawHandlerTest extends TestCase
     {
         Mail::fake();
         Mail::assertNothingSent();
-
-        Metrics::shouldReceive('increment')
-            ->never();
 
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());
@@ -49,21 +45,6 @@ class DrawHandlerTest extends TestCase
 
     public function testClassic(): void
     {
-        Metrics::shouldReceive('increment')
-            ->once()
-            ->with('draws')
-            ->andReturn(true);
-
-        Metrics::shouldReceive('increment')
-            ->once()
-            ->with('participants', 3)
-            ->andReturn(true);
-
-        Metrics::shouldReceive('increment')
-            ->times(3)
-            ->with('email')
-            ->andReturn(true);
-
         Mail::fake();
 
         $this->assertEquals(0, Draw::count());
