@@ -181,7 +181,6 @@ return [
          * Package Service Providers...
          */
         Korko\Validator\ValidatorServiceProvider::class,
-        League\StatsD\Laravel5\Provider\StatsdServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -235,7 +234,6 @@ return [
         'Lang'         => Illuminate\Support\Facades\Lang::class,
         'Log'          => Illuminate\Support\Facades\Log::class,
         'Mail'         => Illuminate\Support\Facades\Mail::class,
-        'Metrics'      => Facades\League\StatsD\Client::class,
         'NoCaptcha'    => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,
         'Password'     => Illuminate\Support\Facades\Password::class,

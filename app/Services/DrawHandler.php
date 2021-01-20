@@ -10,7 +10,6 @@ use App\Mail\OrganizerRecap;
 use App\Mail\TargetDrawn;
 use App\Models\Participant;
 use Arr;
-use Metrics;
 use Solver;
 
 class DrawHandler
@@ -37,10 +36,10 @@ class DrawHandler
     public function sendMail($title, $body): void
     {
         $draw = $this->createDraw($title, $body, $this->expirationDate ?: date('Y-m-d', strtotime('+2 days')));
-        Metrics::increment('draws');
-
         $this->createParticipants($draw, $this->participants, $this->hat);
-        Metrics::increment('participants', count($this->participants));
+
+        $draw->createMetric('new_draw')
+            ->addExtra('participants', count($this->participants));
 
         if (! $this->isNextDrawSolvable($draw)) {
             $draw->next_solvable = false;
@@ -117,8 +116,6 @@ class DrawHandler
 
     public function sendParticipantEmail(Participant $participant)
     {
-        Metrics::increment('email');
-
         SendMail::dispatch($participant, new TargetDrawn($participant));
     }
 }

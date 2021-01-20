@@ -6,8 +6,10 @@ use App\Casts\EncryptedString;
 use DateInterval;
 use DateTime;
 use DB;
+use exussum12\xxhash\Ffi\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Metrics;
 
 class Draw extends Model
 {
@@ -68,5 +70,18 @@ class Draw extends Model
     public function getDeletedAtAttribute()
     {
         return $this->expires_at->addWeeks(self::WEEKS_BEFORE_DELETION);
+    }
+
+    public function getMetricIdAttribute()
+    {
+        return (new xxHash($this->id))->hash($this->created_at);
+    }
+
+    public function createMetric($name)
+    {
+        return Metrics::create($name)
+            ->setTags([
+                'draw' => $this->metricId
+            ]);
     }
 }

@@ -9,7 +9,6 @@ use App\Models\DearSanta;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use App\Traits\UpdatesMailDelivery;
-use Metrics;
 
 class DearSantaController extends Controller
 {
@@ -57,6 +56,8 @@ class DearSantaController extends Controller
         $dearSanta->mail()->associate($mail);
         $dearSanta->save();
 
+        $participant->createMetric('dearsanta');
+
         $this->sendMail($dearSanta);
 
         $message = trans('message.sent');
@@ -72,8 +73,6 @@ class DearSantaController extends Controller
 
     protected function sendMail(DearSanta $dearSanta)
     {
-        Metrics::increment('dearsanta');
-
         SendMail::dispatch($dearSanta->sender->santa, new DearSantaEmail($dearSanta));
     }
 }
