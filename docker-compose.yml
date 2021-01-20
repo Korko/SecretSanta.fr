@@ -21,6 +21,7 @@ services:
             - mysql
             # - redis
             - selenium
+            - mailhog
     selenium:
         image: 'selenium/standalone-chrome'
         volumes:
