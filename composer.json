@@ -34,6 +34,9 @@
         "matt-allan/laravel-code-style": "dev-master",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
+        "pestphp/pest-plugin-faker": "^1.0",
+        "pestphp/pest-plugin-global-assertions": "^1.0",
+        "pestphp/pest-plugin-laravel": "^1.0",
         "phpunit/phpunit": "^9.3.3"
     },
     "config": {
