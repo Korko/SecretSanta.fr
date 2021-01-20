@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Events\MailStatusUpdated;
 use App\Jobs\UpdateMailDelivery;
 use App\Models\Mail as MailModel;
 use App\Traits\UpdatesMailDelivery;

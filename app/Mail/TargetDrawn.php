@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use DrawCrypt;
 use Illuminate\Bus\Queueable;
