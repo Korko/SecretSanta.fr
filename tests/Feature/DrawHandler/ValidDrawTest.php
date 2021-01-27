@@ -70,11 +70,7 @@ it('stores database crypted and uncryptable entries', function ($participants) {
         $link = $m->panelLink;
     });
 
-    // Check data stored are decryptable
-    $path = parse_url($link, PHP_URL_PATH);
-    $pathTheorical = parse_url(route('organizerPanel', ['draw' => '%s']), PHP_URL_PATH);
-    $data = sscanf($path, $pathTheorical);
-    $draw = Draw::findByHashOrFail($data[0]);
+    $draw = URLParser::parseByName('organizerPanel', $link)->draw;
 
     assertNotEquals(0, $draw->participants->count());
 

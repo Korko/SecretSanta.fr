@@ -65,20 +65,6 @@ class Participant extends Model
         return $this->belongsToMany(Participant::class, 'exclusions', 'participant_id', 'exclusion_id');
     }
 
-    public function scopeFindByDearSantaUrlOrFail($query, $url)
-    {
-        $route = app('router')
-            ->getRoutes()
-            ->getByName('dearsanta');
-
-        $request = app('request')
-            ->create($url);
-
-        $hash = $route->bind($request)->participant;
-
-        return $query->findByHashOrFail($hash);
-    }
-
     public function getExclusionsNamesAttribute()
     {
         return $this->exclusions->pluck('name', 'id')->all();

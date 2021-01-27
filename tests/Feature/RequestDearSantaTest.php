@@ -9,6 +9,7 @@ use Crypt;
 use Hashids;
 use Illuminate\Support\Facades\URL;
 use Mail;
+use URLParser;
 
 test('a participant can write to their santa', function () {
     Mail::fake();
@@ -33,7 +34,7 @@ test('a participant can write to their santa', function () {
 
         // Check data stored are decryptable
         $path = parse_url($link, PHP_URL_PATH);
-        $santaTheorical = Participant::findByDearSantaUrlOrFail($path);
+        $santaTheorical = URLParser::parseByName('dearsanta', $path)->participant;
 
         assertEquals($santa['name'], $santaTheorical->santa->name);
         assertEquals($santa['email'], $santaTheorical->santa->email);
