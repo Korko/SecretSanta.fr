@@ -15,9 +15,9 @@ class CreateDearSantasTable extends Migration
     {
         Schema::create('dear_santas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sender_id')->constrained('participants');
+            $table->foreignId('sender_id')->constrained('participants')->cascadeOnDelete();
             $table->longText('mail_body');
-            $table->foreignId('mail_id')->constrained();
+            $table->foreignId('mail_id')->constrained()->cascadeOnDelete();
         });
     }
 
