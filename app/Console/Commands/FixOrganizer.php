@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Participant;
 use Arr;
 use DrawHandler;
 use Illuminate\Console\Command;
 use DrawCrypt;
+use URLParser;
 
 class FixOrganizer extends Command
 {
@@ -33,7 +33,7 @@ class FixOrganizer extends Command
     {
         $this->setCryptKeyFromUrl($this->argument('url'));
 
-        $draw = Participant::findByDearSantaUrlOrFail($this->argument('url'))->draw;
+        $draw = URLParser::parseByName('dearsanta', $this->argument('url'))->participant->draw;
 
         $draw->organizer->email = $this->argument('email');
         $draw->organizer->save();
