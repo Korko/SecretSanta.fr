@@ -59,14 +59,27 @@ function assertHasMailPushed($class, $recipient = null, Closure $callback = null
     });
 }
 
-function ajaxPost($url, array $postArgs = [], $headers = []) {
+function prepareAjax($headers = []) {
     $headers = $headers + [
         'Accept'           => 'application/json',
         'X-Requested-With' => 'XMLHttpRequest',
         'X-HASH-KEY'       => base64_encode(DrawCrypt::getKey())
     ];
+    return test()->withHeaders($headers);
+}
 
-    return test()->withHeaders($headers)->json('POST', $url, $postArgs);
+function ajaxPost($url, array $postArgs = [], $headers = []) {
+    return prepareAjax($headers)->json('POST', $url, $postArgs);
+}
+
+function ajaxGet($url, $headers = []) {
+    return prepareAjax($headers)->json('GET', $url);
+}
+
+function createDraw($participants) {
+    return DrawHandler::toParticipants($participants)
+        ->expiresAt(date('Y-m-d', strtotime('+2 days')))
+        ->notify('test mail {SANTA} => {TARGET} title', 'test mail {SANTA} => {TARGET} body');
 }
 
 function createDrawWithParticipants(int $participants): Draw {

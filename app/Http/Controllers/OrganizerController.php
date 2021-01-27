@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrganizerChangeEmailRequest;
 use App\Http\Requests\OrganizerResendEmailRequest;
-use App\Jobs\SendMail;
-use App\Mail\TargetDrawn;
 use App\Models\Draw;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
+use App\Notifications\TargetDrawn;
 use Csv;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -70,16 +69,11 @@ class OrganizerController extends Controller
 
         $participant->mail->updateDeliveryStatus(MailModel::CREATED);
 
-        $this->sendEmail($participant);
+        $participant->notify(new TargetDrawn);
 
         return response()->json([
             'message' => $message, 'participant' => $participant->only(['id', 'mail']),
         ]);
-    }
-
-    protected function sendEmail(Participant $participant)
-    {
-        SendMail::dispatch($participant, new TargetDrawn($participant));
     }
 
     public function csvInit(Draw $draw)

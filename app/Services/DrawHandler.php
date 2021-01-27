@@ -4,10 +4,9 @@ namespace App\Services;
 
 use App\Models\Draw;
 use App\Exceptions\SolverException;
-use App\Jobs\SendMail;
 use App\Models\Mail as MailModel;
-use App\Mail\OrganizerRecap;
-use App\Mail\TargetDrawn;
+use App\Notifications\OrganizerRecap;
+use App\Notifications\TargetDrawn;
 use App\Models\Participant;
 use Arr;
 use Solver;
@@ -33,7 +32,7 @@ class DrawHandler
         return $this;
     }
 
-    public function sendMail($title, $body): void
+    public function notify($title, $body): Draw
     {
         $draw = $this->createDraw($title, $body, $this->expirationDate ?: date('Y-m-d', strtotime('+2 days')));
         $this->createParticipants($draw, $this->participants, $this->hat);
@@ -46,10 +45,12 @@ class DrawHandler
             $draw->save();
         }
 
-        $this->sendOrganizerEmail($draw);
+        $draw->organizer->notify(new OrganizerRecap);
         foreach ($draw->participants as $participant) {
-            $this->sendParticipantEmail($participant);
+            $participant->notify(new TargetDrawn);
         }
+
+        return $draw;
     }
 
     public function createDraw($title, $body, $dataExpiration): Draw
@@ -107,15 +108,5 @@ class DrawHandler
         } catch (SolverException $exception) {
             return false;
         }
-    }
-
-    public function sendOrganizerEmail(Draw $draw)
-    {
-        SendMail::dispatch($draw->organizer, new OrganizerRecap($draw));
-    }
-
-    public function sendParticipantEmail(Participant $participant)
-    {
-        SendMail::dispatch($participant, new TargetDrawn($participant));
     }
 }

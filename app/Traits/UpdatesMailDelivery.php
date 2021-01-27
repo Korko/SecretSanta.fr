@@ -7,21 +7,19 @@ use App\Models\Mail as MailModel;
 
 trait UpdatesMailDelivery
 {
-    public $mailId;
+    public $mail;
     public $version;
 
     public function store(MailModel $mail)
     {
-        $this->mailId = $mail->id;
+        $this->mail = $mail;
         $this->version = $mail->version;
     }
 
     public function delayedUpdateDelivery($status)
     {
-        if (isset($this->mailId)) {
-            $mail = MailModel::find($this->mailId);
-
-            return $this->updateDelivery($mail, $status, $this->version);
+        if (isset($this->mail)) {
+            return $this->updateDelivery($this->mail->fresh(), $status, $this->version);
         }
     }
 

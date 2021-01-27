@@ -9,11 +9,12 @@ use DB;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Metrics;
 
 class Draw extends Model
 {
-    use HasFactory, HashId;
+    use HasFactory, HashId, Notifiable;
 
     // Remove everything N weeks after the expiration_date
     const WEEKS_BEFORE_DELETION = 3;

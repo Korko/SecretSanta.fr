@@ -21,8 +21,8 @@ it('does not record anything in case of error', function ($participants) {
 })->with('invalid participants list');
 
 it('does not send emails in case of error', function ($participants) {
-    Mail::fake();
-    Mail::assertNothingSent();
+    Notification::fake();
+    Notification::assertNothingSent();
 
     try { DrawHandler::toParticipants($participants); } catch (Exception $e) {}
 })->with('invalid participants list');

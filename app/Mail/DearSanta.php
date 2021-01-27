@@ -3,12 +3,9 @@
 namespace App\Mail;
 
 use App\Models\DearSanta as DearSantaEntry;
-use Illuminate\Bus\Queueable;
 
 class DearSanta extends TrackedMailable
 {
-    use Queueable;
-
     protected $dearSanta;
 
     public $targetName;

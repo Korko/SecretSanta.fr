@@ -34,7 +34,7 @@ class RandomFormController extends Controller
 
         DrawHandler::toParticipants($participants)
             ->expiresAt($dataExpiration)
-            ->sendMail($title, $body);
+            ->notify($title, $body);
     }
 
     protected function formatParticipants(array $participants): array
