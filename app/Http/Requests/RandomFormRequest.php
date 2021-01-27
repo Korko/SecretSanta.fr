@@ -32,7 +32,7 @@ class RandomFormRequest extends Request
             'title'                       => 'required|string',
             'content-email'               => 'required|string|contains:{TARGET}',
 
-            'data-expiration'             => 'required|date|after_or_equal:tomorrow|before:+1year',
+            'data-expiration'             => 'required|date|after_or_equal:tomorrow|before:+6month',
         ];
     }
 
