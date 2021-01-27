@@ -29,6 +29,8 @@ class TrackedMailable extends Mailable
             'mail' => $mail->hash,
             'version' => $mail->version,
         ]);
+
+        return $this;
     }
 
     public function failed()

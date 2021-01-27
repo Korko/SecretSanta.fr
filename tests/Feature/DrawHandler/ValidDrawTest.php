@@ -1,72 +1,65 @@
 <?php
 
-use App\Mail\OrganizerRecap;
-use App\Mail\TargetDrawn;
+use App\Mail\OrganizerRecap as OrganizerRecapMail;
+use App\Notifications\OrganizerRecap as OrganizerRecapNotif;
+use App\Notifications\TargetDrawn;
 use App\Models\Draw;
 use App\Models\Exclusion;
 use App\Models\Participant;
-
-function createDraw ($participants) {
-    DrawHandler::toParticipants($participants)
-        ->expiresAt(date('Y-m-d', strtotime('+2 days')))
-        ->sendMail('test mail {SANTA} => {TARGET} title', 'test mail {SANTA} => {TARGET} body');
-}
 
 it('records new entries in case of success', function ($participants) {
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
     assertEquals(0, Exclusion::count());
 
-    createDraw($participants);
+    $draw = createDraw($participants);
 
     $exclusions = array_reduce($participants, function ($sum, $participant) { return $sum + count($participant['exclusions']); });
 
     assertEquals(1, Draw::count());
+    assertTrue($draw->is(Draw::find(1)));
+
     assertEquals(count($participants), Participant::count());
     assertEquals($exclusions, Exclusion::count());
 
     // Carreful, array is 0..n, Db is 1..n
     foreach($participants as $idx => $participant) {
         assertEquals($participant['name'], Participant::find($idx + 1)->name);
+        assertEquals($participant['email'], Participant::find($idx + 1)->email);
     }
 })->with('valid participants list');
 
-it('sends emails in case of success', function ($participants) {
-    Mail::fake();
+it('sends notifications in case of success', function ($participants) {
+    Notification::fake();
 
-    createDraw($participants);
+    $draw = createDraw($participants);
 
     // Ensure Organizer receives his recap
-    assertHasMailPushed(OrganizerRecap::class, $participants[0]['email']);
+    Notification::assertTimesSent(1, OrganizerRecapNotif::class);
+    Notification::assertSentTo($draw->organizer, OrganizerRecapNotif::class);
 
     // Ensure Participants receive their own recap
-    foreach($participants as $participant) {
-        assertHasMailPushed(TargetDrawn::class, $participant['email']);
+    Notification::assertTimesSent(count($participants), TargetDrawn::class);
+    foreach($draw->participants as $participant) {
+        Notification::assertSentTo($participant, TargetDrawn::class);
     }
 })->with('valid participants list');
 
-it('sends target name in emails', function ($participants, $targets) {
-    Mail::fake();
+it('saves the correct target', function ($participants, $targets) {
+    $draw = createDraw($participants);
 
-    createDraw($participants);
-
-    // TODO: assert body
-    $title = null;
     foreach($participants as $idx => $participant) {
-        assertHasMailPushed(TargetDrawn::class, $participant['email'], function ($m) use (&$title) {
-            $title = $m->subject;
-        });
-        assertStringContainsString('test mail '.$participant['name'].' => '.$participants[$targets[$idx]]['name'].' title', html_entity_decode($title));
+        assertEquals($participants[$targets[$idx]]['name'], $draw->participants[$idx]->target->name);
     }
 })->with('unique participants list');
 
-it('stores database crypted and uncryptable entries', function ($participants) {
+it('sends to the organizer the link to their panel', function ($participants) {
     Mail::fake();
 
     createDraw($participants);
 
     // Ensure Organizer receives his recap
-    assertHasMailPushed(OrganizerRecap::class, 'test@test.com', function ($m) use (&$link) {
+    assertHasMailPushed(OrganizerRecapMail::class, $participants[0]['email'], function ($m) use (&$link) {
         $link = $m->panelLink;
     });
 

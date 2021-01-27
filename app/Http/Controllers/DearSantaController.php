@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DearSantaRequest;
-use App\Jobs\SendMail;
-use App\Mail\DearSanta as DearSantaEmail;
 use App\Models\DearSanta;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
+use App\Notifications\DearSanta as DearSantaNotification;
 use App\Traits\UpdatesMailDelivery;
 
 class DearSantaController extends Controller
@@ -58,7 +57,7 @@ class DearSantaController extends Controller
 
         $participant->createMetric('dearsanta');
 
-        $this->sendMail($dearSanta);
+        $participant->santa->notify(new DearSantaNotification($dearSanta));
 
         $message = trans('message.sent');
 
@@ -69,10 +68,5 @@ class DearSantaController extends Controller
                 ]),
             ]) :
             redirect('/dearsanta/'.$participant->hash)->with('message', $message);
-    }
-
-    protected function sendMail(DearSanta $dearSanta)
-    {
-        SendMail::dispatch($dearSanta->sender->santa, new DearSantaEmail($dearSanta));
     }
 }

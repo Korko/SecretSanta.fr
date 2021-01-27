@@ -4,13 +4,10 @@ namespace App\Mail;
 
 use App\Models\Participant;
 use DrawCrypt;
-use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\URL;
 
 class TargetDrawn extends TrackedMailable
 {
-    use Queueable;
-
     protected $santa;
 
     public $content;
