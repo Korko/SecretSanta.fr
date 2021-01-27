@@ -22121,12 +22121,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   mixins: [Object(_mixins_vueFetcher_js__WEBPACK_IMPORTED_MODULE_4__["VueFetcher"])(_components_organizerForm_vue__WEBPACK_IMPORTED_MODULE_3__["default"])],
   i18n: i18n,
   data: {
-    routes: {
-      fetchStateUrl: window.global.routes.fetchStateUrl,
-      deleteUrl: window.global.routes.deleteUrl,
-      csvInitUrl: window.global.routes.csvInitUrl,
-      csvFinalUrl: window.global.routes.csvFinalUrl
-    }
+    routes: window.global.routes
   }
 });
 

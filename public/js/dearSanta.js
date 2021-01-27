@@ -19539,9 +19539,7 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   mixins: [Object(_mixins_vueFetcher_js__WEBPACK_IMPORTED_MODULE_4__["VueFetcher"])(_components_dearSantaForm_vue__WEBPACK_IMPORTED_MODULE_3__["default"])],
   i18n: i18n,
   data: {
-    routes: {
-      contactUrl: window.global.routes.contactUrl
-    }
+    routes: window.global.routes
   }
 });
 
