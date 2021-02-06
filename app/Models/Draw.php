@@ -28,6 +28,7 @@ class Draw extends Model
     protected $casts = [
         'mail_title' => EncryptedString::class,
         'mail_body' => EncryptedString::class,
+        'next_solvable' => 'boolean',
     ];
 
     /**
