@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Casts\EncryptedString;
-use Illuminate\Database\Eloquent\Model;
 
 class DearSanta extends Model
 {
