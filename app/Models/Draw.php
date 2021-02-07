@@ -10,6 +10,7 @@ use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Metrics;
+use Solver;
 
 class Draw extends Model
 {
