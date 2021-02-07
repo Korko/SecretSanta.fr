@@ -16,7 +16,7 @@ class OrganizerController extends Controller
 {
     public function view(Draw $draw)
     {
-        return view('organizer', [
+        return response()->view('organizer', [
             'draw' => $draw->hash,
         ]);
     }

@@ -29,14 +29,22 @@ Route::pattern('participant:hash', '[0-9a-zA-Z]{'.config('hashids.connections.sa
 Route::pattern('email:hash', '[0-9a-zA-Z]{'.config('hashids.connections.bounce.length').',}');
 Route::pattern('version', '[0-9]+');
 
-Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta');
+Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta')
+    ->missing(function () {
+        return response()->view('missingDraw', [], 404);
+    });
+
 Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function () {
     Route::get('/participant/{participant:hash}', [DearSantaController::class, 'fetch'])->name('dearsanta.fetch');
     Route::post('/dearsanta/{participant:hash}', [DearSantaController::class, 'handle'])->name('dearsanta.contact');
     Route::get('/dearsanta/{participant:hash}/fetchState', [DearSantaController::class, 'fetchState'])->name('dearsanta.fetchState');
 });
 
-Route::get('/org/{draw:hash}', [OrganizerController::class, 'view'])->name('organizerPanel');
+Route::get('/org/{draw:hash}', [OrganizerController::class, 'view'])->name('organizerPanel')
+    ->missing(function () {
+        return response()->view('missingDraw', [], 404);
+    });
+
 Route::middleware(['signed', 'decrypt.key:draw,mail_title'])->group(function () {
     Route::get('/draw/{draw:hash}', [OrganizerController::class, 'fetch'])->name('organizerPanel.fetch');
     Route::delete('/draw/{draw:hash}', [OrganizerController::class, 'delete'])->name('organizerPanel.delete');
