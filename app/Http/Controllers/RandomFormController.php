@@ -11,7 +11,7 @@ class RandomFormController extends Controller
 {
     public function view()
     {
-        return view('randomForm');
+        return response()->view('randomForm');
     }
 
     public function handle(RandomFormRequest $request)
@@ -51,7 +51,7 @@ class RandomFormController extends Controller
 
     public function faq()
     {
-        return view('faq', [
+        return response()->view('faq', [
             'questions' => __('faq.questions'),
         ]);
     }

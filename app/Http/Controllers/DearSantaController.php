@@ -15,7 +15,7 @@ class DearSantaController extends Controller
 
     public function view(Participant $participant)
     {
-        return view('dearSanta', [
+        return response()->view('dearSanta', [
             'participant' => $participant->hash,
         ]);
     }
