@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\OrganizerRecap;
+use App\Notifications\TargetDrawn;
 use App\Http\Requests\RandomFormRequest;
-use Arr;
 use DrawHandler;
-use Illuminate\Http\Request;
 
 class RandomFormController extends Controller
 {
@@ -16,37 +16,43 @@ class RandomFormController extends Controller
 
     public function handle(RandomFormRequest $request)
     {
-        $this->drawAndInform($request);
+        $draw = DrawHandler::withParticipants($request->input('participants'))
+            ->withTitle($request->input('title'))
+            ->withBody($request->input('content-email'))
+            ->withExpiration($request->input('data-expiration'))
+            ->save();
+
+        $draw->createMetric('new_draw')
+            ->addExtra('participants', count($draw->participants));
+
+        $draw->organizer->notify(new OrganizerRecap);
+        foreach ($draw->participants as $participant) {
+            $participant->notify(new TargetDrawn);
+        }
 
         return response()->json([
             'message' => trans('message.sent')
         ]);
     }
 
-    protected function drawAndInform(Request $request)
+    protected function isNextDrawSolvable(Draw $draw): bool
     {
-        $participants = $this->formatParticipants($request->input('participants'));
+        try {
+            $exclusions = [];
 
-        $dataExpiration = $request->input('data-expiration');
+            $draw->participants->each(function (Participant $participant) use (&$exclusions) {
+                $exclusions[$participant->id] = array_merge(
+                    $participant->exclusions->pluck('id')->all(),
+                    [$participant->target->id]
+                );
+            });
 
-        $title = $request->input('title');
-        $body = $request->input('content-email');
+            Solver::one($draw->participants->pluck(null, 'id')->all(), $exclusions);
 
-        DrawHandler::toParticipants($participants)
-            ->expiresAt($dataExpiration)
-            ->notify($title, $body);
-    }
-
-    protected function formatParticipants(array $participants): array
-    {
-        $totalParticipants = count($participants);
-        for ($i = 0; $i < $totalParticipants; $i++) {
-            $participant = &$participants[$i];
-
-            $participant['exclusions'] = array_map('intval', Arr::get($participant, 'exclusions', []));
+            return true;
+        } catch (SolverException $exception) {
+            return false;
         }
-
-        return $participants;
     }
 
     public function faq()
