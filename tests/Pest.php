@@ -77,9 +77,11 @@ function ajaxGet($url, $headers = []) {
 }
 
 function createDraw($participants) {
-    return DrawHandler::toParticipants($participants)
-        ->expiresAt(date('Y-m-d', strtotime('+2 days')))
-        ->notify('test mail {SANTA} => {TARGET} title', 'test mail {SANTA} => {TARGET} body');
+    return DrawHandler::withParticipants($participants)
+        ->withExpiration(date('Y-m-d', strtotime('+2 days')))
+        ->withTitle('test mail {SANTA} => {TARGET} title')
+        ->withBody('test mail {SANTA} => {TARGET} body')
+        ->save();
 }
 
 function createDrawWithParticipants(int $participants): Draw {

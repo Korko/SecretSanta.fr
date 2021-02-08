@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Notifications\TargetDrawn;
 use App\Models\Participant;
 use Arr;
 use Crypt;
@@ -46,7 +47,7 @@ class SendParticipant extends Command
 
         $participant = Participant::find($this->argument('participant'));
 
-        DrawHandler::sendParticipantEmail($participant);
+        $participant->notify(new TargetDrawn);
         $this->info('Participant mail sent');
     }
 }

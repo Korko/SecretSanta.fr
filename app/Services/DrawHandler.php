@@ -2,71 +2,87 @@
 
 namespace App\Services;
 
-use App\Models\Draw;
 use App\Exceptions\SolverException;
+use App\Models\Draw;
 use App\Models\Mail as MailModel;
-use App\Notifications\OrganizerRecap;
-use App\Notifications\TargetDrawn;
 use App\Models\Participant;
 use Arr;
-use Solver;
+use DB;
 
 class DrawHandler
 {
-    protected $participants;
-    protected $hat;
-    protected $expirationDate;
+    public $title;
+    public $body;
+    public $participants;
+    public $expirationDate;
 
-    public function toParticipants(array $participants): self
+    public function __construct()
+    {
+        $this->title = '';
+        $this->body = '';
+        $this->participants = [];
+        $this->expirationDate = date('Y-m-d', strtotime('+2 days'));
+    }
+
+    public function withParticipants(array $participants) : self
     {
         $this->participants = $participants;
-        $this->hat = Solver::one($participants, array_column($participants, 'exclusions'));
 
         return $this;
     }
 
-    public function expiresAt($expirationDate): self
+    public function withTitle($title) : self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function withBody($body) : self
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+    public function withExpiration($expirationDate) : self
     {
         $this->expirationDate = $expirationDate;
 
         return $this;
     }
 
-    public function notify($title, $body): Draw
+    public function save() : Draw
     {
-        $draw = $this->createDraw($title, $body, $this->expirationDate ?: date('Y-m-d', strtotime('+2 days')));
-        $this->createParticipants($draw, $this->participants, $this->hat);
+        DB::beginTransaction();
 
-        $draw->createMetric('new_draw')
-            ->addExtra('participants', count($this->participants));
+        $draw = $this->createDraw();
 
-        if (! $this->isNextDrawSolvable($draw)) {
-            $draw->next_solvable = false;
+        try {
+            $this->solveExclusions($draw);
+
+            $draw->next_solvable = $draw->participants->canRedraw();
             $draw->save();
-        }
 
-        $draw->organizer->notify(new OrganizerRecap);
-        foreach ($draw->participants as $participant) {
-            $participant->notify(new TargetDrawn);
-        }
+            DB::commit();
 
-        return $draw;
+            return $draw;
+        } catch(SolverException $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
     }
 
-    public function createDraw($title, $body, $dataExpiration): Draw
+    protected function createDraw() : Draw
     {
         $draw = new Draw();
-        $draw->expires_at = $dataExpiration;
-        $draw->mail_title = $title;
-        $draw->mail_body = $body;
+        $draw->expires_at = $this->expirationDate;
+        $draw->mail_title = $this->title;
+        $draw->mail_body = $this->body;
         $draw->save();
 
-        return $draw;
-    }
-
-    public function createParticipants(Draw $draw, array $participants, array $hat): void
-    {
-        foreach ($participants as $idx => $santa) {
+        foreach ($this->participants as $idx => $santa) {
             $mail = (new MailModel())->draw()->associate($draw);
             $mail->save();
 
@@ -77,36 +93,28 @@ class DrawHandler
             $participant->mail()->associate($mail);
             $participant->save();
 
-            $participants[$idx]['model'] = $participant;
+            $this->participants[$idx]['model'] = $participant;
             $draw->participants()->save($participant);
         }
 
-        foreach ($hat as $santaIdx => $targetIdx) {
-            foreach ($participants[$santaIdx]['exclusions'] as $participantId) {
-                $draw->participants[$santaIdx]->exclusions()->attach($participants[$participantId]['model']->id);
-            }
-
-            $draw->participants[$santaIdx]->target()->save($participants[$targetIdx]['model']);
-        }
+        return $draw;
     }
 
-    public function isNextDrawSolvable(Draw $draw): bool
+    protected function solveExclusions(Draw $draw) : void
     {
-        try {
-            $exclusions = [];
+        $participants = $this->participants;
+        for ($i = 0; $i < count($participants); $i++) {
+            $participant = $participants[$i];
 
-            $draw->participants->each(function (Participant $participant) use (&$exclusions) {
-                $exclusions[$participant->id] = array_merge(
-                    $participant->exclusions->pluck('id')->all(),
-                    [$participant->target->id]
-                );
-            });
+            foreach ($participant['exclusions'] as $participantId) {
+                $participant['model']->exclusions()->attach($participants[intval($participantId)]['model']->id);
+            }
+        }
 
-            Solver::one($draw->participants->pluck(null, 'id')->all(), $exclusions);
-
-            return true;
-        } catch (SolverException $exception) {
-            return false;
+        $hat = $draw->participants->solve();
+        $participants = $draw->participants->pluck(null, 'id');
+        foreach ($hat as $santaIdx => $targetIdx) {
+            $participants[$santaIdx]->target()->save($participants[$targetIdx]);
         }
     }
 }

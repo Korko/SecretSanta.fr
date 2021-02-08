@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Notifications\OrganizerRecap;
+use App\Notifications\TargetDrawn;
 use Arr;
-use DrawHandler;
 use Illuminate\Console\Command;
 use DrawCrypt;
 use URLParser;
@@ -38,10 +39,10 @@ class FixOrganizer extends Command
         $draw->organizer->email = $this->argument('email');
         $draw->organizer->save();
 
-        DrawHandler::sendOrganizerEmail($draw);
+        $draw->organizer->notify(new OrganizerRecap);
         $this->info('Organizer Recap sent');
 
-        DrawHandler::sendParticipantEmail($draw->organizer);
+        $draw->organizer->notify(new TargetDrawn);
         $this->info('Organizer Participant mail sent');
     }
 
