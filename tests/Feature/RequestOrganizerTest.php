@@ -6,7 +6,7 @@ use App\Models\Participant;
 test('the organizer can send again the target drawn email', function () {
     Mail::fake();
 
-    $draw = createDrawWithParticipants(3);
+    $draw = createDatabaseDraw(3);
     $participant = $draw->participants->random();
 
     // Check data can be changed
@@ -25,7 +25,7 @@ test('the organizer can send again the target drawn email', function () {
 test('the organizer can change a participant\'s email', function () {
     Mail::fake();
 
-    $draw = createDrawWithParticipants(3);
+    $draw = createDatabaseDraw(3);
     $participant = $draw->participants->random();
 
     // Check data can be changed

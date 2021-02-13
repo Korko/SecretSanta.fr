@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use DrawCrypt;
 
 it('stores database crypted entries', function () {
-    $draw = createDrawWithParticipants(3);
+    $draw = createDatabaseDraw(3);
 
     $decrypted = $draw->participants[0]->name;
 

@@ -23,7 +23,7 @@ class RequestBounceTest extends RequestCase
         Mail::fake();
         Mail::assertNothingSent();
 
-        $participants = $this->createNewDraw(3);
+        $participants = $this->createAjaxDraw(3);
 
         // Fake emails as bounces
         $emailClient = $this->mock(EmailClient::class, function ($mock) use ($participants, $prop) {

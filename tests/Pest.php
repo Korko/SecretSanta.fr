@@ -76,7 +76,7 @@ function ajaxGet($url, $headers = []) {
     return prepareAjax($headers)->json('GET', $url);
 }
 
-function createDraw($participants) {
+function createServiceDraw($participants) {
     return DrawHandler::withParticipants($participants)
         ->withExpiration(date('Y-m-d', strtotime('+2 days')))
         ->withTitle('test mail {SANTA} => {TARGET} title')
@@ -84,7 +84,7 @@ function createDraw($participants) {
         ->save();
 }
 
-function createDrawWithParticipants(int $participants): Draw {
+function createDatabaseDraw(int $participants): Draw {
     assertGreaterThan(1, $participants);
 
     $draw = Draw::factory()->create();
@@ -100,7 +100,7 @@ function createDrawWithParticipants(int $participants): Draw {
     return $draw;
 }
 
-function createNewDraw(int $totalParticipants): array {
+function createAjaxDraw(int $totalParticipants): array {
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
 

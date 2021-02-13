@@ -9,7 +9,7 @@ it('records new entries in case of success', function ($participants) {
     assertEquals(0, Participant::count());
     assertEquals(0, Exclusion::count());
 
-    $draw = createDraw($participants);
+    $draw = createServiceDraw($participants);
 
     $exclusions = array_reduce($participants, function ($sum, $participant) { return $sum + count($participant['exclusions']); });
 
@@ -27,7 +27,7 @@ it('records new entries in case of success', function ($participants) {
 })->with('valid participants list');
 
 it('saves the correct target', function ($participants, $targets) {
-    $draw = createDraw($participants);
+    $draw = createServiceDraw($participants);
 
     foreach($participants as $idx => $participant) {
         assertEquals($participants[$targets[$idx]]['name'], $draw->participants[$idx]->target->name);

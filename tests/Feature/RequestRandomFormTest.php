@@ -32,7 +32,7 @@ it('sends notifications in case of success', function () {
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
 
-    $participants = createNewDraw(3);
+    $participants = createAjaxDraw(3);
 
     assertEquals(1, Draw::count());
     assertEquals(3, Participant::count());
@@ -50,12 +50,12 @@ it('sends notifications in case of success', function () {
     }
 });
 
-//TODO test mail title
+test('notification contains title and body specified by organizer');
 
 it('sends to the organizer the link to their panel', function () {
     Mail::fake();
 
-    $participants = createNewDraw(3);
+    $participants = createAjaxDraw(3);
 
     // Ensure Organizer receives his recap
     assertHasMailPushed(OrganizerRecapMail::class, $participants[0]['email'], function ($m) use (&$link) {
