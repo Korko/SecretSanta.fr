@@ -6,6 +6,26 @@ use App\Models\Participant;
 use App\Notifications\OrganizerRecap as OrganizerRecapNotif;
 use App\Notifications\TargetDrawn;
 
+it('sends no notifications in case of error', function ($participants) {
+    Notification::fake();
+    Notification::assertNothingSent();
+
+    assertEquals(0, Draw::count());
+    assertEquals(0, Participant::count());
+
+    ajaxPost('/', [
+            'participants'    => $participants,
+            'title'           => 'this is a test',
+            'content-email'   => 'test mail {SANTA} => {TARGET}',
+            'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+        ])
+        ->assertJsonStructure(['message'])
+        ->assertStatus(422);
+
+    assertEquals(0, Draw::count());
+    assertEquals(0, Participant::count());
+})->with('invalid participants list');
+
 it('sends notifications in case of success', function () {
     Notification::fake();
 
