@@ -29,7 +29,7 @@ class RequestCase extends TestCase
         return $this->withHeaders($headers)->json('POST', $url, $postArgs);
     }
 
-    public function createNewDraw(int $totalParticipants): array
+    public function createAjaxDraw(int $totalParticipants): array
     {
         $this->assertEquals(0, Draw::count());
         $this->assertEquals(0, Participant::count());

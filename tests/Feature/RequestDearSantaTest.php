@@ -14,7 +14,7 @@ use URLParser;
 test('a participant can write to their santa', function () {
     Mail::fake();
 
-    $participants = createNewDraw(3);
+    $participants = createAjaxDraw(3);
 
     // For security issues, the key is only sent by mail and never stored
     // So fetch it from the mail
