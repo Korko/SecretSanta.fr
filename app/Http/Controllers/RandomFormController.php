@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Draw;
+use App\Models\Participant;
 use App\Notifications\OrganizerRecap;
-use App\Notifications\TargetDrawn;
 use App\Http\Requests\RandomFormRequest;
-use DrawHandler;
+use DrawFormHandler;
 
 class RandomFormController extends Controller
 {
@@ -16,43 +17,20 @@ class RandomFormController extends Controller
 
     public function handle(RandomFormRequest $request)
     {
-        $draw = DrawHandler::withParticipants($request->input('participants'))
+        $draw = DrawFormHandler::withParticipants($request->input('participants'))
             ->withTitle($request->input('title'))
             ->withBody($request->input('content-email'))
             ->withExpiration($request->input('data-expiration'))
             ->save();
 
+        $draw->organizer->notify(new OrganizerRecap);
+
         $draw->createMetric('new_draw')
             ->addExtra('participants', count($draw->participants));
-
-        $draw->organizer->notify(new OrganizerRecap);
-        foreach ($draw->participants as $participant) {
-            $participant->notify(new TargetDrawn);
-        }
 
         return response()->json([
             'message' => trans('message.sent')
         ]);
-    }
-
-    protected function isNextDrawSolvable(Draw $draw): bool
-    {
-        try {
-            $exclusions = [];
-
-            $draw->participants->each(function (Participant $participant) use (&$exclusions) {
-                $exclusions[$participant->id] = array_merge(
-                    $participant->exclusions->pluck('id')->all(),
-                    [$participant->target->id]
-                );
-            });
-
-            Solver::one($draw->participants->pluck(null, 'id')->all(), $exclusions);
-
-            return true;
-        } catch (SolverException $exception) {
-            return false;
-        }
     }
 
     public function faq()

@@ -9,20 +9,11 @@ use Solver;
 
 class ParticipantsCollection extends BaseCollection
 {
-    public function canRedraw() : bool
+    public function redrawables() : self
     {
-        try {
-            $this->getRedraw();
-
-            return true;
-        } catch (SolverException $e) {
-            return false;
-        }
-    }
-
-    public function getRedraw() : array
-    {
-        return $this->appendTargetToExclusions()->solve();
+        return $this->filter(function ($participant) {
+            return $participant->redraw;
+        });
     }
 
     public function appendTargetToExclusions() : self
@@ -30,10 +21,5 @@ class ParticipantsCollection extends BaseCollection
         return (clone $this)->each(function (Participant $participant) {
             $participant->exclusions->add($participant->target);
         });
-    }
-
-    public function solve() : array
-    {
-        return Solver::one($this->pluck(null, 'id')->toArray(), $this->pluck('exclusions.*.id', 'id')->toArray());
     }
 }

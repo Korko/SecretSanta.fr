@@ -22,18 +22,23 @@ class DrawFactory extends Factory
     public function definition()
     {
         return [
-        'mail_title' => $this->faker->sentence,
-        'mail_body'  => $this->faker->text,
-        'expires_at' => $this->faker->dateTimeBetween('+1 day', '+1 month'),
-    ];
+            'mail_title' => $this->faker->sentence,
+            'mail_body'  => $this->faker->text,
+            'expires_at' => $this->faker->dateTimeBetween('+1 day', '+1 month'),
+        ];
     }
 
+    /**
+     * Indicate that the draw is expired.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
     public function expired()
     {
         return $this->state(function () {
             return [
-        'expires_at' => $this->faker->dateTime('-1 hour'),
-    ];
+                'expires_at' => $this->faker->dateTime('-1 hour'),
+            ];
         });
     }
 }

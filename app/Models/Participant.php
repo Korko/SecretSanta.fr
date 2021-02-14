@@ -28,11 +28,11 @@ class Participant extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that aren't mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'draw_id', 'target_id', 'mail_id'];
+    protected $guarded = [];
 
     public function draw()
     {

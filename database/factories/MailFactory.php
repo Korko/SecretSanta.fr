@@ -23,9 +23,9 @@ class MailFactory extends Factory
     public function definition()
     {
         return [
-        'delivery_status' => MailModel::CREATED,
-        'draw_id' => Draw::factory(),
-        'version' => $this->faker->numberBetween(0, 255),
-    ];
+            'delivery_status' => MailModel::CREATED,
+            'draw_id' => Draw::factory(),
+            'version' => $this->faker->numberBetween(0, 255),
+        ];
     }
 }
