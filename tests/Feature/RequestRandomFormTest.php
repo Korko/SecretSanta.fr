@@ -8,7 +8,6 @@ use App\Notifications\TargetDrawn;
 
 it('sends no notifications in case of error', function ($participants) {
     Notification::fake();
-    Notification::assertNothingSent();
 
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
@@ -19,23 +18,45 @@ it('sends no notifications in case of error', function ($participants) {
             'content-email'   => 'test mail {SANTA} => {TARGET}',
             'data-expiration' => date('Y-m-d', strtotime('+2 days')),
         ])
-        ->assertJsonStructure(['message'])
-        ->assertStatus(422);
+        ->assertStatus(422)
+        ->assertJsonStructure(['message']);
 
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
+
+    Notification::assertNothingSent();
 })->with('invalid participants list');
+
+it('can create draws', function () {
+    assertEquals(0, Draw::count());
+    assertEquals(0, Participant::count());
+
+    $participants = generateParticipants(3);
+
+    ajaxPost('/', [
+            'participants'    => $participants,
+            'title'           => 'this is a test',
+            'content-email'   => 'test mail {SANTA} => {TARGET}',
+            'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+        ])
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    assertEquals(1, Draw::count());
+    assertEquals(3, Participant::count());
+});
 
 it('sends notifications in case of success', function () {
     Notification::fake();
 
-    assertEquals(0, Draw::count());
-    assertEquals(0, Participant::count());
-
-    $participants = createAjaxDraw(3);
-
-    assertEquals(1, Draw::count());
-    assertEquals(3, Participant::count());
+    ajaxPost('/', [
+            'participants'    => generateParticipants(3),
+            'title'           => 'this is a test',
+            'content-email'   => 'test mail {SANTA} => {TARGET}',
+            'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+        ])
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
 
     $draw = Draw::find(1);
 
@@ -44,30 +65,34 @@ it('sends notifications in case of success', function () {
     Notification::assertSentTo($draw->organizer, OrganizerRecapNotif::class);
 
     // Ensure Participants receive their own recap
-    Notification::assertTimesSent(count($participants), TargetDrawn::class);
+    Notification::assertTimesSent(count($draw->participants), TargetDrawn::class);
     foreach($draw->participants as $participant) {
         Notification::assertSentTo($participant, TargetDrawn::class);
     }
 });
 
-test('notification contains title and body specified by organizer');
-
 it('sends to the organizer the link to their panel', function () {
     Mail::fake();
 
-    $participants = createAjaxDraw(3);
+    ajaxPost('/', [
+            'participants'    => generateParticipants(3),
+            'title'           => 'this is a test',
+            'content-email'   => 'test mail {SANTA} => {TARGET}',
+            'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+        ])
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    $draw = Draw::find(1);
 
     // Ensure Organizer receives his recap
-    assertHasMailPushed(OrganizerRecapMail::class, $participants[0]['email'], function ($m) use (&$link) {
+    assertHasMailPushed(OrganizerRecapMail::class, $draw->organizer->email, function ($m) use (&$link) {
         $link = $m->panelLink;
     });
 
-    $draw = URLParser::parseByName('organizerPanel', $link)->draw;
+    // Check the recap link is valid
+    test()->get($link)->assertSuccessful();
 
-    assertNotEquals(0, $draw->participants->count());
-
-    foreach ($draw->participants as $participant) {
-        assertContains($participant->name, array_column($participants, 'name'));
-        assertContains($participant->email, array_column($participants, 'email'));
-    }
+    // Check link can be used for support
+    assertEquals($draw->id, URLParser::parseByName('organizerPanel', $link)->draw->id);
 });

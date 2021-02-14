@@ -1,8 +1,15 @@
 <?php
 
+use App\Jobs\ParseBounces;
+use App\Mail\TargetDrawn;
 use App\Models\Draw;
+use App\Models\Mail as MailModel;
 use App\Models\Participant;
+use App\Services\EmailClient;
 use function Pest\Faker\faker;
+use PHPUnit\Framework\TestCase;
+use Illuminate\Testing\TestResponse;
+use Webklex\PHPIMAP\Message as EmailMessage;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +52,7 @@ uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundat
 |
 */
 
-function assertHasMailPushed($class, $recipient = null, Closure $callback = null) {
+function assertHasMailPushed($class, $recipient = null, Closure $callback = null) : void {
     Mail::assertSent($class, function ($mail) use ($recipient, $callback) {
         if ($recipient === null || $mail->hasTo($recipient)) {
             if ($callback !== null) {
@@ -59,7 +66,7 @@ function assertHasMailPushed($class, $recipient = null, Closure $callback = null
     });
 }
 
-function prepareAjax($headers = []) {
+function prepareAjax($headers = []) : TestCase {
     $headers = $headers + [
         'Accept'           => 'application/json',
         'X-Requested-With' => 'XMLHttpRequest',
@@ -68,15 +75,19 @@ function prepareAjax($headers = []) {
     return test()->withHeaders($headers);
 }
 
-function ajaxPost($url, array $postArgs = [], $headers = []) {
+function ajaxPost($url, array $postArgs = [], $headers = []) : TestResponse {
     return prepareAjax($headers)->json('POST', $url, $postArgs);
 }
 
-function ajaxGet($url, $headers = []) {
+function ajaxGet($url, $headers = []) : TestResponse {
     return prepareAjax($headers)->json('GET', $url);
 }
 
-function createServiceDraw($participants) {
+function ajaxDelete($url, $headers = []) : TestResponse {
+    return prepareAjax($headers)->json('DELETE', $url);
+}
+
+function createServiceDraw($participants) : Draw {
     return DrawFormHandler::withParticipants($participants)
         ->withExpiration(date('Y-m-d', strtotime('+2 days')))
         ->withTitle('test mail {SANTA} => {TARGET} title')
@@ -84,29 +95,7 @@ function createServiceDraw($participants) {
         ->save();
 }
 
-function createAjaxDraw(int $totalParticipants): array {
-    assertEquals(0, Draw::count());
-    assertEquals(0, Participant::count());
-
-    $participants = generateParticipants($totalParticipants);
-
-    // Initiate DearSanta
-    ajaxPost('/', [
-            'participants'    => $participants,
-            'title'           => faker()->sentence(),
-            'content-email'   => 'test mail {SANTA} => {TARGET}',
-            'data-expiration' => date('Y-m-d', strtotime('+2 days')),
-        ])
-        ->assertJsonStructure(['message'])
-        ->assertStatus(200);
-
-    assertEquals(1, Draw::count());
-    assertEquals($totalParticipants, Participant::count());
-
-    return $participants;
-}
-
-function generateParticipants(int $totalParticipants): array {
+function generateParticipants(int $totalParticipants) : array {
     $participants = [];
     for ($i = 0; $i < $totalParticipants; $i++) {
         $participants[] = [
@@ -140,7 +129,7 @@ function generateParticipants(int $totalParticipants): array {
  *  ],
  * ];
  */
-function formatParticipants($participants): array {
+function formatParticipants($participants) : array {
     $participants = array_map(function ($idx) use ($participants) {
         if (isset($participants[$idx]['target'])) {
             $participants[$idx] += [
@@ -158,4 +147,59 @@ function formatParticipants($participants): array {
     }, array_keys($participants));
 
     return $participants;
+}
+
+function assertReturnPath($prop, $status) : void {
+    Mail::fake();
+
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
+
+    // Fake emails as bounces
+    $emailClient = test()->mock(EmailClient::class, function ($mock) use ($draw, $prop) {
+        // Get all the return path defined by the app
+        $links = [];
+        Mail::assertSent(function (TargetDrawn $mail) use (&$links, $prop) {
+            $links[] = $mail->$prop;
+
+            return true;
+        });
+        test()->assertEquals(count($draw->participants), count($links));
+
+        // Fake the list of "unseen mails"
+        $messages = [];
+        foreach($links as $link) {
+            $messages[] = test()->mock(EmailMessage::class, function ($mock) use ($link) {
+                $mock
+                    ->shouldReceive('getTo')
+                    ->once()
+                    ->andReturn([
+                        (object) ['mailbox' => $link]
+                    ]);
+
+                $mock->shouldReceive('move')->once();
+            });
+        }
+
+        $mock
+            ->shouldReceive('getUnseenMails')
+            ->once()
+            ->andReturn($messages);
+    });
+
+    // Ensure all participants are marked as bounced
+    foreach ($draw->participants as $participant) {
+        test()->assertEquals(MailModel::CREATED, $participant->mail->delivery_status);
+    }
+
+    // Parse bounces and mark them as bounced
+    $job = new ParseBounces();
+    $job->handle($emailClient);
+
+    // Ensure all participants are marked as bounced
+    foreach ($draw->participants as $participant) {
+        // Get the last delivery_status from DB via the "fresh" method
+        test()->assertEquals($status, $participant->mail->fresh()->delivery_status);
+    }
 }
