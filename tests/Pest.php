@@ -6,6 +6,7 @@ use App\Models\Draw;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use App\Services\EmailClient;
+use App\Services\DrawFormHandler;
 use function Pest\Faker\faker;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Testing\TestResponse;
@@ -88,7 +89,8 @@ function ajaxDelete($url, $headers = []) : TestResponse {
 }
 
 function createServiceDraw($participants) : Draw {
-    return DrawFormHandler::withParticipants($participants)
+    return (new DrawFormHandler())
+        ->withParticipants($participants)
         ->withExpiration(date('Y-m-d', strtotime('+2 days')))
         ->withTitle('test mail {SANTA} => {TARGET} title')
         ->withBody('test mail {SANTA} => {TARGET} body')

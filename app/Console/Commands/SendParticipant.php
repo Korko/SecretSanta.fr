@@ -6,7 +6,7 @@ use App\Notifications\TargetDrawn;
 use App\Models\Participant;
 use Arr;
 use Crypt;
-use DrawHandler;
+use App\Services\DrawHandler;
 use Illuminate\Console\Command;
 
 class SendParticipant extends Command
