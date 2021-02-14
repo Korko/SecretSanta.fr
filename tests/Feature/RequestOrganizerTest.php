@@ -1,12 +1,15 @@
 <?php
 
 use App\Mail\TargetDrawn;
+use App\Models\Draw;
 use App\Models\Participant;
 
 test('the organizer can send again the target drawn email', function () {
     Mail::fake();
 
-    $draw = createDatabaseDraw(3);
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
     $participant = $draw->participants->random();
 
     // Check data can be changed
@@ -25,7 +28,9 @@ test('the organizer can send again the target drawn email', function () {
 test('the organizer can change a participant\'s email', function () {
     Mail::fake();
 
-    $draw = createDatabaseDraw(3);
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
     $participant = $draw->participants->random();
 
     // Check data can be changed

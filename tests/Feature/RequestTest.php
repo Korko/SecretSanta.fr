@@ -2,10 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Models\Draw;
 use DrawCrypt;
 
 it('stores database crypted entries', function () {
-    $draw = createDatabaseDraw(3);
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
 
     $decrypted = $draw->participants[0]->name;
 

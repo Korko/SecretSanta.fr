@@ -20,6 +20,10 @@ class HatSolver implements SolverInterface
 
     public function all(array $participants, array $exclusions = []) : Generator
     {
+        if(count($participants) < 2) {
+            throw new SolverException('Not enough participants');
+        }
+
         $hat = array_keys($participants);
         shuffle($hat);
 

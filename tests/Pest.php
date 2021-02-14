@@ -77,27 +77,11 @@ function ajaxGet($url, $headers = []) {
 }
 
 function createServiceDraw($participants) {
-    return DrawHandler::withParticipants($participants)
+    return DrawFormHandler::withParticipants($participants)
         ->withExpiration(date('Y-m-d', strtotime('+2 days')))
         ->withTitle('test mail {SANTA} => {TARGET} title')
         ->withBody('test mail {SANTA} => {TARGET} body')
         ->save();
-}
-
-function createDatabaseDraw(int $participants): Draw {
-    assertGreaterThan(1, $participants);
-
-    $draw = Draw::factory()->create();
-    $draw->participants()->createMany(
-        Participant::factory($participants)->make()->toArray()
-    );
-
-    foreach ($draw->participants as $idx => $participant) {
-        $target = $draw->participants[$idx - 1 >= 0 ? $idx - 1 : $participants - 1];
-        $participant->target()->save($target);
-    }
-
-    return $draw;
 }
 
 function createAjaxDraw(int $totalParticipants): array {
