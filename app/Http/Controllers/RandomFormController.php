@@ -6,7 +6,7 @@ use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\OrganizerRecap;
 use App\Http\Requests\RandomFormRequest;
-use DrawFormHandler;
+use App\Services\DrawFormHandler;
 
 class RandomFormController extends Controller
 {
@@ -17,7 +17,8 @@ class RandomFormController extends Controller
 
     public function handle(RandomFormRequest $request)
     {
-        $draw = DrawFormHandler::withParticipants($request->input('participants'))
+        $draw = (new DrawFormHandler())
+            ->withParticipants($request->input('participants'))
             ->withTitle($request->input('title'))
             ->withBody($request->input('content-email'))
             ->withExpiration($request->input('data-expiration'))
