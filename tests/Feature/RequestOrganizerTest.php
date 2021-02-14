@@ -1,60 +1,126 @@
 <?php
 
-use App\Mail\TargetDrawn;
+use App\Notifications\TargetDrawn;
 use App\Models\Draw;
 use App\Models\Participant;
 
 test('the organizer can send again the target drawn email', function () {
-    Mail::fake();
+    Notification::fake();
 
     $draw = Draw::factory()
         ->hasParticipants(3)
         ->create();
     $participant = $draw->participants->random();
 
-    // Check data can be changed
     $path = URL::signedRoute('organizerPanel.changeEmail', [
         'draw' => $draw->hash,
         'participant' => $participant->id,
     ]);
 
     ajaxPost($path, ['email' => $participant->email])
-        ->assertJsonStructure(['message'])
-        ->assertStatus(200);
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
 
-    assertHasMailPushed(TargetDrawn::class, $participant->email);
+    Notification::assertSentTo($participant, TargetDrawn::class);
 });
 
 test('the organizer can change a participant\'s email', function () {
-    Mail::fake();
+    Notification::fake();
 
     $draw = Draw::factory()
         ->hasParticipants(3)
         ->create();
     $participant = $draw->participants->random();
 
-    // Check data can be changed
     $path = URL::signedRoute('organizerPanel.changeEmail', [
         'draw' => $draw->hash,
         'participant' => $participant->id,
     ]);
 
     ajaxPost($path, ['email' => 'test@test2.com'])
-        ->assertJsonStructure(['message'])
-        ->assertStatus(200);
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
 
     $before = $participant->email;
-    $participant = Participant::find($participant->id);
+    $participant = $participant->fresh();
     $after = $participant->email;
 
     assertNotEquals($before, $after);
     assertEquals('test@test2.com', $after);
 
-    assertHasMailPushed(TargetDrawn::class, $participant->email);
+    Notification::assertSentTo($participant, TargetDrawn::class);
 });
 
-test('the organizer can download initial data');
-test('the organizer cannot download total data if the draw is not expired');
-test('the organizer can download total data if the draw is expired');
+test('the organizer can download initial data', function () {
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
 
-test('the organizer can delete all data');
+    $path = URL::signedRoute('organizerPanel.csvInit', [
+        'draw' => $draw->hash,
+    ]);
+
+    ajaxGet($path)
+        ->assertHeader('Content-Type', 'text/csv; charset=UTF-8')
+        ->assertSuccessful();
+});
+
+test('the organizer cannot download total data if the draw is not expired', function () {
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
+
+    $path = URL::signedRoute('organizerPanel.csvFinal', [
+        'draw' => $draw->hash,
+    ]);
+
+    ajaxGet($path)->assertStatus(403);
+});
+
+test('the organizer can download total data if the draw is expired', function () {
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->expired()
+        ->create();
+
+    $path = URL::signedRoute('organizerPanel.csvFinal', [
+        'draw' => $draw->hash,
+    ]);
+
+    ajaxGet($path)
+        ->assertHeader('Content-Type', 'text/csv; charset=UTF-8')
+        ->assertSuccessful();
+});
+
+test('the organizer can delete all data before expiration', function () {
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
+
+    $path = URL::signedRoute('organizerPanel.delete', [
+        'draw' => $draw->hash,
+    ]);
+
+    ajaxDelete($path)
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    assertNull($draw->fresh());
+});
+
+test('the organizer can delete all data after expiration', function () {
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->expired()
+        ->create();
+
+    $path = URL::signedRoute('organizerPanel.delete', [
+        'draw' => $draw->hash,
+    ]);
+
+    ajaxDelete($path)
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    assertNull($draw->fresh());
+});

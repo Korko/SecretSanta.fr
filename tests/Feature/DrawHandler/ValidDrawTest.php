@@ -31,5 +31,6 @@ it('saves the correct target', function ($participants, $targets) {
 
     foreach($participants as $idx => $participant) {
         assertEquals($participants[$targets[$idx]]['name'], $draw->participants[$idx]->target->name);
+        assertEquals($participant['name'], $draw->participants[$idx]->target->santa->name);
     }
 })->with('unique participants list');

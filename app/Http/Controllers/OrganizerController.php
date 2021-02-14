@@ -87,8 +87,8 @@ class OrganizerController extends Controller
                 ->prepend([
                     ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
                     ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
-                ])
-        );
+                ]),
+        200, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
     public function csvFinal(Draw $draw)
@@ -106,8 +106,8 @@ class OrganizerController extends Controller
                 ->prepend([
                     ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
                     ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
-                ])
-        );
+                ]),
+        200, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
     public function delete(Request $request, Draw $draw)
