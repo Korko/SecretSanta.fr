@@ -32,7 +32,6 @@
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "martinlindhe/laravel-vue-i18n-generator": "dev-master",
-        "matt-allan/laravel-code-style": "dev-master",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "pestphp/pest-plugin-faker": "^1.0",
