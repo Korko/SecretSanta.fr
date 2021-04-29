@@ -46,6 +46,10 @@ mix.js('resources/js/common.js', 'public/js')
    .js('resources/js/organizer.js', 'public/js')
    .js('resources/js/faq.js', 'public/js')
    .modernizr()
+   .vue({
+     extractStyles: true,
+      globalStyles: false
+    })
    .polyfill({ entryPoints: "all" })
    .extract([
       'vue', 'vue-autosize', 'vue-multiselect',
