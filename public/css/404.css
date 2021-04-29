@@ -11877,20 +11877,17 @@ Polaroid
   font-weight: normal;
   text-transform: uppercase;
   color: #2e2e2e;
-}
-
-.back {
   position: relative;
-  margin-top: 44px;
+  margin-bottom: 44px;
 }
 
-.back::before {
+.lead::after {
   position: absolute;
   content: " ";
   background: #ed0121;
   width: 80px;
   height: 3px;
-  top: -22px;
+  bottom: -22px;
   left: 50%;
   margin-left: -40px;
 }
