@@ -4,15 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
-use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
-use App\Traits\UpdatesMailDelivery;
 
 class DearSantaController extends Controller
 {
-    use UpdatesMailDelivery;
-
     public function view(Participant $participant)
     {
         return response()->view('dearSanta', [
@@ -23,7 +19,7 @@ class DearSantaController extends Controller
     public function fetch(Participant $participant)
     {
         // The hash was validated in middleware so we can validate that the email was received
-        $this->updateDelivery($participant->mail, MailModel::RECEIVED);
+        $participant->mail->markAsReceived();
 
         return response()->json([
             'participant' => $participant->only(['hash', 'name']),
@@ -46,13 +42,9 @@ class DearSantaController extends Controller
 
     public function handle(Participant $participant, DearSantaRequest $request)
     {
-        $mail = (new MailModel())->draw()->associate($participant->draw);
-        $mail->save();
-
         $dearSanta = new DearSanta();
         $dearSanta->sender()->associate($participant);
         $dearSanta->mail_body = $request->input('content');
-        $dearSanta->mail()->associate($mail);
         $dearSanta->save();
 
         $participant->createMetric('dearsanta');

@@ -3,19 +3,29 @@
 namespace Tests\Feature;
 
 use App\Models\Draw;
-
-it('does not cleanup non expired draws', function () {
-    $draw = Draw::factory()->create();
-
-    Draw::cleanup();
-
-    assertNotNull($draw->fresh());
-});
+use App\Models\Participant;
+use App\Models\Exclusion;
+use App\Models\DearSanta;
+use App\Models\Mail;
 
 it('cleans up expired draws', function () {
-    $draw = Draw::factory()->expired()->create();
+	$drawNotExpired = Draw::factory()->create();
+    $drawExpired = Draw::factory()->expired()->create();
 
     Draw::cleanup();
 
-    assertNull($draw->fresh());
+    assertNotNull($drawNotExpired->fresh());
+    assertNull($drawExpired->fresh());// assertDeleted
+});
+
+it('cleans up everything', function () {
+    Draw::factory()->expired()->create();
+// TODO: need to create exclusions, dearsantas and mails
+    Draw::cleanup();
+
+    assertEquals(0, Draw::count());
+    assertEquals(0, Participant::count());
+    assertEquals(0, Exclusion::count());
+    assertEquals(0, DearSanta::count());
+    assertEquals(0, Mail::count());
 });

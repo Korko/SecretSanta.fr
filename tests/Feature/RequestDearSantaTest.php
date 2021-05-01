@@ -1,31 +1,31 @@
 <?php
 
-use App\Mail\TargetDrawn;
 use App\Models\Draw;
 use App\Notifications\DearSanta;
+use App\Notifications\TargetDrawn;
 use Illuminate\Support\Facades\URL;
 
 it('send to each participant a link to write to their santa', function () {
-    Mail::fake();
+    Notification::fake();
 
     $draw = Draw::factory()
         ->hasParticipants(3)
         ->create();
 
-    $links = [];
-    Mail::assertSent(function (TargetDrawn $mail) use (&$links) {
-        return $links[] = $mail->dearSantaLink;
-    });
-    assertEquals(count($draw->participants), count($links));
+    foreach($draw->participants as $participant) {
+        Notification::assertSentTo($participant, function (TargetDrawn $notification) use ($participant) {
+            $link = $notification->toMail($participant)->data()['dearSantaLink'];
 
-    foreach ($links as $id => $link) {
-        // Check the dearsanta link is valid
-        test()->get($link)->assertSuccessful();
+            // Check the dearsanta link is valid
+            test()->get($link)->assertSuccessful();
 
-        // Check link can be used for support
-        $path = parse_url($link, PHP_URL_PATH);
-        $participant = URLParser::parseByName('dearsanta', $path)->participant;
-        assertEquals($draw->participants[$id]->santa->id, $participant->santa->id);
+            // Check link can be used for support
+            $path = parse_url($link, PHP_URL_PATH);
+            $guessedParticipant = URLParser::parseByName('dearsanta', $path)->participant;
+            assertEquals($participant->id, $guessedParticipant->id);
+
+            return true;
+        });
     }
 });
 

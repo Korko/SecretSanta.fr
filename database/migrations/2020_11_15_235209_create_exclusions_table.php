@@ -14,8 +14,8 @@ class CreateExclusionsTable extends Migration
     public function up()
     {
         Schema::create('exclusions', function (Blueprint $table) {
-            $table->foreignId('participant_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('exclusion_id')->constrained('participants')->cascadeOnDelete();
+            $table->foreignId('participant_id')->constrained()->onDelete('cascade');
+            $table->foreignId('exclusion_id')->constrained('participants')->onDelete('cascade');
         });
     }
 

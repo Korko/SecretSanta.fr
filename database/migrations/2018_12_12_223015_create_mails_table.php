@@ -15,10 +15,9 @@ class CreateMailsTable extends Migration
     public function up()
     {
         Schema::create('mails', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->unique();
+            $table->morphs('mailable');
             $table->enum('delivery_status', Mail::$deliveryStatuses);
-            $table->foreignId('draw_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->unsignedTinyInteger('version')->default(0);
             $table->timestamps();
         });
     }

@@ -6,7 +6,6 @@ use App\Models\Mail as MailModel;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -52,6 +51,6 @@ class MailStatusUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('draw.'.$this->mail->draw->hash);
+        return new Channel('draw.'.$this->mail->mailable->draw->hash);
     }
 }

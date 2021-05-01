@@ -2,26 +2,24 @@
 
 namespace App\Notifications;
 
-use App\Channels\MailChannel;
-use App\Mail\SuggestRedraw as SuggestRedrawMailable;
 use App\Models\Participant;
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
+use DrawCrypt;
 //Illuminate/Contracts/Queue/ShouldBeEncrypted
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 
 class SuggestRedraw extends Notification
 {
-    use Queueable;
-
     /**
      * Get the notification's delivery channels.
      *
-     * @param  App\Models\Participant  $santa
+     * @param  App\Models\Participant  $participant
      * @return array
      */
-    public function via(Participant $santa)
+    public function via(Participant $participant)
     {
-        return [MailChannel::class];
+        return ['mail'];
     }
 
     /**
@@ -30,9 +28,15 @@ class SuggestRedraw extends Notification
      * @param  App\Models\Participant  $santa
      * @return \Illuminate\Mail\Mailable
      */
-    public function toMail(Participant $santa)
+    public function toMail(Participant $participant)
     {
-        return (new SuggestRedrawMailable($santa))
-            ->to($santa);
+        return (new MailMessage)
+            ->subject(__('emails.suggest_redraw_title', ['participant' => $participant->id]))
+            ->view('emails.suggest_redraw', [
+                'participantName' => $participant->name,
+                'organizerName' => $participant->draw->organizer->name,
+                'targetName' => $participant->target->name,
+                'acceptLink' => URL::signedRoute('acceptRedraw', ['participant' => $participant->hash]).'#'.base64_encode(DrawCrypt::getKey()),
+            ]);
     }
 }

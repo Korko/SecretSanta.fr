@@ -1,16 +1,11 @@
 <?php
 
-use App\Jobs\ParseBounces;
-use App\Mail\TargetDrawn;
 use App\Models\Draw;
-use App\Models\Mail as MailModel;
 use App\Models\Participant;
-use App\Services\EmailClient;
 use App\Services\DrawFormHandler;
 use function Pest\Faker\faker;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Testing\TestResponse;
-use Webklex\PHPIMAP\Message as EmailMessage;
 
 /*
 |--------------------------------------------------------------------------
@@ -149,59 +144,4 @@ function formatParticipants($participants) : array {
     }, array_keys($participants));
 
     return $participants;
-}
-
-function assertReturnPath($prop, $status) : void {
-    Mail::fake();
-
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
-
-    // Fake emails as bounces
-    $emailClient = test()->mock(EmailClient::class, function ($mock) use ($draw, $prop) {
-        // Get all the return path defined by the app
-        $links = [];
-        Mail::assertSent(function (TargetDrawn $mail) use (&$links, $prop) {
-            $links[] = $mail->$prop;
-
-            return true;
-        });
-        test()->assertEquals(count($draw->participants), count($links));
-
-        // Fake the list of "unseen mails"
-        $messages = [];
-        foreach($links as $link) {
-            $messages[] = test()->mock(EmailMessage::class, function ($mock) use ($link) {
-                $mock
-                    ->shouldReceive('getTo')
-                    ->once()
-                    ->andReturn([
-                        (object) ['mailbox' => $link]
-                    ]);
-
-                $mock->shouldReceive('move')->once();
-            });
-        }
-
-        $mock
-            ->shouldReceive('getUnseenMails')
-            ->once()
-            ->andReturn($messages);
-    });
-
-    // Ensure all participants are marked as bounced
-    foreach ($draw->participants as $participant) {
-        test()->assertEquals(MailModel::CREATED, $participant->mail->delivery_status);
-    }
-
-    // Parse bounces and mark them as bounced
-    $job = new ParseBounces();
-    $job->handle($emailClient);
-
-    // Ensure all participants are marked as bounced
-    foreach ($draw->participants as $participant) {
-        // Get the last delivery_status from DB via the "fresh" method
-        test()->assertEquals($status, $participant->mail->fresh()->delivery_status);
-    }
 }

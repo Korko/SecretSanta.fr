@@ -29,6 +29,13 @@ class DearSanta extends Model
         'mail_body' => EncryptedString::class,
     ];
 
+    protected static function booted()
+    {
+        static::deleting(function ($dearSanta) {
+            $dearSanta->mail->delete();
+        });
+    }
+
     public function sender()
     {
         return $this->belongsTo(Participant::class, 'sender_id');
@@ -36,6 +43,11 @@ class DearSanta extends Model
 
     public function mail()
     {
-        return $this->belongsTo(Mail::class, 'mail_id');
+        return $this->morphOne(Mail::class, 'mailable');
+    }
+
+    public function draw()
+    {
+        return $this->sender->draw;
     }
 }

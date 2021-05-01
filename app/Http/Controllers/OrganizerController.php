@@ -67,8 +67,6 @@ class OrganizerController extends Controller
             $message = trans('organizer.up_and_sent');
         }
 
-        $participant->mail->updateDeliveryStatus(MailModel::CREATED);
-
         $participant->notify(new TargetDrawn);
 
         return response()->json([

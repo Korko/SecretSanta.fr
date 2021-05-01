@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Exceptions\SolverException;
 use App\Models\Draw;
-use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use App\Services\DrawHandler;
 use Arr;
@@ -83,14 +82,10 @@ class DrawFormHandler
         $draw->save();
 
         foreach ($this->participants as $idx => $santa) {
-            $mail = (new MailModel())->draw()->associate($draw);
-            $mail->save();
-
             $participant = new Participant();
             $participant->draw()->associate($draw);
             $participant->name = $santa['name'];
             $participant->email = Arr::get($santa, 'email');
-            $participant->mail()->associate($mail);
             $participant->save();
 
             $this->participants[$idx]['model'] = $participant;

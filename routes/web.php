@@ -26,8 +26,7 @@ Route::get('/faq', [RandomFormController::class, 'faq'])->name('faq');
 
 Route::pattern('draw:hash', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
 Route::pattern('participant:hash', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
-Route::pattern('email:hash', '[0-9a-zA-Z]{'.config('hashids.connections.bounce.length').',}');
-Route::pattern('version', '[0-9]+');
+Route::pattern('mail:id', '[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}'); //UUID
 
 Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta')
     ->missing(function () {
@@ -56,4 +55,4 @@ Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function ()
     Route::post('/org/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
 });
 
-Route::get('/email/{mail:hash}/{version}.png', [MailController::class, 'updateStatus'])->name('pixel')->middleware('signed');
+Route::get('/email/{mail:id}.png', [MailController::class, 'updateStatus'])->name('pixel')->middleware('signed');
