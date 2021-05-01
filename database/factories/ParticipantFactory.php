@@ -31,7 +31,6 @@ class ParticipantFactory extends Factory
             'name'      => $this->faker->name,
             'email'     => $this->faker->email,
             'target_id' => null,
-            'mail_id'   => MailModel::factory(),
         ];
     }
 

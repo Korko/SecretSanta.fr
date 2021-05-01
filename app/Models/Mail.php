@@ -2,22 +2,24 @@
 
 namespace App\Models;
 
+use App\Events\MailStatusUpdated;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class Mail extends Model
 {
-    use HasFactory, HashId, DispatchesJobs;
-
-    protected static $hashConnection = 'bounce';
+    /**
+     * Indicates if the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
 
     /**
-     * The attributes that are mass assignable.
+     * The data type of the auto-incrementing ID.
      *
-     * @var array
+     * @var string
      */
-    protected $fillable = ['draw_id'];
+    protected $keyType = 'string';
 
     /**
      * The model's default values for attributes.
@@ -26,7 +28,6 @@ class Mail extends Model
      */
     protected $attributes = [
         'delivery_status' => self::CREATED,
-        'version' => 0,
     ];
 
     public const CREATED = 'created';
@@ -43,22 +44,44 @@ class Mail extends Model
         self::RECEIVED,
     ];
 
+    public function markAsCreated() {
+        $this->updateDeliveryStatus(self::CREATED);
+    }
+
+    public function markAsSending() {
+        $this->updateDeliveryStatus(self::SENDING);
+    }
+
+    public function markAsSent() {
+        $this->updateDeliveryStatus(self::SENT);
+    }
+
+    public function markAsError() {
+        $this->updateDeliveryStatus(self::ERROR);
+    }
+
+    public function markAsReceived() {
+        $this->updateDeliveryStatus(self::RECEIVED);
+    }
+
     public function updateDeliveryStatus($status)
     {
         $this->delivery_status = $status;
-
-        // Force update, in case the delivery_status did not change
-        $this->updated_at = Carbon::now();
-
-        if ($status === self::CREATED) {
-            $this->version++;
-        }
-
         $this->save();
+
+        event(new MailStatusUpdated($this));
+    }
+
+    /**
+     * Get the parent mailable model (dearsanta or participant).
+     */
+    public function mailable()
+    {
+        return $this->morphTo();
     }
 
     public function draw()
     {
-        return $this->belongsTo(Draw::class);
+        return $this->mailable->draw();
     }
 }

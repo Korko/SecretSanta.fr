@@ -2,18 +2,15 @@
 
 namespace App\Notifications;
 
-use App\Channels\MailChannel;
 use App\Models\DearSanta as DearSantaModel;
-use App\Mail\DearSanta as DearSantaMailable;
 use App\Models\Participant;
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
+use App\Channels\TrackedMailChannel;
 //Illuminate/Contracts/Queue/ShouldBeEncrypted
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class DearSanta extends Notification
 {
-    use Queueable;
-
     protected $dearSanta;
 
     public function __construct(DearSantaModel $dearSanta)
@@ -29,7 +26,12 @@ class DearSanta extends Notification
      */
     public function via(Participant $santa)
     {
-        return [MailChannel::class];
+        return [TrackedMailChannel::class];
+    }
+
+    public function getMailableModel(Participant $santa)
+    {
+        return $this->dearSanta;
     }
 
     /**
@@ -40,7 +42,11 @@ class DearSanta extends Notification
      */
     public function toMail(Participant $santa)
     {
-        return (new DearSantaMailable($this->dearSanta))
-            ->to($santa);
+        return (new MailMessage)
+            ->subject(__('emails.dear_santa.title', ['draw' => $santa->draw->id]))
+            ->view('emails.dearsanta', [
+                'content' => $this->dearSanta->mail_body,
+                'targetName' => $santa->target->name
+            ]);
     }
 }

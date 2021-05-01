@@ -2,17 +2,17 @@
 
 namespace App\Notifications;
 
-use App\Channels\MailChannel;
-use App\Mail\TargetDrawn as TargetDrawnMailable;
 use App\Models\Participant;
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
+use App\Channels\TrackedMailChannel;
+use DrawCrypt;
 //Illuminate/Contracts/Queue/ShouldBeEncrypted
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
+use Lang;
 
 class TargetDrawn extends Notification
 {
-    use Queueable;
-
     /**
      * Get the notification's delivery channels.
      *
@@ -21,7 +21,12 @@ class TargetDrawn extends Notification
      */
     public function via(Participant $santa)
     {
-        return [MailChannel::class];
+        return [TrackedMailChannel::class];
+    }
+
+    public function getMailableModel(Participant $santa)
+    {
+        return $santa;
     }
 
     /**
@@ -32,7 +37,25 @@ class TargetDrawn extends Notification
      */
     public function toMail(Participant $santa)
     {
-        return (new TargetDrawnMailable($santa))
-            ->to($santa);
+        $title = $this->parseKeywords(Lang::get('emails.target_draw.title', [
+            'draw' => $santa->draw->id,
+            'subject' => $santa->draw->mail_title,
+        ]), $santa);
+
+        $content = $this->parseKeywords($santa->draw->mail_body, $santa);
+
+        $url = URL::signedRoute('dearsanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getKey());
+
+        return (new MailMessage)
+            ->subject($title)
+            ->view('emails.target_drawn', [
+                'content' => $content,
+                'dearSantaLink' => $url,
+            ]);
+    }
+
+    protected function parseKeywords($str, Participant $santa)
+    {
+        return str_replace(['{SANTA}', '{TARGET}'], [$santa->name, $santa->target->name], $str);
     }
 }

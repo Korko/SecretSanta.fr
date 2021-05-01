@@ -72,7 +72,7 @@ it('sends notifications in case of success', function () {
 });
 
 it('sends to the organizer the link to their panel', function () {
-    Mail::fake();
+    Notification::fake();
 
     ajaxPost('/', [
             'participants'    => generateParticipants(3),
@@ -86,13 +86,15 @@ it('sends to the organizer the link to their panel', function () {
     $draw = Draw::find(1);
 
     // Ensure Organizer receives his recap
-    assertHasMailPushed(OrganizerRecapMail::class, $draw->organizer->email, function ($m) use (&$link) {
-        $link = $m->panelLink;
+    Notification::assertSentTo($draw->organizer, function (OrganizerRecapNotif $notification) use ($draw) {
+        $link = $notification->toMail($draw->organizer)->data()['panelLink'];
+
+        // Check the recap link is valid
+        test()->get($link)->assertSuccessful();
+
+        // Check link can be used for support
+        assertEquals($draw->id, URLParser::parseByName('organizerPanel', $link)->draw->id);
+
+        return true;
     });
-
-    // Check the recap link is valid
-    test()->get($link)->assertSuccessful();
-
-    // Check link can be used for support
-    assertEquals($draw->id, URLParser::parseByName('organizerPanel', $link)->draw->id);
 });

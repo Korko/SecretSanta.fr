@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\EncryptedString;
+use App\Events\DrawDeleted;
 use App\Services\DrawHandler;
 use DateInterval;
 use DateTime;
@@ -47,6 +48,13 @@ class Draw extends Model
      */
     protected $guarded = [];
 
+    protected static function booted()
+    {
+        static::deleting(function ($draw) {
+            $draw->participants->each->delete();
+        });
+    }
+
     public function save(array $options = [])
     {
         $this->expires_at = $this->expires_at ?: (new DateTime('now'))->add(new DateInterval('P7D'));
@@ -56,8 +64,9 @@ class Draw extends Model
 
     public static function cleanup()
     {
-        self::where('expires_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.(self::WEEKS_BEFORE_DELETION * 7).'D')))
-            ->delete();
+        // Do not directly use ->delete() on the query to trigger the deleted event to cleanup the rest of the data
+        self::where('expires_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.(self::WEEKS_BEFORE_DELETION * 7).'D')))->get()
+            ->each->delete();
     }
 
     public function participants()

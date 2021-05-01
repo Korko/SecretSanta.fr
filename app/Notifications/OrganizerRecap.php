@@ -2,17 +2,16 @@
 
 namespace App\Notifications;
 
-use App\Channels\MailChannel;
-use App\Mail\OrganizerRecap as OrganizerRecapMailable;
+use App;
 use App\Models\Participant;
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
+use DrawCrypt;
 //Illuminate/Contracts/Queue/ShouldBeEncrypted
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 
 class OrganizerRecap extends Notification
 {
-    use Queueable;
-
     /**
      * Get the notification's delivery channels.
      *
@@ -21,7 +20,7 @@ class OrganizerRecap extends Notification
      */
     public function via(Participant $organizer)
     {
-        return [MailChannel::class];
+        return ['mail'];
     }
 
     /**
@@ -32,7 +31,14 @@ class OrganizerRecap extends Notification
      */
     public function toMail(Participant $organizer)
     {
-        return (new OrganizerRecapMailable($organizer->draw))
-            ->to($organizer);
+        return (new MailMessage)
+            ->subject(__('emails.organizer_recap_title', ['draw' => $organizer->draw->id]))
+            ->view('emails.organizer_recap', [
+                'organizerName' => $organizer->name,
+                'expirationDate' => $organizer->draw->expires_at->locale(App::getLocale())->isoFormat('LL'),
+                'deletionDate' => $organizer->draw->deleted_at->locale(App::getLocale())->isoFormat('LL'),
+                'nextSolvable' => $organizer->draw->next_solvable,
+                'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $organizer->draw->hash]).'#'.base64_encode(DrawCrypt::getKey()),
+            ]);
     }
 }
