@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
 
 class Model extends BaseModel
 {
-    public $key;
+    public $iv;
 
     public function __serialize()
     {
-        $this->key = base64_encode(DrawCrypt::getKey());
+        $this->iv = base64_encode(DrawCrypt::getIV());
         return parent::__serialize();
     }
 
     public function __unserialize(array $data)
     {
         $values = parent::__unserialize($data);
-        DrawCrypt::setKey(base64_decode($this->key));
+        DrawCrypt::setKey(base64_decode($this->iv));
         return $values;
     }
 }

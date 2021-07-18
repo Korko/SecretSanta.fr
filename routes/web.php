@@ -33,7 +33,7 @@ Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view']
         return response()->view('missingDraw', [], 404);
     });
 
-Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function () {
+Route::middleware(['signed', 'decrypt.iv:participant,name'])->group(function () {
     Route::get('/participant/{participant:hash}', [DearSantaController::class, 'fetch'])->name('dearsanta.fetch');
     Route::post('/dearsanta/{participant:hash}', [DearSantaController::class, 'handle'])->name('dearsanta.contact');
     Route::get('/dearsanta/{participant:hash}/fetchState', [DearSantaController::class, 'fetchState'])->name('dearsanta.fetchState');
@@ -44,14 +44,14 @@ Route::get('/org/{draw:hash}', [OrganizerController::class, 'view'])->name('orga
         return response()->view('missingDraw', [], 404);
     });
 
-Route::middleware(['signed', 'decrypt.key:draw,mail_title'])->group(function () {
+Route::middleware(['signed', 'decrypt.iv:draw,mail_title'])->group(function () {
     Route::get('/draw/{draw:hash}', [OrganizerController::class, 'fetch'])->name('organizerPanel.fetch');
     Route::delete('/draw/{draw:hash}', [OrganizerController::class, 'delete'])->name('organizerPanel.delete');
     Route::get('/draw/{draw:hash}/csvInit', [OrganizerController::class, 'csvInit'])->name('organizerPanel.csvInit');
     Route::get('/draw/{draw:hash}/csvFinal', [OrganizerController::class, 'csvFinal'])->name('organizerPanel.csvFinal');
     Route::get('/org/{draw:hash}/fetchState', [OrganizerController::class, 'fetchState'])->name('organizerPanel.fetchState');
 });
-Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function () {
+Route::middleware(['signed', 'decrypt.iv:participant,name'])->group(function () {
     Route::post('/org/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
 });
 

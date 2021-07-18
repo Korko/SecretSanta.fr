@@ -38,7 +38,7 @@ class OrganizerRecap extends Notification
                 'expirationDate' => $organizer->draw->expires_at->locale(App::getLocale())->isoFormat('LL'),
                 'deletionDate' => $organizer->draw->deleted_at->locale(App::getLocale())->isoFormat('LL'),
                 'nextSolvable' => $organizer->draw->next_solvable,
-                'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $organizer->draw->hash]).'#'.base64_encode(DrawCrypt::getKey()),
+                'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $organizer->draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
             ]);
     }
 }
