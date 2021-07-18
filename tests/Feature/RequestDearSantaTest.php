@@ -16,12 +16,12 @@ it('send to each participant a link to write to their santa', function () {
         Notification::assertSentTo($participant, function (TargetDrawn $notification) use ($participant) {
             $link = $notification->toMail($participant)->data()['dearSantaLink'];
 
-            // Check the dearsanta link is valid
+            // Check the dearSanta link is valid
             test()->get($link)->assertSuccessful();
 
             // Check link can be used for support
             $path = parse_url($link, PHP_URL_PATH);
-            $guessedParticipant = URLParser::parseByName('dearsanta', $path)->participant;
+            $guessedParticipant = URLParser::parseByName('dearSanta', $path)->participant;
             assertEquals($participant->id, $guessedParticipant->id);
 
             return true;

@@ -34,7 +34,7 @@ class DearSantaRequest extends Request
     public function messages()
     {
         return [
-            'content.required' => __('validation.custom.dearsanta.content.required'),
+            'content.required' => __('validation.custom.dearSanta.content.required'),
         ];
     }
 }

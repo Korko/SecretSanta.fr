@@ -13,8 +13,8 @@ test('the organizer can send again the target drawn email', function () {
     $participant = $draw->participants->random();
 
     $path = URL::signedRoute('organizerPanel.changeEmail', [
-        'draw' => $draw->hash,
-        'participant' => $participant->id,
+        'draw' => $draw,
+        'participant' => $participant,
     ]);
 
     ajaxPost($path, ['email' => $participant->email])
@@ -33,8 +33,8 @@ test('the organizer can change a participant\'s email', function () {
     $participant = $draw->participants->random();
 
     $path = URL::signedRoute('organizerPanel.changeEmail', [
-        'draw' => $draw->hash,
-        'participant' => $participant->id,
+        'draw' => $draw,
+        'participant' => $participant,
     ]);
 
     ajaxPost($path, ['email' => 'test@test2.com'])
@@ -57,7 +57,7 @@ test('the organizer can download initial data', function () {
         ->create();
 
     $path = URL::signedRoute('organizerPanel.csvInit', [
-        'draw' => $draw->hash,
+        'draw' => $draw,
     ]);
 
     ajaxGet($path)
@@ -71,7 +71,7 @@ test('the organizer cannot download total data if the draw is not expired', func
         ->create();
 
     $path = URL::signedRoute('organizerPanel.csvFinal', [
-        'draw' => $draw->hash,
+        'draw' => $draw,
     ]);
 
     ajaxGet($path)->assertStatus(403);
@@ -84,7 +84,7 @@ test('the organizer can download total data if the draw is expired', function ()
         ->create();
 
     $path = URL::signedRoute('organizerPanel.csvFinal', [
-        'draw' => $draw->hash,
+        'draw' => $draw,
     ]);
 
     ajaxGet($path)
@@ -98,7 +98,7 @@ test('the organizer can delete all data before expiration', function () {
         ->create();
 
     $path = URL::signedRoute('organizerPanel.delete', [
-        'draw' => $draw->hash,
+        'draw' => $draw,
     ]);
 
     ajaxDelete($path)
@@ -115,7 +115,7 @@ test('the organizer can delete all data after expiration', function () {
         ->create();
 
     $path = URL::signedRoute('organizerPanel.delete', [
-        'draw' => $draw->hash,
+        'draw' => $draw,
     ]);
 
     ajaxDelete($path)

@@ -34,7 +34,7 @@ class FixOrganizer extends Command
     {
         $this->setCryptKeyFromUrl($this->argument('url'));
 
-        $draw = URLParser::parseByName('dearsanta', $this->argument('url'))->participant->draw;
+        $draw = URLParser::parseByName('dearSanta', $this->argument('url'))->participant->draw;
 
         $draw->organizer->email = $this->argument('email');
         $draw->organizer->save();

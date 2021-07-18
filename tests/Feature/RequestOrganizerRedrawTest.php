@@ -16,7 +16,7 @@ test('the organizer can organize a redraw', function () {
     assertFalse($draw->fresh()->redraw);
 
     $path = URL::signedRoute('organizerPanel.suggestRedraw', [
-        'draw' => $draw->hash
+        'draw' => $draw
     ]);
 
     ajaxGet($path)
@@ -36,7 +36,7 @@ test('the organizer cannot organize a redraw if only one solution possible', fun
     assertFalse($draw->fresh()->redraw);
 
     $path = URL::signedRoute('organizerPanel.suggestRedraw', [
-        'draw' => $draw->hash
+        'draw' => $draw
     ]);
 
     ajaxGet($path)
@@ -54,7 +54,7 @@ test('participants can accept the redraw by mail', function () {
         ->create();
 
     $path = URL::signedRoute('organizerPanel.suggestRedraw', [
-        'draw' => $draw->hash
+        'draw' => $draw
     ]);
     ajaxGet($path)
         ->assertSuccessful()
@@ -86,7 +86,7 @@ test('participants cannot accept the redraw if closed', function () {
         ->create();
 
     $path = URL::signedRoute('organizerPanel.suggestRedraw', [
-        'draw' => $draw->hash
+        'draw' => $draw
     ]);
     ajaxGet($path)
         ->assertSuccessful()
@@ -147,7 +147,7 @@ test('the organizer can process the redraw', function () {
     Notification::assertTimesSent(count($draw->participants), TargetDrawn::class);
 
     $path = URL::signedRoute('organizerPanel.redraw', [
-        'draw' => $draw->hash
+        'draw' => $draw
     ]);
     ajaxGet($path)
         ->assertSuccessful()

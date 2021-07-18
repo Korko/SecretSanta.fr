@@ -6,6 +6,10 @@ use App\Casts\EncryptedString;
 
 class DearSanta extends Model
 {
+    use HashId;
+
+    protected $hashConnection = 'dearSanta';
+
     /**
      * The attributes that are mass assignable.
      *

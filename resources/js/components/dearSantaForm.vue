@@ -99,34 +99,34 @@
         <ajax-form :action="routes.contactUrl" :$v="$v" @success="success" @reset="reset" :autoReset="true">
             <fieldset>
                 <div class="form-group">
-                    <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
+                    <label for="mailContent">{{ $t('dearSanta.content.label') }}</label>
                     <div class="input-group">
                         <textarea
                             id="mailContent"
                             v-model="content"
                             name="content"
-                            :placeholder="$t('dearsanta.content.placeholder')"
+                            :placeholder="$t('dearSanta.content.placeholder')"
                             :class="{ 'form-control': true, 'is-invalid': $v.content.$error }"
                             :aria-invalid="$v.content.$error"
                             @blur="$v.content.$touch()"
                         />
-                        <div v-if="!$v.content.required" class="invalid-tooltip">{{ $t('validation.custom.dearsanta.content.required') }}</div>
+                        <div v-if="!$v.content.required" class="invalid-tooltip">{{ $t('validation.custom.dearSanta.content.required') }}</div>
                     </div>
                 </div>
             </fieldset>
         </ajax-form>
         <table class="table table-hover">
-            <caption>{{ $t('dearsanta.list.caption') }}</caption>
+            <caption>{{ $t('dearSanta.list.caption') }}</caption>
             <thead>
                 <tr class="table-active">
                     <th scope="col">
-                        {{ $t('dearsanta.list.date') }}
+                        {{ $t('dearSanta.list.date') }}
                     </th>
                     <th scope="col">
-                        {{ $t('dearsanta.list.body') }}
+                        {{ $t('dearSanta.list.body') }}
                     </th>
                     <th scope="col">
-                        {{ $t('dearsanta.list.status') }}
+                        {{ $t('dearSanta.list.status') }}
                     </th>
                 </tr>
             </thead>
@@ -138,7 +138,7 @@
                 </tr>
                 <tr v-if="emails.length === 0" class="no-email">
                     <td colspan="3">
-                        {{ $t('dearsanta.list.empty') }}
+                        {{ $t('dearSanta.list.empty') }}
                     </td>
                 </tr>
             </tbody>
