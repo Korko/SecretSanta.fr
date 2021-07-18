@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\Encrypter;
+use App\Services\IVEncrypter;
 use Illuminate\Encryption\EncryptionServiceProvider as ServiceProvider;
 
 class EncryptionServiceProvider extends ServiceProvider
@@ -18,8 +18,10 @@ class EncryptionServiceProvider extends ServiceProvider
          * Register another singleton to differenciate app encrypter (using the app_key)
          * and the draw encrypter (using a custom generated key)
          */
-        $this->app->singleton('draw-encrypter', function () {
-            return new Encrypter(Encrypter::generateKey('AES-256-CBC'), 'AES-256-CBC');
+        $this->app->singleton('draw-encrypter', function ($app) {
+            $config = $app->make('config')->get('app');
+
+            return new IVEncrypter($this->parseKey($config), $config['cipher']);
         });
     }
 }

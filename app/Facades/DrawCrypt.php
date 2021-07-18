@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string getKey()
  * @method static void setKey(string $key)
  *
- * @see \App\Services\Encrypter
+ * @see \App\Services\IVEncrypter
  */
 class DrawCrypt extends Facade
 {

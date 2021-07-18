@@ -28,7 +28,7 @@ class SuggestRedraw extends Mailable
         $this->organizerName = $participant->draw->organizer->name;
         $this->targetName = $participant->target->name;
 
-        $this->acceptLink = URL::signedRoute('acceptRedraw', ['participant' => $participant->hash]).'#'.base64_encode(DrawCrypt::getKey());
+        $this->acceptLink = URL::signedRoute('acceptRedraw', ['participant' => $participant->hash]).'#'.base64_encode(DrawCrypt::getIV());
     }
 
     /**

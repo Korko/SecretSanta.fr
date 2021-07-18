@@ -47,7 +47,7 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'signed'        => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle'      => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'decrypt.key'   => \App\Http\Middleware\HandleEncryptionKey::class,
+        'decrypt.iv'   => \App\Http\Middleware\HandleEncryptionIV::class,
     ];
 
     /**
@@ -62,7 +62,7 @@ class Kernel extends HttpKernel
         //\Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         //\App\Http\Middleware\EncryptCookies::class,
-        \App\Http\Middleware\HandleEncryptionKey::class,
+        \App\Http\Middleware\HandleEncryptionIV::class,
         //\App\Http\Middleware\VerifyCsrfToken::class,
     ];
 }

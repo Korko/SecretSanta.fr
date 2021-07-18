@@ -44,7 +44,7 @@ class TargetDrawn extends Notification
 
         $content = $this->parseKeywords($santa->draw->mail_body, $santa);
 
-        $url = URL::signedRoute('dearsanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getKey());
+        $url = URL::signedRoute('dearSanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
 
         return (new MailMessage)
             ->subject($title)

@@ -36,7 +36,7 @@ class SuggestRedraw extends Notification
                 'participantName' => $participant->name,
                 'organizerName' => $participant->draw->organizer->name,
                 'targetName' => $participant->target->name,
-                'acceptLink' => URL::signedRoute('acceptRedraw', ['participant' => $participant->hash]).'#'.base64_encode(DrawCrypt::getKey()),
+                'acceptLink' => URL::signedRoute('acceptRedraw', ['participant' => $participant->hash]).'#'.base64_encode(DrawCrypt::getIV()),
             ]);
     }
 }
