@@ -111,11 +111,11 @@
                     body: ''
                 };
                 if(this.data.finalCsvAvailable && !this.expired) {
-                    message.body = this.$t('organizer.purge.confirm.body_final'); // Won't be able to download final recap + dearsanta
+                    message.body = this.$t('organizer.purge.confirm.body_final'); // Won't be able to download final recap + dearSanta
                 } else if(this.expired) {
                     message.body = this.$t('organizer.purge.confirm.body_expired'); // Won't be able to download recap anymore
                 } else {
-                    message.body = this.$t('organizer.purge.confirm.body_nofinal'); // Won't be able to download recap anymore + Dearsanta
+                    message.body = this.$t('organizer.purge.confirm.body_nofinal'); // Won't be able to download recap anymore + DearSanta
                 }
 
                 this.$dialog
@@ -184,7 +184,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(participant, k) in data.participants" :key="participant.id">
+                <tr v-for="(participant, k) in data.participants" :key="participant.hash">
                     <td>{{ participant.name }}</td>
                     <td>
                         <input-edit

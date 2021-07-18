@@ -122,7 +122,7 @@ return [
                 ],
             ],
         ],
-        'dearsanta' => [
+        'dearSanta' => [
             'content' => [
                 'required' => 'Le contenu du message est requis.',
             ],

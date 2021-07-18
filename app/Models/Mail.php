@@ -73,7 +73,7 @@ class Mail extends Model
     }
 
     /**
-     * Get the parent mailable model (dearsanta or participant).
+     * Get the parent mailable model (dearSanta or participant).
      */
     public function mailable()
     {
