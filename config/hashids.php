@@ -48,6 +48,11 @@ return [
             'length' => '5',
         ],
 
+        'dearSanta' => [
+            'salt'   => env('HASHIDS_SALT_DEARSANTA', 'secretsanta-dearSanta'),
+            'length' => '5',
+        ],
+
         'bounce' => [
             'salt'   => env('HASHIDS_SALT_BOUNCE', 'secretsanta-bounce'),
             'length' => '10',

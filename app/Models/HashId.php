@@ -40,6 +40,7 @@ trait HashId
      */
     public function resolveRouteBinding($value, $field = null)
     {
+        $field = $field ?: $this->getRouteKeyName();
         $model = $field === 'hash' ?
             $this->findByHashOrFail($value) :
             parent::resolveRouteBinding($value, $field);
@@ -47,5 +48,15 @@ trait HashId
         abort_if($model === null, 404);
 
         return $model;
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'hash';
     }
 }

@@ -28,13 +28,13 @@ class OrganizerController extends Controller
             'expires_at' => $draw->expires_at,
             'deleted_at' => $draw->deleted_at,
             'participants' => $draw->participants->mapWithKeys(function ($participant) {
-                return [$participant->id => $participant->only([
-                    'id', 'name', 'email', 'mail',
+                return [$participant->hash => $participant->only([
+                    'hash', 'name', 'email', 'mail',
                 ])];
             }),
             'changeEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
                 return [
-                    $participant->id => URL::signedRoute('organizerPanel.changeEmail', [
+                    $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [
                         'draw' => $participant->draw, 'participant' => $participant
                     ])
                 ];
@@ -47,7 +47,7 @@ class OrganizerController extends Controller
     {
         return response()->json([
             'participants' => $draw->participants->mapWithKeys(function ($participant) {
-                return [$participant->id => $participant->only(['id', 'mail'])];
+                return [$participant->hash => $participant->only(['hash', 'mail'])];
             }),
         ]);
     }
@@ -70,7 +70,7 @@ class OrganizerController extends Controller
         $participant->notify(new TargetDrawn);
 
         return response()->json([
-            'message' => $message, 'participant' => $participant->only(['id', 'mail']),
+            'message' => $message, 'participant' => $participant->only(['hash', 'mail']),
         ]);
     }
 

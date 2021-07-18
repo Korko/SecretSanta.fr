@@ -1,12 +1,12 @@
-@extends('templates/fetcher', ['styles' => '/css/dearSanta.css', 'fetchUrl' => URL::signedRoute('dearsanta.fetch', ['participant' => $participant])])
+@extends('templates/fetcher', ['styles' => '/css/dearSanta.css', 'fetchUrl' => URL::signedRoute('dearSanta.fetch', ['participant' => $participant])])
 
 @section('script')
     @parent
 
     @javascript([
         'routes' => [
-            'contactUrl' => URL::signedRoute('dearsanta.contact', ['participant' => $participant]),
-            'fetchStateUrl' => URL::signedRoute('dearsanta.fetchState', ['participant' => $participant]),
+            'contactUrl' => URL::signedRoute('dearSanta.contact', ['participant' => $participant]),
+            'fetchStateUrl' => URL::signedRoute('dearSanta.fetchState', ['participant' => $participant]),
         ]
     ])
 

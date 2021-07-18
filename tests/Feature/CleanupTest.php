@@ -20,7 +20,7 @@ it('cleans up expired draws', function () {
 
 it('cleans up everything', function () {
     Draw::factory()->expired()->create();
-// TODO: need to create exclusions, dearsantas and mails
+// TODO: need to create exclusions, dearSantas and mails
     Draw::cleanup();
 
     assertEquals(0, Draw::count());

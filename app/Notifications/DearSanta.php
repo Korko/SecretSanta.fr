@@ -44,7 +44,7 @@ class DearSanta extends Notification
     {
         return (new MailMessage)
             ->subject(__('emails.dear_santa.title', ['draw' => $santa->draw->id]))
-            ->view('emails.dearsanta', [
+            ->view('emails.dearSanta', [
                 'content' => $this->dearSanta->mail_body,
                 'targetName' => $santa->target->name
             ]);

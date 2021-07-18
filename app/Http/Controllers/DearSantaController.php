@@ -25,7 +25,7 @@ class DearSantaController extends Controller
             'participant' => $participant->only(['hash', 'name']),
             'draw' => $participant->draw->mail_title,
             'organizer' => $participant->draw->organizer->name,
-            'emails' => $participant->dearSanta->mapWithKeys(function ($email) {
+            'emails' => $participant->dearSantas->mapWithKeys(function ($email) {
                 return [$email->id => $email->only(['id', 'mail_body', 'mail'])];
             }),
         ]);
@@ -34,8 +34,8 @@ class DearSantaController extends Controller
     public function fetchState(Participant $participant)
     {
         return response()->json([
-            'emails' => $participant->dearSanta->mapWithKeys(function ($email) {
-                return [$email->id => $email->only(['id', 'mail_body', 'mail'])];
+            'emails' => $participant->dearSantas->mapWithKeys(function ($dearSanta) {
+                return [$dearSanta->id => $dearSanta->only(['id', 'mail_body', 'mail'])];
             }),
         ]);
     }
@@ -47,7 +47,7 @@ class DearSantaController extends Controller
         $dearSanta->mail_body = $request->input('content');
         $dearSanta->save();
 
-        $participant->createMetric('dearsanta');
+        $participant->createMetric('dearSanta');
 
         $participant->santa->notify(new DearSantaNotification($dearSanta));
 
@@ -59,6 +59,6 @@ class DearSantaController extends Controller
                     'id', 'mail_body', 'mail',
                 ]),
             ]) :
-            redirect('/dearsanta/'.$participant->hash)->with('message', $message);
+            redirect('/dearSanta/'.$participant->hash)->with('message', $message);
     }
 }

@@ -37,7 +37,7 @@ class Participant extends Model
     protected static function booted()
     {
         static::deleting(function ($participant) {
-            $participant->dearSanta->each->delete();
+            $participant->dearSantas->each->delete();
             $participant->exclusions->each->delete();
             $participant->mail->delete();
         });
@@ -58,7 +58,7 @@ class Participant extends Model
         return $this->belongsTo(self::class, 'target_id');
     }
 
-    public function dearSanta()
+    public function dearSantas()
     {
         return $this->hasMany(DearSanta::class, 'sender_id')->with('mail');
     }
