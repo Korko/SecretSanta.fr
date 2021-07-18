@@ -8,11 +8,11 @@ import axios from 'axios';
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
- * Transmit Hash Key via request headers
+ * Transmit Hash IV via request headers
  */
-const key = window.location.hash.substr(1);
-if (key) {
-    axios.defaults.headers.common['X-HASH-KEY'] = key;
+const iv = window.location.hash.substr(1);
+if (iv) {
+    axios.defaults.headers.common['X-HASH-IV'] = iv;
 }
 
 import alertify from '../partials/alertify.js';
