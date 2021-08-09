@@ -55,7 +55,11 @@
         <div id="menu" class="navbar navbar-dark fixed-top navbar-expand-md" role="navigation">
             <nav id="navbar">
                 <div id="logo">
-                    <a href="/"><img src="/images/logo.png" /></a>
+                    <a href="/"><picture>
+                        <source srcset="/images/logo.webp" type="image/webp">
+                        <source srcset="/images/logo.png" type="image/png">
+                        <img src="/images/logo.png" />
+                    </picture></a>
                 </div>
                 @yield('navbar')
             </nav><!--/.navbar-collapse -->
