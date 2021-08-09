@@ -11070,9 +11070,9 @@ body::before {
 You also need to include this conditional style in the <head> of your HTML file to feed this style to IE 6 and lower and 8 and higher.
 
 <!--[if !IE 7]>
-	<style type="text/css">
-		#wrap {display: table;height: 100%}
-	</style>
+    <style type="text/css">
+        #wrap {display: table;height: 100%}
+    </style>
 <![endif]-->
 
 */
@@ -13500,12 +13500,16 @@ a.ui-button:active,
     02. Header
 ========================================================================== */
 #header {
-  background-image: url(/images/gifts-1.jpg);
+  background-image: url(/images/gifts-1.webp);
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
   background-repeat: no-repeat;
   position: relative;
+}
+
+body.nowebp #header {
+  background-image: url(/images/gifts-1.jpg);
 }
 
 #header .center {
@@ -13570,10 +13574,14 @@ a.ui-button:active,
     04. Parallax
 ========================================================================== */
 .parallax {
-  background: url(/images/gifts-2.jpg) fixed no-repeat center center;
+  background: url(/images/gifts-2.webp) fixed no-repeat center center;
   background-size: cover;
   position: relative;
   color: #fff;
+}
+
+body.nowebp .parallax {
+  background-image: url(/images/gifts-2.jpg);
 }
 
 .parallax .inner {
@@ -13582,6 +13590,10 @@ a.ui-button:active,
 }
 
 .parallax.parallax2 {
+  background-image: url(/images/gifts-3.webp);
+}
+
+body.nowebp .parallax.parallax2 {
   background-image: url(/images/gifts-3.jpg);
 }
 
@@ -13676,12 +13688,16 @@ fieldset > div.form-group {
 
 .input-group-addon.lang::before {
   background-repeat: no-repeat;
-  background-image: url(/images/languages.png);
+  background-image: url(/images/languages.webp);
   height: 11px;
   width: 14px;
   content: "";
   display: inline-block;
   margin-right: 8px;
+}
+
+body.nowebp .parallax {
+  background-image: url(/images/languages.png);
 }
 
 .input-group-addon.lang[lang=fr]::before {

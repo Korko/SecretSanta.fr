@@ -58528,7 +58528,7 @@ __webpack_require__.r(__webpack_exports__);
             }
           }
         },
-        "dearsanta": {
+        "dearSanta": {
           "content": {
             "required": "Le contenu du message est requis."
           }
@@ -58644,7 +58644,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
-    "dearsanta": {
+    "dearSanta": {
       "list": {
         "date": "Date d'envoi",
         "body": "Corps du message",

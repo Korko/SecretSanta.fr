@@ -88,30 +88,51 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_0__.default({
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   "fr": {
-    "common": {
-      "internal": "Une erreur est survenue",
-      "fetcher": {
-        "load": "Charger",
-        "loading": "Chargement en cours..."
+    "organizer": {
+      "list": {
+        "name": "Nom",
+        "email": "Adresse Email",
+        "status": "Status d'envoi de l'email",
+        "caption": "Liste des participants"
       },
-      "form": {
-        "send": "Envoyer",
-        "sending": "Envoi en cours",
-        "sent": "Envoyé",
-        "reset": "Recommencer"
+      "up_and_sent": "Modifié avec succès !",
+      "deleted": "Toutes les données ont été supprimées",
+      "download": {
+        "button": "Télécharger le récapitulatif",
+        "button-tooltip": "<h3>Récapitulatif</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
+        "button_initial": "Télécharger le récapitulatif initial",
+        "button_initial-tooltip": "<h3>Récapitulatif initial</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
+        "button_final": "Télécharger le récapitulatif complété",
+        "button_final-tooltip": "<h3>Récapitulatif complété</h3><p>Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.</p><p class=\"border border-white border-1 rounded pl-2 pr-2 font-italic\">Compte tenu de la date de l'évènement définie, cette fonctionnalité n'est disponible que du {expires_at} au {deleted_at}.</p>"
       },
-      "modal": {
-        "close": "Fermer"
-      },
-      "email": {
-        "redo": "Ré-envoyer",
-        "status": {
-          "created": "En attente d'envoi",
-          "sending": "Envoi en cours",
-          "sent": "Envoyé",
-          "error": "Erreur",
-          "received": "Reçu"
+      "purge": {
+        "button": "Supprimer tout",
+        "confirm": {
+          "title": "Êtes-vous sûr de vouloir supprimer la totalité des données avant le nettoyage automatique le {deletion} ?",
+          "body_final": "Vous ne pourrez plus télécharger le récapitulatif des tirages de cet évènement et les participants ne pourront plus écrire à leur père noël secret. Cette action ne peut être annulée.",
+          "body_expired": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement. Cette action ne peut être annulée.",
+          "body_nofinal": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement et les participants ne pourront plus écrire à leur père noël secret. Cette action ne peut être annulée.",
+          "value": "Supprimer toutes les données",
+          "help": "Saisir \"[+:verification]\" en dessous pour confirmer.",
+          "ok": "Ok",
+          "cancel": "Annuler"
         }
+      },
+      "suggest_redraw": {
+        "button": "Proposer un nouveau tirage",
+        "confirm": {
+          "title": "Vous vous apprétez à proposer aux participants de changer de cible",
+          "body": "Chaque participant (vous y-compris) recevra un email lui demandant si il veut relancer l'aléatoire et potentiellement piocher le nom de quelqu'un d'autre. Une fois qu'il existe au moins une autre possibilité de cibles (en fonction des exclusions définies au début), vous pourrez clicker sur le bouton \"Lancer le nouveau tirage\" ici même. En attendant, il sera inactif.",
+          "ok": "Envoyer la proposition",
+          "cancel": "Annuler"
+        },
+        "message": "Les participants ont été prévenu de la proposition"
+      },
+      "redraw": {
+        "button": "Lancer le nouveau tirage",
+        "confirm": [],
+        "disabled": "Trop peu de participants ont accepté le nouveau tirage pour avoir de nouvelles cibles.",
+        "message": "Les participants volontaires ont correctement reçu une nouvelle cible."
       }
     },
     "faq": {
@@ -143,157 +164,30 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
-    "organizer": {
-      "list": {
-        "name": "Nom",
-        "email": "Adresse Email",
-        "status": "Status d'envoi de l'email",
-        "caption": "Liste des participants"
+    "common": {
+      "internal": "Une erreur est survenue",
+      "fetcher": {
+        "load": "Charger",
+        "loading": "Chargement en cours..."
       },
-      "up_and_sent": "Modifié avec succès !",
-      "deleted": "Toutes les données ont été supprimées",
-      "download": {
-        "button": "Télécharger le récapitulatif",
-        "button-tooltip": "<h3>Récapitulatif</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
-        "button_initial": "Télécharger le récapitulatif initial",
-        "button_initial-tooltip": "<h3>Récapitulatif initial</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
-        "button_final": "Télécharger le récapitulatif complété",
-        "button_final-tooltip": "<h3>Récapitulatif complété</h3><p>Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.</p><p>Compte tenu de la date de l'évènement définie, <span class=\"font-italic\">cette fonctionnalité n'est disponible que du {expires_at} au {deleted_at}.</span></p>"
+      "form": {
+        "send": "Envoyer",
+        "sending": "Envoi en cours",
+        "sent": "Envoyé",
+        "reset": "Recommencer"
       },
-      "purge": {
-        "button": "Supprimer tout",
-        "confirm": {
-          "title": "Êtes-vous sûr de vouloir supprimer la totalité des données avant le nettoyage automatique le {deletion} ?",
-          "body_final": "Vous ne pourrez plus télécharger le récapitulatif des tirages de cet évènement et les participants ne pourront plus écrire à leur père noël secret. Cette action ne peut être annulée.",
-          "body_expired": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement. Cette action ne peut être annulée.",
-          "body_nofinal": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement et les participants ne pourront plus écrire à leur père noël secret. Cette action ne peut être annulée.",
-          "value": "Supprimer toutes les données",
-          "help": "Saisir \"[+:verification]\" en dessous pour confirmer.",
-          "ok": "Ok",
-          "cancel": "Annuler"
+      "modal": {
+        "close": "Fermer"
+      },
+      "email": {
+        "redo": "Ré-envoyer",
+        "status": {
+          "created": "En attente d'envoi",
+          "sending": "Envoi en cours",
+          "sent": "Envoyé",
+          "error": "Erreur",
+          "received": "Reçu"
         }
-      },
-      "suggest_redraw": {
-        "button": "Proposer un nouveau tirage",
-        "confirm": {
-          "title": "Vous vous apprétez à proposer aux participants de changer de cible",
-          "body": "Chaque participant (vous y-compris) recevra un email lui demandant si il veut relancer l'aléatoire et potentiellement piocher le nom de quelqu'un d'autre.\nUne fois qu'il existe au moins une autre possibilité de cibles (en fonction des exclusions définies au début), vous pourrez clicker sur le bouton \"Lancer le nouveau tirage\" ici même. En attendant, il sera inactif.",
-          "ok": "Envoyer la proposition",
-          "cancel": "Annuler"
-        }
-      },
-      "redraw": {
-        "button": "Lancer le nouveau tirage",
-        "confirm": []
-      }
-    },
-    "form": {
-      "nav": {
-        "what": "Qu'est-ce que c'est ?",
-        "how": "Comment faire ?",
-        "go": "Allez, c'est parti !",
-        "faq": "Foire Aux Questions"
-      },
-      "title": "Secret Santa .fr",
-      "subtitle": "Offrez-vous des cadeaux... secrètement !",
-      "fyi": "Pour votre information",
-      "section": {
-        "what": {
-          "title": "Qu'est-ce que c'est ?",
-          "subtitle": "Description du Secret Santa",
-          "heading1": "Le principe",
-          "content1": "Secret Santa est un moyen drôle et original de s'offrir anonymement des cadeaux entre amis, collègues...\nLe déroulement est simple : chaque participant reçoit, de façon aléatoire, le nom de la personne à qui il devra faire un cadeau.\nLe montant du cadeau est généralement fixé au préalable (2€, 5€, 10€...)\nLe but n'est pas forcément de faire un beau cadeau mais d'être créatif !",
-          "notice": "secretsanta.fr est entièrement gratuit et sans publicité.\nTout est payé par le développeur lui-même.\nSi cet outil vous plait, pensez à faire un don.\n{button}"
-        },
-        "how": {
-          "title": "Comment faire ?",
-          "subtitle": "Vous allez voir, c'est très simple !",
-          "heading1": "Première étape : lister les participants",
-          "content1": "Grâce aux boutons \"Ajouter un participant\" et \"Enlever un participant\", il est possible d'ajuster le nombre de personnes.\nPour chaque personne, indiquez un nom/prénom ou un pseudonyme, et une adresse email. Deux participants ne peuvent avoir le même nom, sinon il est impossible de les différencier.\nA noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se piocher elle-même.",
-          "heading2": "Deuxième étape : préciser les exclusions",
-          "content2": "Ajoutez des exclusions. Si vous ne voulez pas que deux participants puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
-          "heading3": "Troisième étape : préparer l'e-mail",
-          "content3": "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participants recevront.\nLe mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".\n(Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
-          "notice": "secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.\nCelles-ci sont chiffrées pour être inutilisables sans action de votre part.\nAucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.\nLe code source est disponible sur {link}",
-          "heading4": "Et après ?",
-          "content4": "Jusqu'au jour de l'évènement spécifiée à la fin, les participants peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email. Mais celui-ci ne peut pas répondre, au risque de dévoiler son identité.\nL'organisateur dispose aussi d'une interface dédiée pour retrouver le récapitulatif des participants et des exclusions."
-        },
-        "go": {
-          "title": "À vous de jouer !",
-          "subtitle": "Remplissez, cliquez et c'est parti !"
-        }
-      },
-      "waiting": "Formulaire en cours de création. Si ce message reste affiché, essayez de rafraichir la page, sinon contactez moi par mail (<a href=\"mailto:&#x6a;&#x65;&#x72;&#x65;&#x6d;&#x79;&#x2e;&#x6c;&#x65;&#x6d;&#x65;&#x73;&#x6c;&#x65;&#x40;&#x6b;&#x6f;&#x72;&#x6b;&#x6f;&#x2e;&#x66;&#x72;\">&#x6a;&#x65;&#x72;&#x65;&#x6d;&#x79;&#x2e;&#x6c;&#x65;&#x6d;&#x65;&#x73;&#x6c;&#x65;&#x40;&#x6b;&#x6f;&#x72;&#x6b;&#x6f;&#x2e;&#x66;&#x72;</a>) ou via <a href=\"https://github.com/Korko\">GitHub</a>. Merci.",
-      "success": "Envoyé avec succès !",
-      "participants": {
-        "title": "Détails des participants",
-        "import": "Importer depuis un fichier",
-        "importing": "Import en cours",
-        "caption": "Liste des participats"
-      },
-      "participant": {
-        "organizer": "Organisateur",
-        "name": {
-          "label": "Nom ou pseudonyme",
-          "placeholder": "exemple : Paul ou Korko"
-        },
-        "email": {
-          "label": "Adresse e-mail",
-          "placeholder": "exemple : michel@aol.com"
-        },
-        "exclusions": {
-          "label": "Exclusions",
-          "placeholder": "Aucune exclusion",
-          "noOptions": "Liste vide",
-          "noResult": "Aucun résultat"
-        },
-        "remove": "Enlever",
-        "add": "Ajouter un participant"
-      },
-      "csv": {
-        "title": "Importer une liste de participants depuis un fichier CSV",
-        "help": "Comment créer un fichier CSV avec {excel} Microsoft Office Excel {elink} ou {calc} Libre Office Calc {elink}",
-        "format": "Afin que votre fichier CSV fonctionne, voici le format attendu :",
-        "column1": "Nom du participant",
-        "column2": "Adresse e-mail",
-        "column3": "Exclusions (noms séparés par une virgule)",
-        "warning": "Attention, l'import de ces données supprimera les participants déjà renseignés.",
-        "cancel": "Annuler",
-        "import": "Importer",
-        "importError": "Une erreur est survenue lors de l'import.",
-        "importSuccess": "L'import a été effectué avec succès."
-      },
-      "mail": {
-        "title": {
-          "label": "Titre du mail",
-          "placeholder": "ex : Soirée secretsanta du 23 décembre chez Martin, {SANTA} ta cible est..."
-        },
-        "content": {
-          "label": "Contenu du mail",
-          "placeholder": "ex : Salut {SANTA}, pour la soirée secret santa, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !",
-          "tip1": "Utilisez \"{santa}&#123;SANTA&#125;{close}\" pour le nom de celui qui recevra le mail et \"{target}&#123;TARGET&#125;{close}\" pour le nom de sa cible.",
-          "tip2": "Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau."
-        },
-        "post": "----\nPour écrire à votre Secret Santa, allez sur la page suivante : {link}\nvia SecretSanta.fr"
-      },
-      "data-expiration": "Date de l'évènement : ",
-      "data-expiration-tooltip": "<h3>Date de l'évènement</h3><ul><li>Une interface dédiée vous permettra d'accéder à un récapitulatif des participants jusqu'au jour de l'évènement.</li><li>Toutes les données stockées seront supprimées une semaine après.</li></ul>",
-      "submit": "Lancez l'aléatoire !",
-      "paypal": {
-        "alt": "PayPal, le réflexe sécurité pour payer en ligne"
-      }
-    },
-    "dearsanta": {
-      "list": {
-        "date": "Date d'envoi",
-        "body": "Corps du message",
-        "status": "Status de réception de l'email",
-        "empty": "Aucun email envoyé pour le moment",
-        "caption": "Liste des emails envoyés au Père Noël"
-      },
-      "content": {
-        "label": "Contenu du mail",
-        "placeholder": "Cher Papa Noël..."
       }
     },
     "validation": {
@@ -393,7 +287,7 @@ __webpack_require__.r(__webpack_exports__);
             }
           }
         },
-        "dearsanta": {
+        "dearSanta": {
           "content": {
             "required": "Le contenu du message est requis."
           }
@@ -436,6 +330,102 @@ __webpack_require__.r(__webpack_exports__);
         "available": "Disponible",
         "size": "Taille",
         "g-recaptcha-response": "Recaptcha"
+      }
+    },
+    "form": {
+      "nav": {
+        "what": "Qu'est-ce que c'est ?",
+        "how": "Comment faire ?",
+        "go": "Allez, c'est parti !",
+        "faq": "Foire Aux Questions"
+      },
+      "title": "Secret Santa .fr",
+      "subtitle": "Offrez-vous des cadeaux... secrètement !",
+      "fyi": "Pour votre information",
+      "section": {
+        "what": {
+          "title": "Qu'est-ce que c'est ?",
+          "subtitle": "Description du Secret Santa",
+          "heading1": "Le principe",
+          "content1": "Secret Santa est un moyen drôle et original de s'offrir anonymement des cadeaux entre amis, collègues...\nLe déroulement est simple : chaque participant reçoit, de façon aléatoire, le nom de la personne à qui il devra faire un cadeau.\nLe montant du cadeau est généralement fixé au préalable (2€, 5€, 10€...)\nLe but n'est pas forcément de faire un beau cadeau mais d'être créatif !",
+          "notice": "secretsanta.fr est entièrement gratuit et sans publicité.\nTout est payé par le développeur lui-même.\nSi cet outil vous plait, pensez à faire un don.\n{button}"
+        },
+        "how": {
+          "title": "Comment faire ?",
+          "subtitle": "Vous allez voir, c'est très simple !",
+          "heading1": "Première étape : lister les participants",
+          "content1": "Grâce aux boutons \"Ajouter un participant\" et \"Enlever un participant\", il est possible d'ajuster le nombre de personnes.\nPour chaque personne, indiquez un nom/prénom ou un pseudonyme, et une adresse email. Deux participants ne peuvent avoir le même nom, sinon il est impossible de les différencier.\nA noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se piocher elle-même.",
+          "heading2": "Deuxième étape : préciser les exclusions",
+          "content2": "Ajoutez des exclusions. Si vous ne voulez pas que deux participants puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
+          "heading3": "Troisième étape : préparer l'e-mail",
+          "content3": "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participants recevront.\nLe mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".\n(Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
+          "notice": "secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.\nCelles-ci sont chiffrées pour être inutilisables sans action de votre part.\nAucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.\nLe code source est disponible sur {link}",
+          "heading4": "Et après ?",
+          "content4": "Jusqu'au jour de l'évènement spécifiée à la fin, les participants peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email. Mais celui-ci ne peut pas répondre, au risque de dévoiler son identité.\nL'organisateur dispose aussi d'une interface dédiée pour retrouver le récapitulatif des participants et des exclusions."
+        },
+        "go": {
+          "title": "À vous de jouer !",
+          "subtitle": "Remplissez, cliquez et c'est parti !"
+        }
+      },
+      "waiting": "Formulaire en cours de création. Si ce message reste affiché, essayez de rafraichir la page, sinon contactez moi par mail (<a href=\"mailto:&#x6a;&#x65;&#x72;&#x65;&#x6d;&#x79;&#x2e;&#x6c;&#x65;&#x6d;&#x65;&#x73;&#x6c;&#x65;&#x40;&#x6b;&#x6f;&#x72;&#x6b;&#x6f;&#x2e;&#x66;&#x72;\">&#x6a;&#x65;&#x72;&#x65;&#x6d;&#x79;&#x2e;&#x6c;&#x65;&#x6d;&#x65;&#x73;&#x6c;&#x65;&#x40;&#x6b;&#x6f;&#x72;&#x6b;&#x6f;&#x2e;&#x66;&#x72;</a>) ou via <a href=\"https://github.com/Korko\">GitHub</a>. Merci.",
+      "success": "Envoyé avec succès !",
+      "participants": {
+        "title": "Détails des participants",
+        "import": "Importer depuis un fichier",
+        "importing": "Import en cours",
+        "caption": "Liste des participats"
+      },
+      "participant": {
+        "organizer": "Organisateur",
+        "name": {
+          "label": "Nom ou pseudonyme",
+          "placeholder": "exemple : Paul ou Korko"
+        },
+        "email": {
+          "label": "Adresse e-mail",
+          "placeholder": "exemple : michel@aol.com"
+        },
+        "exclusions": {
+          "label": "Exclusions",
+          "placeholder": "Aucune exclusion",
+          "noOptions": "Liste vide",
+          "noResult": "Aucun résultat"
+        },
+        "remove": "Enlever",
+        "add": "Ajouter un participant"
+      },
+      "csv": {
+        "title": "Importer une liste de participants depuis un fichier CSV",
+        "help": "Comment créer un fichier CSV avec {excel} Microsoft Office Excel {elink} ou {calc} Libre Office Calc {elink}",
+        "format": "Afin que votre fichier CSV fonctionne, voici le format attendu :",
+        "column1": "Nom du participant",
+        "column2": "Adresse e-mail",
+        "column3": "Exclusions (noms séparés par une virgule)",
+        "warning": "Attention, l'import de ces données supprimera les participants déjà renseignés.",
+        "cancel": "Annuler",
+        "import": "Importer",
+        "importError": "Une erreur est survenue lors de l'import.",
+        "importSuccess": "L'import a été effectué avec succès."
+      },
+      "mail": {
+        "title": {
+          "label": "Titre du mail",
+          "placeholder": "ex : Soirée secretsanta du 23 décembre chez Martin, {SANTA} ta cible est..."
+        },
+        "content": {
+          "label": "Contenu du mail",
+          "placeholder": "ex : Salut {SANTA}, pour la soirée secret santa, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !",
+          "tip1": "Utilisez \"{santa}&#123;SANTA&#125;{close}\" pour le nom de celui qui recevra le mail et \"{target}&#123;TARGET&#125;{close}\" pour le nom de sa cible.",
+          "tip2": "Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau."
+        },
+        "post": "----\nPour écrire à votre Secret Santa, allez sur la page suivante : {link}\nvia SecretSanta.fr"
+      },
+      "data-expiration": "Date de l'évènement : ",
+      "data-expiration-tooltip": "<h3>Date de l'évènement</h3><ul><li>Une interface dédiée vous permettra d'accéder à un récapitulatif des participants jusqu'au jour de l'évènement.</li><li>Toutes les données stockées seront supprimées une semaine après.</li></ul>",
+      "submit": "Lancez l'aléatoire !",
+      "paypal": {
+        "alt": "PayPal, le réflexe sécurité pour payer en ligne"
       }
     }
   }
@@ -616,6 +606,50 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/engine-user-agent.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js/internals/engine-user-agent.js ***!
+  \*************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var getBuiltIn = __webpack_require__(/*! ../internals/get-built-in */ "./node_modules/core-js/internals/get-built-in.js");
+
+module.exports = getBuiltIn('navigator', 'userAgent') || '';
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/engine-v8-version.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js/internals/engine-v8-version.js ***!
+  \*************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
+var userAgent = __webpack_require__(/*! ../internals/engine-user-agent */ "./node_modules/core-js/internals/engine-user-agent.js");
+
+var process = global.process;
+var Deno = global.Deno;
+var versions = process && process.versions || Deno && Deno.version;
+var v8 = versions && versions.v8;
+var match, version;
+
+if (v8) {
+  match = v8.split('.');
+  version = match[0] < 4 ? 1 : match[0] + match[1];
+} else if (userAgent) {
+  match = userAgent.match(/Edge\/(\d+)/);
+  if (!match || match[1] >= 74) {
+    match = userAgent.match(/Chrome\/(\d+)/);
+    if (match) version = match[1];
+  }
+}
+
+module.exports = version && +version;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/enum-bug-keys.js":
 /*!*********************************************************!*\
   !*** ./node_modules/core-js/internals/enum-bug-keys.js ***!
@@ -723,7 +757,6 @@ module.exports = function (exec) {
   \********************************************************/
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
-var path = __webpack_require__(/*! ../internals/path */ "./node_modules/core-js/internals/path.js");
 var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 
 var aFunction = function (variable) {
@@ -731,8 +764,7 @@ var aFunction = function (variable) {
 };
 
 module.exports = function (namespace, method) {
-  return arguments.length < 2 ? aFunction(path[namespace]) || aFunction(global[namespace])
-    : path[namespace] && path[namespace][method] || global[namespace] && global[namespace][method];
+  return arguments.length < 2 ? aFunction(global[namespace]) : global[namespace] && global[namespace][method];
 };
 
 
@@ -772,7 +804,7 @@ var toObject = __webpack_require__(/*! ../internals/to-object */ "./node_modules
 
 var hasOwnProperty = {}.hasOwnProperty;
 
-module.exports = function hasOwn(it, key) {
+module.exports = Object.hasOwn || function hasOwn(it, key) {
   return hasOwnProperty.call(toObject(it), key);
 };
 
@@ -844,7 +876,7 @@ var store = __webpack_require__(/*! ../internals/shared-store */ "./node_modules
 
 var functionToString = Function.toString;
 
-// this helper broken in `3.4.1-3.4.4`, so we can't use `shared` helper
+// this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
 if (typeof store.inspectSource != 'function') {
   store.inspectSource = function (it) {
     return functionToString.call(it);
@@ -888,7 +920,7 @@ var getterFor = function (TYPE) {
   };
 };
 
-if (NATIVE_WEAK_MAP) {
+if (NATIVE_WEAK_MAP || shared.state) {
   var store = shared.state || (shared.state = new WeakMap());
   var wmget = store.get;
   var wmhas = store.has;
@@ -988,6 +1020,48 @@ module.exports = false;
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/is-symbol.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/core-js/internals/is-symbol.js ***!
+  \*****************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var getBuiltIn = __webpack_require__(/*! ../internals/get-built-in */ "./node_modules/core-js/internals/get-built-in.js");
+var USE_SYMBOL_AS_UID = __webpack_require__(/*! ../internals/use-symbol-as-uid */ "./node_modules/core-js/internals/use-symbol-as-uid.js");
+
+module.exports = USE_SYMBOL_AS_UID ? function (it) {
+  return typeof it == 'symbol';
+} : function (it) {
+  var $Symbol = getBuiltIn('Symbol');
+  return typeof $Symbol == 'function' && Object(it) instanceof $Symbol;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/native-symbol.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js/internals/native-symbol.js ***!
+  \*********************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+/* eslint-disable es/no-symbol -- required for testing */
+var V8_VERSION = __webpack_require__(/*! ../internals/engine-v8-version */ "./node_modules/core-js/internals/engine-v8-version.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
+
+// eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
+module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
+  var symbol = Symbol();
+  // Chrome 38 Symbol has incorrect toString conversion
+  // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
+  return !String(symbol) || !(Object(symbol) instanceof Symbol) ||
+    // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
+    !Symbol.sham && V8_VERSION && V8_VERSION < 41;
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/native-weak-map.js":
 /*!***********************************************************!*\
   !*** ./node_modules/core-js/internals/native-weak-map.js ***!
@@ -1013,7 +1087,7 @@ module.exports = typeof WeakMap === 'function' && /native code/.test(inspectSour
 var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js/internals/descriptors.js");
 var IE8_DOM_DEFINE = __webpack_require__(/*! ../internals/ie8-dom-define */ "./node_modules/core-js/internals/ie8-dom-define.js");
 var anObject = __webpack_require__(/*! ../internals/an-object */ "./node_modules/core-js/internals/an-object.js");
-var toPrimitive = __webpack_require__(/*! ../internals/to-primitive */ "./node_modules/core-js/internals/to-primitive.js");
+var toPropertyKey = __webpack_require__(/*! ../internals/to-property-key */ "./node_modules/core-js/internals/to-property-key.js");
 
 // eslint-disable-next-line es/no-object-defineproperty -- safe
 var $defineProperty = Object.defineProperty;
@@ -1022,7 +1096,7 @@ var $defineProperty = Object.defineProperty;
 // https://tc39.es/ecma262/#sec-object.defineproperty
 exports.f = DESCRIPTORS ? $defineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
-  P = toPrimitive(P, true);
+  P = toPropertyKey(P);
   anObject(Attributes);
   if (IE8_DOM_DEFINE) try {
     return $defineProperty(O, P, Attributes);
@@ -1045,7 +1119,7 @@ var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_mo
 var propertyIsEnumerableModule = __webpack_require__(/*! ../internals/object-property-is-enumerable */ "./node_modules/core-js/internals/object-property-is-enumerable.js");
 var createPropertyDescriptor = __webpack_require__(/*! ../internals/create-property-descriptor */ "./node_modules/core-js/internals/create-property-descriptor.js");
 var toIndexedObject = __webpack_require__(/*! ../internals/to-indexed-object */ "./node_modules/core-js/internals/to-indexed-object.js");
-var toPrimitive = __webpack_require__(/*! ../internals/to-primitive */ "./node_modules/core-js/internals/to-primitive.js");
+var toPropertyKey = __webpack_require__(/*! ../internals/to-property-key */ "./node_modules/core-js/internals/to-property-key.js");
 var has = __webpack_require__(/*! ../internals/has */ "./node_modules/core-js/internals/has.js");
 var IE8_DOM_DEFINE = __webpack_require__(/*! ../internals/ie8-dom-define */ "./node_modules/core-js/internals/ie8-dom-define.js");
 
@@ -1056,7 +1130,7 @@ var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
 // https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
 exports.f = DESCRIPTORS ? $getOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
   O = toIndexedObject(O);
-  P = toPrimitive(P, true);
+  P = toPropertyKey(P);
   if (IE8_DOM_DEFINE) try {
     return $getOwnPropertyDescriptor(O, P);
   } catch (error) { /* empty */ }
@@ -1212,6 +1286,27 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/ordinary-to-primitive.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/core-js/internals/ordinary-to-primitive.js ***!
+  \*****************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
+
+// `OrdinaryToPrimitive` abstract operation
+// https://tc39.es/ecma262/#sec-ordinarytoprimitive
+module.exports = function (input, pref) {
+  var fn, val;
+  if (pref === 'string' && typeof (fn = input.toString) == 'function' && !isObject(val = fn.call(input))) return val;
+  if (typeof (fn = input.valueOf) == 'function' && !isObject(val = fn.call(input))) return val;
+  if (pref !== 'string' && typeof (fn = input.toString) == 'function' && !isObject(val = fn.call(input))) return val;
+  throw TypeError("Can't convert object to primitive value");
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/own-keys.js":
 /*!****************************************************!*\
   !*** ./node_modules/core-js/internals/own-keys.js ***!
@@ -1229,19 +1324,6 @@ module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
   var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
   return getOwnPropertySymbols ? keys.concat(getOwnPropertySymbols(it)) : keys;
 };
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/path.js":
-/*!************************************************!*\
-  !*** ./node_modules/core-js/internals/path.js ***!
-  \************************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
-
-module.exports = global;
 
 
 /***/ }),
@@ -1319,11 +1401,11 @@ module.exports = function (it) {
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
-var createNonEnumerableProperty = __webpack_require__(/*! ../internals/create-non-enumerable-property */ "./node_modules/core-js/internals/create-non-enumerable-property.js");
 
 module.exports = function (key, value) {
   try {
-    createNonEnumerableProperty(global, key, value);
+    // eslint-disable-next-line es/no-object-defineproperty -- safe
+    Object.defineProperty(global, key, { value: value, configurable: true, writable: true });
   } catch (error) {
     global[key] = value;
   } return value;
@@ -1379,7 +1461,7 @@ var store = __webpack_require__(/*! ../internals/shared-store */ "./node_modules
 (module.exports = function (key, value) {
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
-  version: '3.11.1',
+  version: '3.16.1',
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2021 Denis Pushkarev (zloirock.ru)'
 });
@@ -1487,18 +1569,45 @@ module.exports = function (argument) {
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
+var isSymbol = __webpack_require__(/*! ../internals/is-symbol */ "./node_modules/core-js/internals/is-symbol.js");
+var ordinaryToPrimitive = __webpack_require__(/*! ../internals/ordinary-to-primitive */ "./node_modules/core-js/internals/ordinary-to-primitive.js");
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
+
+var TO_PRIMITIVE = wellKnownSymbol('toPrimitive');
 
 // `ToPrimitive` abstract operation
 // https://tc39.es/ecma262/#sec-toprimitive
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
-module.exports = function (input, PREFERRED_STRING) {
-  if (!isObject(input)) return input;
-  var fn, val;
-  if (PREFERRED_STRING && typeof (fn = input.toString) == 'function' && !isObject(val = fn.call(input))) return val;
-  if (typeof (fn = input.valueOf) == 'function' && !isObject(val = fn.call(input))) return val;
-  if (!PREFERRED_STRING && typeof (fn = input.toString) == 'function' && !isObject(val = fn.call(input))) return val;
-  throw TypeError("Can't convert object to primitive value");
+module.exports = function (input, pref) {
+  if (!isObject(input) || isSymbol(input)) return input;
+  var exoticToPrim = input[TO_PRIMITIVE];
+  var result;
+  if (exoticToPrim !== undefined) {
+    if (pref === undefined) pref = 'default';
+    result = exoticToPrim.call(input, pref);
+    if (!isObject(result) || isSymbol(result)) return result;
+    throw TypeError("Can't convert object to primitive value");
+  }
+  if (pref === undefined) pref = 'number';
+  return ordinaryToPrimitive(input, pref);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/to-property-key.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/core-js/internals/to-property-key.js ***!
+  \***********************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var toPrimitive = __webpack_require__(/*! ../internals/to-primitive */ "./node_modules/core-js/internals/to-primitive.js");
+var isSymbol = __webpack_require__(/*! ../internals/is-symbol */ "./node_modules/core-js/internals/is-symbol.js");
+
+// `ToPropertyKey` abstract operation
+// https://tc39.es/ecma262/#sec-topropertykey
+module.exports = function (argument) {
+  var key = toPrimitive(argument, 'string');
+  return isSymbol(key) ? key : String(key);
 };
 
 
@@ -1515,6 +1624,52 @@ var postfix = Math.random();
 
 module.exports = function (key) {
   return 'Symbol(' + String(key === undefined ? '' : key) + ')_' + (++id + postfix).toString(36);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/use-symbol-as-uid.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js/internals/use-symbol-as-uid.js ***!
+  \*************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+/* eslint-disable es/no-symbol -- required for testing */
+var NATIVE_SYMBOL = __webpack_require__(/*! ../internals/native-symbol */ "./node_modules/core-js/internals/native-symbol.js");
+
+module.exports = NATIVE_SYMBOL
+  && !Symbol.sham
+  && typeof Symbol.iterator == 'symbol';
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/well-known-symbol.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js/internals/well-known-symbol.js ***!
+  \*************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
+var shared = __webpack_require__(/*! ../internals/shared */ "./node_modules/core-js/internals/shared.js");
+var has = __webpack_require__(/*! ../internals/has */ "./node_modules/core-js/internals/has.js");
+var uid = __webpack_require__(/*! ../internals/uid */ "./node_modules/core-js/internals/uid.js");
+var NATIVE_SYMBOL = __webpack_require__(/*! ../internals/native-symbol */ "./node_modules/core-js/internals/native-symbol.js");
+var USE_SYMBOL_AS_UID = __webpack_require__(/*! ../internals/use-symbol-as-uid */ "./node_modules/core-js/internals/use-symbol-as-uid.js");
+
+var WellKnownSymbolsStore = shared('wks');
+var Symbol = global.Symbol;
+var createWellKnownSymbol = USE_SYMBOL_AS_UID ? Symbol : Symbol && Symbol.withoutSetter || uid;
+
+module.exports = function (name) {
+  if (!has(WellKnownSymbolsStore, name) || !(NATIVE_SYMBOL || typeof WellKnownSymbolsStore[name] == 'string')) {
+    if (NATIVE_SYMBOL && has(Symbol, name)) {
+      WellKnownSymbolsStore[name] = Symbol[name];
+    } else {
+      WellKnownSymbolsStore[name] = createWellKnownSymbol('Symbol.' + name);
+    }
+  } return WellKnownSymbolsStore[name];
 };
 
 
@@ -1564,10 +1719,10 @@ $({ target: 'Object', stat: true }, {
 
 /***/ }),
 
-/***/ "./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-13[0].rules[0].use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/faq.vue?vue&type=style&index=0&lang=css&":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-13[0].rules[0].use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/faq.vue?vue&type=style&index=0&lang=css& ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-13[0].rules[0].use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/laravel-mix/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/faq.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-13[0].rules[0].use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/laravel-mix/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/faq.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1636,7 +1791,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_clonedRuleSet_13_0_rules_0_use_0_node_modules_css_loader_dist_cjs_js_clonedRuleSet_13_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_13_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_faq_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-13[0].rules[0].use[0]!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./faq.vue?vue&type=style&index=0&lang=css& */ "./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-13[0].rules[0].use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/faq.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_clonedRuleSet_13_0_rules_0_use_0_node_modules_css_loader_dist_cjs_js_clonedRuleSet_13_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_laravel_mix_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_13_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_faq_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-13[0].rules[0].use[0]!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/laravel-mix/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./faq.vue?vue&type=style&index=0&lang=css& */ "./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-13[0].rules[0].use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/laravel-mix/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-13[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/faq.vue?vue&type=style&index=0&lang=css&");
 
 
 /***/ }),
@@ -1874,8 +2029,6 @@ function normalizeComponent (
 
 },
 /******/ function(__webpack_require__) { // webpackRuntimeModules
-/******/ "use strict";
-/******/ 
 /******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
 /******/ __webpack_require__.O(0, ["js/vendors-vue","css/randomForm"], function() { return __webpack_exec__("./resources/js/faq.js"); });
 /******/ var __webpack_exports__ = __webpack_require__.O();

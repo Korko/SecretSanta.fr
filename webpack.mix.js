@@ -7,12 +7,6 @@ require('laravel-mix-purgecss');
 require('laravel-mix-polyfill');
 require('laravel-mix-modernizr');
 
-mix.webpackConfig({
-  plugins: [
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
-  ]
-});
-
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -29,6 +23,9 @@ mix.autoload({
 });
 
 mix.webpackConfig({
+  plugins: [
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+  ],
   module: {
     rules: [
       {
@@ -40,6 +37,19 @@ mix.webpackConfig({
   }
 });
 
+mix.options({
+    processCssUrls: true,
+    terser: {
+        extractComments: false
+    },
+    purifyCss: false,
+    postCss: [require('autoprefixer')],
+    clearConsole: false,
+    cssNano: {
+        discardComments: {removeAll: true},
+    }
+});
+
 mix.js('resources/js/common.js', 'public/js')
    .js('resources/js/randomForm.js', 'public/js')
    .js('resources/js/dearSanta.js', 'public/js')
@@ -47,7 +57,7 @@ mix.js('resources/js/common.js', 'public/js')
    .js('resources/js/faq.js', 'public/js')
    .modernizr()
    .vue({
-     extractStyles: true,
+      extractStyles: true,
       globalStyles: false
     })
    .polyfill({ entryPoints: "all" })

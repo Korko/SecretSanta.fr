@@ -27,13 +27,16 @@
     02. Header
 ========================================================================== */
 #header {
-    background-image: url(/images/gifts-1.jpg);
+    background-image: url(/images/gifts-1.webp);
     -moz-background-size: cover;
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
     background-repeat: no-repeat;
     position: relative;
+}
+body.nowebp #header {
+    background-image: url(/images/gifts-1.jpg);
 }
 
 #header .center {
@@ -98,11 +101,14 @@
     04. Parallax
 ========================================================================== */
 .parallax {
-    background: url(/images/gifts-2.jpg) fixed no-repeat center center;
+    background: url(/images/gifts-2.webp) fixed no-repeat center center;
     -moz-background-size: cover;
     background-size: cover;
     position: relative;
     color: #fff;
+}
+body.nowebp .parallax {
+    background-image: url(/images/gifts-2.jpg);
 }
 
 .parallax .inner {
@@ -111,6 +117,9 @@
 }
 
 .parallax.parallax2 {
+    background-image: url(/images/gifts-3.webp);
+}
+body.nowebp .parallax.parallax2 {
     background-image: url(/images/gifts-3.jpg);
 }
 
@@ -205,12 +214,15 @@ fieldset > div.form-group {
 
 .input-group-addon.lang::before {
     background-repeat: no-repeat;
-    background-image: url(/images/languages.png);
+    background-image: url(/images/languages.webp);
     height: 11px;
     width: 14px;
     content: '';
     display: inline-block;
     margin-right: 8px;
+}
+body.nowebp .parallax {
+    background-image: url(/images/languages.png);
 }
 
 .input-group-addon.lang[lang=fr]::before {
