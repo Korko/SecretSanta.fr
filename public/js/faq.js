@@ -133,7 +133,8 @@ __webpack_require__.r(__webpack_exports__);
         "confirm": [],
         "disabled": "Trop peu de participants ont accepté le nouveau tirage pour avoir de nouvelles cibles.",
         "message": "Les participants volontaires ont correctement reçu une nouvelle cible."
-      }
+      },
+      "expired": "Votre évènement est passé ({expires_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un participant."
     },
     "faq": {
       "nav": {

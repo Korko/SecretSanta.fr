@@ -2985,7 +2985,8 @@ __webpack_require__.r(__webpack_exports__);
         "confirm": [],
         "disabled": "Trop peu de participants ont accepté le nouveau tirage pour avoir de nouvelles cibles.",
         "message": "Les participants volontaires ont correctement reçu une nouvelle cible."
-      }
+      },
+      "expired": "Votre évènement est passé ({expires_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un participant."
     },
     "faq": {
       "nav": {
@@ -9807,14 +9808,18 @@ var render = function() {
                                     name: "tooltip",
                                     rawName: "v-tooltip.top",
                                     value: {
-                                      img:
-                                        "srikanta-h-u-TrGVhbsUf40-unsplash.jpg",
+                                      img: {
+                                        "image/webp":
+                                          "srikanta-h-u-TrGVhbsUf40-unsplash.webp",
+                                        "image/jpg":
+                                          "srikanta-h-u-TrGVhbsUf40-unsplash.jpg"
+                                      },
                                       text: _vm.$t(
                                         "form.data-expiration-tooltip"
                                       )
                                     },
                                     expression:
-                                      "{ img: 'srikanta-h-u-TrGVhbsUf40-unsplash.jpg', text: $t('form.data-expiration-tooltip') }",
+                                      "{ img: {'image/webp': 'srikanta-h-u-TrGVhbsUf40-unsplash.webp', 'image/jpg': 'srikanta-h-u-TrGVhbsUf40-unsplash.jpg'}, text: $t('form.data-expiration-tooltip') }",
                                     modifiers: { top: true }
                                   }
                                 ],
