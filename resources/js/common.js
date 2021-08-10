@@ -141,12 +141,25 @@ Vue.directive('tooltip', {
         div.className = 'tip-wrapper';
 
         // Replace the element by the div and add the element in the div
-        el.after(div);
+        el.parentNode.insertBefore(div, el);
         div.appendChild(el);
+
+        if (binding.value.img)
+            if (typeof binding.value.img === 'object' || binding.value.img instanceof Object) {
+                var img = '<picture>';
+                Object.keys(binding.value.img).forEach(mime => {
+                    img += '<source srcset="/images/' + binding.value.img[mime] + '" type="' + mime + '">';
+                });
+                img += '<img class="media-object" src="/images/' + Object.values(binding.value.img).slice(-1)[0] + '">';
+                img += '</picture>';
+                binding.value.img = img;
+            } else {
+                binding.value.img = '<img src="/images/' + binding.value.img + '" />';
+            }
 
         var div2 = document.createElement('div');
         div2.className = "tip-content " + direction;
-        div2.innerHTML = (binding.value.img ? '<img src="/images/' + binding.value.img + '" />' : '')
+        div2.innerHTML = binding.value.img
             + '<div class="text-content">' + (binding.value.text || binding.value) + '</div>'
             + '<i></i>';
         div.appendChild(div2);

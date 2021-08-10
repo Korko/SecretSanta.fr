@@ -204,16 +204,16 @@
             {{ $t('organizer.purge.button') }}
         </button>
         <template v-if="data.finalCsvAvailable">
-            <button type="button" class="btn btn-primary" @click="download" v-tooltip.top="{ img: 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg', text: $t('organizer.download.button_initial-tooltip') }">
+            <button type="button" class="btn btn-primary" @click="download" v-tooltip.top="{ img: {'image/webp': 'rune-haugseng-UCzjZPCGV1Y-unsplash.webp', 'image/jpg': 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg'}, text: $t('organizer.download.button_initial-tooltip') }">
                 <i class="fas fa-download" />
                 {{ $t('organizer.download.button_initial') }}
             </button>
-            <button :disabled="!expired" type="button" class="btn btn-primary" @click="downloadPlus" v-tooltip.top="{ img: 'mike-arney-9r-_2gzP37k-unsplash.jpg', text: $t('organizer.download.button_final-tooltip', {expires_at: expirationDateLong, deleted_at: deletionDateLong}) }">
+            <button :disabled="!expired" type="button" class="btn btn-primary" @click="downloadPlus" v-tooltip.top="{ img: {'image/webp': 'mike-arney-9r-_2gzP37k-unsplash.webp', 'image/jpg': 'mike-arney-9r-_2gzP37k-unsplash.jpg'}, text: $t('organizer.download.button_final-tooltip', {expires_at: expirationDateLong, deleted_at: deletionDateLong}) }">
                 <i class="fas fa-download" />
                 {{ $t('organizer.download.button_final') }}
             </button>
         </template>
-        <button v-else type="button" class="btn btn-primary" @click="download" v-tooltip.top="{ img: 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg', text: $t('organizer.download.button-tooltip') }">
+        <button v-else type="button" class="btn btn-primary" @click="download" v-tooltip.top="{ img: {'image/webp': 'rune-haugseng-UCzjZPCGV1Y-unsplash.webp', 'image/jpg': 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg'}, text: $t('organizer.download.button-tooltip') }">
             <i class="fas fa-download" />
             {{ $t('organizer.download.button') }}
         </button>
