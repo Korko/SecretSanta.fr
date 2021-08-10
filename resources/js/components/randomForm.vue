@@ -363,7 +363,7 @@
                     <fieldset>
                         <div id="form-options" class="form-group">
                             <div class="input-inline-group">
-                                <label for="expiration" v-tooltip.top="{ img: 'srikanta-h-u-TrGVhbsUf40-unsplash.jpg', text: $t('form.data-expiration-tooltip') }">{{ $t('form.data-expiration') }}</label>
+                                <label for="expiration" v-tooltip.top="{ img: {'image/webp': 'srikanta-h-u-TrGVhbsUf40-unsplash.webp', 'image/jpg': 'srikanta-h-u-TrGVhbsUf40-unsplash.jpg'}, text: $t('form.data-expiration-tooltip') }">{{ $t('form.data-expiration') }}</label>
                                 <input
                                     type="date"
                                     name="data-expiration"
