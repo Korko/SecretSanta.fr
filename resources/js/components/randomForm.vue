@@ -242,9 +242,6 @@
                     <fieldset>
                         <legend>{{ $t('form.participants.title') }}</legend>
                         <div class="table-responsive form-group">
-                            <div class="alert alert-warning" role="alert">
-                                Les adresses @laposte.net et @sfr.fr ne fonctionnent malheureusement pas bien avec SecretSanta.fr en ce moment. Les destinataires ne reçoivent pas leurs emails.<br />Autant que possible, évitez d'utilisez ces adresses.
-                            </div>
                             <table id="participants" class="table table-hover table-numbered">
                                 <caption>{{ $t('form.participants.caption') }}</caption>
                                 <thead>
