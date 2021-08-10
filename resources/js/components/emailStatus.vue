@@ -1,6 +1,10 @@
 <script>
     export default {
         props: {
+            can_redo: {
+                type: Boolean,
+                default: true
+            },
             delivery_status: {
                 type: String,
                 required: true
@@ -27,7 +31,7 @@
 <template>
     <div>
         <span>{{ $t(`common.email.status.${delivery_status}`) }} <i :class="[icon, delivery_status]"></i></span>
-        <button :disabled="delivery_status === 'created' || disabled" type="button" class="btn btn-outline-secondary" @click="$emit('redo')">
+        <button v-if="can_redo || delivery_status === 'error'" :disabled="delivery_status === 'created' || disabled" type="button" class="btn btn-outline-secondary" @click="$emit('redo')">
             <i class="fas fa-redo" />
             {{ $t(`common.email.redo`) }}
         </button>
