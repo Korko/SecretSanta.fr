@@ -1,6 +1,8 @@
 @extends('emails/layout_plain')
 
-@yield('title', "Message aux participants")
+@section('title')
+    Message aux participants
+@endsection
 
 @section('content')
     > {{ $content }}

@@ -1,6 +1,8 @@
 @extends('emails/tracked_layout')
 
-@yield('title', "Message aux participants")
+@section('title')
+    Message aux participants
+@endsection
 
 @section('content')
     <blockquote>{!! nl2br(htmlentities($content)) !!}</blockquote>
