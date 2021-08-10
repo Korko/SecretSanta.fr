@@ -12,7 +12,7 @@
     import Moment from 'moment';
 
     import axios from '../partials/axios.js';
-    import Echo from '../partials/echo.js';
+    //import Echo from '../partials/echo.js';
 
     import InputEdit from './inputEdit.vue';
     import EmailStatus from './emailStatus.vue';
@@ -60,8 +60,20 @@
                 return new Date(this.data.deleted_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             }
         },
+        async mounted() {
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                        return registration.pushManager.getSubscription()
+                        .then(async function(registration) {
+                          // partie relative à l'enregistrement
+                        });
+                    });
+                });
+            }
+        },
         created() {
-            Echo.channel('draw.'+this.data.draw)
+  /*          Echo.channel('draw.'+this.data.draw)
                 .listen('.pusher:subscription_succeeded', () => {
                     this.fetchState();
                 })
@@ -72,7 +84,7 @@
                         this.$set(this.data.participants[key].mail, 'delivery_status', data.delivery_status);
                         this.$set(this.data.participants[key].mail, 'updated_at', data.updated_at);
                     }
-                });
+                });*/
         },
         methods: {
             update(k, data) {

@@ -6,7 +6,8 @@
     Vue.use(Vuelidate);
 
     import axios from '../partials/axios.js';
-    import Echo from '../partials/echo.js';
+    //import Echo from '../partials/echo.js';
+    //import { listen } from '../notifications.worker.js';
 
     import EmailStatus from './emailStatus.vue';
     import DefaultForm from './form.vue';
@@ -45,7 +46,11 @@
                 );
             }
         },
+        async mounted() {
+            //console.debug(await listen());
+        },
         created() {
+        /*
             Echo.channel('draw.'+this.data.draw)
                 .listen('.pusher:subscription_succeeded', () => {
                     this.fetchState();
@@ -58,6 +63,7 @@
                         this.$set(this.data.emails[key].mail, 'updated_at', data.updated_at);
                     }
                 });
+            */
         },
         validations: {
             content: {
