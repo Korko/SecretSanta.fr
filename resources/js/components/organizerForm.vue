@@ -11,7 +11,7 @@
 
     import Moment from 'moment';
 
-    import axios from '../partials/axios.js';
+    import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
 
     import InputEdit from './inputEdit.vue';
@@ -81,17 +81,16 @@
                 this.data.participants[k].mail.updated_at = data.participant.mail.updated_at;
             },
             fetchState() {
-                return axios
-                    .get(this.routes.fetchStateUrl)
+                return fetch(this.routes.fetchStateUrl)
                     .then(response => {
                         if (response.data.participants) {
                             Object.values(response.data.participants).forEach(participant => {
                                 var new_update = new Date(participant.mail.updated_at);
-                                var old_update = new Date(this.data.participants[participant.id].mail.updated_at);
-                                this.data.participants[participant.id].mail.delivery_status =
+                                var old_update = new Date(this.data.participants[participant.hash].mail.updated_at);
+                                this.data.participants[participant.hash].mail.delivery_status =
                                     new_update > old_update
                                         ? participant.mail.delivery_status
-                                        : this.data.participants[participant.id].mail.delivery_status;
+                                        : this.data.participants[participant.hash].mail.delivery_status;
                             });
                         }
                     });
@@ -123,8 +122,7 @@
                     .then(this.purge);
             },
             purge() {
-                return axios
-                    .delete(this.routes.deleteUrl)
+                return fetch(this.routes.deleteUrl, 'DELETE')
                     .then(data => {
                         this.$dialog
                             .alert(data.message)
@@ -135,14 +133,12 @@
                 this.$set(this.data.participants[k], 'email', email);
                 this.$set(this.data.participants[k].mail, 'delivery_status', 'created');
 
-                return axios
-                    .post(this.data.changeEmailUrls[this.data.participants[k].id], {
+                return fetch(this.data.changeEmailUrls[this.data.participants[k].hash], 'POST', {
                         email: email
                     });
             },
             download() {
-                axios
-                    .get(this.routes.csvInitUrl, {responseType: 'blob'})
+                fetch(this.routes.csvInitUrl, {responseType: 'blob'})
                     .then(response => {
                         if(response.data)
                             download(response.data, 'secretsanta_'+this.expirationDateShort+'_init.csv', 'text/csv');
