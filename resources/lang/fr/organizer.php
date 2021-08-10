@@ -34,4 +34,5 @@ return [
             'cancel' => 'Annuler',
         ],
     ],
+    'expired' => 'Votre évènement est passé ({expires_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un participant.'
 ];
