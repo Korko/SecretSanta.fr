@@ -1,6 +1,8 @@
 @extends('emails/layout_plain')
 
-@yield('title', "Récapitulatif Organisateur")
+@section('title')
+    Récapitulatif Organisateur
+@endsection
 
 @section('content')
     Bonjour {{ $organizerName }},
