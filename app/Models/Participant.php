@@ -7,11 +7,12 @@ use App\Collections\ParticipantsCollection;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 use Metrics;
 
 class Participant extends Model
 {
-    use HasFactory, Notifiable, HashId {
+    use HasFactory, Notifiable, HasPushSubscriptions, HashId {
         resolveRouteBinding as public baseResolver;
     }
 
@@ -119,5 +120,11 @@ class Participant extends Model
                 'participant' => $this->metricId,
                 'is_organizer' => $this->is($this->draw->organizer)
             ]);
+    }
+
+    // Usefull for Mail notification
+    public function getSenderAttribute()
+    {
+        return $this->draw->organizer;
     }
 }
