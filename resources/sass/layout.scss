@@ -60,9 +60,9 @@ body::before {/* thanks to Maleika (Kohoutec) */
 You also need to include this conditional style in the <head> of your HTML file to feed this style to IE 6 and lower and 8 and higher.
 
 <!--[if !IE 7]>
-	<style type="text/css">
-		#wrap {display: table;height: 100%}
-	</style>
+    <style type="text/css">
+        #wrap {display: table;height: 100%}
+    </style>
 <![endif]-->
 
 */
