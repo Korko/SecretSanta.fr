@@ -71,6 +71,12 @@
             reset() {
                 this.content = '';
             },
+            resend(k) {
+                this.$set(this.data.emails[k], 'delivery_status', 'created');
+
+                return axios
+                    .post(this.data.resendEmailUrls[this.data.emails[k].id]);
+            },
             fetchState() {
                 return axios
                     .get(this.routes.fetchStateUrl)
@@ -131,10 +137,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="email in emails" :key="email.id" class="email">
+                <tr v-for="(email, k) in emails" :key="email.id" class="email">
                     <td>{{ email.created_at }}</td>
                     <td><p>{{ nl2br(email.mail_body) }}</p></td>
-                    <td><email-status :delivery_status="email.delivery_status" /></td>
+                    <td><email-status :delivery_status="email.delivery_status" :can_redo="false" @redo="resend(k)"/></td>
                 </tr>
                 <tr v-if="emails.length === 0" class="no-email">
                     <td colspan="3">
