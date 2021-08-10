@@ -27,12 +27,12 @@
 };
 
 const getExtensionFromMime = function(mime) {
-	switch(mime) {
-		case 'text/csv':
-		case 'image/png':
-		case 'image/jpeg':
-			return mime.split('/')[1];
-	}
+    switch(mime) {
+        case 'text/csv':
+        case 'image/png':
+        case 'image/jpeg':
+            return mime.split('/')[1];
+    }
 };*/
 
 const download = function(data, fileName, mimeType) {
