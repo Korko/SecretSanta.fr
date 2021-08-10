@@ -101,7 +101,7 @@ class DrawFormHandler
         for ($i = 0; $i < count($participants); $i++) {
             $participant = $participants[$i];
 
-            foreach ($participant['exclusions'] as $participantId) {
+            foreach (Arr::get($participant, 'exclusions', []) as $participantId) {
                 $participant['model']->exclusions()->attach($participants[intval($participantId)]['model']->id);
             }
         }
