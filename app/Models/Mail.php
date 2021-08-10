@@ -4,9 +4,12 @@ namespace App\Models;
 
 use App\Events\MailStatusUpdated;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Mail extends Model
 {
+    use HasFactory;
+
     /**
      * Indicates if the model's ID is auto-incrementing.
      *
