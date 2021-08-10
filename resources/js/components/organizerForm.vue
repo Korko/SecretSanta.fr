@@ -162,7 +162,7 @@
             Les adresses @laposte.net et @sfr.fr ne fonctionnent malheureusement pas bien avec SecretSanta.fr en ce moment. Les destinataires ne reçoivent pas leurs emails.<br />Autant que possible, évitez d'utilisez ces adresses.
         </div>
         <div v-if="expired" class="alert alert-warning" role="alert">
-            Votre évènement est passé ({{ expirationDateLong }}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un participant.
+            {{ $t('organizer.expired', {expires_at: expirationDateLong}) }}
         </div>
         <table class="table table-hover">
             <caption>{{ $t('organizer.list.caption') }}</caption>
