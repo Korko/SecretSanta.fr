@@ -15,7 +15,7 @@ return [
         'button_initial'  => 'Télécharger le récapitulatif initial',
         'button_initial-tooltip' => '<h3>Récapitulatif initial</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l\'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>',
         'button_final' => 'Télécharger le récapitulatif complété',
-        'button_final-tooltip' => '<h3>Récapitulatif complété</h3><p>Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu\'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.</p><p>Compte tenu de la date de l\'évènement définie, <span class="font-italic">cette fonctionnalité n\'est disponible que du {expires_at} au {deleted_at}.</span></p>',
+        'button_final-tooltip' => '<h3>Récapitulatif complété</h3><p>Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu\'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.</p><p class="border border-white border-1 rounded pl-2 pr-2 font-italic">Compte tenu de la date de l\'évènement définie, cette fonctionnalité n\'est disponible que du {expires_at} au {deleted_at}.</p>',
     ],
     'purge'         => [
         'button'  => 'Supprimer tout',
