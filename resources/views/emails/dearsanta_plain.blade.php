@@ -1,6 +1,8 @@
 @extends('emails/layout_plain')
 
-@yield('title', "Message de {{ $targetName }}")
+@section('title')
+    Message de {{ $targetName }}
+@endsection
 
 @section('content')
     > {{ $content }}

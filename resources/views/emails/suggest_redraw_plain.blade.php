@@ -1,6 +1,8 @@
 @extends('emails/layout_plain')
 
-@yield('title', "Proposition de l'organisateur")
+@section('title')
+    Proposition de l'organisateur
+@endsection
 
 @section('content')
     Bonjour {{ $participantName }},
