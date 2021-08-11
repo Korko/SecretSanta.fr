@@ -5,7 +5,7 @@
     import { required } from 'vuelidate/lib/validators'
     Vue.use(Vuelidate);
 
-    import axios from '../partials/axios.js';
+    import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
 
     import EmailStatus from './emailStatus.vue';
@@ -74,15 +74,13 @@
             resend(k) {
                 this.$set(this.data.emails[k], 'delivery_status', 'created');
 
-                return axios
-                    .post(this.data.resendEmailUrls[this.data.emails[k].id]);
+                return fetch(this.data.resendEmailUrls[this.data.emails[k].id], 'POST');
             },
             fetchState() {
-                return axios
-                    .get(this.routes.fetchStateUrl)
+                return fetch(this.routes.fetchStateUrl)
                     .then(response => {
-                        if (response.data.emails) {
-                            Object.values(response.data.emails).forEach(email => {
+                        if (response.emails) {
+                            Object.values(response.emails).forEach(email => {
                                 var new_update = new Date(email.mail.updated_at);
                                 var old_update = new Date(this.data.emails[email.id].mail.updated_at);
                                 this.data.emails[email.id].mail.delivery_status =
@@ -105,13 +103,13 @@
         <ajax-form :action="routes.contactUrl" :$v="$v" @success="success" @reset="reset" :autoReset="true">
             <fieldset>
                 <div class="form-group">
-                    <label for="mailContent">{{ $t('dearSanta.content.label') }}</label>
+                    <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
                     <div class="input-group">
                         <textarea
                             id="mailContent"
                             v-model="content"
                             name="content"
-                            :placeholder="$t('dearSanta.content.placeholder')"
+                            :placeholder="$t('dearsanta.content.placeholder')"
                             :class="{ 'form-control': true, 'is-invalid': $v.content.$error }"
                             :aria-invalid="$v.content.$error"
                             @blur="$v.content.$touch()"
@@ -122,17 +120,17 @@
             </fieldset>
         </ajax-form>
         <table class="table table-hover">
-            <caption>{{ $t('dearSanta.list.caption') }}</caption>
+            <caption>{{ $t('dearsanta.list.caption') }}</caption>
             <thead>
                 <tr class="table-active">
                     <th scope="col">
-                        {{ $t('dearSanta.list.date') }}
+                        {{ $t('dearsanta.list.date') }}
                     </th>
                     <th scope="col">
-                        {{ $t('dearSanta.list.body') }}
+                        {{ $t('dearsanta.list.body') }}
                     </th>
                     <th scope="col">
-                        {{ $t('dearSanta.list.status') }}
+                        {{ $t('dearsanta.list.status') }}
                     </th>
                 </tr>
             </thead>
@@ -144,7 +142,7 @@
                 </tr>
                 <tr v-if="emails.length === 0" class="no-email">
                     <td colspan="3">
-                        {{ $t('dearSanta.list.empty') }}
+                        {{ $t('dearsanta.list.empty') }}
                     </td>
                 </tr>
             </tbody>
