@@ -1,5 +1,5 @@
 <script>
-    import axios from '../partials/axios.js';
+    import fetch from '../partials/fetch.js';
 
     import Timer from './timer.vue';
 
@@ -18,10 +18,9 @@
         },
         mounted() {
             this.loading = true;
-            axios
-                .get(this.fetchurl)
+            fetch(this.fetchurl)
                 .then(response => {
-                    this.$emit('success', response.data);
+                    this.$emit('success', response);
                 })
                 .catch(error => {
                     this.$emit('error');

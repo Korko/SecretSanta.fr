@@ -630,6 +630,19 @@ __webpack_require__.r(__webpack_exports__);
       "paypal": {
         "alt": "PayPal, le réflexe sécurité pour payer en ligne"
       }
+    },
+    "dearsanta": {
+      "list": {
+        "date": "Date d'envoi",
+        "body": "Corps du message",
+        "status": "Status de réception de l'email",
+        "empty": "Aucun email envoyé pour le moment",
+        "caption": "Liste des emails envoyés au Père Noël"
+      },
+      "content": {
+        "label": "Contenu du mail",
+        "placeholder": "Cher Papa Noël..."
+      }
     }
   }
 });
@@ -5220,7 +5233,7 @@ module.exports=window.Modernizr;if(hadGlobal){window.Modernizr=oldGlobal;}else{d
 },
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
-/******/ __webpack_require__.O(0, ["js/vendors-vue","js/vendors-ui","js/vendors-jquery","css/faq","css/organizer","css/dearSanta","css/randomForm","css/404"], function() { return __webpack_exec__("./resources/js/common.js"), __webpack_exec__("./resources/sass/randomForm.scss"), __webpack_exec__("./resources/sass/dearSanta.scss"), __webpack_exec__("./resources/sass/organizer.scss"), __webpack_exec__("./resources/sass/faq.scss"), __webpack_exec__("./resources/sass/404.scss"); });
+/******/ __webpack_require__.O(0, ["js/vendors-vue","js/vendors-jquery","js/vendors-ui","css/faq","css/organizer","css/dearSanta","css/randomForm","css/404"], function() { return __webpack_exec__("./resources/js/common.js"), __webpack_exec__("./resources/sass/randomForm.scss"), __webpack_exec__("./resources/sass/dearSanta.scss"), __webpack_exec__("./resources/sass/organizer.scss"), __webpack_exec__("./resources/sass/faq.scss"), __webpack_exec__("./resources/sass/404.scss"); });
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);
