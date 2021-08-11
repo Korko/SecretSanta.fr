@@ -6,13 +6,13 @@ use Webklex\IMAP\Facades\Client;
 
 class EmailClient
 {
-	protected $delegate;
+    protected $delegate;
 
-	public function __construct($connexion = 'default')
-	{
+    public function __construct($connexion = 'default')
+    {
         $this->delegate = Client::account($connexion);
         $this->delegate->connect();
-	}
+    }
 
     public function getUnseenMails(): Iterable
     {
