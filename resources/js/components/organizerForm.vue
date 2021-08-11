@@ -83,8 +83,8 @@
             fetchState() {
                 return fetch(this.routes.fetchStateUrl)
                     .then(response => {
-                        if (response.data.participants) {
-                            Object.values(response.data.participants).forEach(participant => {
+                        if (response.participants) {
+                            Object.values(response.participants).forEach(participant => {
                                 var new_update = new Date(participant.mail.updated_at);
                                 var old_update = new Date(this.data.participants[participant.hash].mail.updated_at);
                                 this.data.participants[participant.hash].mail.delivery_status =
@@ -138,18 +138,15 @@
                     });
             },
             download() {
-                fetch(this.routes.csvInitUrl, {responseType: 'blob'})
+                fetch(this.routes.csvInitUrl, 'GET', '', {responseType: 'blob'})
                     .then(response => {
-                        if(response.data)
-                            download(response.data, 'secretsanta_'+this.expirationDateShort+'_init.csv', 'text/csv');
+                        download(response, 'secretsanta_'+this.expirationDateShort+'_init.csv', 'text/csv');
                     });
             },
             downloadPlus() {
-                axios
-                    .get(this.routes.csvFinalUrl, {responseType: 'blob'})
+                fetch(this.routes.csvFinalUrl, 'GET', '', {responseType: 'blob'})
                     .then(response => {
-                        if(response.data)
-                            download(response.data, 'secretsanta_'+this.expirationDateShort+'_full.csv', 'text/csv');
+                        download(response, 'secretsanta_'+this.expirationDateShort+'_full.csv', 'text/csv');
                     });
             }
         }

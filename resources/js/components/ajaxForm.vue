@@ -1,7 +1,7 @@
 <script>
     import jQuery from 'jquery';
 
-    import axios from '../partials/axios.js';
+    import fetch from '../partials/fetch.js';
 
     export default {
         props: {
@@ -68,8 +68,7 @@
 
                     this.sending = true;
 
-                    return axios
-                        .post(url, options.data)
+                    return fetch(url, 'POST', options.data)
                         .then(response => {
                             this.fieldErrors = [];
                             this.sending = false;
@@ -78,22 +77,22 @@
                                 this.sent = true;
                             }
 
-                            (options.success || options.then || function() {})(response.data);
+                            (options.success || options.then || function() {})(response);
                             (options.complete || options.finally || function() {})();
 
-                            this.$emit('success', response.data);
+                            this.$emit('success', response);
 
                             if(this.autoReset) {
                                 this.onReset();
                             }
                         })
                         .catch(error => {
-                            if (error.response.data && error.response.data.errors)
-                                this.fieldErrors = error.response.data.errors;
+                            if (error.response && error.response.errors)
+                                this.fieldErrors = error.response.errors;
 
                             this.sending = false;
 
-                            (options.error || options.catch || function() {})(error.response.data);
+                            (options.error || options.catch || function() {})(error.response);
                             (options.complete || options.finally || function() {})();
 
                             this.$emit('error');

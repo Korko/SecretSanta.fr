@@ -13,5 +13,12 @@ export default function(url, method, data, headers) {
             ...(headers || {})
         },
         body: body
-    }));
+    }))
+    .then(response => {
+        if((headers || {}).responseType) {
+            return response.text();
+        } else {
+            return response.json();
+        }
+    });
 };
