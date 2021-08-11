@@ -25,7 +25,7 @@ return [
 
     'langFiles' => [
         'common',
-        'dearSanta',
+        'dearsanta',
         'faq',
         'form',
         'organizer',

@@ -340,6 +340,19 @@ export default {
             "paypal": {
                 "alt": "PayPal, le réflexe sécurité pour payer en ligne"
             }
+        },
+        "dearsanta": {
+            "list": {
+                "date": "Date d'envoi",
+                "body": "Corps du message",
+                "status": "Status de réception de l'email",
+                "empty": "Aucun email envoyé pour le moment",
+                "caption": "Liste des emails envoyés au Père Noël"
+            },
+            "content": {
+                "label": "Contenu du mail",
+                "placeholder": "Cher Papa Noël..."
+            }
         }
     }
 }
