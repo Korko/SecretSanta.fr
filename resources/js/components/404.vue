@@ -1,0 +1,189 @@
+<script>
+
+</script>
+
+<template>
+
+</template>
+
+<style>
+    /** Source: https://codepen.io/Wandersonsc/pen/RMerRy **/
+    @import "../../sass/layout.scss";
+
+    /**
+    Wasted
+    **/
+    @font-face {
+        font-family: "GTA";
+        src: url(../../fonts/pricedownbl.ttf) format("truetype");
+    }
+    .wasted {
+        font-family: "GTA";
+        color: red;
+        position: absolute;
+        width: 100%;
+        background-color: grey;
+        z-index: 10;
+        text-align: center;
+        top: 50%;
+        transform: translate(0, -50%);
+        height: 2em;
+        font-size: 44px;
+        line-height: 2em;
+        clip-path: polygon(
+            0% 15%,
+            100% 0,
+            100% 100%,
+            0 85%
+        );
+        opacity: .9;
+    }
+
+    /**
+    Polaroid
+    **/
+    .polaroid-wrapper {
+        width: 100%;
+        padding: 0 2rem;
+        text-align: center;
+    }
+    .polaroid {
+        position: relative;
+        background: #fff;
+        padding: 1rem;
+        box-shadow: 0 0.2rem 1.2rem rgba(0,0,0,0.2);
+    }
+    .polaroid > img {
+        max-width: 100%;
+        height: auto;
+    }
+    .polaroid .caption {
+        font-size: 1.8rem;
+        text-align: center;
+        line-height: 2em;
+        min-height: 2em;
+    }
+    .polaroid-wrapper .item {
+        width: 30%;
+        display: inline-block;
+    }
+    .polaroid-wrapper .item .polaroid:before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        transition: all 0.35s;
+    }
+    .polaroid-wrapper .item:nth-of-type(4n+1) {
+        transform: scale(0.8, 0.8) rotate(5deg);
+        transition: all 0.35s;
+    }
+    .polaroid-wrapper .item:nth-of-type(4n+1) .polaroid:before {
+        transform: rotate(6deg);
+        height: 20%;
+        width: 47%;
+        bottom: 30px;
+        right: 12px;
+        box-shadow: 0 2.1rem 2rem rgba(0,0,0,0.4);
+    }
+    .polaroid-wrapper .item:nth-of-type(4n+2) {
+        transform: scale(0.8, 0.8) rotate(-5deg);
+        transition: all 0.35s;
+    }
+    .polaroid-wrapper .item:nth-of-type(4n+2) .polaroid:before {
+        transform: rotate(-6deg);
+        height: 20%;
+        width: 47%;
+        bottom: 30px;
+        left: 12px;
+        box-shadow: 0 2.1rem 2rem rgba(0,0,0,0.4);
+    }
+    .polaroid-wrapper .item:nth-of-type(4n+4) {
+        transform: scale(0.8, 0.8) rotate(3deg);
+        transition: all 0.35s;
+    }
+    .polaroid-wrapper .item:nth-of-type(4n+4) .polaroid:before {
+        transform: rotate(4deg);
+        height: 20%;
+        width: 47%;
+        bottom: 30px;
+        right: 12px;
+        box-shadow: 0 2.1rem 2rem rgba(0,0,0,0.3);
+    }
+    .polaroid-wrapper .item:nth-of-type(4n+3) {
+        transform: scale(0.8, 0.8) rotate(-3deg);
+        transition: all 0.35s;
+    }
+    .polaroid-wrapper .item:nth-of-type(4n+3) .polaroid:before {
+        transform: rotate(-4deg);
+        height: 20%;
+        width: 47%;
+        bottom: 30px;
+        left: 12px;
+        box-shadow: 0 2.1rem 2rem rgba(0,0,0,0.3);
+    }
+    .polaroid-wrapper .item:hover {
+        filter: none;
+        transform: scale(1, 1) rotate(0deg) !important;
+        transition: all 0.35s;
+        filter: grayscale(100%);
+    }
+    .polaroid-wrapper .item:hover .polaroid:before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        transform: rotate(0deg);
+        height: 90%;
+        width: 90%;
+        bottom: 0%;
+        right: 5%;
+        box-shadow: 0 1rem 3rem rgba(0,0,0,0.2);
+        transition: all 0.35s;
+    }
+    /*.polaroid-wrapper .item:hover .polaroid {
+        filter: grayscale(100%);
+    }*/
+    .polaroid-wrapper .item .wasted {
+        display: none;
+        width: calc(100% - 2rem);
+        margin-left: 1rem;
+        color: black;
+    }
+    .polaroid-wrapper .item:hover .wasted {
+        display: block;
+    }
+
+    /**
+    **/
+    .error-content {
+        margin-top: 30px;
+    }
+
+    .section-title {
+        font-size: 36px;
+        line-height: 40px;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .lead {
+        font-size: 17px;
+        line-height: 24px;
+        font-weight: normal;
+        text-transform: uppercase;
+        color: #2e2e2e;
+        position: relative;
+        margin-bottom: 44px;
+    }
+
+    .lead::after {
+        position: absolute;
+        content: ' ';
+        background: #ed0121;
+        width: 80px;
+        height: 3px;
+        bottom: -22px;
+        left: 50%;
+        margin-left: -40px;
+    }
+</style>

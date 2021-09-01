@@ -44,6 +44,13 @@ export default {
 </template>
 
 <style>
+    @import "../../sass/layout.scss";
+
+    #content {
+        padding-top: 140px;
+        padding-bottom: 60px;
+    }
+
     .fade-enter-active, .fade-leave-active {
         transition: all 0.5s;
     }

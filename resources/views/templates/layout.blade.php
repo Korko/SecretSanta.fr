@@ -22,7 +22,7 @@
         <meta property="og:title" content="SecretSanta">
         <meta property="og:site_name" content="SecretSanta">
         <meta property="og:url" content="{{ url('/') }}">
-        <meta property="og:image" content="{{ url('/images/logo_black.png') }}">
+        <meta property="og:image" content="{{ url('../../images/logo_black.png') }}">
         <meta property="og:description" content="@lang('headers.description')">
         <meta property="og:type" content="website">
         <meta property="og:locale" content="{{ App::getLocale() }}">
@@ -33,14 +33,14 @@
         <meta name="twitter:creator" content="Korko">
         <meta name="twitter:title" content="SecretSanta">
         <meta name="twitter:description" content="@lang('headers.description')">
-        <meta name="twitter:image" content="{{ url('/images/logo_black.png') }}">
+        <meta name="twitter:image" content="{{ url('../../images/logo_black.png') }}">
 
         <!-- facebook image -->
-        <link rel="image_src" href="{{ url('/images/logo_black.png') }}" />
+        <link rel="image_src" href="{{ url('../../images/logo_black.png') }}" />
 
         <!-- css -->
         @php
-            $styles = (array) (isset($styles) ? $styles : '/css/layout.css');
+            $styles = (array) (isset($styles) ? $styles : null);
         @endphp
         @foreach($styles as $style)
             <link rel="stylesheet" href="{{ mix($style) }}" />
@@ -55,11 +55,7 @@
         <div id="menu" class="navbar navbar-dark fixed-top navbar-expand-md" role="navigation">
             <nav id="navbar">
                 <div id="logo">
-                    <a href="/"><picture>
-                        <source srcset="/images/logo.webp" type="image/webp">
-                        <source srcset="/images/logo.png" type="image/png">
-                        <img src="/images/logo.png" />
-                    </picture></a>
+                    <a href="/"></a>
                 </div>
                 @yield('navbar')
             </nav><!--/.navbar-collapse -->

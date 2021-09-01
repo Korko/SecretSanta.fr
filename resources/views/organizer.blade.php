@@ -1,4 +1,4 @@
-@extends('templates/fetcher', ['styles' => '/css/organizer.css', 'fetchUrl' => URL::signedRoute('organizerPanel.fetch', ['draw' => $draw])])
+@extends('templates/fetcher', ['fetchUrl' => URL::signedRoute('organizerPanel.fetch', ['draw' => $draw])])
 
 @section('script')
     @parent
@@ -12,7 +12,7 @@
         ]
     ])
 
-    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('/js/organizer.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('../js/common.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('../js/organizer.js') }}"></script>
 @stop
 
