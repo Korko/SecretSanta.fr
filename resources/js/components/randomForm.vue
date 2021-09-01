@@ -570,23 +570,28 @@
     }
 
     .media-calendar-icon {
-        background-image: image-set("../../images/calendar-icon.webp", "../../images/calendar-icon.png");
+        background-image: url("../../images/calendar-icon.png");
+        background-image: image-set(url("../../images/calendar-icon.webp"), url("../../images/calendar-icon.png"));
         background-repeat: no-repeat;
     }
     .media-user-icon {
-        background-image: image-set("../../images/user-icon.webp", "../../images/user-icon.png");
+        background-image: url("../../images/user-icon.png");
+        background-image: image-set(url("../../images/user-icon.webp"), url("../../images/user-icon.png"));
         background-repeat: no-repeat;
     }
     .media-paper-icon {
-        background-image: image-set("../../images/paper-icon.webp", "../../images/paper-icon.png");
+        background-image: url("../../images/paper-icon.png");
+        background-image: image-set(url("../../images/paper-icon.webp"), url("../../images/paper-icon.png"));
         background-repeat: no-repeat;
     }
     .media-mail-icon {
-        background-image: image-set("../../images/mail-icon.webp", "../../images/mail-icon.png");
+        background-image: url("../../images/mail-icon.png");
+        background-image: image-set(url("../../images/mail-icon.webp"), url("../../images/mail-icon.png"));
         background-repeat: no-repeat;
     }
     .media-clock-icon {
-        background-image: image-set("../../images/clock-icon.webp", "../../images/clock-icon.png");
+        background-image: url("../../images/clock-icon.png");
+        background-image: image-set(url("../../images/clock-icon.webp"), url("../../images/clock-icon.png"));
         background-repeat: no-repeat;
     }
 
