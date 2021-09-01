@@ -1,6 +1,8 @@
 const mix = require('laravel-mix');
 const webpack = require('webpack');
 
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 require('dotenv').config();
 
 require('laravel-mix-purgecss');
@@ -22,9 +24,29 @@ mix.autoload({
   jquery: ['$', 'jQuery', 'window.jQuery']
 });
 
+mix.override(webpackConfig => {
+  // BUG: laravel-mix doesn't handle file-loader's default esModule:true setting properly causing
+  // corrupted .ttf trying to be loaded by the browser.
+  // WORKAROUND: Override mixs and turn off esModule support on fonts.
+  // FIX: When laravel-mix fixes their bug AND laravel-mix updates to the fixed version
+  // this can be removed
+  webpackConfig.module.rules.forEach(rule => {
+    if (rule.test.toString() === '/(\.(woff2?|ttf|eot|otf)$|font.*\.svg$)/') {
+      if (Array.isArray(rule.use)) {
+        rule.use.forEach(ruleUse => {
+          if (ruleUse.loader === 'file-loader') {
+            ruleUse.options.esModule = false;
+          }
+        });
+      }
+    }
+  });
+});
+
 mix.webpackConfig({
   plugins: [
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new MiniCssExtractPlugin()
   ],
   module: {
     rules: [
@@ -32,7 +54,20 @@ mix.webpackConfig({
         // Matches all PHP or JSON files in `resources/lang` directory.
         test: /resources[\\\/]lang.+\.(php|json)$/,
         loader: 'laravel-localization-loader',
-      }
+      },
+//      {
+//        test: /\.(sa|sc|c)ss$/,
+//        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+//      },
+      {
+        test: /\.(jpg|png|webp)$/,
+        loader: 'file-loader',
+        options: {
+          outputPath: 'images',
+          name: '[name].[ext]?[contenthash]',
+          esModule: false
+        },
+      },
     ]
   }
 });
@@ -47,7 +82,8 @@ mix.options({
     clearConsole: false,
     cssNano: {
         discardComments: {removeAll: true},
-    }
+    },
+    imgLoaderOptions: false
 });
 
 mix.js('resources/js/common.js', 'public/js')
@@ -55,9 +91,10 @@ mix.js('resources/js/common.js', 'public/js')
    .js('resources/js/dearSanta.js', 'public/js')
    .js('resources/js/organizer.js', 'public/js')
    .js('resources/js/faq.js', 'public/js')
+   .js('resources/js/404.js', 'public/js')
    .modernizr()
    .vue({
-      extractStyles: true,
+      extractStyles: false,
       globalStyles: false
     })
    .polyfill({ entryPoints: "all" })
@@ -71,11 +108,11 @@ mix.js('resources/js/common.js', 'public/js')
    .extract([
       'alertifyjs', 'moment', 'papaparse', 'crypto-js'
     ], 'public/js/vendors-ui.js')
-   .sass('resources/sass/randomForm.scss', 'public/css')
-   .sass('resources/sass/dearSanta.scss', 'public/css')
-   .sass('resources/sass/organizer.scss', 'public/css')
-   .sass('resources/sass/faq.scss', 'public/css')
-   .sass('resources/sass/404.scss', 'public/css')
+//   .sass('resources/sass/randomForm.scss', 'public/css')
+//   .sass('resources/sass/dearSanta.scss', 'public/css')
+//   .sass('resources/sass/organizer.scss', 'public/css')
+//   .sass('resources/sass/faq.scss', 'public/css')
+//   .sass('resources/sass/404.scss', 'public/css')
    .purgeCss({
       content: [
         "app/**/*.php",
@@ -89,9 +126,9 @@ mix.js('resources/js/common.js', 'public/js')
         "resources/**/*.twig",
         "node_modules/**/*.vue", // Added line, all the rest is copied from postcss-purgecss-laravel plugin
       ]
-   })
-   .copy('resources/img', 'public/images')
-   .copy('resources/fonts', 'public/fonts');
+   });
+   //.copy('resources/img', 'public/images')
+   //.copy('resources/fonts', 'public/fonts');
 
 if (mix.inProduction()) {
     mix.version();

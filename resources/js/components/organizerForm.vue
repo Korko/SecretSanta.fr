@@ -2,7 +2,6 @@
     import Vue from "vue";
 
     import VuejsDialog from "vuejs-dialog";
-    import 'vuejs-dialog/dist/vuejs-dialog.min.css';
     Vue.use(VuejsDialog);
 
     import { required, email } from 'vuelidate/lib/validators';
@@ -155,9 +154,6 @@
 
 <template>
     <div>
-        <div class="alert alert-warning" role="alert">
-            Les adresses @laposte.net et @sfr.fr ne fonctionnent malheureusement pas bien avec SecretSanta.fr en ce moment. Les destinataires ne reçoivent pas leurs emails.<br />Autant que possible, évitez d'utilisez ces adresses.
-        </div>
         <div v-if="expired" class="alert alert-warning" role="alert">
             {{ $t('organizer.expired', {expires_at: expirationDateLong}) }}
         </div>
@@ -218,9 +214,20 @@
 </template>
 
 <style>
-.purge .dg-btn--ok {
-  color: #a82824;
-  background-color: #fefefe;
-  border-color: #a82824;
-}
+    @import "../../sass/layout.scss";
+    @import "~vuejs-dialog/dist/vuejs-dialog.min.css";
+
+    .table td {
+        vertical-align: middle !important;
+    }
+
+    table caption {
+        display: none;
+    }
+
+    .purge .dg-btn--ok {
+      color: #a82824;
+      background-color: #fefefe;
+      border-color: #a82824;
+    }
 </style>

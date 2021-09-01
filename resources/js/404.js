@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import RandomForm from './components/randomForm.vue';
 
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
@@ -12,12 +11,12 @@ const i18n = new VueI18n({
     messages: Locale
 });
 
+import c404 from './components/404.vue';
+
 window.app = new Vue({
-    el: '#form',
-
+    el: '#content',
     components: {
-        RandomForm
+        c404
     },
-
     i18n
 });

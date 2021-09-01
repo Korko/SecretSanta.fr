@@ -1,4 +1,11 @@
-@extends('templates/layout', ['styles' => ['/css/404.css']])
+@extends('templates/layout')
+
+@section('script')
+    @parent
+
+    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/404.js') }}"></script>
+@stop
 
 @section('content')
     <div class="polaroid-wrapper">
