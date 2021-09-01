@@ -71,6 +71,8 @@ services:
             - 9000:9000
             - 2500:2500
             - 1100:1100
+        environment:
+            INBUCKET_SMTP_REJECTDOMAINS: "reject"
         networks:
             - sail
 networks:
