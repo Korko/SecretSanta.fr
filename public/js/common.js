@@ -3776,71 +3776,6 @@ for (var COLLECTION_NAME in DOMIterables) {
 
 /***/ }),
 
-/***/ "./resources/sass/404.scss":
-/*!*********************************!*\
-  !*** ./resources/sass/404.scss ***!
-  \*********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/randomForm.scss":
-/*!****************************************!*\
-  !*** ./resources/sass/randomForm.scss ***!
-  \****************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/dearSanta.scss":
-/*!***************************************!*\
-  !*** ./resources/sass/dearSanta.scss ***!
-  \***************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/organizer.scss":
-/*!***************************************!*\
-  !*** ./resources/sass/organizer.scss ***!
-  \***************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./resources/sass/faq.scss":
-/*!*********************************!*\
-  !*** ./resources/sass/faq.scss ***!
-  \*********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
 /***/ "./.modernizrrc":
 /*!**********************!*\
   !*** ./.modernizrrc ***!
@@ -5233,7 +5168,7 @@ module.exports=window.Modernizr;if(hadGlobal){window.Modernizr=oldGlobal;}else{d
 },
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
-/******/ __webpack_require__.O(0, ["js/vendors-vue","js/vendors-jquery","js/vendors-ui","css/faq","css/organizer","css/dearSanta","css/randomForm","css/404"], function() { return __webpack_exec__("./resources/js/common.js"), __webpack_exec__("./resources/sass/randomForm.scss"), __webpack_exec__("./resources/sass/dearSanta.scss"), __webpack_exec__("./resources/sass/organizer.scss"), __webpack_exec__("./resources/sass/faq.scss"), __webpack_exec__("./resources/sass/404.scss"); });
+/******/ __webpack_require__.O(0, ["js/vendors-ui","js/vendors-jquery","js/vendors-vue"], function() { return __webpack_exec__("./resources/js/common.js"); });
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);

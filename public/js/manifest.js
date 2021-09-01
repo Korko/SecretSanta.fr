@@ -128,6 +128,11 @@
 /******/ 		};
 /******/ 	}();
 /******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	!function() {
+/******/ 		__webpack_require__.p = "/";
+/******/ 	}();
+/******/ 	
 /******/ 	/* webpack/runtime/jsonp chunk loading */
 /******/ 	!function() {
 /******/ 		// no baseURI
@@ -136,12 +141,7 @@
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
-/******/ 			"/js/manifest": 0,
-/******/ 			"css/faq": 0,
-/******/ 			"css/organizer": 0,
-/******/ 			"css/dearSanta": 0,
-/******/ 			"css/randomForm": 0,
-/******/ 			"css/404": 0
+/******/ 			"/js/manifest": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading

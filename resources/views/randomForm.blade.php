@@ -1,4 +1,4 @@
-@extends('templates/layout', ['styles' => '/css/randomForm.css'])
+@extends('templates/layout')
 
 @section('header')
     @parent
@@ -42,14 +42,7 @@
             <p class="lead main text-center">@lang('form.section.what.subtitle')</p>
             <div class="row text-center what">
                 <ul class="media-list w-100">
-                    <li class="media">
-                        <div class="media-left media-middle">
-                            <picture>
-                                <source srcset="/images/calendar-icon.webp" type="image/webp">
-                                <source srcset="/images/calendar-icon.png" type="image/png">
-                                <img class="media-object" src="/images/calendar-icon.png">
-                            </picture>
-                        </div>
+                    <li class="media media-icon-left media-calendar-icon">
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.what.heading1')</h4>
                             <p>{!! nl2br(trans('form.section.what.content1')) !!}</p>
@@ -78,56 +71,28 @@
             <p class="lead main text-center">@lang('form.section.how.subtitle')</p>
             <div class="row text-center how">
                 <ul class="media-list w-100">
-                    <li class="media">
-                        <div class="media-left media-middle">
-                            <picture>
-                                <source srcset="/images/user-icon.webp" type="image/webp">
-                                <source srcset="/images/user-icon.png" type="image/png">
-                                <img class="media-object" src="/images/user-icon.png">
-                            </picture>
-                        </div>
+                    <li class="media media-icon-left media-user-icon">
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading1')</h4>
                             <p>{!! nl2br(trans('form.section.how.content1')) !!}</p>
                         </div>
                     </li>
-                    <li class="media">
+                    <li class="media media-icon-right media-paper-icon">
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading2')</h4>
                             <p>{!! nl2br(trans('form.section.how.content2')) !!}</p>
                         </div>
-                        <div class="media-right media-middle">
-                            <picture>
-                                <source srcset="/images/paper-icon.webp" type="image/webp">
-                                <source srcset="/images/paper-icon.png" type="image/png">
-                                <img class="media-object" src="/images/paper-icon.png">
-                            </picture>
-                        </div>
                     </li>
-                    <li class="media">
-                        <div class="media-left media-middle">
-                            <picture>
-                                <source srcset="/images/mail-icon.webp" type="image/webp">
-                                <source srcset="/images/mail-icon.png" type="image/png">
-                                <img class="media-object" src="/images/mail-icon.png">
-                            </picture>
-                        </div>
+                    <li class="media media-icon-left media-mail-icon">
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading3')</h4>
                             <p>{!! nl2br(trans('form.section.how.content3')) !!}</p>
                         </div>
                     </li>
-                    <li class="media">
+                    <li class="media media-icon-right media-clock-icon">
                         <div class="media-body">
                             <h4 class="media-heading">@lang('form.section.how.heading4')</h4>
                             <p>{!! nl2br(trans('form.section.how.content4')) !!}</p>
-                        </div>
-                        <div class="media-right media-middle">
-                            <picture>
-                                <source srcset="/images/clock-icon.webp" type="image/webp">
-                                <source srcset="/images/clock-icon.png" type="image/png">
-                                <img class="media-object" src="/images/clock-icon.png">
-                            </picture>
                         </div>
                     </li>
                 </ul>
