@@ -18,5 +18,9 @@ window.app = new Vue({
     components: {
         Faq
     },
-    i18n
+    i18n,
+    mounted: function() {
+        document.body.classList.add('cssLoading');
+        setTimeout(() => document.body.classList.remove('cssLoading'), 0);
+    }
 });

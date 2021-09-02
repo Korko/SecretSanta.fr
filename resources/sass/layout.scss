@@ -3,6 +3,17 @@
 @import '~alertifyjs/build/css/alertify.min.css';
 @import '~alertifyjs/build/css/themes/bootstrap.min.css';
 
+#loadOverlay {
+    display: none;
+}
+.cssLoading * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
+
 .alertify .ajs-dialog {
     top: 50%;
     transform: translateY(-50%);
@@ -364,7 +375,7 @@ footer .row {
         font-weight: bold;
         padding: 5px 40px;
         line-height: 20px;
-        transition: 0.5s;
+        transition: background 0.5s, color 0.5s;
         width: 200px;
         position: absolute;
         top: 55px;

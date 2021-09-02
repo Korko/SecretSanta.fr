@@ -19,5 +19,9 @@ window.app = new Vue({
     i18n,
     data: {
         routes: window.global.routes
+    },
+    mounted: function() {
+        document.body.classList.add('cssLoading');
+        setTimeout(() => document.body.classList.remove('cssLoading'), 0);
     }
 });
