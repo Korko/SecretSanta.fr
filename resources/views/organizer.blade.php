@@ -12,7 +12,7 @@
         ]
     ])
 
-    <script type="text/javascript" src="{{ mix('../js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('../js/organizer.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/organizer.js') }}"></script>
 @stop
 
