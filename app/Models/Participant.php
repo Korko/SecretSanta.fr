@@ -120,4 +120,10 @@ class Participant extends Model
                 'is_organizer' => $this->is($this->draw->organizer)
             ]);
     }
+
+    // Usefull for Mail notification
+    public function getSenderAttribute()
+    {
+        return $this->draw->organizer;
+    }
 }
