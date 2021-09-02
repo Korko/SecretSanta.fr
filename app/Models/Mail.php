@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Events\MailStatusUpdated;
+use App\Notifications\MailStatusUpdated;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -72,7 +72,7 @@ class Mail extends Model
         $this->delivery_status = $status;
         $this->save();
 
-        event(new MailStatusUpdated($this));
+        $this->mailable->sender->notify(new MailStatusUpdated($this));
     }
 
     /**
