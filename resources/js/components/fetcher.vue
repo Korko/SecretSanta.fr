@@ -22,7 +22,7 @@
                 .then(response => {
                     this.$emit('success', response);
                 })
-                .catch(error => {
+                .catch(response => {
                     this.$emit('error');
                 })
                 .finally(() => {
