@@ -3,8 +3,8 @@
 @section('script')
     @parent
 
-    <script type="text/javascript" src="{{ mix('../js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('../js/faq.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/faq.js') }}"></script>
 @stop
 
 @section('navbar')
