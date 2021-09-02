@@ -48,6 +48,8 @@
     @show
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
+    <div id="loadOverlay" style="background-color:#FFF; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div>
+
     <span id="ribbon" class="d-none d-md-block"><a href="{{ route('faq') }}" target="_blank">@lang('form.nav.faq')</a></span>
 
     <div id="wrap">
