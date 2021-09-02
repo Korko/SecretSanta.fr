@@ -35,7 +35,7 @@ const getExtensionFromMime = function(mime) {
     }
 };*/
 
-const download = function(data, fileName, mimeType) {
+const download = (data, fileName, mimeType) => {
     var blob = new Blob([data]);
     blob = blob.slice(0, blob.size, mimeType);
 
@@ -47,4 +47,16 @@ const download = function(data, fileName, mimeType) {
     link.click();
 };
 
-export { download };
+const isString = arg => {
+    return typeof arg === 'string' || arg instanceof String;
+};
+
+const isObject = arg => {
+    return Object.prototype.toString.call(arg) === '[object Object]';
+};
+
+const isArray = arg => {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+};
+
+export { download, isString, isObject, isArray };
