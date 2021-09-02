@@ -3,6 +3,8 @@
 
     import fetch from '../partials/fetch.js';
 
+    import alertify from '../partials/alertify.js';
+
     export default {
         props: {
             action: {
@@ -86,14 +88,25 @@
                                 this.onReset();
                             }
                         })
-                        .catch(error => {
-                            if (error.response && error.response.errors)
-                                this.fieldErrors = error.response.errors;
+                        .catch(response => {
+                            if (response && response.errors)
+                                this.fieldErrors = response.errors;
 
                             this.sending = false;
 
-                            (options.error || options.catch || function() {})(error.response);
-                            (options.complete || options.finally || function() {})();
+                            var callback;
+                            if(callback = (options.error || options.catch)) {
+                                callback(response);
+                            }
+
+                            var callback2;
+                            if(callback2 = (options.complete || options.finally)) {
+                                callback2();
+                            }
+
+                            if(!callback && !callback2 && this.fieldErrors.length > 0) {
+                                alertify.errorAlert(this.$t('form.internalError'));
+                            }
 
                             this.$emit('error');
                         });
