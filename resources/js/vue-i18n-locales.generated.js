@@ -323,7 +323,8 @@ export default {
             "submit": "Lancez l'aléatoire !",
             "paypal": {
                 "alt": "PayPal, le réflexe sécurité pour payer en ligne"
-            }
+            },
+            "internalError": "Erreur interne"
         },
         "dearsanta": {
             "list": {
