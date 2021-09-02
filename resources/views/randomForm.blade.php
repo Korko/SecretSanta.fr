@@ -111,7 +111,7 @@
         <div class="container inner"></div>
     </div>
 
-    <div id="form" class="light-wrapper">
+    <div id="form" class="light-wrapper v-cloak">
         <section class="ss-style-top"></section>
         <div class="container inner">
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
