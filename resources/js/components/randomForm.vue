@@ -181,7 +181,7 @@
                 Papa.parse(file, {
                     error: function() {
                         this.importing = false;
-                        alertify.alert(this.$t('form.csv.importError'));
+                        alertify.errorAlert(this.$t('form.csv.importError'));
                     },
                     complete: function(file) {
                         this.importing = false;
@@ -201,7 +201,7 @@
                                 this.addParticipant();
                             }
                         }
-                        alertify.alert(this.$t('form.csv.importSuccess'));
+                        alertify.errorAlert(this.$t('form.csv.importSuccess'));
                     }.bind(this)
                 });
             },
