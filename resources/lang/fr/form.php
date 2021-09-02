@@ -127,4 +127,6 @@ via SecretSanta.fr',
     'paypal' => [
         'alt' => 'PayPal, le réflexe sécurité pour payer en ligne',
     ],
+
+    'internalError' => 'Erreur interne',
 ];
