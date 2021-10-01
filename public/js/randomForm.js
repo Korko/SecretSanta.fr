@@ -459,10 +459,6 @@ __webpack_require__.r(__webpack_exports__);
     autoReset: {
       type: Boolean,
       default: false
-    },
-    internalError: {
-      type: Boolean,
-      default: false
     }
   },
   data: function data() {

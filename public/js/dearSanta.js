@@ -64,10 +64,6 @@ __webpack_require__.r(__webpack_exports__);
     autoReset: {
       type: Boolean,
       default: false
-    },
-    internalError: {
-      type: Boolean,
-      default: false
     }
   },
   data: function data() {
@@ -20318,12 +20314,7 @@ var render = function() {
       _c(
         "ajax-form",
         {
-          attrs: {
-            action: _vm.routes.contactUrl,
-            $v: _vm.$v,
-            internalError: true,
-            autoReset: true
-          },
+          attrs: { action: _vm.routes.contactUrl, $v: _vm.$v, autoReset: true },
           on: { success: _vm.success, reset: _vm.reset }
         },
         [

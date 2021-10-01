@@ -6,7 +6,7 @@
     "/js/faq.js": "/js/faq.js",
     "/js/404.js": "/js/404.js",
     "/js/manifest.js": "/js/manifest.js",
+    "/js/vendors-vue.js": "/js/vendors-vue.js",
     "/js/vendors-ui.js": "/js/vendors-ui.js",
-    "/js/vendors-jquery.js": "/js/vendors-jquery.js",
-    "/js/vendors-vue.js": "/js/vendors-vue.js"
+    "/js/vendors-jquery.js": "/js/vendors-jquery.js"
 }
