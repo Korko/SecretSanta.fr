@@ -52,10 +52,15 @@
         background: #fff;
         padding: 1rem;
         box-shadow: 0 0.2rem 1.2rem rgba(0,0,0,0.2);
+        background-image: url(../../images/404-1.webp);
+        background-origin: content-box;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        height:  19vw;
     }
-    .polaroid > img {
-        max-width: 100%;
-        height: auto;
+    body.nowebp .polaroid {
+        background-image: url(../../images/404-1.jpg);
     }
     .polaroid .caption {
         font-size: 1.8rem;
