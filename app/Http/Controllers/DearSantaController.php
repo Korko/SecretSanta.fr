@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\URL;
 
 class DearSantaController extends Controller
 {
+    protected $dearSantaPublicFields = ['id', 'mail_body', 'mail', 'created_at', 'updated_at'];
+
     public function view(Participant $participant)
     {
         return response()->view('dearSanta', [
@@ -28,7 +30,9 @@ class DearSantaController extends Controller
             'draw' => $participant->draw->mail_title,
             'organizer' => $participant->draw->organizer->name,
             'emails' => $participant->dearSantas->mapWithKeys(function ($email) {
-                return [$email->id => $email->only(['id', 'mail_body', 'mail'])];
+                return [
+                    $email->id => $email->only($this->dearSantaPublicFields)
+                ];
             }),
             'resendEmailUrls' => $participant->dearSantas->mapWithKeys(function ($dearSanta) use ($participant) {
                 return [
@@ -44,7 +48,9 @@ class DearSantaController extends Controller
     {
         return response()->json([
             'emails' => $participant->dearSantas->mapWithKeys(function ($dearSanta) {
-                return [$dearSanta->id => $dearSanta->only(['id', 'mail_body', 'mail'])];
+                return [
+                    $dearSanta->id => $dearSanta->only($this->dearSantaPublicFields)
+                ];
             }),
         ]);
     }
@@ -61,9 +67,8 @@ class DearSantaController extends Controller
 
         return $request->ajax() ?
             response()->json([
-                'message' => $message, 'email' => $dearSanta->only([
-                    'id', 'mail_body', 'mail',
-                ]),
+                'message' => $message,
+                'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
             ]) :
             redirect('/dearSanta/'.$participant->hash)->with('message', $message);
     }
@@ -83,9 +88,8 @@ class DearSantaController extends Controller
 
         return $request->ajax() ?
             response()->json([
-                'message' => $message, 'email' => $dearSanta->only([
-                    'id', 'mail_body', 'mail',
-                ]),
+                'message' => $message,
+                'email' => DearSanta::find($dearSanta->id)->only($this->dearSantaPublicFields),
             ]) :
             redirect('/dearSanta/'.$participant->hash)->with('message', $message);
     }
