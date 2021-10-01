@@ -64,10 +64,6 @@ __webpack_require__.r(__webpack_exports__);
     autoReset: {
       type: Boolean,
       default: false
-    },
-    internalError: {
-      type: Boolean,
-      default: false
     }
   },
   data: function data() {
@@ -645,21 +641,25 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.use((vuejs_dialog__WEBPACK_IMPORTED_MOD
       }).then(function (response) {
         (0,_partials_helpers_js__WEBPACK_IMPORTED_MODULE_6__.download)(response, 'secretsanta_' + _this5.expirationDateShort + '_full.csv', 'text/csv');
       });
-    },
-    confirmSuggestRedraw: function confirmSuggestRedraw() {
-      var options = {
-        okText: this.$t('organizer.suggest_redraw.confirm.ok'),
-        cancelText: this.$t('organizer.suggest_redraw.confirm.cancel'),
-        customClass: 'suggest_redraw'
-      };
-      var message = {
-        title: this.$t('organizer.suggest_redraw.confirm.title'),
-        body: this.$t('organizer.suggest_redraw.confirm.body')
-      };
-      this.$dialog.confirm(message, options).then(this.suggestRedraw);
-    },
-    suggestRedraw: function suggestRedraw() {//
     }
+    /*confirmSuggestRedraw() {
+        let options = {
+            okText: this.$t('organizer.suggest_redraw.confirm.ok'),
+            cancelText: this.$t('organizer.suggest_redraw.confirm.cancel'),
+            customClass: 'suggest_redraw'
+        };
+         let message = {
+            title: this.$t('organizer.suggest_redraw.confirm.title'),
+            body: this.$t('organizer.suggest_redraw.confirm.body')
+        };
+         this.$dialog
+            .confirm(message, options)
+            .then(this.suggestRedraw);
+    },
+    suggestRedraw() {
+        //
+    }*/
+
   }
 });
 
@@ -20956,43 +20956,6 @@ var render = function() {
               _vm._v(
                 "\n        " +
                   _vm._s(_vm.$t("organizer.download.button")) +
-                  "\n    "
-              )
-            ]
-          ),
-      _vm._v(" "),
-      !_vm.data.redraw
-        ? _c(
-            "button",
-            {
-              staticClass: "btn btn-warning",
-              attrs: { disabled: _vm.expired, type: "button" },
-              on: { click: _vm.confirmSuggestRedraw }
-            },
-            [
-              _c("i", { staticClass: "fas fa-paper-plane" }),
-              _vm._v(
-                "\n        " +
-                  _vm._s(_vm.$t("organizer.suggest_redraw.button")) +
-                  "\n    "
-              )
-            ]
-          )
-        : _c(
-            "button",
-            {
-              staticClass: "btn btn-warning",
-              attrs: {
-                disabled: !_vm.canRedraw || _vm.expired,
-                type: "button"
-              },
-              on: { click: _vm.confirmRedraw }
-            },
-            [
-              _c("i", { staticClass: "fas fa-dice" }),
-              _vm._v(
-                "\n        " +
-                  _vm._s(_vm.$t("organizer.redraw.button")) +
                   "\n    "
               )
             ]

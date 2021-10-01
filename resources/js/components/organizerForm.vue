@@ -148,7 +148,7 @@
                         download(response, 'secretsanta_'+this.expirationDateShort+'_full.csv', 'text/csv');
                     });
             },
-            confirmSuggestRedraw() {
+            /*confirmSuggestRedraw() {
                 let options = {
                     okText: this.$t('organizer.suggest_redraw.confirm.ok'),
                     cancelText: this.$t('organizer.suggest_redraw.confirm.cancel'),
@@ -166,7 +166,7 @@
             },
             suggestRedraw() {
                 //
-            }
+            }*/
         }
     };
 </script>
@@ -229,14 +229,14 @@
             <i class="fas fa-download" />
             {{ $t('organizer.download.button') }}
         </button>
-        <button v-if="!data.redraw" :disabled="expired" type="button" class="btn btn-warning" @click="confirmSuggestRedraw">
+        <!--<button v-if="!data.redraw" :disabled="expired" type="button" class="btn btn-warning" @click="confirmSuggestRedraw">
             <i class="fas fa-paper-plane" />
             {{ $t('organizer.suggest_redraw.button') }}
         </button>
         <button v-else :disabled="!canRedraw || expired" type="button" class="btn btn-warning" @click="confirmRedraw">
             <i class="fas fa-dice" />
             {{ $t('organizer.redraw.button') }}
-        </button>
+        </button>-->
     </div>
 </template>
 
