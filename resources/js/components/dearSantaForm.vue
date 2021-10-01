@@ -66,6 +66,9 @@
         },
         methods: {
             success(data) {
+                if(!data.email.updated_at) {
+                    data.email.updated_at = new Date();
+                }
                 this.$set(this.data.emails, data.email.id, data.email);
             },
             reset() {
