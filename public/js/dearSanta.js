@@ -273,6 +273,10 @@ vue__WEBPACK_IMPORTED_MODULE_9__.default.use(vuelidate__WEBPACK_IMPORTED_MODULE_
   },
   methods: {
     success: function success(data) {
+      if (!data.email.updated_at) {
+        data.email.updated_at = new Date();
+      }
+
       this.$set(this.data.emails, data.email.id, data.email);
     },
     reset: function reset() {
