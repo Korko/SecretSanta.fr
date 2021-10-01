@@ -12,11 +12,6 @@
 
         <div class="item">
             <div class="polaroid">
-                <picture>
-                    <source srcset="/images/404-1.webp" type="image/webp">
-                    <source srcset="/images/404-1.jpg" type="image/jpg">
-                    <img src="/images/404-1.jpg">
-                </picture>
                 <div class="caption"></div>
             </div>
             <p class="wasted">Wasted</p>
