@@ -2,9 +2,10 @@
 
 namespace Tests\Feature;
 
+use DrawCrypt;
 use DrawHandler;
 
-it('handles ajax format', function () {
+/*it('handles ajax format', function () {
     $mock = DrawHandler::partialMock();
 
     $mock->shouldReceive('toParticipants')
@@ -42,4 +43,15 @@ it('handles ajax format', function () {
         'content-email'        => 'test mail {SANTA} => {TARGET}',
         'data-expiration'      => date('Y-m-d', strtotime('+2 days')),
     ]);
+});*/
+
+it('stores database crypted entries', function () {
+    $draw = createDrawWithParticipants(3);
+
+    $decrypted = $draw->participants[0]->name;
+
+    DrawCrypt::shouldReceive('decrypt')
+        ->andReturnArg(0);
+
+    assertNotEquals($draw->participants[0]->name, $decrypted);
 });

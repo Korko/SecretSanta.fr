@@ -53,6 +53,8 @@ it('saves the correct target', function ($participants, $targets) {
     }
 })->with('unique participants list');
 
+//TODO test mail title
+
 it('sends to the organizer the link to their panel', function ($participants) {
     Mail::fake();
 
