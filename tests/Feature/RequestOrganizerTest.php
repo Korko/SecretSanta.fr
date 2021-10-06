@@ -47,3 +47,9 @@ test('the organizer can change a participant\'s email', function () {
 
     assertHasMailPushed(TargetDrawn::class, $participant->email);
 });
+
+test('the organizer can download initial data');
+test('the organizer cannot download total data if the draw is not expired');
+test('the organizer can download total data if the draw is expired');
+
+test('the organizer can delete all data');
