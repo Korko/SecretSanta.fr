@@ -1,6 +1,8 @@
 {
     "private": true,
-    "browserslist": ["defaults"],
+    "browserslist": [
+        "defaults"
+    ],
     "scripts": {
         "dev": "npm run development",
         "development": "mix",
@@ -29,7 +31,6 @@
         "sass-loader": "^12.1.0",
         "vue-loader": "^15.9.6",
         "vue-template-compiler": "^2.6.12",
-        "webpack-cli": "^4.7.2",
         "webpack-modernizr-loader": "^5.0.0"
     },
     "dependencies": {
