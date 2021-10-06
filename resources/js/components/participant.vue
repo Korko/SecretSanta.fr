@@ -43,7 +43,7 @@
             otherParticipants() {
                 var participants = this.all.map((participant, idx) => {participant.idx = idx; return participant;});
                 participants.splice(this.idx, 1);
-                return participants;
+                return participants.filter(participant => !!participant.name);
             }
         },
         created: function() {
