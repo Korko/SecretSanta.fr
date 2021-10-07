@@ -50,7 +50,7 @@ class DearSanta extends Model
         return $this->morphOne(Mail::class, 'mailable');
     }
 
-    public function draw()
+    public function getDrawAttribute()
     {
         return $this->sender->draw;
     }
