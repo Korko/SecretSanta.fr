@@ -24,7 +24,7 @@ class MailTracker
         $params = $this->parseReturnPath($returnPath);
 
         if (!empty($params[0])) {
-            $mail = MailModel::find($params[1]);
+            $mail = MailModel::where('notification', $params[1])->first();
 
             if ($mail) {
                 switch($params[0]) {
