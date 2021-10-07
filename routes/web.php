@@ -73,4 +73,4 @@ Route::middleware(['signed', 'decrypt.iv:participant,name'])->group(function () 
     Route::post('/org/{draw}/{participant}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
 });
 
-Route::get('/email/{mail:id}.png', [MailController::class, 'updateStatus'])->name('pixel')->middleware('signed');
+Route::get('/email/{mail:notification}.png', [MailController::class, 'updateStatus'])->name('pixel')->middleware('signed');

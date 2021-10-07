@@ -26,7 +26,7 @@ class TrackedMailChannel extends MailChannel
             $mail = (new MailModel());
         }
 
-        $mail->id = $notification->id;
+        $mail->notification = $notification->id;
         $mailable->mail()->save($mail);
         $mail->markAsSending();
 
