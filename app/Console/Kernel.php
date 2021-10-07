@@ -3,7 +3,6 @@
 namespace App\Console;
 
 use App\Models\Draw;
-use App\Jobs\ParseBounces;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -34,7 +33,7 @@ class Kernel extends ConsoleKernel
             ->environments('prod');
 
         $schedule
-            ->job(new ParseBounces)
+            ->command('bounces:parse')
             ->everyMinute()
             ->withoutOverlapping()
             ->environments('prod');
