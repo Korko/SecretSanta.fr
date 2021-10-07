@@ -23,7 +23,7 @@ class ParseBounces implements ShouldQueue
         $recipients = $this->getRecipients($emailClient);
 
         foreach($recipients as $recipient) {
-            $tracker->handle($this->getReturnPath($recipient));
+            $tracker->handle($recipient);
         }
     }
 
@@ -43,14 +43,8 @@ class ParseBounces implements ShouldQueue
 
     protected function getFirstRecipientAddress(EmailMessage $message): string
     {
-        $recipient = collect($message->getTo())
-            ->first();
+        $recipient = $message->getTo()[0];
 
         return is_object($recipient) ? $recipient->mailbox : '';
-    }
-
-    protected function getReturnPath($email): string
-    {
-        return strstr($email, '@', true);
     }
 }
