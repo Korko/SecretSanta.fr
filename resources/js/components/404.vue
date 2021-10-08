@@ -184,7 +184,7 @@
     .lead::after {
         position: absolute;
         content: ' ';
-        background: #ed0121;
+        background: #a00;
         width: 80px;
         height: 3px;
         bottom: -22px;

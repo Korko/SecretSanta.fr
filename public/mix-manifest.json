@@ -1,12 +1,12 @@
 {
-    "/js/common.js": "/js/common.js?id=97e7f785a235da20dc9f",
-    "/js/randomForm.js": "/js/randomForm.js?id=96d48a4acf89602b759b",
-    "/js/dearSanta.js": "/js/dearSanta.js?id=c6da30af225634391f30",
-    "/js/organizer.js": "/js/organizer.js?id=8872feefcf06ac462754",
-    "/js/faq.js": "/js/faq.js?id=ffa02375cdf73a672a87",
-    "/js/404.js": "/js/404.js?id=b98d9cf97019306dc481",
+    "/js/common.js": "/js/common.js?id=f5b7e7e549f1787a8749",
+    "/js/randomForm.js": "/js/randomForm.js?id=cf8763abc8f36a50244f",
+    "/js/dearSanta.js": "/js/dearSanta.js?id=d8bd3e9c378d39de1951",
+    "/js/organizer.js": "/js/organizer.js?id=afa56a8c86d226c20e9d",
+    "/js/faq.js": "/js/faq.js?id=b5f24e9b6ef811cf7c3d",
+    "/js/404.js": "/js/404.js?id=22d0b6b70819f77c79aa",
     "/js/manifest.js": "/js/manifest.js?id=1e9642638105550e928f",
-    "/js/vendors-jquery.js": "/js/vendors-jquery.js?id=7200a82327f118ca9eeb",
-    "/js/vendors-vue.js": "/js/vendors-vue.js?id=0bf9c948da7d8b4a63f4",
-    "/js/vendors-ui.js": "/js/vendors-ui.js?id=0f99475c979e92992fba"
+    "/js/vendors-jquery.js": "/js/vendors-jquery.js?id=0123e764461a15150b42",
+    "/js/vendors-vue.js": "/js/vendors-vue.js?id=5aa98c67518340eb7654",
+    "/js/vendors-ui.js": "/js/vendors-ui.js?id=2cbb39daa8d17383a848"
 }

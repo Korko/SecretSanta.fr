@@ -449,14 +449,14 @@
         text-transform: uppercase;
         font-weight: bold;
         display: inline-block;
-        background: #ed0121;
+        background: #a00;
         padding: 0 18px;
     }
 
     #header .subtitle h4 {
         display: inline-block;
         background: white;
-        color: #ed0121;
+        color: #a00;
         font-size: 38px;
         padding: 0 15px;
     }
@@ -548,7 +548,7 @@
     .lead::after {
         position: absolute;
         content: ' ';
-        background: #ed0121;
+        background: #a00;
         width: 80px;
         height: 3px;
         bottom: -22px;
