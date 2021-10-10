@@ -9,6 +9,10 @@
             'csvFinalUrl' => URL::signedRoute('organizerPanel.csvFinal', ['draw' => $draw]),
             'deleteUrl' => URL::temporarySignedRoute('organizerPanel.delete', 3600, ['draw' => $draw]), // 1h validity
             'fetchStateUrl' => URL::signedRoute('organizerPanel.fetchState', ['draw' => $draw]),
+        ],
+        'pusher' => [
+            'key' => Arr::get(config('websockets.apps'), '0.key'),
+            'host' => config('app.url')
         ]
     ])
 
