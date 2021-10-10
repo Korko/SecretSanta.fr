@@ -9,6 +9,10 @@
             'fetchStateUrl' => URL::signedRoute('dearSanta.fetchState', ['participant' => $participant]),
             'subUrl' => URL::signedRoute('participant.sub', ['participant' => $participant]),
             'unsubUrl' => URL::signedRoute('participant.unsub', ['participant' => $participant]),
+        ],
+        'pusher' => [
+            'key' => Arr::get(config('websockets.apps'), '0.key'),
+            'host' => config('app.url')
         ]
     ])
 
