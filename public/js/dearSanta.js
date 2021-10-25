@@ -674,9 +674,10 @@ window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/d
   broadcaster: 'pusher',
   key: window.global.pusher.key,
   wsHost: window.global.pusher.host,
-  wsPort: 443,
+  wsPort: window.global.pusher.port || 443,
+  useTLS: !(window.global.pusher.port === 80),
   disableStats: true,
-  enabledTransports: ['ws', 'wss']
+  enabledTransports: window.global.pusher.port === 80 ? ['ws'] : ['wss']
 }));
 
 /***/ }),
