@@ -95,6 +95,7 @@ mix.js('resources/js/common.js', 'public/js')
    .js('resources/js/organizer.js', 'public/js')
    .js('resources/js/faq.js', 'public/js')
    .js('resources/js/404.js', 'public/js')
+   .js('resources/js/dashboard.js', 'public/js')
    .modernizr()
    .vue({
       extractStyles: false,

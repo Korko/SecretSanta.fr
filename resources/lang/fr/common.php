@@ -29,4 +29,10 @@ return [
             'received' => 'Reçu',
         ],
     ],
+
+    'nav' => [
+        'go'        => 'Organiser un nouveau tirage',
+        'dashboard' => 'Tableau de bord',
+        'faq'       => 'Foire Aux Questions',
+    ],
 ];

@@ -33,6 +33,15 @@
         data() {
             return {
                 validations: {
+                    name: {
+                        required,
+                        unique(value) {
+                            // standalone validator ideally should not assume a field is required
+                            if (value === '') return true;
+
+                            return (this.data.participants.filter(participant => (participant.name === value)).length === 1);
+                        }
+                    },
                     email: {
                         required,
                         format: email
@@ -174,7 +183,19 @@
             </thead>
             <tbody>
                 <tr v-for="(participant, k) in data.participants" :key="participant.hash">
-                    <td>{{ participant.name }}</td>
+                    <td>
+                        <input-edit
+                            :value="participant.name"
+                            :validation="validations.name"
+                            :update="(name) => updateName(k, name)"
+                            :disabled="expired"
+                        >
+                            <template #errors="{ $v: $v }">
+                                <div v-if="!$v.name.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.required') }}</div>
+                                <div v-else-if="!$v.name.unique" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.distinct') }}</div>
+                            </template>
+                        </input-edit>
+                    </td>
                     <td>
                         <input-edit
                             :value="participant.email"
@@ -183,8 +204,8 @@
                             :disabled="expired"
                         >
                             <template #errors="{ $v: $v }">
-                                <div v-if="!$v.required" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.required') }}</div>
-                                <div v-else-if="!$v.format" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.format') }}</div>
+                                <div v-if="!$v.email.required" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.required') }}</div>
+                                <div v-else-if="!$v.email.format" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.format') }}</div>
                             </template>
                         </input-edit>
                     </td>

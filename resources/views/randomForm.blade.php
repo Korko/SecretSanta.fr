@@ -12,10 +12,11 @@
     <ul class="nav navbar-nav navbar-nav-left">
         <li><a href="#what">@lang('form.nav.what')</a></li>
         <li><a href="#how">@lang('form.nav.how')</a></li>
+        <li><a href="#form">@lang('form.nav.go')</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-nav-right">
-        <li><a href="#form">@lang('form.nav.go')</a></li>
-        <li><a class="d-md-none" href="{{ route('faq') }}" target="_blank">@lang('form.nav.faq')</a></li>
+        <li><a href="{{ route('dashboard') }}" target="_blank">@lang('common.nav.dashboard')</a></li>
+        <li><a class="d-md-none" href="{{ route('faq') }}" target="_blank">@lang('common.nav.faq')</a></li>
     </ul>
 @stop
 

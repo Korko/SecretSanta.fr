@@ -230,7 +230,7 @@ nav#navbar {
 }
 
 .navbar .navbar-nav > li > a:hover,
-.narbar .navbar-nav > .active > a {
+.navbar .navbar-nav > .active > a {
     background: #ed0121;
     color: white;
     text-shadow: none;
@@ -248,6 +248,21 @@ nav#navbar {
     justify-content: flex-start;
     flex: 1;
     margin-left: 60px;
+}
+
+.navbar a[href]:not(:empty)::before {
+    content: "↪";
+    padding-right: .2em;
+    color: #ccc;
+    display: inline-block;
+    opacity: .4;
+}
+.navbar a[href]:not(:empty):hover::before {
+    text-decoration: none;
+    color: #333;
+}
+.navbar a[href^="#"]:not(:empty)::before {
+    content: "#";
 }
 
 #logo {

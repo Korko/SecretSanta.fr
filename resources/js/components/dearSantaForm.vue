@@ -46,7 +46,7 @@
             }
         },
         created() {
-            Echo.channel('draw.'+this.data.draw)
+            Echo.channel('draw.'+this.data.draw.hash)
                 .listen('.pusher:subscription_succeeded', () => {
                     this.fetchState();
                 })
@@ -58,6 +58,20 @@
                         this.$set(this.data.emails[key].mail, 'updated_at', data.updated_at);
                     }
                 });
+
+            window.localStorage.setItem('secretsanta', JSON.stringify(Object.assign({},
+                JSON.parse(window.localStorage.getItem('secretsanta')) || {},
+                {
+                    [this.data.draw.hash]: {
+                        title: this.data.draw.mail_title,
+                        creation: this.data.draw.created_at,
+                        expiration: this.data.draw.expires_at,
+                        organizer: this.data.organizer,
+                        participant: this.data.participant.name,
+                        dearSanta: this.routes.contactUrl
+                    }
+                }
+            )));
         },
         validations: {
             content: {

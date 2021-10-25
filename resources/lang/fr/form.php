@@ -2,10 +2,9 @@
 
 return [
     'nav' => [
-        'what' => 'Qu\'est-ce que c\'est ?',
-        'how'  => 'Comment faire ?',
-        'go'   => 'Allez, c\'est parti !',
-        'faq'  => 'Foire Aux Questions',
+        'what'      => 'Qu\'est-ce que c\'est ?',
+        'how'       => 'Comment faire ?',
+        'go'        => 'Allez, c\'est parti !',
     ],
 
     'title'    => 'Secret Santa .fr',

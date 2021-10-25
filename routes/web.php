@@ -23,6 +23,7 @@ Route::get('/', [RandomFormController::class, 'view']);
 Route::post('/', [RandomFormController::class, 'handle']);
 
 Route::get('/faq', [RandomFormController::class, 'faq'])->name('faq');
+Route::get('/dashboard', [RandomFormController::class, 'dashboard'])->name('dashboard');
 
 Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
 Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');

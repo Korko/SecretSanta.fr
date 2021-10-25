@@ -40,4 +40,9 @@ class RandomFormController extends Controller
             'questions' => __('faq.questions'),
         ]);
     }
+
+    public function dashboard()
+    {
+        return response()->view('dashboard');
+    }
 }

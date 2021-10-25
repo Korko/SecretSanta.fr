@@ -20,9 +20,10 @@ services:
         networks:
             - sail
         depends_on:
+            - selenium
             - mysql
             # - redis
-            - selenium
+            # - memcached
             #- mailhog
             - inbucket
     selenium:
