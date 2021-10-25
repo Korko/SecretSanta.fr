@@ -12,7 +12,7 @@
         ],
         'pusher' => [
             'key' => Arr::get(config('websockets.apps'), '0.key'),
-            'host' => config('app.url')
+            'host' => Arr::get(config('websockets.apps'), '0.host'),
         ]
     ])
 
