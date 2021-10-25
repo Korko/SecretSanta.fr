@@ -334,6 +334,10 @@ __webpack_require__.r(__webpack_exports__);
       type: String,
       required: true
     },
+    last_update: {
+      type: String,
+      default: null
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -348,6 +352,9 @@ __webpack_require__.r(__webpack_exports__);
         received: "fas fa-check",
         error: "fas fa-exclamation-triangle"
       }[this.delivery_status];
+    },
+    recent: function recent() {
+      return new Date().getTime() - new Date(this.last_update).getTime() < 5 * 60 * 1000; // 5m delay
     }
   }
 });
@@ -20695,6 +20702,7 @@ var render = function() {
                     _c("email-status", {
                       attrs: {
                         delivery_status: email.delivery_status,
+                        last_update: email.updated_at,
                         can_redo: false
                       },
                       on: {
@@ -20764,10 +20772,7 @@ var render = function() {
           "button",
           {
             staticClass: "btn btn-outline-secondary",
-            attrs: {
-              disabled: _vm.delivery_status === "created" || _vm.disabled,
-              type: "button"
-            },
+            attrs: { disabled: _vm.recent || _vm.disabled, type: "button" },
             on: {
               click: function($event) {
                 return _vm.$emit("redo")
