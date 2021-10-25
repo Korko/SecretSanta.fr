@@ -141,7 +141,7 @@
                 <tr v-for="(email, k) in emails" :key="email.id" class="email">
                     <td>{{ email.created_at }}</td>
                     <td><p>{{ nl2br(email.mail_body) }}</p></td>
-                    <td><email-status :delivery_status="email.delivery_status" :can_redo="false" @redo="resend(k)"/></td>
+                    <td><email-status :delivery_status="email.delivery_status" :last_update="email.updated_at" :can_redo="false" @redo="resend(k)"/></td>
                 </tr>
                 <tr v-if="emails.length === 0" class="no-email">
                     <td colspan="3">

@@ -9,6 +9,10 @@
                 type: String,
                 required: true
             },
+            last_update: {
+                type: String,
+                default: null
+            },
             disabled: {
                 type: Boolean,
                 default: false
@@ -23,6 +27,9 @@
                     received: "fas fa-check",
                     error: "fas fa-exclamation-triangle"
                 }[this.delivery_status];
+            },
+            recent() {
+                return (new Date()).getTime() - (new Date(this.last_update)).getTime() < 5*60*1000;// 5m delay
             }
         }
     }
@@ -31,7 +38,7 @@
 <template>
     <div>
         <span>{{ $t(`common.email.status.${delivery_status}`) }} <i :class="[icon, delivery_status]"></i></span>
-        <button v-if="can_redo || delivery_status === 'error'" :disabled="delivery_status === 'created' || disabled" type="button" class="btn btn-outline-secondary" @click="$emit('redo')">
+        <button v-if="can_redo || delivery_status === 'error'" :disabled="recent || disabled" type="button" class="btn btn-outline-secondary" @click="$emit('redo')">
             <i class="fas fa-redo" />
             {{ $t(`common.email.redo`) }}
         </button>

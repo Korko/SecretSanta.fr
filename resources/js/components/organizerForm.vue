@@ -188,7 +188,7 @@
                             </template>
                         </input-edit>
                     </td>
-                    <td><email-status :delivery_status="participant.mail.delivery_status" :disabled="expired" @redo="updateEmail(k, participant.email)" /></td>
+                    <td><email-status :delivery_status="participant.mail.delivery_status" :last_update="participant.mail.updated_at" :disabled="expired" @redo="updateEmail(k, participant.email)" /></td>
                 </tr>
             </tbody>
         </table>
