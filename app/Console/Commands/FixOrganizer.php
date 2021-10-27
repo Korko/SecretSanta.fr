@@ -32,7 +32,7 @@ class FixOrganizer extends Command
      */
     public function handle()
     {
-        $this->setCryptKeyFromUrl($this->argument('url'));
+        $this->setCryptIVFromUrl($this->argument('url'));
 
         $draw = URLParser::parseByName('dearSanta', $this->argument('url'))->participant->draw;
 
@@ -46,10 +46,10 @@ class FixOrganizer extends Command
         $this->info('Organizer Participant mail sent');
     }
 
-    protected function setCryptKeyFromUrl($url)
+    protected function setCryptIVFromUrl($url)
     {
         $hash = Arr::get(explode('#', $url, 2), 1);
         $key = base64_decode($hash);
-        DrawCrypt::setKey($key);
+        DrawCrypt::setIV($key);
     }
 }
