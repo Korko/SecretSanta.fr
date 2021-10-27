@@ -19,10 +19,10 @@ class DrawHandler
             $participants[$santaIdx]->target()->save($participants[$targetIdx]);
         }
 
-        $draw->participants->each->notify(new TargetDrawn);
-
         $draw->next_solvable = self::canRedraw($draw->participants->fresh());
         $draw->save();
+
+        $draw->participants->each->notify(new TargetDrawn);
     }
 
     public static function getHat(ParticipantsCollection $participants) : array
