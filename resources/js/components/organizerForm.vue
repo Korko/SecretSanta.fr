@@ -192,7 +192,7 @@
                 </tr>
             </tbody>
         </table>
-        <button type="button" class="btn btn-danger" @click="confirmPurge">
+        <button type="button" class="btn btn-danger" @click="confirmPurge" disabled>
             <i class="fas fa-trash" />
             {{ $t('organizer.purge.button') }}
         </button>
