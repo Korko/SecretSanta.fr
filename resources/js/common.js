@@ -165,3 +165,7 @@ Vue.directive('tooltip', {
         div.appendChild(div2);
     }
 });
+
+Vue.component('dashboard', () => import('./components/dashboard.vue'));
+Vue.component('faq', () => import('./components/faq.vue'));
+Vue.component('c404', () => import('./components/404.vue'));

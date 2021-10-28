@@ -1,12 +1,5 @@
 @extends('templates/layout')
 
-@section('script')
-    @parent
-
-    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('/js/404.js') }}"></script>
-@stop
-
 @section('content')
     <div class="polaroid-wrapper">
 
@@ -26,4 +19,11 @@
         <p class="back text-center"><a href="/" class="btn btn-primary">Revenir sur la page d'accueil</a></p>
 
     </div>
+@stop
+
+@section('script')
+    @parent
+
+    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
 @stop

@@ -11,13 +11,8 @@ const i18n = new VueI18n({
     messages: Locale
 });
 
-import Faq from './components/dashboard.vue';
-
 window.app = new Vue({
     el: '#content',
-    components: {
-        Dashboard
-    },
     i18n,
     mounted: function() {
         document.body.classList.add('cssLoading');

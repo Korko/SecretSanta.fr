@@ -17,5 +17,5 @@
     @parent
 
     <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('/js/dashboard.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
 @stop

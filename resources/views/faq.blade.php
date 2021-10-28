@@ -1,12 +1,5 @@
 @extends('templates/layout')
 
-@section('script')
-    @parent
-
-    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('/js/faq.js') }}"></script>
-@stop
-
 @section('navbar')
     <ul class="nav navbar-nav navbar-nav-left">
     </ul>
@@ -19,4 +12,11 @@
 
 @section('content')
     <faq :questions="{{ json_encode($questions) }}" />
+@stop
+
+@section('script')
+    @parent
+
+    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
 @stop
