@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Notifications\MailStatusUpdated;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Mail extends Model
@@ -15,14 +16,7 @@ class Mail extends Model
      *
      * @var bool
      */
-    public $incrementing = false;
-
-    /**
-     * The data type of the auto-incrementing ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
+    public $incrementing = true;
 
     /**
      * The model's default values for attributes.
@@ -72,7 +66,11 @@ class Mail extends Model
         $this->delivery_status = $status;
         $this->save();
 
-        $this->mailable->sender->notify(new MailStatusUpdated($this));
+        try {
+            $this->mailable->sender->notify(new MailStatusUpdated($this));
+        } catch(Exception $e) {
+            // Ignore exception
+        }
     }
 
     /**

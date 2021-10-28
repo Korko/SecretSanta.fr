@@ -6,6 +6,7 @@ use App\Collections\ParticipantsCollection;
 use App\Exceptions\SolverException;
 use App\Models\Draw;
 use App\Notifications\TargetDrawn;
+use Exception;
 use Solver;
 
 class DrawHandler
@@ -19,10 +20,16 @@ class DrawHandler
             $participants[$santaIdx]->target()->save($participants[$targetIdx]);
         }
 
-        $draw->participants->each->notify(new TargetDrawn);
-
         $draw->next_solvable = self::canRedraw($draw->participants->fresh());
         $draw->save();
+
+        $draw->participants->each(function($participant) {
+            try {
+                $participant->notify(new TargetDrawn);
+            } catch(Exception $e) {
+                // Don't fail, just ignore
+            }
+        });
     }
 
     public static function getHat(ParticipantsCollection $participants) : array

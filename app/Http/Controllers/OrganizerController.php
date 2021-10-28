@@ -9,6 +9,7 @@ use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use App\Notifications\TargetDrawn;
 use Csv;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
@@ -67,11 +68,17 @@ class OrganizerController extends Controller
             $message = trans('organizer.up_and_sent');
         }
 
-        $participant->notify(new TargetDrawn);
+        try {
+            $participant->notify(new TargetDrawn);
 
-        return response()->json([
-            'message' => $message, 'participant' => $participant->only(['hash', 'mail']),
-        ]);
+            return response()->json([
+                'message' => $message, 'participant' => $participant->only(['hash', 'mail']),
+            ]);
+        } catch(Exception $e) {
+            return response()->json([
+                'error' => trans('error.email')
+            ]);
+        }
     }
 
     public function csvInit(Draw $draw)

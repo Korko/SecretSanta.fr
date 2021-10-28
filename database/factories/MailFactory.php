@@ -22,7 +22,7 @@ class MailFactory extends Factory
     public function definition()
     {
         return [
-            'id'              => $this->faker->uuid,
+            'notification'    => $this->faker->uuid,
             'delivery_status' => MailModel::CREATED,
         ];
     }
