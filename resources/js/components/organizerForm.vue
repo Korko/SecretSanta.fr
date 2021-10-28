@@ -12,6 +12,7 @@
 
     import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
+    import { deepMerge } from '../partials/helpers.js';
 
     import InputEdit from './inputEdit.vue';
     import EmailStatus from './emailStatus.vue';
@@ -20,6 +21,7 @@
     export default {
         components: { InputEdit, EmailStatus },
         extends: DefaultForm,
+
         props: {
             data: {
                 type: Object,
@@ -56,20 +58,20 @@
                 );
             },
             expired() {
-                return Moment(this.data.expires_at).isBefore(Moment(), "day");
+                return Moment(this.data.draw.expires_at).isBefore(Moment(), "day");
             },
             expirationDateShort() {
-                return Moment(this.data.expires_at).format('YYYY-MM-DD');
+                return Moment(this.data.draw.expires_at).format('YYYY-MM-DD');
             },
             expirationDateLong() {
-                return new Date(this.data.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+                return new Date(this.data.draw.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             },
             deletionDateLong() {
-                return new Date(this.data.deleted_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+                return new Date(this.data.draw.deleted_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             }
         },
         created() {
-            Echo.channel('draw.'+this.data.draw)
+            Echo.channel('draw.'+this.data.draw.hash)
                 .listen('.pusher:subscription_succeeded', () => {
                     this.fetchState();
                 })
@@ -81,7 +83,23 @@
                         this.$set(this.data.participants[key].mail, 'updated_at', data.updated_at);
                     }
                 });
+
+            window.localStorage.setItem('secretsanta', JSON.stringify(deepMerge(
+                JSON.parse(window.localStorage.getItem('secretsanta')) || {},
+                {
+                    [this.data.draw.hash]: {
+                        title: this.data.draw.mail_title,
+                        creation: this.data.draw.created_at,
+                        expiration: this.data.draw.expires_at,
+                        organizerName: this.data.organizer,
+                        links: {
+                            org: {link: window.location.href}
+                        }
+                    }
+                }
+            )));
         },
+
         methods: {
             update(k, data) {
                 this.data.participants[k].email = data.value;

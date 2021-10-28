@@ -31,7 +31,7 @@ return [
     ],
 
     'nav' => [
-        'go'        => 'Organiser un nouveau tirage',
+        'go'        => 'Organiser un tirage',
         'dashboard' => 'Tableau de bord',
         'faq'       => 'Foire Aux Questions',
     ],

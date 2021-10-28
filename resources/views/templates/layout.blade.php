@@ -100,6 +100,7 @@
         <script src="{{ mix('/js/vendors-vue.js') }}"></script>
         <script src="{{ mix('/js/vendors-jquery.js') }}"></script>
         <script src="{{ mix('/js/vendors-ui.js') }}"></script>
+        <script src="{{ mix('/js/vendors-tools.js') }}"></script>
     @show
 </body>
 </html>

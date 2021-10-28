@@ -42,6 +42,7 @@
         "jquery-ui": "^1.12.1",
         "jquery.actual": "github:dreamerslab/jquery.actual#master",
         "jquery.scrollto": "^2.1.3",
+        "lodash": "^4.17.21",
         "modernizr": "^3.11.7",
         "moment": "^2.29.1",
         "npm": "^7.20.0",

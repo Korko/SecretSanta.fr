@@ -10,7 +10,7 @@
 @stop
 
 @section('content')
-    test
+    <dashboard />
 @stop
 
 @section('script')

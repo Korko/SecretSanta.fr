@@ -7,6 +7,7 @@
 
     import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
+    import { deepMerge } from '../partials/helpers.js';
 
     import EmailStatus from './emailStatus.vue';
     import DefaultForm from './form.vue';
@@ -59,16 +60,17 @@
                     }
                 });
 
-            window.localStorage.setItem('secretsanta', JSON.stringify(Object.assign({},
+            window.localStorage.setItem('secretsanta', JSON.stringify(deepMerge(
                 JSON.parse(window.localStorage.getItem('secretsanta')) || {},
                 {
                     [this.data.draw.hash]: {
                         title: this.data.draw.mail_title,
                         creation: this.data.draw.created_at,
                         expiration: this.data.draw.expires_at,
-                        organizer: this.data.organizer,
-                        participant: this.data.participant.name,
-                        dearSanta: this.routes.contactUrl
+                        organizerName: this.data.organizer,
+                        links: {
+                            [this.data.participant.hash]: {name: this.data.participant.name, link: window.location.href}
+                        }
                     }
                 }
             )));

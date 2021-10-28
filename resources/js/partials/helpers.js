@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /*const getMimeTypeFromData = function(data) {
 
     var mimes = [
@@ -59,4 +61,16 @@ const isArray = arg => {
     return Object.prototype.toString.call(arg) === '[object Array]';
 };
 
-export { download, isString, isObject, isArray };
+const deepMerge = (object, ...sources) => {
+    return _.mergeWith(
+        object,
+        ...sources,
+        function (objValue, srcValue) {
+            if (_.isArray(objValue)) {
+                return objValue.concat(srcValue);
+            }
+        }
+    );
+};
+
+export { download, isString, isObject, isArray, deepMerge };

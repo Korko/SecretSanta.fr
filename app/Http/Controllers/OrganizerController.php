@@ -25,9 +25,8 @@ class OrganizerController extends Controller
     public function fetch(Draw $draw)
     {
         return response()->json([
-            'draw' => $draw->hash,
-            'expires_at' => $draw->expires_at,
-            'deleted_at' => $draw->deleted_at,
+            'draw' => $draw->only(['hash', 'mail_title', 'created_at', 'expires_at', 'deleted_at']),
+            'organizer' => $draw->organizer->name,
             'participants' => $draw->participants->mapWithKeys(function ($participant) {
                 return [$participant->hash => $participant->only([
                     'hash', 'name', 'email', 'mail',

@@ -1,13 +1,12 @@
 {
     "/js/common.js": "/js/common.js",
+    "/js/app.js": "/js/app.js",
     "/js/randomForm.js": "/js/randomForm.js",
     "/js/dearSanta.js": "/js/dearSanta.js",
     "/js/organizer.js": "/js/organizer.js",
-    "/js/faq.js": "/js/faq.js",
-    "/js/404.js": "/js/404.js",
-    "/js/dashboard.js": "/js/dashboard.js",
     "/js/manifest.js": "/js/manifest.js",
     "/js/vendors-jquery.js": "/js/vendors-jquery.js",
+    "/js/vendors-ui.js": "/js/vendors-ui.js",
     "/js/vendors-vue.js": "/js/vendors-vue.js",
-    "/js/vendors-ui.js": "/js/vendors-ui.js"
+    "/js/vendors-tools.js": "/js/vendors-tools.js"
 }

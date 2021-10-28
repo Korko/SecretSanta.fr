@@ -8,12 +8,10 @@ export default {
 
         };
     },
-    created() {
-        var data = JSON.parse(window.localStorage.getItem('secretsanta')) || {};
-
-        console.log(data);
-    },
     computed: {
+        draws() {
+            return JSON.parse(window.localStorage.getItem('secretsanta')) || {};
+        }
     },
     watch: {
     }
@@ -22,7 +20,16 @@ export default {
 
 <template>
     <div>
-        test
+        <table>
+            <tr v-for="(draw, hash) in draws">
+                <td>{{ hash }}</td>
+                <td>{{ draw.title }}</td>
+                <td>{{ draw.creation }}</td>
+                <td>{{ draw.expiration }}</td>
+                <td>{{ draw.organizerName }}</td>
+                <td>{{ draw.links }}</td>
+            </tr>
+        </table>
     </div>
 </template>
 

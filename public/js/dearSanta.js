@@ -186,11 +186,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
 /* harmony import */ var _partials_fetch_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../partials/fetch.js */ "./resources/js/partials/fetch.js");
 /* harmony import */ var _partials_echo_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../partials/echo.js */ "./resources/js/partials/echo.js");
-/* harmony import */ var _emailStatus_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./emailStatus.vue */ "./resources/js/components/emailStatus.vue");
-/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
+/* harmony import */ var _partials_helpers_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../partials/helpers.js */ "./resources/js/partials/helpers.js");
+/* harmony import */ var _emailStatus_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./emailStatus.vue */ "./resources/js/components/emailStatus.vue");
+/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./form.vue */ "./resources/js/components/form.vue");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -211,11 +212,12 @@ vue__WEBPACK_IMPORTED_MODULE_10__["default"].use(vuelidate__WEBPACK_IMPORTED_MOD
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    EmailStatus: _emailStatus_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
+    EmailStatus: _emailStatus_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
   },
-  extends: _form_vue__WEBPACK_IMPORTED_MODULE_15__["default"],
+  extends: _form_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
   props: {
     data: {
       type: Object,
@@ -266,18 +268,20 @@ vue__WEBPACK_IMPORTED_MODULE_10__["default"].use(vuelidate__WEBPACK_IMPORTED_MOD
         _this.$set(_this.data.emails[key].mail, 'updated_at', data.updated_at);
       }
     });
-    window.localStorage.setItem('secretsanta', JSON.stringify(Object.assign({}, JSON.parse(window.localStorage.getItem('secretsanta')) || {}, _defineProperty({}, this.data.draw.hash, {
+    window.localStorage.setItem('secretsanta', JSON.stringify((0,_partials_helpers_js__WEBPACK_IMPORTED_MODULE_14__.deepMerge)(JSON.parse(window.localStorage.getItem('secretsanta')) || {}, _defineProperty({}, this.data.draw.hash, {
       title: this.data.draw.mail_title,
       creation: this.data.draw.created_at,
       expiration: this.data.draw.expires_at,
-      organizer: this.data.organizer,
-      participant: this.data.participant.name,
-      dearSanta: this.routes.contactUrl
+      organizerName: this.data.organizer,
+      links: _defineProperty({}, this.data.participant.hash, {
+        name: this.data.participant.name,
+        link: window.location.href
+      })
     }))));
   },
   validations: {
     content: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_16__.required
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_17__.required
     }
   },
   methods: {
@@ -828,7 +832,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "download": function() { return /* binding */ download; },
 /* harmony export */   "isString": function() { return /* binding */ isString; },
 /* harmony export */   "isObject": function() { return /* binding */ isObject; },
-/* harmony export */   "isArray": function() { return /* binding */ isArray; }
+/* harmony export */   "isArray": function() { return /* binding */ isArray; },
+/* harmony export */   "deepMerge": function() { return /* binding */ deepMerge; }
 /* harmony export */ });
 /* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.slice.js */ "./node_modules/core-js/modules/es.array.slice.js");
 /* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_0__);
@@ -844,6 +849,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_url_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_url_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var core_js_modules_web_url_search_params_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! core-js/modules/web.url-search-params.js */ "./node_modules/core-js/modules/web.url-search-params.js");
 /* harmony import */ var core_js_modules_web_url_search_params_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_url_search_params_js__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! core-js/modules/es.array.concat.js */ "./node_modules/core-js/modules/es.array.concat.js");
+/* harmony import */ var core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_8__);
+
 
 
 
@@ -888,6 +898,7 @@ const getExtensionFromMime = function(mime) {
             return mime.split('/')[1];
     }
 };*/
+
 var download = function download(data, fileName, mimeType) {
   var blob = new Blob([data]);
   blob = blob.slice(0, blob.size, mimeType);
@@ -909,6 +920,18 @@ var isObject = function isObject(arg) {
 
 var isArray = function isArray(arg) {
   return Object.prototype.toString.call(arg) === '[object Array]';
+};
+
+var deepMerge = function deepMerge(object) {
+  for (var _len = arguments.length, sources = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    sources[_key - 1] = arguments[_key];
+  }
+
+  return lodash__WEBPACK_IMPORTED_MODULE_8___default().mergeWith.apply((lodash__WEBPACK_IMPORTED_MODULE_8___default()), [object].concat(sources, [function (objValue, srcValue) {
+    if (lodash__WEBPACK_IMPORTED_MODULE_8___default().isArray(objValue)) {
+      return objValue.concat(srcValue);
+    }
+  }]));
 };
 
 
@@ -5491,6 +5514,78 @@ module.exports = function (name) {
 // a string of all valid unicode whitespaces
 module.exports = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' +
   '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/modules/es.array.concat.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.array.concat.js ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
+var isArray = __webpack_require__(/*! ../internals/is-array */ "./node_modules/core-js/internals/is-array.js");
+var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
+var toObject = __webpack_require__(/*! ../internals/to-object */ "./node_modules/core-js/internals/to-object.js");
+var lengthOfArrayLike = __webpack_require__(/*! ../internals/length-of-array-like */ "./node_modules/core-js/internals/length-of-array-like.js");
+var createProperty = __webpack_require__(/*! ../internals/create-property */ "./node_modules/core-js/internals/create-property.js");
+var arraySpeciesCreate = __webpack_require__(/*! ../internals/array-species-create */ "./node_modules/core-js/internals/array-species-create.js");
+var arrayMethodHasSpeciesSupport = __webpack_require__(/*! ../internals/array-method-has-species-support */ "./node_modules/core-js/internals/array-method-has-species-support.js");
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
+var V8_VERSION = __webpack_require__(/*! ../internals/engine-v8-version */ "./node_modules/core-js/internals/engine-v8-version.js");
+
+var IS_CONCAT_SPREADABLE = wellKnownSymbol('isConcatSpreadable');
+var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;
+var MAXIMUM_ALLOWED_INDEX_EXCEEDED = 'Maximum allowed index exceeded';
+
+// We can't use this feature detection in V8 since it causes
+// deoptimization and serious performance degradation
+// https://github.com/zloirock/core-js/issues/679
+var IS_CONCAT_SPREADABLE_SUPPORT = V8_VERSION >= 51 || !fails(function () {
+  var array = [];
+  array[IS_CONCAT_SPREADABLE] = false;
+  return array.concat()[0] !== array;
+});
+
+var SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('concat');
+
+var isConcatSpreadable = function (O) {
+  if (!isObject(O)) return false;
+  var spreadable = O[IS_CONCAT_SPREADABLE];
+  return spreadable !== undefined ? !!spreadable : isArray(O);
+};
+
+var FORCED = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT;
+
+// `Array.prototype.concat` method
+// https://tc39.es/ecma262/#sec-array.prototype.concat
+// with adding support of @@isConcatSpreadable and @@species
+$({ target: 'Array', proto: true, forced: FORCED }, {
+  // eslint-disable-next-line no-unused-vars -- required for `.length`
+  concat: function concat(arg) {
+    var O = toObject(this);
+    var A = arraySpeciesCreate(O, 0);
+    var n = 0;
+    var i, k, length, len, E;
+    for (i = -1, length = arguments.length; i < length; i++) {
+      E = i === -1 ? O : arguments[i];
+      if (isConcatSpreadable(E)) {
+        len = lengthOfArrayLike(E);
+        if (n + len > MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
+        for (k = 0; k < len; k++, n++) if (k in E) createProperty(A, n, E[k]);
+      } else {
+        if (n >= MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
+        createProperty(A, n++, E);
+      }
+    }
+    A.length = n;
+    return A;
+  }
+});
 
 
 /***/ }),
@@ -21013,7 +21108,7 @@ function normalizeComponent (
 },
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
-/******/ __webpack_require__.O(0, ["js/vendors-jquery","js/vendors-vue","js/vendors-ui"], function() { return __webpack_exec__("./resources/js/dearSanta.js"); });
+/******/ __webpack_require__.O(0, ["js/vendors-jquery","js/vendors-ui","js/vendors-vue","js/vendors-tools"], function() { return __webpack_exec__("./resources/js/dearSanta.js"); });
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);

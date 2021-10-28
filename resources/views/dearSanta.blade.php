@@ -19,3 +19,12 @@
     <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
     <script type="text/javascript" src="{{ mix('/js/dearSanta.js') }}"></script>
 @stop
+
+@section('navbar')
+    <ul class="nav navbar-nav navbar-nav-left">
+    </ul>
+    <ul class="nav navbar-nav navbar-nav-right">
+        <li><a href="/">@lang('common.nav.go')</a></li>
+        <li><a href="{{ route('dashboard') }}">@lang('common.nav.dashboard')</a></li>
+    </ul>
+@stop
