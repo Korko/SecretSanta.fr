@@ -7,6 +7,7 @@ use App\Models\DearSanta;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
+use Exception;
 use Illuminate\Support\Facades\URL;
 
 class DearSantaController extends Controller
@@ -61,16 +62,27 @@ class DearSantaController extends Controller
 
         $participant->createMetric('resend_email');
 
-        $participant->santa->notify(new DearSantaNotification($dearSanta));
+        try {
+            $participant->santa->notify(new DearSantaNotification($dearSanta));
 
-        $message = trans('message.sent');
+            $message = trans('message.sent');
 
-        return $request->ajax() ?
-            response()->json([
-                'message' => $message,
-                'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
-            ]) :
-            redirect('/dearSanta/'.$participant->hash)->with('message', $message);
+            return $request->ajax() ?
+                response()->json([
+                    'message' => $message,
+                    'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
+                ]) :
+                redirect('/dearSanta/'.$participant->hash)->with('message', $message);
+        } catch(Exception $e) {
+            $error = trans('error.email');
+
+            return $request->ajax() ?
+                response()->json([
+                    'error' => $error,
+                    'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
+                ]) :
+                redirect('/dearSanta/'.$participant->hash)->with('error', $error);
+        }
     }
 
     public function handle(Participant $participant, DearSantaRequest $request)
