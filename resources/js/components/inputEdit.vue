@@ -173,7 +173,7 @@
                     :aria-invalid="$v.$error"
                     @input="onInput"
                 />
-                <slot name="errors" :$v="$v.newValue"></slot>
+                <slot name="errors"></slot>
                 <div class="input-group-append">
                     <button
                         v-if="state === 'viewError'"

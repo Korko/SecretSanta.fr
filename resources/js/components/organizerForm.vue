@@ -4,7 +4,9 @@
     import VuejsDialog from "vuejs-dialog";
     Vue.use(VuejsDialog);
 
-    import { required, email } from 'vuelidate/lib/validators';
+    import Vuelidate from 'vuelidate';
+    import { required, email } from 'vuelidate/lib/validators'
+    Vue.use(Vuelidate);
 
     import { download } from '../partials/helpers.js';
 
@@ -34,21 +36,7 @@
         },
         data() {
             return {
-                validations: {
-                    name: {
-                        required,
-                        unique(value) {
-                            // standalone validator ideally should not assume a field is required
-                            if (value === '') return true;
 
-                            return (this.data.participants.filter(participant => (participant.name === value)).length === 1);
-                        }
-                    },
-                    email: {
-                        required,
-                        format: email
-                    }
-                }
             };
         },
         computed: {
@@ -70,6 +58,23 @@
                 return new Date(this.data.draw.deleted_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             }
         },
+
+        validations: {
+            name: {
+                required,
+                unique(value) {
+                    // standalone validator ideally should not assume a field is required
+                    if (value === '') return true;
+
+                    return (Object.values(this.data.participants).filter(participant => (participant.name === value)).length === 1);
+                }
+            },
+            email: {
+                required,
+                format: email
+            }
+        },
+
         created() {
             Echo.channel('draw.'+this.data.draw.hash)
                 .listen('.pusher:subscription_succeeded', () => {
@@ -204,11 +209,11 @@
                     <td>
                         <input-edit
                             :value="participant.name"
-                            :validation="validations.name"
+                            :validation="$v.name"
                             :update="(name) => updateName(k, name)"
                             :disabled="expired"
                         >
-                            <template #errors="{ $v: $v }">
+                            <template #errors>
                                 <div v-if="!$v.name.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.required') }}</div>
                                 <div v-else-if="!$v.name.unique" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.distinct') }}</div>
                             </template>
@@ -217,11 +222,11 @@
                     <td>
                         <input-edit
                             :value="participant.email"
-                            :validation="validations.email"
+                            :validation="$v.email"
                             :update="(email) => updateEmail(k, email)"
                             :disabled="expired"
                         >
-                            <template #errors="{ $v: $v }">
+                            <template #errors>
                                 <div v-if="!$v.email.required" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.required') }}</div>
                                 <div v-else-if="!$v.email.format" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.format') }}</div>
                             </template>
