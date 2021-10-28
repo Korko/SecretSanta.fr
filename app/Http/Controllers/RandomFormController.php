@@ -7,6 +7,7 @@ use App\Models\Participant;
 use App\Notifications\OrganizerRecap;
 use App\Http\Requests\RandomFormRequest;
 use App\Services\DrawFormHandler;
+use Exception;
 
 class RandomFormController extends Controller
 {
@@ -33,9 +34,9 @@ class RandomFormController extends Controller
             return response()->json([
                 'message' => trans('message.sent')
             ]);
-        } catch(SolverException $e) {
+        } catch(Exception $e) {
             return response()->json([
-                'error' => ''//TODO
+                'error' => trans('error.internal')
             ]);
         }
     }
