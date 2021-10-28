@@ -5,14 +5,32 @@ namespace App\Notifications;
 use App\Models\Participant;
 use App\Channels\TrackedMailChannel;
 use DrawCrypt;
+use Illuminate\Bus\Queueable;
 //Illuminate/Contracts/Queue/ShouldBeEncrypted
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 use Lang;
 
-class TargetDrawn extends Notification
+class TargetDrawn extends Notification implements ShouldQueue
 {
+    use Queueable;
+
+    /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 10;
+
+    /**
+     * The number of seconds to wait before retrying the job.
+     *
+     * @var int
+     */
+    public $backoff = 30;
+
     /**
      * Get the notification's delivery channels.
      *

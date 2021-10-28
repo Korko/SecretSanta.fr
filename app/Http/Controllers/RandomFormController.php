@@ -17,21 +17,27 @@ class RandomFormController extends Controller
 
     public function handle(RandomFormRequest $request)
     {
-        $draw = (new DrawFormHandler())
-            ->withParticipants($request->input('participants'))
-            ->withTitle($request->input('title'))
-            ->withBody($request->input('content-email'))
-            ->withExpiration($request->input('data-expiration'))
-            ->save();
+        try {
+            $draw = (new DrawFormHandler())
+                ->withParticipants($request->input('participants'))
+                ->withTitle($request->input('title'))
+                ->withBody($request->input('content-email'))
+                ->withExpiration($request->input('data-expiration'))
+                ->save();
 
-        $draw->organizer->notify(new OrganizerRecap);
+            $draw->organizer->notify(new OrganizerRecap);
 
-        $draw->createMetric('new_draw')
-            ->addExtra('participants', count($draw->participants));
+            $draw->createMetric('new_draw')
+                ->addExtra('participants', count($draw->participants));
 
-        return response()->json([
-            'message' => trans('message.sent')
-        ]);
+            return response()->json([
+                'message' => trans('message.sent')
+            ]);
+        } catch(SolverException $e) {
+            return response()->json([
+                'error' => ''//TODO
+            ]);
+        }
     }
 
     public function faq()
