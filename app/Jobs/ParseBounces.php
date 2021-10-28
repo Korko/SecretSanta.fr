@@ -3,33 +3,32 @@
 namespace App\Jobs;
 
 use App\Mail\TrackedMailable;
-use App\Models\Mail as MailModel;
-use App\Services\EmailClient;
 use App\Services\MailTracker;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use App\Contracts\Mailbox;
+use App\Mailbox\EmailMessage;
 use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
-use Webklex\PHPIMAP\Message as EmailMessage;
 
 class ParseBounces implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(EmailClient $emailClient, MailTracker $tracker)
+    public function handle(Mailbox $mailbox, MailTracker $tracker)
     {
-        $recipients = $this->getRecipients($emailClient);
+        $recipients = $this->getRecipients($mailbox);
 
         foreach($recipients as $recipient) {
             $tracker->handle($recipient);
         }
     }
 
-    protected function getRecipients(EmailClient $emailClient)
+    protected function getRecipients(Mailbox $mailbox)
     {
-        $unseenMails = $emailClient->getUnseenMails();
+        $unseenMails = $mailbox->getUnseenMails();
         foreach ($unseenMails as $unseenMail) {
             yield $this->getFirstRecipientAddress($unseenMail);
 
