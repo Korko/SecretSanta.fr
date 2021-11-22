@@ -22,6 +22,13 @@ class Draw extends Model
     protected $hashConnection = 'draw';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['mail_title', 'mail_body', 'expires_at', 'next_solvable'];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array

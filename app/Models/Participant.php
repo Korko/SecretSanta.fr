@@ -18,6 +18,13 @@ class Participant extends Model
     protected $hashConnection = 'santa';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'email'];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array
