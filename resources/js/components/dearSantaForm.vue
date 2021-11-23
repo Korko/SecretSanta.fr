@@ -91,9 +91,9 @@
                 this.content = '';
             },
             resend(k) {
-                this.$set(this.data.emails[k], 'delivery_status', 'created');
+                this.$set(this.data.emails[this.emails[k].mailable_id], 'delivery_status', 'created');
 
-                return fetch(this.data.resendEmailUrls[this.data.emails[k].id], 'POST');
+                return fetch(this.data.resendEmailUrls[this.emails[k].mailable_id]);
             },
             fetchState() {
                 return fetch(this.routes.fetchStateUrl)
