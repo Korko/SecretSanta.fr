@@ -128,3 +128,23 @@ it('does not fail if a notification cannot be sent', function () {
     assertEquals(1, Draw::count());
     assertEquals(3, Participant::count());
 });
+
+it('can deal with thousands of participants', function () {
+    assertEquals(0, Draw::count());
+    assertEquals(0, Participant::count());
+
+    $totalParticipants = 400;
+    $participants = generateParticipants($totalParticipants, false);
+
+    ajaxPost('/', [
+            'participants'    => $participants,
+            'title'           => 'this is a test',
+            'content-email'   => 'test mail {SANTA} => {TARGET}',
+            'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+        ])
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    assertEquals(1, Draw::count());
+    assertEquals($totalParticipants, Participant::count());
+})->group('massive');
