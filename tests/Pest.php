@@ -92,7 +92,7 @@ function createServiceDraw($participants) : Draw {
         ->save();
 }
 
-function generateParticipants(int $totalParticipants) : array {
+function generateParticipants(int $totalParticipants, bool $withExclusions = true) : array {
     $participants = [];
     for ($i = 0; $i < $totalParticipants; $i++) {
         $participants[] = [
@@ -102,7 +102,7 @@ function generateParticipants(int $totalParticipants) : array {
         ];
     }
 
-    return formatParticipants($participants);
+    return $withExclusions ? formatParticipants($participants) : $participants;
 }
 
 /**
