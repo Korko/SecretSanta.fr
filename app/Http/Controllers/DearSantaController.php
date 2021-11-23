@@ -58,8 +58,6 @@ class DearSantaController extends Controller
 
     public function resend(Participant $participant, DearSanta $dearSanta, \Illuminate\Http\Request $request)
     {
-        abort_unless($dearSanta->mail->delivery_status === MailModel::ERROR, 403, 'Cannot resend a non failed email');
-
         $participant->createMetric('resend_email');
 
         try {
