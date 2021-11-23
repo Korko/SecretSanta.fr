@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\SolverException;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\OrganizerRecap;
@@ -34,10 +35,10 @@ class RandomFormController extends Controller
             return response()->json([
                 'message' => trans('message.sent')
             ]);
-        } catch(Exception $e) {
+        } catch(SolverException $e) {
             return response()->json([
-                'error' => trans('error.internal')
-            ]);
+                'message' => trans('error.solution'),
+            ], 422);
         }
     }
 
