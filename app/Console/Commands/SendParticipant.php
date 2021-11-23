@@ -4,8 +4,7 @@ namespace App\Console\Commands;
 
 use App\Notifications\TargetDrawn;
 use App\Models\Participant;
-use Arr;
-use Crypt;
+use DrawCrypt;
 use App\Services\DrawHandler;
 use Illuminate\Console\Command;
 
@@ -42,8 +41,8 @@ class SendParticipant extends Command
      */
     public function handle()
     {
-        $key = base64_decode($this->argument('key'));
-        DrawCrypt::setKey($key);
+        $iv = base64_decode($this->argument('iv'));
+        DrawCrypt::setIV($iv);
 
         $participant = Participant::find($this->argument('participant'));
 
