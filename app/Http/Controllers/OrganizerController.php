@@ -117,7 +117,7 @@ class OrganizerController extends Controller
 
     public function delete(Request $request, Draw $draw)
     {
-        //$draw->delete();
+        $draw->delete();
 
         $draw->createMetric('delete');
 
