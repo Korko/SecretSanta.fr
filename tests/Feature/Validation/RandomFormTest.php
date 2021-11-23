@@ -120,6 +120,26 @@ it('works with valid exclusion', function () {
         ]);
 });
 
+it('needs a date in specific format', function () {
+    ajaxPost('/', ['participants' => [
+            ['name' => 'toto', 'email' => 'test@test.com'],
+            ['name' => 'tata', 'email' => 'test@test.com'],
+            ['name' => 'tutu', 'email' => 'test@test.com'],
+        ], 'data-expiration' => date('Ymd', strtotime('+3 day'))])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['title', 'content-email', 'data-expiration']);
+});
+
+it('fails if the expiration is past', function () {
+    ajaxPost('/', ['participants' => [
+            ['name' => 'toto', 'email' => 'test@test.com'],
+            ['name' => 'tata', 'email' => 'test@test.com'],
+            ['name' => 'tutu', 'email' => 'test@test.com'],
+        ], 'data-expiration' => '1970-08-22'])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['title', 'content-email', 'data-expiration']);
+});
+
 it('fails if the expiration is too soon', function () {
     ajaxPost('/', ['participants' => [
             ['name' => 'toto', 'email' => 'test@test.com'],
