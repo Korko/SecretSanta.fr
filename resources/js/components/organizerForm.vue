@@ -165,8 +165,8 @@
                 this.$set(this.data.participants[k].mail, 'delivery_status', 'created');
 
                 return fetch(this.data.changeEmailUrls[this.data.participants[k].hash], 'POST', {
-                        email: email
-                    });
+                    email: email
+                });
             },
             download() {
                 fetch(this.routes.csvInitUrl, 'GET', '', {responseType: 'blob'})
