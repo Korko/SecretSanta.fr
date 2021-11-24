@@ -6,14 +6,14 @@ use App\Models\Participant;
 use App\Channels\TrackedMailChannel;
 use DrawCrypt;
 use Illuminate\Bus\Queueable;
-//Illuminate/Contracts/Queue/ShouldBeEncrypted
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 use Lang;
 
-class TargetDrawn extends Notification implements ShouldQueue
+class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
     use Queueable;
 
