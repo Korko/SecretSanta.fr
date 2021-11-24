@@ -5,7 +5,6 @@ namespace App\Notifications;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
 use App\Channels\TrackedMailChannel;
-//Illuminate/Contracts/Queue/ShouldBeEncrypted
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
