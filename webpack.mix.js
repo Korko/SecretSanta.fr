@@ -111,11 +111,7 @@ mix.js('resources/js/common.js', 'public/js')
    .extract([
       'alertifyjs', 'moment', 'papaparse', 'crypto-js'
     ], 'public/js/vendors-ui.js')
-//   .sass('resources/sass/randomForm.scss', 'public/css')
-//   .sass('resources/sass/dearSanta.scss', 'public/css')
-//   .sass('resources/sass/organizer.scss', 'public/css')
-//   .sass('resources/sass/faq.scss', 'public/css')
-//   .sass('resources/sass/404.scss', 'public/css')
+   .sass('resources/sass/layout.scss', 'public/css')
    .purgeCss({
       content: [
         "app/**/*.php",
