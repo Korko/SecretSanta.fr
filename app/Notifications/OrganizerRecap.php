@@ -6,13 +6,13 @@ use App;
 use App\Models\Participant;
 use DrawCrypt;
 use Illuminate\Bus\Queueable;
-//Illuminate/Contracts/Queue/ShouldBeEncrypted
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 
-class OrganizerRecap extends Notification implements ShouldQueue
+class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
     use Queueable;
 
