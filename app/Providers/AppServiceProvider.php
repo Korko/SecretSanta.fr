@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Services\CsvGenerator;
 use App\Services\Response;
+use DrawCrypt;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Support\ServiceProvider;
+use Queue;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Queue::createPayloadUsing(function ($connection, $queue, $payload) {
+            return [
+                'data' => array_merge($payload['data'], [
+                    'iv' => base64_encode(DrawCrypt::getIV())
+                ])
+            ];
+        });
+
+        $this->app['events']->listen(\Illuminate\Queue\Events\JobProcessing::class, function ($event) {
+            if (isset($event->job->payload()['data']['iv'])) {
+                DrawCrypt::setIV(base64_decode($event->job->payload()['data']['iv']));
+            }
+        });
     }
 }
