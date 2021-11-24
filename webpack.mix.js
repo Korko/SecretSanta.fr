@@ -118,6 +118,7 @@ mix.js('resources/js/common.js', 'public/js')
 //   .sass('resources/sass/organizer.scss', 'public/css')
 //   .sass('resources/sass/faq.scss', 'public/css')
 //   .sass('resources/sass/404.scss', 'public/css')
+   .sass('resources/sass/layout.scss', 'public/css')
    .purgeCss({
       content: [
         "app/**/*.php",
