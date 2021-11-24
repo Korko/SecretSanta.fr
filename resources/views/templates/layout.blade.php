@@ -50,7 +50,7 @@
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
     <div id="loadOverlay" style="background-color:#FFF; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div>
 
-    <span id="ribbon" class="d-none d-md-block"><a href="{{ route('faq') }}" target="_blank">@lang('form.nav.faq')</a></span>
+    <span id="ribbon" class="d-none d-md-block"><a href="{{ route('faq') }}">@lang('form.nav.faq')</a></span>
 
     <div id="wrap">
     <div id="main">
@@ -87,6 +87,7 @@
                     @section('copyright2')
                         {!! trans('footer.theme', ['author' => '<a class="themeBy" href="https://www.themewagon.com">ThemeWagon</a>']) !!}
                         <br />{!! trans('footer.icons', ['author' => '<a class="themeBy" href="https://www.iconfinder.com/iconsets/doublejdesign-free-icon-handy_color">Double-J Designs</a>']) !!}
+                        <br /><a class="themeBy" href="{{ route('legal') }}">{{ trans('footer.legal') }}</a>
                     @show
                 </div>
             </div>
