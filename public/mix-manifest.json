@@ -1,12 +1,11 @@
 {
-    "/js/common.js": "/js/common.js?id=22fd07c1d5b6552262dc",
-    "/js/app.js": "/js/app.js?id=2543bc55f0784425c1fa",
-    "/js/randomForm.js": "/js/randomForm.js?id=5d3399289028bb9d5acc",
-    "/js/dearSanta.js": "/js/dearSanta.js?id=e79c8e8136086eb96c6c",
-    "/js/organizer.js": "/js/organizer.js?id=3abd0dd784e66823bc67",
-    "/js/manifest.js": "/js/manifest.js?id=d2898e169d42f24dd0a0",
-    "/js/vendors-jquery.js": "/js/vendors-jquery.js?id=7200a82327f118ca9eeb",
-    "/js/vendors-ui.js": "/js/vendors-ui.js?id=0f99475c979e92992fba",
-    "/js/vendors-vue.js": "/js/vendors-vue.js?id=0bf9c948da7d8b4a63f4",
-    "/js/vendors-tools.js": "/js/vendors-tools.js?id=461ca3b3fec85b51b558"
+    "/js/common.js": "/js/common.js?id=16d2d7b70f51c8ac297d",
+    "/js/app.js": "/js/app.js?id=cb44467a1ad088533964",
+    "/js/randomForm.js": "/js/randomForm.js?id=5f4b387adfeebe7d68c7",
+    "/js/dearSanta.js": "/js/dearSanta.js?id=06273f83b2157306561d",
+    "/js/organizer.js": "/js/organizer.js?id=27ae78472394cedc5073",
+    "/js/manifest.js": "/js/manifest.js?id=0f3a330b4bba1a744c16",
+    "/css/vendor.css": "/css/vendor.css?id=91c2d076d1374e92c0b2",
+    "/css/app.css": "/css/app.css?id=df727818f19ea0044137",
+    "/js/vendor.js": "/js/vendor.js?id=c4b7088711f8f8f438c2"
 }
