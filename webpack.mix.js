@@ -94,27 +94,19 @@ mix.js('resources/js/common.js', 'public/js')
    .js('resources/js/dearSanta.js', 'public/js')
    .js('resources/js/organizer.js', 'public/js')
    .js('resources/js/faq.js', 'public/js')
-   .js('resources/js/404.js', 'public/js')
    .modernizr()
    .vue({
       extractStyles: false,
       globalStyles: false
     })
    .polyfill({ entryPoints: "all" })
-   .extract([
-      'vue', 'vue-autosize', 'vue-multiselect',
-      'vuelidate', 'vue-i18n', 'vue-recaptcha', 'vuejs-dialog'
-    ], 'public/js/vendors-vue.js')
-   .extract([
-      'jquery', 'jquery-ui', 'jquery.actual', 'jquery.scrollto', 'bootstrap'
-    ], 'public/js/vendors-jquery.js')
-   .extract([
-      'alertifyjs', 'moment', 'papaparse', 'crypto-js'
-    ], 'public/js/vendors-ui.js')
-   .sass('resources/sass/layout.scss', 'public/css')
+   .extract()
+   .sass('resources/sass/app.scss', 'public/css')
+   .sass('resources/sass/vendor.scss', 'public/css')
    .purgeCss({
       content: [
         "app/**/*.php",
+        "resources/**/*.blade.php",
         "resources/**/*.html",
         "resources/**/*.js",
         "resources/**/*.jsx",
@@ -123,10 +115,11 @@ mix.js('resources/js/common.js', 'public/js')
         "resources/**/*.php",
         "resources/**/*.vue",
         "resources/**/*.twig",
+        "storage/framework/views/*.php",
         "node_modules/**/*.vue", // Added line, all the rest is copied from postcss-purgecss-laravel plugin
       ]
    });
-   //.copy('resources/img', 'public/images')
+   //.copy('resources/img', 'public/images');
    //.copy('resources/fonts', 'public/fonts');
 
 if (mix.inProduction()) {
