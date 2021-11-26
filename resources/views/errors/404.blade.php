@@ -1,11 +1,10 @@
 @extends('templates/layout')
 
-@section('script')
+@section('header')
     @parent
 
-    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('/js/404.js') }}"></script>
-@stop
+    <link rel="stylesheet" href="{{ mix('/css/404.css') }}" />
+@show
 
 @section('content')
     <div class="polaroid-wrapper">
