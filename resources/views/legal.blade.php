@@ -19,15 +19,20 @@
     <pre>
         # Usage
 
-        Votre utilisation du site Web indique que vous avez lu et accepté nos pratiques de confidentialité, telles qu'énoncées dans cette politique. Si vous n'acceptez pas les modalités d'utilisation de cette politique, veuillez, s'il-vous-plaît, ne pas utiliser ce site Web. Le développeur se réserve le droit de modifier à tout moment cette politique s'il le juge nécessaire.
+        Votre utilisation du site Web indique que vous avez lu et accepté nos pratiques de confidentialité, telles qu'énoncées dans cette politique.
+        Si vous n'acceptez pas les modalités d'utilisation de cette politique, veuillez, s'il-vous-plaît, ne pas utiliser ce site Web.
+        Le développeur se réserve le droit de modifier à tout moment cette politique s'il le juge nécessaire.
 
-        Le site https://secretsanta.fr collecte des informations personnelles comme le nom et l'adresse email des participants soumis par un visiteur. Alors organisateur d'évènement, vous reconnaissez avoir eu le consentement des autres participants pour partager leurs données personnelles dans cet outil. Ces données ne sont utilisées que pour la gestion de cet évènement organisé et ne sont partagées avec aucun partenaire.
+        Le site https://secretsanta.fr collecte des informations personnelles comme le nom et l'adresse email des participants soumis par un visiteur.
+        Alors organisateur d'évènement, vous reconnaissez avoir eu le consentement des autres participants pour partager leurs données personnelles dans cet outil.
+        Ces données ne sont utilisées que pour la gestion de cet évènement organisé et ne sont partagées avec aucun partenaire.
 
         Le développeur se réserve le droit de supprimer à tout moment un évènement ainsi que toutes les données associées, notamment en cas d'abus évident de l'outil.
 
         # Engagement pour la sécurité
 
-        Le développeur s'engage à ce que la sécurité de vos données personnelles soient au coeur de la conception de cet outil et que le chiffrements des dites données soit utilisé autant que possible afin d'en garantir la protection même en cas de fuite.
+        Le développeur s'engage à ce que la sécurité de vos données personnelles soient au coeur de la conception de cet outil
+        et que le chiffrements des dites données soit utilisé autant que possible afin d'en garantir la protection même en cas de fuite.
 
         # Durées de stockage de vos données
 
@@ -35,7 +40,10 @@
 
         # Les droits que vous avez sur vos données
 
-        A tout moment, un organisateur d'évènement peut supprimer manuellement toutes les données associées au dit évènement depuis son interface personnalisée dont le lien a été reçu par email. Si vous jugez que l'organisateur de l'évènement n'avait pas obtenu votre consentement pour l'utilisation de vos données personnelles sur cet outil ou que vous souhaitez supprimer toutes vos données de ce site relatives à un évènement, merci de contacter le développeur en fournissant une copie d'un email reçu par le site. De part le chiffrement des données, le développeur ne saurait retrouver vos données sans le lien fourni dans cet email.
+        A tout moment, un organisateur d'évènement peut supprimer manuellement toutes les données associées au dit évènement depuis son interface personnalisée dont le lien a été reçu par email.
+        Si vous jugez que l'organisateur de l'évènement n'avait pas obtenu votre consentement pour l'utilisation de vos données personnelles sur cet outil
+        ou que vous souhaitez supprimer toutes vos données de ce site relatives à un évènement, merci de contacter le développeur en fournissant une copie d'un email reçu par le site.
+        De part le chiffrement des données, le développeur ne saurait retrouver vos données sans le lien fourni dans cet email.
 
         # Licences
 
@@ -45,7 +53,8 @@
 
         # Informatique et Libertés
 
-        Aucun usage en dehors du bon fonctionnement de ce site ne saurait être fait de vos données personnelles. Celles-ci sont chiffrées afin de ne pas être utilisable sans votre action ou votre consentement directe.
+        Aucun usage en dehors du bon fonctionnement de ce site ne saurait être fait de vos données personnelles.
+        Celles-ci sont chiffrées afin de ne pas être utilisable sans votre action ou votre consentement directe.
 
         # Éditeur
 
@@ -61,7 +70,8 @@
 
         Le développeur s’engage à sécuriser au mieux le site, cependant sa responsabilité ne pourra être mise en cause si des données indésirables sont importées et installées sur son site à son insu.
 
-        Des espaces interactifs (espace contact au père noël secret) sont à la disposition des participants. De part le chiffrement des données, le développeur ne saurait être responsable du contenu de ces échanges
+        Des espaces interactifs (espace contact au père noël secret) sont à la disposition des participants.
+        De part le chiffrement des données, le développeur ne saurait être responsable du contenu de ces échanges
 
         # Cookies
 
