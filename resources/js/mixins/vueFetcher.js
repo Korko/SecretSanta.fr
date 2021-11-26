@@ -15,7 +15,7 @@ export const VueFetcher = Form => {
             Form
         },
 
-        el: '#form',
+        el: '#wrap',
 
         data: {
             state: 'Fetcher',
