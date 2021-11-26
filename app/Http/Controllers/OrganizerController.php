@@ -27,7 +27,7 @@ class OrganizerController extends Controller
         return response()->json([
             'draw' => $draw->only(['hash', 'mail_title', 'created_at', 'expires_at', 'deleted_at']),
             'organizer' => $draw->organizer->name,
-            'participants' => $draw->participants->mapWithKeys(function ($participant) {
+            'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) {
                 return [$participant->hash => $participant->only([
                     'hash', 'name', 'email', 'mail',
                 ])];
@@ -46,7 +46,7 @@ class OrganizerController extends Controller
     public function fetchState(Draw $draw)
     {
         return response()->json([
-            'participants' => $draw->participants->mapWithKeys(function ($participant) {
+            'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) {
                 return [$participant->hash => $participant->only(['hash', 'mail'])];
             }),
         ]);
