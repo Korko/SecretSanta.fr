@@ -1,7 +1,7 @@
 <script>
-    import Vue from "vue";
+    import Vue from 'vue';
 
-    import VuejsDialog from "vuejs-dialog";
+    import VuejsDialog from 'vuejs-dialog';
     Vue.use(VuejsDialog);
 
     import { required, email } from 'vuelidate/lib/validators';
@@ -15,10 +15,11 @@
 
     import InputEdit from './inputEdit.vue';
     import EmailStatus from './emailStatus.vue';
+    import Tooltip from './tooltip.vue';
     import DefaultForm from './form.vue';
 
     export default {
-        components: { InputEdit, EmailStatus },
+        components: { InputEdit, EmailStatus, Tooltip },
         extends: DefaultForm,
         props: {
             data: {
@@ -47,7 +48,7 @@
                 );
             },
             expired() {
-                return Moment(this.data.expires_at).isBefore(Moment(), "day");
+                return Moment(this.data.expires_at).isBefore(Moment(), 'day');
             },
             expirationDateShort() {
                 return Moment(this.data.expires_at).format('YYYY-MM-DD');
@@ -197,24 +198,69 @@
             {{ $t('organizer.purge.button') }}
         </button>
         <template v-if="data.finalCsvAvailable">
-            <button type="button" class="btn btn-primary" @click="download" v-tooltip.top="{ img: {'image/webp': 'rune-haugseng-UCzjZPCGV1Y-unsplash.webp', 'image/jpg': 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg'}, text: $t('organizer.download.button_initial-tooltip') }">
-                <i class="fas fa-download" />
-                {{ $t('organizer.download.button_initial') }}
-            </button>
-            <button :disabled="!expired" type="button" class="btn btn-primary" @click="downloadPlus" v-tooltip.top="{ img: {'image/webp': 'mike-arney-9r-_2gzP37k-unsplash.webp', 'image/jpg': 'mike-arney-9r-_2gzP37k-unsplash.jpg'}, text: $t('organizer.download.button_final-tooltip', {expires_at: expirationDateLong, deleted_at: deletionDateLong}) }">
-                <i class="fas fa-download" />
-                {{ $t('organizer.download.button_final') }}
-            </button>
+            <tooltip direction="right">
+                <template #tooltip>
+                    <picture>
+                        <source srcset="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp" type="image/webp" />
+                        <source srcset="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" type="image/jpg" />
+                        <img class="media-object" src="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" />
+                    </picture>
+                    <div class="text-content">
+                        <h3>{{ $t('organizer.download.button_initial-tooltip.title') }}</h3>
+                        <p>{{ $t('organizer.download.button_initial-tooltip.content') }}</p>
+                    </div>
+                </template>
+                <template #default>
+                    <button type="button" class="btn btn-primary" @click="download">
+                        <i class="fas fa-download" />
+                        {{ $t('organizer.download.button_initial') }}
+                    </button>
+                </template>
+            </tooltip>
+            <tooltip direction="right">
+                <template #tooltip>
+                    <picture>
+                        <source srcset="../../images/mike-arney-9r-_2gzP37k-unsplash.webp" type="image/webp" />
+                        <source srcset="../../images/mike-arney-9r-_2gzP37k-unsplash.jpg" type="image/jpg" />
+                        <img class="media-object" src="../../images/mike-arney-9r-_2gzP37k-unsplash.jpg" />
+                    </picture>
+                    <div class="text-content">
+                        <h3>{{ $t('organizer.download.button_final-tooltip.title') }}</h3>
+                        <p>{{ $t('organizer.download.button_final-tooltip.explain') }}</p>
+                        <p class="border border-white border-1 rounded pl-2 pr-2 font-italic">{{ $t('organizer.download.button_final-tooltip.limit', {expires_at: expirationDateLong, deleted_at: deletionDateLong}) }}</p>
+                    </div>
+                </template>
+                <template #default>
+                    <button :disabled="!expired" type="button" class="btn btn-primary" @click="downloadPlus">
+                        <i class="fas fa-download" />
+                        {{ $t('organizer.download.button_final') }}
+                    </button>
+                </template>
+            </tooltip>
         </template>
-        <button v-else type="button" class="btn btn-primary" @click="download" v-tooltip.top="{ img: {'image/webp': 'rune-haugseng-UCzjZPCGV1Y-unsplash.webp', 'image/jpg': 'rune-haugseng-UCzjZPCGV1Y-unsplash.jpg'}, text: $t('organizer.download.button-tooltip') }">
-            <i class="fas fa-download" />
-            {{ $t('organizer.download.button') }}
-        </button>
+        <tooltip v-else direction="right">
+            <template #tooltip>
+                <picture>
+                    <source srcset="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp" type="image/webp" />
+                    <source srcset="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" type="image/jpg" />
+                    <img class="media-object" src="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" />
+                </picture>
+                <div class="text-content">
+                    <h3>{{ $t('organizer.download.button-tooltip.title') }}</h3>
+                    <p>{{ $t('organizer.download.button-tooltip.content') }}</p>
+                </div>
+            </template>
+            <template #default>
+                <button type="button" class="btn btn-primary" @click="download">
+                    <i class="fas fa-download" />
+                    {{ $t('organizer.download.button') }}
+                </button>
+            </template>
+        </tooltip>
     </div>
 </template>
 
 <style>
-    @import "../../sass/layout.scss";
     @import "~vuejs-dialog/dist/vuejs-dialog.min.css";
 
     .table td {

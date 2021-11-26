@@ -26,14 +26,17 @@
     import Csv from './csv.vue';
     import AjaxForm from './ajaxForm.vue';
     import Participant from './participant.vue';
+    import Tooltip from './tooltip.vue';
 
     const formatMoment = (amount, unit) => Moment(window.now).add(amount, unit).format('YYYY-MM-DD')
 
     export default {
+
         components: {
             AjaxForm,
             Csv,
-            Participant
+            Participant,
+            Tooltip
         },
 
         data: function() {
@@ -360,7 +363,25 @@
                     <fieldset>
                         <div id="form-options" class="form-group">
                             <div class="input-inline-group">
-                                <label for="expiration" v-tooltip.top="{ img: {'image/webp': 'srikanta-h-u-TrGVhbsUf40-unsplash.webp', 'image/jpg': 'srikanta-h-u-TrGVhbsUf40-unsplash.jpg'}, text: $t('form.data-expiration-tooltip') }">{{ $t('form.data-expiration') }}</label>
+                                <tooltip direction="top">
+                                    <template #tooltip>
+                                        <picture>
+                                            <source srcset="../../images/srikanta-h-u-TrGVhbsUf40-unsplash.webp" type="image/webp" />
+                                            <source srcset="../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" type="image/jpg" />
+                                            <img class="media-object" src="../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" />
+                                        </picture>
+                                        <div class="text-content">
+                                            <h3>{{ $t('form.data-expiration-tooltip.title') }}</h3>
+                                            <ul>
+                                                <li>{{ $t('form.data-expiration-tooltip.interface') }}</li>
+                                                <li>{{ $t('form.data-expiration-tooltip.deletion') }}</li>
+                                            </ul>
+                                        </div>
+                                    </template>
+                                    <template #default>
+                                        <label for="expiration">{{ $t('form.data-expiration') }}</label>
+                                    </template>
+                                </tooltip>
                                 <input
                                     type="date"
                                     name="data-expiration"
@@ -390,7 +411,6 @@
 </template>
 
 <style>
-    @import "../../sass/layout.scss";
     @import "~vue-multiselect/dist/vue-multiselect.min";
 
     /* Fix tiny style glitches */

@@ -154,8 +154,6 @@
 </template>
 
 <style>
-    @import "../../sass/layout.scss";
-
     #form form {
         margin-bottom: 20px;
     }

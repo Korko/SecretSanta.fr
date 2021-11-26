@@ -120,7 +120,11 @@ via SecretSanta.fr',
     ],
 
     'data-expiration' => 'Date de l\'évènement : ',
-    'data-expiration-tooltip' => '<h3>Date de l\'évènement</h3><ul><li>Une interface dédiée vous permettra d\'accéder à un récapitulatif des participants jusqu\'au jour de l\'évènement.</li><li>Toutes les données stockées seront supprimées une semaine après.</li></ul>',
+    'data-expiration-tooltip' => [
+        'title' => 'Date de l\'évènement',
+        'interface' => 'Une interface dédiée vous permettra d\'accéder à un récapitulatif des participants jusqu\'au jour de l\'évènement.',
+        'deletion' => 'Toutes les données stockées seront supprimées une semaine après.',
+    ],
 
     'submit'  => 'Lancez l\'aléatoire !',
 

@@ -22,7 +22,7 @@
         <meta property="og:title" content="SecretSanta">
         <meta property="og:site_name" content="SecretSanta">
         <meta property="og:url" content="{{ url('/') }}">
-        <meta property="og:image" content="{{ url('../../images/logo_black.png') }}">
+        <meta property="og:image" content="{{ url('/images/logo_black.png') }}">
         <meta property="og:description" content="@lang('headers.description')">
         <meta property="og:type" content="website">
         <meta property="og:locale" content="{{ App::getLocale() }}">
@@ -33,18 +33,14 @@
         <meta name="twitter:creator" content="Korko">
         <meta name="twitter:title" content="SecretSanta">
         <meta name="twitter:description" content="@lang('headers.description')">
-        <meta name="twitter:image" content="{{ url('../../images/logo_black.png') }}">
+        <meta name="twitter:image" content="{{ url('/images/logo_black.png') }}">
 
         <!-- facebook image -->
-        <link rel="image_src" href="{{ url('../../images/logo_black.png') }}" />
+        <link rel="image_src" href="{{ url('/images/logo_black.png') }}" />
 
         <!-- css -->
-        @php
-            $styles = (array) (isset($styles) ? $styles : null);
-        @endphp
-        @foreach($styles as $style)
-            <link rel="stylesheet" href="{{ mix($style) }}" />
-        @endforeach
+        <link rel="stylesheet" href="{{ mix('/css/vendor.css') }}" />
+        <link rel="stylesheet" href="{{ mix('/css/app.css') }}" />
     @show
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
@@ -53,22 +49,22 @@
     <span id="ribbon" class="d-none d-md-block"><a href="{{ route('faq') }}">@lang('form.nav.faq')</a></span>
 
     <div id="wrap">
-    <div id="main">
-        <div id="menu" class="navbar navbar-dark fixed-top navbar-expand-md" role="navigation">
-            <nav id="navbar">
-                <div id="logo">
-                    <a href="/"></a>
-                </div>
-                @yield('navbar')
-            </nav><!--/.navbar-collapse -->
-        </div><!-- menu -->
+        <div id="main">
+            <div id="menu" class="navbar navbar-dark fixed-top navbar-expand-md" role="navigation">
+                <nav id="navbar">
+                    <div id="logo">
+                        <a href="/"></a>
+                    </div>
+                    @yield('navbar')
+                </nav><!--/.navbar-collapse -->
+            </div><!-- menu -->
 
-        @section('body')
-            <div id="content">
-                @yield('content')
-            </div>
-        @show
-    </div>
+            @section('body')
+                <div id="content">
+                    @yield('content')
+                </div>
+            @show
+        </div>
     </div>
 
     <footer id="footer" class="dark-wrapper">
@@ -98,9 +94,7 @@
     @section('script')
         <script src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" data-auto-replace-svg="nest"></script>
         <script src="{{ mix('/js/manifest.js') }}"></script>
-        <script src="{{ mix('/js/vendors-vue.js') }}"></script>
-        <script src="{{ mix('/js/vendors-jquery.js') }}"></script>
-        <script src="{{ mix('/js/vendors-ui.js') }}"></script>
+        <script src="{{ mix('/js/vendor.js') }}"></script>
     @show
 </body>
 </html>

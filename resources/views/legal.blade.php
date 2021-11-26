@@ -1,10 +1,4 @@
-@extends('templates/layout', ['styles' => '/css/layout.css'])
-
-@section('script')
-    @parent
-
-    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
-@stop
+@extends('templates/layout')
 
 @section('navbar')
     <ul class="nav navbar-nav navbar-nav-left">
