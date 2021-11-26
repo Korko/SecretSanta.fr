@@ -118,7 +118,8 @@ mix.js('resources/js/common.js', 'public/js')
         "storage/framework/views/*.php",
         "node_modules/**/*.vue", // Added line, all the rest is copied from postcss-purgecss-laravel plugin
       ]
-   });
+   })
+   .copy('resources/images/logo_black.png', 'public/images');
 
 if (mix.inProduction()) {
     mix.version();

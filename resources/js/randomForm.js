@@ -13,7 +13,7 @@ const i18n = new VueI18n({
 });
 
 window.app = new Vue({
-    el: '#form',
+    el: '#wrap',
 
     components: {
         RandomForm

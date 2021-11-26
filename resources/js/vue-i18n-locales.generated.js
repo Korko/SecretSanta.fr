@@ -11,11 +11,21 @@ export default {
             "deleted": "Toutes les données ont été supprimées",
             "download": {
                 "button": "Télécharger le récapitulatif",
-                "button-tooltip": "<h3>Récapitulatif</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
+                "button-tooltip": {
+                    "title": "Récapitulatif",
+                    "content": "Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici."
+                },
                 "button_initial": "Télécharger le récapitulatif initial",
-                "button_initial-tooltip": "<h3>Récapitulatif initial</h3><p>Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.</p>",
+                "button_initial-tooltip": {
+                    "title": "Récapitulatif initial",
+                    "content": "Ce sont les données telles que vous les avez remplies à la génération de l'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici."
+                },
                 "button_final": "Télécharger le récapitulatif complété",
-                "button_final-tooltip": "<h3>Récapitulatif complété</h3><p>Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.</p><p class=\"border border-white border-1 rounded pl-2 pr-2 font-italic\">Compte tenu de la date de l'évènement définie, cette fonctionnalité n'est disponible que du {expires_at} au {deleted_at}.</p>"
+                "button_final-tooltip": {
+                    "title": "Récapitulatif complété",
+                    "explain": "Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.",
+                    "limit": "Compte tenu de la date de l'évènement définie, cette fonctionnalité n'est disponible que du {expires_at} au {deleted_at}."
+                }
             },
             "purge": {
                 "button": "Supprimer tout",
@@ -319,7 +329,11 @@ export default {
                 "post": "----\nPour écrire à votre Secret Santa, allez sur la page suivante : {link}\nvia SecretSanta.fr"
             },
             "data-expiration": "Date de l'évènement : ",
-            "data-expiration-tooltip": "<h3>Date de l'évènement</h3><ul><li>Une interface dédiée vous permettra d'accéder à un récapitulatif des participants jusqu'au jour de l'évènement.</li><li>Toutes les données stockées seront supprimées une semaine après.</li></ul>",
+            "data-expiration-tooltip": {
+                "title": "Date de l'évènement",
+                "interface": "Une interface dédiée vous permettra d'accéder à un récapitulatif des participants jusqu'au jour de l'évènement.",
+                "deletion": "Toutes les données stockées seront supprimées une semaine après."
+            },
             "submit": "Lancez l'aléatoire !",
             "paypal": {
                 "alt": "PayPal, le réflexe sécurité pour payer en ligne"
