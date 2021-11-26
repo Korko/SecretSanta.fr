@@ -47,7 +47,5 @@ class Handler extends ExceptionHandler
                 'message' => trans('error.signature'),
             ], 500);
         });
-
-        return parent::render($request, $exception);
     }
 }
