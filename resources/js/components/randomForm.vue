@@ -30,6 +30,8 @@
 
     const formatMoment = (amount, unit) => Moment(window.now).add(amount, unit).format('YYYY-MM-DD')
 
+    import * as d3 from 'd3';
+
     export default {
 
         components: {
@@ -131,6 +133,10 @@
             );
         },
 
+        mounted: function() {
+            this.initNetwork();
+        },
+
         methods: {
             // Only way to have parameters parsing for vuejs events
             $td(key, params) {
@@ -228,6 +234,10 @@
                 this.addParticipant();
                 this.addParticipant();
                 this.addParticipant();
+            },
+
+            initNetwork() {
+                
             }
         }
     };
@@ -305,6 +315,8 @@
                             </button>
                         </div>
                     </fieldset>
+
+                    <div id="network"></div>
 
                     <fieldset>
                         <legend>Messages</legend>
