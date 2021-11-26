@@ -102,6 +102,7 @@ mix.js('resources/js/common.js', 'public/js')
    .polyfill({ entryPoints: "all" })
    .extract()
    .sass('resources/sass/app.scss', 'public/css')
+   .sass('resources/sass/404.scss', 'public/css')
    .sass('resources/sass/vendor.scss', 'public/css')
    .purgeCss({
       content: [

@@ -1,5 +1,11 @@
 @extends('templates/layout')
 
+@section('header')
+    @parent
+
+    <link rel="stylesheet" href="{{ mix('/css/404.css') }}" />
+@show
+
 @section('content')
     <div class="polaroid-wrapper">
 
