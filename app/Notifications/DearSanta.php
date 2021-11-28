@@ -5,8 +5,10 @@ namespace App\Notifications;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
 use App\Channels\TrackedMailChannel;
+use DrawCrypt;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 
 class DearSanta extends Notification
 {
