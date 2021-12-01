@@ -2,10 +2,10 @@
 
 namespace App\Notifications;
 
+use App\Channels\TrackedMailChannel;
+use App\Facades\DrawCrypt;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
-use App\Channels\TrackedMailChannel;
-use DrawCrypt;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
@@ -47,7 +47,8 @@ class DearSanta extends Notification
             ->subject(__('emails.dear_santa.title', ['draw' => $santa->draw->id]))
             ->view('emails.dearsanta', [
                 'content' => $this->dearSanta->mail_body,
-                'targetName' => $santa->target->name
+                'targetName' => $santa->target->name,
+                'dearSantaLink' => $url
             ]);
     }
 }
