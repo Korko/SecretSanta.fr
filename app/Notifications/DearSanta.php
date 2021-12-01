@@ -2,9 +2,10 @@
 
 namespace App\Notifications;
 
+use App\Channels\TrackedMailChannel;
+use App\Facades\DrawCrypt;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
-use App\Channels\TrackedMailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -41,11 +42,14 @@ class DearSanta extends Notification
      */
     public function toMail(Participant $santa)
     {
+        $url = URL::signedRoute('dearSanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
+
         return (new MailMessage)
             ->subject(__('emails.dear_santa.title', ['draw' => $santa->draw->id]))
             ->view('emails.dearsanta', [
                 'content' => $this->dearSanta->mail_body,
-                'targetName' => $santa->target->name
+                'targetName' => $santa->target->name,
+                'dearSantaLink' => $url
             ]);
     }
 }
