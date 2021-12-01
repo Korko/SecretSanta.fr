@@ -6,6 +6,7 @@ use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Notifications\Notifiable;
 use Metrics;
 
@@ -96,7 +97,7 @@ class Participant extends Model
     {
         $participant = $this->baseResolver($value, $field);
 
-        abort_if($participant->draw->expired, 404);
+        throw_if($participant->draw->expired, ModelNotFoundException::class);
 
         return $participant;
     }
