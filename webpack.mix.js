@@ -120,7 +120,7 @@ mix.js('resources/js/common.js', 'public/js')
         "node_modules/**/*.vue", // Added line, all the rest is copied from postcss-purgecss-laravel plugin
       ]
    })
-   .copy('resources/images/logo_black.png', 'public/images');
+   .copy('resources/images/logo_black.png', 'public/images'); // Meta image for social networks
 
 if (mix.inProduction()) {
     mix.version();
