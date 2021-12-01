@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Notifications\TargetDrawn;
+use App\Facades\DrawCrypt;
 use App\Models\Participant;
-use DrawCrypt;
+use App\Notifications\TargetDrawn;
 use App\Services\DrawHandler;
 use Illuminate\Console\Command;
 

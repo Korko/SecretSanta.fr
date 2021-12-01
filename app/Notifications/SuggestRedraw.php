@@ -2,8 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Facades\DrawCrypt;
 use App\Models\Participant;
-use DrawCrypt;
 //Illuminate/Contracts/Queue/ShouldBeEncrypted
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;

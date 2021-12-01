@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DrawCrypt;
+use App\Facades\DrawCrypt;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
 class Model extends BaseModel

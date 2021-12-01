@@ -4,7 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Participant;
 use App\Channels\TrackedMailChannel;
-use DrawCrypt;
+use App\Facades\DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;

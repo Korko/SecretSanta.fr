@@ -2,7 +2,7 @@
 
 namespace App\Casts;
 
-use DrawCrypt;
+use App\Facades\DrawCrypt;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class EncryptedString implements CastsAttributes

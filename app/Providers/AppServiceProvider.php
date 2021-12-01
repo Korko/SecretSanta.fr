@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Facades\DrawCrypt;
 use App\Services\CsvGenerator;
 use App\Services\Response;
-use DrawCrypt;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Support\ServiceProvider;
 use Queue;

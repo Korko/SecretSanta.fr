@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Facades\DrawCrypt;
 use Closure;
 use Illuminate\Contracts\Encryption\DecryptException;
-use DrawCrypt;
 
 class HandleEncryptionIV
 {

@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Facades\DrawCrypt;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use Arr;
 use Illuminate\Console\Command;
-use DrawCrypt;
 use URLParser;
 
 class FixOrganizer extends Command

@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Notifications\DearSanta as DearSantaNotification;
+use App\Facades\DrawCrypt;
 use App\Models\DearSanta;
-use DrawCrypt;
+use App\Notifications\DearSanta as DearSantaNotification;
 use Illuminate\Console\Command;
 
 class SendDearSanta extends Command

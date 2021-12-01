@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Facades\DrawCrypt;
 use App\Models\Draw;
-use DrawCrypt;
 
 it('stores database crypted entries', function () {
     $draw = Draw::factory()

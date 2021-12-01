@@ -3,8 +3,8 @@
 namespace App\Notifications;
 
 use App;
+use App\Facades\DrawCrypt;
 use App\Models\Participant;
-use DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
