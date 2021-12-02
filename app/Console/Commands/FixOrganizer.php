@@ -4,9 +4,6 @@ namespace App\Console\Commands;
 
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
-use Arr;
-use Illuminate\Console\Command;
-use DrawCrypt;
 use URLParser;
 
 class FixOrganizer extends Command
@@ -39,17 +36,10 @@ class FixOrganizer extends Command
         $draw->organizer->email = $this->argument('email');
         $draw->organizer->save();
 
-        $draw->organizer->notify(new OrganizerRecap);
+        $draw->organizer->notifyNow(new OrganizerRecap);
         $this->info('Organizer Recap sent');
 
-        $draw->organizer->notify(new TargetDrawn);
+        $draw->organizer->notifyNow(new TargetDrawn);
         $this->info('Organizer Participant mail sent');
-    }
-
-    protected function setCryptIVFromUrl($url)
-    {
-        $hash = Arr::get(explode('#', $url, 2), 1);
-        $key = base64_decode($hash);
-        DrawCrypt::setIV($key);
     }
 }

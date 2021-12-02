@@ -4,9 +4,6 @@ namespace App\Console\Commands;
 
 use App\Notifications\TargetDrawn;
 use App\Models\Participant;
-use DrawCrypt;
-use App\Services\DrawHandler;
-use Illuminate\Console\Command;
 
 class SendParticipant extends Command
 {
@@ -15,7 +12,7 @@ class SendParticipant extends Command
      *
      * @var string
      */
-    protected $signature = 'send:participant {participant : ID of the participant} {key : The decryption key}';
+    protected $signature = 'send:participant {participant : ID of the participant} {url : The URL received by one of the participants to write to their santa}';
 
     /**
      * The console command description.
@@ -41,12 +38,11 @@ class SendParticipant extends Command
      */
     public function handle()
     {
-        $iv = base64_decode($this->argument('iv'));
-        DrawCrypt::setIV($iv);
+        $this->setCryptIVFromUrl($this->argument('url'));
 
         $participant = Participant::find($this->argument('participant'));
 
-        $participant->notify(new TargetDrawn);
+        $participant->notifyNow(new TargetDrawn);
         $this->info('Participant mail sent');
     }
 }
