@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App;
+use App\Channels\MailChannel;
 use App\Facades\DrawCrypt;
 use App\Models\Participant;
 use Illuminate\Bus\Queueable;
@@ -38,7 +39,7 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
      */
     public function via(Participant $organizer)
     {
-        return ['mail'];
+        return [MailChannel::class];
     }
 
     /**

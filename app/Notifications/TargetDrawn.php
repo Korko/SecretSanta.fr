@@ -2,16 +2,15 @@
 
 namespace App\Notifications;
 
-use App\Models\Participant;
 use App\Channels\TrackedMailChannel;
 use App\Facades\DrawCrypt;
+use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
-use Lang;
 
 class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
 {

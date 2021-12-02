@@ -22,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
             \App\Solvers\SolverInterface::class,
             \App\Solvers\HatSolver::class
         );
+
+        $this->app->bind(
+            \Illuminate\Notifications\Channels\MailChannel::class,
+            \App\Channels\MailChannel::class
+        );
     }
 
     /**

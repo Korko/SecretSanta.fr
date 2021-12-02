@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Channels\MailChannel;
 use App\Facades\DrawCrypt;
 use App\Models\Participant;
 //Illuminate/Contracts/Queue/ShouldBeEncrypted
@@ -19,7 +20,7 @@ class SuggestRedraw extends Notification
      */
     public function via(Participant $participant)
     {
-        return ['mail'];
+        return [MailChannel::class];
     }
 
     /**
