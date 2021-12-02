@@ -2,10 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Facades\DrawCrypt;
 use App\Notifications\TargetDrawn;
-use Arr;
-use Illuminate\Console\Command;
 use URLParser;
 
 class FixParticipant extends Command
@@ -39,14 +36,7 @@ class FixParticipant extends Command
         $participant->email = $this->argument('email');
         $participant->find($this->argument('id'))->save();
 
-        $participant->notify(new TargetDrawn);
+        $participant->notifyNow(new TargetDrawn);
         $this->info('Participant mail sent');
-    }
-
-    protected function setCryptIVFromUrl($url)
-    {
-        $hash = Arr::get(explode('#', $url, 2), 1);
-        $key = base64_decode($hash);
-        DrawCrypt::setIV($key);
     }
 }

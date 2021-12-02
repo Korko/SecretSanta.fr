@@ -2,9 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Facades\DrawCrypt;
-use Arr;
-use Illuminate\Console\Command;
 use URLParser;
 
 class ListDraw extends Command
@@ -38,12 +35,5 @@ class ListDraw extends Command
             ['ID', 'Name', 'Email'],
             $draw->participants()->get(['id', 'name', 'email'])->toArray()
         );
-    }
-
-    protected function setCryptIVFromUrl($url)
-    {
-        $hash = Arr::get(explode('#', $url, 2), 1);
-        $key = base64_decode($hash);
-        DrawCrypt::setIV($key);
     }
 }

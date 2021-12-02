@@ -2,10 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Facades\DrawCrypt;
-use App\Models\DearSanta;
 use App\Notifications\DearSanta as DearSantaNotification;
-use Illuminate\Console\Command;
+use App\Models\DearSanta;
 
 class SendDearSanta extends Command
 {
@@ -14,7 +12,7 @@ class SendDearSanta extends Command
      *
      * @var string
      */
-    protected $signature = 'send:dearSanta {dearSanta : ID of the dearsanta} {iv : The decryption iv}';
+    protected $signature = 'send:dearSanta {dearSanta : ID of the dearsanta} {url : The URL received by one of the participants to write to their santa}';
 
     /**
      * The console command description.
@@ -40,12 +38,11 @@ class SendDearSanta extends Command
      */
     public function handle()
     {
-        $iv = base64_decode($this->argument('iv'));
-        DrawCrypt::setIV($iv);
+        $this->setCryptIVFromUrl($this->argument('url'));
 
         $dearSanta = DearSanta::find($this->argument('dearSanta'));
 
-        $dearSanta->sender->santa->notify(new DearSantaNotification($dearSanta));
+        $dearSanta->sender->santa->notifyNow(new DearSantaNotification($dearSanta));
         $this->info('DearSanta mail sent');
     }
 }
