@@ -2,10 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\CsvGenerator;
-use App\Services\Response;
 use DrawCrypt;
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Support\ServiceProvider;
 use Queue;
 
@@ -21,6 +18,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Solvers\SolverInterface::class,
             \App\Solvers\HatSolver::class
+        );
+
+        $this->app->bind(
+            \Illuminate\Notifications\Channels\MailChannel::class,
+            \App\Channels\MailChannel::class
         );
     }
 
