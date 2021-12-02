@@ -5,7 +5,6 @@ namespace App\Channels;
 use URL;
 use App\Models\Mail as MailModel;
 use Facades\App\Services\MailTracker;
-use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Notification;
 
 class TrackedMailChannel extends MailChannel
@@ -74,6 +73,4 @@ class TrackedMailChannel extends MailChannel
 
         return parent::messageBuilder($notifiable, $notification, $message);
     }
-
-
 }
