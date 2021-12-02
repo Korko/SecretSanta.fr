@@ -3,14 +3,6 @@ import jQuery from 'jquery';
 import actual from 'jquery.actual'; // eslint-disable-line no-unused-vars
 import scrollTo from 'jquery.scrollto'; // eslint-disable-line no-unused-vars
 
-// Still using CommonJS syntax
-const Modernizr = require("Modernizr");
-Modernizr.on('webp', function (result) {
-    if(!result) {
-        jQuery('body').addClass('nowebp');
-    }
-});
-
 (function($, sr) {
     // debouncing function from John Hann
     // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/

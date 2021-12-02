@@ -7,7 +7,6 @@ require('dotenv').config();
 
 require('laravel-mix-purgecss');
 require('laravel-mix-polyfill');
-require('laravel-mix-modernizr');
 
 /*
  |--------------------------------------------------------------------------
@@ -44,6 +43,11 @@ mix.override(webpackConfig => {
 });
 
 mix.webpackConfig({
+  optimization: {
+    providedExports: false,
+    sideEffects: false,
+    usedExports: false
+  },
   plugins: [
     new webpack.IgnorePlugin({
         resourceRegExp: /^\.\/locale$/,
@@ -70,7 +74,7 @@ mix.webpackConfig({
           name: '[name].[ext]?[contenthash]',
           esModule: false
         },
-      },
+      }
     ]
   }
 });
@@ -94,7 +98,6 @@ mix.js('resources/js/common.js', 'public/js')
    .js('resources/js/randomForm.js', 'public/js')
    .js('resources/js/dearSanta.js', 'public/js')
    .js('resources/js/organizer.js', 'public/js')
-   .modernizr()
    .vue({
       extractStyles: false,
       globalStyles: false

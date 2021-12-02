@@ -1,7 +1,6 @@
 <script>
     import jQuery from 'jquery';
     window.$ = window.jQuery = jQuery;
-    import 'jquery-ui/ui/widgets/datepicker.js';
 
     import alertify from '../partials/alertify.js';
 
@@ -13,9 +12,6 @@
     import Vuelidate from 'vuelidate';
     import { required, minLength, email } from 'vuelidate/lib/validators'
     Vue.use(Vuelidate);
-
-    // Still using CommonJS syntax
-    const Modernizr = require("Modernizr");
 
     import Moment from 'moment';
     import 'moment/locale/fr';
@@ -112,23 +108,6 @@
             this.addParticipant();
             this.addParticipant();
             this.addParticipant();
-
-            Vue.nextTick(
-                function() {
-                    if (!Modernizr.inputtypes.date) {
-                        jQuery('input[type=date]', this.$el).datepicker({
-                            // Consistent format with the HTML5 picker
-                            dateFormat: 'yy-mm-dd',
-                            minDate: formatMoment(1, 'day'),
-                            maxDate: formatMoment(1, 'year')
-                        });
-                    }
-
-                    if (!Modernizr.filereader) {
-                        jQuery('.participants-imports').remove();
-                    }
-                }.bind(this)
-            );
         },
 
         methods: {
