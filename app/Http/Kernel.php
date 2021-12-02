@@ -47,7 +47,7 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'signed'        => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle'      => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'decrypt.iv'   => \App\Http\Middleware\HandleEncryptionIV::class,
+        'decrypt.iv'    => \App\Http\Middleware\HandleEncryptionIV::class,
     ];
 
     /**
