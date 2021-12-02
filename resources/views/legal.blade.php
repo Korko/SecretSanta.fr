@@ -5,7 +5,6 @@
         <li><a href="/">@lang('faq.nav.go')</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-nav-right">
-        <li><a href="mailto:{{ config('app.email') }}">@lang('faq.nav.contact')</a></li>
     </ul>
 @stop
 
@@ -17,7 +16,7 @@
         Si vous n'acceptez pas les modalités d'utilisation de cette politique, veuillez, s'il-vous-plaît, ne pas utiliser ce site Web.
         Le développeur se réserve le droit de modifier à tout moment cette politique s'il le juge nécessaire.
 
-        Le site https://secretsanta.fr collecte des informations personnelles comme le nom et l'adresse email des participants soumis par un visiteur.
+        Le site {{ config('app.url') }} collecte des informations personnelles comme le nom et l'adresse email des participants soumis par un visiteur.
         Alors organisateur d'évènement, vous reconnaissez avoir eu le consentement des autres participants pour partager leurs données personnelles dans cet outil.
         Ces données ne sont utilisées que pour la gestion de cet évènement organisé et ne sont partagées avec aucun partenaire.
 
@@ -41,7 +40,7 @@
 
         # Licences
 
-        Le contenu du site https://secretsanta.fr est sous licence Apache 2.0 (https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)).
+        Le contenu du site {{ config('app.url') }} est sous licence Apache 2.0 (https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)).
 
         Le code source est intégralement disponible sur les sites https://framagit.org/Korko/SecretSanta et https://github.com/Korko/SecretSanta.fr/.
 
@@ -70,6 +69,6 @@
         # Cookies
 
         Un « cookie » est un fichier de petite taille qui enregistre des informations relatives à la navigation d’un utilisateur sur un site.
-        Le site https://secretsanta.fr n'utilise aucun cookie et se passe donc de demande d'autorisation pour ceux-ci.
+        Le site {{ config('app.url') }} n'utilise aucun cookie et se passe donc de demande d'autorisation pour ceux-ci.
     </pre>
 @stop
