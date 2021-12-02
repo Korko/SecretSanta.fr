@@ -45,7 +45,7 @@ trait HashId
             $this->findByHashOrFail($value) :
             parent::resolveRouteBinding($value, $field);
 
-        abort_if($model === null, 404);
+        throw_if($model === null, ModelNotFoundException::class);
 
         return $model;
     }
