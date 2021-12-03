@@ -32,12 +32,12 @@ class DearSantaController extends Controller
             'organizer' => $participant->draw->organizer->name,
             'emails' => $participant->dearSantas->mapWithKeys(function ($email) {
                 return [
-                    $email->id => $email->only($this->dearSantaPublicFields)
+                    $email->mail->id => $email->only($this->dearSantaPublicFields)
                 ];
             }),
             'resendEmailUrls' => $participant->dearSantas->mapWithKeys(function ($dearSanta) use ($participant) {
                 return [
-                    $dearSanta->id => URL::signedRoute('dearSanta.resend', [
+                    $dearSanta->mail->id => URL::signedRoute('dearSanta.resend', [
                         'participant' => $participant, 'dearSanta' => $dearSanta
                     ])
                 ];
@@ -50,7 +50,7 @@ class DearSantaController extends Controller
         return response()->json([
             'emails' => $participant->dearSantas->mapWithKeys(function ($dearSanta) {
                 return [
-                    $dearSanta->id => $dearSanta->only($this->dearSantaPublicFields)
+                    $dearSanta->mail->id => $dearSanta->only($this->dearSantaPublicFields)
                 ];
             }),
         ]);

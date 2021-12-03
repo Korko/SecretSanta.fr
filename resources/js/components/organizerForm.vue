@@ -33,6 +33,12 @@
         },
         data() {
             return {
+                participants: this.data.participants,
+                draw: this.data.draw,
+                expires_at: this.data.expires_at,
+                deleted_at: this.data.deleted_at,
+                finalCsvAvailable: this.data.finalCsvAvailable,
+                changeEmailUrls: this.data.changeEmailUrls,
                 validations: {
                     email: {
                         required,
@@ -43,58 +49,35 @@
         },
         computed: {
             checkUpdates() {
-                return !!Object.values(this.data.participants).find(
+                return !!Object.values(this.participants).find(
                     participant => participant.mail.delivery_status !== 'error'
                 );
             },
             expired() {
-                return Moment(this.data.expires_at).isBefore(Moment(), 'day');
+                return Moment(this.expires_at).isBefore(Moment(), 'day');
             },
             expirationDateShort() {
-                return Moment(this.data.expires_at).format('YYYY-MM-DD');
+                return Moment(this.expires_at).format('YYYY-MM-DD');
             },
             expirationDateLong() {
-                return new Date(this.data.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+                return new Date(this.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             },
             deletionDateLong() {
-                return new Date(this.data.deleted_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+                return new Date(this.deleted_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             }
         },
         created() {
-            Echo.channel('draw.'+this.data.draw)
-                .listen('.pusher:subscription_succeeded', () => {
-                    this.fetchState();
-                })
+            Echo.channel('draw.'+this.draw)
                 .listen('.mail.update', data => {
-                    var key = Object.keys(this.data.participants).find(key => this.data.participants[key].mail.id === data.id);
+                    var key = Object.keys(this.participants).find(key => this.participants[key].mail.id === data.id);
 
                     if(key) {
-                        this.$set(this.data.participants[key].mail, 'delivery_status', data.delivery_status);
-                        this.$set(this.data.participants[key].mail, 'updated_at', data.updated_at);
+                        this.participants[key].mail.delivery_status = data.delivery_status;
+                        this.participants[key].mail.updated_at = data.updated_at;
                     }
                 });
         },
         methods: {
-            update(k, data) {
-                this.data.participants[k].email = data.value;
-                this.data.participants[k].mail.delivery_status = data.participant.mail.delivery_status;
-                this.data.participants[k].mail.updated_at = data.participant.mail.updated_at;
-            },
-            fetchState() {
-                return fetch(this.routes.fetchStateUrl)
-                    .then(response => {
-                        if (response.participants) {
-                            Object.values(response.participants).forEach(participant => {
-                                var new_update = new Date(participant.mail.updated_at);
-                                var old_update = new Date(this.data.participants[participant.hash].mail.updated_at);
-                                this.data.participants[participant.hash].mail.delivery_status =
-                                    new_update > old_update
-                                        ? participant.mail.delivery_status
-                                        : this.data.participants[participant.hash].mail.delivery_status;
-                            });
-                        }
-                    });
-            },
             confirmPurge() {
                 let options = {
                     okText: this.$t('organizer.purge.confirm.ok'),
@@ -109,7 +92,7 @@
                     title: this.$t('organizer.purge.confirm.title', {deletion: this.deletionDateLong}),
                     body: ''
                 };
-                if(this.data.finalCsvAvailable && !this.expired) {
+                if(this.finalCsvAvailable && !this.expired) {
                     message.body = this.$t('organizer.purge.confirm.body_final'); // Won't be able to download final recap + dearSanta
                 } else if(this.expired) {
                     message.body = this.$t('organizer.purge.confirm.body_expired'); // Won't be able to download recap anymore
@@ -130,10 +113,10 @@
                     });
             },
             updateEmail(k, email) {
-                this.$set(this.data.participants[k], 'email', email);
-                this.$set(this.data.participants[k].mail, 'delivery_status', 'created');
+                this.participants[k].email = email;
+                this.participants[k].mail.delivery_status = 'created';
 
-                return fetch(this.data.changeEmailUrls[this.data.participants[k].hash], 'POST', {
+                return fetch(this.changeEmailUrls[this.participants[k].hash], 'POST', {
                     email: email
                 });
             },
