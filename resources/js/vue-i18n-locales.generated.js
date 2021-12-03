@@ -178,7 +178,8 @@ export default {
                     "expiration": {
                         "required": "La date d'expiration est requise.",
                         "min": "La date d'expiration ne peut pas précéder demain.",
-                        "max": "La date d'expiration ne peut pas dépasser un an."
+                        "max": "La date d'expiration ne peut pas dépasser un an.",
+                        "format": "La date d'expiration doit respecter le format année-mois-jour exemple: 2022-02-05."
                     },
                     "participants": {
                         "length": "Il faut au moins 3 participants"
