@@ -2,10 +2,12 @@
 
 namespace App\Channels;
 
-use URL;
 use App\Models\Mail as MailModel;
 use Facades\App\Services\MailTracker;
 use Illuminate\Notifications\Notification;
+use Mail;
+use Swift_TransportException;
+use URL;
 
 class TrackedMailChannel extends MailChannel
 {
@@ -25,15 +27,18 @@ class TrackedMailChannel extends MailChannel
             $mail = (new MailModel());
         }
 
-        $mail->notification = $notification->id;
-        $mailable->mail()->save($mail);
         $mail->markAsSending();
 
-        dispatch(function () use ($mail) {
-            $mail->markAsSent();
-        })->delay(10);
+        $mail->notification = $notification->id;
+        $mailable->mail()->save($mail);
 
-        parent::send($notifiable, $notification);
+        try {
+            parent::send($notifiable, $notification);
+
+            $mail->markAsSent();
+        } catch (Swift_TransportException $exception) {
+            $mail->markAsError();
+        }
     }
 
     /**
