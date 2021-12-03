@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Notifications\MailStatusUpdated;
+use App\Events\MailStatusUpdated;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -67,7 +67,7 @@ class Mail extends Model
         $this->save();
 
         try {
-            $this->mailable->sender->notify(new MailStatusUpdated($this));
+            MailStatusUpdated::dispatch($this);
         } catch(Exception $e) {
             // Ignore exception
         }
