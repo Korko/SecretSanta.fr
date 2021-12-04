@@ -74,6 +74,7 @@
             },
             resend(id) {
                 this.emails[id].mail.delivery_status = 'created';
+                this.emails[id].mail.updated_at = new Date().getTime();
 
                 return fetch(this.resendEmailUrls[id]);
             },
