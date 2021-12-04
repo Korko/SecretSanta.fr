@@ -115,6 +115,7 @@
             updateEmail(k, email) {
                 this.participants[k].email = email;
                 this.participants[k].mail.delivery_status = 'created';
+                this.participants[k].mail.updated_at = new Date().getTime();
 
                 return fetch(this.changeEmailUrls[this.participants[k].hash], 'POST', {
                     email: email
