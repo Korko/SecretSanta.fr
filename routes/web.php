@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +18,12 @@ use App\Http\Controllers\RandomFormController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+RateLimiter::for('global', function (Request $request) {
+    return Limit::perMinute(100)->by($request->ip())->response(function () {
+        return abort(429);
+    });
+});
 
 Route::get('/', [RandomFormController::class, 'view']);
 Route::post('/', [RandomFormController::class, 'handle']);
