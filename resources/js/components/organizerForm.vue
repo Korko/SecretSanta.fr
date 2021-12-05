@@ -39,6 +39,7 @@
                 deleted_at: this.data.deleted_at,
                 finalCsvAvailable: this.data.finalCsvAvailable,
                 changeEmailUrls: this.data.changeEmailUrls,
+                withdrawalUrls: this.data.withdrawalUrls,
                 validations: {
                     email: {
                         required,
@@ -48,6 +49,9 @@
             };
         },
         computed: {
+            canWithdraw() {
+                return Object.keys(this.participants).length > 3;
+            },
             checkUpdates() {
                 return !!Object.values(this.participants).find(
                     participant => participant.mail.delivery_status !== 'error'
@@ -121,6 +125,33 @@
                     email: email
                 });
             },
+            confirmWithdrawal(k) {
+                let options = {
+                    okText: this.$t('organizer.withdraw.confirm.ok'),
+                    cancelText: this.$t('organizer.withdraw.confirm.cancel'),
+                    verification: this.$t('organizer.withdraw.confirm.value'),
+                    verificationHelp: this.$t('organizer.withdraw.confirm.help'),
+                    type: 'hard',
+                    customClass: 'withdraw'
+                };
+
+                this.$dialog
+                    .confirm({
+                        title: this.$t('organizer.withdraw.confirm.title', {deletion: this.deletionDateLong}),
+                        body: this.$t('organizer.withdraw.confirm.body', {name: this.participants[k].name})
+                    }, options)
+                    .then(() => this.withdraw(k));
+            },
+            withdraw(k) {
+                var url = this.withdrawalUrls[this.participants[k].hash];
+                this.$delete(this.participants, k);
+
+                return fetch(url)
+                    .then(data => {
+                        this.$dialog
+                            .alert(data.message);
+                    });
+            },
             download() {
                 fetch(this.routes.csvInitUrl, 'GET', '', {responseType: 'blob'})
                     .then(response => {
@@ -146,19 +177,22 @@
             <caption>{{ $t('organizer.list.caption') }}</caption>
             <thead>
                 <tr class="table-active">
-                    <th scope="col">
+                    <th style="width: 33%" scope="col">
                         {{ $t('organizer.list.name') }}
                     </th>
-                    <th scope="col">
+                    <th style="width: 33%" scope="col">
                         {{ $t('organizer.list.email') }}
                     </th>
-                    <th scope="col">
+                    <th :style="canWithdraw ? 'width: 30%' : 'width: 33%'" scope="col">
                         {{ $t('organizer.list.status') }}
+                    </th>
+                    <th v-if="canWithdraw" style="width: 3%" scope="col">
+                        {{ $t('organizer.list.withdraw') }}
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(participant, k) in data.participants" :key="participant.hash">
+                <tr v-for="(participant, k) in participants" :key="participant.hash">
                     <td>{{ participant.name }}</td>
                     <td>
                         <input-edit
@@ -174,6 +208,15 @@
                         </input-edit>
                     </td>
                     <td><email-status :delivery_status="participant.mail.delivery_status" :last_update="participant.mail.updated_at" :disabled="expired" @redo="updateEmail(k, participant.email)" /></td>
+                    <td v-if="canWithdraw">
+                        <button
+                            type="button"
+                            class="btn btn-outline-danger participant-remove"
+                            @click="confirmWithdrawal(k)"
+                        >
+                            <i class="fas fa-minus" /><span> {{ $t('organizer.withdraw.button') }}</span>
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
