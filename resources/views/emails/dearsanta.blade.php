@@ -1,4 +1,4 @@
-@extends('emails/tracked_layout')
+@extends('emails/layout')
 
 @section('title')
     Message de {{ $targetName }}
