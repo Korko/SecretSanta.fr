@@ -27,7 +27,7 @@ before_script:
   - curl -sL https://deb.nodesource.com/setup_current.x | bash -
   - apt-get install -y nodejs build-essential yarn libzip-dev zip git wget bzip2
   - apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-  - docker-php-ext-install bcmath zip bzip2
+  - docker-php-ext-install bcmath zip bz2
   - curl --show-error --silent https://getcomposer.org/installer | php
   - php composer.phar install
 
