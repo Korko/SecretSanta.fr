@@ -21,7 +21,7 @@ class Participant extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['name', 'email'];
 
@@ -34,13 +34,6 @@ class Participant extends Model
         'name' => EncryptedString::class,
         'email' => EncryptedString::class,
     ];
-
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
 
     protected static function booted()
     {
@@ -121,7 +114,7 @@ class Participant extends Model
 
     public function getMetricIdAttribute()
     {
-        return (new xxHash($this->draw->id))->hash($this->id);
+        return (new xxHash($this->draw->id))->hash((string) $this->id);
     }
 
     public function createMetric($name, $value = 1)

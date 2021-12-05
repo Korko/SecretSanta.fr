@@ -34,7 +34,7 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
     /**
      * Get the notification's delivery channels.
      *
-     * @param  App\Models\Participant  $organizer
+     * @param  \App\Models\Participant  $organizer
      * @return array
      */
     public function via(Participant $organizer)
@@ -45,7 +45,7 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
     /**
      * Get the mail representation of the notification.
      *
-     * @param  App\Models\Participant  $organizer
+     * @param  \App\Models\Participant  $organizer
      * @return \Illuminate\Mail\Mailable
      */
     public function toMail(Participant $organizer)

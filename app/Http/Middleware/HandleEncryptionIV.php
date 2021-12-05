@@ -26,7 +26,7 @@ class HandleEncryptionIV
             // Accessing the attribute is enough
             $request->route()->parameters()[$parameterToCheck]->$fieldToCheck;
         } catch (DecryptException $e) {
-            abort(500, "Invalid encryption iv: ".$e->getMessage());
+            abort(500, 'Invalid encryption iv: '.$e->getMessage());
         } catch (\Exception $e) {
             // Something may be wrong with the Controller parameters (missing the parameter to check?)
         }

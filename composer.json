@@ -9,7 +9,6 @@
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
-        "anhskohbo/no-captcha": "^3.3",
         "beyondcode/laravel-websockets": "^1.9",
         "doctrine/dbal": "^3.0",
         "exussum12/xxhash": "^1.3",

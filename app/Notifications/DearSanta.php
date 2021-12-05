@@ -22,7 +22,7 @@ class DearSanta extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  App\Models\Participant  $santa
+     * @param  \App\Models\Participant  $santa
      * @return array
      */
     public function via(Participant $santa)
@@ -38,7 +38,7 @@ class DearSanta extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  App\Models\Participant  $santa
+     * @param  \App\Models\Participant  $santa
      * @return \Illuminate\Mail\Mailable
      */
     public function toMail(Participant $santa)

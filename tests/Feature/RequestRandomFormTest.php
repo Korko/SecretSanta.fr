@@ -99,36 +99,6 @@ it('sends to the organizer the link to their panel', function () {
     });
 });
 
-it('does not fail if a notification cannot be sent', function () {
-    Notification::fake();
-
-    Notification::shouldReceive('send')->times(4)->andReturnUsing(function() {
-        static $counter = 0;
-
-        $counter++;
-
-        switch ($counter) {
-            case 1:
-            case 2:
-            case 4:
-                return true;
-            default: throw new Exception("Fail");
-        }
-    });
-
-    ajaxPost('/', [
-            'participants'    => generateParticipants(3),
-            'title'           => 'this is a test',
-            'content-email'   => 'test mail {SANTA} => {TARGET}',
-            'data-expiration' => date('Y-m-d', strtotime('+2 days')),
-        ])
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
-
-    assertEquals(1, Draw::count());
-    assertEquals(3, Participant::count());
-});
-
 it('can deal with thousands of participants', function () {
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());

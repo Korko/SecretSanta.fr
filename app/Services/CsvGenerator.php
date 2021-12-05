@@ -47,7 +47,7 @@ class CsvGenerator
         $fileHandler = fopen('php://memory', 'r+');
         foreach ($this->data as $fields) {
             if (fputcsv($fileHandler, $fields, $this->delimiter, $this->enclosure, $this->escapeChar) === false) {
-                return false;
+                return '';
             }
         }
         rewind($fileHandler);

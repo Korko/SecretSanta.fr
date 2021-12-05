@@ -17,14 +17,14 @@ class Draw extends Model
     use HasFactory, HashId, Notifiable;
 
     // Remove everything N weeks after the expiration_date
-    const WEEKS_BEFORE_DELETION = 3;
+    public const WEEKS_BEFORE_DELETION = 3;
 
     protected $hashConnection = 'draw';
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['mail_title', 'mail_body', 'expires_at', 'next_solvable'];
 
@@ -42,18 +42,11 @@ class Draw extends Model
     /**
      * The attributes that should be mutated to dates.
      *
-     * @var array
+     * @var string[]
      */
     protected $dates = [
         'expires_at',
     ];
-
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
 
     protected static function booted()
     {

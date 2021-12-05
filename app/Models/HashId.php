@@ -10,7 +10,7 @@ trait HashId
     /**
      * The accessors to append to the model's array form.
      *
-     * @var array
+     * @var string[]
      */
     protected $append = ['hash'];
 
