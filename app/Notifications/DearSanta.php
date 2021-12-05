@@ -43,6 +43,8 @@ class DearSanta extends Notification
      */
     public function toMail(Participant $santa)
     {
+        $url = URL::signedRoute('dearSanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
+
         return (new MailMessage)
             ->subject(__('emails.dear_santa.title', ['draw' => $santa->draw->id]))
             ->view('emails.dearsanta', [
