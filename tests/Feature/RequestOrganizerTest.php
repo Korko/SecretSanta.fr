@@ -23,7 +23,7 @@ test('the organizer can send again the target drawn email', function () {
 
     Notification::assertSentTo($participant, TargetDrawn::class);
 });
-/*
+
 test('the organizer can change a participant\'s email', function () {
     Notification::fake();
 
@@ -37,11 +37,12 @@ test('the organizer can change a participant\'s email', function () {
         'participant' => $participant,
     ]);
 
+    $before = $participant->email;
+
     ajaxPost($path, ['email' => 'test@test2.com'])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    $before = $participant->email;
     $participant = $participant->fresh();
     $after = $participant->email;
 
@@ -123,4 +124,4 @@ test('the organizer can delete all data after expiration', function () {
         ->assertJsonStructure(['message']);
 
     assertNull($draw->fresh());
-});*/
+});
