@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\MailStatusUpdated;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Str;
 
@@ -78,7 +79,7 @@ class Mail extends Model
 
         try {
             MailStatusUpdated::dispatch($this);
-        } catch(Exception $e) {
+        } catch(BroadcastException $e) {
             // Ignore exception
         }
     }

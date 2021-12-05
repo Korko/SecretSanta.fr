@@ -6,8 +6,8 @@ use App\Models\Mail as MailModel;
 
 class MailTracker
 {
-    const BOUNCE = 'bounce';
-    const CONFIRM = 'confirm';
+    protected const BOUNCE = 'bounce';
+    protected const CONFIRM = 'confirm';
 
     public function getBounceReturnPath($mail)
     {

@@ -5,16 +5,15 @@ namespace App\Services;
 use App\Exceptions\SolverException;
 use App\Models\Draw;
 use App\Models\Participant;
-use App\Services\DrawHandler;
 use Arr;
 use DB;
 
 class DrawFormHandler
 {
-    public $title;
-    public $body;
-    public $participants;
-    public $expirationDate;
+    protected $title;
+    protected $body;
+    protected $participants;
+    protected $expirationDate;
 
     public function __construct()
     {

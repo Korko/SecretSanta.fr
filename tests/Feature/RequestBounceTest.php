@@ -19,7 +19,7 @@ it('can handle bounced emails', function () {
 
     [$bouncedParticipant, $confirmedParticipant] = $draw->participants->random(2);
 
-    $job = $this->partialMock(ParseBounces::class);
+    $job = test()->partialMock(ParseBounces::class);
     $job->shouldAllowMockingProtectedMethods()
         ->shouldReceive('getRecipients')
         ->andReturn([

@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
 
 class URLParser
 {
-    public $router;
-    public $request;
+    protected $router;
+    protected $request;
 
     public function __construct(Router $router, Request $request)
     {

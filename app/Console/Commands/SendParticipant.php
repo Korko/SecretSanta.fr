@@ -22,16 +22,6 @@ class SendParticipant extends Command
     protected $description = 'Send again an email to a participant';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed

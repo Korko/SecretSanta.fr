@@ -32,9 +32,11 @@ class OrganizerController extends Controller
             'expires_at' => $draw->expires_at,
             'deleted_at' => $draw->deleted_at,
             'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) {
-                return [$participant->hash => $participant->only([
-                    'hash', 'name', 'email', 'mail',
-                ])];
+                return [
+                    $participant->hash => $participant->only([
+                        'hash', 'name', 'email', 'mail',
+                    ])
+                ];
             }),
             'changeEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
                 return [
@@ -98,7 +100,7 @@ class OrganizerController extends Controller
         $santa->target()->save($target);
 
         $santa->notify(new TargetWithdrawn);
-        $target->dearSantas->each(function ($dearSanta) {
+        $target->dearSantas->each(function ($dearSanta) use ($santa) {
             $santa->notify(new DearSanta($dearSanta));
         });
         $participant->delete();
@@ -120,7 +122,7 @@ class OrganizerController extends Controller
                     ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
                     ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
                 ]),
-        200, ['Content-Type' => 'text/csv; charset=UTF-8']);
+            200, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
     public function csvFinal(Draw $draw)
@@ -139,7 +141,7 @@ class OrganizerController extends Controller
                     ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
                     ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
                 ]),
-        200, ['Content-Type' => 'text/csv; charset=UTF-8']);
+            200, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
     public function delete(Request $request, Draw $draw)
