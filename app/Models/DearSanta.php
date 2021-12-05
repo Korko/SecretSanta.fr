@@ -13,7 +13,7 @@ class DearSanta extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['mail_body', 'sender_id', 'mail_id'];
 

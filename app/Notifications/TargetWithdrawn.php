@@ -2,8 +2,8 @@
 
 namespace App\Notifications;
 
-use App\Models\Participant;
 use App\Channels\MailChannel;
+use App\Models\Participant;
 use DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
@@ -34,7 +34,7 @@ class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncry
     /**
      * Get the notification's delivery channels.
      *
-     * @param  App\Models\Participant  $santa
+     * @param  \App\Models\Participant  $santa
      * @return array
      */
     public function via(Participant $santa)
@@ -50,7 +50,7 @@ class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncry
     /**
      * Get the mail representation of the notification.
      *
-     * @param  App\Models\Participant  $santa
+     * @param  \App\Models\Participant  $santa
      * @return \Illuminate\Mail\Mailable
      */
     public function toMail(Participant $santa)

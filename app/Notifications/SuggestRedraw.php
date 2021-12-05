@@ -15,7 +15,7 @@ class SuggestRedraw extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  App\Models\Participant  $participant
+     * @param  \App\Models\Participant  $participant
      * @return array
      */
     public function via(Participant $participant)
@@ -26,7 +26,7 @@ class SuggestRedraw extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  App\Models\Participant  $santa
+     * @param  \App\Models\Participant  $santa
      * @return \Illuminate\Mail\Mailable
      */
     public function toMail(Participant $participant)

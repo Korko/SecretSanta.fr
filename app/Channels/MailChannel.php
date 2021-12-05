@@ -44,6 +44,4 @@ class MailChannel extends BaseMailChannel
 
         return parent::messageBuilder($notifiable, $notification, $message);
     }
-
-
 }

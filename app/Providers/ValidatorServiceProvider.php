@@ -41,9 +41,4 @@ class ValidatorServiceProvider extends ServiceProvider
             return ($data === [] || ! empty($rawData[$attribute]));
         });
     }
-
-    public function register(): void
-    {
-        //
-    }
 }

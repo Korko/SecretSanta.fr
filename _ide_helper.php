@@ -15987,107 +15987,6 @@
      
 }
 
-    namespace Anhskohbo\NoCaptcha\Facades { 
-            /**
-     * 
-     *
-     */ 
-        class NoCaptcha {
-                    /**
-         * Render HTML captcha.
-         *
-         * @param array $attributes
-         * @return string 
-         * @static 
-         */ 
-        public static function display($attributes = [])
-        {
-                        /** @var \Anhskohbo\NoCaptcha\NoCaptcha $instance */
-                        return $instance->display($attributes);
-        }
-                    /**
-         * 
-         *
-         * @see display()
-         * @static 
-         */ 
-        public static function displayWidget($attributes = [])
-        {
-                        /** @var \Anhskohbo\NoCaptcha\NoCaptcha $instance */
-                        return $instance->displayWidget($attributes);
-        }
-                    /**
-         * Display a Invisible reCAPTCHA by embedding a callback into a form submit button.
-         *
-         * @param string $formIdentifier the html ID of the form that should be submitted.
-         * @param string $text the text inside the form button
-         * @param array $attributes array of additional html elements
-         * @return string 
-         * @static 
-         */ 
-        public static function displaySubmit($formIdentifier, $text = 'submit', $attributes = [])
-        {
-                        /** @var \Anhskohbo\NoCaptcha\NoCaptcha $instance */
-                        return $instance->displaySubmit($formIdentifier, $text, $attributes);
-        }
-                    /**
-         * Render js source
-         *
-         * @param null $lang
-         * @param bool $callback
-         * @param string $onLoadClass
-         * @return string 
-         * @static 
-         */ 
-        public static function renderJs($lang = null, $callback = false, $onLoadClass = 'onloadCallBack')
-        {
-                        /** @var \Anhskohbo\NoCaptcha\NoCaptcha $instance */
-                        return $instance->renderJs($lang, $callback, $onLoadClass);
-        }
-                    /**
-         * Verify no-captcha response.
-         *
-         * @param string $response
-         * @param string $clientIp
-         * @return bool 
-         * @static 
-         */ 
-        public static function verifyResponse($response, $clientIp = null)
-        {
-                        /** @var \Anhskohbo\NoCaptcha\NoCaptcha $instance */
-                        return $instance->verifyResponse($response, $clientIp);
-        }
-                    /**
-         * Verify no-captcha response by Symfony Request.
-         *
-         * @param \Request $request
-         * @return bool 
-         * @static 
-         */ 
-        public static function verifyRequest($request)
-        {
-                        /** @var \Anhskohbo\NoCaptcha\NoCaptcha $instance */
-                        return $instance->verifyRequest($request);
-        }
-                    /**
-         * Get recaptcha js link.
-         *
-         * @param string $lang
-         * @param boolean $callback
-         * @param string $onLoadClass
-         * @return string 
-         * @static 
-         */ 
-        public static function getJsLink($lang = null, $callback = false, $onLoadClass = 'onloadCallBack')
-        {
-                        /** @var \Anhskohbo\NoCaptcha\NoCaptcha $instance */
-                        return $instance->getJsLink($lang, $callback, $onLoadClass);
-        }
-         
-    }
-     
-}
-
     namespace Facades\App\Services { 
             /**
      * 
@@ -17207,17 +17106,6 @@
         {
                         return \Illuminate\Http\Request::hasValidRelativeSignature();
         }
-         
-    }
-     
-}
-
-    namespace Illuminate\Routing { 
-            /**
-     * 
-     *
-     */ 
-        class ResponseFactory {
          
     }
      
@@ -20658,7 +20546,6 @@ namespace  {
             class Lang extends \Illuminate\Support\Facades\Lang {}
             class Log extends \Illuminate\Support\Facades\Log {}
             class Mail extends \Illuminate\Support\Facades\Mail {}
-            class NoCaptcha extends \Anhskohbo\NoCaptcha\Facades\NoCaptcha {}
             class Notification extends \Illuminate\Support\Facades\Notification {}
             class Password extends \Illuminate\Support\Facades\Password {}
             class Queue extends \Illuminate\Support\Facades\Queue {}
