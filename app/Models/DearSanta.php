@@ -37,8 +37,8 @@ class DearSanta extends Model
     {
         parent::boot();
 
-        static::creating(function($dearSanta) {
-            $dearSanta->mail()->save(new MailModel);
+        static::created(function($dearSanta) {
+            $dearSanta->mail()->save(new Mail);
         });
 
         static::deleting(function ($dearSanta) {

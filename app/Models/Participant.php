@@ -46,8 +46,8 @@ class Participant extends Model
     {
         parent::boot();
 
-        static::creating(function($participant) {
-            $participant->mail()->save(new MailModel);
+        static::created(function($participant) {
+            $participant->mail()->save(new Mail);
         });
 
         static::deleting(function ($participant) {
