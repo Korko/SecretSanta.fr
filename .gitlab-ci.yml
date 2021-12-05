@@ -19,7 +19,7 @@ stages:
   - tests
   - metrics
 
-image:
+install:environment:
   stage: install
   script:
     - apt-get update -yqq
