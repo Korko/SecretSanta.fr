@@ -53,7 +53,7 @@ npm:
       - node_modules/
   script:
       - npm install
-      - npm run production
+      - npm run production --openssl-legacy-provider start
   artifacts:
     expire_in: 1 month
     paths:
