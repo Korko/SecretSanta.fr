@@ -5,7 +5,7 @@ use App\Models\Mail as MailModel;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use Illuminate\Support\Facades\URL;
-/*
+
 it('send to each participant a link to write to their santa', function () {
     Notification::fake();
 
@@ -47,7 +47,7 @@ it('lets each participant write to their santa', function () {
         Notification::assertSentTo($participant->santa, DearSanta::class);
     }
 });
-*/
+
 it('lets a participant resend the email to their santa in case of error', function () {
     Notification::fake();
 
@@ -65,24 +65,20 @@ it('lets a participant resend the email to their santa in case of error', functi
 
     Notification::assertSentToTimes($participant->santa, DearSanta::class, 1);
     $dearSanta = $participant->dearSantas->first();
-/*
+
     ajaxGet(URL::signedRoute('dearSanta.resend', ['participant' => $participant, 'dearSanta' => $dearSanta]))
         ->assertForbidden()
         ->assertJsonStructure(['message']);
 
     // Nothing new, still the same notification
     Notification::assertSentToTimes($participant->santa, DearSanta::class, 1);
-*/
-    // Actual notification is not sent so no real mail notification is recorded
-    // Fake one
-    $mail = MailModel::factory()
-        ->for($dearSanta, 'mailable')
-        ->failed()
-        ->create();
+
+    $dearSanta->mail->updated_at = $dearSanta->mail->updated_at->subSeconds(config('mail.resend_delay'));
+    $dearSanta->mail->save();
 
     ajaxGet(URL::signedRoute('dearSanta.resend', ['participant' => $participant, 'dearSanta' => $dearSanta]))
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-//    Notification::assertSentToTimes($participant->santa, DearSanta::class, 2);
+    Notification::assertSentToTimes($participant->santa, DearSanta::class, 2);
 });
