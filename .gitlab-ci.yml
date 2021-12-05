@@ -1,4 +1,4 @@
-image: mglaman/docker-php-bcmath
+image: ipunktbs/php
 
 variables:
   APP_ENV: "local"
