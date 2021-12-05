@@ -1,4 +1,4 @@
-image: alpine:latest
+image: lorisleiva/laravel-docker:latest
 
 variables:
   APP_ENV: "local"
