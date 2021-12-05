@@ -48,24 +48,24 @@ composer:
 phpunit:
   stage: tests
   script:
-    - ./vendor/bin/sail php phpunit --coverage-text --colors=never
+    - php phpunit --coverage-text --colors=never
   artifacts:
     paths:
       - ./storage/logs # for debugging
     expire_in: 7 days
     when: always
 
-dusk:
-  stage: tests
-  script:
-    - ./vendor/bin/sail dusk
-  artifacts:
-    paths:
-      - ./storage/logs # for debugging
-      - ./tests/Browser/screenshots
-      - ./tests/Browser/console
-    expire_in: 7 days
-    when: always
+#dusk:
+#  stage: tests
+#  script:
+#    - ./vendor/bin/sail dusk
+#  artifacts:
+#    paths:
+#      - ./storage/logs # for debugging
+#      - ./tests/Browser/screenshots
+#      - ./tests/Browser/console
+#    expire_in: 7 days
+#    when: always
 
 php-metrics:
   stage: metrics
