@@ -6,4 +6,5 @@ return [
     'organizer_final_recap_title' => 'SecretSanta #:draw - Récapitulatif final organisateur',
     'target_draw.title' => 'SecretSanta #:draw - :subject',
     'dear_santa.title'  => 'SecretSanta #:draw - Message du bénéficiaire de votre cadeau',
+    'target_withdraw.title' => 'SecretSanta #:draw - Desistement du bénéficiaire de votre cadeau',
 ];

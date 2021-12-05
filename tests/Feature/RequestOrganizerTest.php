@@ -1,6 +1,8 @@
 <?php
 
+use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetWithdrawn;
 use App\Models\Draw;
 use App\Models\Participant;
 
@@ -50,6 +52,43 @@ test('the organizer can change a participant\'s email', function () {
     assertEquals('test@test2.com', $after);
 
     Notification::assertSentTo($participant, TargetDrawn::class);
+});
+
+test('the organizer can withdraw a participant', function () {
+    Notification::fake();
+
+    $draw = Draw::factory()
+        ->hasParticipants(4)
+        ->create();
+    $participant = $draw->participants->random();
+
+    ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), [
+            'content' => 'test dearSanta mail content',
+        ])
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    Notification::assertSentTo($participant->santa, DearSanta::class);
+
+    $santa = $participant->santa;
+    $target = $participant->target;
+
+    ajaxGet(URL::signedRoute('organizerPanel.withdraw', [
+            'draw' => $draw,
+            'participant' => $participant,
+        ]))
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    $santa = $santa->fresh();
+    $participant = $participant->fresh();
+    $target = $target->fresh();
+
+    assertEquals($santa->target->id, $target->id);
+    assertEquals($target->santa->id, $santa->id);
+
+    Notification::assertSentTo($santa, TargetWithdrawn::class);
+    Notification::assertSentTo($santa, DearSanta::class);
 });
 
 test('the organizer can download initial data', function () {
