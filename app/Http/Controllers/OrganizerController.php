@@ -68,17 +68,13 @@ class OrganizerController extends Controller
             $message = trans('organizer.up_and_sent');
         }
 
-        try {
-            $participant->notify(new TargetDrawn);
+        $participant->mail->markAsCreated();
 
-            return response()->json([
-                'message' => $message, 'participant' => $participant->only(['hash', 'mail']),
-            ]);
-        } catch(Exception $e) {
-            return response()->json([
-                'error' => trans('error.email')
-            ]);
-        }
+        $participant->notify(new TargetDrawn);
+
+        return response()->json([
+            'message' => $message, 'participant' => $participant->only(['hash', 'mail']),
+        ]);
     }
 
     public function csvInit(Draw $draw)

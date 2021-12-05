@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Collections\ParticipantsCollection;
 use App\Exceptions\SolverException;
 use App\Models\Draw;
+use App\Models\Mail as MailModel;
 use App\Notifications\TargetDrawn;
 use Exception;
 use Solver;
@@ -24,11 +25,7 @@ class DrawHandler
         $draw->save();
 
         $draw->participants->each(function($participant) {
-            try {
-                $participant->notify(new TargetDrawn);
-            } catch(Exception $e) {
-                // Don't fail, just ignore
-            }
+            $participant->notify(new TargetDrawn);
         });
     }
 

@@ -6,6 +6,7 @@ use App\Events\MailStatusUpdated;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Str;
 
 class Mail extends Model
 {
@@ -40,6 +41,15 @@ class Mail extends Model
         self::ERROR,
         self::RECEIVED,
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function($mail) {
+            $mail->notification = Str::uuid();
+        });
+    }
 
     public function markAsCreated() {
         $this->updateDeliveryStatus(self::CREATED);

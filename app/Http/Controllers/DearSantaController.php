@@ -9,6 +9,8 @@ use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
 use Exception;
 use Illuminate\Support\Facades\URL;
+use Str;
+use Carbon\Carbon;
 
 class DearSantaController extends Controller
 {
@@ -58,6 +60,10 @@ class DearSantaController extends Controller
 
     public function resend(Participant $participant, DearSanta $dearSanta, \Illuminate\Http\Request $request)
     {
+        abort_unless($dearSanta->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, 'Vous devez attendre avant de réenvoyer cet email.');
+
+        $dearSanta->mail->markAsCreated();
+
         $participant->createMetric('resend_email');
 
         try {
