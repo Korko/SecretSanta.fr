@@ -48,7 +48,7 @@ composer:
 phpunit:
   stage: tests
   script:
-    - php phpunit --coverage-text --colors=never
+    - php vendor/bin/phpunit --coverage-text --colors=never
   artifacts:
     paths:
       - ./storage/logs # for debugging
