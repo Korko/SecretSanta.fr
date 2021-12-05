@@ -23,7 +23,7 @@ install:environment:
   stage: install
   script:
     - apt-get update -yqq
-    - docker-php-ext-install bcmath
+    - docker-php-ext-install bcmath zip
     - curl --show-error --silent https://getcomposer.org/installer | php
     - php composer.phar install
 
