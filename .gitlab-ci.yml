@@ -1,4 +1,4 @@
-image: ipunktbs/php
+image: php:8.0-cli
 
 variables:
   APP_ENV: "local"
@@ -14,9 +14,18 @@ cache:
   key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
 
 stages:
+  - install
   - build
   - tests
   - metrics
+
+image:
+  stage: install
+  script:
+    - apt-get update -yqq
+    - docker-php-ext-install bcmath
+    - curl --show-error --silent https://getcomposer.org/installer | php
+    - php composer.phar install
 
 composer:
   stage: build
