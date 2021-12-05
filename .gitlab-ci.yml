@@ -45,22 +45,6 @@ composer:
       - vendor/
       - .env
 
-npm:
-  stage: build
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}-npm
-    paths:
-      - node_modules/
-  script:
-      - npm install
-      - npm run production --openssl-legacy-provider start
-  artifacts:
-    expire_in: 1 month
-    paths:
-      - node_modules/
-      - public/css/
-      - public/js/
-
 phpunit:
   stage: tests
   script:
