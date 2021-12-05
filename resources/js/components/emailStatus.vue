@@ -19,7 +19,7 @@
             },
             rateLimit: {
                 type: Number,
-                default: 5*60*1000 // 5m delay
+                default: 5*60*1000 // 5m delay config('mail.resend_delay')
             }
         },
         data() {

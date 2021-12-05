@@ -20,40 +20,17 @@ class TrackedMailChannel extends MailChannel
      */
     public function send($notifiable, Notification $notification)
     {
-        $mailable = $notification->getMailableModel($notifiable);
-        if($mailable->mail) {
-            $mail = $mailable->mail;
-        } else {
-            $mail = (new MailModel());
-        }
-
-        $mail->markAsSending();
-
-        $mail->notification = $notification->id;
-        $mailable->mail()->save($mail);
+        $mail = $notification->getMailableModel($notifiable)->mail;
 
         try {
+            $mail->markAsSending();
+
             parent::send($notifiable, $notification);
 
             $mail->markAsSent();
         } catch (Swift_TransportException $exception) {
             $mail->markAsError();
         }
-    }
-
-    /**
-     * Get additional meta-data to pass along with the view data.
-     *
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @return array
-     */
-    protected function additionalMessageData($notification)
-    {
-        return array_merge(parent::additionalMessageData($notification), [
-            'trackedPixel' => URL::signedRoute('pixel', [
-                'mail' => $notification->id,
-            ]),
-        ]);
     }
 
     /**
@@ -66,14 +43,16 @@ class TrackedMailChannel extends MailChannel
      */
     protected function messageBuilder($notifiable, $notification, $message)
     {
-        $message->withSwiftMessage(function ($message) use ($notification) {
+        $mail = $notification->getMailableModel($notifiable)->mail;
+
+        $message->withSwiftMessage(function ($message) use ($mail) {
             // In case of Bounce
-            $message->getHeaders()->addPathHeader('Return-Path', MailTracker::getBounceReturnPath($notification));
+            $message->getHeaders()->addPathHeader('Return-Path', MailTracker::getBounceReturnPath($mail));
 
             // To assert Reception
-            $message->getHeaders()->addPathHeader('X-Confirm-Reading-To', MailTracker::getConfirmReturnPath($notification));
-            $message->getHeaders()->addPathHeader('Return-Receipt-To', MailTracker::getConfirmReturnPath($notification));
-            $message->getHeaders()->addPathHeader('Disposition-Notification-To', MailTracker::getConfirmReturnPath($notification));
+            $message->getHeaders()->addPathHeader('X-Confirm-Reading-To', MailTracker::getConfirmReturnPath($mail));
+            $message->getHeaders()->addPathHeader('Return-Receipt-To', MailTracker::getConfirmReturnPath($mail));
+            $message->getHeaders()->addPathHeader('Disposition-Notification-To', MailTracker::getConfirmReturnPath($mail));
         });
 
         return parent::messageBuilder($notifiable, $notification, $message);

@@ -35,6 +35,12 @@ class DearSanta extends Model
 
     protected static function booted()
     {
+        parent::boot();
+
+        static::creating(function($dearSanta) {
+            $dearSanta->mail()->save(new MailModel);
+        });
+
         static::deleting(function ($dearSanta) {
             $dearSanta->mail->delete();
         });
