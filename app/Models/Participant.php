@@ -44,6 +44,12 @@ class Participant extends Model
 
     protected static function booted()
     {
+        parent::boot();
+
+        static::created(function($participant) {
+            $participant->mail()->save(new Mail);
+        });
+
         static::deleting(function ($participant) {
             $participant->dearSantas->each->delete();
             $participant->exclusions->each->delete();

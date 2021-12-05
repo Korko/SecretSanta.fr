@@ -7,8 +7,11 @@ use App\Models\DearSanta;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\URL;
+use Lang;
+use Str;
 
 class DearSantaController extends Controller
 {
@@ -32,12 +35,12 @@ class DearSantaController extends Controller
             'organizer' => $participant->draw->organizer->name,
             'emails' => $participant->dearSantas->mapWithKeys(function ($email) {
                 return [
-                    $email->id => $email->only($this->dearSantaPublicFields)
+                    $email->mail->id => $email->only($this->dearSantaPublicFields)
                 ];
             }),
             'resendEmailUrls' => $participant->dearSantas->mapWithKeys(function ($dearSanta) use ($participant) {
                 return [
-                    $dearSanta->id => URL::signedRoute('dearSanta.resend', [
+                    $dearSanta->mail->id => URL::signedRoute('dearSanta.resend', [
                         'participant' => $participant, 'dearSanta' => $dearSanta
                     ])
                 ];
@@ -50,7 +53,7 @@ class DearSantaController extends Controller
         return response()->json([
             'emails' => $participant->dearSantas->mapWithKeys(function ($dearSanta) {
                 return [
-                    $dearSanta->id => $dearSanta->only($this->dearSantaPublicFields)
+                    $dearSanta->mail->id => $dearSanta->only($this->dearSantaPublicFields)
                 ];
             }),
         ]);
@@ -58,6 +61,10 @@ class DearSantaController extends Controller
 
     public function resend(Participant $participant, DearSanta $dearSanta, \Illuminate\Http\Request $request)
     {
+        abort_unless($dearSanta->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
+
+        $dearSanta->mail->markAsCreated();
+
         $participant->createMetric('resend_email');
 
         try {

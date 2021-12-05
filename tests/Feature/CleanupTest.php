@@ -9,7 +9,7 @@ use App\Models\DearSanta;
 use App\Models\Mail;
 
 it('cleans up expired draws', function () {
-	$drawNotExpired = Draw::factory()->create();
+    $drawNotExpired = Draw::factory()->create();
     $drawExpired = Draw::factory()->expired()->create();
 
     Draw::cleanup();

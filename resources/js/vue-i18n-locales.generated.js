@@ -5,9 +5,11 @@ export default {
                 "name": "Nom",
                 "email": "Adresse Email",
                 "status": "Status d'envoi de l'email",
-                "caption": "Liste des participants"
+                "caption": "Liste des participants",
+                "withdraw": "Retirer"
             },
             "up_and_sent": "Modifié avec succès !",
+            "withdrawn": "{name} ne participe plus à l'évènement.",
             "deleted": "Toutes les données ont été supprimées",
             "download": {
                 "button": "Télécharger le récapitulatif",
@@ -35,6 +37,17 @@ export default {
                     "body_expired": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement. Cette action ne peut être annulée.",
                     "body_nofinal": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement et les participants ne pourront plus écrire à leur père noël secret. Cette action ne peut être annulée.",
                     "value": "Supprimer toutes les données",
+                    "help": "Saisir \"[+:verification]\" en dessous pour confirmer.",
+                    "ok": "Ok",
+                    "cancel": "Annuler"
+                }
+            },
+            "withdraw": {
+                "button": "Retirer",
+                "confirm": {
+                    "title": "Êtes-vous sûr de vouloir retirer {name} de l'évènement ?",
+                    "body": "Tous les messages reçu de sa cible seront transmis à son nouveau père noël secret. Cette action ne peut être annulée.",
+                    "value": "Annuler la participation",
                     "help": "Saisir \"[+:verification]\" en dessous pour confirmer.",
                     "ok": "Ok",
                     "cancel": "Annuler"
@@ -178,7 +191,8 @@ export default {
                     "expiration": {
                         "required": "La date d'expiration est requise.",
                         "min": "La date d'expiration ne peut pas précéder demain.",
-                        "max": "La date d'expiration ne peut pas dépasser un an."
+                        "max": "La date d'expiration ne peut pas dépasser un an.",
+                        "format": "La date d'expiration doit respecter le format année-mois-jour exemple: 2022-02-05."
                     },
                     "participants": {
                         "length": "Il faut au moins 3 participants"

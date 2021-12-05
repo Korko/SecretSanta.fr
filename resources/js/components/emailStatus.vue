@@ -10,13 +10,23 @@
                 required: true
             },
             last_update: {
-                type: String,
+                type: [String, Number],
                 default: null
             },
             disabled: {
                 type: Boolean,
                 default: false
+            },
+            rateLimit: {
+                type: Number,
+                default: 5*60*1000 // 5m delay config('mail.resend_delay')
             }
+        },
+        data() {
+            return {
+                recent: true,
+                recentUpdateTimeout: null
+            };
         },
         computed: {
             icon() {
@@ -27,9 +37,28 @@
                     received: "fas fa-check",
                     error: "fas fa-exclamation-triangle"
                 }[this.delivery_status];
+            }
+        },
+        watch: {
+            last_update: {
+                immediate: true,
+                handler() {
+                    this.recent = this.isRecent();
+                    if(this.recent) {
+                        this.recentUpdateTimeout && clearTimeout(this.recentUpdateTimeout);
+                        this.recentUpdateTimeout = setTimeout(() => {
+                            this.recent = this.isRecent();
+                        }, this.rateLimit - this.getDelay());
+                    }
+                }
+            }
+        },
+        methods: {
+            getDelay() {
+                return (new Date()).getTime() - (new Date(this.last_update)).getTime();
             },
-            recent() {
-                return (new Date()).getTime() - (new Date(this.last_update)).getTime() < 5*60*1000;// 5m delay
+            isRecent() {
+                return this.getDelay() < this.rateLimit;
             }
         }
     }

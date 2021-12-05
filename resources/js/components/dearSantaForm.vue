@@ -27,12 +27,15 @@
         },
         data() {
             return {
-                content: ''
+                content: '',
+                draw: this.data.draw,
+                emails: this.data.emails,
+                resendEmailUrls: this.data.resendEmailUrls
             };
         },
         computed: {
-            emails() {
-                return Object.values(this.data.emails)
+            emailsByDate() {
+                return Object.values(this.emails)
                     .map(email => Object.assign(email, email.mail))
                     .sort((email1, email2) => (new Date(email1.created_at) > new Date(email2.created_at) ? -1 : 1))
                     .map(email => {
@@ -41,35 +44,30 @@
                     }) || [];
             },
             checkUpdates() {
-                return !!Object.values(this.data.emails).find(
+                return !!Object.values(this.emails).find(
                     email => email.mail.delivery_status !== 'error'
                 );
             }
         },
         created() {
-            Echo.channel('draw.'+this.data.draw.hash)
-                .listen('.pusher:subscription_succeeded', () => {
-                    this.fetchState();
-                })
+            Echo.channel('draw.'+this.draw.hash)
                 .listen('.mail.update', data => {
-                    var key = Object.keys(this.data.emails).find(key => this.data.emails[key].mail.id === data.id);
-
-                    if(key) {
-                        this.$set(this.data.emails[key].mail, 'delivery_status', data.delivery_status);
-                        this.$set(this.data.emails[key].mail, 'updated_at', data.updated_at);
+                    if(this.emails[data.id]) {
+                        this.emails[data.id].mail.delivery_status = data.delivery_status;
+                        this.emails[data.id].mail.updated_at = data.updated_at;
                     }
                 });
 
             window.localStorage.setItem('secretsanta', JSON.stringify(deepMerge(
                 JSON.parse(window.localStorage.getItem('secretsanta')) || {},
                 {
-                    [this.data.draw.hash]: {
-                        title: this.data.draw.mail_title,
-                        creation: this.data.draw.created_at,
-                        expiration: this.data.draw.expires_at,
-                        organizerName: this.data.organizer,
+                    [this.draw.hash]: {
+                        title: this.draw.mail_title,
+                        creation: this.draw.created_at,
+                        expiration: this.draw.expires_at,
+                        organizerName: this.organizer,
                         links: {
-                            [this.data.participant.hash]: {name: this.data.participant.name, link: window.location.href}
+                            [this.participant.hash]: {name: this.participant.name, link: window.location.href}
                         }
                     }
                 }
@@ -85,30 +83,16 @@
                 if(!data.email.updated_at) {
                     data.email.updated_at = new Date();
                 }
-                this.$set(this.data.emails, data.email.id, data.email);
+                this.$set(this.emails, data.email.id, data.email);
             },
             reset() {
                 this.content = '';
             },
-            resend(k) {
-                this.$set(this.data.emails[this.emails[k].mailable_id], 'delivery_status', 'created');
+            resend(id) {
+                this.emails[id].mail.delivery_status = 'created';
+                this.emails[id].mail.updated_at = new Date().getTime();
 
-                return fetch(this.data.resendEmailUrls[this.emails[k].mailable_id]);
-            },
-            fetchState() {
-                return fetch(this.routes.fetchStateUrl)
-                    .then(response => {
-                        if (response.emails) {
-                            Object.values(response.emails).forEach(email => {
-                                var new_update = new Date(email.mail.updated_at);
-                                var old_update = new Date(this.data.emails[email.id].mail.updated_at);
-                                this.data.emails[email.id].mail.delivery_status =
-                                    new_update > old_update
-                                        ? email.mail.delivery_status
-                                        : this.data.emails[email.id].mail.delivery_status;
-                            });
-                        }
-                    });
+                return fetch(this.resendEmailUrls[id]);
             },
             nl2br(str) {
                 return str.replace("\n", '<br />');
@@ -154,10 +138,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(email, k) in emails" :key="email.id" class="email">
+                <tr v-for="email in emailsByDate" :key="email.id" class="email">
                     <td>{{ email.created_at }}</td>
                     <td><p>{{ nl2br(email.mail_body) }}</p></td>
-                    <td><email-status :delivery_status="email.delivery_status" :last_update="email.updated_at" @redo="resend(k)"/></td>
+                    <td><email-status :delivery_status="email.mail.delivery_status" :last_update="email.mail.updated_at" @redo="resend(email.id)"/></td>
                 </tr>
                 <tr v-if="emails.length === 0" class="no-email">
                     <td colspan="3">

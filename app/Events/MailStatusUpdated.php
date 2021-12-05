@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Events;
 
-use App\Events\MailStatusUpdated as Event;
 use App\Models\Mail as MailModel;
-use App\Models\Participant;
 use Illuminate\Broadcasting\Channel;
-//Illuminate/Contracts/Queue/ShouldBeEncrypted
-use Illuminate\Notifications\Channels\BroadcastChannel;
-use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Notification;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class MailStatusUpdated extends Notification
+class MailStatusUpdated implements ShouldBroadcast
 {
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
     protected $mail;
 
     public function __construct(MailModel $mail)
@@ -21,22 +21,11 @@ class MailStatusUpdated extends Notification
     }
 
     /**
-     * Get the notification channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array|string
-     */
-    public function via($notifiable)
-    {
-        return [BroadcastChannel::class];
-    }
-
-    /**
      * Get the data to broadcast.
      *
      * @return array
      */
-    public function toBroadcast()
+    public function broadcastWith()
     {
         return [
             'id' => $this->mail->id,
@@ -46,11 +35,11 @@ class MailStatusUpdated extends Notification
     }
 
     /**
-     * Get the type of the notification being broadcast.
+     * The event's broadcast name.
      *
      * @return string
      */
-    public function broadcastType()
+    public function broadcastAs()
     {
         return 'mail.update';
     }

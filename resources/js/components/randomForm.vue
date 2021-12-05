@@ -79,6 +79,9 @@
             },
             expiration: {
                 required,
+                format(value) {
+                    return /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(value);
+                },
                 minValue(value) {
                     return Moment(value, 'YYYY-MM-DD').isSameOrAfter(formatMoment(1, 'day'));
                 },
@@ -373,6 +376,7 @@
                                     :max="moment(1, 'year')"
                                 />
                                 <div class="invalid-tooltip" v-if="!$v.expiration.required">{{ $t('validation.custom.randomform.expiration.required') }}</div>
+                                <div class="invalid-tooltip" v-else-if="!$v.expiration.format">{{ $t('validation.custom.randomform.expiration.format') }}</div>
                                 <div class="invalid-tooltip" v-else-if="!$v.expiration.minValue">{{ $t('validation.custom.randomform.expiration.min') }}</div>
                                 <div class="invalid-tooltip" v-else-if="!$v.expiration.maxValue">{{ $t('validation.custom.randomform.expiration.max') }}</div>
                                 <div class="invalid-tooltip" v-else-if="fieldError('data-expiration')">{{ fieldError('data-expiration') }}</div>

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Notifications\MailStatusUpdated;
+use App\Events\MailStatusUpdated;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Str;
 
 class Mail extends Model
 {
@@ -41,6 +42,15 @@ class Mail extends Model
         self::RECEIVED,
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function($mail) {
+            $mail->notification = Str::uuid();
+        });
+    }
+
     public function markAsCreated() {
         $this->updateDeliveryStatus(self::CREATED);
     }
@@ -67,7 +77,7 @@ class Mail extends Model
         $this->save();
 
         try {
-            $this->mailable->sender->notify(new MailStatusUpdated($this));
+            MailStatusUpdated::dispatch($this);
         } catch(Exception $e) {
             // Ignore exception
         }

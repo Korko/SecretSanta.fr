@@ -55,6 +55,7 @@ class RandomFormRequest extends Request
             'data-expiration.required'       => __('validation.custom.randomform.expiration.required'),
             'data-expiration.after_or_equal' => __('validation.custom.randomform.expiration.min'),
             'data-expiration.before'         => __('validation.custom.randomform.expiration.max'),
+            'data-expiration.date_format'    => __('validation.custom.randomform.expiration.format'),
         ];
     }
 }

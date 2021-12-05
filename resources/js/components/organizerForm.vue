@@ -37,26 +37,39 @@
         },
         data() {
             return {
-
+                participants: this.data.participants,
+                draw: this.data.draw,
+                finalCsvAvailable: this.data.finalCsvAvailable,
+                changeEmailUrls: this.data.changeEmailUrls,
+                withdrawalUrls: this.data.withdrawalUrls,
+                validations: {
+                    email: {
+                        required,
+                        format: email
+                    }
+                }
             };
         },
         computed: {
+            canWithdraw() {
+                return Object.keys(this.participants).length > 3;
+            },
             checkUpdates() {
-                return !!Object.values(this.data.participants).find(
+                return !!Object.values(this.participants).find(
                     participant => participant.mail.delivery_status !== 'error'
                 );
             },
             expired() {
-                return Moment(this.data.draw.expires_at).isBefore(Moment(), "day");
+                return Moment(this.draw.expires_at).isBefore(Moment(), "day");
             },
             expirationDateShort() {
-                return Moment(this.data.draw.expires_at).format('YYYY-MM-DD');
+                return Moment(this.draw.expires_at).format('YYYY-MM-DD');
             },
             expirationDateLong() {
-                return new Date(this.data.draw.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+                return new Date(this.draw.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             },
             deletionDateLong() {
-                return new Date(this.data.draw.deleted_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+                return new Date(this.draw.deleted_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             }
         },
 
@@ -67,7 +80,7 @@
                     // standalone validator ideally should not assume a field is required
                     if (value === '') return true;
 
-                    return (Object.values(this.data.participants).filter(participant => (participant.name === value)).length === 1);
+                    return (Object.values(this.participants).filter(participant => (participant.name === value)).length === 1);
                 }
             },
             email: {
@@ -77,27 +90,24 @@
         },
 
         created() {
-            Echo.channel('draw.'+this.data.draw.hash)
-                .listen('.pusher:subscription_succeeded', () => {
-                    this.fetchState();
-                })
+            Echo.channel('draw.'+this.draw.hash)
                 .listen('.mail.update', data => {
-                    var key = Object.keys(this.data.participants).find(key => this.data.participants[key].mail.id === data.id);
+                    var key = Object.keys(this.participants).find(key => this.participants[key].mail.id === data.id);
 
                     if(key) {
-                        this.$set(this.data.participants[key].mail, 'delivery_status', data.delivery_status);
-                        this.$set(this.data.participants[key].mail, 'updated_at', data.updated_at);
+                        this.participants[key].mail.delivery_status = data.delivery_status;
+                        this.participants[key].mail.updated_at = data.updated_at;
                     }
                 });
 
             window.localStorage.setItem('secretsanta', JSON.stringify(deepMerge(
                 JSON.parse(window.localStorage.getItem('secretsanta')) || {},
                 {
-                    [this.data.draw.hash]: {
-                        title: this.data.draw.mail_title,
-                        creation: this.data.draw.created_at,
-                        expiration: this.data.draw.expires_at,
-                        organizerName: this.data.organizer,
+                    [this.draw.hash]: {
+                        title: this.draw.mail_title,
+                        creation: this.draw.created_at,
+                        expiration: this.draw.expires_at,
+                        organizerName: this.organizer,
                         links: {
                             org: {link: window.location.href}
                         }
@@ -107,26 +117,6 @@
         },
 
         methods: {
-            update(k, data) {
-                this.data.participants[k].email = data.value;
-                this.data.participants[k].mail.delivery_status = data.participant.mail.delivery_status;
-                this.data.participants[k].mail.updated_at = data.participant.mail.updated_at;
-            },
-            fetchState() {
-                return fetch(this.routes.fetchStateUrl)
-                    .then(response => {
-                        if (response.participants) {
-                            Object.values(response.participants).forEach(participant => {
-                                var new_update = new Date(participant.mail.updated_at);
-                                var old_update = new Date(this.data.participants[participant.hash].mail.updated_at);
-                                this.data.participants[participant.hash].mail.delivery_status =
-                                    new_update > old_update
-                                        ? participant.mail.delivery_status
-                                        : this.data.participants[participant.hash].mail.delivery_status;
-                            });
-                        }
-                    });
-            },
             confirmPurge() {
                 let options = {
                     okText: this.$t('organizer.purge.confirm.ok'),
@@ -141,7 +131,7 @@
                     title: this.$t('organizer.purge.confirm.title', {deletion: this.deletionDateLong}),
                     body: ''
                 };
-                if(this.data.finalCsvAvailable && !this.expired) {
+                if(this.finalCsvAvailable && !this.expired) {
                     message.body = this.$t('organizer.purge.confirm.body_final'); // Won't be able to download final recap + dearSanta
                 } else if(this.expired) {
                     message.body = this.$t('organizer.purge.confirm.body_expired'); // Won't be able to download recap anymore
@@ -162,12 +152,40 @@
                     });
             },
             updateEmail(k, email) {
-                this.$set(this.data.participants[k], 'email', email);
-                this.$set(this.data.participants[k].mail, 'delivery_status', 'created');
+                this.participants[k].email = email;
+                this.participants[k].mail.delivery_status = 'created';
+                this.participants[k].mail.updated_at = new Date().getTime();
 
-                return fetch(this.data.changeEmailUrls[this.data.participants[k].hash], 'POST', {
+                return fetch(this.changeEmailUrls[this.participants[k].hash], 'POST', {
                     email: email
                 });
+            },
+            confirmWithdrawal(k) {
+                let options = {
+                    okText: this.$t('organizer.withdraw.confirm.ok'),
+                    cancelText: this.$t('organizer.withdraw.confirm.cancel'),
+                    verification: this.$t('organizer.withdraw.confirm.value'),
+                    verificationHelp: this.$t('organizer.withdraw.confirm.help'),
+                    type: 'hard',
+                    customClass: 'withdraw'
+                };
+
+                this.$dialog
+                    .confirm({
+                        title: this.$t('organizer.withdraw.confirm.title', {deletion: this.deletionDateLong}),
+                        body: this.$t('organizer.withdraw.confirm.body', {name: this.participants[k].name})
+                    }, options)
+                    .then(() => this.withdraw(k));
+            },
+            withdraw(k) {
+                var url = this.withdrawalUrls[this.participants[k].hash];
+                this.$delete(this.participants, k);
+
+                return fetch(url)
+                    .then(data => {
+                        this.$dialog
+                            .alert(data.message);
+                    });
             },
             download() {
                 fetch(this.routes.csvInitUrl, 'GET', '', {responseType: 'blob'})
@@ -194,14 +212,17 @@
             <caption>{{ $t('organizer.list.caption') }}</caption>
             <thead>
                 <tr class="table-active">
-                    <th scope="col">
+                    <th style="width: 33%" scope="col">
                         {{ $t('organizer.list.name') }}
                     </th>
-                    <th scope="col">
+                    <th style="width: 33%" scope="col">
                         {{ $t('organizer.list.email') }}
                     </th>
-                    <th scope="col">
+                    <th :style="canWithdraw ? 'width: 30%' : 'width: 33%'" scope="col">
                         {{ $t('organizer.list.status') }}
+                    </th>
+                    <th v-if="canWithdraw" style="width: 3%" scope="col">
+                        {{ $t('organizer.list.withdraw') }}
                     </th>
                 </tr>
             </thead>
@@ -234,6 +255,15 @@
                         </input-edit>
                     </td>
                     <td><email-status :delivery_status="participant.mail.delivery_status" :last_update="participant.mail.updated_at" :disabled="expired" @redo="updateEmail(k, participant.email)" /></td>
+                    <td v-if="canWithdraw">
+                        <button
+                            type="button"
+                            class="btn btn-outline-danger participant-remove"
+                            @click="confirmWithdrawal(k)"
+                        >
+                            <i class="fas fa-minus" /><span> {{ $t('organizer.withdraw.button') }}</span>
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>

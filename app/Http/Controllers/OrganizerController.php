@@ -7,11 +7,14 @@ use App\Http\Requests\OrganizerResendEmailRequest;
 use App\Models\Draw;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
+use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetWithdrawn;
 use Csv;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Lang;
 
 class OrganizerController extends Controller
 {
@@ -35,6 +38,13 @@ class OrganizerController extends Controller
             'changeEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
                 return [
                     $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [
+                        'draw' => $participant->draw, 'participant' => $participant
+                    ])
+                ];
+            }),
+            'withdrawalUrls' => $draw->participants->mapWithKeys(function ($participant) {
+                return [
+                    $participant->hash => URL::signedRoute('organizerPanel.withdraw', [
                         'draw' => $participant->draw, 'participant' => $participant
                     ])
                 ];
@@ -67,17 +77,34 @@ class OrganizerController extends Controller
             $message = trans('organizer.up_and_sent');
         }
 
-        try {
-            $participant->notify(new TargetDrawn);
+        $participant->mail->markAsCreated();
 
-            return response()->json([
-                'message' => $message, 'participant' => $participant->only(['hash', 'mail']),
-            ]);
-        } catch(Exception $e) {
-            return response()->json([
-                'error' => trans('error.email')
-            ]);
-        }
+        $participant->notify(new TargetDrawn);
+
+        return response()->json([
+            'message' => $message, 'participant' => $participant->only(['hash', 'mail']),
+        ]);
+    }
+
+    public function withdraw(Draw $draw, Participant $participant)
+    {
+        abort_unless($draw->participants->count() > 3, 403, Lang::get('error.withdraw'));
+
+        $santa = $participant->santa;
+        $target = $participant->target;
+
+        // A -> B -> C => A -> C
+        $santa->target()->save($target);
+
+        $santa->notify(new TargetWithdrawn);
+        $target->dearSantas->each(function ($dearSanta) {
+            $santa->notify(new DearSanta($dearSanta));
+        });
+        $participant->delete();
+
+        return response()->json([
+            'message' => trans('organizer.withdrawn', ['name' => $participant->name]),
+        ]);
     }
 
     public function csvInit(Draw $draw)
@@ -97,8 +124,8 @@ class OrganizerController extends Controller
 
     public function csvFinal(Draw $draw)
     {
-        abort_unless($draw->expired, 403, 'Cet évènement n\'est pas encore terminé');
-        abort_unless($draw->next_solvable, 404, 'Cet évènement ne permet pas cette génération');
+        abort_unless($draw->expired, 403, Lang::get('error.expired'));
+        abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
 
         $draw->createMetric('csv_final_download');
 

@@ -2,9 +2,9 @@
 
 namespace App\Notifications;
 
-use App\Channels\TrackedMailChannel;
-use App\Facades\DrawCrypt;
 use App\Models\Participant;
+use App\Channels\MailChannel;
+use DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,7 +13,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 use Lang;
 
-class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
+class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
     use Queueable;
 
@@ -39,7 +39,7 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
      */
     public function via(Participant $santa)
     {
-        return [TrackedMailChannel::class];
+        return [MailChannel::class];
     }
 
     public function getMailableModel(Participant $santa)
@@ -55,25 +55,15 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
      */
     public function toMail(Participant $santa)
     {
-        $title = $this->parseKeywords(Lang::get('emails.target_draw.title', [
-            'draw' => $santa->draw->id,
-            'subject' => $santa->draw->mail_title,
-        ]), $santa);
-
-        $content = $this->parseKeywords($santa->draw->mail_body, $santa);
-
-        $url = URL::signedRoute('dearSanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
+        $title = Lang::get('emails.target_withdraw.title', [
+            'draw' => $santa->draw->id
+        ]);
 
         return (new MailMessage)
             ->subject($title)
-            ->view('emails.target_drawn', [
-                'content' => $content,
-                'dearSantaLink' => $url,
+            ->view('emails.target_withdrawn', [
+                'santaName' => $santa->name,
+                'targetName' => $santa->target->name,
             ]);
-    }
-
-    protected function parseKeywords($str, Participant $santa)
-    {
-        return str_replace(['{SANTA}', '{TARGET}'], [$santa->name, $santa->target->name], $str);
     }
 }
