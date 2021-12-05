@@ -83,7 +83,7 @@ dusk:
 php-metrics:
   stage: metrics
   script:
-    - composer global require --dev phpmetrics/phpmetrics
+    - php composer.phar global require --dev phpmetrics/phpmetrics
     - phpmetrics --report-html=var/php-metrics app tests
   artifacts:
     paths:
@@ -104,7 +104,7 @@ php-mess-detector:
 php-assumptions:
   stage: metrics
   script:
-    - composer global require --dev rskuipers/php-assumptions
+    - php composer.phar global require --dev rskuipers/php-assumptions
     - phpa app tests
   allow_failure: true
 
@@ -132,7 +132,7 @@ php-security-checker:
 php-churn:
   stage: metrics
   script:
-    - composer global require --dev bmitch/churn-php
+    - php composer.phar global require --dev bmitch/churn-php
     - churn run app tests
   allow_failure: true
 
@@ -153,14 +153,14 @@ php-code-fixer:
 php-insights:
   stage: metrics
   script:
-    - composer global require --dev nunomaduro/phpinsights
+    - php composer.phar global require --dev nunomaduro/phpinsights
     - phpinsights
   allow_failure: true
 
 phpstan:
   stage: metrics
   script:
-    - composer global require --dev nunomaduro/larastan
+    - php composer.phar global require --dev nunomaduro/larastan
     - wget https://gist.githubusercontent.com/Korko/19ad2705a8a8632819aa8370fcb631b8/raw/d79f918004273b8823a5530e57141119eba69ac6/phpstan.neon
     - phpstan analyse -c phpstan.neon
   allow_failure: true
