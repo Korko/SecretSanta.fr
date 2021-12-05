@@ -1,4 +1,4 @@
-image: serversideup/php:8.0-cli
+image: mglaman/docker-php-bcmath
 
 variables:
   APP_ENV: "local"
