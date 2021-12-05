@@ -34,7 +34,6 @@ Route::view('/legal', 'legal')->name('legal');
 Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
 Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
 Route::pattern('dearSanta', '[0-9a-zA-Z]{'.config('hashids.connections.dearSanta.length').',}');
-Route::pattern('mail:id', '[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}'); //UUID
 
 Route::middleware('signed')->group(function() {
     Route::get('/dearSanta/{participant}', [DearSantaController::class, 'view'])
@@ -95,7 +94,4 @@ Route::middleware('signed')->group(function() {
         Route::post('/org/{draw}/{participant}/changeEmail', [OrganizerController::class, 'changeEmail'])
             ->name('organizerPanel.changeEmail');
     });
-
-    Route::get('/email/{mail:notification}.png', [MailController::class, 'updateStatus'])
-        ->name('pixel');
 });
