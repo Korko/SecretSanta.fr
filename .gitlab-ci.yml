@@ -25,7 +25,7 @@ before_script:
   - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add
   - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
   - curl -sL https://deb.nodesource.com/setup_current.x | bash -
-  - apt-get install -y nodejs build-essential yarn libzip-dev zip git
+  - apt-get install -y nodejs build-essential yarn libzip-dev zip git wget
   - apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
   - docker-php-ext-install bcmath zip
   - curl --show-error --silent https://getcomposer.org/installer | php
@@ -70,8 +70,8 @@ phpunit:
 php-metrics:
   stage: metrics
   script:
-    - php composer.phar global require --dev phpmetrics/phpmetrics
-    - phpmetrics --report-html=var/php-metrics app tests
+    - php composer.phar require --dev phpmetrics/phpmetrics
+    - php vendor/bin/phpmetrics --report-html=var/php-metrics app tests
   artifacts:
     paths:
       - var/php-metrics/
@@ -91,8 +91,8 @@ php-mess-detector:
 php-assumptions:
   stage: metrics
   script:
-    - php composer.phar global require --dev rskuipers/php-assumptions
-    - phpa app tests
+    - php composer.phar require --dev rskuipers/php-assumptions
+    - php vendor/bin/phpa app tests
   allow_failure: true
 
 composer-unused:
@@ -119,8 +119,8 @@ php-security-checker:
 php-churn:
   stage: metrics
   script:
-    - php composer.phar global require --dev bmitch/churn-php
-    - churn run app tests
+    - php composer.phar require --dev bmitch/churn-php
+    - php vendor/bin/churn run app tests
   allow_failure: true
 
 php-code-analyzer:
@@ -140,14 +140,14 @@ php-code-fixer:
 php-insights:
   stage: metrics
   script:
-    - php composer.phar global require --dev nunomaduro/phpinsights
-    - phpinsights
+    - php composer.phar require --dev nunomaduro/phpinsights
+    - php vendor/bin/phpinsights
   allow_failure: true
 
 phpstan:
   stage: metrics
   script:
-    - php composer.phar global require --dev nunomaduro/larastan
+    - php composer.phar require --dev nunomaduro/larastan
     - wget https://gist.githubusercontent.com/Korko/19ad2705a8a8632819aa8370fcb631b8/raw/d79f918004273b8823a5530e57141119eba69ac6/phpstan.neon
-    - phpstan analyse -c phpstan.neon
+    - php vendor/bin/phpstan analyse -c phpstan.neon
   allow_failure: true
