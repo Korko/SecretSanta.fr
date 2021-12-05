@@ -72,8 +72,8 @@ class Draw extends Model
     public static function cleanup()
     {
         // Do not directly use ->delete() on the query to trigger the deleted event to cleanup the rest of the data
-        //self::where('expires_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.(self::WEEKS_BEFORE_DELETION * 7).'D')))->get()
-        //    ->each->delete();
+        self::where('expires_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.(self::WEEKS_BEFORE_DELETION * 7).'D')))->get()
+            ->each->delete();
     }
 
     public function participants()
