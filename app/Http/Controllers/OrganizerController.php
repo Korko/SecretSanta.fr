@@ -14,6 +14,7 @@ use Csv;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Lang;
 
 class OrganizerController extends Controller
 {
@@ -88,7 +89,7 @@ class OrganizerController extends Controller
 
     public function withdraw(Draw $draw, Participant $participant)
     {
-        abort_unless($draw->participants->count() > 3, 403, 'Vous ne pouvez pas avoir moins de 3 participants.');
+        abort_unless($draw->participants->count() > 3, 403, Lang::get('error.withdraw'));
 
         $santa = $participant->santa;
         $target = $participant->target;
@@ -124,8 +125,8 @@ class OrganizerController extends Controller
 
     public function csvFinal(Draw $draw)
     {
-        abort_unless($draw->expired, 403, 'Cet évènement n\'est pas encore terminé');
-        abort_unless($draw->next_solvable, 404, 'Cet évènement ne permet pas cette génération');
+        abort_unless($draw->expired, 403, Lang::get('error.expired'));
+        abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
 
         $draw->createMetric('csv_final_download');
 
