@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DearSantaController;
-use App\Http\Controllers\MailController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
 use Illuminate\Support\Facades\RateLimiter;
