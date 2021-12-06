@@ -5,7 +5,7 @@ export default {
                 "name": "Nom",
                 "email": "Adresse Email",
                 "status": "Status d'envoi de l'email",
-                "caption": "Liste des participants",
+                "caption": "Liste des participant(e)s",
                 "withdraw": "Retirer"
             },
             "up_and_sent": "Modifié avec succès !",
@@ -25,7 +25,7 @@ export default {
                 "button_final": "Télécharger le récapitulatif complété",
                 "button_final-tooltip": {
                     "title": "Récapitulatif complété",
-                    "explain": "Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de charque participant la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant pour la prochaine fois.",
+                    "explain": "Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de chaque participant(e) la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant(e) pour la prochaine fois.",
                     "limit": "Compte tenu de la date de l'évènement définie, cette fonctionnalité n'est disponible que du {expires_at} au {deleted_at}."
                 }
             },
@@ -33,9 +33,9 @@ export default {
                 "button": "Supprimer tout",
                 "confirm": {
                     "title": "Êtes-vous sûr de vouloir supprimer la totalité des données avant le nettoyage automatique le {deletion} ?",
-                    "body_final": "Vous ne pourrez plus télécharger le récapitulatif des tirages de cet évènement et les participants ne pourront plus écrire à leur père noël secret. Cette action ne peut être annulée.",
+                    "body_final": "Vous ne pourrez plus télécharger le récapitulatif des tirages de cet évènement et les participant(e)s ne pourront plus écrire à leur père/mère noël secret. Cette action ne peut être annulée.",
                     "body_expired": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement. Cette action ne peut être annulée.",
-                    "body_nofinal": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement et les participants ne pourront plus écrire à leur père noël secret. Cette action ne peut être annulée.",
+                    "body_nofinal": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement et les participant(e)s ne pourront plus écrire à leur père/mère noël secret. Cette action ne peut être annulée.",
                     "value": "Supprimer toutes les données",
                     "help": "Saisir \"[+:verification]\" en dessous pour confirmer.",
                     "ok": "Ok",
@@ -46,14 +46,14 @@ export default {
                 "button": "Retirer",
                 "confirm": {
                     "title": "Êtes-vous sûr de vouloir retirer {name} de l'évènement ?",
-                    "body": "Tous les messages reçu de sa cible seront transmis à son nouveau père noël secret. Cette action ne peut être annulée.",
+                    "body": "Tous les messages reçu de sa cible seront transmis à son nouveau père/mère noël secret. Cette action ne peut être annulée.",
                     "value": "Annuler la participation",
                     "help": "Saisir \"[+:verification]\" en dessous pour confirmer.",
                     "ok": "Ok",
                     "cancel": "Annuler"
                 }
             },
-            "expired": "Votre évènement est passé ({expires_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un participant."
+            "expired": "Votre évènement est passé ({expires_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un(e) participant(e)."
         },
         "faq": {
             "nav": {
@@ -66,20 +66,20 @@ export default {
             },
             "questions": {
                 "general": {
-                    "Pourquoi avoir développé SecretSanta.fr ?": "Le développeur faisait fréquemment des soirées secret santa avec des amis ou des collègues avec les prénoms de chacun dans un chapeau. Chacun piochait un papier et c'est arrivé plusieurs fois que quelqu'un tombe sur son prénom. Parfois on relançait le tirage, parfois la personne ne le disais pas et je trouvais ça dommage. Alors il a eu l'idée d'en faire un outils. Le but était de faire en sorte que tout soit automatique et que personne ne se pioche soit même. Même l'organisateur participait comme tout le monde puisqu'il ne pouvait pas savoir qui avait pioché qui. Après sont venus les exclusions etc.",
+                    "Pourquoi avoir développé SecretSanta.fr ?": "Le développeur faisait fréquemment des soirées secret santa avec des amis ou des collègues avec les prénoms de chacun dans un chapeau. Chacun piochait un papier et c'est arrivé plusieurs fois que quelqu'un tombe sur son prénom. Parfois on relançait le tirage, parfois la personne ne le disais pas et je trouvais ça dommage. Alors il a eu l'idée d'en faire un outils. Le but était de faire en sorte que tout soit automatique et que personne ne se pioche soit même. Même l'organisateur/organisatrice participait comme tout le monde puisqu'il ne pouvait pas savoir qui avait pioché qui. Après sont venus les exclusions etc.",
                     "Comment ce site peut fonctionner en étant gratuit ?": "SecretSanta.fr est complètement gratuit pour les utilisateurs, pas pour le développeur qui paye les différents frais. Il n'y a aucune publicité ni revente d'informations.",
-                    "Je me suis trompé dans mon adresse email quand j'ai organisé mon secret santa, comment faire ?": "Pour corriger ce problème, soit vous organizer un autre tirage, soit vous demandez à un des participant de vous transmettre l'adresse web qui lui permet d'écrire à son père noël secret et vous l'envoyez par mail à l'adresse suivante : help@secretsanta.fr. Après vérification et durant son temps libre, le développeur pourra peut-être vous aider.",
-                    "J'ai supprimé mon email d'accès au panneau d'organisateur, comment faire ?": "Pour corriger ce problème, soit vous organizer un autre tirage, soit vous demandez à un des participant de vous transmettre l'adresse web qui lui permet d'écrire à son père noël secret et vous l'envoyez par mail à l'adresse suivante : help@secretsanta.fr. Après vérification et durant son temps libre, le développeur pourra peut-être vous aider.",
-                    "Je me suis trompé dans l'adresse d'un participant": "Lorsque vous avez organisé votre secret santa, vous avez dû recevoir un email avec un lien vers un panneau d'organisateur. Vous pourrez modifier l'adresse email de chaque participant depuis cette interface.",
-                    "Un des participants n'a pas reçu l'email, que faire ?": "Alors même que l'adresse renseignée est bonne, il arrive que l'email se perde, finisse en spam ou qu'un problème survienne faisant que l'email n'est pas arrivé. Depuis votre panneau d'organisateur, vous pouvez retrouver un bouton à côté du status de réception de l'email du participant pour pouvoir réenvoyer le-dit email. Comme ça, le participant pourra enfin savoir qui est sa cible et comment parler à son Santa.",
-                    "Quand sont supprimés mes données personnelles ?": "Toutes vos données d'un tirage sont supprimées 7 jours après la date d'expiration. Ce délai a été fixé afin d'envoyer à l'organisateur la liste des participants avec leur cible piochée par mail afin d'aider à l'organisation d'un secretsanta avec les mêmes personnes plus tard en évitant de retomber sur les mêmes cibles.",
+                    "Je me suis trompé dans mon adresse email quand j'ai organisé mon secret santa, comment faire ?": "Pour corriger ce problème, soit vous organizer un autre tirage, soit vous demandez à un des participant de vous transmettre l'adresse web qui lui permet d'écrire à son/sa père/mère noël secret et vous l'envoyez par mail à l'adresse suivante : help@secretsanta.fr. Après vérification et durant son temps libre, le développeur pourra peut-être vous aider.",
+                    "J'ai supprimé mon email d'accès au panneau d'organisateur/organisatrice, comment faire ?": "Pour corriger ce problème, soit vous organizer un autre tirage, soit vous demandez à un des participant de vous transmettre l'adresse web qui lui permet d'écrire à son/sa père/mère noël secret et vous l'envoyez par mail à l'adresse suivante : help@secretsanta.fr. Après vérification et durant son temps libre, le développeur pourra peut-être vous aider.",
+                    "Je me suis trompé dans l'adresse d'un participant": "Lorsque vous avez organisé votre secret santa, vous avez dû recevoir un email avec un lien vers un panneau d'organisateur/organisatrice. Vous pourrez modifier l'adresse email de chaque participant depuis cette interface.",
+                    "Un des participants n'a pas reçu l'email, que faire ?": "Alors même que l'adresse renseignée est bonne, il arrive que l'email se perde, finisse en spam ou qu'un problème survienne faisant que l'email n'est pas arrivé. Depuis votre panneau d'organisateur/organisatrice, vous pouvez retrouver un bouton à côté du status de réception de l'email du participant pour pouvoir réenvoyer le-dit email. Comme ça, le participant pourra enfin savoir qui est sa cible et comment parler à son Santa.",
+                    "Quand sont supprimés mes données personnelles ?": "Toutes vos données d'un tirage sont supprimées 7 jours après la date d'expiration. Ce délai a été fixé afin d'envoyer à l'organisateur/organisatrice la liste des participants avec leur cible piochée par mail afin d'aider à l'organisation d'un secretsanta avec les mêmes personnes plus tard en évitant de retomber sur les mêmes cibles.",
                     "J'ai oublié un participant, comment je peux le rajouter ?": "Malheureusement, de par sa conception, SecretSanta.fr ne permet pas de rajouter quelqu'un une fois le tirage effectué. Il vous reste cependant une option, autre que relancer le tirage : vous pouvez attribuez à cette personne votre propre cible et offrir vous même un cadeau à ce nouveau participant.",
                     "Qui peut savoir la liste des cibles ?": "Pour faire court : personne. Pour faire long : "
                 },
                 "technical": {
-                    "Quelles données sont stockées et pourquoi ?": "Sont conservés pour chaque participant : nom et adresse email, pour chaque organisation, le titre et le contenu du mail envoyé ainsi que chaque message envoyé entre participant via le lien reçu par mail (appelé 'cher papa noël'). Elles sont conservées pour deux raisons : d'abord pour permettre cette dernière fonctionnalité qui permet d'écrire à son père noël secret. Ensuite pour permettre de réenvoyer les emails en cas d'erreur d'adresse.",
+                    "Quelles données sont stockées et pourquoi ?": "Sont conservés pour chaque participant : nom et adresse email, pour chaque organisation, le titre et le contenu du mail envoyé ainsi que chaque message envoyé entre participant via le lien reçu par mail (appelé 'cher papa noël'). Elles sont conservées pour deux raisons : d'abord pour permettre cette dernière fonctionnalité qui permet d'écrire à son/sa père/mère noël secret. Ensuite pour permettre de réenvoyer les emails en cas d'erreur d'adresse.",
                     "Comment sont stockées les données ?": "Chaque élement est chiffré en AES-256 avec une clef unique par organisation. Cette clef n'est pas stockée et est envoyée à chaque participant. L'administrateur ne peut donc jamais accéder aux données sans action de votre part. Chaque fois que vous effectuez une action, vous utilisez automatiquement cette clef qui n'est que prétée à SecretSanta pour faire l'action demandée sans jamais l'enregistrer.",
-                    "Je voudrais supprimer mes données, comment faire ?": "De part la façon dont sont stockées les données, l'administrateur est dans l'incapacité de savoir quelle donnée appartient à qui. Seul l'organisateur est en capacité de supprimer les données de tous les participants d'un coup. Sinon, ces données sont automatiquement supprimées peu après la fin de l'évènement.",
+                    "Je voudrais supprimer mes données, comment faire ?": "De part la façon dont sont stockées les données, l'administrateur est dans l'incapacité de savoir quelle donnée appartient à qui. Seul l'organisateur/organisatrice est en capacité de supprimer les données de tous les participants d'un coup. Sinon, ces données sont automatiquement supprimées peu après la fin de l'évènement.",
                     "J'aimerais vérifier par moi même le code source, où puis-je le trouver ?": "Avec grand plaisir ! Le code source se trouve à l'adresse suivante : https://framagit.com/Korko/SecretSanta. Vous pouvez aussi trouver le lien en haut à droite de la page principale, dans le petit ruban rouge."
                 }
             }
@@ -195,12 +195,12 @@ export default {
                         "format": "La date d'expiration doit respecter le format année-mois-jour exemple: 2022-02-05."
                     },
                     "participants": {
-                        "length": "Il faut au moins 3 participants"
+                        "length": "Il faut au moins 3 participant(e)s"
                     },
                     "participant": {
                         "name": {
-                            "required": "Ce participant est requis (au moins 3 personnes).",
-                            "distinct": "Ce participant n'a pas un nom unique."
+                            "required": "Ce/Cette participant(e) est requis (au moins 3 personnes).",
+                            "distinct": "Ce/Cette participant(e) n'a pas un nom unique."
                         },
                         "email": {
                             "required": "Cette adresse email est requise.",
@@ -274,15 +274,15 @@ export default {
                 "how": {
                     "title": "Comment faire ?",
                     "subtitle": "Vous allez voir, c'est très simple !",
-                    "heading1": "Première étape : lister les participants",
-                    "content1": "Grâce aux boutons \"Ajouter un participant\" et \"Enlever un participant\", il est possible d'ajuster le nombre de personnes.\nPour chaque personne, indiquez un nom/prénom ou un pseudonyme, et une adresse email. Deux participants ne peuvent avoir le même nom, sinon il est impossible de les différencier.\nA noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se piocher elle-même.",
+                    "heading1": "Première étape : lister les participant(e)s",
+                    "content1": "Grâce aux boutons \"Ajouter un(e) participant(e)\" et \"Enlever un(e) participant(e)\", il est possible d'ajuster le nombre de personnes.\nPour chaque personne, indiquez un nom/prénom ou un pseudonyme, et une adresse email. Deux participant(e)s ne peuvent avoir le même nom, sinon il est impossible de les différencier.\nA noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se piocher elle-même.",
                     "heading2": "Deuxième étape : préciser les exclusions",
-                    "content2": "Ajoutez des exclusions. Si vous ne voulez pas que deux participants puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
+                    "content2": "Ajoutez des exclusions. Si vous ne voulez pas que deux participant(e)s puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
                     "heading3": "Troisième étape : préparer l'e-mail",
-                    "content3": "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participants recevront.\nLe mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".\n(Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
+                    "content3": "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participant(e)s recevront.\nLe mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".\n(Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
                     "notice": "secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.\nCelles-ci sont chiffrées pour être inutilisables sans action de votre part.\nAucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.\nLe code source est disponible sur {link}",
                     "heading4": "Et après ?",
-                    "content4": "Jusqu'au jour de l'évènement spécifiée à la fin, les participants peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email. Mais celui-ci ne peut pas répondre, au risque de dévoiler son identité.\nL'organisateur dispose aussi d'une interface dédiée pour retrouver le récapitulatif des participants et des exclusions."
+                    "content4": "Jusqu'au jour de l'évènement spécifiée à la fin, les participant(e)s peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email. Mais celui-ci ne peut pas répondre, au risque de dévoiler son identité.\nL'organisateur/organisatrice dispose aussi d'une interface dédiée pour retrouver le récapitulatif des participant(e)s et des exclusions."
                 },
                 "go": {
                     "title": "À vous de jouer !",
@@ -292,13 +292,13 @@ export default {
             "waiting": "Formulaire en cours de création. Si ce message reste affiché, essayez de rafraichir la page, sinon contactez moi par mail (<a href=\"mailto:&#x6a;&#x65;&#x72;&#x65;&#x6d;&#x79;&#x2e;&#x6c;&#x65;&#x6d;&#x65;&#x73;&#x6c;&#x65;&#x40;&#x6b;&#x6f;&#x72;&#x6b;&#x6f;&#x2e;&#x66;&#x72;\">&#x6a;&#x65;&#x72;&#x65;&#x6d;&#x79;&#x2e;&#x6c;&#x65;&#x6d;&#x65;&#x73;&#x6c;&#x65;&#x40;&#x6b;&#x6f;&#x72;&#x6b;&#x6f;&#x2e;&#x66;&#x72;</a>) ou via <a href=\"https://github.com/Korko\">GitHub</a>. Merci.",
             "success": "Envoyé avec succès !",
             "participants": {
-                "title": "Détails des participants",
+                "title": "Détails des participant(e)s",
                 "import": "Importer depuis un fichier",
                 "importing": "Import en cours",
                 "caption": "Liste des participats"
             },
             "participant": {
-                "organizer": "Organisateur",
+                "organizer": "Organisateur/Organisatrice",
                 "name": {
                     "label": "Nom ou pseudonyme",
                     "placeholder": "exemple : Paul ou Korko"
@@ -314,16 +314,16 @@ export default {
                     "noResult": "Aucun résultat"
                 },
                 "remove": "Enlever",
-                "add": "Ajouter un participant"
+                "add": "Ajouter un(e) participant(e)"
             },
             "csv": {
-                "title": "Importer une liste de participants depuis un fichier CSV",
+                "title": "Importer une liste de participant(e)s depuis un fichier CSV",
                 "help": "Comment créer un fichier CSV avec {excel} Microsoft Office Excel {elink} ou {calc} Libre Office Calc {elink}",
                 "format": "Afin que votre fichier CSV fonctionne, voici le format attendu :",
-                "column1": "Nom du participant",
+                "column1": "Nom du/de la participant(e)",
                 "column2": "Adresse e-mail",
                 "column3": "Exclusions (noms séparés par une virgule)",
-                "warning": "Attention, l'import de ces données supprimera les participants déjà renseignés.",
+                "warning": "Attention, l'import de ces données supprimera les participant(e)s déjà renseignés.",
                 "cancel": "Annuler",
                 "import": "Importer",
                 "importError": "Une erreur est survenue lors de l'import.",
@@ -345,7 +345,7 @@ export default {
             "data-expiration": "Date de l'évènement : ",
             "data-expiration-tooltip": {
                 "title": "Date de l'évènement",
-                "interface": "Une interface dédiée vous permettra d'accéder à un récapitulatif des participants jusqu'au jour de l'évènement.",
+                "interface": "Une interface dédiée vous permettra d'accéder à un récapitulatif des participant(e)s jusqu'au jour de l'évènement.",
                 "deletion": "Toutes les données stockées seront supprimées une semaine après."
             },
             "submit": "Lancez l'aléatoire !",
@@ -360,7 +360,7 @@ export default {
                 "body": "Corps du message",
                 "status": "Status de réception de l'email",
                 "empty": "Aucun email envoyé pour le moment",
-                "caption": "Liste des emails envoyés au Père Noël"
+                "caption": "Liste des emails envoyés au/à la Père/Mère Noël"
             },
             "content": {
                 "label": "Contenu du mail",
