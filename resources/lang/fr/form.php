@@ -30,14 +30,14 @@ Si cet outil vous plait, pensez à faire un don.
         'how' => [
             'title'    => 'Comment faire ?',
             'subtitle' => 'Vous allez voir, c\'est très simple !',
-            'heading1' => 'Première étape : lister les participants',
-            'content1' => "Grâce aux boutons \"Ajouter un participant\" et \"Enlever un participant\", il est possible d'ajuster le nombre de personnes.
-Pour chaque personne, indiquez un nom/prénom ou un pseudonyme, et une adresse email. Deux participants ne peuvent avoir le même nom, sinon il est impossible de les différencier.
+            'heading1' => 'Première étape : lister les participant(e)s',
+            'content1' => "Grâce aux boutons \"Ajouter un(e) participant(e)\" et \"Enlever un(e) participant(e)\", il est possible d'ajuster le nombre de personnes.
+Pour chaque personne, indiquez un nom/prénom ou un pseudonyme, et une adresse email. Deux participant(e)s ne peuvent avoir le même nom, sinon il est impossible de les différencier.
 A noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se piocher elle-même.",
             'heading2' => 'Deuxième étape : préciser les exclusions',
-            'content2' => "Ajoutez des exclusions. Si vous ne voulez pas que deux participants puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
+            'content2' => "Ajoutez des exclusions. Si vous ne voulez pas que deux participant(e)s puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
             'heading3' => 'Troisième étape : préparer l\'e-mail',
-            'content3' => "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participants recevront.
+            'content3' => "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participant(e)s recevront.
 Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".
 (Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
             'notice' => 'secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.
@@ -45,8 +45,8 @@ Celles-ci sont chiffrées pour être inutilisables sans action de votre part.
 Aucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.
 Le code source est disponible sur :link',
             'heading4' => 'Et après ?',
-            'content4' => "Jusqu'au jour de l'évènement spécifiée à la fin, les participants peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email. Mais celui-ci ne peut pas répondre, au risque de dévoiler son identité.
-L'organisateur dispose aussi d'une interface dédiée pour retrouver le récapitulatif des participants et des exclusions.",
+            'content4' => "Jusqu'au jour de l'évènement spécifiée à la fin, les participant(e)s peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email. Mais celui-ci ne peut pas répondre, au risque de dévoiler son identité.
+L'organisateur/organisatrice dispose aussi d'une interface dédiée pour retrouver le récapitulatif des participant(e)s et des exclusions.",
             'notice' => 'secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.
 Celles-ci sont chiffrées pour être inutilisables sans action de votre part.
 Aucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.
@@ -63,14 +63,14 @@ Le code source est disponible sur :link',
     'success' => 'Envoyé avec succès !',
 
     'participants' => [
-        'title'     => 'Détails des participants',
+        'title'     => 'Détails des participant(e)s',
         'import'    => 'Importer depuis un fichier',
         'importing' => 'Import en cours',
         'caption'   => 'Liste des participats',
     ],
 
     'participant' => [
-        'organizer'  => 'Organisateur',
+        'organizer'  => 'Organisateur·rice',
         'name'       => [
             'label'       => 'Nom ou pseudonyme',
             'placeholder' => 'exemple : Paul ou Korko',
@@ -86,17 +86,17 @@ Le code source est disponible sur :link',
             'noResult'    => 'Aucun résultat',
         ],
         'remove'     => 'Enlever',
-        'add'        => 'Ajouter un participant',
+        'add'        => 'Ajouter un(e) participant(e)',
     ],
 
     'csv' => [
-        'title'         => 'Importer une liste de participants depuis un fichier CSV',
+        'title'         => 'Importer une liste de participant(e)s depuis un fichier CSV',
         'help'          => 'Comment créer un fichier CSV avec :excel Microsoft Office Excel :elink ou :calc Libre Office Calc :elink',
         'format'        => 'Afin que votre fichier CSV fonctionne, voici le format attendu :',
-        'column1'       => 'Nom du participant',
+        'column1'       => 'Nom du/de la participant(e)',
         'column2'       => 'Adresse e-mail',
         'column3'       => 'Exclusions (noms séparés par une virgule)',
-        'warning'       => 'Attention, l\'import de ces données supprimera les participants déjà renseignés.',
+        'warning'       => 'Attention, l\'import de ces données supprimera les participant(e)s déjà renseignés.',
         'cancel'        => 'Annuler',
         'import'        => 'Importer',
         'importError'   => 'Une erreur est survenue lors de l\'import.',
@@ -122,7 +122,7 @@ via SecretSanta.fr',
     'data-expiration' => 'Date de l\'évènement : ',
     'data-expiration-tooltip' => [
         'title' => 'Date de l\'évènement',
-        'interface' => 'Une interface dédiée vous permettra d\'accéder à un récapitulatif des participants jusqu\'au jour de l\'évènement.',
+        'interface' => 'Une interface dédiée vous permettra d\'accéder à un récapitulatif des participant(e)s jusqu\'au jour de l\'évènement.',
         'deletion' => 'Toutes les données stockées seront supprimées une semaine après.',
     ],
 

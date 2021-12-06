@@ -110,12 +110,12 @@ return [
                 'format'   => 'La date d\'expiration doit respecter le format année-mois-jour exemple: 2022-02-05.'
             ],
             'participants' => [
-                'length' => 'Il faut au moins 3 participants',
+                'length' => 'Il faut au moins 3 participant(e)s',
             ],
             'participant' => [
                 'name' => [
-                    'required' => 'Ce participant est requis (au moins 3 personnes).',
-                    'distinct' => 'Ce participant n\'a pas un nom unique.',
+                    'required' => 'Ce/Cette participant(e) est requis (au moins 3 personnes).',
+                    'distinct' => 'Ce/Cette participant(e) n\'a pas un nom unique.',
                 ],
                 'email' => [
                     'required' => 'Cette adresse email est requise.',
