@@ -26,7 +26,7 @@ class Draw extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['mail_title', 'mail_body', 'expires_at', 'next_solvable'];
+    protected $fillable = ['mail_title', 'mail_body', 'expires_at', 'next_solvable', 'organizer_name', 'organizer_email'];
 
     /**
      * The attributes that should be cast.
@@ -37,6 +37,8 @@ class Draw extends Model
         'mail_title' => EncryptedString::class,
         'mail_body' => EncryptedString::class,
         'next_solvable' => 'boolean',
+        'organizer_name' => EncryptedString::class,
+        'organizer_email' => EncryptedString::class,
     ];
 
     /**

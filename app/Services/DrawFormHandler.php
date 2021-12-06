@@ -12,6 +12,7 @@ class DrawFormHandler
 {
     protected $title;
     protected $body;
+    protected $organizer;
     protected $participants;
     protected $expirationDate;
 
@@ -19,13 +20,24 @@ class DrawFormHandler
     {
         $this->title = '';
         $this->body = '';
+        $this->organizer = null;
         $this->participants = [];
         $this->expirationDate = date('Y-m-d', strtotime('+2 days'));
+    }
+
+    public function withOrganizer(array $organizer) : self
+    {
+        $this->organizer = $organizer;
+
+        return $this;
     }
 
     public function withParticipants(array $participants) : self
     {
         $this->participants = $participants;
+        if(!isset($this->organizer)) {
+            $this->organizer = reset($participants);
+        }
 
         return $this;
     }
@@ -78,6 +90,8 @@ class DrawFormHandler
         $draw->expires_at = $this->expirationDate;
         $draw->mail_title = $this->title;
         $draw->mail_body = $this->body;
+        $draw->organizer_name = $this->organizer['name'];
+        $draw->organizer_email = $this->organizer['email'];
         $draw->save();
 
         foreach ($this->participants as $idx => $santa) {

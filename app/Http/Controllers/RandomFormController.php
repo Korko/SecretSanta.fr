@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Channels\MailChannel;
 use App\Exceptions\SolverException;
 use App\Models\Draw;
 use App\Models\Participant;
@@ -9,6 +10,7 @@ use App\Notifications\OrganizerRecap;
 use App\Http\Requests\RandomFormRequest;
 use App\Services\DrawFormHandler;
 use Exception;
+use Notification;
 
 class RandomFormController extends Controller
 {
@@ -19,15 +21,25 @@ class RandomFormController extends Controller
 
     public function handle(RandomFormRequest $request)
     {
+        $safe = $request->safe();
+
         try {
-            $draw = (new DrawFormHandler())
-                ->withParticipants($request->input('participants'))
-                ->withTitle($request->input('title'))
-                ->withBody($request->input('content-email'))
-                ->withExpiration($request->input('data-expiration'))
+            $drawForm = (new DrawFormHandler());
+
+            if(!$safe['participant-organizer']) {
+                $drawForm->withOrganizer($safe['organizer']);
+            }
+
+            $draw = $drawForm
+                ->withParticipants($safe['participants'])
+                ->withTitle($safe['title'])
+                ->withBody($safe['content-email'])
+                ->withExpiration($safe['data-expiration'])
                 ->save();
 
-            $draw->organizer->notify(new OrganizerRecap);
+            Notification::route(MailChannel::class, [
+                $draw->organizer_email => $draw->organizer_name
+            ])->notify(new OrganizerRecap($draw));
 
             $draw->createMetric('new_draw')
                 ->addExtra('participants', count($draw->participants));

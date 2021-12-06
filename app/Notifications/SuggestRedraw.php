@@ -35,7 +35,7 @@ class SuggestRedraw extends Notification
             ->subject(__('emails.suggest_redraw_title', ['participant' => $participant->id]))
             ->view('emails.suggest_redraw', [
                 'participantName' => $participant->name,
-                'organizerName' => $participant->draw->organizer->name,
+                'organizerName' => $participant->draw->organizer_name,
                 'targetName' => $participant->target->name,
                 'acceptLink' => URL::signedRoute('acceptRedraw', ['participant' => $participant->hash]).'#'.base64_encode(DrawCrypt::getIV()),
             ]);

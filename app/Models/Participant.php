@@ -122,14 +122,7 @@ class Participant extends Model
         return Metrics::create($name, $value)
             ->setTags([
                 'draw' => $this->draw->metricId,
-                'participant' => $this->metricId,
-                'is_organizer' => $this->is($this->draw->organizer)
+                'participant' => $this->metricId
             ]);
-    }
-
-    // Usefull for Mail notification
-    public function getSenderAttribute()
-    {
-        return $this->draw->organizer;
     }
 }

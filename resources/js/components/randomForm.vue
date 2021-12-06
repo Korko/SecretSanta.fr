@@ -10,7 +10,7 @@
     Vue.use(VueAutosize);
 
     import Vuelidate from 'vuelidate';
-    import { required, minLength, email } from 'vuelidate/lib/validators'
+    import { required, minLength, email, requiredIf } from 'vuelidate/lib/validators'
     Vue.use(Vuelidate);
 
     import Moment from 'moment';
@@ -23,6 +23,7 @@
     import AjaxForm from './ajaxForm.vue';
     import Participant from './participant.vue';
     import Tooltip from './tooltip.vue';
+    import Toggle from './toggle.vue';
 
     const formatMoment = (amount, unit) => Moment(window.now).add(amount, unit).format('YYYY-MM-DD')
 
@@ -32,11 +33,17 @@
             AjaxForm,
             Csv,
             Participant,
-            Tooltip
+            Tooltip,
+            Toggle
         },
 
         data: function() {
             return {
+                participantOrganizer: true,
+                organizer: {
+                    name: '',
+                    email: '',
+                },
                 participants: [],
                 title: '',
                 content: '',
@@ -48,6 +55,17 @@
         },
 
         validations: {
+            organizerName: {
+                required: requiredIf(function() {
+                    return !this.participantOrganizer;
+                })
+            },
+            organizerEmail: {
+                required: requiredIf(function() {
+                    return !this.participantOrganizer;
+                }),
+                format: email
+            },
             participants: {
                 required,
                 minLength: minLength(3),
@@ -224,10 +242,74 @@
                         {{ $t('form.success') }}
                     </div>
 
-                    <fieldset>
+                    <toggle
+                        class="organizerToggle"
+                        name="participantOrganizer"
+                        v-model="participantOrganizer"
+                        :labelYes="$t('form.organizerIn')"
+                        :labelNo="$t('form.organizerOut')"
+                        backgroundYes="#0069D9"
+                        backgroundNo="#B50119"
+                    />
+
+                    <fieldset v-if="!participantOrganizer" id="organizer">
+                        <legend>{{ $t('form.organizer.title') }}</legend>
+                        <div class="table-responsive form-group">
+                            <table class="table table-hover table-numbered">
+                                <caption>{{ $t('form.organizer.title') }}</caption>
+                                <tbody>
+                                    <tr>
+                                        <th style="width: 33%" scope="col">
+                                            {{ $t('form.organizer.name') }}
+                                        </th>
+                                        <td>
+                                            <div class="input-group">
+                                                <input
+                                                    type="text"
+                                                    name="organizer[name]"
+                                                    :placeholder="$t('form.participant.name.placeholder')"
+                                                    v-model="organizer.name"
+                                                    class="form-control participant-name"
+                                                    :class="{ 'is-invalid': $v.organizerName.$error || fieldError(`organizer.name`)}"
+                                                    :aria-invalid="$v.organizerName.$error || fieldError(`organizer.name`)"
+                                                    @blur="$v.organizerName.$touch()"
+                                                />
+                                                <div v-if="!$v.organizerName.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.name.required') }}</div>
+                                                <div v-else-if="fieldError(`organizer.name`)" class="invalid-tooltip">{{ fieldError(`organizer.name`) }}</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 33%" scope="col">
+                                            {{ $t('form.organizer.email') }}
+                                        </th>
+                                        <td>
+                                            <div class="input-group">
+                                                <input
+                                                    type="email"
+                                                    name="organizer[email]"
+                                                    :placeholder="$t('form.participant.email.placeholder')"
+                                                    v-model="organizer.email"
+                                                    class="form-control participant-email"
+                                                    :class="{ 'is-invalid': $v.organizerEmail.$error || fieldError(`organizer.email`)}"
+                                                    :aria-invalid="$v.organizerEmail.$error || fieldError(`organizer.email`)"
+                                                    @blur="$v.organizerEmail.$touch()"
+                                                />
+                                                <div v-if="!$v.organizerEmail.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.required') }}</div>
+                                                <div v-else-if="!$v.organizerEmail.format" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.format') }}</div>
+                                                <div v-else-if="fieldError(`organizer.email`)" class="invalid-tooltip">{{ fieldError(`organizer.email`) }}</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+
+                    <fieldset id="participants">
                         <legend>{{ $t('form.participants.title') }}</legend>
                         <div class="table-responsive form-group">
-                            <table id="participants" class="table table-hover table-numbered">
+                            <table class="table table-hover table-numbered">
                                 <caption>{{ $t('form.participants.caption') }}</caption>
                                 <thead>
                                     <tr>
@@ -258,6 +340,7 @@
                                         :required="idx < 3 && participants.length <= 3"
                                         :field-error="fieldError"
                                         :$v="$v.participants.$each[idx]"
+                                        :participantOrganizer="participantOrganizer"
                                         @input:name="$set(participant, 'name', $event)"
                                         @input:email="$set(participant, 'email', $event)"
                                         @input:exclusions="$set(participant, 'exclusions', $event)"
@@ -393,8 +476,15 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     @import "~vue-multiselect/dist/vue-multiselect.min";
+
+    .organizerToggle {
+        display: inline-block;
+    }
+    #participants {
+        margin-top: 80px;
+    }
 
     /* Fix tiny style glitches */
     .multiselect--active .multiselect__tags {
@@ -415,217 +505,13 @@
     }
 
     /* ==========================================================================
-        02. Header
-    ========================================================================== */
-    #header {
-        background-image: url(../../images/gifts-1.webp);
-        -moz-background-size: cover;
-        background-size: cover;
-        background-position: center center;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        position: relative;
-    }
-    body.nowebp #header {
-        background-image: url(../../images/gifts-1.jpg);
-    }
-
-    #header .center {
-        position: relative;
-        z-index: 1;
-        color: white;
-        padding: 70px 0;
-    }
-
-    #header .bottom {
-        color: white;
-    }
-
-    #header .center .slogan {
-        font-size: 26px;
-        text-transform: uppercase;
-    }
-
-    #header .banner h1 {
-        font-size: 100px;
-        color: white;
-        text-transform: uppercase;
-        font-weight: bold;
-        display: inline-block;
-        background: #a00;
-        padding: 0 18px;
-    }
-
-    #header .subtitle h4 {
-        display: inline-block;
-        background: white;
-        color: #a00;
-        font-size: 38px;
-        padding: 0 15px;
-    }
-
-    #header .bottom {
-        text-align: center;
-        width: 100%;
-        position: absolute;
-        bottom: 30px;
-    }
-
-    #header .bottom a {
-        font-size: 36px;
-        color: whitesmoke;
-        position: relative;
-        top: -5px;
-    }
-
-    .bg-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(44, 33, 5, 0.2);
-        z-index: 0;
-    }
-
-    /* ==========================================================================
-        04. Parallax
-    ========================================================================== */
-    .parallax {
-        background: url(../../images/gifts-2.webp) fixed no-repeat center center;
-        -moz-background-size: cover;
-        background-size: cover;
-        position: relative;
-        color: #fff;
-    }
-    body.nowebp .parallax {
-        background-image: url(../../images/gifts-2.jpg);
-    }
-
-    .parallax .inner {
-        padding-top: 130px;
-        padding-bottom: 130px;
-    }
-
-    .parallax.parallax2 {
-        background-image: url(../../images/gifts-3.webp);
-    }
-    body.nowebp .parallax.parallax2 {
-        background-image: url(../../images/gifts-3.jpg);
-    }
-
-    /* ==========================================================================
-        05. What/How
-    ========================================================================== */
-    .light-wrapper {
-        background: #fbfbfb;
-    }
-
-    .light-wrapper .inner {
-        padding-top: 50px;
-        padding-bottom: 50px;
-    }
-
-    .section-title {
-        font-size: 36px;
-        line-height: 40px;
-        text-transform: uppercase;
-        margin-bottom: 15px;
-        font-weight: 600;
-    }
-
-    .main.lead {
-        margin-bottom: 80px;
-    }
-
-    .lead {
-        font-size: 17px;
-        line-height: 24px;
-        font-weight: normal;
-        text-transform: uppercase;
-        margin-bottom: 15px;
-        color: #2e2e2e;
-        position: relative;
-    }
-
-    .lead::after {
-        position: absolute;
-        content: ' ';
-        background: #a00;
-        width: 80px;
-        height: 3px;
-        bottom: -22px;
-        left: 50%;
-        margin-left: -40px;
-    }
-
-    .media {
-        min-height: 128px;
-    }
-
-    .media-icon-left {
-        background-position-x: left;
-        padding-left: 128px;
-    }
-    .media-icon-right {
-        background-position-x: right;
-        padding-right: 128px;
-    }
-
-    .media-calendar-icon {
-        background-image: url("../../images/calendar-icon.png");
-        background-image: image-set(url("../../images/calendar-icon.webp"), url("../../images/calendar-icon.png"));
-        background-repeat: no-repeat;
-    }
-    .media-user-icon {
-        background-image: url("../../images/user-icon.png");
-        background-image: image-set(url("../../images/user-icon.webp"), url("../../images/user-icon.png"));
-        background-repeat: no-repeat;
-    }
-    .media-paper-icon {
-        background-image: url("../../images/paper-icon.png");
-        background-image: image-set(url("../../images/paper-icon.webp"), url("../../images/paper-icon.png"));
-        background-repeat: no-repeat;
-    }
-    .media-mail-icon {
-        background-image: url("../../images/mail-icon.png");
-        background-image: image-set(url("../../images/mail-icon.webp"), url("../../images/mail-icon.png"));
-        background-repeat: no-repeat;
-    }
-    .media-clock-icon {
-        background-image: url("../../images/clock-icon.png");
-        background-image: image-set(url("../../images/clock-icon.webp"), url("../../images/clock-icon.png"));
-        background-repeat: no-repeat;
-    }
-
-    .media-body {
-        width: auto;
-        text-align: left;
-        margin: auto;
-    }
-
-    .media-heading {
-        font-weight: bold;
-    }
-
-    div.card-body {
-        font-style: italic;
-    }
-
-    div.card-body::first-line {
-        font-weight: bold;
-        font-style: normal;
-        text-transform: uppercase;
-    }
-
-    /* ==========================================================================
         06. Form
     ========================================================================== */
     fieldset > div.form-group {
         overflow: visible;
     }
 
-    #participants caption {
+    table caption {
         display: none;
     }
 

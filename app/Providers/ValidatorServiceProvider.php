@@ -10,6 +10,8 @@ class ValidatorServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        Validator::excludeUnvalidatedArrayKeys();
+
         Validator::extend('in_keys', function ($attribute, $value, $parameters, $validator) {
             return collect($parameters)->contains(function ($parameter) use ($value, $validator) {
                 return array_key_exists($value, Arr::get($validator->getData(), $parameter));
