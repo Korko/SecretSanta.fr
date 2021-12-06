@@ -6,7 +6,7 @@ return [
         'body'    => 'Corps du message',
         'status'  => 'Status de réception de l\'email',
         'empty'   => 'Aucun email envoyé pour le moment',
-        'caption' => 'Liste des emails envoyés au Père Noël',
+        'caption' => 'Liste des emails envoyés au/à la Père/Mère Noël',
     ],
     'content' => [
         'label'       => 'Contenu du mail',
