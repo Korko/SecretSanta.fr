@@ -96,6 +96,9 @@ return [
             'recaptcha' => 'Le captcha est invalide',
         ],
         'randomform' => [
+            'participant-organizer' => [
+                'required' => 'Vous devez spécifier si l\'organisateur participe ou non à l\'évènement.',
+            ],
             'title' => [
                 'required' => 'Le titre de l\'email est requis.',
             ],
@@ -111,6 +114,15 @@ return [
             ],
             'participants' => [
                 'length' => 'Il faut au moins 3 participant(e)s',
+            ],
+            'organizer'   => [
+                'name'  => [
+                    'required' => 'Le nom de l\'organisateur/organisatrice est requis.',
+                ],
+                'email' => [
+                    'required' => 'Cette adresse email est requise.',
+                    'format'   => 'Le format de cette adresse est invalide.',
+                ],
             ],
             'participant' => [
                 'name' => [

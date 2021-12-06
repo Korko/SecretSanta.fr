@@ -200,6 +200,15 @@ export default {
                     "participants": {
                         "length": "Il faut au moins 3 participant(e)s"
                     },
+                    "organizer": {
+                        "name": {
+                            "required": "Le nom de l'organisateur/organisatrice est requis."
+                        },
+                        "email": {
+                            "required": "Cette adresse email est requise.",
+                            "format": "Le format de cette adresse est invalide."
+                        }
+                    },
                     "participant": {
                         "name": {
                             "required": "Ce/Cette participant(e) est requis (au moins 3 personnes).",
@@ -294,6 +303,13 @@ export default {
             },
             "waiting": "Formulaire en cours de création. Si ce message reste affiché, essayez de rafraichir la page, sinon contactez moi par mail (<a href=\"mailto:&#x6a;&#x65;&#x72;&#x65;&#x6d;&#x79;&#x2e;&#x6c;&#x65;&#x6d;&#x65;&#x73;&#x6c;&#x65;&#x40;&#x6b;&#x6f;&#x72;&#x6b;&#x6f;&#x2e;&#x66;&#x72;\">&#x6a;&#x65;&#x72;&#x65;&#x6d;&#x79;&#x2e;&#x6c;&#x65;&#x6d;&#x65;&#x73;&#x6c;&#x65;&#x40;&#x6b;&#x6f;&#x72;&#x6b;&#x6f;&#x2e;&#x66;&#x72;</a>) ou via <a href=\"https://github.com/Korko\">GitHub</a>. Merci.",
             "success": "Envoyé avec succès !",
+            "organizerIn": "L'organisateur/organisatrice participe",
+            "organizerOut": "L'organisateur/organisatrice ne participe pas",
+            "organizer": {
+                "title": "Détails de l'organisateur/organisatrice",
+                "name": "Nom ou pseudonyme de l'organisateur/organisatrice",
+                "email": "Adresse e-mail de l'organisateur/organisatrice"
+            },
             "participants": {
                 "title": "Détails des participant(e)s",
                 "import": "Importer depuis un fichier",

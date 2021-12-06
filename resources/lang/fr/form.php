@@ -62,6 +62,15 @@ Le code source est disponible sur :link',
 
     'success' => 'Envoyé avec succès !',
 
+    'organizerIn' => 'L\'organisateur/organisatrice participe',
+    'organizerOut' => 'L\'organisateur/organisatrice ne participe pas',
+
+    'organizer' => [
+        'title' => 'Détails de l\'organisateur/organisatrice',
+        'name'  => 'Nom ou pseudonyme de l\'organisateur/organisatrice',
+        'email' => 'Adresse e-mail de l\'organisateur/organisatrice',
+    ],
+
     'participants' => [
         'title'     => 'Détails des participant(e)s',
         'import'    => 'Importer depuis un fichier',
