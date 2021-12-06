@@ -37,6 +37,10 @@
             $v: {
                 type: Object,
                 required: true
+            },
+            participantOrganizer: {
+                type: Boolean,
+                default: true
             }
         },
         computed: {
@@ -70,7 +74,7 @@
             <div class="input-group">
                 <span class="input-group-prepend counter">
                     <span class="input-group-text"
-                        >{{ idx + 1 }}<template v-if="idx === 0"> - {{ $t('form.participant.organizer') }}</template></span
+                        >{{ idx + 1 }}<template v-if="idx === 0 && participantOrganizer"> - {{ $t('form.participant.organizer') }}</template></span
                     >
                 </span>
                 <input

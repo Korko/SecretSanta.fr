@@ -22,6 +22,11 @@ class RandomFormRequest extends Request
     public function rules()
     {
         return parent::rules() + [
+            'participant-organizer'       => 'required|boolean',
+
+            'organizer.name'              => 'exclude_if:participant-organizer,true|required',
+            'organizer.email'             => 'exclude_if:participant-organizer,true|required|email',
+
             'participants'                => 'required|array|min:3',
 
             'participants.*.name'         => 'required|distinct',
@@ -44,6 +49,10 @@ class RandomFormRequest extends Request
     public function messages()
     {
         return [
+            'participant-organizer.required' => __('validation.custom.randomform.participant-organizer.required'),
+            'organizer.name.required'        => __('validation.custom.randomform.organizer.name.required'),
+            'organizer.email.required'       => __('validation.custom.randomform.organizer.email.required'),
+            'organizer.email.email'          => __('validation.custom.randomform.organizer.email.email'),
             'participants.min'               => __('validation.custom.randomform.participants.length'),
             'participants.*.name.required'   => __('validation.custom.randomform.participant.name.required'),
             'participants.*.name.distinct'   => __('validation.custom.randomform.participant.name.distinct'),

@@ -33,13 +33,12 @@ class FixOrganizer extends Command
 
         $draw = URLParser::parseByName('dearSanta', $this->argument('url'))->participant->draw;
 
-        $draw->organizer->email = $this->argument('email');
-        $draw->organizer->save();
+        $draw->organizer_email = $this->argument('email');
+        $draw->save();
 
-        $draw->organizer->notifyNow(new OrganizerRecap);
+        Notification::route('mail', [
+            $draw->organizer_email => $draw->organizer_name
+        ])->notify(new OrganizerRecap($draw));
         $this->info('Organizer Recap sent');
-
-        $draw->organizer->notifyNow(new TargetDrawn);
-        $this->info('Organizer Participant mail sent');
     }
 }

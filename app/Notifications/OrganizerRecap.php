@@ -4,18 +4,21 @@ namespace App\Notifications;
 
 use App;
 use App\Channels\MailChannel;
+use App\Models\Draw;
 use App\Models\Participant;
 use DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
 class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
-    use Queueable;
+    use Queueable, SerializesModels;
 
     /**
      * The number of times the job may be attempted.
@@ -31,13 +34,20 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
      */
     public $backoff = 30;
 
+    protected $draw;
+
+    public function __construct(Draw $draw)
+    {
+        $this->draw = $draw;
+    }
+
     /**
      * Get the notification's delivery channels.
      *
-     * @param  \App\Models\Participant  $organizer
+     * @param  \Illuminate\Notifications\AnonymousNotifiable $organizer
      * @return array
      */
-    public function via(Participant $organizer)
+    public function via(AnonymousNotifiable $organizer)
     {
         return [MailChannel::class];
     }
@@ -45,19 +55,19 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
     /**
      * Get the mail representation of the notification.
      *
-     * @param  \App\Models\Participant  $organizer
+     * @param  \Illuminate\Notifications\AnonymousNotifiable $organizer
      * @return \Illuminate\Mail\Mailable
      */
-    public function toMail(Participant $organizer)
+    public function toMail(AnonymousNotifiable $organizer)
     {
         return (new MailMessage)
-            ->subject(__('emails.organizer_recap_title', ['draw' => $organizer->draw->id]))
+            ->subject(__('emails.organizer_recap_title', ['draw' => $this->draw->id]))
             ->view('emails.organizer_recap', [
-                'organizerName' => $organizer->name,
-                'expirationDate' => $organizer->draw->expires_at->locale(App::getLocale())->isoFormat('LL'),
-                'deletionDate' => $organizer->draw->deleted_at->locale(App::getLocale())->isoFormat('LL'),
-                'nextSolvable' => $organizer->draw->next_solvable,
-                'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $organizer->draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
+                'organizerName' => $this->draw->organizer_name,
+                'expirationDate' => $this->draw->expires_at->locale(App::getLocale())->isoFormat('LL'),
+                'deletionDate' => $this->draw->deleted_at->locale(App::getLocale())->isoFormat('LL'),
+                'nextSolvable' => $this->draw->next_solvable,
+                'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $this->draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
             ]);
     }
 }

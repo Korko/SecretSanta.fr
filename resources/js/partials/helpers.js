@@ -1,4 +1,4 @@
-/*const getMimeTypeFromData = function(data) {
+/*export const getMimeTypeFromData = function(data) {
 
     var mimes = [
         {
@@ -26,7 +26,7 @@
 
 };
 
-const getExtensionFromMime = function(mime) {
+export const getExtensionFromMime = function(mime) {
     switch(mime) {
         case 'text/csv':
         case 'image/png':
@@ -35,7 +35,7 @@ const getExtensionFromMime = function(mime) {
     }
 };*/
 
-const download = (data, fileName, mimeType) => {
+export const download = (data, fileName, mimeType) => {
     var blob = new Blob([data]);
     blob = blob.slice(0, blob.size, mimeType);
 
@@ -47,16 +47,34 @@ const download = (data, fileName, mimeType) => {
     link.click();
 };
 
-const isString = arg => {
+export const isString = arg => {
     return typeof arg === 'string' || arg instanceof String;
 };
 
-const isObject = arg => {
+export const isObject = arg => {
     return Object.prototype.toString.call(arg) === '[object Object]';
 };
 
-const isArray = arg => {
+export const isArray = arg => {
     return Object.prototype.toString.call(arg) === '[object Array]';
 };
 
-export { download, isString, isObject, isArray };
+export const isBoolean = arg => {
+    return typeof arg === 'boolean';
+};
+
+export const has = (object, key) => {
+  return isObject(object) && object.hasOwnProperty(key);
+};
+
+export const get = (object, key, defaultValue) => {
+  return has(object, key) ? object[key] : defaultValue;
+};
+
+export const px = value => {
+  return `${value}px`;
+};
+
+export const translate = (x, y) => {
+  return `translate(${x}, ${y})`;
+};

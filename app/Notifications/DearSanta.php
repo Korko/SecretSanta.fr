@@ -6,12 +6,16 @@ use App\Channels\TrackedMailChannel;
 use App\Facades\DrawCrypt;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
+use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
 class DearSanta extends Notification
 {
+    use Queueable, SerializesModels;
+
     protected $dearSanta;
 
     public function __construct(DearSantaModel $dearSanta)
