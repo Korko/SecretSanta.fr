@@ -25,14 +25,14 @@ class OrganizerInDraw extends Migration
                     ->whereNotExists(function ($query) {
                        $query->select(DB::raw(1))
                              ->from('participants')
-                             ->whereColumn('draws.id', 'participants.draw_id')
-                             ->where('organizer.id', '>', 'participants.id');
+                             ->whereColumn('draws.id', '=', 'participants.draw_id')
+                             ->whereColumn('organizer.id', '>', 'participants.id');
                    });
             })
             ->update(
                 array(
-                    'organizer_name' => 'organizer.name',
-                    'organizer_email' => 'organizer.email'
+                    'organizer_name' => DB::raw('organizer.name'),
+                    'organizer_email' => DB::raw('organizer.email')
                 )
             );
 
