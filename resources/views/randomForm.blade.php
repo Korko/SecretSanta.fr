@@ -112,7 +112,7 @@
         <div class="container inner"></div>
     </div>
 
-    <div id="form" class="light-wrapper v-cloak">
+    <div id="form" class="light-wrapper">
         <section class="ss-style-top"></section>
         <div class="container inner">
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
@@ -121,11 +121,4 @@
         </div><!-- /.container -->
         <section class="ss-style-bottom"></section>
     </div>
-@stop
-
-@section('script')
-    @parent
-
-    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('/js/randomForm.js') }}"></script>
 @stop

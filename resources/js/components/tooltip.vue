@@ -27,7 +27,7 @@
         position: relative;
         text-align: left;
     }
-    .tip-wrapper .tip-handler * {
+    .tip-wrapper .tip-handler:deep(*) {
         text-decoration: underline dotted;
     }
 
@@ -78,9 +78,6 @@
     .tip-content img {
         width: 400px;
         border-radius: 8px 8px 0 0;
-    }
-    .tip-content .text-content {
-        padding: 10px 20px;
     }
 
     .tip-content.right i {

@@ -5,8 +5,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 require('dotenv').config();
 
-require('laravel-mix-purgecss');
-require('laravel-mix-polyfill');
+//require('laravel-mix-purgecss');
+//require('laravel-mix-polyfill');
 
 /*
  |--------------------------------------------------------------------------
@@ -53,7 +53,12 @@ mix.webpackConfig({
         resourceRegExp: /^\.\/locale$/,
         contextRegExp: /moment$/,
     }),
-    new MiniCssExtractPlugin()
+    new MiniCssExtractPlugin(),
+    new webpack.DefinePlugin({
+        __VUE_I18N_FULL_INSTALL__: true,
+        __VUE_I18N_LEGACY_API__: false,
+        __INTLIFY_PROD_DEVTOOLS__: false
+    })
   ],
   module: {
     rules: [
@@ -95,34 +100,33 @@ mix.options({
 
 mix.js('resources/js/common.js', 'public/js')
    .js('resources/js/app.js', 'public/js')
-   .js('resources/js/randomForm.js', 'public/js')
-   .js('resources/js/dearSanta.js', 'public/js')
-   .js('resources/js/organizer.js', 'public/js')
+//   .js('resources/js/dearSanta.js', 'public/js')
+//   .js('resources/js/organizer.js', 'public/js')
    .vue({
       extractStyles: false,
       globalStyles: false
     })
-   .polyfill({ entryPoints: "all" })
+//   .polyfill({ entryPoints: "all" })
    .extract()
    .sass('resources/sass/app.scss', 'public/css')
    .sass('resources/sass/404.scss', 'public/css')
    .sass('resources/sass/vendor.scss', 'public/css')
-   .purgeCss({
-      content: [
-        "app/**/*.php",
-        "resources/**/*.blade.php",
-        "resources/**/*.html",
-        "resources/**/*.js",
-        "resources/**/*.jsx",
-        "resources/**/*.ts",
-        "resources/**/*.tsx",
-        "resources/**/*.php",
-        "resources/**/*.vue",
-        "resources/**/*.twig",
-        "storage/framework/views/*.php",
-        "node_modules/**/*.vue", // Added line, all the rest is copied from postcss-purgecss-laravel plugin
-      ]
-   })
+//   .purgeCss({
+//      content: [
+//        "app/**/*.php",
+//        "resources/**/*.blade.php",
+//        "resources/**/*.html",
+//        "resources/**/*.js",
+//        "resources/**/*.jsx",
+//        "resources/**/*.ts",
+//        "resources/**/*.tsx",
+//        "resources/**/*.php",
+//        "resources/**/*.vue",
+//        "resources/**/*.twig",
+//        "storage/framework/views/*.php",
+//        "node_modules/**/*.vue", // Added line, all the rest is copied from postcss-purgecss-laravel plugin
+//      ]
+//   })
    .copy('resources/images/logo_black.png', 'public/images'); // Meta image for social networks
 
 if (mix.inProduction()) {

@@ -1,21 +1,26 @@
-import Vue from 'vue';
+import { createApp, defineAsyncComponent } from 'vue';
 
-import VueI18n from 'vue-i18n';
-Vue.use(VueI18n);
+const app = createApp({
+    mounted: function() {
+        document.body.classList.add('cssLoading');
+        setTimeout(() => document.body.classList.remove('cssLoading'), 0);
+    },
+    components: {
+        RandomForm: defineAsyncComponent(() => import('./components/randomForm.vue')),
+        Dashboard: defineAsyncComponent(() => import('./components/dashboard.vue')),
+        Faq: defineAsyncComponent(() => import('./components/faq.vue'))
+    }
+});
+app.mount('#main');
 
 const lang = document.documentElement.lang.substr(0, 2);
 import Locale from './vue-i18n-locales.generated.js';
 
-const i18n = new VueI18n({
+import { createI18n } from 'vue-i18n';
+const i18n = createI18n({
     locale: lang,
-    messages: Locale
+    messages: Locale,
+    globalInjection: true
 });
 
-window.app = new Vue({
-    el: '#content',
-    i18n,
-    mounted: function() {
-        document.body.classList.add('cssLoading');
-        setTimeout(() => document.body.classList.remove('cssLoading'), 0);
-    }
-});
+app.use(i18n);

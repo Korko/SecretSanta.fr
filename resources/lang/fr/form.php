@@ -57,7 +57,7 @@ Le code source est disponible sur :link',
         ],
     ],
 
-    'waiting' => 'Formulaire en cours de création. Si ce message reste affiché, essayez de rafraichir la page, sinon contactez moi par mail (<a href="mailto:&#x6a;&#x65;&#x72;&#x65;&#x6d;&#x79;&#x2e;&#x6c;&#x65;&#x6d;&#x65;&#x73;&#x6c;&#x65;&#x40;&#x6b;&#x6f;&#x72;&#x6b;&#x6f;&#x2e;&#x66;&#x72;">&#x6a;&#x65;&#x72;&#x65;&#x6d;&#x79;&#x2e;&#x6c;&#x65;&#x6d;&#x65;&#x73;&#x6c;&#x65;&#x40;&#x6b;&#x6f;&#x72;&#x6b;&#x6f;&#x2e;&#x66;&#x72;</a>) ou via <a href="https://github.com/Korko">GitHub</a>. Merci.',
+    'waiting' => 'Formulaire en cours de création. Si ce message reste affiché, essayez de rafraichir la page, sinon contactez moi par mail ({email}) ou via {github}. Merci.',
 
     'success' => 'Envoyé avec succès !',
 
@@ -85,7 +85,7 @@ Le code source est disponible sur :link',
         ],
         'email'      => [
             'label'       => 'Adresse e-mail',
-            'placeholder' => 'exemple : michel@aol.com',
+            'placeholder' => 'exemple : michel{\'@\'}aol.com',
         ],
         'exclusions' => [
             'label'       => 'Exclusions',
@@ -119,7 +119,7 @@ Le code source est disponible sur :link',
         'content' => [
             'label'       => 'Contenu du mail',
             'placeholder' => 'ex : Salut {SANTA}, pour la soirée secret santa, ta cible c\'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !',
-            'tip1' => 'Utilisez ":santa&#123;SANTA&#125;:close" pour le nom de celui qui recevra le mail et ":target&#123;TARGET&#125;:close" pour le nom de sa cible.',
+            'tip1' => 'Utilisez {santa} pour le nom de celui qui recevra le mail et {target} pour le nom de sa cible.',
             'tip2' => 'Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.',
         ],
         'post' => '----

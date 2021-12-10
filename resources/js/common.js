@@ -117,6 +117,3 @@ Array.prototype.remove = function() {
     }
     return this;
 };
-
-Vue.component('dashboard', () => import('./components/dashboard.vue'));
-Vue.component('faq', () => import('./components/faq.vue'));

@@ -48,23 +48,21 @@
 
     <span id="ribbon" class="d-none d-md-block"><a href="{{ route('faq') }}">@lang('common.nav.faq')</a></span>
 
-    <div id="wrap">
-        <div id="main">
-            <div id="menu" class="navbar navbar-dark fixed-top navbar-expand-md" role="navigation">
-                <nav id="navbar">
-                    <div id="logo">
-                        <a href="/"></a>
-                    </div>
-                    @yield('navbar')
-                </nav><!--/.navbar-collapse -->
-            </div><!-- menu -->
-
-            @section('body')
-                <div id="content">
-                    @yield('content')
+    <div id="main" v-cloak>
+        <div id="menu" class="navbar navbar-dark fixed-top navbar-expand-md" role="navigation">
+            <nav id="navbar">
+                <div id="logo">
+                    <a href="/"></a>
                 </div>
-            @show
-        </div>
+                @yield('navbar')
+            </nav><!--/.navbar-collapse -->
+        </div><!-- menu -->
+
+        @section('body')
+            <div id="content">
+                @yield('content')
+            </div>
+        @show
     </div>
 
     <footer id="footer" class="dark-wrapper">
@@ -93,8 +91,10 @@
 
     @section('script')
         <script src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" data-auto-replace-svg="nest"></script>
-        <script src="{{ mix('/js/manifest.js') }}"></script>
-        <script src="{{ mix('/js/vendor.js') }}"></script>
+        <script type="text/javascript" src="{{ mix('/js/manifest.js') }}"></script>
+        <script type="text/javascript" src="{{ mix('/js/vendor.js') }}"></script>
+        <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
+        <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
     @show
 </body>
 </html>
