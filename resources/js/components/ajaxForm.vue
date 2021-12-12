@@ -44,13 +44,11 @@
                 default: false
             }
         },
-        data: () => {
-            return {
-                fieldErrors: [],
-                sending: false,
-                sent: false
-            };
-        },
+        data: () => ({
+            fieldErrors: [],
+            sending: false,
+            sent: false
+        }),
         watch: {
             sending() {
                 this.$emit('change', this.sending);

@@ -8,6 +8,8 @@
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
+var _this = undefined;
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     questions: {
@@ -17,9 +19,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      selectedCategory: Object.keys(this.questions)[0],
-      categories: Object.keys(this.questions),
-      qnas: this.questions,
+      selectedCategory: Object.keys(_this.questions)[0],
+      categories: Object.keys(_this.questions),
+      qnas: _this.questions,
       showed: {}
     };
   },
@@ -59,18 +61,18 @@ var _hoisted_2 = ["onClick"];
 var _hoisted_3 = ["id", "aria-expanded", "aria-controls", "onClick"];
 var _hoisted_4 = ["id"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.categories, function (category, i) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.categories, function (category, i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       key: i,
       "class": "nav-item"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'nav-link': true,
-        'active': $data.selectedCategory === category
+        'active': _ctx.selectedCategory === category
       }),
       href: "#",
       onClick: function onClick($event) {
-        return $data.selectedCategory = category;
+        return _ctx.selectedCategory = category;
       }
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t("faq.categories.".concat(category))), 11
     /* TEXT, CLASS, PROPS */
@@ -79,15 +81,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* KEYED_FRAGMENT */
   ))]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.selectedQuestions, function (question, i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-      key: "".concat($data.selectedCategory, "_").concat(i),
+      key: "".concat(_ctx.selectedCategory, "_").concat(i),
       "class": "card"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
       id: "question".concat(i),
       "class": "card-header",
-      "aria-expanded": $data.showed[i],
+      "aria-expanded": _ctx.showed[i],
       "aria-controls": "answer".concat(i),
       onClick: function onClick($event) {
-        return _ctx.$set($data.showed, i, !$data.showed[i]);
+        return _ctx.$set(_ctx.showed, i, !_ctx.showed[i]);
       }
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(question), 9
     /* TEXT, PROPS */
@@ -102,7 +104,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* TEXT */
         )], 8
         /* PROPS */
-        , _hoisted_4), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.showed[i]]])];
+        , _hoisted_4), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.showed[i]]])];
       }),
       _: 2
       /* DYNAMIC */

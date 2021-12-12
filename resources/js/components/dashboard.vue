@@ -3,17 +3,16 @@ export default {
     props: {
 
     },
-    data() {
-        return {
+    data: () => ({
 
-        };
-    },
+    }),
     computed: {
         draws() {
             return JSON.parse(window.localStorage.getItem('secretsanta')) || {};
         }
     },
     watch: {
+
     }
 }
 </script>

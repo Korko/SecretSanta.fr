@@ -28,7 +28,7 @@ class OrganizerController extends Controller
     public function fetch(Draw $draw)
     {
         return response()->json([
-            'draw' => $draw->only(['hash', 'mail_title', 'created_at', 'expires_at', 'deleted_at']),
+            'draw' => $draw->only(['hash', 'mail_title', 'created_at', 'expires_at', 'deleted_at', 'next_solvable']),
             'organizer' => $draw->organizer->name,
             'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) {
                 return [
@@ -50,8 +50,7 @@ class OrganizerController extends Controller
                         'draw' => $participant->draw, 'participant' => $participant
                     ])
                 ];
-            }),
-            'finalCsvAvailable' => $draw->next_solvable
+            })
         ]);
     }
 

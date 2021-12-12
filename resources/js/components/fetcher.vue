@@ -6,19 +6,17 @@
     export default {
         components: { Timer },
         props: {
-            fetchurl: {
+            fetchUrl: {
                 type: String,
                 required: true
             }
         },
-        data: () => {
-            return {
-                loading: false
-            };
-        },
+        data: () => ({
+            loading: false
+        }),
         mounted() {
             this.loading = true;
-            fetch(this.fetchurl)
+            fetch(this.fetchUrl)
                 .then(response => {
                     this.$emit('success', response);
                 })

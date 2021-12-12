@@ -1,155 +1,3 @@
-<script>
-    import Vue from 'vue';
-
-    import Vuelidate from 'vuelidate';
-    Vue.use(Vuelidate);
-
-    import StateMachine from '../mixins/stateMachine.js';
-
-    export default {
-        mixins: [StateMachine],
-        inheritAttrs: false,
-        props: {
-            value: {
-                type: String,
-                required: true
-            },
-            validation: {
-                type: Object,
-                default: null
-            },
-            update: {
-                type: Function,
-                required: true
-            },
-            disabled: {
-                type: Boolean,
-                default: false
-            }
-        },
-        validations() {
-            return {
-                newValue: this.validation || {}
-            };
-        },
-        data: function() {
-            return {
-                states: Object.freeze({
-                    view: {
-                        edit: 'editing'
-                    },
-                    editing: {
-                        validate: 'editingValidating',
-                        cancel: 'view',
-                        blur: 'editingBlur'
-                    },
-                    editingBlur: {
-                        same: 'view',
-                        different: 'editingValidating'
-                    },
-                    editingValid: {
-                        validate: 'editingValidating',
-                        submit: 'viewUpdating',
-                        cancel: 'view',
-                        blur: 'editingBlur'
-                    },
-                    editingInvalid: {
-                        validate: 'editingValidating',
-                        cancel: 'view'
-                    },
-                    editingValidating: {
-                        valid: 'editingValid',
-                        invalid: 'editingInvalid'
-                    },
-                    viewUpdating: {
-                        success: 'viewUpdated',
-                        error: 'viewError'
-                    },
-                    viewUpdated: {
-                        edit: 'editing',
-                        timer: 'view'
-                    },
-                    viewError: {
-                        edit: 'editing',
-                        resend: 'viewUpdating'
-                    }
-                }),
-                state: 'view',
-                newValue: this.value
-            };
-        },
-        computed: {
-            isSame() {
-                return this.newValue === this.value;
-            },
-            view() {
-                return this.state.startsWith('view');
-            },
-            updating() {
-                return this.state === 'viewUpdating';
-            }
-        },
-        methods: {
-            onBlur() {
-                this.$v.$touch();
-                this.send('blur');
-            },
-            onCancel() {
-                this.$v.$reset();
-                this.send('cancel');
-            },
-            onInput() {
-                this.$v.$error && this.$v.$touch();
-                this.send('validate');
-            },
-            onSubmit() {
-                this.$v.$touch();
-                this.send('submit');
-            },
-            onResend() {
-                this.send('resend');
-            },
-            submit() {
-                return this.update(this.newValue);
-            },
-            stateView() {
-                this.newValue = this.value;
-            },
-            stateEditing() {
-                this.$nextTick(() => this.$refs.input.focus());
-            },
-            stateEditingBlur() {
-                if (this.isSame) {
-                    this.send('same');
-                } else {
-                    this.send('different');
-                }
-            },
-            stateEditingValidating() {
-                if (this.$v.$invalid || this.$el.querySelectorAll('input:invalid').length > 0) {
-                    this.send('invalid');
-                } else {
-                    this.send('valid');
-                }
-            },
-            stateViewUpdating() {
-                this.submit()
-                    .then(() => {
-                        this.send('success');
-                    })
-                    .catch(() => {
-                        this.send('error');
-                    });
-            },
-            stateViewUpdated() {
-                setTimeout(() => {
-                    this.send('timer');
-                }, 5000);
-            }
-        }
-    };
-</script>
-
 <template>
     <form method="post" autocomplete="off" @submit.prevent="onSubmit">
         <fieldset :disabled="updating || disabled">
@@ -168,9 +16,9 @@
                     v-model="newValue"
                     name="input"
                     v-bind="$attrs"
-                    :class="{ 'form-control': true, 'is-invalid': $v.$error }"
+                    :class="{ 'form-control': true, 'is-invalid': v$.$error }"
                     :disabled="view"
-                    :aria-invalid="$v.$error"
+                    :aria-invalid="v$.$error"
                     @input="onInput"
                 />
                 <slot name="errors"></slot>
@@ -215,6 +63,152 @@
         </fieldset>
     </form>
 </template>
+
+<script>
+    import { useVuelidate } from '@vuelidate/core';
+
+    import StateMachine from '../mixins/stateMachine.js';
+
+    export default {
+        mixins: [StateMachine],
+        inheritAttrs: false,
+        props: {
+            modelValue: {
+                type: String,
+                required: true
+            },
+            validation: {
+                type: Object,
+                default: null
+            },
+            disabled: {
+                type: Boolean,
+                default: false
+            }
+        },
+        setup: () => ({ v$: useVuelidate() }),
+        validations() {
+            return {
+                newValue: this.validation || {}
+            };
+        },
+        data() {
+            return {
+                states: Object.freeze({
+                    view: {
+                        edit: 'editing'
+                    },
+                    editing: {
+                        validate: 'editingValidating',
+                        cancel: 'view',
+                        blur: 'editingBlur'
+                    },
+                    editingBlur: {
+                        same: 'view',
+                        different: 'editingValidating'
+                    },
+                    editingValid: {
+                        validate: 'editingValidating',
+                        submit: 'viewUpdating',
+                        cancel: 'view',
+                        blur: 'editingBlur'
+                    },
+                    editingInvalid: {
+                        validate: 'editingValidating',
+                        cancel: 'view'
+                    },
+                    editingValidating: {
+                        valid: 'editingValid',
+                        invalid: 'editingInvalid'
+                    },
+                    viewUpdating: {
+                        success: 'viewUpdated',
+                        error: 'viewError'
+                    },
+                    viewUpdated: {
+                        edit: 'editing',
+                        timer: 'view'
+                    },
+                    viewError: {
+                        edit: 'editing',
+                        resend: 'viewUpdating'
+                    }
+                }),
+                state: 'view',
+                newValue: this.modelValue
+            };
+        },
+        computed: {
+            isSame() {
+                return this.newValue === this.modelValue;
+            },
+            view() {
+                return this.state.startsWith('view');
+            },
+            updating() {
+                return this.state === 'viewUpdating';
+            }
+        },
+        methods: {
+            onBlur() {
+                this.v$.$touch();
+                this.send('blur');
+            },
+            onCancel() {
+                this.v$.$reset();
+                this.send('cancel');
+            },
+            onInput() {
+                this.v$.$error && this.v$.$touch();
+                this.send('validate');
+            },
+            onSubmit() {
+                this.v$.$touch();
+                this.send('submit');
+            },
+            onResend() {
+                this.send('resend');
+            },
+            submit() {
+                return this.$emit('update', this.newValue);
+            },
+            stateView() {
+                this.newValue = this.modelValue;
+            },
+            stateEditing() {
+                this.$nextTick(() => this.$refs.input.focus());
+            },
+            stateEditingBlur() {
+                if (this.isSame) {
+                    this.send('same');
+                } else {
+                    this.send('different');
+                }
+            },
+            stateEditingValidating() {
+                if (this.v$.$invalid || this.$el.querySelectorAll('input:invalid').length > 0) {
+                    this.send('invalid');
+                } else {
+                    this.send('valid');
+                }
+            },
+            stateViewUpdating() {
+                this.submit()
+                    .then(() => {
+                        this.send('success');
+                    })
+                    .catch(() => {
+                        this.send('error');
+                    });
+            },
+            stateViewUpdated() {
+                setTimeout(() => {
+                    this.send('timer');
+                }, 5000);
+            }
+        }
+    };
+</script>
 
 <style scoped>
     .input-group > .input-group-prepend > .input-group-text {

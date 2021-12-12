@@ -22,12 +22,10 @@
                 default: 5*60*1000 // 5m delay config('mail.resend_delay')
             }
         },
-        data() {
-            return {
-                recent: true,
-                recentUpdateTimeout: null
-            };
-        },
+        data: () => ({
+            recent: true,
+            recentUpdateTimeout: null
+        }),
         computed: {
             icon() {
                 return {

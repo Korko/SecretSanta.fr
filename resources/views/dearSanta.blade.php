@@ -1,4 +1,4 @@
-@extends('templates/fetcher', ['fetchUrl' => URL::signedRoute('dearSanta.fetch', ['participant' => $participant])])
+@extends('templates/layout')
 
 @section('script')
     @parent
@@ -17,7 +17,7 @@
     ])
 
     <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('/js/dearSanta.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
 @stop
 
 @section('navbar')
@@ -27,4 +27,8 @@
         <li><a href="/">@lang('common.nav.go')</a></li>
         <li><a href="{{ route('dashboard') }}">@lang('common.nav.dashboard')</a></li>
     </ul>
+@stop
+
+@section('content')
+    <vue-fetcher fetch="{{ URL::signedRoute('dearSanta.fetch', ['participant' => $participant]) }}" :form="DearSantaForm" />
 @stop

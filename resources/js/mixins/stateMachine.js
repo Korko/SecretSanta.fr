@@ -1,12 +1,10 @@
 export default {
-    data() {
-        return {
-            data: null,
-            states: {},
-            previousState: null,
-            state: null
-        };
-    },
+    data: () => ({
+        data: null,
+        states: {},
+        previousState: null,
+        state: null
+    }),
     methods: {
         send(trigger, data) {
             this.data = data;

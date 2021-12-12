@@ -7,11 +7,9 @@
                 default: 100
             }
         },
-        data: () => {
-            return {
-                show: false
-            };
-        },
+        data: () => ({
+            show: false
+        }),
         mounted() {
             setTimeout(() => {
                 this.show = true;

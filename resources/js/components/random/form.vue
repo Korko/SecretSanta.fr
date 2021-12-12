@@ -202,9 +202,9 @@
                                 <tooltip direction="top">
                                     <template #tooltip>
                                         <picture>
-                                            <source srcset="../../images/srikanta-h-u-TrGVhbsUf40-unsplash.webp" type="image/webp" />
-                                            <source srcset="../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" type="image/jpg" />
-                                            <img class="media-object" src="../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" />
+                                            <source srcset="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.webp" type="image/webp" />
+                                            <source srcset="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" type="image/jpg" />
+                                            <img class="media-object" src="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" />
                                         </picture>
                                         <div class="text-content">
                                             <h3>{{ $t('form.data-expiration-tooltip.title') }}</h3>
@@ -256,7 +256,7 @@
     import jQuery from 'jquery';
     window.$ = window.jQuery = jQuery;
 
-    import alertify from '../partials/alertify.js';
+    import alertify from '../../partials/alertify.js';
 
     import { useVuelidate } from '@vuelidate/core';
     import { required, minLength, email, requiredIf } from '@vuelidate/validators';
@@ -267,12 +267,12 @@
 
     import Papa from 'papaparse';
 
-    import AjaxForm from './ajaxForm.vue';
-    import AutoTextarea from './autoTextarea.vue';
-    import Csv from './csv.vue';
+    import AjaxForm from '../ajaxForm.vue';
+    import AutoTextarea from '../autoTextarea.vue';
+    import Csv from '../csv.vue';
     import Participant from './participant.vue';
-    import Tooltip from './tooltip.vue';
-    import Toggle from './toggle.vue';
+    import Tooltip from '../tooltip.vue';
+    import Toggle from '../toggle.vue';
 
     const formatMoment = (amount, unit) => Moment(window.now).add(amount, unit).format('YYYY-MM-DD')
 
@@ -287,67 +287,62 @@
             Toggle
         },
 
+        data: () => ({
+            participantOrganizer: true,
+            organizer: {
+                name: '',
+                email: '',
+            },
+            participants: [],
+            title: '',
+            content: '',
+            expiration: null,
+            now: window.now,
+            showModal: false,
+            importing: false
+        }),
+
         setup: () => ({ v$: useVuelidate() }),
-
-        data: function() {
-            return {
-                participantOrganizer: true,
-                organizer: {
-                    name: '',
-                    email: '',
+        validations: () => ({
+            organizer: {
+                name: {
+                    required: requiredIf(function() {
+                        return !this.participantOrganizer;
+                    })
                 },
-                participants: [],
-                title: '',
-                content: '',
-                expiration: null,
-                now: window.now,
-                showModal: false,
-                importing: false,
-            };
-        },
-
-        validations() {
-            return {
-                organizer: {
-                    name: {
-                        required: requiredIf(function() {
-                            return !this.participantOrganizer;
-                        })
-                    },
-                    email: {
-                        required: requiredIf(function() {
-                            return !this.participantOrganizer;
-                        }),
-                        format: email
-                    }
-                },
-                participants: {
-                    required,
-                    minLength: minLength(3)
-                },
-                title: {
-                    required
-                },
-                content: {
-                    required,
-                    contains(value) {
-                       return value.indexOf('{TARGET}') >= 0;
-                    }
-                },
-                expiration: {
-                    required,
-                    format(value) {
-                        return /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(value);
-                    },
-                    minValue(value) {
-                        return Moment(value, 'YYYY-MM-DD').isSameOrAfter(formatMoment(1, 'day'));
-                    },
-                    maxValue(value) {
-                        return Moment(value, 'YYYY-MM-DD').isSameOrBefore(formatMoment(6, 'month'));
-                    }
+                email: {
+                    required: requiredIf(function() {
+                        return !this.participantOrganizer;
+                    }),
+                    format: email
                 }
-            };
-        },
+            },
+            participants: {
+                required,
+                minLength: minLength(3)
+            },
+            title: {
+                required
+            },
+            content: {
+                required,
+                contains(value) {
+                   return value.indexOf('{TARGET}') >= 0;
+                }
+            },
+            expiration: {
+                required,
+                format(value) {
+                    return /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(value);
+                },
+                minValue(value) {
+                    return Moment(value, 'YYYY-MM-DD').isSameOrAfter(formatMoment(1, 'day'));
+                },
+                maxValue(value) {
+                    return Moment(value, 'YYYY-MM-DD').isSameOrBefore(formatMoment(6, 'month'));
+                }
+            }
+        }),
 
         watch: {
             sent(newVal) {
@@ -507,7 +502,7 @@
 
     .input-group-addon.lang::before {
         background-repeat: no-repeat;
-        background-image: url(../../images/languages.webp);
+        background-image: url(../../../images/languages.webp);
         height: 11px;
         width: 14px;
         content: '';
@@ -515,7 +510,7 @@
         margin-right: 8px;
     }
     body.nowebp .input-group-addon.lang::before {
-        background-image: url(../../images/languages.png);
+        background-image: url(../../../images/languages.png);
     }
 
     .input-group-addon.lang[lang=fr]::before {

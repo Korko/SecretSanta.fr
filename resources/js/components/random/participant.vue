@@ -1,100 +1,3 @@
-<script>
-    import Multiselect from '@vueform/multiselect'
-
-    import { useVuelidate } from '@vuelidate/core';
-    import { required, email } from '@vuelidate/validators';
-
-    export default {
-        components: {
-            Multiselect
-        },
-        setup: () => ({ v$: useVuelidate() }),
-        props: {
-            idx: {
-                type: Number,
-                required: true
-            },
-            name: {
-                type: String,
-                default: ''
-            },
-            email: {
-                type: String,
-                default: ''
-            },
-            exclusions: {
-                type: Array,
-                default: () => []
-            },
-            exclusionsTxt: {
-                type: String,
-                default: null
-            },
-            all: {
-                type: Array,
-                required: true
-            },
-            required: {
-                type: Boolean,
-                required: true
-            },
-            fieldError: {
-                type: Function,
-                required: true
-            },
-            participantOrganizer: {
-                type: Boolean,
-                default: true
-            }
-        },
-        validations() {
-            return {
-                name: {
-                    required,
-                    unique(value) {
-                        // standalone validator ideally should not assume a field is required
-                        if (value === '') return true;
-
-                        return (this.all.filter(participant => (participant.name === value)).length === 1);
-                    }
-                },
-                email: {
-                    required,
-                    format: email
-                }
-            };
-        },
-        computed: {
-            otherParticipants() {
-                var participants = this.all.map((participant, idx) => {participant.idx = idx; return participant;});
-                participants.splice(this.idx, 1);
-                return participants.filter(participant => !!participant.name);
-            }
-        },
-        created: function() {
-            if(this.name) this.v$.name.$touch();
-            if(this.email) this.v$.email.$touch();
-        },
-        methods: {
-            changeName(value) {
-                this.$emit('input:name', value);
-            },
-            changeEmail(value) {
-                this.$emit('input:email', value);
-            },
-            changeExclusions(value) {
-                this.$emit('input:exclusions', value);
-            },
-            addExclusion(e, participant) {
-                this.$emit('addExclusion', participant);
-            },
-            removeExclusion(e, participant) {
-                this.$emit('removeExclusion', participant);
-            }
-        }
-    };
-</script>
-
 <template>
     <tr class="participant" :dusk="'participant'+idx">
         <td class="align-middle">
@@ -178,6 +81,101 @@
         </td>
     </tr>
 </template>
+
+<script>
+    import Multiselect from '@vueform/multiselect'
+
+    import { useVuelidate } from '@vuelidate/core';
+    import { required, email } from '@vuelidate/validators';
+
+    export default {
+        components: {
+            Multiselect
+        },
+        setup: () => ({ v$: useVuelidate() }),
+        props: {
+            idx: {
+                type: Number,
+                required: true
+            },
+            name: {
+                type: String,
+                default: ''
+            },
+            email: {
+                type: String,
+                default: ''
+            },
+            exclusions: {
+                type: Array,
+                default: () => []
+            },
+            exclusionsTxt: {
+                type: String,
+                default: null
+            },
+            all: {
+                type: Array,
+                required: true
+            },
+            required: {
+                type: Boolean,
+                required: true
+            },
+            fieldError: {
+                type: Function,
+                required: true
+            },
+            participantOrganizer: {
+                type: Boolean,
+                default: true
+            }
+        },
+        validations: () => ({
+            name: {
+                required,
+                unique(value) {
+                    // standalone validator ideally should not assume a field is required
+                    if (value === '') return true;
+
+                    return (this.all.filter(participant => (participant.name === value)).length === 1);
+                }
+            },
+            email: {
+                required,
+                format: email
+            }
+        }),
+        computed: {
+            otherParticipants() {
+                var participants = this.all.map((participant, idx) => {participant.idx = idx; return participant;});
+                participants.splice(this.idx, 1);
+                return participants.filter(participant => !!participant.name);
+            }
+        },
+        created: function() {
+            if(this.name) this.v$.name.$touch();
+            if(this.email) this.v$.email.$touch();
+        },
+        methods: {
+            changeName(value) {
+                this.$emit('input:name', value);
+            },
+            changeEmail(value) {
+                this.$emit('input:email', value);
+            },
+            changeExclusions(value) {
+                this.$emit('input:exclusions', value);
+            },
+            addExclusion(e, participant) {
+                this.$emit('addExclusion', participant);
+            },
+            removeExclusion(e, participant) {
+                this.$emit('removeExclusion', participant);
+            }
+        }
+    };
+</script>
 
 <style scoped>
     @import '@vueform/multiselect/themes/default.css';

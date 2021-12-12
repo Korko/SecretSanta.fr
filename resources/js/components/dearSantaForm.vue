@@ -18,7 +18,7 @@
         props: {
             data: {
                 type: Object,
-                default() { return {}; }
+                default: () => ({})
             },
             routes: {
                 type: Object,
@@ -73,11 +73,11 @@
                 }
             )));
         },
-        validations: {
+        validations: () => ({
             content: {
                 required
             }
-        },
+        }),
         methods: {
             success(data) {
                 if(!data.email.updated_at) {
