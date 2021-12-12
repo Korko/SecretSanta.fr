@@ -22,8 +22,9 @@ class RandomFormRequest extends Request
     public function rules()
     {
         return parent::rules() + [
-            'participant-organizer'       => 'required|boolean',
+            'participant-organizer'       => 'sometimes|boolean',
 
+            'organizer'                   => 'sometimes|array',
             'organizer.name'              => 'exclude_if:participant-organizer,true|required',
             'organizer.email'             => 'exclude_if:participant-organizer,true|required|email',
 
