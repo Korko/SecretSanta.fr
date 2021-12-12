@@ -15,6 +15,8 @@ class CreateDrawsTable extends Migration
     {
         Schema::create('draws', function (Blueprint $table) {
             $table->id();
+            $table->longText('organizer_name');
+            $table->longText('organizer_email');
             $table->longText('mail_title');
             $table->longText('mail_body');
             $table->date('expires_at');
