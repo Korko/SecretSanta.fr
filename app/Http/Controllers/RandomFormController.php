@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Channels\MailChannel;
 use App\Exceptions\SolverException;
 use App\Models\Draw;
 use App\Models\Participant;
@@ -38,7 +37,7 @@ class RandomFormController extends Controller
                 ->withExpiration($safe['data-expiration'])
                 ->save();
 
-            Notification::route(MailChannel::class, [
+            Notification::route('mail', [
                 $draw->organizer_email => $draw->organizer_name
             ])->notify(new OrganizerRecap($draw));
 
