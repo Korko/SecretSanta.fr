@@ -39,7 +39,7 @@ class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncry
      */
     public function via(Participant $santa)
     {
-        return [MailChannel::class];
+        return ['mail'];
     }
 
     public function getMailableModel(Participant $santa)

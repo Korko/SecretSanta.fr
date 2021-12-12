@@ -1,6 +1,5 @@
 <?php
 
-use App\Channels\MailChannel;
 use App\Mail\OrganizerRecap as OrganizerRecapMail;
 use App\Models\Draw;
 use App\Models\Participant;
@@ -71,7 +70,7 @@ it('sends notifications in case of success', function () {
         new AnonymousNotifiable,
         OrganizerRecapNotif::class,
         function ($notification, $channels, $notifiable) use ($draw) {
-            return $notifiable->routes[MailChannel::class] === [$draw->organizer_email => $draw->organizer_name];
+            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
         }
     );
 
@@ -108,7 +107,7 @@ it('can create draws with a non participant organizer', function () {
         new AnonymousNotifiable,
         OrganizerRecapNotif::class,
         function ($notification, $channels, $notifiable) use ($draw) {
-            return $notifiable->routes[MailChannel::class] === [$draw->organizer_email => $draw->organizer_name];
+            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
         }
     );
 
@@ -148,7 +147,7 @@ it('sends to the organizer the link to their panel', function () {
             // Check link can be used for support
             assertEquals($draw->id, URLParser::parseByName('organizerPanel', $link)->draw->id);
 
-            return $notifiable->routes[MailChannel::class] === [$draw->organizer_email => $draw->organizer_name];
+            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
         }
     );
 });

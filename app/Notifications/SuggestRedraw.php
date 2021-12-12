@@ -20,7 +20,7 @@ class SuggestRedraw extends Notification
      */
     public function via(Participant $participant)
     {
-        return [MailChannel::class];
+        return ['mail'];
     }
 
     /**
