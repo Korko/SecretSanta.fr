@@ -9,7 +9,7 @@
 
                     <toggle
                         class="organizerToggle"
-                        name="participantOrganizer"
+                        name="participant-organizer"
                         v-model="participantOrganizer"
                         :labelYes="$t('form.organizerIn')"
                         :labelNo="$t('form.organizerOut')"
@@ -35,11 +35,11 @@
                                                     :placeholder="$t('form.participant.name.placeholder')"
                                                     v-model="organizer.name"
                                                     class="form-control participant-name"
-                                                    :class="{ 'is-invalid': v$.organizer.name.$error || fieldError(`organizer.name`)}"
-                                                    :aria-invalid="v$.organizer.name.$error || fieldError(`organizer.name`)"
-                                                    @blur="v$.organizer.name.$touch()"
+                                                    :class="{ 'is-invalid': $v.organizer.name.$error || fieldError(`organizer.name`)}"
+                                                    :aria-invalid="$v.organizer.name.$error || fieldError(`organizer.name`)"
+                                                    @blur="$v.organizer.name.$touch()"
                                                 />
-                                                <div v-if="!v$.organizer.name.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.name.required') }}</div>
+                                                <div v-if="!$v.organizer.name.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.name.required') }}</div>
                                                 <div v-else-if="fieldError(`organizer.name`)" class="invalid-tooltip">{{ fieldError(`organizer.name`) }}</div>
                                             </div>
                                         </td>
@@ -56,12 +56,12 @@
                                                     :placeholder="$t('form.participant.email.placeholder')"
                                                     v-model="organizer.email"
                                                     class="form-control participant-email"
-                                                    :class="{ 'is-invalid': v$.organizer.email.$error || fieldError(`organizer.email`)}"
-                                                    :aria-invalid="v$.organizer.email.$error || fieldError(`organizer.email`)"
-                                                    @blur="v$.organizer.email.$touch()"
+                                                    :class="{ 'is-invalid': $v.organizer.email.$error || fieldError(`organizer.email`)}"
+                                                    :aria-invalid="$v.organizer.email.$error || fieldError(`organizer.email`)"
+                                                    @blur="$v.organizer.email.$touch()"
                                                 />
-                                                <div v-if="!v$.organizer.email.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.required') }}</div>
-                                                <div v-else-if="!v$.organizer.email.format" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.format') }}</div>
+                                                <div v-if="!$v.organizer.email.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.required') }}</div>
+                                                <div v-else-if="!$v.organizer.email.format" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.format') }}</div>
                                                 <div v-else-if="fieldError(`organizer.email`)" class="invalid-tooltip">{{ fieldError(`organizer.email`) }}</div>
                                             </div>
                                         </td>
@@ -511,10 +511,6 @@
     }
     body.nowebp .input-group-addon.lang::before {
         background-image: url(../../../images/languages.png);
-    }
-
-    .input-group-addon.lang[lang=fr]::before {
-        background-position: 0 -121px;
     }
 
     #mailContent,

@@ -190,7 +190,7 @@
                             title: this.draw.mail_title,
                             creation: this.draw.created_at,
                             expiration: this.draw.expires_at,
-                            organizerName: this.organizer,
+                            organizerName: this.draw.organizer_name,
                             links: {
                                 org: {link: window.location.href}
                             }

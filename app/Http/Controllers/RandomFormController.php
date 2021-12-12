@@ -9,6 +9,7 @@ use App\Models\Participant;
 use App\Notifications\OrganizerRecap;
 use App\Http\Requests\RandomFormRequest;
 use App\Services\DrawFormHandler;
+use Arr;
 use Exception;
 use Notification;
 
@@ -26,7 +27,7 @@ class RandomFormController extends Controller
         try {
             $drawForm = (new DrawFormHandler());
 
-            if(!$safe['participant-organizer']) {
+            if(!Arr::get($safe, 'participant-organizer', false)) {
                 $drawForm->withOrganizer($safe['organizer']);
             }
 
@@ -37,7 +38,7 @@ class RandomFormController extends Controller
                 ->withExpiration($safe['data-expiration'])
                 ->save();
 
-            Notification::route(MailChannel::class, [
+            Notification::route('mail', [
                 $draw->organizer_email => $draw->organizer_name
             ])->notify(new OrganizerRecap($draw));
 

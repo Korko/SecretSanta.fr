@@ -78,7 +78,7 @@ Le code source est disponible sur :link',
     ],
 
     'participant' => [
-        'organizer'  => 'Organisateur/Organisatrice',
+        'organizer'  => 'Organisateur·rice',
         'name'       => [
             'label'       => 'Nom ou pseudonyme',
             'placeholder' => 'exemple : Paul ou Korko',

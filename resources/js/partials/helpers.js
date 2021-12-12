@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 /*export const getMimeTypeFromData = function(data) {
 
     var mimes = [
@@ -81,6 +79,7 @@ export const translate = (x, y) => {
   return `translate(${x}, ${y})`;
 };
 
+import _ from 'lodash';
 export const deepMerge = (object, ...sources) => {
     return _.mergeWith(
         object,

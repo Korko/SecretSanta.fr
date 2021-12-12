@@ -43,7 +43,7 @@
 
 <template>
     <span>
-        <input type="checkbox" class="toggle" :id="id" :name="name" :checked="modelValue" @change="emit" />
+        <input type="checkbox" class="toggle" :id="id" :name="name" :checked="modelValue" value="1" @change="emit" />
         <label :for="id" :style="{'--backgroundNo': backgroundNo, '--backgroundYes': backgroundYes}">
           <span class="on">{{ labelYes }}</span>
           <span class="off">{{ labelNo }}</span>

@@ -27,10 +27,6 @@
                 type: Object,
                 required: true
             },
-            organizer: {
-                type: String,
-                required: true
-            },
             participant: {
                 type: Object,
                 required: true
@@ -85,7 +81,7 @@
                         title: this.draw.mail_title,
                         creation: this.draw.created_at,
                         expiration: this.draw.expires_at,
-                        organizerName: this.organizer,
+                        organizerName: this.draw.organizer_name,
                         links: {
                             [this.participant.hash]: {name: this.participant.name, link: window.location.href}
                         }

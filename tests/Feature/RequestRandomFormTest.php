@@ -15,7 +15,7 @@ it('sends no notifications in case of error', function ($participants) {
     assertEquals(0, Participant::count());
 
     ajaxPost('/', [
-            'participant-organizer' => true,
+            'participant-organizer' => '1',
             'participants'          => $participants,
             'title'                 => 'this is a test',
             'content-email'         => 'test mail {SANTA} => {TARGET}',
@@ -37,7 +37,7 @@ it('can create draws', function () {
     $participants = generateParticipants(3);
 
     ajaxPost('/', [
-            'participant-organizer' => true,
+            'participant-organizer' => '1',
             'participants'          => $participants,
             'title'                 => 'this is a test',
             'content-email'         => 'test mail {SANTA} => {TARGET}',
@@ -54,7 +54,7 @@ it('sends notifications in case of success', function () {
     Notification::fake();
 
     ajaxPost('/', [
-            'participant-organizer' => true,
+            'participant-organizer' => '1',
             'participants'          => generateParticipants(3),
             'title'                 => 'this is a test',
             'content-email'         => 'test mail {SANTA} => {TARGET}',
@@ -71,7 +71,7 @@ it('sends notifications in case of success', function () {
         new AnonymousNotifiable,
         OrganizerRecapNotif::class,
         function ($notification, $channels, $notifiable) use ($draw) {
-            return $notifiable->routes[MailChannel::class] === [$draw->organizer_email => $draw->organizer_name];
+            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
         }
     );
 
@@ -88,7 +88,7 @@ it('can create draws with a non participant organizer', function () {
     $participants = generateParticipants(3);
 
     ajaxPost('/', [
-            'participant-organizer' => false,
+            'participant-organizer' => '0',
             'organizer'             => ['name' => 'foo', 'email' => 'foo@foobar.com'],
             'participants'          => $participants,
             'title'                 => 'this is a test',
@@ -108,7 +108,7 @@ it('can create draws with a non participant organizer', function () {
         new AnonymousNotifiable,
         OrganizerRecapNotif::class,
         function ($notification, $channels, $notifiable) use ($draw) {
-            return $notifiable->routes[MailChannel::class] === [$draw->organizer_email => $draw->organizer_name];
+            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
         }
     );
 
@@ -124,7 +124,7 @@ it('sends to the organizer the link to their panel', function () {
     Notification::fake();
 
     ajaxPost('/', [
-            'participant-organizer' => true,
+            'participant-organizer' => '1',
             'participants'          => generateParticipants(3),
             'title'                 => 'this is a test',
             'content-email'         => 'test mail {SANTA} => {TARGET}',
@@ -148,7 +148,7 @@ it('sends to the organizer the link to their panel', function () {
             // Check link can be used for support
             assertEquals($draw->id, URLParser::parseByName('organizerPanel', $link)->draw->id);
 
-            return $notifiable->routes[MailChannel::class] === [$draw->organizer_email => $draw->organizer_name];
+            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
         }
     );
 });
@@ -161,7 +161,7 @@ it('can deal with thousands of participants', function () {
     $participants = generateParticipants($totalParticipants, false);
 
     ajaxPost('/', [
-            'participant-organizer' => true,
+            'participant-organizer' => '1',
             'participants'          => $participants,
             'title'                 => 'this is a test',
             'content-email'         => 'test mail {SANTA} => {TARGET}',

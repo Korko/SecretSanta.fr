@@ -321,7 +321,7 @@ export default {
                 "caption": "Liste des participats"
             },
             "participant": {
-                "organizer": "Organisateur/Organisatrice",
+                "organizer": "Organisateur·rice",
                 "name": {
                     "label": "Nom ou pseudonyme",
                     "placeholder": "exemple : Paul ou Korko"

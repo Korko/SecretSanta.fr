@@ -31,8 +31,7 @@ class DearSantaController extends Controller
 
         return response()->json([
             'participant' => $participant->only(['hash', 'name']),
-            'draw' => $participant->draw->only(['hash', 'mail_title', 'created_at', 'expires_at']),
-            'organizer' => $participant->draw->organizer->name,
+            'draw' => $participant->draw->only(['hash', 'mail_title', 'created_at', 'expires_at', 'organizer_name']),
             'emails' => $participant->dearSantas->mapWithKeys(function ($email) {
                 return [
                     $email->mail->id => $email->only($this->dearSantaPublicFields)

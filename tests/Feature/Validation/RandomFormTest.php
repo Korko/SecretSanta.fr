@@ -4,7 +4,7 @@ it('fails if nothing sent', function () {
     ajaxPost('/', ['a' => 'b'])
         ->assertStatus(422)
         ->assertJsonValidationErrors([
-            'participants', 'data-expiration', 'title', 'content-email',
+            'organizer.name', 'organizer.email', 'participants', 'data-expiration', 'title', 'content-email',
         ]);
 });
 
@@ -14,7 +14,7 @@ it('needs at least three names', function () {
         ]])
         ->assertStatus(422)
         ->assertJsonValidationErrors([
-            'participants', 'participants.0.email', 'title', 'content-email', 'data-expiration',
+            'organizer.name', 'organizer.email', 'participants', 'participants.0.email', 'title', 'content-email', 'data-expiration',
         ]);
 
     ajaxPost('/', ['participants' => [
@@ -23,6 +23,7 @@ it('needs at least three names', function () {
         ]])
         ->assertStatus(422)
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants', 'participants.0.email', 'participants.1.email',
             'title', 'content-email', 'data-expiration',
         ]);
@@ -35,7 +36,7 @@ it('fails if names are duplicates', function () {
         ]])
         ->assertStatus(422)
         ->assertJsonValidationErrors([
-            'participants',
+            'organizer.name', 'organizer.email', 'participants',
             'participants.0.name', 'participants.0.email',
             'participants.1.name', 'participants.1.email',
             'title', 'content-email', 'data-expiration',
@@ -50,6 +51,7 @@ it('requires emails', function () {
         ]])
         ->assertStatus(422)
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants.0.email', 'participants.1.email', 'participants.2.email',
             'title', 'content-email', 'data-expiration',
         ]);
@@ -61,6 +63,7 @@ it('requires emails', function () {
         ]])
         ->assertStatus(422)
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants.0.email', 'participants.2.email',
             'title', 'content-email', 'data-expiration',
         ]);
@@ -74,6 +77,7 @@ it('needs valid email format', function () {
         ]])
         ->assertStatus(422)
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants.0.email',
             'title', 'content-email', 'data-expiration',
         ]);
@@ -87,7 +91,7 @@ it('needs email body', function () {
         ]])
         ->assertStatus(422)
         ->assertJsonValidationErrors([
-            'title', 'content-email', 'data-expiration',
+            'organizer.name', 'organizer.email', 'title', 'content-email', 'data-expiration',
         ]);
 });
 
@@ -99,6 +103,7 @@ it('fails if exclusion does not exist', function () {
         ]])
         ->assertStatus(422)
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants.0.exclusions.0', 'participants.0.email',
             'participants.1.email',
             'participants.2.email',
@@ -113,6 +118,7 @@ it('works with valid exclusion', function () {
         ]])
         ->assertStatus(422)
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants.0.email',
             'participants.1.email',
             'participants.2.email',
@@ -125,7 +131,7 @@ it('needs a date in specific format', function () {
             ['name' => 'toto', 'email' => 'test@test.com'],
             ['name' => 'tata', 'email' => 'test@test.com'],
             ['name' => 'tutu', 'email' => 'test@test.com'],
-        ], 'data-expiration' => date('Ymd', strtotime('+3 day'))])
+        ], 'participant-organizer' => '1', 'data-expiration' => date('Ymd', strtotime('+3 day'))])
         ->assertStatus(422)
         ->assertJsonValidationErrors(['title', 'content-email', 'data-expiration']);
 });
@@ -135,7 +141,7 @@ it('fails if the expiration is past', function () {
             ['name' => 'toto', 'email' => 'test@test.com'],
             ['name' => 'tata', 'email' => 'test@test.com'],
             ['name' => 'tutu', 'email' => 'test@test.com'],
-        ], 'data-expiration' => '1970-08-22'])
+        ], 'participant-organizer' => '1', 'data-expiration' => '1970-08-22'])
         ->assertStatus(422)
         ->assertJsonValidationErrors(['title', 'content-email', 'data-expiration']);
 });
@@ -145,7 +151,7 @@ it('fails if the expiration is too soon', function () {
             ['name' => 'toto', 'email' => 'test@test.com'],
             ['name' => 'tata', 'email' => 'test@test.com'],
             ['name' => 'tutu', 'email' => 'test@test.com'],
-        ], 'data-expiration' => date('Y-m-d')])
+        ], 'participant-organizer' => '1', 'data-expiration' => date('Y-m-d')])
         ->assertStatus(422)
         ->assertJsonValidationErrors(['title', 'content-email', 'data-expiration']);
 });
@@ -157,5 +163,5 @@ it('works if the expiration is far enough', function () {
             ['name' => 'tutu', 'email' => 'test@test.com'],
         ], 'data-expiration' => date('Y-m-d', strtotime('+3 day'))])
         ->assertStatus(422)
-        ->assertJsonValidationErrors(['title', 'content-email']);
+        ->assertJsonValidationErrors(['organizer.name', 'organizer.email']);
 });

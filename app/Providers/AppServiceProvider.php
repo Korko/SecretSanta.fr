@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Facades\DrawCrypt;
-use App\Services\CsvGenerator;
-use App\Services\Response;
-use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Foundation\Application;
+use Illuminate\Mail\Markdown;
+use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\ServiceProvider;
 use Queue;
 
@@ -23,10 +23,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Solvers\HatSolver::class
         );
 
-        $this->app->bind(
-            \Illuminate\Notifications\Channels\MailChannel::class,
-            \App\Channels\MailChannel::class
-        );
+        $channelManager = $this->app->get(ChannelManager::class);
+        $channelManager->extend('mail', function (Application $application) {
+            return new \App\Channels\MailChannel($application->get('mail.manager'), $application->get(Markdown::class));
+        });
     }
 
     /**
