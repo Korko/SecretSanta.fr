@@ -257,7 +257,7 @@
 
                     <toggle
                         class="organizerToggle"
-                        name="participantOrganizer"
+                        name="participant-organizer"
                         v-model="participantOrganizer"
                         :labelYes="$t('form.organizerIn')"
                         :labelNo="$t('form.organizerOut')"
