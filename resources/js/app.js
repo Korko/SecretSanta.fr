@@ -8,6 +8,7 @@ const app = createApp({
     components: {
         RandomForm: defineAsyncComponent(() => import('./components/random/form.vue')),
         OrganizerForm: defineAsyncComponent(() => import('./components/organizer/form.vue')),
+        DearSantaForm: defineAsyncComponent(() => import('./components/dearSantaForm.vue')),
         Dashboard: defineAsyncComponent(() => import('./components/dashboard.vue')),
         Faq: defineAsyncComponent(() => import('./components/faq.vue')),
         VueFetcher: defineAsyncComponent(() => import('./components/vueFetcher.vue'))

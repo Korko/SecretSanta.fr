@@ -4,12 +4,6 @@
     @parent
 
     @javascript([
-        'routes' => [
-            'contactUrl' => URL::signedRoute('dearSanta.contact', ['participant' => $participant]),
-            'fetchStateUrl' => URL::signedRoute('dearSanta.fetchState', ['participant' => $participant]),
-            'subUrl' => URL::signedRoute('participant.sub', ['participant' => $participant]),
-            'unsubUrl' => URL::signedRoute('participant.unsub', ['participant' => $participant]),
-        ],
         'pusher' => [
             'key' => Arr::get(config('websockets.apps'), '0.key'),
             'host' => Arr::get(config('websockets.apps'), '0.host'),
@@ -30,5 +24,9 @@
 @stop
 
 @section('content')
-    <vue-fetcher fetch="{{ URL::signedRoute('dearSanta.fetch', ['participant' => $participant]) }}" :form="DearSantaForm" />
+    <vue-fetcher fetch="{{ URL::signedRoute('dearSanta.fetch', ['participant' => $participant]) }}">
+        <template v-slot:default="slotProps">
+            <dear-santa-form v-bind="slotProps.data" :routes="JSON.parse('{{ json_encode([ 'contactUrl' => URL::signedRoute('dearSanta.contact', ['participant' => $participant]), 'fetchStateUrl' => URL::signedRoute('dearSanta.fetchState', ['participant' => $participant]), 'subUrl' => URL::signedRoute('participant.sub', ['participant' => $participant]), 'unsubUrl' => URL::signedRoute('participant.unsub', ['participant' => $participant]) ]) }}')"/>
+        </template>
+    </vue-fetcher>
 @stop

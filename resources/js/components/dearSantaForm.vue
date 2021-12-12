@@ -1,9 +1,8 @@
 <script>
     import Vue from 'vue';
 
-    import Vuelidate from 'vuelidate';
-    import { required } from 'vuelidate/lib/validators'
-    Vue.use(Vuelidate);
+    import { useVuelidate } from '@vuelidate/core';
+    import { required } from '@vuelidate/validators';
 
     import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
@@ -15,22 +14,43 @@
     export default {
         components: { EmailStatus },
         extends: DefaultForm,
+        setup: () => ({ v$: useVuelidate() }),
+        validations() {
+            return {
+                content: {
+                    required
+                }
+            };
+        },
         props: {
-            data: {
+            draw: {
                 type: Object,
-                default: () => ({})
+                required: true
+            },
+            organizer: {
+                type: String,
+                required: true
+            },
+            participant: {
+                type: Object,
+                required: true
+            },
+            emails: {
+                type: Object,
+                required: true
             },
             routes: {
+                type: Object,
+                required: true
+            },
+            resendEmailUrls: {
                 type: Object,
                 required: true
             }
         },
         data() {
             return {
-                content: '',
-                draw: this.data.draw,
-                emails: this.data.emails,
-                resendEmailUrls: this.data.resendEmailUrls
+                content: ''
             };
         },
         computed: {
@@ -73,11 +93,6 @@
                 }
             )));
         },
-        validations: () => ({
-            content: {
-                required
-            }
-        }),
         methods: {
             success(data) {
                 if(!data.email.updated_at) {

@@ -26,6 +26,9 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)({
     OrganizerForm: (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineAsyncComponent)(function () {
       return Promise.all(/*! import() */[__webpack_require__.e("/js/vendor"), __webpack_require__.e("resources_js_components_organizer_form_vue")]).then(__webpack_require__.bind(__webpack_require__, /*! ./components/organizer/form.vue */ "./resources/js/components/organizer/form.vue"));
     }),
+    DearSantaForm: (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineAsyncComponent)(function () {
+      return Promise.all(/*! import() */[__webpack_require__.e("/js/vendor"), __webpack_require__.e("resources_js_components_dearSantaForm_vue")]).then(__webpack_require__.bind(__webpack_require__, /*! ./components/dearSantaForm.vue */ "./resources/js/components/dearSantaForm.vue"));
+    }),
     Dashboard: (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineAsyncComponent)(function () {
       return Promise.all(/*! import() */[__webpack_require__.e("/js/vendor"), __webpack_require__.e("resources_js_components_dashboard_vue")]).then(__webpack_require__.bind(__webpack_require__, /*! ./components/dashboard.vue */ "./resources/js/components/dashboard.vue"));
     }),
