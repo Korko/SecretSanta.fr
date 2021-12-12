@@ -537,27 +537,6 @@
         white-space: nowrap;
     }
 
-    .input-group-addon.lang {
-        padding: 6px 8px;
-    }
-
-    .input-group-addon.lang::before {
-        background-repeat: no-repeat;
-        background-image: url(../../images/languages.webp);
-        height: 11px;
-        width: 14px;
-        content: '';
-        display: inline-block;
-        margin-right: 8px;
-    }
-    body.nowebp .input-group-addon.lang::before {
-        background-image: url(../../images/languages.png);
-    }
-
-    .input-group-addon.lang[lang=fr]::before {
-        background-position: 0 -121px;
-    }
-
     #mailContent,
     #mailPost {
         max-width: 100%;
