@@ -13,33 +13,35 @@ class OrganizerInDraw extends Migration
      */
     public function up()
     {
-        Schema::table('draws', function (Blueprint $table) {
-            $table->longText('organizer_name')->nullable();
-            $table->longText('organizer_email')->nullable();
-        });
+        if (! Schema::hasColumn('draws', 'organizer_name')) {
+            Schema::table('draws', function (Blueprint $table) {
+                $table->longText('organizer_name')->nullable();
+                $table->longText('organizer_email')->nullable();
+            });
 
-        DB::table('draws')
-            ->join('participants as organizer', function ($join) {
-                $join
-                    ->on('draws.id', '=', 'organizer.draw_id')
-                    ->whereNotExists(function ($query) {
-                       $query->select(DB::raw(1))
-                             ->from('participants')
-                             ->whereColumn('draws.id', '=', 'participants.draw_id')
-                             ->whereColumn('organizer.id', '>', 'participants.id');
-                   });
-            })
-            ->update(
-                array(
-                    'organizer_name' => '`organizer`.`name`',
-                    'organizer_email' => '`organizer`.`email`'
-                )
-            );
+            DB::table('draws')
+                ->join('participants as organizer', function ($join) {
+                    $join
+                        ->on('draws.id', '=', 'organizer.draw_id')
+                        ->whereNotExists(function ($query) {
+                           $query->select(DB::raw(1))
+                                 ->from('participants')
+                                 ->whereColumn('draws.id', '=', 'participants.draw_id')
+                                 ->whereColumn('organizer.id', '>', 'participants.id');
+                       });
+                })
+                ->update(
+                    array(
+                        'organizer_name' => DB::raw('organizer.name'),
+                        'organizer_email' => DB::raw('organizer.email')
+                    )
+                );
 
-        Schema::table('draws', function (Blueprint $table) {
-            $table->longText('organizer_name')->nullable(false)->change();
-            $table->longText('organizer_email')->nullable(false)->change();
-        });
+            Schema::table('draws', function (Blueprint $table) {
+                $table->longText('organizer_name')->nullable(false)->change();
+                $table->longText('organizer_email')->nullable(false)->change();
+            });
+        }
     }
 
     /**
