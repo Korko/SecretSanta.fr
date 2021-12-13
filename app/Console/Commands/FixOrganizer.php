@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
+use Notification;
 use URLParser;
 
 class FixOrganizer extends Command
