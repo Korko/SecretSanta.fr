@@ -110,6 +110,7 @@ Le code source est disponible sur :link',
         'import'        => 'Importer',
         'importError'   => 'Une erreur est survenue lors de l\'import.',
         'importSuccess' => 'L\'import a été effectué avec succès.',
+        'analyzing'     => 'Chargement en cours...',
     ],
 
     'mail' => [

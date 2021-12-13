@@ -2,12 +2,35 @@
     import Modal from './modal.vue';
     import jQuery from 'jquery';
 
+    const jschardet = require("jschardet")
+
     export default {
         components: { Modal },
+        data() {
+            return {
+                analyzing: false
+            };
+        },
         methods: {
+            getEncoding: async function(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        let csvResult = e.target.result.split(/\r|\n|\r\n/);
+                        resolve(jschardet.detect(csvResult.toString()).encoding);
+                    }
+                    reader.readAsBinaryString(file);
+                });
+            },
             emitSubmit: function() {
-                this.$emit('import', jQuery('#uploadCsv input[type=file]')[0].files[0]);
-                this.$emit('close');
+                const file = jQuery('#uploadCsv input[type=file]')[0].files[0];
+
+                this.analyzing = true;
+                this.getEncoding(file).then(encoding => {
+                    this.$emit('import', file, encoding);
+                    this.$emit('close');
+                    this.analyzing = false;
+                });
             },
             emitCancel: function() {
                 this.$emit('close');
@@ -61,14 +84,20 @@
         </template>
 
         <template #footer>
-            <button class="btn btn-warning" @click="$refs.reset.click()">
-                <span class="fas fa-stop-circle" />
-                {{ $t('form.csv.cancel') }}
-            </button>
-            <button class="btn btn-primary" @click="$refs.submit.click()">
+            <button v-if="analyzing" :disabled="true" class="btn btn-primary">
                 <span class="fas fa-upload" />
-                {{ $t('form.csv.import') }}
+                {{ $t('form.csv.analyzing') }}
             </button>
+            <template v-else>
+                <button class="btn btn-warning" @click="$refs.reset.click()">
+                    <span class="fas fa-stop-circle" />
+                    {{ $t('form.csv.cancel') }}
+                </button>
+                <button class="btn btn-primary" @click="$refs.submit.click()">
+                    <span class="fas fa-upload" />
+                    {{ $t('form.csv.import') }}
+                </button>
+            </template>
         </template>
     </modal>
 </template>
