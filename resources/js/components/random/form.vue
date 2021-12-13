@@ -257,6 +257,7 @@
     window.$ = window.jQuery = jQuery;
 
     import alertify from '../../partials/alertify.js';
+    import Toastify from '../../partials/toastify.js';
 
     import { useVuelidate } from '@vuelidate/core';
     import { required, minLength, email, requiredIf } from '@vuelidate/validators';
@@ -382,23 +383,31 @@
 
             addParticipant(name, email, exclusions) {
                 var n = this.participants.push({
-                    name: name,
-                    email: email,
+                    name: name ? name.trim() : undefined,
+                    email: email ? email.trim() : undefined,
                     id: 'id' + this.participants.length + new Date().getTime()
                 });
-                this.participants[n - 1].exclusions = (exclusions || '')
-                    .split(',')
-                    .map(s => s.trim())
-                    .filter(exclusion => {
-                        return (
-                            this.participants.findIndex(participant => (participant.name === exclusion)) !== -1
-                        );
-                    });
+
+                // Delay to wait for the names of all other participants to be set
+                setTimeout(
+                    () => {
+                        this.participants[n - 1].exclusions = (exclusions || '')
+                            .split(',')
+                            .map(s => s.trim())
+                            .map(exclusion => {
+                                var idx = this.participants.findIndex(participant => (participant.name === exclusion));
+                                return idx !== -1 ? this.participants[idx] : undefined;
+                            })
+                            .filter(p => !!p);
+                    },
+                    0
+                );
             },
 
-            importParticipants(file) {
+            importParticipants(file, encoding) {
                 this.importing = true;
                 Papa.parse(file, {
+                    encoding,
                     error: function() {
                         this.importing = false;
                         alertify.errorAlert(this.$t('form.csv.importError'));
@@ -421,19 +430,19 @@
                                 this.addParticipant();
                             }
                         }
-                        alertify.errorAlert(this.$t('form.csv.importSuccess'));
+                        Toastify.success(this.$t('form.csv.importSuccess'));
                     }.bind(this)
                 });
             },
 
             appendSanta() {
-                this.content += "{SANTA}";
-                this.v$.content.$touch();
+                navigator.clipboard.writeText("{SANTA}");
+                Toastify.success(this.$t('common.copied'));
             },
 
             appendTarget() {
-                this.content += "{TARGET}";
-                this.v$.content.$touch();
+                navigator.clipboard.writeText("{TARGET}");
+                Toastify.success(this.$t('common.copied'));
             },
 
             reset() {
@@ -451,6 +460,8 @@
 </script>
 
 <style scoped>
+    @import "~toastify-js/src/toastify.css";
+
     .organizerToggle {
         display: inline-block;
     }

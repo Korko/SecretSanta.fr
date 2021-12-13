@@ -2,6 +2,9 @@
 
 return [
     'internal' => 'Une erreur est survenue',
+    'success'  => 'Succès',
+
+    'copied' => 'Copié dans le presse papier',
 
     'fetcher' => [
         'load'    => 'Charger',
