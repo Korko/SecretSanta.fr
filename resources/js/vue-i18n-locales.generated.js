@@ -86,6 +86,8 @@ export default {
         },
         "common": {
             "internal": "Une erreur est survenue",
+            "success": "Succès",
+            "copied": "Copié dans le presse papier",
             "fetcher": {
                 "load": "Charger",
                 "loading": "Chargement en cours..."
@@ -346,7 +348,8 @@ export default {
                 "cancel": "Annuler",
                 "import": "Importer",
                 "importError": "Une erreur est survenue lors de l'import.",
-                "importSuccess": "L'import a été effectué avec succès."
+                "importSuccess": "L'import a été effectué avec succès.",
+                "analyzing": "Chargement en cours..."
             },
             "mail": {
                 "title": {
