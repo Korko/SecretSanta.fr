@@ -14,17 +14,20 @@ class DrawHandler
 {
     public static function solve(Draw $draw, ?ParticipantsCollection $participants = null)
     {
-        $hat = self::getHat($participants ?: $draw->participants);
+        $participants = ($participants ?: $draw->participants)
+            ->mapWithKeys(function ($participant) { return [$participant->id => $participant]; });
 
-        $participants = $draw->participants->pluck(null, 'id');
+        $hat = self::getHat($participants);
+
         foreach ($hat as $santaIdx => $targetIdx) {
-            $participants[$santaIdx]->target()->save($participants[$targetIdx]);
+            $participants[$santaIdx]->target()->associate($participants[$targetIdx]);
+            $participants[$santaIdx]->save();
         }
 
-        $draw->next_solvable = self::canRedraw($draw->participants->fresh());
+        $draw->next_solvable = self::canRedraw($participants);
         $draw->save();
 
-        $draw->participants->each(function($participant) {
+        $participants->each(function($participant) {
             $participant->notify(new TargetDrawn);
         });
     }
