@@ -7,6 +7,7 @@ use App\Http\Requests\OrganizerResendEmailRequest;
 use App\Models\Draw;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
+use App\Notifications\ConfirmWithdrawal;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
@@ -94,13 +95,15 @@ class OrganizerController extends Controller
         $target = $participant->target;
 
         // A -> B -> C => A -> C
-        $santa->target()->save($target);
+        $santa->target()->associate($target);
+        $santa->save();
 
         $santa->notify(new TargetWithdrawn);
         $target->dearSantas->each(function ($dearSanta) use ($santa) {
             $santa->notify(new DearSanta($dearSanta));
         });
         $participant->delete();
+        $participant->notify(new ConfirmWithdrawal);
 
         return response()->json([
             'message' => trans('organizer.withdrawn', ['name' => $participant->name]),

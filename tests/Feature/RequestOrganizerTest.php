@@ -1,5 +1,6 @@
 <?php
 
+use App\Notifications\ConfirmWithdrawal;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
@@ -80,15 +81,13 @@ test('the organizer can withdraw a participant', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    $santa = $santa->fresh();
-    $participant = $participant->fresh();
-    $target = $target->fresh();
-
-    assertEquals($santa->target->id, $target->id);
-    assertEquals($target->santa->id, $santa->id);
-
     Notification::assertSentTo($santa, TargetWithdrawn::class);
     Notification::assertSentTo($santa, DearSanta::class);
+    Notification::assertSentTo($participant, ConfirmWithdrawal::class);
+
+    assertEquals($santa->fresh()->target->id, $target->id);
+    assertEquals($target->fresh()->santa->id, $santa->id);
+    assertEquals($participant->fresh(), null);
 });
 
 test('the organizer can download initial data', function () {
