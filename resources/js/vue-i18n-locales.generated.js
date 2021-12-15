@@ -96,7 +96,7 @@ export default {
                 "send": "Envoyer",
                 "sending": "Envoi en cours",
                 "sent": "Envoyé",
-                "reset": "Recommencer"
+                "reset": "Commencer un nouveau tirage"
             },
             "modal": {
                 "close": "Fermer"
