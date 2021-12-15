@@ -24,7 +24,7 @@
     </style>
     <![endif]-->
 
-        <link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Kreon&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Kreon&display=swap" rel="stylesheet">
 
     <style type="text/css" media="screen">
         /* Linked Styles */
@@ -34,7 +34,7 @@
         p { padding:0 !important; margin:0 !important }
         img { -ms-interpolation-mode: bicubic; /* Allow smoother rendering of resized image in Internet Explorer */ }
         .mcnPreviewText { display: none !important; }
-                blockquote { font-family:'Annie Use Your Telescope', cursive; }
+        blockquote { font-family:'Caveat', cursive; }
 
         /* Mobile styles */
         @media only screen and (max-device-width: 480px), only screen and (max-width: 480px) {
