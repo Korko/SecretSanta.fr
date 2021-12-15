@@ -79,7 +79,12 @@
                 return fetch(this.resendEmailUrls[id]);
             },
             nl2br(str) {
-                return str.replace("\n", '<br />');
+                return str.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br />$2');
+            },
+            e(str) {
+                var p = document.createElement("p");
+                p.appendChild(document.createTextNode(str));
+                return p.innerHTML;
             }
         }
     };
@@ -124,7 +129,7 @@
             <tbody>
                 <tr v-for="email in emailsByDate" :key="email.id" class="email">
                     <td>{{ email.created_at }}</td>
-                    <td><p>{{ nl2br(email.mail_body) }}</p></td>
+                    <td><p v-html="nl2br(e(email.mail_body))"></p></td>
                     <td><email-status :delivery_status="email.mail.delivery_status" :last_update="email.mail.updated_at" @redo="resend(email.id)"/></td>
                 </tr>
                 <tr v-if="emails.length === 0" class="no-email">
