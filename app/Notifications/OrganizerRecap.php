@@ -62,7 +62,7 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
     {
         return (new MailMessage)
             ->subject(__('emails.organizer_recap_title', ['draw' => $this->draw->id]))
-            ->view('emails.organizer_recap', [
+            ->view(['emails.organizer_recap', 'emails.organizer_recap_plain'], [
                 'organizerName' => $this->draw->organizer_name,
                 'expirationDate' => $this->draw->expires_at->locale(App::getLocale())->isoFormat('LL'),
                 'deletionDate' => $this->draw->deleted_at->locale(App::getLocale())->isoFormat('LL'),
