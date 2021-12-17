@@ -7,12 +7,14 @@ use App\Facades\DrawCrypt;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
-class DearSanta extends Notification
+class DearSanta extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
     use Queueable, SerializesModels;
 
