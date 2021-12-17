@@ -15,7 +15,7 @@ class DearSanta extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['mail_body', 'sender_id', 'mail_id'];
+    protected $fillable = ['mail_body', 'sender_id'];
 
     /**
      * Indicates if the model should be timestamped.
