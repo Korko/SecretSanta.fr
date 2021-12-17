@@ -12,7 +12,7 @@ it('cleans up expired draws', function () {
     $drawNotExpired = Draw::factory()->create();
     $drawExpired = Draw::factory()->expired()->create();
 
-    Draw::cleanup();
+    test()->artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
 
     assertNotNull($drawNotExpired->fresh());
     assertNull($drawExpired->fresh());// assertDeleted
@@ -20,8 +20,9 @@ it('cleans up expired draws', function () {
 
 it('cleans up everything', function () {
     Draw::factory()->expired()->create();
-// TODO: need to create exclusions, dearSantas and mails
-    Draw::cleanup();
+    // TODO: need to create exclusions, dearSantas and mails
+
+    test()->artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
 
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
