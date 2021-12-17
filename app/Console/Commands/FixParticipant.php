@@ -34,7 +34,7 @@ class FixParticipant extends Command
 
         $participant = $draw->participants->find($this->argument('id'));
         $participant->email = $this->argument('email');
-        $participant->find($this->argument('id'))->save();
+        $participant->save();
 
         $participant->notifyNow(new TargetDrawn);
         $this->info('Participant mail sent');
