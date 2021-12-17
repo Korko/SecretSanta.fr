@@ -61,7 +61,7 @@ class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncry
 
         return (new MailMessage)
             ->subject($title)
-            ->view('emails.target_withdrawn', [
+            ->view(['emails.target_withdrawn', 'emails.target_withdrawn_plain'], [
                 'santaName' => $santa->name,
                 'targetName' => $santa->target->name,
             ]);

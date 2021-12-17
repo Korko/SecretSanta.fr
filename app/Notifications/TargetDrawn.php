@@ -66,7 +66,7 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
 
         return (new MailMessage)
             ->subject($title)
-            ->view('emails.target_drawn', [
+            ->view(['emails.target_drawn', 'emails.target_drawn_plain'], [
                 'content' => $content,
                 'dearSantaLink' => $url,
             ]);
