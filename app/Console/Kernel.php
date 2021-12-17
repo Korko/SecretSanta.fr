@@ -26,9 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule
-            ->call(function () {
-                Draw::cleanup();
-            })
+            ->command('model:prune')
             ->daily()
             ->environments('prod');
 

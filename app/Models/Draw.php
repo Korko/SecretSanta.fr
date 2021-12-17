@@ -9,12 +9,13 @@ use DateInterval;
 use DateTime;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Notifications\Notifiable;
 use Metrics;
 
 class Draw extends Model
 {
-    use HasFactory, HashId, Notifiable;
+    use HasFactory, HashId, Notifiable, Prunable;
 
     // Remove everything N weeks after the expiration_date
     public const WEEKS_BEFORE_DELETION = 3;
@@ -64,11 +65,14 @@ class Draw extends Model
         return parent::save($options);
     }
 
-    public static function cleanup()
+    /**
+     * Get the prunable model query.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function prunable()
     {
-        // Do not directly use ->delete() on the query to trigger the deleted event to cleanup the rest of the data
-        self::where('expires_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.(self::WEEKS_BEFORE_DELETION * 7).'D')))->get()
-            ->each->delete();
+        return static::where('expires_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.(self::WEEKS_BEFORE_DELETION * 7).'D')));
     }
 
     public function participants()
