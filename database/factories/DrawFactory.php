@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Draw;
+use App\Services\DrawHandler;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DrawFactory extends Factory
@@ -28,6 +29,20 @@ class DrawFactory extends Factory
             'organizer_name'  => $this->faker->name,
             'organizer_email' => $this->faker->email,
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (Draw $draw) {
+            if ($draw->participants->count() > 0) {
+                DrawHandler::solve($draw, $draw->participants);
+            }
+        });
     }
 
     /**

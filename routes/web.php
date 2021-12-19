@@ -51,6 +51,8 @@ Route::middleware('signed')->group(function() {
             ->name('dearSanta.fetchState');
         Route::get('/dearSanta/{participant}/{dearSanta}/resend', [DearSantaController::class, 'resend'])
             ->name('dearSanta.resend');
+        Route::get('/dearSanta/{participant}/resendTarget', [DearSantaController::class, 'resendTarget'])
+            ->name('dearSanta.resend_target');
 
         Route::post('/participant/{participant}/sub', function(Participant $participant, Request $request) {
             $participant->updatePushSubscription(

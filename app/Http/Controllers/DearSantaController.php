@@ -32,6 +32,7 @@ class DearSantaController extends Controller
         return response()->json([
             'participant' => $participant->only(['hash', 'name']),
             'draw' => $participant->draw->only(['hash', 'mail_title', 'created_at', 'expires_at', 'organizer_name']),
+            'targetDearSantaLastUpdate' => $participant->target->dearSantas->load('mail')->max('mail.updated_at'),
             'emails' => $participant->dearSantas->mapWithKeys(function ($email) {
                 return [
                     $email->mail->id => $email->only($this->dearSantaPublicFields)
@@ -44,6 +45,9 @@ class DearSantaController extends Controller
                     ])
                 ];
             }),
+            'resendTargetEmailsUrl' => URL::signedRoute('dearSanta.resend_target', [
+                'participant' => $participant
+            ])
         ]);
     }
 
@@ -87,6 +91,25 @@ class DearSantaController extends Controller
                 ]) :
                 redirect('/dearSanta/'.$participant->hash)->with('error', $error);
         }
+    }
+
+    public function resendTarget(Participant $participant, \Illuminate\Http\Request $request)
+    {
+        $dearSantas = $participant->dearSantas->load('mail');
+        $max = $dearSantas->max('mail.updated_at');
+        abort_unless($max !== null && $max->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
+
+        $dearSantas->each(function ($dearSanta) use ($participant) {
+            $participant->notify(new DearSantaNotification($dearSanta));
+        });
+
+        $message = trans('message.sent');
+
+        return $request->ajax() ?
+            response()->json([
+                'message' => $message,
+            ]) :
+            redirect('/dearSanta/'.$participant->hash)->with('message', $message);
     }
 
     public function handle(Participant $participant, DearSantaRequest $request)

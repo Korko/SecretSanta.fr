@@ -41,7 +41,7 @@ export default {
     </div>
 </template>
 
-<style>
+<style scoped>
     #content {
         padding-top: 140px;
         padding-bottom: 60px;

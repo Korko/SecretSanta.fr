@@ -1,5 +1,10 @@
 <script>
+    import Tooltip from './tooltip.vue';
+
     export default {
+        components: {
+            Tooltip
+        },
         props: {
             can_redo: {
                 type: Boolean,
@@ -65,10 +70,25 @@
 <template>
     <div>
         <span>{{ $t(`common.email.status.${delivery_status}`) }} <i :class="[icon, delivery_status]"></i></span>
-        <button v-if="can_redo || delivery_status === 'error'" :disabled="recent || disabled" type="button" class="btn btn-outline-secondary" @click="$emit('redo')">
-            <i class="fas fa-redo" />
-            {{ $t(`common.email.redo`) }}
-        </button>
+        <template v-if="can_redo || delivery_status === 'error'">
+            <tooltip v-if="recent" direction="left">
+                <template #tooltip>
+                    <div class="text-content">
+                        {{ $t(`common.email.recent`) }}
+                    </div>
+                </template>
+                <template #default>
+                    <button :disabled="true" type="button" class="btn btn-outline-secondary">
+                        <i class="fas fa-redo" />
+                        {{ $t(`common.email.redo`) }}
+                    </button>
+                </template>
+            </tooltip>
+            <button v-else :disabled="disabled" type="button" class="btn btn-outline-secondary" @click="$emit('redo')">
+                <i class="fas fa-redo" />
+                {{ $t(`common.email.redo`) }}
+            </button>
+        </template>
     </div>
 </template>
 

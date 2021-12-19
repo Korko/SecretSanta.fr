@@ -9,10 +9,11 @@
     import { deepMerge } from '../partials/helpers.js';
 
     import EmailStatus from './emailStatus.vue';
+    import Tooltip from './tooltip.vue';
     import DefaultForm from './form.vue';
 
     export default {
-        components: { EmailStatus },
+        components: { EmailStatus, Tooltip },
         extends: DefaultForm,
         setup: () => ({ v$: useVuelidate() }),
         validations() {
@@ -42,6 +43,14 @@
             resendEmailUrls: {
                 type: Object,
                 required: true
+            },
+            resendTargetEmailsUrl: {
+                type: Object,
+                required: true
+            },
+            targetDearSantaLastUpdate: {
+                type: Date,
+                required: true
             }
         },
         data() {
@@ -63,6 +72,9 @@
                 return !!Object.values(this.emails).find(
                     email => email.mail.delivery_status !== 'error'
                 );
+            },
+            recentTargetDearSanta() {
+                return (new Date()).getTime() - (new Date(this.targetDearSantaLastUpdate)).getTime() < 5*60*1000;
             }
         },
         created() {
@@ -104,6 +116,11 @@
                 this.emails[id].mail.updated_at = new Date().getTime();
 
                 return fetch(this.resendEmailUrls[id]);
+            },
+            resend_target() {
+                this.targetDearSantaLastUpdate = new Date().getTime();
+
+                return fetch(this.resendTargetEmailsUrl);
             },
             nl2br(str) {
                 return str.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br />$2');
@@ -358,9 +375,26 @@
                     </td>
                 </tr>
             </tbody>
-        </table>-->
-
-
+        </table>
+        <div class="text-center">
+            <tooltip v-if="recentTargetDearSanta" direction="top">
+                <template #tooltip>
+                    <div class="text-content">
+                        {{ $t(`common.email.recent`) }}
+                    </div>
+                </template>
+                <template #default>
+                    <button :disabled="true" type="button" class="btn btn-outline-secondary">
+                        <i class="fas fa-redo" />
+                        {{ $t('dearsanta.resend.button') }}
+                    </button>
+                </template>
+            </tooltip>
+            <button v-else class="btn btn-info btn-lg" @click="resend_target">
+                <i class="fas fa-redo" />
+                {{ $t('dearsanta.resend.button') }}
+            </button>
+        </div>-->
     </div>
 </template>
 
@@ -566,14 +600,17 @@
       display:inline-block;
     }
 
-
     #form form {
         margin-bottom: 20px;
     }
 
     .email td p {
         overflow: auto;
-        max-height: 10em;
+        --lines:  15;
+        max-height: calc(var(--lines)*1.5em);
+        display: -webkit-box;
+        -webkit-line-clamp: var(--lines);
+        -webkit-box-orient: vertical;
 
         background:
             /* Shadow covers */
