@@ -31,5 +31,6 @@ return [
             'error'    => 'Erreur',
             'received' => 'Reçu',
         ],
+        'recent' => 'Vous ne pouvez pas relancer un même email trop rapidement',
     ],
 ];

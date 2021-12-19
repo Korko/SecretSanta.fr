@@ -12,4 +12,7 @@ return [
         'label'       => 'Contenu du mail',
         'placeholder' => 'Cher Papa Noël...',
     ],
+    'resend' => [
+        'button'  => 'Me ré-envoyer les mails que j\'ai reçu de ma cible',
+    ]
 ];
