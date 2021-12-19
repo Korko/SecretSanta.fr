@@ -33,16 +33,4 @@ class ParticipantFactory extends Factory
             'target_id' => null,
         ];
     }
-
-    /**
-     * Call the "after creating" callbacks for the given model instances.
-     *
-     * @param  \Illuminate\Support\Collection  $participants
-     * @param  \Illuminate\Database\Eloquent\Model|null  $draw
-     * @return void
-     */
-    protected function callAfterCreating(Collection $participants, ?Model $draw = null)
-    {
-        DrawHandler::solve($draw, $participants);
-    }
 }
