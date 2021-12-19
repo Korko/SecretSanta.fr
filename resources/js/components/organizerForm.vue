@@ -287,7 +287,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     @import "~vuejs-dialog/dist/vuejs-dialog.min.css";
 
     .table td {

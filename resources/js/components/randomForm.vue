@@ -434,7 +434,7 @@
                                     />
 
                                     <blockquote class="tips">
-                                        <p :is="$td('form.mail.content.tip1', {'target': anchor('target'), 'santa': anchor('santa'), 'close':'</a>'})" @santa="appendSanta" @target="appendTarget"></p>
+                                        <p :is="$td('form.mail.content.tip1', {target: anchor('target'), santa: anchor('santa'), close:'</a>'})" @santa="appendSanta" @target="appendTarget"></p>
                                         <p>{{ $t('form.mail.content.tip2') }}</p>
                                     </blockquote>
                                 </div>
