@@ -109,7 +109,8 @@ export default {
                     "sent": "Envoyé",
                     "error": "Erreur",
                     "received": "Reçu"
-                }
+                },
+                "recent": "Vous ne pouvez pas relancer un même email trop rapidement"
             }
         },
         "validation": {
@@ -387,6 +388,9 @@ export default {
             "content": {
                 "label": "Contenu du mail",
                 "placeholder": "Cher Papa Noël..."
+            },
+            "resend": {
+                "button": "Me ré-envoyer les mails que j'ai reçu de ma cible"
             }
         }
     }
