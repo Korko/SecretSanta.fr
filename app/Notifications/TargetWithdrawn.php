@@ -55,7 +55,7 @@ class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncry
      */
     public function toMail(Participant $santa)
     {
-        $title = Lang::get('emails.target_withdraw.title', [
+        $title = Lang::get('emails.target_withdrawn.title', [
             'draw' => $santa->draw->id
         ]);
 
