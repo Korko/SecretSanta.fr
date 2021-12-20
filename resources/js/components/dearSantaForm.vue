@@ -191,12 +191,13 @@
 
     .email td p {
         overflow: auto;
-        --lines:  15;
+        --lines:  5;
         max-height: calc(var(--lines)*1.5em);
         display: -webkit-box;
         -webkit-line-clamp: var(--lines);
         -webkit-box-orient: vertical;
 
+        background-color: rgba(255,255,255,0);
         background:
             /* Shadow covers */
             linear-gradient(white 30%, rgba(255,255,255,0)),
@@ -204,7 +205,7 @@
 
             /* Shadows */
             radial-gradient(50% 0, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)),
-            radial-gradient(50% 100%,farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+            radial-gradient(50% 100%, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
         background:
             /* Shadow covers */
             linear-gradient(white 30%, rgba(255,255,255,0)),
@@ -218,5 +219,24 @@
 
         /* Opera doesn't support this in the shorthand */
         background-attachment: local, local, scroll, scroll;
+    }
+
+    .email:hover td p {
+        background-color: rgba(0, 0, 0, 0.075);
+        background:
+            /* Shadow covers */
+            linear-gradient(white 30%, rgba(0, 0, 0, 0.075)),
+            linear-gradient(rgba(0, 0, 0, 0.075), white 70%) 0 100%,
+
+            /* Shadows */
+            radial-gradient(50% 0, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)),
+            radial-gradient(50% 100%, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+        background:
+            linear-gradient(white 30%, rgba(0, 0, 0, 0.075)),
+            linear-gradient(rgba(0, 0, 0, 0.075), white 70%) 0 100%,
+
+            /* Shadows */
+            radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
+            radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
     }
 </style>
