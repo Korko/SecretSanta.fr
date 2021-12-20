@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Lang;
+
 class OrganizerChangeEmailRequest extends Request
 {
     /**
@@ -34,8 +36,8 @@ class OrganizerChangeEmailRequest extends Request
     public function messages()
     {
         return [
-            'email.required' => __('validation.custom.organizer.email.required'),
-            'email.email'    => __('validation.custom.organizer.email.format'),
+            'email.required' => Lang::get('validation.custom.organizer.email.required'),
+            'email.email'    => Lang::get('validation.custom.organizer.email.format'),
         ];
     }
 }

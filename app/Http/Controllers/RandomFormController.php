@@ -11,6 +11,7 @@ use App\Http\Requests\RandomFormRequest;
 use App\Services\DrawFormHandler;
 use Arr;
 use Exception;
+use Lang;
 use Notification;
 
 class RandomFormController extends Controller
@@ -58,7 +59,7 @@ class RandomFormController extends Controller
     public function faq()
     {
         return response()->view('faq', [
-            'questions' => __('faq.questions'),
+            'questions' => Lang::get('faq.questions'),
         ]);
     }
 

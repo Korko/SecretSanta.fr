@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Lang;
+
 class DearSantaRequest extends Request
 {
     /**
@@ -34,7 +36,7 @@ class DearSantaRequest extends Request
     public function messages()
     {
         return [
-            'content.required' => __('validation.custom.dearSanta.content.required'),
+            'content.required' => Lang::get('validation.custom.dearSanta.content.required'),
         ];
     }
 }
