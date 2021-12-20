@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Draw;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
-use App\Services\DrawHandler;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -32,5 +31,27 @@ class ParticipantFactory extends Factory
             'email'     => $this->faker->email,
             'target_id' => null,
         ];
+    }
+
+    /**
+     * Indicate that the draw is expired.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function bijective()
+    {
+        return $this->afterCreating(function (Participant $participant, Draw $draw) {
+            if ($draw->participants->count() % 2 !== 0) {
+                throw new Exception('Cannot make bijective participants with odd number of them');
+            }
+
+            $participant->exclusions()->attach(
+                $draw->participants
+                    ->pluck('id')
+                    ->filter(function ($id) use($participant) {
+                        return floor(($id - 1) / 2) !== floor(($participant->id - 1) / 2);
+                    })
+            );
+        });
     }
 }
