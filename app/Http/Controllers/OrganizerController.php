@@ -96,8 +96,13 @@ class OrganizerController extends Controller
         $santa = $participant->santa;
         $target = $participant->target;
 
-        // A -> B -> C => A -> C
-        $santa->target()->save($target);
+        if ($santa->isNot($target)) {
+            // A -> B -> C => A -> C
+            $santa->target()->save($target);
+        } else {
+            // Limit case!
+            return;//TODO
+        }
 
         $santa->notify(new TargetWithdrawn);
         $target->dearSantas->each(function ($dearSanta) use ($santa) {
