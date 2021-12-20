@@ -3,15 +3,12 @@
 namespace App\Notifications;
 
 use App\Channels\TrackedMailChannel;
-use App\Facades\DrawCrypt;
+use App\Mail\TargetDrawnMailable;
 use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\URL;
-use Lang;
 
 class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
@@ -42,11 +39,6 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
         return [TrackedMailChannel::class];
     }
 
-    public function getMailableModel(Participant $santa)
-    {
-        return $santa;
-    }
-
     /**
      * Get the mail representation of the notification.
      *
@@ -55,25 +47,6 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
      */
     public function toMail(Participant $santa)
     {
-        $title = $this->parseKeywords(Lang::get('emails.target_draw.title', [
-            'draw' => $santa->draw->id,
-            'subject' => $santa->draw->mail_title,
-        ]), $santa);
-
-        $content = $this->parseKeywords($santa->draw->mail_body, $santa);
-
-        $url = URL::signedRoute('dearSanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
-
-        return (new MailMessage)
-            ->subject($title)
-            ->view(['emails.target_drawn', 'emails.target_drawn_plain'], [
-                'content' => $content,
-                'dearSantaLink' => $url,
-            ]);
-    }
-
-    protected function parseKeywords($str, Participant $santa)
-    {
-        return str_replace(['{SANTA}', '{TARGET}'], [$santa->name, $santa->target->name], $str);
+        return new TargetDrawnMailable($santa);
     }
 }

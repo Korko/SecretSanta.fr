@@ -2,6 +2,7 @@
 
 namespace App\Channels;
 
+use App\Mail\TrackedMailable;
 use App\Models\Mail as MailModel;
 use Facades\App\Services\MailTracker;
 use Illuminate\Notifications\Notification;
@@ -20,7 +21,13 @@ class TrackedMailChannel extends MailChannel
      */
     public function send($notifiable, Notification $notification)
     {
-        $mail = $notification->getMailableModel($notifiable)->mail;
+        $message = $notification->toMail($notifiable);
+
+        if (! $message instanceof TrackedMailable) {
+            return parent::send($notifiable, $notification);
+        }
+
+        $mail = $message->getMail();
 
         try {
             $mail->markAsSending();
@@ -43,7 +50,11 @@ class TrackedMailChannel extends MailChannel
      */
     protected function messageBuilder($notifiable, $notification, $message)
     {
-        $mail = $notification->getMailableModel($notifiable)->mail;
+        if (! $message instanceof TrackedMailable) {
+            return parent::messageBuilder($notifiable, $notification, $message);
+        }
+
+        $mail = $message->getMail();
 
         $message->withSwiftMessage(function ($message) use ($mail) {
             // In case of Bounce

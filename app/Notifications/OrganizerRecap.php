@@ -2,19 +2,13 @@
 
 namespace App\Notifications;
 
-use App;
-use App\Channels\MailChannel;
-use App\Facades\DrawCrypt;
+use App\Mail\OrganizerRecap as OrganizerRecapMailable;
 use App\Models\Draw;
-use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\AnonymousNotifiable;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\URL;
 
 class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
@@ -60,14 +54,6 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
      */
     public function toMail($organizer)
     {
-        return (new MailMessage)
-            ->subject(__('emails.organizer_recap_title', ['draw' => $this->draw->id]))
-            ->view(['emails.organizer_recap', 'emails.organizer_recap_plain'], [
-                'organizerName' => $this->draw->organizer_name,
-                'expirationDate' => $this->draw->expires_at->locale(App::getLocale())->isoFormat('LL'),
-                'deletionDate' => $this->draw->deleted_at->locale(App::getLocale())->isoFormat('LL'),
-                'nextSolvable' => $this->draw->next_solvable,
-                'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $this->draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
-            ]);
+        return new OrganizerRecapMailable($this->draw);
     }
 }
