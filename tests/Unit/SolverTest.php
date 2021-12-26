@@ -14,6 +14,7 @@ class SolverTest extends TestCase
     {
         $actual = [];
         foreach ($combinations as $combination) {
+            ksort($combination);
             array_walk($combination, function (&$idx) use ($participants) {
                 $idx = $participants[$idx];
             });
@@ -24,7 +25,7 @@ class SolverTest extends TestCase
         sort($actual);
         sort($expected);
 
-        $this->assertEquals(serialize($actual), serialize($expected));
+        $this->assertEquals(serialize($expected), serialize($actual));
     }
 
     public function testNoExclusion(): void
