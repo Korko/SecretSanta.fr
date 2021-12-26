@@ -3,11 +3,26 @@
 namespace Tests\Unit;
 
 use App\Exceptions\SolverException;
-use Solver;
+use App\Solvers\Solver;
+use App\Solvers\HatSolver;
+use App\Solvers\GraphSolver;
 use Tests\TestCase;
 
 class SolverTest extends TestCase
 {
+    /**
+     * Solver provider.
+     *
+     * @return \App\Solvers\Solver[][]
+     */
+    public function solverProvider()
+    {
+        return [
+            HatSolver::class => [new HatSolver],
+            GraphSolver::class => [new GraphSolver],
+        ];
+    }
+
     const LOOP_NUMBER = 100;
 
     public function assertCombination($expected, $combinations, $participants): void
@@ -28,45 +43,94 @@ class SolverTest extends TestCase
         $this->assertEquals(serialize($expected), serialize($actual));
     }
 
-    public function testNoExclusion(): void
+    /**
+     * @dataProvider solverProvider
+     */
+    public function testSplitGraph(Solver $solver): void
+    {
+        $participants = ['A', 'B', 'C', 'D'];
+        $this->assertCombination([
+            'BCDA', 'BDAC',
+            'CADB', 'CDBA',
+            'DABC', 'DCAB',
+            // Those contains separate groups
+            'BADC', // A => B, B => A // C => D, D => C
+            'CDAB', // A => C, C => A // B => D, D => B
+            'DCBA', // A => D, D => A // B => C, C => B
+        ], $solver->all($participants), $participants);
+
+        $participants = ['A', 'B', 'C', 'D', 'E', 'F'];
+        $this->assertCombination([
+            // ABC // DEF
+            'BCA'.'EFD', 'CAB'.'EFD',
+            'BCA'.'FDE', 'CAB'.'FDE',
+        ], $solver->all($participants, [
+            0 => [3, 4, 5],
+            1 => [3, 4, 5],
+            2 => [3, 4, 5],
+            3 => [0, 1, 2],
+            4 => [0, 1, 2],
+            5 => [0, 1, 2]
+        ]), $participants);
+
+        $participants = ['A', 'B', 'C', 'D', 'E', 'F'];
+        $this->assertCombination([
+            // AB // CD // EF
+            'BA'.'DC'.'FE',
+        ], $solver->all($participants, [
+            0 => [2, 3, 4, 5],
+            1 => [2, 3, 4, 5],
+            2 => [0, 1, 4, 5],
+            3 => [0, 1, 4, 5],
+            4 => [0, 1, 2, 3],
+            5 => [0, 1, 2, 3]
+        ]), $participants);
+    }
+
+    /**
+     * @dataProvider solverProvider
+     */
+    public function testNoExclusion(Solver $solver): void
     {
         $participants = ['A', 'B'];
         $this->assertCombination([
             'BA',
-        ], Solver::all($participants), $participants);
+        ], $solver->all($participants), $participants);
 
         $participants = ['A', 'B', 'C'];
         $this->assertCombination([
             'BCA', 'CAB',
-        ], Solver::all($participants), $participants);
-
-        $participants = ['A', 'B', 'C', 'D'];
-        $this->assertCombination([
-            'BCDA', 'BDAC', 'BADC',
-            'CDAB', 'CADB', 'CDBA',
-            'DABC', 'DCBA', 'DCAB',
-        ], Solver::all($participants), $participants);
+        ], $solver->all($participants), $participants);
     }
 
-    public function testSimpleExclusion(): void
+    /**
+     * @dataProvider solverProvider
+     */
+    public function testSimpleExclusion(Solver $solver): void
     {
         // A => C
         $participants = ['A', 'B', 'C'];
         $this->assertCombination([
             'BCA',
-        ], Solver::all($participants, [0 => [2]]), $participants);
+        ], $solver->all($participants, [0 => [2]]), $participants);
     }
 
-    public function testImpossibleSolution(): void
+    /**
+     * @dataProvider solverProvider
+     */
+    public function testImpossibleSolution(Solver $solver): void
     {
         $participants = ['A', 'B', 'C'];
-        $this->assertCombination([], Solver::all($participants, [0 => [1, 2]]), $participants);
-        $this->assertCombination([], Solver::all($participants, [2 => [0, 1]]), $participants);
+        $this->assertCombination([], $solver->all($participants, [0 => [1, 2]]), $participants);
+        $this->assertCombination([], $solver->all($participants, [2 => [0, 1]]), $participants);
     }
 
-    public function testOne(): void
+    /**
+     * @dataProvider solverProvider
+     */
+    public function testOne(Solver $solver): void
     {
-        $this->assertTrue((function () {
+        $this->assertTrue((function () use ($solver) {
             $solutions = [
                 [0 => 1, 1 => 2, 2 => 0],
                 [0 => 2, 1 => 0, 2 => 1],
@@ -74,7 +138,7 @@ class SolverTest extends TestCase
             $valid = [];
 
             for ($i = 0; $i < self::LOOP_NUMBER; $i++) {
-                $solution = Solver::one(['A', 'B', 'C']);
+                $solution = $solver->one(['A', 'B', 'C']);
 
                 $solutionIdx = array_search($solution, $solutions);
                 $valid[$solutionIdx] = true;
@@ -90,8 +154,9 @@ class SolverTest extends TestCase
 
     /**
      * @doesNotPerformAssertions
+     * @dataProvider solverProvider
      */
-    public function testMass(): void
+    public function testMass(Solver $solver): void
     {
         // 702 characters from 'A' to 'ZZ'
         $participants = [];
@@ -100,7 +165,7 @@ class SolverTest extends TestCase
         }
 
         try {
-            Solver::one($participants);
+            $solver->one($participants);
         } catch (SolverException $e) {
             $this->fail('No exception expected');
         }

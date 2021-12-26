@@ -6,35 +6,25 @@ use App\Exceptions\SolverException;
 use Arr;
 use Generator;
 
-class HatSolver implements SolverInterface
+class HatSolver extends Solver
 {
-    public function one(array $participants, array $exclusions = []) : array
+    protected function solve(array $participants, array $exclusions = []) : Generator
     {
-        $generator = $this->all($participants, $exclusions);
-        if (! $generator->valid()) {
-            throw new SolverException('Cannot solve');
-        }
-
-        return $generator->current();
-    }
-
-    public function all(array $participants, array $exclusions = []) : Generator
-    {
-        if(count($participants) < 2) {
-            throw new SolverException('Not enough participants');
-        }
-
         $hat = array_keys($participants);
         shuffle($hat);
 
-        return $this->solve(array_keys($participants)[0], [], $exclusions, $hat);
+        return $this->solveWithExclusions(array_keys($participants)[0], [], $exclusions, $hat);
     }
 
-    private function solve(int $participantIdx, array $combination, array $allExclusions, array $currentHat) : Generator
+    private function solveWithExclusions(int $participantIdx, array $combination, array $allExclusions, array $currentHat) : Generator
     {
         // End of a loop, we've found a possible combination
         if ($currentHat === []) {
             yield $combination;
+        }
+
+        if (isset($combination[$participantIdx])) {
+            yield from $this->solveWithExclusions($participantIdx + 1, $combination, $allExclusions, $currentHat);
         }
 
         // Get the exclusions requested for that participant
@@ -50,7 +40,7 @@ class HatSolver implements SolverInterface
             $newHat = array_diff($currentHat, [$drawnParticipant]);
 
             // Further check if this solution is possible
-            yield from $this->solve($participantIdx + 1, $newCombination, $allExclusions, $newHat);
+            yield from $this->solveWithExclusions($participantIdx + 1, $newCombination, $allExclusions, $newHat);
         }
     }
 }
