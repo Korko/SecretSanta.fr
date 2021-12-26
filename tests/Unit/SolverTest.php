@@ -44,6 +44,7 @@ class SolverTest extends TestCase
     }
 
     /**
+     * Test if the solver can found solutions even if the participants are separated in small groups
      * @dataProvider solverProvider
      */
     public function testSplitGraph(Solver $solver): void
@@ -88,6 +89,7 @@ class SolverTest extends TestCase
     }
 
     /**
+     * Test with several participants without exclusions to see if all combinaisons are listed
      * @dataProvider solverProvider
      */
     public function testNoExclusion(Solver $solver): void
@@ -104,6 +106,7 @@ class SolverTest extends TestCase
     }
 
     /**
+     * Test if a single exclusion is correctly handled
      * @dataProvider solverProvider
      */
     public function testSimpleExclusion(Solver $solver): void
@@ -116,6 +119,7 @@ class SolverTest extends TestCase
     }
 
     /**
+     * Test if an impossible solution due to exclusions is correctly handled
      * @dataProvider solverProvider
      */
     public function testImpossibleSolution(Solver $solver): void
@@ -126,6 +130,7 @@ class SolverTest extends TestCase
     }
 
     /**
+     * Test if we can find 2 differents solutions by random in a least LOOP_NUMBER iterations
      * @dataProvider solverProvider
      */
     public function testOne(Solver $solver): void
@@ -153,6 +158,7 @@ class SolverTest extends TestCase
     }
 
     /**
+     * Test if the system can handle a large amount of participants in a single call
      * @doesNotPerformAssertions
      * @dataProvider solverProvider
      */

@@ -5,79 +5,77 @@ namespace App\Solvers;
 use Arr;
 use Generator;
 
+function abc($idx) {
+    return implode('', array_intersect_key(str_split('ABCDEFGHI', 1), array_flip((array) $idx)));
+}
+function pair(array $list) {
+    return collect($list)->mapWithKeys(function ($b, $a) {
+        return [abc($a) => abc($b)];
+    })->toArray();
+}
+
 class GraphSolver extends Solver
 {//TODO: seed shuffle?
-    protected function solve(array $participants, array $exclusions = []) : Generator
+    protected function solve(array $participants, array $allExclusions = []) : Generator
     {
-        $nodes = array_keys($participants);
-        shuffle($nodes);
-
-        return $this->findPaths($nodes, $exclusions);
-    }
-
-    protected function findPaths($nodes, array $allExclusions) : Generator
-    {
-        $startNode = Arr::first($nodes);
-
-        $generator = $this->_findLonguestPaths($startNode, $nodes, $allExclusions, [$startNode]);
-        foreach($generator as $path) {
-            $nodesLeft = array_diff($nodes, $path); // Same goes with diffKeys
-
-            if (count($nodesLeft) === 0) {
-                // Hamiltonian path
-                yield $path;
-            } else if (count($nodesLeft) >= 2) {
-                // We have a separate possible group
-                $generator2 = $this->findPaths($nodesLeft, $allExclusions);
-                foreach($generator2 as $path2) {
-                    yield $path + $path2;
-                }
-            }
-            // No else, a single node mean invalid path
-        }
-    }
-
-    // Search for all possible routes from a single start point
-    // May ignore some nodes if separate groups exist
-    private function _findLonguestPaths($startNode, array $nodes, array $allExclusions, array $graph) : Generator
-    {
-        // All the nodes still accessible without exclusions (no route) and weighted by priority
-        $availableNodes = collect(array_diff($nodes, [$startNode], Arr::get($allExclusions, $startNode, [])))
-            ->mapWithKeys(function ($node) use ($allExclusions) {
-                // The more the node have exclusions, the more we should pick it (min weight should be 1)
-                return [$node => 1 + count(Arr::get($allExclusions, $node, []))];
+        // Preformat nodes to weight them by the amount of exclusions for each one
+        $participants = collect($participants)
+            ->keys()
+            ->shuffle()
+            ->mapWithKeys(function ($participantIdx) use ($allExclusions) {
+                // The more the participantIdx have exclusions, the more we should pick it (min weight should be 1)
+                return [$participantIdx => 1 + count(Arr::get($allExclusions, $participantIdx, []))];
             })
             ->toArray();
 
+        // Preformat the exclusions to have the same format as participants [node => [exclusion1 => 0, exclusion2 => 0, ...]]
+        array_walk($allExclusions, function (&$exclusions) {
+            $exclusions = array_flip($exclusions);
+        });
+
+        return $this->findPaths($participants, $allExclusions);
+    }
+
+    protected function findPaths($nodes, array $allExclusions, array $list = []) : Generator
+    {
+        yield from $this->findPathsFrom(array_key_first($nodes), $nodes, $allExclusions, $list);
+    }
+
+    protected function findPathsFrom($startNode, $allNodesLeft, $allExclusions, $list)
+    {
+        // All the nodes still accessible without exclusions (no route)
+        $availableNodes = array_diff_key($allNodesLeft, [$startNode => 0], Arr::get($allExclusions, $startNode, []));
+
         if (count($availableNodes) > 0) {
-            // It's like a foreach but with a weighted random pick each time
             while (count($availableNodes) > 0) {
                 // Pick a random number between 0 and the sum of all weights
                 // And then search in the list which one reaches that random weight
                 $rand = mt_rand(0, array_sum($availableNodes));
-                $nextNode = Arr::first(array_keys($availableNodes), function ($node) use (&$rand, $availableNodes) {
-                    return ($rand -= $availableNodes[$node]) <= 0;
+                $nextNode = Arr::first(array_keys($availableNodes), function ($nextNode) use (&$rand, $availableNodes) {
+                    return ($rand -= $availableNodes[$nextNode]) <= 0;
                 });
-
-                // [0] gives to [1] which gives to [2]... and the last gives to [0]
-                $tmpGraph = array_merge($graph, [$nextNode]);
-                $tmpNodes = array_diff($nodes, [$nextNode]);
                 $availableNodes = array_diff_key($availableNodes, [$nextNode => 0]);
 
-                if (in_array($nextNode, $graph) || count($tmpNodes) === 0) {
-                    yield $this->formatGraph($tmpGraph);
+                $possibleList = $list + [$startNode => $nextNode];
+                $nodesLeft = array_diff_key($allNodesLeft, [$nextNode => 0]);
+
+                if (! isset($list[$nextNode])) {
+                    // We need to go deeper
+                    yield from $this->findPathsFrom($nextNode, $nodesLeft, $allExclusions, $possibleList);
+                } else if (count($nodesLeft) >= 2) {
+                    // Another partial graph is possible
+                    yield from $this->findPaths($nodesLeft, $allExclusions, $possibleList);
+                } else if (count($nodesLeft) === 0) {
+                    // Solution found
+                    yield $possibleList;
                 } else {
-                    yield from $this->_findLonguestPaths($nextNode, $tmpNodes, $allExclusions, $tmpGraph);
+                    // Wrong path, single node alone
                 }
             }
+        } else {
+            // Wrong path, no solution
         }
     }
 
-    protected function formatGraph(array $graph) : array
-    {
-        $lastNode = array_pop($graph);
-        return collect($graph)->mapWithKeys(function ($node, $idx) use ($graph, $lastNode) {
-            return $node !== end($graph) ? [$node => $graph[$idx + 1]] : [$node => $lastNode];
-        })->toArray();
-    }
+
 }
