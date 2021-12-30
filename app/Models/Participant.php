@@ -136,4 +136,16 @@ class Participant extends Model
     {
         return [$this->email => $this->name];
     }
+
+    /**
+     * Get the queueable relationships for the entity.
+     *
+     * @return array
+     */
+    public function getQueueableRelations()
+    {
+        // To prevent infinite loop with recursive references, we unset the relations list (exclusions, target)
+        $this->unsetRelations();
+        return parent::getQueueableRelations();
+    }
 }
