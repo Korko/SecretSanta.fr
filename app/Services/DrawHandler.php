@@ -28,7 +28,7 @@ class DrawHandler
         $draw->save();
 
         $participants->each(function($participant) {
-            $participant->make->notify(new TargetDrawn);
+            $participant->notify(new TargetDrawn);
         });
     }
 
