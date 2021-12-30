@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Channels\TrackedMailChannel;
-use App\Mail\TargetDrawnMailable;
+use App\Mail\TargetDrawn as TargetDrawnMailable;
 use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;

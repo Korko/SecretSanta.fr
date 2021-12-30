@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Mail\ConfirmWithdrawal as ConfirmWithdrawalMailable;
 use App\Models\Participant;
 use Illuminate\Notifications\Notification;
 
@@ -27,6 +28,6 @@ class ConfirmWithdrawal extends Notification
      */
     public function toMail(Participant $santa)
     {
-        return new ConfirmWithdrawal($santa);
+        return new ConfirmWithdrawalMailable($santa);
     }
 }
