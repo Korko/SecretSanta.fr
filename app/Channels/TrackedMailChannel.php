@@ -28,15 +28,16 @@ class TrackedMailChannel extends MailChannel
         }
 
         $mail = $message->getMail();
+        if ($mail !== null) {
+            try {
+                $mail->markAsSending();
 
-        try {
-            $mail->markAsSending();
+                parent::send($notifiable, $notification);
 
-            parent::send($notifiable, $notification);
-
-            $mail->markAsSent();
-        } catch (Swift_TransportException $exception) {
-            $mail->markAsError();
+                $mail->markAsSent();
+            } catch (Swift_TransportException $exception) {
+                $mail->markAsError();
+            }
         }
     }
 
