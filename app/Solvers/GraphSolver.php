@@ -2,80 +2,68 @@
 
 namespace App\Solvers;
 
-use Arr;
 use Generator;
-
-function abc($idx) {
-    return implode('', array_intersect_key(str_split('ABCDEFGHI', 1), array_flip((array) $idx)));
-}
-function pair(array $list) {
-    return collect($list)->mapWithKeys(function ($b, $a) {
-        return [abc($a) => abc($b)];
-    })->toArray();
-}
+use Illuminate\Support\Collection;
 
 class GraphSolver extends Solver
-{//TODO: seed shuffle?
-    protected function solve(array $participants, array $allExclusions = []) : Generator
+{
+    //TODO: seed shuffle?
+    protected function solve(Collection $participantsIdx, Collection $allExclusions) : Generator
+    {
+        return $this->findPaths($participantsIdx->shuffle(), $allExclusions);
+    }
+
+    protected function findPaths(Collection $nodesLeft, Collection $allExclusions)
     {
         // Preformat nodes to weight them by the amount of exclusions for each one
-        $participants = collect($participants)
-            ->keys()
-            ->shuffle()
-            ->mapWithKeys(function ($participantIdx) use ($allExclusions) {
-                // The more the participantIdx have exclusions, the more we should pick it (min weight should be 1)
-                return [$participantIdx => 1 + count(Arr::get($allExclusions, $participantIdx, []))];
-            })
-            ->toArray();
+        $nodesLeft = $nodesLeft
+            ->mapWithKeys(function ($nodeIdx) use ($allExclusions) {
+                // The more the nodeIdx have exclusions, the more we should pick it (min weight should be 1)
+                return [$nodeIdx => 1 + count($allExclusions->get($nodeIdx, []))];
+            });
 
         // Preformat the exclusions to have the same format as participants [node => [exclusion1 => 0, exclusion2 => 0, ...]]
-        array_walk($allExclusions, function (&$exclusions) {
-            $exclusions = array_flip($exclusions);
-        });
+        foreach ($allExclusions as $idx => $exclusions) {
+            $allExclusions[$idx] = array_flip($exclusions);
+        }
 
-        return $this->findPaths($participants, $allExclusions);
+        return $this->findPathsFrom($nodesLeft->firstKey(), $nodesLeft, $allExclusions, []);
     }
 
-    protected function findPaths($nodes, array $allExclusions, array $list = []) : Generator
+    private function findPathsFrom($startNode, Collection $nodesLeft, Collection $allExclusions, $list = [])
     {
-        yield from $this->findPathsFrom(array_key_first($nodes), $nodes, $allExclusions, $list);
-    }
+        $availableNodes = $nodesLeft
+            ->diffKeys([$startNode => 0])
+            ->diffKeys($allExclusions->get($startNode, []));
 
-    protected function findPathsFrom($startNode, $allNodesLeft, $allExclusions, $list)
-    {
-        // All the nodes still accessible without exclusions (no route)
-        $availableNodes = array_diff_key($allNodesLeft, [$startNode => 0], Arr::get($allExclusions, $startNode, []));
+        while (count($availableNodes) > 0) {
+            // Pick a random number between 0 and the sum of all weights
+            // And then search in the list which one reaches that random weight
+            $rand = mt_rand(0, $availableNodes->sum());
+            $nextNode = $availableNodes->firstKey(function ($weight, $nextNode) use (&$rand) {
+                return ($rand -= $weight) <= 0;
+            });
+            unset($availableNodes[$nextNode]);
 
-        if (count($availableNodes) > 0) {
-            while (count($availableNodes) > 0) {
-                // Pick a random number between 0 and the sum of all weights
-                // And then search in the list which one reaches that random weight
-                $rand = mt_rand(0, array_sum($availableNodes));
-                $nextNode = Arr::first(array_keys($availableNodes), function ($nextNode) use (&$rand, $availableNodes) {
-                    return ($rand -= $availableNodes[$nextNode]) <= 0;
-                });
-                $availableNodes = array_diff_key($availableNodes, [$nextNode => 0]);
+            // Remove the node from the list but keep the weight to add it later on
+            $nextNodeWeight = $nodesLeft[$nextNode];
+            $nodesLeft->offsetUnset($nextNode);
 
-                $possibleList = $list + [$startNode => $nextNode];
-                $nodesLeft = array_diff_key($allNodesLeft, [$nextNode => 0]);
+            $list[$startNode] = $nextNode;
 
-                if (! isset($list[$nextNode])) {
-                    // We need to go deeper
-                    yield from $this->findPathsFrom($nextNode, $nodesLeft, $allExclusions, $possibleList);
-                } else if (count($nodesLeft) >= 2) {
-                    // Another partial graph is possible
-                    yield from $this->findPaths($nodesLeft, $allExclusions, $possibleList);
-                } else if (count($nodesLeft) === 0) {
-                    // Solution found
-                    yield $possibleList;
-                } else {
-                    // Wrong path, single node alone
-                }
+            if (! isset($list[$nextNode])) {
+                // We need to go deeper
+                yield from $this->findPathsFrom($nextNode, $nodesLeft, $allExclusions, $list);
+            } else if ($nodesLeft->count() >= 2) {
+                // Another partial graph is possible
+                yield from $this->findPathsFrom($nodesLeft->firstKey(), $nodesLeft, $allExclusions, $list);
+            } else if ($nodesLeft->count() === 0) {
+                // Solution found
+                yield $list;
             }
-        } else {
-            // Wrong path, no solution
+
+            // Now that we've explored that node, add it back in the total list of nodes (but keep it out of available ones)
+            $nodesLeft[$nextNode] = $nextNodeWeight;
         }
     }
-
-
 }

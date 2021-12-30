@@ -28,15 +28,15 @@ class DrawHandler
         $draw->save();
 
         $participants->each(function($participant) {
-            $participant->notify(new TargetDrawn);
+            $participant->make->notify(new TargetDrawn);
         });
     }
 
     public static function getHat(ParticipantsCollection $participants) : array
     {
         return Solver::one(
-            $participants->pluck(null, 'id')->toArray(),
-            $participants->pluck('exclusions.*.id', 'id')->toArray()
+            $participants->pluck('id', 'id'),
+            $participants->pluck('exclusions.*.id', 'id')->filter()
         );
     }
 

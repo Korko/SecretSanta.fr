@@ -3,9 +3,10 @@
 namespace App\Solvers;
 
 use Generator;
+use Illuminate\Support\Collection;
 
 interface SolverInterface
 {
-    public function one(array $participants, array $exclusions = []) : array;
-    public function all(array $participants, array $exclusions = []) : Generator;
+    public function one(Collection|array $participantsIdx, Collection|array|null $exclusions = null) : array;
+    public function all(Collection|array $participantsIdx, Collection|array|null $exclusions = null) : Generator;
 }
