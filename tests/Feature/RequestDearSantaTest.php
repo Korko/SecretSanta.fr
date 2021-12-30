@@ -15,7 +15,7 @@ it('send to each participant a link to write to their santa', function () {
 
     foreach($draw->participants as $participant) {
         Notification::assertSentTo($participant, function (TargetDrawn $notification) use ($participant) {
-            $link = $notification->toMail($participant)->data()['dearSantaLink'];
+            $link = $notification->toMail($participant)->build()->viewData['dearSantaLink'];
 
             // Check the dearSanta link is valid
             test()->get($link)->assertSuccessful();
