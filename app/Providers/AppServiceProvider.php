@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             \App\Solvers\SolverInterface::class,
-            \App\Solvers\HatSolver::class
+            \App\Solvers\GraphSolver::class
         );
 
         $channelManager = $this->app->get(ChannelManager::class);
