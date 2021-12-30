@@ -31,6 +31,8 @@ it('sends no notifications in case of error', function ($participants) {
 })->with('invalid participants list');
 
 it('can create draws', function () {
+    Notification::fake();
+
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
 
@@ -140,7 +142,7 @@ it('sends to the organizer the link to their panel', function () {
         new AnonymousNotifiable,
         OrganizerRecapNotif::class,
         function ($notification, $channels, $notifiable) use ($draw) {
-            $link = $notification->toMail($notifiable)->data()['panelLink'];
+            $link = $notification->toMail($notifiable)->build()->viewData['panelLink'];
 
             // Check the recap link is valid
             test()->get($link)->assertSuccessful();
@@ -154,6 +156,8 @@ it('sends to the organizer the link to their panel', function () {
 });
 
 it('can deal with thousands of participants', function () {
+    Notification::fake();
+
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
 
