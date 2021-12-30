@@ -7,4 +7,5 @@ return [
     'target_draw.title' => 'SecretSanta #:draw - :subject',
     'dear_santa.title'  => 'SecretSanta #:draw - Message du bénéficiaire de votre cadeau',
     'target_withdrawn.title' => 'SecretSanta #:draw - Desistement du bénéficiaire de votre cadeau',
+    'target_changed.title' => 'SecretSanta #:draw - Changement du bénéficiaire de votre cadeau',
 ];

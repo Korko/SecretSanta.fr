@@ -2,6 +2,7 @@
 
 use App\Notifications\ConfirmWithdrawal;
 use App\Notifications\DearSanta;
+use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
 use App\Models\Draw;
@@ -89,6 +90,34 @@ test('the organizer can withdraw a participant', function () {
     assertEquals($target->fresh()->santa->id, $santa->id);
     assertEquals($participant->fresh(), null);
 });
+
+test('the organizer can withdraw a bijective participant', function () {
+    Notification::fake();
+
+    $draw = Draw::factory()
+        ->has(Participant::factory()->count(4)->bijective())
+        ->create();
+    $participant = $draw->participants->random();
+
+    $santa = $participant->santa;
+    $target = $participant->target;
+    assertEquals($santa->id, $target->id); // That's the bijective part, A <-> B
+
+    ajaxGet(URL::signedRoute('organizerPanel.withdraw', [
+            'draw' => $draw,
+            'participant' => $participant,
+        ]))
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    // We can't easily determine the new santa
+    Notification::assertTimesSent(1, TargetWithdrawn::class);
+    Notification::assertTimesSent(1, DearSanta::class);
+    Notification::assertTimesSent(1, ConfirmWithdrawal::class);
+    Notification::assertTimesSent(1, TargetChanged::class);
+
+    assertNotEquals($santa->fresh()->target->id, $santa->id);
+})->skip('wip - infinite');
 
 test('the organizer can download initial data', function () {
     $draw = Draw::factory()
