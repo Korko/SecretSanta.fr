@@ -125,8 +125,6 @@ CREATE TABLE `participants` (
   `email` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `target_id` bigint unsigned DEFAULT NULL,
   `redraw` tinyint(1) NOT NULL DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `participants_draw_id_foreign` (`draw_id`),
   KEY `participants_target_id_foreign` (`target_id`),

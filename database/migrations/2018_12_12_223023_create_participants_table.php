@@ -20,7 +20,6 @@ class CreateParticipantsTable extends Migration
             $table->text('email');
             $table->foreignId('target_id')->nullable()->constrained('participants')->onDelete('set null');
             $table->boolean('redraw')->default(false);
-            $table->timestamps();
         });
     }
 
