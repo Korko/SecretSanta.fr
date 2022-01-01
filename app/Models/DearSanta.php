@@ -33,6 +33,13 @@ class DearSanta extends Model
         'mail_body' => EncryptedString::class,
     ];
 
+    /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['sender'];
+
     protected static function booted()
     {
         parent::boot();

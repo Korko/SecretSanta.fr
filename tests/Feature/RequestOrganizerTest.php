@@ -163,3 +163,26 @@ test('the organizer can delete all data after expiration', function () {
 
     assertNull($draw->fresh());
 });
+
+it('updates the draw update date when sending an email', function () {
+    Notification::fake();
+
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
+
+    $updated_at = $draw->updated_at;
+    $participant = $draw->participants->first();
+
+    sleep(2);
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeEmail', [
+            'draw' => $draw,
+            'participant' => $participant,
+        ]), ['email' => 'test@test2.com'])
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    Notification::assertSentTo($participant, TargetDrawn::class);
+    test()->assertNotEquals($updated_at->timestamp, $draw->fresh()->updated_at->timestamp);
+});

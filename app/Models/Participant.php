@@ -35,6 +35,20 @@ class Participant extends Model
         'email' => EncryptedString::class,
     ];
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['draw'];
+
     protected static function booted()
     {
         parent::boot();

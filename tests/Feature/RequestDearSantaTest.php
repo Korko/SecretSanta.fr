@@ -82,3 +82,25 @@ it('lets a participant resend the email to their santa in case of error', functi
 
     Notification::assertSentToTimes($participant->santa, DearSanta::class, 2);
 });
+
+it('updates the draw update date when writing to a santa', function () {
+    Notification::fake();
+
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
+
+    $updated_at = $draw->updated_at;
+    $participant = $draw->participants->first();
+
+    sleep(2);
+
+    ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), [
+            'content' => 'test dearSanta mail content',
+        ])
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    Notification::assertSentTo($participant->santa, DearSanta::class);
+    test()->assertNotEquals($updated_at->timestamp, $draw->fresh()->updated_at->timestamp);
+});

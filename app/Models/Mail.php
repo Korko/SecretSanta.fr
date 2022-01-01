@@ -43,6 +43,13 @@ class Mail extends Model
         self::RECEIVED,
     ];
 
+    /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['mailable'];
+
     public static function boot()
     {
         parent::boot();
