@@ -10,7 +10,7 @@ it('can handle bounced emails', function () {
             'participant-organizer' => true,
             'participants'          => generateParticipants(3),
             'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
+            'content'               => 'test mail {SANTA} => {TARGET}',
             'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()

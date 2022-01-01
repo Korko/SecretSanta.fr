@@ -38,7 +38,7 @@ class RandomFormRequest extends Request
             'participants.*.exclusions.*' => 'integer|in_keys:participants',
 
             'title'                       => 'required|string',
-            'content-email'               => 'required|string|contains:{TARGET}',
+            'content'                     => 'required|string|contains:{TARGET}',
 
             'data-expiration'             => 'required|date_format:Y-m-d|after_or_equal:tomorrow|before:+6month',
         ];
@@ -62,8 +62,8 @@ class RandomFormRequest extends Request
             'participants.*.email.required'  => Lang::get('validation.custom.randomform.participant.email.required'),
             'participants.*.email.email'     => Lang::get('validation.custom.randomform.participant.email.format'),
             'title.required'                 => Lang::get('validation.custom.randomform.title.required'),
-            'content-email.required'         => Lang::get('validation.custom.randomform.content.required'),
-            'content-email.contains'         => Lang::get('validation.custom.randomform.content.contains'),
+            'content.required'               => Lang::get('validation.custom.randomform.content.required'),
+            'content.contains'               => Lang::get('validation.custom.randomform.content.contains'),
             'data-expiration.required'       => Lang::get('validation.custom.randomform.expiration.required'),
             'data-expiration.after_or_equal' => Lang::get('validation.custom.randomform.expiration.min'),
             'data-expiration.before'         => Lang::get('validation.custom.randomform.expiration.max'),

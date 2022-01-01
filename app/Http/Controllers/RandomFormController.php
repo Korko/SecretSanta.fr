@@ -35,7 +35,7 @@ class RandomFormController extends Controller
             $draw = $drawForm
                 ->withParticipants($safe['participants'])
                 ->withTitle($safe['title'])
-                ->withBody($safe['content-email'])
+                ->withBody($safe['content'])
                 ->withExpiration($safe['data-expiration'])
                 ->save();
 

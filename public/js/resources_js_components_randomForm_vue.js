@@ -1629,7 +1629,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_auto_textarea, {
         id: "mailContent",
-        name: "content-email",
+        name: "content",
         modelValue: _ctx.content,
         "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
           return _ctx.content = $event;
@@ -1637,9 +1637,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         placeholder: _ctx.$t('form.mail.content.placeholder'),
         rows: "3",
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", {
-          'is-invalid': _ctx.v$.content.$error || fieldError('content-email')
+          'is-invalid': _ctx.v$.content.$error || fieldError('content')
         }]),
-        "aria-invalid": _ctx.v$.content.$error || fieldError('content-email'),
+        "aria-invalid": _ctx.v$.content.$error || fieldError('content'),
         style: {
           "width": "100%"
         }
@@ -1649,7 +1649,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* TEXT */
       )) : !_ctx.v$.content.contains ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('validation.custom.randomform.content.contains')), 1
       /* TEXT */
-      )) : fieldError('content-email') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(fieldError('content-email')), 1
+      )) : fieldError('content') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(fieldError('content')), 1
       /* TEXT */
       )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
         id: "mailPost",

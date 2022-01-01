@@ -160,18 +160,18 @@
                                     <div class="input-group">
                                         <auto-textarea
                                             id="mailContent"
-                                            name="content-email"
+                                            name="content"
                                             v-model="content"
                                             :placeholder="$t('form.mail.content.placeholder')"
                                             rows="3"
                                             class="form-control"
-                                            :class="{ 'is-invalid': v$.content.$error || fieldError('content-email') }"
-                                            :aria-invalid="v$.content.$error || fieldError('content-email')"
+                                            :class="{ 'is-invalid': v$.content.$error || fieldError('content') }"
+                                            :aria-invalid="v$.content.$error || fieldError('content')"
                                             style="width: 100%;"
                                         />
                                         <div v-if="!v$.content.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.required') }}</div>
                                         <div v-else-if="!v$.content.contains" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.contains') }}</div>
-                                        <div v-else-if="fieldError('content-email')" class="invalid-tooltip">{{ fieldError('content-email') }}</div>
+                                        <div v-else-if="fieldError('content')" class="invalid-tooltip">{{ fieldError('content') }}</div>
                                     </div>
                                     <textarea
                                         id="mailPost"

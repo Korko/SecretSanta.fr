@@ -18,7 +18,7 @@ it('sends no notifications in case of error', function ($participants) {
             'participant-organizer' => '1',
             'participants'          => $participants,
             'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
+            'content'               => 'test mail {SANTA} => {TARGET}',
             'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertStatus(422)
@@ -42,7 +42,7 @@ it('can create draws', function () {
             'participant-organizer' => '1',
             'participants'          => $participants,
             'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
+            'content'               => 'test mail {SANTA} => {TARGET}',
             'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()
@@ -59,7 +59,7 @@ it('sends notifications in case of success', function () {
             'participant-organizer' => '1',
             'participants'          => generateParticipants(3),
             'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
+            'content'               => 'test mail {SANTA} => {TARGET}',
             'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()
@@ -94,7 +94,7 @@ it('can create draws with a non participant organizer', function () {
             'organizer'             => ['name' => 'foo', 'email' => 'foo@foobar.com'],
             'participants'          => $participants,
             'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
+            'content'               => 'test mail {SANTA} => {TARGET}',
             'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()
@@ -129,7 +129,7 @@ it('sends to the organizer the link to their panel', function () {
             'participant-organizer' => '1',
             'participants'          => generateParticipants(3),
             'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
+            'content'               => 'test mail {SANTA} => {TARGET}',
             'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()
@@ -168,7 +168,7 @@ it('can deal with thousands of participants', function () {
             'participant-organizer' => '1',
             'participants'          => $participants,
             'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
+            'content'               => 'test mail {SANTA} => {TARGET}',
             'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()

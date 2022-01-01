@@ -51,8 +51,8 @@ class RandomFormTest extends DuskTestCase
                         $browser->selectParticipant($name1);
                     })
                     ->type('title', $this->faker->sentence)
-                    ->type('content-email', $this->faker->paragraph)
-                    ->append('content-email', '{TARGET}')
+                    ->type('content', $this->faker->paragraph)
+                    ->append('content', '{TARGET}')
                     ->type('data-expiration', $this->faker->dateTimeBetween('+1 day', '+30 days')->format('m/d/Y'))
                     ->scrollIntoView('#randomForm button[type=submit]')
                     ->click('#randomForm button[type=submit]')
