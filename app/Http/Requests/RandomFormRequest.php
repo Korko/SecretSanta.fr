@@ -27,18 +27,18 @@ class RandomFormRequest extends Request
             'participant-organizer'       => 'sometimes|boolean',
 
             'organizer'                   => 'sometimes|array',
-            'organizer.name'              => 'exclude_if:participant-organizer,true|required',
-            'organizer.email'             => 'exclude_if:participant-organizer,true|required|email',
+            'organizer.name'              => 'exclude_if:participant-organizer,true|required|max:55',
+            'organizer.email'             => 'exclude_if:participant-organizer,true|required|email|max:320',
 
             'participants'                => 'required|array|min:3',
 
-            'participants.*.name'         => 'required|distinct',
-            'participants.*.email'        => 'required|email',
+            'participants.*.name'         => 'required|distinct|max:55',
+            'participants.*.email'        => 'required|email|max:320',
             'participants.*.exclusions'   => 'sometimes|array',
             'participants.*.exclusions.*' => 'integer|in_keys:participants',
 
-            'title'                       => 'required|string',
-            'content'                     => 'required|string|contains:{TARGET}',
+            'title'                       => 'required|string|max:36773',
+            'content'                     => 'required|string|max:36773|contains:{TARGET}',
 
             'data-expiration'             => 'required|date_format:Y-m-d|after_or_equal:tomorrow|before:+6month',
         ];

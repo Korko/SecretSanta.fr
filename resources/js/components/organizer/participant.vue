@@ -41,7 +41,7 @@
 
 <script>
     import { useVuelidate } from '@vuelidate/core';
-    import { required, email } from '@vuelidate/validators';
+    import { required, email, maxLength } from '@vuelidate/validators';
 
     import InputEdit from '../inputEdit.vue';
     import EmailStatus from '../emailStatus.vue';
@@ -55,6 +55,7 @@
         validations: () => ({
             name: {
                 required,
+                maxLength: maxLength(55),
                 unique(value) {
                     // standalone validator ideally should not assume a field is required
                     if (value === '') return true;
@@ -64,6 +65,7 @@
             },
             email: {
                 required,
+                maxLength: maxLength(320),
                 format: email
             }
         }),

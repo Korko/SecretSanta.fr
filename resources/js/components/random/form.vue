@@ -260,7 +260,7 @@
     import Toastify from '../../partials/toastify.js';
 
     import { useVuelidate } from '@vuelidate/core';
-    import { required, minLength, email, requiredIf } from '@vuelidate/validators';
+    import { required, minLength, maxLength , email, requiredIf } from '@vuelidate/validators';
 
     import Moment from 'moment';
     import 'moment/locale/fr';
@@ -309,12 +309,14 @@
                 name: {
                     required: requiredIf(function() {
                         return !this.participantOrganizer;
-                    })
+                    }),
+                    maxLength: maxLength(55)
                 },
                 email: {
                     required: requiredIf(function() {
                         return !this.participantOrganizer;
                     }),
+                    maxLength: maxLength(320),
                     format: email
                 }
             },
@@ -323,10 +325,12 @@
                 minLength: minLength(3)
             },
             title: {
-                required
+                required,
+                maxLength: maxLength(36773)
             },
             content: {
                 required,
+                maxLength: maxLength(36773),
                 contains(value) {
                    return value.indexOf('{TARGET}') >= 0;
                 }
