@@ -15,7 +15,7 @@ class Handler extends ExceptionHandler
      * @var string[]
      */
     protected $dontReport = [
-        //
+        \Illuminate\Broadcasting\BroadcastException::class
     ];
 
     /**
