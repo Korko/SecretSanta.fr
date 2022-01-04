@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 8.74.0.
+ * Generated for Laravel 8.77.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -6378,6 +6378,36 @@
                         return $instance->has($ability);
         }
                     /**
+         * Perform an on-demand authorization check. Throw an authorization exception if the condition or callback is false.
+         *
+         * @param \Illuminate\Auth\Access\Response|\Closure|bool $condition
+         * @param string|null $message
+         * @param string|null $code
+         * @return \Illuminate\Auth\Access\Response 
+         * @throws \Illuminate\Auth\Access\AuthorizationException
+         * @static 
+         */ 
+        public static function allowIf($condition, $message = null, $code = null)
+        {
+                        /** @var \Illuminate\Auth\Access\Gate $instance */
+                        return $instance->allowIf($condition, $message, $code);
+        }
+                    /**
+         * Perform an on-demand authorization check. Throw an authorization exception if the condition or callback is true.
+         *
+         * @param \Illuminate\Auth\Access\Response|\Closure|bool $condition
+         * @param string|null $message
+         * @param string|null $code
+         * @return \Illuminate\Auth\Access\Response 
+         * @throws \Illuminate\Auth\Access\AuthorizationException
+         * @static 
+         */ 
+        public static function denyIf($condition, $message = null, $code = null)
+        {
+                        /** @var \Illuminate\Auth\Access\Gate $instance */
+                        return $instance->denyIf($condition, $message, $code);
+        }
+                    /**
          * Define a new ability.
          *
          * @param string $ability
@@ -8249,9 +8279,23 @@
                     /**
          * Assert the total amount of times a notification was sent.
          *
+         * @param string $notification
+         * @param int $expectedCount
+         * @return void 
+         * @static 
+         */ 
+        public static function assertSentTimes($notification, $expectedCount)
+        {
+                        /** @var \Illuminate\Support\Testing\Fakes\NotificationFake $instance */
+                        $instance->assertSentTimes($notification, $expectedCount);
+        }
+                    /**
+         * Assert the total amount of times a notification was sent.
+         *
          * @param int $expectedCount
          * @param string $notification
          * @return void 
+         * @deprecated Use the assertSentTimes method instead
          * @static 
          */ 
         public static function assertTimesSent($expectedCount, $notification)
@@ -11035,6 +11079,20 @@
                         return $instance->boolean($key, $default);
         }
                     /**
+         * Retrieve input from the request as a Carbon instance.
+         *
+         * @param string $key
+         * @param string|null $format
+         * @param string|null $tz
+         * @return \Illuminate\Support\Carbon|null 
+         * @static 
+         */ 
+        public static function date($key, $format = null, $tz = null)
+        {
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->date($key, $format, $tz);
+        }
+                    /**
          * Retrieve input from the request as a collection.
          *
          * @param array|string|null $key
@@ -11160,7 +11218,7 @@
                     /**
          * Dump the request items and end the script.
          *
-         * @param array|mixed $keys
+         * @param mixed $keys
          * @return void 
          * @static 
          */ 
@@ -11172,7 +11230,7 @@
                     /**
          * Dump the items.
          *
-         * @param array $keys
+         * @param mixed $keys
          * @return \Illuminate\Http\Request 
          * @static 
          */ 
@@ -13585,6 +13643,18 @@
                         return $instance->extend($driver, $callback);
         }
                     /**
+         * Set the application instance used by the manager.
+         *
+         * @param \Illuminate\Contracts\Foundation\Application $app
+         * @return \Illuminate\Filesystem\FilesystemManager 
+         * @static 
+         */ 
+        public static function setApplication($app)
+        {
+                        /** @var \Illuminate\Filesystem\FilesystemManager $instance */
+                        return $instance->setApplication($app);
+        }
+                    /**
          * Assert that the given file exists.
          *
          * @param string|array $path
@@ -14026,6 +14096,18 @@
         {
                         /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
                         return $instance->getDriver();
+        }
+                    /**
+         * Define a custom temporary URL builder callback.
+         *
+         * @param \Closure $callback
+         * @return void 
+         * @static 
+         */ 
+        public static function buildTemporaryUrlsUsing($callback)
+        {
+                        /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
+                        $instance->buildTemporaryUrlsUsing($callback);
         }
                     /**
          * Register a custom macro.
@@ -14824,6 +14906,21 @@
                         return $instance->renderWhen($condition, $view, $data, $mergeData);
         }
                     /**
+         * Get the rendered content of the view based on the negation of a given condition.
+         *
+         * @param bool $condition
+         * @param string $view
+         * @param \Illuminate\Contracts\Support\Arrayable|array $data
+         * @param array $mergeData
+         * @return string 
+         * @static 
+         */ 
+        public static function renderUnless($condition, $view, $data = [], $mergeData = [])
+        {
+                        /** @var \Illuminate\View\Factory $instance */
+                        return $instance->renderUnless($condition, $view, $data, $mergeData);
+        }
+                    /**
          * Get the rendered contents of a partial from a loop.
          *
          * @param string $view
@@ -15416,7 +15513,7 @@
                         return \Illuminate\View\Factory::parentPlaceholder($section);
         }
                     /**
-         * Check if the section exists.
+         * Check if section exists.
          *
          * @param string $name
          * @return bool 
@@ -15632,47 +15729,12 @@
      
 }
 
-    namespace Illuminate\Support { 
+    namespace App\Collections { 
             /**
      * 
      *
      */ 
         class Arr {
-         
-    }
-            /**
-     * 
-     *
-     */ 
-        class Str {
-         
-    }
-            /**
-     * 
-     *
-     */ 
-        class Collection {
-                    /**
-         * 
-         *
-         * @see \Barryvdh\Debugbar\ServiceProvider::register()
-         * @static 
-         */ 
-        public static function debug()
-        {
-                        return \Illuminate\Support\Collection::debug();
-        }
-                    /**
-         * 
-         *
-         * @see \App\Providers\CollectionMacroServiceProvider::boot()
-         * @param array $attributes
-         * @static 
-         */ 
-        public static function toCsv($attributes)
-        {
-                        return \Illuminate\Support\Collection::toCsv($attributes);
-        }
          
     }
      
@@ -15747,6 +15809,20 @@
                         return $instance->encrypt($value, $serialize);
         }
                     /**
+         * Decrypt the given value.
+         *
+         * @param string $payload
+         * @param bool $unserialize
+         * @return mixed 
+         * @throws \Illuminate\Contracts\Encryption\DecryptException
+         * @static 
+         */ 
+        public static function decrypt($payload, $unserialize = true)
+        {
+                        /** @var \App\Services\IVEncrypter $instance */
+                        return $instance->decrypt($payload, $unserialize);
+        }
+                    /**
          * Determine if the given key and cipher combination is valid.
          *
          * @param string $key
@@ -15781,20 +15857,6 @@
         {            //Method inherited from \Illuminate\Encryption\Encrypter         
                         /** @var \App\Services\IVEncrypter $instance */
                         return $instance->encryptString($value);
-        }
-                    /**
-         * Decrypt the given value.
-         *
-         * @param string $payload
-         * @param bool $unserialize
-         * @return mixed 
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static 
-         */ 
-        public static function decrypt($payload, $unserialize = true)
-        {            //Method inherited from \Illuminate\Encryption\Encrypter         
-                        /** @var \App\Services\IVEncrypter $instance */
-                        return $instance->decrypt($payload, $unserialize);
         }
                     /**
          * Decrypt the given string without unserialization.
@@ -15833,9 +15895,9 @@
          *
          * @static 
          */ 
-        public static function one($participants, $exclusions = [])
-        {
-                        /** @var \App\Solvers\HatSolver $instance */
+        public static function one($participants, $exclusions = null)
+        {            //Method inherited from \App\Solvers\Solver         
+                        /** @var \App\Solvers\GraphSolver $instance */
                         return $instance->one($participants, $exclusions);
         }
                     /**
@@ -15843,9 +15905,9 @@
          *
          * @static 
          */ 
-        public static function all($participants, $exclusions = [])
-        {
-                        /** @var \App\Solvers\HatSolver $instance */
+        public static function all($participants, $exclusions = null)
+        {            //Method inherited from \App\Solvers\Solver         
+                        /** @var \App\Solvers\GraphSolver $instance */
                         return $instance->all($participants, $exclusions);
         }
          
@@ -15987,6 +16049,58 @@
      
 }
 
+    namespace Illuminate\Support { 
+            /**
+     * 
+     *
+     */ 
+        class Str {
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class Collection {
+                    /**
+         * 
+         *
+         * @see \Barryvdh\Debugbar\ServiceProvider::register()
+         * @static 
+         */ 
+        public static function debug()
+        {
+                        return \Illuminate\Support\Collection::debug();
+        }
+                    /**
+         * 
+         *
+         * @see \App\Providers\CollectionMacroServiceProvider::boot()
+         * @param array $attributes
+         * @static 
+         */ 
+        public static function toCsv($attributes)
+        {
+                        return \Illuminate\Support\Collection::toCsv($attributes);
+        }
+                    /**
+         * Get the first key from the collection passing the given truth test.
+         *
+         * @param callable|null $callback
+         * @param mixed $default
+         * @return mixed 
+         * @see \App\Providers\CollectionMacroServiceProvider::boot()
+         * @static 
+         */ 
+        public static function firstKey($callback = null, $default = null)
+        {
+                        return \Illuminate\Support\Collection::firstKey($callback, $default);
+        }
+         
+    }
+     
+}
+
     namespace Facades\App\Services { 
             /**
      * 
@@ -16009,7 +16123,7 @@
      
 }
 
-    namespace Barryvdh\Debugbar { 
+    namespace Barryvdh\Debugbar\Facades { 
             /**
      * 
      *
@@ -16024,7 +16138,7 @@
      * @method static void warning(mixed $message)
      * @see \Barryvdh\Debugbar\LaravelDebugbar
      */ 
-        class Facade {
+        class Debugbar {
                     /**
          * Enable the Debugbar and boot, if not already booted.
          *
@@ -17114,7 +17228,7 @@
 
 namespace  { 
             class App extends \Illuminate\Support\Facades\App {}
-            class Arr extends \Illuminate\Support\Arr {}
+            class Arr extends \App\Collections\Arr {}
             class Artisan extends \Illuminate\Support\Facades\Artisan {}
             class Auth extends \Illuminate\Support\Facades\Auth {}
             class Blade extends \Illuminate\Support\Facades\Blade {}
@@ -18367,18 +18481,6 @@ namespace  {
             }
              
                 /**
-             * Explains the query.
-             *
-             * @return \Illuminate\Support\Collection 
-             * @static 
-             */ 
-            public static function explain()
-            {
-                                /** @var \Illuminate\Database\Eloquent\Builder $instance */
-                                return $instance->explain();
-            }
-             
-                /**
              * Chunk the results of the query.
              *
              * @param int $count
@@ -19248,7 +19350,7 @@ namespace  {
                 /**
              * Add a "where date" statement to the query.
              *
-             * @param string $column
+             * @param \Illuminate\Database\Query\Expression|string $column
              * @param string $operator
              * @param \DateTimeInterface|string|null $value
              * @param string $boolean
@@ -20485,6 +20587,18 @@ namespace  {
             }
              
                 /**
+             * Explains the query.
+             *
+             * @return \Illuminate\Support\Collection 
+             * @static 
+             */ 
+            public static function explain()
+            {
+                                /** @var \Illuminate\Database\Query\Builder $instance */
+                                return $instance->explain();
+            }
+             
+                /**
              * Register a custom macro.
              *
              * @param string $name
@@ -20562,7 +20676,7 @@ namespace  {
             class URLParser extends \Facades\App\Services\URLParser {}
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
-            class Debugbar extends \Barryvdh\Debugbar\Facade {}
+            class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
             class Metrics extends \STS\Metrics\MetricsFacade {}
             class Client extends \Webklex\IMAP\Facades\Client {}
