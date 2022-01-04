@@ -3,7 +3,7 @@
 namespace App\Mail;
 
 use App\Facades\DrawCrypt;
-use App\Models\DearSanta;
+use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
 use Illuminate\Support\Facades\URL;
 use Lang;
@@ -20,10 +20,15 @@ class DearSanta extends TrackedMailable
      * @param  \App\Models\DearSanta  $dearSanta
      * @return void
      */
-    public function __construct(Participant $santa, DearSanta $dearSanta)
+    public function __construct(Participant $santa, DearSantaModel $dearSanta)
     {
         $this->santa = $santa;
         $this->dearSanta = $dearSanta;
+    }
+
+    protected function getMailable()
+    {
+        return $this->dearSanta;
     }
 
     /**

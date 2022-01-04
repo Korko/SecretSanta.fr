@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Channels\TrackedMailChannel;
 use App\Mail\TargetDrawn as TargetDrawnMailable;
 use App\Models\Participant;
 use Illuminate\Bus\Queueable;
@@ -36,7 +35,7 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
      */
     public function via(Participant $santa)
     {
-        return [TrackedMailChannel::class];
+        return ['mail'];
     }
 
     /**
@@ -47,6 +46,7 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
      */
     public function toMail(Participant $santa)
     {
-        return new TargetDrawnMailable($santa);
+        return (new TargetDrawnMailable($santa))
+            ->to($santa->routeNotificationFor('mail'));
     }
 }

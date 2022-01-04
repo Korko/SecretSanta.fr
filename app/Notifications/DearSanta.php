@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Channels\TrackedMailChannel;
 use App\Mail\DearSanta as DearSantaMailable;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
@@ -31,7 +30,7 @@ class DearSanta extends Notification implements ShouldQueue, ShouldBeEncrypted
      */
     public function via(Participant $santa)
     {
-        return [TrackedMailChannel::class];
+        return ['mail'];
     }
 
     /**
@@ -42,6 +41,7 @@ class DearSanta extends Notification implements ShouldQueue, ShouldBeEncrypted
      */
     public function toMail(Participant $santa)
     {
-        return new DearSantaMailable($santa, $this->dearSanta);
+        return (new DearSantaMailable($santa, $this->dearSanta))
+            ->to($santa->routeNotificationFor('mail'));
     }
 }

@@ -148,7 +148,9 @@ class Participant extends Model
      */
     public function routeNotificationForMail($notification)
     {
-        return [$this->email => $this->name];
+        return [
+            ['name' => $this->name, 'email' => $this->email],
+        ];
     }
 
     /**

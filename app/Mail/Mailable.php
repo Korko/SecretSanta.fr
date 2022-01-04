@@ -1,24 +1,22 @@
 <?php
 
-namespace App\Channels;
+namespace App\Mail;
 
-use Illuminate\Notifications\Channels\MailChannel as BaseMailChannel;
+use Illuminate\Mail\Mailable as BaseMailable;
 use Swift_Signers_DKIMSigner;
 
-class MailChannel extends BaseMailChannel
+class Mailable extends BaseMailable
 {
     /**
-     * Get the mailer Closure for the message.
+     * Send the message using the given mailer.
      *
-     * @param  mixed  $notifiable
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @param  \Illuminate\Notifications\Messages\MailMessage  $message
-     * @return \Closure
+     * @param  \Illuminate\Contracts\Mail\Factory|\Illuminate\Contracts\Mail\Mailer  $mailer
+     * @return void
      */
-    protected function messageBuilder($notifiable, $notification, $message)
+    public function send($mailer)
     {
         // Sign DKIM
-        $message->withSwiftMessage(function ($message) {
+        $this->withSwiftMessage(function ($message) {
             if (
                 config('mail.dkim_private_key') &&
                 file_exists(config('mail.dkim_private_key')) &&
@@ -42,6 +40,6 @@ class MailChannel extends BaseMailChannel
             }
         });
 
-        return parent::messageBuilder($notifiable, $notification, $message);
+        return parent::send($mailer);
     }
 }

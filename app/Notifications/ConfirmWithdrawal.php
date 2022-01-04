@@ -28,6 +28,7 @@ class ConfirmWithdrawal extends Notification
      */
     public function toMail(Participant $santa)
     {
-        return new ConfirmWithdrawalMailable($santa);
+        return (new ConfirmWithdrawalMailable($santa))
+            ->to($santa->routeNotificationFor('mail'));
     }
 }

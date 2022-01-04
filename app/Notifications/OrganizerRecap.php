@@ -54,6 +54,7 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
      */
     public function toMail($organizer)
     {
-        return new OrganizerRecapMailable($this->draw);
+        return (new OrganizerRecapMailable($this->draw))
+            ->to($organizer->routeNotificationFor('mail'));
     }
 }

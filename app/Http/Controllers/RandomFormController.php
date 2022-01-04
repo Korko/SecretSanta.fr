@@ -40,7 +40,7 @@ class RandomFormController extends Controller
                 ->save();
 
             Notification::route('mail', [
-                $draw->organizer_email => $draw->organizer_name
+                ['name' => $draw->organizer_name, 'email' => $draw->organizer_email],
             ])->notify(new OrganizerRecap($draw));
 
             $draw->createMetric('new_draw')

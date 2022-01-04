@@ -22,11 +22,6 @@ class AppServiceProvider extends ServiceProvider
             \App\Solvers\SolverInterface::class,
             \App\Solvers\GraphSolver::class
         );
-
-        $channelManager = $this->app->get(ChannelManager::class);
-        $channelManager->extend('mail', function (Application $application) {
-            return new \App\Channels\MailChannel($application->get('mail.manager'), $application->get(Markdown::class));
-        });
     }
 
     /**

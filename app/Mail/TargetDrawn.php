@@ -22,6 +22,11 @@ class TargetDrawn extends TrackedMailable
         $this->santa = $santa;
     }
 
+    protected function getMailable()
+    {
+        return $this->santa;
+    }
+
     /**
      * Build the message.
      *

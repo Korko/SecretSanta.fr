@@ -5,7 +5,6 @@ namespace App\Mail;
 use App;
 use App\Facades\DrawCrypt;
 use App\Models\Draw;
-use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\URL;
 use Lang;
 

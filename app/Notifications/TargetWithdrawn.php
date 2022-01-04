@@ -46,6 +46,7 @@ class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncry
      */
     public function toMail(Participant $santa)
     {
-        return new TargetWithdrawnMailable($santa);
+        return (new TargetWithdrawnMailable($santa))
+            ->to($santa->routeNotificationFor('mail'));
     }
 }

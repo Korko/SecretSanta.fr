@@ -37,17 +37,16 @@ return [
         'mailtrap' => [
             'transport' => 'smtp',
             'host' => 'smtp.mailtrap.io',
-            'port' => 465,
+            'port' => 2525,
             'encryption' => 'tls',
             'username' => env('MAILTRAP_USERNAME'),
             'password' => env('MAILTRAP_PASSWORD'),
         ],
 
-        'mailhog' => [
+        'inbucket' => [
             'transport' => 'smtp',
-            'host' => env('MAILHOG_HOST', '127.0.0.1'),
-            'port' => env('MAILHOG_PORT', 1025),
-            'encryption' => null,
+            'host' => env('INBUCKET_HOST', 'inbucket'),
+            'port' => env('INBUCKET_PORT', 2500),
             'username' => null,
             'password' => null,
         ],

@@ -2,32 +2,47 @@
 
 namespace App\Mail;
 
-use App\Models\Mail;
-use Illuminate\Mail\Mailable;
+use Facades\App\Services\MailTracker;
+use Swift_TransportException;
 
-class TrackedMailable extends Mailable
+abstract class TrackedMailable extends Mailable
 {
-    protected $mail;
+    protected $mailable;
 
     /**
-     * Create a new tracked mailable instance.
+     * Send the message using the given mailer.
      *
-     * @param  \App\Models\Mail  $mailer
+     * @param  \Illuminate\Contracts\Mail\Factory|\Illuminate\Contracts\Mail\Mailer  $mailer
      * @return void
      */
-    public function __construct(Mail $mail)
+    public function send($mailer)
     {
-        $this->mail = $mail;
-        $this->mail->markAsCreated();
+        $this->mailable = $this->getMailable();
+        $this->mailable->mail()->create();
+
+        $this->withSwiftMessage(function ($message) {
+            // In case of Bounce
+            $message->getHeaders()->addPathHeader('Return-Path', MailTracker::getBounceReturnPath($this->mailable->mail));
+
+            // To assert Reception
+            $message->getHeaders()->addPathHeader('X-Confirm-Reading-To', MailTracker::getConfirmReturnPath($this->mailable->mail));
+            $message->getHeaders()->addPathHeader('Return-Receipt-To', MailTracker::getConfirmReturnPath($this->mailable->mail));
+            $message->getHeaders()->addPathHeader('Disposition-Notification-To', MailTracker::getConfirmReturnPath($this->mailable->mail));
+        });
+
+        try {
+            $this->mailable->mail->markAsSending();
+
+            parent::send($mailer);
+
+            $this->mailable->mail->markAsSent();
+        } catch (Swift_TransportException $exception) {
+            $this->mailable->mail->markAsError();
+        }
     }
 
     /**
-     * Get the mail instance.
-     *
-     * @return \App\Models\Mail
+     * Return a mailable (morpheable into \App\Models\Mail) instance
      */
-    public function getMail()
-    {
-        return $this->mail;
-    }
+    abstract protected function getMailable();
 }
