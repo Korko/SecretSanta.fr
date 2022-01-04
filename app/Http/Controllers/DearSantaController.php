@@ -29,23 +29,25 @@ class DearSantaController extends Controller
         // The hash was validated in middleware so we can validate that the email was received
         $participant->mail->markAsReceived();
 
+        $participant->load('target', 'target.dearSantas', 'target.dearSantas.mail', 'dearSantas', 'dearSantas.mail');
+
         return response()->json([
             'participant' => $participant->only(['hash', 'name']),
             'draw' => $participant->draw->only(['hash', 'mail_title', 'created_at', 'expires_at', 'organizer_name']),
-            'targetDearSantaLastUpdate' => $participant->target->dearSantas->load('mail')->max('mail.updated_at'),
+            'targetDearSantaLastUpdate' => $participant->target->dearSantas->max('mail.updated_at'),
             'emails' => $participant->dearSantas->mapWithKeys(function ($email) {
                 return [
                     $email->mail->id => $email->only($this->dearSantaPublicFields)
                 ];
             }),
-            'resendEmailUrls' => $participant->dearSantas->mapWithKeys(function ($dearSanta) use ($participant) {
+            'resendEmailUrls' => $participant->draw->expired ? [] : $participant->dearSantas->mapWithKeys(function ($dearSanta) use ($participant) {
                 return [
                     $dearSanta->mail->id => URL::signedRoute('dearSanta.resend', [
                         'participant' => $participant, 'dearSanta' => $dearSanta
                     ])
                 ];
             }),
-            'resendTargetEmailsUrl' => URL::signedRoute('dearSanta.resend_target', [
+            'resendTargetEmailsUrl' => $participant->draw->expired ? null : URL::signedRoute('dearSanta.resend_target', [
                 'participant' => $participant
             ])
         ]);

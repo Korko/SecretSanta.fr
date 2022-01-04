@@ -30,24 +30,26 @@ class OrganizerController extends Controller
     {
         return response()->json([
             'draw' => $draw->only(['hash', 'mail_title', 'created_at', 'expires_at', 'deleted_at', 'next_solvable', 'organizer_name']),
-            'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) {
+            'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) use ($draw) {
                 return [
                     $participant->hash => $participant->only([
-                        'hash', 'name', 'email', 'mail',
-                    ])
+                        'hash', 'name', 'email', 'mail'
+                    ]) + (
+                        $draw->expired ? ['target' => $participant->target->name] : []
+                    )
                 ];
             }),
-            'changeEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
+            'changeEmailUrls' => $draw->expired ? [] : $draw->participants->mapWithKeys(function ($participant) use ($draw) {
                 return [
                     $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [
-                        'draw' => $participant->draw, 'participant' => $participant
+                        'draw' => $draw, 'participant' => $participant
                     ])
                 ];
             }),
-            'withdrawalUrls' => $draw->participants->mapWithKeys(function ($participant) {
+            'withdrawalUrls' => $draw->expired ? [] : $draw->participants->mapWithKeys(function ($participant) use ($draw) {
                 return [
                     $participant->hash => URL::signedRoute('organizerPanel.withdraw', [
-                        'draw' => $participant->draw, 'participant' => $participant
+                        'draw' => $draw, 'participant' => $participant
                     ])
                 ];
             })
