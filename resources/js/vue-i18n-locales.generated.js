@@ -5,6 +5,7 @@ export default {
                 "name": "Nom",
                 "email": "Adresse Email",
                 "status": "Status d'envoi de l'email",
+                "target": "Nom de la cible",
                 "caption": "Liste des participant(e)s",
                 "withdraw": "Retirer"
             },
@@ -25,14 +26,24 @@ export default {
                 "button_final": "Télécharger le récapitulatif complété",
                 "button_final-tooltip": {
                     "title": "Récapitulatif complété",
-                    "explain": "Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de chaque participant(e) la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant(e) pour la prochaine fois.",
-                    "limit": "Compte tenu de la date de l'évènement définie, cette fonctionnalité n'est disponible que du {expires_at} au {deleted_at}."
+                    "explain": "Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de chaque participant(e) la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant(e) pour la prochaine fois."
+                }
+            },
+            "end": {
+                "button": "Terminer l'évènement",
+                "button-tooltip": {
+                    "title": "Terminer l'évènement",
+                    "content": "Une fois l'évènement terminé, les cibles de chaque participant sera affiché et vous pourrez aussi télécharger le récapitulatif complété. Par ailleurs les interfaces pour communiquer avec son père noël secret seront désactivées et les données du tirage au sort seront supprimées dans 7 jours. Cette action est définitive."
                 }
             },
             "purge": {
                 "button": "Supprimer tout",
+                "button-tooltip": {
+                    "title": "Supprimer toutes les données",
+                    "content": "Sans action de votre part, toutes les données seront automatiquement supprimées 3 mois après le dernier email échangé. Cette action supprime immédiatement la totalité des données de votre tirage au sort (noms des participants, adresses emails, messages échangés etc). Cette action est définitive."
+                },
                 "confirm": {
-                    "title": "Êtes-vous sûr de vouloir supprimer la totalité des données avant le nettoyage automatique le {deletion} ?",
+                    "title": "Êtes-vous sûr de vouloir supprimer la totalité des données avant le nettoyage automatique le {deletes_at} ?",
                     "body_final": "Vous ne pourrez plus télécharger le récapitulatif des tirages de cet évènement et les participant(e)s ne pourront plus écrire à leur père/mère noël secret. Cette action ne peut être annulée.",
                     "body_expired": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement. Cette action ne peut être annulée.",
                     "body_nofinal": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement et les participant(e)s ne pourront plus écrire à leur père/mère noël secret. Cette action ne peut être annulée.",
@@ -53,7 +64,7 @@ export default {
                     "cancel": "Annuler"
                 }
             },
-            "expired": "Votre évènement est passé ({expires_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un(e) participant(e)."
+            "expired": "Votre évènement a été marqué comme terminé ({expired_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un(e) participant(e)."
         },
         "faq": {
             "nav": {
@@ -399,7 +410,8 @@ export default {
             },
             "resend": {
                 "button": "Me ré-envoyer les mails que j'ai reçu de ma cible"
-            }
+            },
+            "expired": "Votre évènement a été marqué comme terminé ({expired_at}). Le nom de votre cible a été révélé à l'organisateur et certaines actions ne sont plus disponibles, comme envoyer des emails."
         }
     }
 }

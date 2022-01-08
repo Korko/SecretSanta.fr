@@ -11,7 +11,6 @@ it('can handle bounced emails', function () {
             'participants'          => generateParticipants(3),
             'title'                 => 'this is a test',
             'content'               => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);

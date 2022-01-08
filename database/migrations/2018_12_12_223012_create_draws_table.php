@@ -19,7 +19,6 @@ class CreateDrawsTable extends Migration
             $table->text('organizer_email');
             $table->text('mail_title');
             $table->text('mail_body');
-            $table->date('expires_at');
             $table->boolean('next_solvable')->default(true);
             $table->timestamps();
         });

@@ -75,6 +75,10 @@
         visibility: visible; opacity: 1;
     }
 
+    .tip-content:deep(.text-content) {
+        padding: 10px 20px;
+    }
+
     .tip-content img {
         width: 400px;
         border-radius: 8px 8px 0 0;

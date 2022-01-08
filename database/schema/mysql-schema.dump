@@ -25,10 +25,10 @@ CREATE TABLE `draws` (
   `organizer_email` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `mail_title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `mail_body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `expires_at` date NOT NULL,
   `next_solvable` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `expired_at` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -147,3 +147,5 @@ INSERT INTO `migrations` VALUES (6,'2019_12_11_232036_create_failed_jobs_table',
 INSERT INTO `migrations` VALUES (7,'2020_02_19_140057_create_dear_santas_table',1);
 INSERT INTO `migrations` VALUES (8,'2020_11_15_235209_create_exclusions_table',1);
 INSERT INTO `migrations` VALUES (9,'2022_01_01_230426_reduce_columns_sizes',1);
+INSERT INTO `migrations` VALUES (10,'2022_01_01_231112_remove_participants_timestamps',1);
+INSERT INTO `migrations` VALUES (11,'2022_01_02_001503_remove_draw_expiration',1);

@@ -196,47 +196,6 @@
                             </fieldset>
                         </div>
                     </fieldset>
-                    <fieldset>
-                        <div id="form-options" class="form-group">
-                            <div class="input-inline-group">
-                                <tooltip direction="top">
-                                    <template #tooltip>
-                                        <picture>
-                                            <source srcset="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.webp" type="image/webp" />
-                                            <source srcset="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" type="image/jpg" />
-                                            <img class="media-object" src="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" />
-                                        </picture>
-                                        <div class="text-content">
-                                            <h3>{{ $t('form.data-expiration-tooltip.title') }}</h3>
-                                            <ul>
-                                                <li>{{ $t('form.data-expiration-tooltip.interface') }}</li>
-                                                <li>{{ $t('form.data-expiration-tooltip.deletion') }}</li>
-                                            </ul>
-                                        </div>
-                                    </template>
-                                    <template #default>
-                                        <label for="expiration">{{ $t('form.data-expiration') }}</label>
-                                    </template>
-                                </tooltip>
-                                <input
-                                    type="date"
-                                    name="data-expiration"
-                                    id="expiration"
-                                    v-model="expiration"
-                                    :class="{ 'is-invalid': v$.expiration.$error || fieldError('data-expiration') }"
-                                    :aria-invalid="v$.expiration.$error || fieldError('data-expiration')"
-                                    @blur="v$.expiration.$touch()"
-                                    :min="moment(1, 'day')"
-                                    :max="moment(1, 'year')"
-                                />
-                                <div class="invalid-tooltip" v-if="!v$.expiration.required">{{ $t('validation.custom.randomform.expiration.required') }}</div>
-                                <div class="invalid-tooltip" v-else-if="!v$.expiration.format">{{ $t('validation.custom.randomform.expiration.format') }}</div>
-                                <div class="invalid-tooltip" v-else-if="!v$.expiration.minValue">{{ $t('validation.custom.randomform.expiration.min') }}</div>
-                                <div class="invalid-tooltip" v-else-if="!v$.expiration.maxValue">{{ $t('validation.custom.randomform.expiration.max') }}</div>
-                                <div class="invalid-tooltip" v-else-if="fieldError('data-expiration')">{{ fieldError('data-expiration') }}</div>
-                            </div>
-                        </div>
-                    </fieldset>
                 </template>
             </ajax-form>
         </div>
@@ -278,7 +237,6 @@
     const formatMoment = (amount, unit) => Moment(window.now).add(amount, unit).format('YYYY-MM-DD')
 
     export default {
-
         components: {
             AjaxForm,
             AutoTextarea,
@@ -297,7 +255,6 @@
             participants: [],
             title: '',
             content: '',
-            expiration: null,
             now: window.now,
             showModal: false,
             importing: false
@@ -334,18 +291,6 @@
                 contains(value) {
                    return value.indexOf('{TARGET}') >= 0;
                 }
-            },
-            expiration: {
-                required,
-                format(value) {
-                    return /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(value);
-                },
-                minValue(value) {
-                    return Moment(value, 'YYYY-MM-DD').isSameOrAfter(formatMoment(1, 'day'));
-                },
-                maxValue(value) {
-                    return Moment(value, 'YYYY-MM-DD').isSameOrBefore(formatMoment(6, 'month'));
-                }
             }
         }),
 
@@ -381,10 +326,6 @@
                 return formatMoment(amount, unit);
             },
 
-            resetParticipants() {
-                this.participants = [];
-            },
-
             addParticipant(name, email, exclusions) {
                 var n = this.participants.push({
                     name: name ? name.trim() : undefined,
@@ -417,14 +358,13 @@
                         alertify.errorAlert(this.$t('form.csv.importError'));
                     },
                     complete: function(file) {
-                        this.importing = false;
-                        this.resetParticipants();
+                        this.participants = [];
 
                         // Set participants
                         file.data.forEach(
                             function(participant) {
                                 if (participant[0] !== '' && participant.length >= 2) {
-                                    this.addParticipant(participant[0], participant[1], participant[2]);
+                                    this.addParticipant(participant[0], participant[1], participant[2] || '');
                                 }
                             }.bind(this)
                         );
@@ -434,6 +374,9 @@
                                 this.addParticipant();
                             }
                         }
+
+                        this.importing = false;
+
                         Toastify.success(this.$t('form.csv.importSuccess'));
                     }.bind(this)
                 });
@@ -453,7 +396,6 @@
                 this.participants = [];
                 this.title = '';
                 this.content = '';
-                this.expiration = null;
 
                 this.addParticipant();
                 this.addParticipant();
@@ -616,10 +558,6 @@
 
     .fade-enter, .fade-leave-to {
         opacity: 0;
-    }
-
-    .tip-content .text-content {
-        padding: 10px 20px;
     }
 
     /* ==========================================================================

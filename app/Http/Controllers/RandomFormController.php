@@ -36,7 +36,6 @@ class RandomFormController extends Controller
                 ->withParticipants($safe['participants'])
                 ->withTitle($safe['title'])
                 ->withBody($safe['content'])
-                ->withExpiration($safe['data-expiration'])
                 ->save();
 
             Notification::route('mail', [

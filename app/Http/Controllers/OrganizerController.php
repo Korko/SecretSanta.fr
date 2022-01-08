@@ -28,29 +28,25 @@ class OrganizerController extends Controller
 
     public function fetch(Draw $draw)
     {
+        $drawFields = ['hash', 'mail_title', 'created_at', 'expired_at', 'deletes_at', 'next_solvable', 'organizer_name'];
+        $participantFields = ['hash', 'name', 'email', 'mail' => ['id', 'updated_at', 'delivery_status']];
+
+        if ($draw->expired) {
+            $participantFields[] = ['target' => ['hash', 'name']];
+        }
+
         return response()->json([
-            'draw' => $draw->only(['hash', 'mail_title', 'created_at', 'expires_at', 'deleted_at', 'next_solvable', 'organizer_name']),
-            'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) use ($draw) {
+            'draw' => $draw->only($drawFields),
+            'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) use ($draw, $participantFields) {
                 return [
-                    $participant->hash => $participant->only([
-                        'hash', 'name', 'email', 'mail'
-                    ]) + (
-                        $draw->expired ? ['target' => $participant->target->name] : []
-                    )
-                ];
-            }),
-            'changeEmailUrls' => $draw->expired ? [] : $draw->participants->mapWithKeys(function ($participant) use ($draw) {
-                return [
-                    $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [
-                        'draw' => $draw, 'participant' => $participant
-                    ])
-                ];
-            }),
-            'withdrawalUrls' => $draw->expired ? [] : $draw->participants->mapWithKeys(function ($participant) use ($draw) {
-                return [
-                    $participant->hash => URL::signedRoute('organizerPanel.withdraw', [
-                        'draw' => $draw, 'participant' => $participant
-                    ])
+                    $participant->hash => $participant->only($participantFields) + [
+                        'changeEmailUrl' => $draw->expired ? '' : URL::signedRoute('organizerPanel.changeEmail', [
+                            'draw' => $draw, 'participant' => $participant
+                        ]),
+                        'withdrawalUrl' => $draw->expired ? '' : URL::signedRoute('organizerPanel.withdraw', [
+                            'draw' => $draw, 'participant' => $participant
+                        ]),
+                    ]
                 ];
             })
         ]);

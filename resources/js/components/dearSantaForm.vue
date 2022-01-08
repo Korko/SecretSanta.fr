@@ -329,6 +329,9 @@
         </div>
 
 <!--
+        <div v-if="expired" class="alert alert-warning" role="alert">
+            {{ $t('dearsanta.expired', {expired_at: expirationDateLong}) }}
+        </div>
         <ajax-form :action="routes.contactUrl" :$v="$v" @success="success" @reset="reset" :autoReset="true">
             <fieldset>
                 <div class="form-group">

@@ -88,9 +88,11 @@
         },
         setup: () => ({ v$: useVuelidate() }),
         validations() {
-            return {
-                newValue: this.validation || {}
-            };
+            // This test is just to prevent infinite loop if validation is done during setup
+            if (this.$el)
+                return {
+                    newValue: this.validation || {}
+                };
         },
         data() {
             return {

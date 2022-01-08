@@ -14,7 +14,6 @@ class DrawFormHandler
     protected $body;
     protected $organizer;
     protected $participants;
-    protected $expirationDate;
 
     public function __construct()
     {
@@ -22,7 +21,6 @@ class DrawFormHandler
         $this->body = '';
         $this->organizer = null;
         $this->participants = [];
-        $this->expirationDate = date('Y-m-d', strtotime('+2 days'));
     }
 
     public function withOrganizer(array $organizer) : self
@@ -56,13 +54,6 @@ class DrawFormHandler
         return $this;
     }
 
-    public function withExpiration($expirationDate) : self
-    {
-        $this->expirationDate = $expirationDate;
-
-        return $this;
-    }
-
     public function save() : Draw
     {
         DB::beginTransaction();
@@ -87,7 +78,6 @@ class DrawFormHandler
     protected function createDraw() : Draw
     {
         $draw = new Draw();
-        $draw->expires_at = $this->expirationDate;
         $draw->mail_title = $this->title;
         $draw->mail_body = $this->body;
         $draw->organizer_name = $this->organizer['name'];

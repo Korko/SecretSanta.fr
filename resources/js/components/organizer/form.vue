@@ -1,22 +1,25 @@
 <template>
     <div>
         <div v-if="expired" class="alert alert-warning" role="alert">
-            {{ $t('organizer.expired', {expires_at: expirationDateLong}) }}
+            {{ $t('organizer.expired', {expired_at: expirationDateLong}) }}
         </div>
         <table class="table table-hover">
             <caption>{{ $t('organizer.list.caption') }}</caption>
             <thead>
                 <tr class="table-active">
-                    <th style="width: 33%" scope="col">
+                    <th :style="expired ? 'width: 25%' : 'width: 33%'" scope="col">
                         {{ $t('organizer.list.name') }}
                     </th>
-                    <th style="width: 33%" scope="col">
+                    <th :style="expired ? 'width: 25%' : 'width: 33%'" scope="col">
                         {{ $t('organizer.list.email') }}
                     </th>
-                    <th :style="canWithdraw ? 'width: 30%' : 'width: 33%'" scope="col">
+                    <th v-if="expired" style="width: 25%" scope="col">
+                        {{ $t('organizer.list.target') }}
+                    </th>
+                    <th :style="canWithdraw ? 'width: 25%' : 'width: 33%'" scope="col">
                         {{ $t('organizer.list.status') }}
                     </th>
-                    <th v-if="canWithdraw" style="width: 3%" scope="col">
+                    <th v-if="! expired && canWithdraw" style="width: 3%" scope="col">
                         {{ $t('organizer.list.withdraw') }}
                     </th>
                 </tr>
@@ -35,12 +38,48 @@
                 ></tr>
             </tbody>
         </table>
-        <button type="button" class="btn btn-danger" @click="confirmPurge">
-            <i class="fas fa-trash" />
-            {{ $t('organizer.purge.button') }}
-        </button>
+        <template v-if="!expired">
+            <tooltip direction="top">
+                <template #tooltip>
+                    <picture>
+                        <source srcset="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.webp" type="image/webp" />
+                        <source srcset="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" type="image/jpg" />
+                        <img class="media-object" src="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" />
+                    </picture>
+                    <div class="text-content">
+                        <h3>{{ $t('organizer.end.button-tooltip.title') }}</h3>
+                        <p>{{ $t('organizer.end.button-tooltip.content') }}</p>
+                    </div>
+                </template>
+                <template #default>
+                    <button type="button" class="btn btn-warning" @click="confirmEnd">
+                        <i class="fas fa-calendar-check" />
+                        {{ $t('organizer.end.button') }}
+                    </button>
+                </template>
+            </tooltip>
+        </template>
+        <tooltip direction="top">
+            <template #tooltip>
+                <picture>
+                    <source srcset="../../../images/lynda-hinton-QyDLHeUerd4-unsplash.webp" type="image/webp" />
+                    <source srcset="../../../images/lynda-hinton-QyDLHeUerd4-unsplash.jpg" type="image/jpg" />
+                    <img class="media-object" src="../../../images/lynda-hinton-QyDLHeUerd4-unsplash.jpg" />
+                </picture>
+                <div class="text-content">
+                    <h3>{{ $t('organizer.purge.button-tooltip.title') }}</h3>
+                    <p>{{ $t('organizer.purge.button-tooltip.content') }}</p>
+                </div>
+            </template>
+            <template #default>
+                <button type="button" class="btn btn-danger" @click="confirmPurge">
+                    <i class="fas fa-trash" />
+                    {{ $t('organizer.purge.button', {deletes_at: deletionDateLong}) }}
+                </button>
+            </template>
+        </tooltip>
         <template v-if="draw.next_solvable">
-            <tooltip direction="right">
+            <tooltip direction="top">
                 <template #tooltip>
                     <picture>
                         <source srcset="../../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp" type="image/webp" />
@@ -59,7 +98,7 @@
                     </button>
                 </template>
             </tooltip>
-            <tooltip direction="right">
+            <tooltip direction="top">
                 <template #tooltip>
                     <picture>
                         <source srcset="../../../images/mike-arney-9r-_2gzP37k-unsplash.webp" type="image/webp" />
@@ -69,7 +108,6 @@
                     <div class="text-content">
                         <h3>{{ $t('organizer.download.button_final-tooltip.title') }}</h3>
                         <p>{{ $t('organizer.download.button_final-tooltip.explain') }}</p>
-                        <p class="border border-white border-1 rounded pl-2 pr-2 font-italic">{{ $t('organizer.download.button_final-tooltip.limit', {expires_at: expirationDateLong, deleted_at: deletionDateLong}) }}</p>
                     </div>
                 </template>
                 <template #default>
@@ -80,7 +118,7 @@
                 </template>
             </tooltip>
         </template>
-        <tooltip v-else direction="right">
+        <tooltip v-else direction="top">
             <template #tooltip>
                 <picture>
                     <source srcset="../../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp" type="image/webp" />
@@ -135,14 +173,6 @@
                 type: Object,
                 required: true
             },
-            changeEmailUrls: {
-                type: Object,
-                required: true
-            },
-            withdrawalUrls: {
-                type: Object,
-                required: true
-            },
             routes: {
                 type: Object,
                 required: true
@@ -158,16 +188,13 @@
                 );
             },
             expired() {
-                return Moment(this.draw.expires_at).isBefore(Moment(), "day");
-            },
-            expirationDateShort() {
-                return Moment(this.draw.expires_at).format('YYYY-MM-DD');
+                return !!this.draw.expired_at;
             },
             expirationDateLong() {
-                return new Date(this.draw.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+                return new Date(this.draw.expired_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             },
             deletionDateLong() {
-                return new Date(this.draw.deleted_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+                return new Date(this.draw.deletes_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             }
         },
 
@@ -189,7 +216,7 @@
                         [this.draw.hash]: {
                             title: this.draw.mail_title,
                             creation: this.draw.created_at,
-                            expiration: this.draw.expires_at,
+                            deletion: this.draw.deletes_at,
                             organizerName: this.draw.organizer_name,
                             links: {
                                 org: {link: window.location.href}
@@ -240,7 +267,7 @@
                 this.participants[k].mail.delivery_status = 'created';
                 this.participants[k].mail.updated_at = new Date().getTime();
 
-                return fetch(this.changeEmailUrls[this.participants[k].hash], 'POST', {
+                return fetch(this.participants[k].changeEmailUrl, 'POST', {
                     email: email
                 });
             },
@@ -262,11 +289,10 @@
                     .then(() => this.withdraw(k));
             },
             withdraw(k) {
-                var url = this.withdrawalUrls[this.participants[k].hash];
-                this.$delete(this.participants, k);
-
-                return fetch(url)
+                return fetch(this.participants[k].withdrawalUrl)
                     .then(data => {
+                        this.$delete(this.participants, k);
+
                         this.$dialog
                             .alert(data.message);
                     });
@@ -274,13 +300,13 @@
             download() {
                 fetch(this.routes.csvInitUrl, 'GET', '', {responseType: 'blob'})
                     .then(response => {
-                        download(response, 'secretsanta_'+this.expirationDateShort+'_init.csv', 'text/csv');
+                        download(response, 'secretsanta_'+this.draw.hash+'_init.csv', 'text/csv');
                     });
             },
             downloadPlus() {
                 fetch(this.routes.csvFinalUrl, 'GET', '', {responseType: 'blob'})
                     .then(response => {
-                        download(response, 'secretsanta_'+this.expirationDateShort+'_full.csv', 'text/csv');
+                        download(response, 'secretsanta_'+this.draw.hash+'_full.csv', 'text/csv');
                     });
             }
         }

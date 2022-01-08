@@ -18,7 +18,6 @@ it('sends no notifications in case of error', function ($participants) {
             'participants'          => $participants,
             'title'                 => 'this is a test',
             'content'               => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertStatus(422)
         ->assertJsonStructure(['message']);
@@ -42,7 +41,6 @@ it('can create draws', function () {
             'participants'          => $participants,
             'title'                 => 'this is a test',
             'content'               => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
@@ -59,7 +57,6 @@ it('sends notifications in case of success', function () {
             'participants'          => generateParticipants(3),
             'title'                 => 'this is a test',
             'content'               => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
@@ -94,7 +91,6 @@ it('can create draws with a non participant organizer', function () {
             'participants'          => $participants,
             'title'                 => 'this is a test',
             'content'               => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
@@ -129,7 +125,6 @@ it('sends to the organizer the link to their panel', function () {
             'participants'          => generateParticipants(3),
             'title'                 => 'this is a test',
             'content'               => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
@@ -164,7 +159,6 @@ it('can deal with thousands of participants', function () {
             'participants'          => $participants,
             'title'                 => 'this is a test',
             'content'               => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
         ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);

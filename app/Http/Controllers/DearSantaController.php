@@ -33,7 +33,7 @@ class DearSantaController extends Controller
 
         return response()->json([
             'participant' => $participant->only(['hash', 'name']),
-            'draw' => $participant->draw->only(['hash', 'mail_title', 'created_at', 'expires_at', 'organizer_name']),
+            'draw' => $participant->draw->only(['hash', 'mail_title', 'created_at', 'expired_at', 'organizer_name']),
             'targetDearSantaLastUpdate' => $participant->target->dearSantas->max('mail.updated_at'),
             'emails' => $participant->dearSantas->mapWithKeys(function ($email) {
                 return [

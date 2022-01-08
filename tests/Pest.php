@@ -86,7 +86,6 @@ function ajaxDelete($url, $headers = []) : TestResponse {
 function createServiceDraw($participants) : Draw {
     return (new DrawFormHandler())
         ->withParticipants($participants)
-        ->withExpiration(date('Y-m-d', strtotime('+2 days')))
         ->withTitle('test mail {SANTA} => {TARGET} title')
         ->withBody('test mail {SANTA} => {TARGET} body')
         ->save();

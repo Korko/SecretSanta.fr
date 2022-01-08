@@ -25,7 +25,6 @@ class DrawFactory extends Factory
         return [
             'mail_title'      => $this->faker->sentence,
             'mail_body'       => $this->faker->text,
-            'expires_at'      => $this->faker->dateTimeBetween('+1 day', '+1 month'),
             'organizer_name'  => $this->faker->name,
             'organizer_email' => $this->faker->email,
         ];
@@ -54,7 +53,7 @@ class DrawFactory extends Factory
     {
         return $this->state(function () {
             return [
-                'expires_at' => $this->faker->dateTime('-1 hour'),
+                'expired_at' => $this->faker->dateTime('-1 hour'),
             ];
         });
     }

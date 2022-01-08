@@ -26,6 +26,9 @@
                 </template>
             </input-edit>
         </td>
+        <td v-if="expired">
+            {{ target }}
+        </td>
         <td><email-status :delivery_status="mail.delivery_status" :last_update="mail.updated_at" :disabled="expired" @redo="updateEmail(k, email)" /></td>
         <td v-if="canWithdraw">
             <button
@@ -77,6 +80,10 @@
             email: {
                 type: String,
                 required: true
+            },
+            target: {
+                type: String,
+                // Not required
             },
             mail: {
                 type: Object,

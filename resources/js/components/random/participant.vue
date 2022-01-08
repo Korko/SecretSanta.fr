@@ -155,7 +155,7 @@
                 return participants.filter(participant => !!participant.name);
             }
         },
-        created: function() {
+        mounted: function() {
             if(this.name) this.v$.name.$touch();
             if(this.email) this.v$.email.$touch();
         },

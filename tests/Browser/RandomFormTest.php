@@ -53,7 +53,6 @@ class RandomFormTest extends DuskTestCase
                     ->type('title', $this->faker->sentence)
                     ->type('content', $this->faker->paragraph)
                     ->append('content', '{TARGET}')
-                    ->type('data-expiration', $this->faker->dateTimeBetween('+1 day', '+30 days')->format('m/d/Y'))
                     ->scrollIntoView('#randomForm button[type=submit]')
                     ->click('#randomForm button[type=submit]')
                     ->waitForText('Les exclusions que vous avez choisies ne permettent pas d\'attribuer une cible par participant.');

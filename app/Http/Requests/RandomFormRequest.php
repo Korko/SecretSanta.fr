@@ -39,8 +39,6 @@ class RandomFormRequest extends Request
 
             'title'                       => 'required|string|max:36773',
             'content'                     => 'required|string|max:36773|contains:{TARGET}',
-
-            'data-expiration'             => 'required|date_format:Y-m-d|after_or_equal:tomorrow|before:+6month',
         ];
     }
 
@@ -64,10 +62,6 @@ class RandomFormRequest extends Request
             'title.required'                 => Lang::get('validation.custom.randomform.title.required'),
             'content.required'               => Lang::get('validation.custom.randomform.content.required'),
             'content.contains'               => Lang::get('validation.custom.randomform.content.contains'),
-            'data-expiration.required'       => Lang::get('validation.custom.randomform.expiration.required'),
-            'data-expiration.after_or_equal' => Lang::get('validation.custom.randomform.expiration.min'),
-            'data-expiration.before'         => Lang::get('validation.custom.randomform.expiration.max'),
-            'data-expiration.date_format'    => Lang::get('validation.custom.randomform.expiration.format'),
         ];
     }
 }
