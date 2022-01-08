@@ -21,4 +21,21 @@ class Model extends BaseModel
         DrawCrypt::setKey(base64_decode($this->iv));
         return $values;
     }
+
+    /**
+     * Get a subset of the model's attributes.
+     *
+     * @param  array|mixed  $attributes
+     * @return array
+     */
+    public function only($attributes)
+    {
+        $results = [];
+
+        foreach (is_array($attributes) ? $attributes : func_get_args() as $key => $attribute) {
+            $results[is_array($attribute) ? $key : $attribute] = is_array($attribute) ? $this->{$key}->only($attribute) : $this->getAttribute($attribute);
+        }
+
+        return $results;
+    }
 }
