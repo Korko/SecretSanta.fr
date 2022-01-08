@@ -2,8 +2,8 @@
 
 return [
     'nav' => [
-        'go'      => 'Allez, c\'est parti !',
-        'contact' => 'J\'ai encore une question',
+        'go'      => "Allez, c'est parti !",
+        'contact' => "J'ai encore une question",
     ],
 
     'categories' => [
@@ -32,7 +32,7 @@ return [
         'technical' => [
             'Quelles données sont stockées et pourquoi ?' => "Sont conservés pour chaque participant : nom et adresse email, pour chaque organisation, le titre et le contenu du mail envoyé ainsi que chaque message envoyé entre participant via le lien reçu par mail (appelé 'cher papa noël'). Elles sont conservées pour deux raisons : d'abord pour permettre cette dernière fonctionnalité qui permet d'écrire à son/sa père/mère noël secret. Ensuite pour permettre de réenvoyer les emails en cas d'erreur d'adresse.",
             'Comment sont stockées les données ?' => "Chaque élement est chiffré en AES-256 avec une clef unique par organisation. Cette clef n'est pas stockée et est envoyée à chaque participant. L'administrateur ne peut donc jamais accéder aux données sans action de votre part. Chaque fois que vous effectuez une action, vous utilisez automatiquement cette clef qui n'est que prétée à SecretSanta pour faire l'action demandée sans jamais l'enregistrer.",
-            'Je voudrais supprimer mes données personnelles.' => "De part la façon dont sont stockées les données, l'administrateur est dans l'incapacité de savoir quelles données appartiennent à qui. Seul l'organisateur/organisatrice est en capacité de supprimer les données d'un participant en le retirant de l'évènement ou en supprimant l'évènement entièrement. Sinon, ces données sont automatiquement supprimées peu après la fin de l'évènement.",
+            'Je voudrais supprimer mes données personnelles.' => "De part la façon dont sont stockées les données, l'administrateur est dans l'incapacité de savoir quelles données appartiennent à qui. Seul l'organisateur/organisatrice est en capacité de supprimer les données d'un participant en le retirant de l'évènement ou en supprimant l'évènement entièrement. Sinon, ces données sont automatiquement supprimées peu après la fin de l'évènement ou quelques mois après le dernier message échangé via la plateforme.",
             "J'aimerais vérifier par moi même le code source." => "Avec grand plaisir ! Le code source se trouve à l'adresse suivante : https://framagit.com/Korko/SecretSanta. Vous pouvez aussi trouver le lien en haut à droite de la page principale, dans le petit ruban rouge.",
         ],
     ],

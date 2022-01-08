@@ -2,9 +2,9 @@
 
 return [
     'nav' => [
-        'what'      => 'Qu\'est-ce que c\'est ?',
+        'what'      => "Qu'est-ce que c'est ?",
         'how'       => 'Comment faire ?',
-        'go'        => 'Allez, c\'est parti !',
+        'go'        => "Allez, c'est parti !",
     ],
 
     'title'    => 'Secret Santa .fr',
@@ -14,7 +14,7 @@ return [
 
     'section' => [
         'what' => [
-            'title'    => 'Qu\'est-ce que c\'est ?',
+            'title'    => "Qu'est-ce que c'est ?",
             'subtitle' => 'Description du Secret Santa',
             'heading1' => 'Le principe',
             'content1' => "Secret Santa est un moyen drôle et original de s'offrir anonymement des cadeaux entre amis, collègues...
@@ -28,14 +28,14 @@ Si cet outil vous plait, pensez à faire un don.
         ],
         'how' => [
             'title'    => 'Comment faire ?',
-            'subtitle' => 'Vous allez voir, c\'est très simple !',
+            'subtitle' => "Vous allez voir, c'est très simple !",
             'heading1' => 'Première étape : lister les participant(e)s',
             'content1' => "Grâce aux boutons \"Ajouter un(e) participant(e)\" et \"Enlever un(e) participant(e)\", il est possible d'ajuster le nombre de personnes.
 Pour chaque personne, indiquez un nom/prénom ou un pseudonyme, et une adresse email. Deux participant(e)s ne peuvent avoir le même nom, sinon il est impossible de les différencier.
 A noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se piocher elle-même.",
             'heading2' => 'Deuxième étape : préciser les exclusions',
             'content2' => "Ajoutez des exclusions. Si vous ne voulez pas que deux participant(e)s puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
-            'heading3' => 'Troisième étape : préparer l\'e-mail',
+            'heading3' => "Troisième étape : préparer l'e-mail",
             'content3' => "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participant(e)s recevront.
 Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".
 (Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
@@ -53,7 +53,7 @@ Le code source est disponible sur :link',
         ],
         'go' => [
             'title'    => 'À vous de jouer !',
-            'subtitle' => 'Remplissez, cliquez et c\'est parti !',
+            'subtitle' => "Remplissez, cliquez et c'est parti !",
         ],
     ],
 
@@ -61,13 +61,13 @@ Le code source est disponible sur :link',
 
     'success' => 'Envoyé avec succès !',
 
-    'organizerIn' => 'L\'organisateur/organisatrice participe',
-    'organizerOut' => 'L\'organisateur/organisatrice ne participe pas',
+    'organizerIn' => "L'organisateur/organisatrice participe",
+    'organizerOut' => "L'organisateur/organisatrice ne participe pas",
 
     'organizer' => [
-        'title' => 'Détails de l\'organisateur/organisatrice',
-        'name'  => 'Nom ou pseudonyme de l\'organisateur/organisatrice',
-        'email' => 'Adresse e-mail de l\'organisateur/organisatrice',
+        'title' => "Détails de l'organisateur/organisatrice",
+        'name'  => "Nom ou pseudonyme de l'organisateur/organisatrice",
+        'email' => "Adresse e-mail de l'organisateur/organisatrice",
     ],
 
     'participants' => [
@@ -85,7 +85,7 @@ Le code source est disponible sur :link',
         ],
         'email'      => [
             'label'       => 'Adresse e-mail',
-            'placeholder' => 'exemple : michel{\'@\'}aol.com',
+            'placeholder' => "exemple : michel{'@'}aol.com",
         ],
         'exclusions' => [
             'label'       => 'Exclusions',
@@ -104,11 +104,11 @@ Le code source est disponible sur :link',
         'column1'       => 'Nom du/de la participant(e)',
         'column2'       => 'Adresse e-mail',
         'column3'       => 'Exclusions (noms séparés par une virgule)',
-        'warning'       => 'Attention, l\'import de ces données supprimera les participant(e)s déjà renseignés.',
+        'warning'       => "Attention, l'import de ces données supprimera les participant(e)s déjà renseignés.",
         'cancel'        => 'Annuler',
         'import'        => 'Importer',
-        'importError'   => 'Une erreur est survenue lors de l\'import.',
-        'importSuccess' => 'L\'import a été effectué avec succès.',
+        'importError'   => "Une erreur est survenue lors de l'import.",
+        'importSuccess' => "L'import a été effectué avec succès.",
         'analyzing'     => 'Chargement en cours...',
     ],
 
@@ -119,7 +119,7 @@ Le code source est disponible sur :link',
         ],
         'content' => [
             'label'       => 'Contenu du mail',
-            'placeholder' => 'ex : Salut {SANTA}, pour la soirée secret santa, ta cible c\'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !',
+            'placeholder' => "ex : Salut {SANTA}, pour la soirée secret santa, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !",
             'tip1' => 'Utilisez {santa} pour le nom de celui qui recevra le mail et {target} pour le nom de sa cible.',
             'tip2' => 'Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.',
         ],
@@ -128,14 +128,14 @@ Pour écrire à votre Secret Santa, allez sur la page suivante : :link
 via SecretSanta.fr',
     ],
 
-    'data-expiration' => 'Date de l\'évènement : ',
+    'data-expiration' => "Date de l'évènement : ",
     'data-expiration-tooltip' => [
-        'title' => 'Date de l\'évènement',
-        'interface' => 'Une interface dédiée vous permettra d\'accéder à un récapitulatif des participant(e)s jusqu\'au jour de l\'évènement.',
+        'title' => "Date de l'évènement",
+        'interface' => "Une interface dédiée vous permettra d'accéder à un récapitulatif des participant(e)s jusqu'au jour de l'évènement.",
         'deletion' => 'Toutes les données stockées seront supprimées une semaine après.',
     ],
 
-    'submit'  => 'Lancez l\'aléatoire !',
+    'submit'  => "Lancez l'aléatoire !",
 
     'paypal' => [
         'alt' => 'PayPal, le réflexe sécurité pour payer en ligne',

@@ -60,7 +60,7 @@ return [
     'withdraw'      => [
         'button'  => 'Retirer',
         'confirm' => [
-            'title'  => 'Êtes-vous sûr de vouloir retirer {name} de l\'évènement ?',
+            'title'  => "Êtes-vous sûr de vouloir retirer {name} de l'évènement ?",
             'body'   => 'Tous les messages reçu de sa cible seront transmis à son nouveau père/mère noël secret. Cette action ne peut être annulée.',
             'value'  => 'Annuler la participation',
             // Use !: not to be transformed by vue-i18n-generator

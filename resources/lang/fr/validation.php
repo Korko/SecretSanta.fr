@@ -77,7 +77,7 @@ return [
     'unique'    => 'La valeur du champ :attribute est déjà utilisée.',
     'url'       => "Le format de l'URL de :attribute n'est pas valide.",
 
-    'recaptcha' => 'Le captcha n\'a pas pu être validé.',
+    'recaptcha' => "Le captcha n'a pas pu être validé.",
 
     /*
     |--------------------------------------------------------------------------
@@ -97,27 +97,27 @@ return [
         ],
         'randomform' => [
             'participant-organizer' => [
-                'required' => 'Vous devez spécifier si l\'organisateur participe ou non à l\'évènement.',
+                'required' => "Vous devez spécifier si l'organisateur participe ou non à l'évènement.",
             ],
             'title' => [
-                'required' => 'Le titre de l\'email est requis.',
+                'required' => "Le titre de l'email est requis.",
             ],
             'content' => [
-                'required' => 'Le contenu de l\'email est requis.',
-                'contains' => 'Le contenu de l\'email doit contenir le mot {TARGET} pour indiquer la cible.',
+                'required' => "Le contenu de l'email est requis.",
+                'contains' => "Le contenu de l'email doit contenir le mot {TARGET} pour indiquer la cible.",
             ],
             'expiration' => [
-                'required' => 'La date d\'expiration est requise.',
-                'min'      => 'La date d\'expiration ne peut pas précéder demain.',
-                'max'      => 'La date d\'expiration ne peut pas dépasser un an.',
-                'format'   => 'La date d\'expiration doit respecter le format année-mois-jour exemple: 2022-02-05.'
+                'required' => "La date d'expiration est requise.",
+                'min'      => "La date d'expiration ne peut pas précéder demain.",
+                'max'      => "La date d'expiration ne peut pas dépasser un an.",
+                'format'   => "La date d'expiration doit respecter le format année-mois-jour exemple: 2022-02-05."
             ],
             'participants' => [
                 'length' => 'Il faut au moins 3 participant(e)s',
             ],
             'organizer'   => [
                 'name'  => [
-                    'required' => 'Le nom de l\'organisateur/organisatrice est requis.',
+                    'required' => "Le nom de l'organisateur/organisatrice est requis.",
                 ],
                 'email' => [
                     'required' => 'Cette adresse email est requise.',
@@ -127,7 +127,7 @@ return [
             'participant' => [
                 'name' => [
                     'required' => 'Ce/Cette participant(e) est requis (au moins 3 personnes).',
-                    'distinct' => 'Ce/Cette participant(e) n\'a pas un nom unique.',
+                    'distinct' => "Ce/Cette participant(e) n'a pas un nom unique.",
                 ],
                 'email' => [
                     'required' => 'Cette adresse email est requise.',
@@ -143,7 +143,7 @@ return [
         'organizer' => [
             'email' => [
                 'required' => 'La nouvelle adresse est requise.',
-                'format'   => 'Le format de l\'adresse n\'est pas valide.',
+                'format'   => "Le format de l'adresse n'est pas valide.",
             ],
         ],
     ],
