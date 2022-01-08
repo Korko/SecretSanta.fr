@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
             ->environments('prod');
 
         $schedule
-            ->command('bounces:parse')
+            ->command('secretsanta:parse-bounces')
             ->everyMinute()
             ->withoutOverlapping()
             ->environments('prod');

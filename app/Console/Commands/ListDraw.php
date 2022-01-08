@@ -14,7 +14,7 @@ class ListDraw extends Command
      *
      * @var string
      */
-    protected $signature = 'list:draw {url : The URL received by one of the participants to write to their santa}';
+    protected $signature = 'secretsanta:list-draw {url : The URL received by one of the participants to write to their santa or the link to the organizer panel}';
 
     /**
      * The console command description.
