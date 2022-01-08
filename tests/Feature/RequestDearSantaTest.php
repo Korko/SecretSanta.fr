@@ -15,17 +15,9 @@ it('send to each participant a link to write to their santa', function () {
 
     foreach($draw->participants as $participant) {
         Notification::assertSentTo($participant, function (TargetDrawn $notification) use ($participant) {
-            $link = $notification->toMail($participant)->build()->viewData['dearSantaLink'];
-
-            // Check the dearSanta link is valid
-            test()->get($link)->assertSuccessful();
-
-            // Check link can be used for support
-            $path = parse_url($link, PHP_URL_PATH);
-            $guessedParticipant = URLParser::parseByName('dearSanta', $path)->participant;
-            assertEquals($participant->id, $guessedParticipant->id);
-
-            return true;
+            return $notification->toMail($participant)->assertSeeInHtml(
+                URL::signedRoute('dearSanta', ['participant' => $participant->hash]).'#'.base64_encode(DrawCrypt::getIV())
+            );
         });
     }
 });

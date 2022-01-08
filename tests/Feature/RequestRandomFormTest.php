@@ -1,10 +1,9 @@
 <?php
 
 use App\Channels\MailChannel;
-use App\Mail\OrganizerRecap as OrganizerRecapMail;
 use App\Models\Draw;
 use App\Models\Participant;
-use App\Notifications\OrganizerRecap as OrganizerRecapNotif;
+use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use Illuminate\Notifications\AnonymousNotifiable;
 
@@ -68,12 +67,12 @@ it('sends notifications in case of success', function () {
     $draw = Draw::find(1);
 
     // Ensure Organizer receives his recap
-    Notification::assertTimesSent(1, OrganizerRecapNotif::class);
+    Notification::assertTimesSent(1, OrganizerRecap::class);
     Notification::assertSentTo(
         new AnonymousNotifiable,
-        OrganizerRecapNotif::class,
+        OrganizerRecap::class,
         function ($notification, $channels, $notifiable) use ($draw) {
-            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
+            return $notifiable->routes['mail'] === [['name' => $draw->organizer_name, 'email' => $draw->organizer_email]];
         }
     );
 
@@ -105,12 +104,12 @@ it('can create draws with a non participant organizer', function () {
     assertEquals('foo@foobar.com', $draw->organizer_email);
 
     // Ensure Organizer receives his recap
-    Notification::assertTimesSent(1, OrganizerRecapNotif::class);
+    Notification::assertTimesSent(1, OrganizerRecap::class);
     Notification::assertSentTo(
         new AnonymousNotifiable,
-        OrganizerRecapNotif::class,
+        OrganizerRecap::class,
         function ($notification, $channels, $notifiable) use ($draw) {
-            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
+            return $notifiable->routes['mail'] === [['name' => $draw->organizer_name, 'email' => $draw->organizer_email]];
         }
     );
 
@@ -140,17 +139,13 @@ it('sends to the organizer the link to their panel', function () {
     // Ensure Organizer receives his recap
     Notification::assertSentTo(
         new AnonymousNotifiable,
-        OrganizerRecapNotif::class,
+        OrganizerRecap::class,
         function ($notification, $channels, $notifiable) use ($draw) {
-            $link = $notification->toMail($notifiable)->build()->viewData['panelLink'];
-
-            // Check the recap link is valid
-            test()->get($link)->assertSuccessful();
-
-            // Check link can be used for support
-            assertEquals($draw->id, URLParser::parseByName('organizerPanel', $link)->draw->id);
-
-            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
+            return
+                $notifiable->routes['mail'] === [['name' => $draw->organizer_name, 'email' => $draw->organizer_email]] &&
+                $notification->toMail($notifiable)->assertSeeInHtml(
+                    URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV())
+            );
         }
     );
 });
