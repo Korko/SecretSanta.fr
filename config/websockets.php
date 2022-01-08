@@ -27,6 +27,7 @@ return [
             'name' => env('APP_NAME'),
             'host' => env('PUSHER_APP_HOST'),
             'key' => env('PUSHER_APP_KEY'),
+            'port' => env('PUSHER_APP_PORT'),
             'secret' => env('PUSHER_APP_SECRET'),
             'path' => env('PUSHER_APP_PATH'),
             'capacity' => null,

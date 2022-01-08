@@ -54,7 +54,12 @@
                 <div id="logo">
                     <a href="/"></a>
                 </div>
-                @yield('navbar')
+                <ul class="nav navbar-nav navbar-nav-left">
+                    @yield('navbar-left')
+                </ul>
+                <ul class="nav navbar-nav navbar-nav-right">
+                    @yield('navbar-right')
+                </ul>
             </nav><!--/.navbar-collapse -->
         </div><!-- menu -->
 
@@ -95,6 +100,14 @@
         <script type="text/javascript" src="{{ mix('/js/vendor.js') }}"></script>
         <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
         <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
+
+        @javascript([
+            'pusher' => [
+                'key' => Arr::get(config('websockets.apps'), '0.key'),
+                'host' => Arr::get(config('websockets.apps'), '0.host'),
+                'port' => intval(Arr::get(config('websockets.apps'), '0.port', 443)),
+            ]
+        ])
     @show
 </body>
 </html>
