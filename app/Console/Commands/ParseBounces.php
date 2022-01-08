@@ -12,7 +12,7 @@ class ParseBounces extends Command
      *
      * @var string
      */
-    protected $signature = 'bounces:parse';
+    protected $signature = 'secretsanta:parse-bounces';
 
     /**
      * The console command description.
