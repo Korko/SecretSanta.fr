@@ -9,6 +9,7 @@ return [
     'categories' => [
         'general'   => 'Générales',
         'technical' => 'Techniques',
+        'news'      => 'Dernières Nouveautés',
     ],
 
     'questions' => [
@@ -35,5 +36,13 @@ return [
             'Je voudrais supprimer mes données personnelles.' => "De part la façon dont sont stockées les données, l'administrateur est dans l'incapacité de savoir quelles données appartiennent à qui. Seul l'organisateur/organisatrice est en capacité de supprimer les données d'un participant en le retirant de l'évènement ou en supprimant l'évènement entièrement. Sinon, ces données sont automatiquement supprimées peu après la fin de l'évènement ou quelques mois après le dernier message échangé via la plateforme.",
             "J'aimerais vérifier par moi même le code source." => "Avec grand plaisir ! Le code source se trouve à l'adresse suivante : https://framagit.com/Korko/SecretSanta. Vous pouvez aussi trouver le lien en haut à droite de la page principale, dans le petit ruban rouge.",
         ],
+
+        'news' => [
+            "La date d'expiration" => "Fin 2022 : Plus besoin de préciser la date de l'évènement lors de la création. Maintenant elle est manuellement déclenchée dans la panneau d'organisateur. Dans le cas où plus aucun message n'est échangé (d'un participant à un autre ou une relance de nom de cible) pendant 3 mois, toutes les données seront automatiquement supprimées.",
+            'Un nouvel algorithme' => "Fin 2022 : Un nouveau système de résolution du tirage au sort à été mis en place. Plus rapide et plus efficace, il devrait éviter au maximum les personnes isolées qui s'offrent l'une à l'autre et privilégier plutôt les chaînes de cadeau, en plus de permettre de plus grandes chaînes !",
+            'La relance du nom de la cible' => "Fin 2021 : Quand on a supprimé son email qui donne le nom de sa cible mais qu'on a encore le lien vers le panneau, on peut maintenant redemander soit-même le réenvoie de cet email depuis ce même panneau.",
+            'Le retrait de participant' => "Fin 2021 : On peut désormais retirer un participant d'un tirage au sort. Il faut être au minimum 4.",
+            'Organisateur non participant' => "Fin 2021 : Un organisateur peut maintenant ne plus participer. Il garde accès à son panneau de supervision mais n'est plus tiré au sort et ne reçoit pas de cible non plus.",
+        ]
     ],
 ];

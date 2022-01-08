@@ -6,12 +6,14 @@ export default {
             required: true
         }
     },
-    data: () => ({
-        selectedCategory: Object.keys(this.questions)[0],
-        categories: Object.keys(this.questions),
-        qnas: this.questions,
-        showed: {}
-    }),
+    data() {
+        return {
+            selectedCategory: Object.keys(this.questions)[0],
+            categories: Object.keys(this.questions),
+            qnas: this.questions,
+            showed: {}
+        };
+    },
     computed: {
         selectedQuestions() { return Object.keys(this.qnas[this.selectedCategory]); },
         selectedAnswers() { return Object.values(this.qnas[this.selectedCategory]); }
@@ -30,7 +32,7 @@ export default {
             </li>
         </ul>
         <div v-for="(question, i) in selectedQuestions" :key="`${selectedCategory}_${i}`" class="card">
-            <p :id="`question${i}`" class="card-header" :aria-expanded="showed[i]" :aria-controls="`answer${i}`" @click="$set(showed, i, !showed[i])">{{ question }}</p>
+            <p :id="`question${i}`" class="card-header" :aria-expanded="showed[i]" :aria-controls="`answer${i}`" @click="showed[i] = !showed[i]">{{ question }}</p>
 
             <transition name="fade">
                 <div v-show="showed[i]" :id="`answer${i}`" class="card-body">
@@ -47,12 +49,16 @@ export default {
         padding-bottom: 60px;
     }
 
-    .fade-enter-active, .fade-leave-active {
-        transition: all 0.5s;
+    .fade-enter-active {
+        transition: all 0.5s ease;
     }
-    .fade-enter, .fade-leave-to {
+    .fade-leave-active {
+        transition: all 0.2s ease;
+    }
+    .fade-enter-from, .fade-leave-to {
         opacity: 0;
     }
+
     .card {
         margin: 10px 60px;
     }
@@ -70,10 +76,10 @@ export default {
         transform-origin: 0.5rem 0.5rem; /* 1/3 width 1/3 height */
         right: 1.25rem; /* right padding of card-header */
         top: 1rem; /* top padding of card-header + transform-origin / 2 */
-        transform: rotate(45deg);
+        transform: rotate(45deg) scaleX(-1) scaleY(-1);
         transition: all 1s; /* twice the fade delay */
     }
     .card .card-header[aria-expanded='true']:after {
-        transform: rotate(45deg) scaleX(-1) scaleY(-1);
+        transform: rotate(45deg);
     }
 </style>
