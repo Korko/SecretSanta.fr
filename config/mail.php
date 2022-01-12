@@ -60,15 +60,6 @@ return [
             'password' => env('MAIL_PASSWORD'),
         ],
 
-        'ses' => [
-            'transport' => 'ses',
-        ],
-
-        'sendmail' => [
-            'transport' => 'sendmail',
-            'path' => '/usr/sbin/sendmail -bs',
-        ],
-
         'log' => [
             'transport' => 'log',
             'channel' => env('MAIL_LOG_CHANNEL'),
