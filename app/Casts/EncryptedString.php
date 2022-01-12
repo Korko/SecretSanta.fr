@@ -14,7 +14,7 @@ class EncryptedString implements CastsAttributes
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $attributes
-     * @return array
+     * @return string
      */
     public function get($model, $key, $value, $attributes)
     {
@@ -26,12 +26,12 @@ class EncryptedString implements CastsAttributes
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
-     * @param  array  $value
+     * @param  string  $value
      * @param  array  $attributes
      * @return string
      */
     public function set($model, $key, $value, $attributes)
     {
-        return DrawCrypt::encrypt($value);
+        return $value === null ? null : DrawCrypt::encrypt($value);
     }
 }
