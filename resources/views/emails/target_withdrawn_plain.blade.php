@@ -1,8 +1,4 @@
-@extends('emails/layout_plain')
-
-@section('title')
-    Changement de cible
-@endsection
+@extends('emails/layout_plain', ['title' => 'target_withdrawn'])
 
 @section('content')
     Bonjour {{ $santaName }},

@@ -5,7 +5,7 @@ namespace App\Mail;
 use App\Models\Participant;
 use Lang;
 
-class ConfirmWithdrawal extends Mailable
+class TargetNameChanged extends Mailable
 {
     protected $santa;
 
@@ -28,13 +28,13 @@ class ConfirmWithdrawal extends Mailable
     public function build()
     {
         return $this
-            ->subject(Lang::get('emails.confirm_withdrawal.title', [
-                'draw' => $santa->draw->id
+            ->subject(Lang::get('emails.name_changed.title', [
+                'draw' => $this->santa->draw->id
             ]))
-            ->view('emails.confirm_withdrawal', [
-                'draw' => $santa->draw->id,
-                'santaName' => $santa->name,
-                'organizerName' => $santa->draw->organizer_name,
+            ->view(['emails.name_changed', 'emails.name_changed_plain'], [
+                'draw' => $this->santa->draw->id,
+                'santaName' => $this->santa->name,
+                'targetName' => $this->santa->target->name,
             ]);
     }
 }

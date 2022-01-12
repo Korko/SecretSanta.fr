@@ -9,7 +9,7 @@ export default {
                 "caption": "Liste des participant(e)s",
                 "withdraw": "Retirer"
             },
-            "up_and_sent": "Modifié avec succès !",
+            "changed": "Modifié avec succès !",
             "withdrawn": "{name} ne participe plus à l'évènement.",
             "deleted": "Toutes les données ont été supprimées",
             "download": {
@@ -261,6 +261,10 @@ export default {
                     "email": {
                         "required": "La nouvelle adresse est requise.",
                         "format": "Le format de l'adresse n'est pas valide."
+                    },
+                    "name": {
+                        "required": "Le nom du participant est requis.",
+                        "not_in": "Le nom du participant doit être unique."
                     }
                 }
             },

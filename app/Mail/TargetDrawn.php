@@ -34,7 +34,7 @@ class TargetDrawn extends TrackedMailable
      */
     public function build()
     {
-        $title = $this->parseKeywords(Lang::get('emails.target_draw.title', [
+        $title = $this->parseKeywords(Lang::get('emails.target_drawn.title', [
             'draw' => $this->santa->draw->id,
             'subject' => $this->santa->draw->mail_title,
         ]), $this->santa);
@@ -46,6 +46,7 @@ class TargetDrawn extends TrackedMailable
         return $this
             ->subject($title)
             ->view(['emails.target_drawn', 'emails.target_drawn_plain'], [
+                'draw' => $this->santa->draw->id,
                 'content' => $content,
                 'dearSantaLink' => $url,
             ]);

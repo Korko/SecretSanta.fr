@@ -2,6 +2,7 @@
     <form method="post" autocomplete="off" @submit.prevent="onSubmit">
         <fieldset :disabled="updating || disabled">
             <div class="input-group" :data-state="state" :data-previous-state="previousState">
+                <h2 role="alert" style="display: none;">{{ data.message }}</h2>
                 <div v-if="updating" class="input-group-prepend">
                     <i class="input-group-text fas fa-spinner fa-spin" />
                 </div>
@@ -9,7 +10,7 @@
                     <i class="input-group-text fas fa-check" />
                 </div>
                 <div v-if="state === 'viewError'" class="input-group-prepend">
-                    <i class="input-group-text fas fa-exclamation-circle" />
+                    <i class="input-group-text fas fa-exclamation-circle" :title="data.message" />
                 </div>
                 <input
                     ref="input"
@@ -19,6 +20,7 @@
                     :class="{ 'form-control': true, 'is-invalid': v$.$error }"
                     :disabled="view"
                     :aria-invalid="v$.$error"
+                    :title="data.message"
                     @input="onInput"
                 />
                 <slot name="errors"></slot>
@@ -75,6 +77,10 @@
         props: {
             modelValue: {
                 type: String,
+                required: true
+            },
+            submit: {
+                type: Function,
                 required: true
             },
             validation: {
@@ -171,9 +177,6 @@
             onResend() {
                 this.send('resend');
             },
-            submit() {
-                return this.$emit('update', this.newValue);
-            },
             stateView() {
                 this.newValue = this.modelValue;
             },
@@ -195,12 +198,12 @@
                 }
             },
             stateViewUpdating() {
-                this.submit()
+                this.submit(this.newValue)
                     .then(() => {
                         this.send('success');
                     })
-                    .catch(() => {
-                        this.send('error');
+                    .catch((message) => {
+                        this.send('error', {message});
                     });
             },
             stateViewUpdated() {

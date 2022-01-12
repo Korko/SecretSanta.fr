@@ -1,8 +1,4 @@
-@extends('emails/layout_plain')
-
-@section('title')
-    Message aux participants
-@endsection
+@extends('emails/layout_plain', ['title' => 'target_drawn'])
 
 @section('content')
     > {{ $content }}

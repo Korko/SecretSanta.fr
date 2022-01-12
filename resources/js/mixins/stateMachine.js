@@ -1,13 +1,13 @@
 export default {
     data: () => ({
-        data: null,
+        data: {},
         states: {},
         previousState: null,
         state: null
     }),
     methods: {
         send(trigger, data) {
-            this.data = data;
+            this.data = data || {};
 
             var newState = this.states[this.state][trigger] || this.states[this.state]['*'];
             if (newState) {

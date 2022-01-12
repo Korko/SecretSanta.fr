@@ -1,8 +1,4 @@
-@extends('emails/layout_plain')
-
-@section('title')
-    Récapitulatif Organisateur
-@endsection
+@extends('emails/layout_plain', ['title' => 'organizer_recap'])
 
 @section('content')
     Bonjour {{ $organizerName }},

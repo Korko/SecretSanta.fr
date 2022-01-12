@@ -3,6 +3,7 @@
 use App\Notifications\ConfirmWithdrawal;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetNameChanged;
 use App\Notifications\TargetWithdrawn;
 use App\Models\Draw;
 use App\Models\Participant;
@@ -15,6 +16,8 @@ test('the organizer can send again the target drawn email', function () {
         ->create();
     $participant = $draw->participants->random();
 
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
+
     $path = URL::signedRoute('organizerPanel.changeEmail', [
         'draw' => $draw,
         'participant' => $participant,
@@ -24,7 +27,7 @@ test('the organizer can send again the target drawn email', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    Notification::assertSentTo($participant, TargetDrawn::class);
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 2);
 });
 
 test('the organizer can change a participant\'s email', function () {
@@ -34,6 +37,8 @@ test('the organizer can change a participant\'s email', function () {
         ->hasParticipants(3)
         ->create();
     $participant = $draw->participants->random();
+
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
 
     $path = URL::signedRoute('organizerPanel.changeEmail', [
         'draw' => $draw,
@@ -52,7 +57,63 @@ test('the organizer can change a participant\'s email', function () {
     assertNotEquals($before, $after);
     assertEquals('test@test2.com', $after);
 
-    Notification::assertSentTo($participant, TargetDrawn::class);
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 2);
+});
+
+test('the organizer can change a participant\'s name', function () {
+    Notification::fake();
+
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
+    $participant = $draw->participants->random();
+
+    $path = URL::signedRoute('organizerPanel.changeName', [
+        'draw' => $draw,
+        'participant' => $participant,
+    ]);
+
+    $before = $participant->name;
+
+    ajaxPost($path, ['name' => 'foobar'])
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    $participant = $participant->fresh();
+    $after = $participant->name;
+
+    assertNotEquals($before, $after);
+    assertEquals('foobar', $after);
+
+    Notification::assertSentTo($participant->santa, TargetNameChanged::class);
+});
+
+test('the organizer cannot give twice the same name', function () {
+    Notification::fake();
+
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
+    $participant = $draw->participants->random();
+    $other = $draw->participants->except($participant->id)->random();
+
+    $path = URL::signedRoute('organizerPanel.changeName', [
+        'draw' => $draw,
+        'participant' => $participant,
+    ]);
+
+    $before = $participant->name;
+
+    ajaxPost($path, ['name' => $other->name])
+        ->assertUnprocessable()
+        ->assertJsonStructure(['message']);
+
+    $participant = $participant->fresh();
+    $after = $participant->name;
+
+    assertEquals($before, $after);
+
+    Notification::assertTimesSent(0, TargetNameChanged::class);
 });
 
 test('the organizer can withdraw a participant', function () {
@@ -174,6 +235,8 @@ it('updates the draw update date when sending an email', function () {
     $updated_at = $draw->updated_at;
     $participant = $draw->participants->first();
 
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
+
     sleep(2);
 
     ajaxPost(URL::signedRoute('organizerPanel.changeEmail', [
@@ -183,6 +246,6 @@ it('updates the draw update date when sending an email', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    Notification::assertSentTo($participant, TargetDrawn::class);
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 2);
     test()->assertNotEquals($updated_at->timestamp, $draw->fresh()->updated_at->timestamp);
 });

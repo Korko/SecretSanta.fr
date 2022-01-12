@@ -43,6 +43,7 @@ class DearSanta extends TrackedMailable
         return $this
             ->subject(Lang::get('emails.dear_santa.title', ['draw' => $this->santa->draw->id]))
             ->view(['emails.dearsanta', 'emails.dearsanta_plain'], [
+                'draw' => $this->santa->draw->id,
                 'content' => $this->dearSanta->mail_body,
                 'targetName' => $this->santa->target->name,
                 'dearSantaLink' => $url

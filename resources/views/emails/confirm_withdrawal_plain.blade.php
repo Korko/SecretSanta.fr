@@ -1,8 +1,4 @@
-@extends('emails/layout_plain')
-
-@section('title')
-    Confirmation de désistement
-@endsection
+@extends('emails/layout_plain', ['title' => 'confirm_withdrawal'])
 
 @section('content')
     Bonjour {{ $santaName }},

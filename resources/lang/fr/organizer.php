@@ -9,7 +9,7 @@ return [
         'caption'  => 'Liste des participant(e)s',
         'withdraw' => 'Retirer',
     ],
-    'up_and_sent'   => 'Modifié avec succès !',
+    'changed'       => 'Modifié avec succès !',
     'withdrawn'     => ":name ne participe plus à l'évènement.",
     'deleted'       => 'Toutes les données ont été supprimées',
     'download'      => [

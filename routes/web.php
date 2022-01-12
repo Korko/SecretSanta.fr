@@ -95,6 +95,8 @@ Route::middleware('signed')->group(function() {
     Route::middleware('decrypt.iv:participant,name')->group(function () {
         Route::post('/org/{draw}/{participant}/changeEmail', [OrganizerController::class, 'changeEmail'])
             ->name('organizerPanel.changeEmail');
+        Route::post('/org/{draw}/{participant}/changeName', [OrganizerController::class, 'changeName'])
+            ->name('organizerPanel.changeName');
         Route::get('/org/{draw}/{participant}/withdraw', [OrganizerController::class, 'withdraw'])
             ->name('organizerPanel.withdraw');
     });

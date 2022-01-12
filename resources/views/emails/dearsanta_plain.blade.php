@@ -1,9 +1,7 @@
-@extends('emails/layout_plain')
-
-@section('title')
-    Message de {{ $targetName }}
-@endsection
+@extends('emails/layout_plain', ['title' => 'dear_santa'])
 
 @section('content')
+    Message de {{ $targetName }}
+
     > {{ $content }}
 @endsection

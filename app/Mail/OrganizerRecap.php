@@ -31,8 +31,9 @@ class OrganizerRecap extends Mailable
     public function build()
     {
         return $this
-            ->subject(Lang::get('emails.organizer_recap_title', ['draw' => $this->draw->id]))
+            ->subject(Lang::get('emails.organizer_recap.title', ['draw' => $this->draw->id]))
             ->view(['emails.organizer_recap', 'emails.organizer_recap_plain'], [
+                'draw' => $this->draw->id,
                 'organizerName' => $this->draw->organizer_name,
                 'deletionDate' => $this->draw->deletes_at->locale(App::getLocale())->isoFormat('LL'),
                 'nextSolvable' => $this->draw->next_solvable,

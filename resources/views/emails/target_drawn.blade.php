@@ -1,8 +1,4 @@
-@extends('emails/layout')
-
-@section('title')
-    Message aux participants
-@endsection
+@extends('emails/layout', ['title' => 'target_drawn'])
 
 @section('content')
     <blockquote>{!! nl2br(htmlentities($content)) !!}</blockquote>

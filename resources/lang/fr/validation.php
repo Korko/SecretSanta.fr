@@ -145,6 +145,10 @@ return [
                 'required' => 'La nouvelle adresse est requise.',
                 'format'   => "Le format de l'adresse n'est pas valide.",
             ],
+            'name' => [
+                'required' => 'Le nom du participant est requis.',
+                'not_in' => 'Le nom du participant doit être unique.',
+            ]
         ],
     ],
 

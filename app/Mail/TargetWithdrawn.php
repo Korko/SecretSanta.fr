@@ -32,6 +32,7 @@ class TargetWithdrawn extends Mailable
                 'draw' => $this->santa->draw->id
             ]))
             ->view(['emails.target_withdrawn', 'emails.target_withdrawn_plain'], [
+                'draw' => $this->santa->draw->id,
                 'santaName' => $this->santa->name,
                 'targetName' => $this->santa->target->name,
             ]);

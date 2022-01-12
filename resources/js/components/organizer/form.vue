@@ -33,8 +33,9 @@
                     :participants="participants"
                     :expired="expired"
                     :canWithdraw="canWithdraw"
-                    @update:email="(email) => updateEmail(k, email)"
-                    @update:name="(name) => updateName(k, name)"
+                    :updateEmail="(email) => updateEmail(k, email)"
+                    :updateName="(name) => updateName(k, name)"
+                    @resend="() => updateEmail(k, participant.email)"
                 ></tr>
             </tbody>
         </table>
@@ -269,7 +270,14 @@
 
                 return fetch(this.participants[k].changeEmailUrl, 'POST', {
                     email: email
-                });
+                }).catch(data => Promise.reject(data.errors.email[0]));
+            },
+            updateName(k, name) {
+                this.participants[k].name = name;
+
+                return fetch(this.participants[k].changeNameUrl, 'POST', {
+                    name: name
+                }).catch(data => Promise.reject(data.errors.name[0]));
             },
             confirmWithdrawal(k) {
                 let options = {

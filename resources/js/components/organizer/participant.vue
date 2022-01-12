@@ -4,7 +4,7 @@
             <input-edit
                 :modelValue="name"
                 :validation="v$.name"
-                @update="$emit('update:name', $event)"
+                :submit="updateName"
                 :disabled="expired"
             >
                 <template #errors>
@@ -17,7 +17,7 @@
             <input-edit
                 :modelValue="email"
                 :validation="v$.email"
-                @update="$emit('update:email', event)"
+                :submit="updateEmail"
                 :disabled="expired"
             >
                 <template #errors>
@@ -29,7 +29,7 @@
         <td v-if="expired">
             {{ target }}
         </td>
-        <td><email-status :delivery_status="mail.delivery_status" :last_update="mail.updated_at" :disabled="expired" @redo="updateEmail(k, email)" /></td>
+        <td><email-status :delivery_status="mail.delivery_status" :last_update="mail.updated_at" :disabled="expired" @redo="$emit('resend')" /></td>
         <td v-if="canWithdraw">
             <button
                 type="button"
@@ -99,6 +99,14 @@
             },
             canWithdraw: {
                 type: Boolean,
+                required: true
+            },
+            updateEmail: {
+                type: Function,
+                required: true
+            },
+            updateName: {
+                type: Function,
                 required: true
             }
         }

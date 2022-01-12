@@ -17,7 +17,7 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="x-apple-disable-message-reformatting" />
 
-    <title>@yield('title')</title>
+    <title>@yield('title', ($title && $draw) ? __('emails.'.$title.'.title', ['draw' => $draw]) : '')</title>
     <!--[if gte mso 9]>
     <style type="text/css" media="all">
         sup { font-size: 100% !important; }
