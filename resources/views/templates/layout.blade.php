@@ -13,30 +13,39 @@
         <!-- meta -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <meta http-equiv="content-language" content="{{ App::getLocale() }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="@lang('headers.description')">
         <meta name="keywords" content="@lang('headers.keywords')">
         <meta name="author" content="Korko <webmaster@secretsanta.fr>">
+        <meta name=”robots” content="index, follow">
+        <meta name="rating" content="safe for kids">
 
         <!-- opengraph/facebook -->
-        <meta property="og:title" content="SecretSanta">
-        <meta property="og:site_name" content="SecretSanta">
+        <meta property="og:title" content="SecretSanta.fr">
+        <meta property="og:site_name" content="SecretSanta.fr">
         <meta property="og:url" content="{{ url('/') }}">
-        <meta property="og:image" content="{{ url('/images/logo_black.png') }}">
+        <meta property="og:image" content="{{ url('/images/opengraph_banner_19.1_1.png') }}">
+        <meta property="og:image:url" content="{{ url('/images/opengraph_banner_19.1_1.png') }}">
+        <meta property="og:image:alt" content="{{ url('/images/santaclaus.png') }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
         <meta property="og:description" content="@lang('headers.description')">
         <meta property="og:type" content="website">
         <meta property="og:locale" content="{{ App::getLocale() }}">
 
         <!-- twitter -->
-        <meta name="twitter:card" content="summary">
+        <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@korkof">
-        <meta name="twitter:creator" content="Korko">
-        <meta name="twitter:title" content="SecretSanta">
+        <meta name="twitter:creator" content="@korkof">
+        <meta name="twitter:title" content="SecretSanta.fr">
         <meta name="twitter:description" content="@lang('headers.description')">
-        <meta name="twitter:image" content="{{ url('/images/logo_black.png') }}">
+        <meta name="twitter:image" content="{{ url('/images/opengraph_banner_16_9.png') }}">
+        <meta name="twitter:image" content="@lang('headers.logo_alt')">
+        <meta name="twitter:url" content="{{ url('/') }}">
 
         <!-- facebook image -->
-        <link rel="image_src" href="{{ url('/images/logo_black.png') }}" />
+        <link rel="image_src" href="{{ url('/images/opengraph_banner_19.1_1.png') }}" />
 
         <!-- css -->
         <link rel="stylesheet" href="{{ mix('/css/vendor.css') }}" />
