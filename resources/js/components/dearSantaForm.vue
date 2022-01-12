@@ -332,7 +332,7 @@
         <div v-if="expired" class="alert alert-warning" role="alert">
             {{ $t('dearsanta.expired', {expired_at: expirationDateLong}) }}
         </div>
-        <ajax-form :action="routes.contactUrl" :$v="$v" @success="success" @reset="reset" :autoReset="true">
+        <ajax-form :action="routes.contactUrl" :v$="v$" @success="success" @reset="reset" :autoReset="true">
             <fieldset>
                 <div class="form-group">
                     <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
@@ -342,11 +342,11 @@
                             v-model="content"
                             name="content"
                             :placeholder="$t('dearsanta.content.placeholder')"
-                            :class="{ 'form-control': true, 'is-invalid': $v.content.$error }"
-                            :aria-invalid="$v.content.$error"
-                            @blur="$v.content.$touch()"
+                            :class="{ 'form-control': true, 'is-invalid': v$.content.$error }"
+                            :aria-invalid="v$.content.$error"
+                            @blur="v$.content.$touch()"
                         />
-                        <div v-if="!$v.content.required" class="invalid-tooltip">{{ $t('validation.custom.dearSanta.content.required') }}</div>
+                        <div v-if="!v$.content.required" class="invalid-tooltip">{{ $t('validation.custom.dearSanta.content.required') }}</div>
                     </div>
                 </div>
             </fieldset>
