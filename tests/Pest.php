@@ -1,9 +1,5 @@
 <?php
 
-use App\Models\Draw;
-use App\Models\Participant;
-use App\Services\DrawFormHandler;
-use function Pest\Faker\faker;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Testing\TestResponse;
 
@@ -37,6 +33,20 @@ uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundat
     return $this->toBe(1);
 });*/
 
+/**
+ * Assert the count of model entries.
+ *
+ * @param  string  $class
+ * @param  int  $count
+ * @return $this
+ */
+function assertModelCount($class, int $count) {
+    return test()->assertDatabaseCount(
+        test()->getTable($class),
+        $count
+    );
+}
+
 /*
 |--------------------------------------------------------------------------
 | Functions
@@ -47,20 +57,6 @@ uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundat
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
-
-function assertHasMailPushed($class, $recipient = null, Closure $callback = null) : void {
-    Mail::assertSent($class, function ($mail) use ($recipient, $callback) {
-        if ($recipient === null || $mail->hasTo($recipient)) {
-            if ($callback !== null) {
-                $callback($mail);
-            }
-
-            return true;
-        }
-
-        return false;
-    });
-}
 
 function prepareAjax($headers = []) : TestCase {
     $headers = $headers + [
@@ -83,64 +79,34 @@ function ajaxDelete($url, $headers = []) : TestResponse {
     return prepareAjax($headers)->json('DELETE', $url);
 }
 
-function createServiceDraw($participants) : Draw {
-    return (new DrawFormHandler())
-        ->withParticipants($participants)
-        ->withTitle('test mail {SANTA} => {TARGET} title')
-        ->withBody('test mail {SANTA} => {TARGET} body')
-        ->save();
-}
+/**
+ * Laravel TestCase aliases
+ */
 
-function generateParticipants(int $totalParticipants, bool $withExclusions = true) : array {
-    $participants = [];
-    for ($i = 0; $i < $totalParticipants; $i++) {
-        $participants[] = [
-            'name' => faker()->unique()->name,
-            'email' => faker()->unique()->safeEmail,
-            'target' => ($i === 0) ? $totalParticipants - 1 : $i - 1
-        ];
-    }
-
-    return $withExclusions ? formatParticipants($participants) : $participants;
+/**
+ * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithConsole
+ */
+function artisan($command, $parameters = []) {
+    return test()->artisan($command, $parameters);
 }
 
 /**
- * Expected $participants array format:
- *
- * $participants = [
- *  [
- *      'name'   => 'foo',
- *      'email'  => 'test@test.com',
- *      'target' => 1,
- *  ],
- *  [
- *      'name'   => 'bar',
- *      'email'  => 'test2@test.com',
- *      'target' => 2,
- *  ],
- *  [
- *      'name'   => 'foobar',
- *      'email'  => 'test3@test.com',
- *      'target' => 0,
- *  ],
- * ];
+ * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
  */
-function formatParticipants($participants) : array {
-    $participants = array_map(function ($idx) use ($participants) {
-        if (isset($participants[$idx]['target'])) {
-            $participants[$idx] += [
-                // Remove the keys and cast as string to simulate an html form submission
-                'exclusions' => array_values(
-                    array_map('strval',
-                        // Get all the participants idx but the current one and the target
-                        // (this participant will only draw their target and nobody else)
-                        array_diff(array_keys($participants), [$idx], [$participants[$idx]['target']])
-                    )
-                ),
-            ];
-        }
-        return $participants[$idx];
-    }, array_keys($participants));
+function seed($class = 'Database\\Seeders\\DatabaseSeeder') {
+    return test()->seed($class);
+}
 
-    return $participants;
+/**
+ * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
+ */
+function assertModelExists($model) {
+    return test()->assertModelExists($model);
+}
+
+/**
+ * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
+ */
+function assertModelMissing($model) {
+    return test()->assertModelMissing($model);
 }

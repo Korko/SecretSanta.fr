@@ -7,20 +7,24 @@ use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use Illuminate\Notifications\AnonymousNotifiable;
 
+function createDraw($participants, $params = []) {
+    return ajaxPost('/', $params + [
+            'participant-organizer' => '1',
+            'participants'          => $participants,
+            'title'                 => 'this is a test',
+            'content'               => 'test mail {SANTA} => {TARGET}',
+        ])
+        ->assertJsonStructure(['message']);
+}
+
 it('sends no notifications in case of error', function ($participants) {
     Notification::fake();
 
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
 
-    ajaxPost('/', [
-            'participant-organizer' => '1',
-            'participants'          => $participants,
-            'title'                 => 'this is a test',
-            'content'               => 'test mail {SANTA} => {TARGET}',
-        ])
-        ->assertStatus(422)
-        ->assertJsonStructure(['message']);
+    createDraw($participants)
+        ->assertStatus(422);
 
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
@@ -28,38 +32,24 @@ it('sends no notifications in case of error', function ($participants) {
     Notification::assertNothingSent();
 })->with('invalid participants list');
 
-it('can create draws', function () {
+it('can create draws', function ($participants) {
     Notification::fake();
 
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
 
-    $participants = generateParticipants(3);
-
-    ajaxPost('/', [
-            'participant-organizer' => '1',
-            'participants'          => $participants,
-            'title'                 => 'this is a test',
-            'content'               => 'test mail {SANTA} => {TARGET}',
-        ])
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+    createDraw($participants)
+        ->assertSuccessful();
 
     assertEquals(1, Draw::count());
     assertEquals(3, Participant::count());
-});
+})->with('participants list');;
 
-it('sends notifications in case of success', function () {
+it('sends notifications in case of success', function ($participants) {
     Notification::fake();
 
-    ajaxPost('/', [
-            'participant-organizer' => '1',
-            'participants'          => generateParticipants(3),
-            'title'                 => 'this is a test',
-            'content'               => 'test mail {SANTA} => {TARGET}',
-        ])
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+    createDraw($participants)
+        ->assertSuccessful();
 
     $draw = Draw::find(1);
 
@@ -78,22 +68,16 @@ it('sends notifications in case of success', function () {
     foreach($draw->participants as $participant) {
         Notification::assertSentTo($participant, TargetDrawn::class);
     }
-});
+})->with('participants list');;
 
-it('can create draws with a non participant organizer', function () {
+it('can create draws with a non participant organizer', function ($participants) {
     Notification::fake();
 
-    $participants = generateParticipants(3);
-
-    ajaxPost('/', [
+    createDraw($participants, [
             'participant-organizer' => '0',
-            'organizer'             => ['name' => 'foo', 'email' => 'foo@foobar.com'],
-            'participants'          => $participants,
-            'title'                 => 'this is a test',
-            'content'               => 'test mail {SANTA} => {TARGET}',
+            'organizer' => ['name' => 'foo', 'email' => 'foo@foobar.com'],
         ])
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+        ->assertSuccessful();
 
     $draw = Draw::find(1);
     assertEquals('foo', $draw->organizer_name);
@@ -115,19 +99,13 @@ it('can create draws with a non participant organizer', function () {
         assertNotEquals($participant->email, $draw->organizer_email);
         Notification::assertSentTo($participant, TargetDrawn::class);
     }
-});
+})->with('participants list');
 
-it('sends to the organizer the link to their panel', function () {
+it('sends to the organizer the link to their panel', function ($participants) {
     Notification::fake();
 
-    ajaxPost('/', [
-            'participant-organizer' => '1',
-            'participants'          => generateParticipants(3),
-            'title'                 => 'this is a test',
-            'content'               => 'test mail {SANTA} => {TARGET}',
-        ])
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+    createDraw($participants)
+        ->assertSuccessful();
 
     $draw = Draw::find(1);
 
@@ -143,27 +121,18 @@ it('sends to the organizer the link to their panel', function () {
             );
         }
     );
-});
+})->with('participants list');
 
-it('can deal with thousands of participants', function () {
+it('can deal with thousands of participants', function ($participants) {
     Notification::fake();
 
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());
 
-    $totalParticipants = 400;
-    $participants = generateParticipants($totalParticipants, false);
-
-    ajaxPost('/', [
-            'participant-organizer' => '1',
-            'participants'          => $participants,
-            'title'                 => 'this is a test',
-            'content'               => 'test mail {SANTA} => {TARGET}',
-        ])
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+    createDraw($participants)
+        ->assertSuccessful();
 
     assertEquals(1, Draw::count());
     assertEquals($participants[0]['name'], Draw::find(1)->organizer_name);
-    assertEquals($totalParticipants, Participant::count());
-})->group('massive');
+    assertEquals(count($participants), Participant::count());
+})->with('huge participants list')->group('massive');

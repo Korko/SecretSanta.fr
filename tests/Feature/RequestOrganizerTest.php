@@ -6,17 +6,11 @@ use App\Notifications\TargetDrawn;
 use App\Notifications\TargetNameChanged;
 use App\Notifications\TargetWithdrawn;
 use App\Models\Draw;
-use App\Models\Participant;
 
-test('the organizer can send again the target drawn email', function () {
+test('the organizer can send again the target drawn email', function (Draw $draw) {
     Notification::fake();
 
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
     $participant = $draw->participants->random();
-
-    Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
 
     $path = URL::signedRoute('organizerPanel.changeEmail', [
         'draw' => $draw,
@@ -27,18 +21,13 @@ test('the organizer can send again the target drawn email', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    Notification::assertSentToTimes($participant, TargetDrawn::class, 2);
-});
+    Notification::assertSentTo($participant, TargetDrawn::class);
+})->with('basic draw');
 
-test('the organizer can change a participant\'s email', function () {
+test('the organizer can change a participant\'s email', function (Draw $draw) {
     Notification::fake();
 
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
     $participant = $draw->participants->random();
-
-    Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
 
     $path = URL::signedRoute('organizerPanel.changeEmail', [
         'draw' => $draw,
@@ -57,15 +46,12 @@ test('the organizer can change a participant\'s email', function () {
     assertNotEquals($before, $after);
     assertEquals('test@test2.com', $after);
 
-    Notification::assertSentToTimes($participant, TargetDrawn::class, 2);
-});
+    Notification::assertSentTo($participant, TargetDrawn::class);
+})->with('basic draw');
 
-test('the organizer can change a participant\'s name', function () {
+test('the organizer can change a participant\'s name', function (Draw $draw) {
     Notification::fake();
 
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
     $participant = $draw->participants->random();
 
     $path = URL::signedRoute('organizerPanel.changeName', [
@@ -86,16 +72,12 @@ test('the organizer can change a participant\'s name', function () {
     assertEquals('foobar', $after);
 
     Notification::assertSentTo($participant->santa, TargetNameChanged::class);
-});
+})->with('basic draw');
 
-test('the organizer cannot give twice the same name', function () {
+test('the organizer cannot give twice the same name', function (Draw $draw) {
     Notification::fake();
 
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
-    $participant = $draw->participants->random();
-    $other = $draw->participants->except($participant->id)->random();
+    [$participant, $other] = $draw->participants->random(2);
 
     $path = URL::signedRoute('organizerPanel.changeName', [
         'draw' => $draw,
@@ -113,15 +95,12 @@ test('the organizer cannot give twice the same name', function () {
 
     assertEquals($before, $after);
 
-    Notification::assertTimesSent(0, TargetNameChanged::class);
-});
+    Notification::assertNothingSent();
+})->with('basic draw');
 
-test('the organizer can withdraw a participant', function () {
+test('the organizer can withdraw a participant', function (Draw $draw) {
     Notification::fake();
 
-    $draw = Draw::factory()
-        ->hasParticipants(4)
-        ->create();
     $participant = $draw->participants->random();
 
     ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), [
@@ -149,13 +128,9 @@ test('the organizer can withdraw a participant', function () {
     assertEquals($santa->fresh()->target->id, $target->id);
     assertEquals($target->fresh()->santa->id, $santa->id);
     assertEquals($participant->fresh(), null);
-});
+})->with('large draw');
 
-test('the organizer can download initial data', function () {
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
-
+test('the organizer can download initial data', function (Draw $draw) {
     $path = URL::signedRoute('organizerPanel.csvInit', [
         'draw' => $draw,
     ]);
@@ -163,26 +138,17 @@ test('the organizer can download initial data', function () {
     ajaxGet($path)
         ->assertHeader('Content-Type', 'text/csv; charset=UTF-8')
         ->assertSuccessful();
-});
+})->with('basic draw');
 
-test('the organizer cannot download total data if the draw is not expired', function () {
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
-
+test('the organizer cannot download total data if the draw is not finished', function (Draw $draw) {
     $path = URL::signedRoute('organizerPanel.csvFinal', [
         'draw' => $draw,
     ]);
 
     ajaxGet($path)->assertStatus(403);
-});
+})->with('basic draw');
 
-test('the organizer can download total data if the draw is expired', function () {
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->expired()
-        ->create();
-
+test('the organizer can download total data if the draw is finished', function (Draw $draw) {
     $path = URL::signedRoute('organizerPanel.csvFinal', [
         'draw' => $draw,
     ]);
@@ -190,13 +156,9 @@ test('the organizer can download total data if the draw is expired', function ()
     ajaxGet($path)
         ->assertHeader('Content-Type', 'text/csv; charset=UTF-8')
         ->assertSuccessful();
-});
+})->with('finished draw');
 
-test('the organizer can delete all data before expiration', function () {
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
-
+test('the organizer can delete all data before the event', function (Draw $draw) {
     $path = URL::signedRoute('organizerPanel.delete', [
         'draw' => $draw,
     ]);
@@ -206,14 +168,9 @@ test('the organizer can delete all data before expiration', function () {
         ->assertJsonStructure(['message']);
 
     assertNull($draw->fresh());
-});
+})->with('basic draw');
 
-test('the organizer can delete all data after expiration', function () {
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->expired()
-        ->create();
-
+test('the organizer can delete all data after the event', function (Draw $draw) {
     $path = URL::signedRoute('organizerPanel.delete', [
         'draw' => $draw,
     ]);
@@ -223,19 +180,13 @@ test('the organizer can delete all data after expiration', function () {
         ->assertJsonStructure(['message']);
 
     assertNull($draw->fresh());
-});
+})->with('finished draw');
 
-it('updates the draw update date when sending an email', function () {
+it('updates the draw update date when sending an email', function (Draw $draw) {
     Notification::fake();
-
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
 
     $updated_at = $draw->updated_at;
     $participant = $draw->participants->first();
-
-    Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
 
     sleep(2);
 
@@ -246,6 +197,6 @@ it('updates the draw update date when sending an email', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    Notification::assertSentToTimes($participant, TargetDrawn::class, 2);
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
     test()->assertNotEquals($updated_at->timestamp, $draw->fresh()->updated_at->timestamp);
-});
+})->with('basic draw');

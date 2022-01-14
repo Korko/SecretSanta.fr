@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\Casts\EncryptedString;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DearSanta extends Model
 {
-    use HashId;
+    use HasFactory, HashId;
 
     protected $hashConnection = 'dearSanta';
 

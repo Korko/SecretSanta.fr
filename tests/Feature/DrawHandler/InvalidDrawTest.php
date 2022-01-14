@@ -11,13 +11,13 @@ it('throws an exception when there\'s no solution', function ($participants) {
 })->with('invalid participants list')->throws(SolverException::class);
 
 it('does not record anything in case of error', function ($participants) {
-    assertEquals(0, Draw::count());
-    assertEquals(0, Participant::count());
-    assertEquals(0, Exclusion::count());
+    assertModelCount(Draw::class, 0);
+    assertModelCount(Participant::class, 0);
+    assertModelCount(Exclusion::class, 0);
 
     try { (new DrawFormHandler())->withParticipants($participants)->save(); } catch (Exception $e) {}
 
-    assertEquals(0, Draw::count());
-    assertEquals(0, Participant::count());
-    assertEquals(0, Exclusion::count());
+    assertModelCount(Draw::class, 0);
+    assertModelCount(Participant::class, 0);
+    assertModelCount(Exclusion::class, 0);
 })->with('invalid participants list');

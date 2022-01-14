@@ -1,33 +1,13 @@
 <?php
 
+use App\Models\DearSanta;
 use App\Models\Draw;
-use App\Models\Mail as MailModel;
-use App\Notifications\DearSanta;
-use App\Notifications\TargetDrawn;
+use App\Notifications\DearSanta as DearSantaNotification;
+use App\Notifications\TargetDrawn as TargetDrawnNotification;
 use Illuminate\Support\Facades\URL;
 
-it('send to each participant a link to write to their santa', function () {
+it('lets each participant write to their santa', function (Draw $draw) {
     Notification::fake();
-
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
-
-    foreach($draw->participants as $participant) {
-        Notification::assertSentTo($participant, function (TargetDrawn $notification) use ($participant) {
-            return $notification->toMail($participant)->assertSeeInHtml(
-                URL::signedRoute('dearSanta', ['participant' => $participant->hash]).'#'.base64_encode(DrawCrypt::getIV())
-            );
-        });
-    }
-});
-
-it('lets each participant write to their santa', function () {
-    Notification::fake();
-
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
 
     foreach ($draw->participants as $participant) {
         ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), [
@@ -36,51 +16,33 @@ it('lets each participant write to their santa', function () {
             ->assertSuccessful()
             ->assertJsonStructure(['message']);
 
-        Notification::assertSentTo($participant->santa, DearSanta::class);
+        Notification::assertSentTo($participant->santa, DearSantaNotification::class);
     }
-});
+})->with('basic draw');
 
-it('lets a participant resend the email to their santa in case of error', function () {
+test('it does not let a participant resend the email to their santa just after sending', function (DearSanta $dearSanta) {
     Notification::fake();
 
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
-
-    $participant = $draw->participants->first();
-
-    ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), [
-            'content' => 'test dearSanta mail content',
-        ])
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
-
-    Notification::assertSentToTimes($participant->santa, DearSanta::class, 1);
-    $dearSanta = $participant->dearSantas->first();
-
-    ajaxGet(URL::signedRoute('dearSanta.resend', ['participant' => $participant, 'dearSanta' => $dearSanta]))
+    ajaxGet(URL::signedRoute('dearSanta.resend', ['participant' => $dearSanta->sender, 'dearSanta' => $dearSanta]))
         ->assertForbidden()
         ->assertJsonStructure(['message']);
 
     // Nothing new, still the same notification
-    Notification::assertSentToTimes($participant->santa, DearSanta::class, 1);
+    Notification::assertNothingSent();
+})->with('dear santa');
 
-    $dearSanta->mail->updated_at = $dearSanta->mail->updated_at->subSeconds(config('mail.resend_delay'));
-    $dearSanta->mail->save();
+test('it lets a participant resend the email to their santa in case of error', function (DearSanta $dearSanta) {
+    Notification::fake();
 
-    ajaxGet(URL::signedRoute('dearSanta.resend', ['participant' => $participant, 'dearSanta' => $dearSanta]))
+    ajaxGet(URL::signedRoute('dearSanta.resend', ['participant' => $dearSanta->sender, 'dearSanta' => $dearSanta]))
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    Notification::assertSentToTimes($participant->santa, DearSanta::class, 2);
-});
+    Notification::assertSentToTimes($dearSanta->sender->santa, DearSantaNotification::class, 1);
+})->with('resendable dear santa');
 
-it('updates the draw update date when writing to a santa', function () {
+test('it updates the draw update date when writing to a santa', function (Draw $draw) {
     Notification::fake();
-
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
 
     $updated_at = $draw->updated_at;
     $participant = $draw->participants->first();
@@ -93,6 +55,6 @@ it('updates the draw update date when writing to a santa', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    Notification::assertSentTo($participant->santa, DearSanta::class);
+    Notification::assertSentTo($participant->santa, DearSantaNotification::class);
     test()->assertNotEquals($updated_at->timestamp, $draw->fresh()->updated_at->timestamp);
-});
+})->with('basic draw');

@@ -3,28 +3,37 @@
 use App\Models\Draw;
 use App\Models\Exclusion;
 use App\Models\Participant;
+use App\Notifications\TargetDrawn as TargetDrawnNotification;
+use App\Services\DrawFormHandler;
+
+function createServiceDraw($participants) : Draw {
+    return (new DrawFormHandler())
+        ->withParticipants($participants)
+        ->withTitle('test mail {SANTA} => {TARGET} title')
+        ->withBody('test mail {SANTA} => {TARGET} body')
+        ->save();
+}
 
 it('records new entries in case of success', function ($participants) {
-    assertEquals(0, Draw::count());
-    assertEquals(0, Participant::count());
-    assertEquals(0, Exclusion::count());
+    assertModelCount(Draw::class, 0);
+    assertModelCount(Participant::class, 0);
+    assertModelCount(Exclusion::class, 0);
 
     $draw = createServiceDraw($participants);
 
     $exclusions = array_reduce($participants, function ($sum, $participant) { return $sum + count($participant['exclusions']); });
 
-    assertEquals(1, Draw::count());
-    assertTrue($draw->is(Draw::find(1)));
-
-    assertEquals(count($participants), Participant::count());
-    assertEquals($exclusions, Exclusion::count());
+    assertModelCount(Draw::class, 1);
+    assertModelExists($draw);
+    assertModelCount(Participant::class, count($participants));
+    assertModelCount(Exclusion::class, $exclusions);
 
     // Carreful, array is 0..n, Db is 1..n
     foreach($participants as $idx => $participant) {
         assertEquals($participant['name'], Participant::find($idx + 1)->name);
         assertEquals($participant['email'], Participant::find($idx + 1)->email);
     }
-})->with('valid participants list');
+})->with('participants list');
 
 it('saves the correct target', function ($participants, $targets) {
     $draw = createServiceDraw($participants);
@@ -38,3 +47,17 @@ it('saves the correct target', function ($participants, $targets) {
         assertEquals($participant['name'], $draw->participants[$idx]->target->santa->name);
     }
 })->with('unique participants list');
+
+it('send to each participant a link to write to their santa', function ($participants) {
+    Notification::fake();
+
+    $draw = createServiceDraw($participants);
+
+    foreach($draw->participants as $participant) {
+        Notification::assertSentTo($participant, function (TargetDrawnNotification $notification) use ($participant) {
+            return $notification->toMail($participant)->assertSeeInHtml(
+                URL::signedRoute('dearSanta', ['participant' => $participant->hash]).'#'.base64_encode(DrawCrypt::getIV())
+            );
+        });
+    }
+})->with('participants list');

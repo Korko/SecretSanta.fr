@@ -3,17 +3,17 @@
 namespace Tests\Feature;
 
 use App\Facades\DrawCrypt;
-use App\Models\Draw;
+use App\Models\Participant;
 
 it('stores database crypted entries', function () {
-    $draw = Draw::factory()
-        ->hasParticipants(3)
+    $participant = Participant::factory()
         ->create();
 
-    $decrypted = $draw->participants[0]->name;
+    $decrypted = $participant->name;
 
+    // Disable decryption
     DrawCrypt::shouldReceive('decrypt')
         ->andReturnArg(0);
 
-    assertNotEquals($draw->participants[0]->name, $decrypted);
+    assertNotEquals($participant->name, $decrypted);
 });
