@@ -15,5 +15,5 @@ return [
     'resend' => [
         'button'  => "Me ré-envoyer les mails que j'ai reçu de ma cible",
     ],
-    'expired' => "Votre évènement a été marqué comme terminé ({expired_at}). Le nom de votre cible a été révélé à l'organisateur et certaines actions ne sont plus disponibles, comme envoyer des emails."
+    'finished' => "Votre évènement a été marqué comme terminé ({finished_at}). Le nom de votre cible a été révélé à l'organisateur et certaines actions ne sont plus disponibles, comme envoyer des emails."
 ];

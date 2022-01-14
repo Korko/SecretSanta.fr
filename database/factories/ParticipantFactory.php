@@ -3,11 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Draw;
-use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 class ParticipantFactory extends Factory
 {
@@ -33,11 +30,6 @@ class ParticipantFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the draw is expired.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
     public function bijective()
     {
         return $this->afterCreating(function (Participant $participant, Draw $draw) {

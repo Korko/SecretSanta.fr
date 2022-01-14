@@ -5,7 +5,7 @@
                 :modelValue="name"
                 :validation="v$.name"
                 :submit="updateName"
-                :disabled="expired"
+                :disabled="finished"
             >
                 <template #errors>
                     <div v-if="!v$.name.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.required') }}</div>
@@ -18,7 +18,7 @@
                 :modelValue="email"
                 :validation="v$.email"
                 :submit="updateEmail"
-                :disabled="expired"
+                :disabled="finished"
             >
                 <template #errors>
                     <div v-if="!v$.email.required" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.required') }}</div>
@@ -26,10 +26,10 @@
                 </template>
             </input-edit>
         </td>
-        <td v-if="expired">
+        <td v-if="finished">
             {{ target }}
         </td>
-        <td><email-status :delivery_status="mail.delivery_status" :last_update="mail.updated_at" :disabled="expired" @redo="$emit('resend')" /></td>
+        <td><email-status :delivery_status="mail.delivery_status" :last_update="mail.updated_at" :disabled="finished" @redo="$emit('resend')" /></td>
         <td v-if="canWithdraw">
             <button
                 type="button"
@@ -93,7 +93,7 @@
                 type: Object,
                 required: true
             },
-            expired: {
+            finished: {
                 type: Boolean,
                 required: true
             },

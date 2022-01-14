@@ -18,7 +18,7 @@ class Draw extends Model
 
     // Consider a draw expired N months after the last mail sent
     public const MONTHS_BEFORE_EXPIRATION = 3;
-    // Remove everything N days after the expirated_at date
+    // Remove everything N days after the finished_at date
     public const DAYS_BEFORE_DELETION = 7;
 
     protected $hashConnection = 'draw';
@@ -28,7 +28,7 @@ class Draw extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['mail_title', 'mail_body', 'next_solvable', 'organizer_name', 'organizer_email', 'created_at', 'updated_at', 'expired_at'];
+    protected $fillable = ['mail_title', 'mail_body', 'next_solvable', 'organizer_name', 'organizer_email', 'created_at', 'updated_at', 'finished_at'];
 
     /**
      * The attributes that should be cast.
@@ -49,7 +49,7 @@ class Draw extends Model
      * @var string[]
      */
     protected $dates = [
-        'expired_at',
+        'finished_at',
     ];
 
     protected static function booted()
@@ -66,7 +66,7 @@ class Draw extends Model
      */
     public function prunable()
     {
-        return static::where('expired_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.self::DAYS_BEFORE_DELETION.'D')))
+        return static::where('finished_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.self::DAYS_BEFORE_DELETION.'D')))
             ->orWhere('updated_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.self::MONTHS_BEFORE_EXPIRATION.'M')));
     }
 
@@ -85,14 +85,14 @@ class Draw extends Model
         return $this->updated_at->addMonths(self::MONTHS_BEFORE_EXPIRATION);
     }
 
-    public function getExpiredAttribute()
+    public function getFinishedAttribute()
     {
-        return $this->expired_at ? $this->expired_at->isPast() : false;
+        return $this->finished_at ? $this->finished_at->isPast() : false;
     }
 
     public function getDeletesAtAttribute()
     {
-        return max($this->expires_at, $this->expired_at ? $this->expired_at->addMonths(self::DAYS_BEFORE_DELETION) : null);
+        return max($this->expires_at, $this->finished_at ? $this->finished_at->addMonths(self::DAYS_BEFORE_DELETION) : null);
     }
 
     public function getMetricIdAttribute()

@@ -14,9 +14,9 @@ class RemoveDrawExpiration extends Migration
      */
     public function up()
     {
-        if (! Schema::hasColumn('draws', 'expired_at')) {
+        if (! Schema::hasColumn('draws', 'finished_at')) {
             Schema::table('draws', function (Blueprint $table) {
-                $table->date('expired_at')->nullable();
+                $table->date('finished_at')->nullable();
             });
         }
 
@@ -26,7 +26,7 @@ class RemoveDrawExpiration extends Migration
                     ->update(
                         array(
                             'updated_at' => DB::raw('GREATEST(updated_at, DATE_SUB(expires_at, INTERVAL '.Draw::MONTHS_BEFORE_EXPIRATION.' MONTH))'),
-                            'expired_at' => DB::raw('IF(expires_at >= NOW(), expires_at, NULL)')
+                            'finished_at' => DB::raw('IF(expires_at >= NOW(), expires_at, NULL)')
                         )
                     );
             }
@@ -52,14 +52,14 @@ class RemoveDrawExpiration extends Migration
             DB::table('draws')
                 ->update(
                     array(
-                        'expires_at' => DB::raw('GREATEST(expired_at, DATE_ADD(updated_at, INTERVAL '.Draw::MONTHS_BEFORE_EXPIRATION.' MONTH))'),
+                        'expires_at' => DB::raw('GREATEST(finished_at, DATE_ADD(updated_at, INTERVAL '.Draw::MONTHS_BEFORE_EXPIRATION.' MONTH))'),
                     )
                 );
         }
 
         Schema::table('draws', function (Blueprint $table) {
             $table->date('expires_at')->change();
-            $table->dropColumn('expired_at');
+            $table->dropColumn('finished_at');
         });
     }
 }

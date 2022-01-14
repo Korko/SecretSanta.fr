@@ -45,7 +45,7 @@ export default {
                 "confirm": {
                     "title": "Êtes-vous sûr de vouloir supprimer la totalité des données avant le nettoyage automatique le {deletes_at} ?",
                     "body_final": "Vous ne pourrez plus télécharger le récapitulatif des tirages de cet évènement et les participant(e)s ne pourront plus écrire à leur père/mère noël secret. Cette action ne peut être annulée.",
-                    "body_expired": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement. Cette action ne peut être annulée.",
+                    "body_finished": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement. Cette action ne peut être annulée.",
                     "body_nofinal": "Vous ne pourrez plus télécharger le récapitulatif de cet évènement et les participant(e)s ne pourront plus écrire à leur père/mère noël secret. Cette action ne peut être annulée.",
                     "value": "Supprimer toutes les données",
                     "help": "Saisir \"[+:verification]\" en dessous pour confirmer.",
@@ -64,7 +64,7 @@ export default {
                     "cancel": "Annuler"
                 }
             },
-            "expired": "Votre évènement a été marqué comme terminé ({expired_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un(e) participant(e)."
+            "finished": "Votre évènement a été marqué comme terminé ({finished_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un(e) participant(e)."
         },
         "faq": {
             "nav": {
@@ -424,7 +424,7 @@ export default {
             "resend": {
                 "button": "Me ré-envoyer les mails que j'ai reçu de ma cible"
             },
-            "expired": "Votre évènement a été marqué comme terminé ({expired_at}). Le nom de votre cible a été révélé à l'organisateur et certaines actions ne sont plus disponibles, comme envoyer des emails."
+            "finished": "Votre évènement a été marqué comme terminé ({finished_at}). Le nom de votre cible a été révélé à l'organisateur et certaines actions ne sont plus disponibles, comme envoyer des emails."
         }
     }
 }

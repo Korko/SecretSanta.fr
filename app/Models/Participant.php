@@ -110,7 +110,7 @@ class Participant extends Model
     {
         $participant = $this->baseResolver($value, $field);
 
-        throw_if($participant->draw->expired, ModelNotFoundException::class);
+        throw_if($participant->draw->finished, ModelNotFoundException::class);
 
         return $participant;
     }

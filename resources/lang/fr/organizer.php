@@ -43,18 +43,18 @@ return [
             'content' => "Sans action de votre part, toutes les données seront automatiquement supprimées 3 mois après le dernier email échangé. Cette action supprime immédiatement la totalité des données de votre tirage au sort (noms des participants, adresses emails, messages échangés etc). Cette action est définitive.",
         ],
         'confirm' => [
-            'title'  => 'Êtes-vous sûr de vouloir supprimer la totalité des données avant le nettoyage automatique le :deletes_at ?',
-            // Final recap available and draw not expired yet
-            'body_final'   => 'Vous ne pourrez plus télécharger le récapitulatif des tirages de cet évènement et les participant(e)s ne pourront plus écrire à leur père/mère noël secret. Cette action ne peut être annulée.',
-            // Draw expired, final recap may be available or not
-            'body_expired' => 'Vous ne pourrez plus télécharger le récapitulatif de cet évènement. Cette action ne peut être annulée.',
-            // No final recap available and draw not expired yet
-            'body_nofinal' => 'Vous ne pourrez plus télécharger le récapitulatif de cet évènement et les participant(e)s ne pourront plus écrire à leur père/mère noël secret. Cette action ne peut être annulée.',
-            'value'  => 'Supprimer toutes les données',
+            'title'         => 'Êtes-vous sûr de vouloir supprimer la totalité des données avant le nettoyage automatique le :deletes_at ?',
+            // Final recap available and draw not finished yet
+            'body_final'    => 'Vous ne pourrez plus télécharger le récapitulatif des tirages de cet évènement et les participant(e)s ne pourront plus écrire à leur père/mère noël secret. Cette action ne peut être annulée.',
+            // Draw finished, final recap may be available or not
+            'body_finished' => 'Vous ne pourrez plus télécharger le récapitulatif de cet évènement. Cette action ne peut être annulée.',
+            // No final recap available and draw not finished yet
+            'body_nofinal'  => 'Vous ne pourrez plus télécharger le récapitulatif de cet évènement et les participant(e)s ne pourront plus écrire à leur père/mère noël secret. Cette action ne peut être annulée.',
+            'value'         => 'Supprimer toutes les données',
             // Use !: not to be transformed by vue-i18n-generator
-            'help'   => 'Saisir "[+!:verification]" en dessous pour confirmer.',
-            'ok'     => 'Ok',
-            'cancel' => 'Annuler',
+            'help'          => 'Saisir "[+!:verification]" en dessous pour confirmer.',
+            'ok'            => 'Ok',
+            'cancel'        => 'Annuler',
         ],
     ],
     'withdraw'      => [
@@ -69,5 +69,5 @@ return [
             'cancel' => 'Annuler',
         ],
     ],
-    'expired' => 'Votre évènement a été marqué comme terminé ({expired_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un(e) participant(e).'
+    'finished' => 'Votre évènement a été marqué comme terminé ({finished_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un(e) participant(e).'
 ];

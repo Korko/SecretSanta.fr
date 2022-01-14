@@ -30,10 +30,10 @@ class OrganizerController extends Controller
 
     public function fetch(Draw $draw)
     {
-        $drawFields = ['hash', 'mail_title', 'created_at', 'expired_at', 'deletes_at', 'next_solvable', 'organizer_name'];
+        $drawFields = ['hash', 'mail_title', 'created_at', 'finished_at', 'deletes_at', 'next_solvable', 'organizer_name'];
         $participantFields = ['hash', 'name', 'email', 'mail' => ['id', 'updated_at', 'delivery_status']];
 
-        if ($draw->expired) {
+        if ($draw->finished) {
             $participantFields[] = ['target' => ['hash', 'name']];
         }
 
@@ -42,13 +42,13 @@ class OrganizerController extends Controller
             'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) use ($draw, $participantFields) {
                 return [
                     $participant->hash => $participant->only($participantFields) + [
-                        'changeEmailUrl' => $draw->expired ? '' : URL::signedRoute('organizerPanel.changeEmail', [
+                        'changeEmailUrl' => $draw->finished ? '' : URL::signedRoute('organizerPanel.changeEmail', [
                             'draw' => $draw, 'participant' => $participant
                         ]),
-                        'changeNameUrl' => $draw->expired ? '' : URL::signedRoute('organizerPanel.changeName', [
+                        'changeNameUrl' => $draw->finished ? '' : URL::signedRoute('organizerPanel.changeName', [
                             'draw' => $draw, 'participant' => $participant
                         ]),
-                        'withdrawalUrl' => $draw->expired ? '' : URL::signedRoute('organizerPanel.withdraw', [
+                        'withdrawalUrl' => $draw->finished ? '' : URL::signedRoute('organizerPanel.withdraw', [
                             'draw' => $draw, 'participant' => $participant
                         ]),
                     ]
@@ -158,7 +158,7 @@ class OrganizerController extends Controller
 
     public function csvFinal(Draw $draw)
     {
-        abort_unless($draw->expired, 403, Lang::get('error.expired'));
+        abort_unless($draw->finished, 403, Lang::get('error.finished'));
         abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
 
         $draw->createMetric('csv_final_download');

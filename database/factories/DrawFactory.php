@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Draw;
-use App\Services\DrawHandler;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DrawFactory extends Factory
@@ -44,16 +44,20 @@ class DrawFactory extends Factory
         });
     }
 
-    /**
-     * Indicate that the draw is expired.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
+    public function finished()
+    {
+        return $this->state(function () {
+            return [
+                'finished_at' => Carbon::now()
+            ];
+        });
+    }
+
     public function expired()
     {
         return $this->state(function () {
             return [
-                'expired_at' => $this->faker->dateTime('-1 hour'),
+                'finished_at' => Carbon::now()->subDays(Draw::DAYS_BEFORE_DELETION)
             ];
         });
     }

@@ -327,10 +327,10 @@
             </footer>
           </main>
         </div>
+-->
 
-<!--
-        <div v-if="expired" class="alert alert-warning" role="alert">
-            {{ $t('dearsanta.expired', {expired_at: expirationDateLong}) }}
+        <div v-if="finished" class="alert alert-warning" role="alert">
+            {{ $t('dearsanta.finished', {finished_at: endDateLong}) }}
         </div>
         <ajax-form :action="routes.contactUrl" :v$="v$" @success="success" @reset="reset" :autoReset="true">
             <fieldset>

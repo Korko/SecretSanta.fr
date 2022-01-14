@@ -1,25 +1,25 @@
 <template>
     <div>
-        <div v-if="expired" class="alert alert-warning" role="alert">
-            {{ $t('organizer.expired', {expired_at: expirationDateLong}) }}
+        <div v-if="finished" class="alert alert-warning" role="alert">
+            {{ $t('organizer.finished', {finished_at: endDateLong}) }}
         </div>
         <table class="table table-hover">
             <caption>{{ $t('organizer.list.caption') }}</caption>
             <thead>
                 <tr class="table-active">
-                    <th :style="expired ? 'width: 25%' : 'width: 33%'" scope="col">
+                    <th :style="finished ? 'width: 25%' : 'width: 33%'" scope="col">
                         {{ $t('organizer.list.name') }}
                     </th>
-                    <th :style="expired ? 'width: 25%' : 'width: 33%'" scope="col">
+                    <th :style="finished ? 'width: 25%' : 'width: 33%'" scope="col">
                         {{ $t('organizer.list.email') }}
                     </th>
-                    <th v-if="expired" style="width: 25%" scope="col">
+                    <th v-if="finished" style="width: 25%" scope="col">
                         {{ $t('organizer.list.target') }}
                     </th>
                     <th :style="canWithdraw ? 'width: 25%' : 'width: 33%'" scope="col">
                         {{ $t('organizer.list.status') }}
                     </th>
-                    <th v-if="! expired && canWithdraw" style="width: 3%" scope="col">
+                    <th v-if="! finished && canWithdraw" style="width: 3%" scope="col">
                         {{ $t('organizer.list.withdraw') }}
                     </th>
                 </tr>
@@ -31,7 +31,7 @@
                     :key="participant.hash"
                     v-bind="participant"
                     :participants="participants"
-                    :expired="expired"
+                    :finished="finished"
                     :canWithdraw="canWithdraw"
                     :updateEmail="(email) => updateEmail(k, email)"
                     :updateName="(name) => updateName(k, name)"
@@ -39,7 +39,7 @@
                 ></tr>
             </tbody>
         </table>
-        <template v-if="!expired">
+        <template v-if="!finished">
             <tooltip direction="top">
                 <template #tooltip>
                     <picture>
@@ -112,7 +112,7 @@
                     </div>
                 </template>
                 <template #default>
-                    <button :disabled="!expired" type="button" class="btn btn-primary" @click="downloadPlus">
+                    <button :disabled="!finished" type="button" class="btn btn-primary" @click="downloadPlus">
                         <i class="fas fa-download" />
                         {{ $t('organizer.download.button_final') }}
                     </button>
@@ -188,11 +188,11 @@
                     participant => participant.mail.delivery_status !== 'error'
                 );
             },
-            expired() {
-                return !!this.draw.expired_at;
+            finished() {
+                return !!this.draw.finished_at;
             },
-            expirationDateLong() {
-                return new Date(this.draw.expired_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+            endDateLong() {
+                return new Date(this.draw.finished_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
             },
             deletionDateLong() {
                 return new Date(this.draw.deletes_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
@@ -243,10 +243,10 @@
                     title: this.$t('organizer.purge.confirm.title', {deletion: this.deletionDateLong}),
                     body: ''
                 };
-                if(this.draw.next_solvable && !this.expired) {
+                if(this.draw.next_solvable && !this.finished) {
                     message.body = this.$t('organizer.purge.confirm.body_final'); // Won't be able to download final recap + dearSanta
-                } else if(this.expired) {
-                    message.body = this.$t('organizer.purge.confirm.body_expired'); // Won't be able to download recap anymore
+                } else if(this.finished) {
+                    message.body = this.$t('organizer.purge.confirm.body_finished'); // Won't be able to download recap anymore
                 } else {
                     message.body = this.$t('organizer.purge.confirm.body_nofinal'); // Won't be able to download recap anymore + DearSanta
                 }
