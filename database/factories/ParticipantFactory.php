@@ -30,6 +30,7 @@ class ParticipantFactory extends Factory
         ];
     }
 
+    // TODO: check
     public function bijective()
     {
         return $this->afterCreating(function (Participant $participant, Draw $draw) {

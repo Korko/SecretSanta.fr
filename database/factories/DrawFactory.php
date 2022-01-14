@@ -30,20 +30,6 @@ class DrawFactory extends Factory
         ];
     }
 
-    /**
-     * Configure the model factory.
-     *
-     * @return $this
-     */
-    public function configure()
-    {
-        return $this->afterCreating(function (Draw $draw) {
-            if ($draw->participants->count() > 0) {
-                DrawHandler::solve($draw, $draw->participants);
-            }
-        });
-    }
-
     public function finished()
     {
         return $this->state(function () {
