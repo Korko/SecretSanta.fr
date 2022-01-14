@@ -10,12 +10,11 @@ use DateTime;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
-use Illuminate\Notifications\Notifiable;
 use Metrics;
 
 class Draw extends Model
 {
-    use HasFactory, HashId, Notifiable, Prunable;
+    use HasFactory, HashId, Prunable;
 
     // Consider a draw expired N months after the last mail sent
     public const MONTHS_BEFORE_EXPIRATION = 3;
