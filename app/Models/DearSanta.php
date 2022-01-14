@@ -42,7 +42,7 @@ class DearSanta extends Model
         });
 
         static::deleting(function ($dearSanta) {
-            $dearSanta->mail->delete();
+            $dearSanta->mail()->delete();
         });
     }
 
