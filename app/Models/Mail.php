@@ -26,21 +26,21 @@ class Mail extends Model
      * @var array
      */
     protected $attributes = [
-        'delivery_status' => self::CREATED,
+        'delivery_status' => self::STATE_CREATED,
     ];
 
-    public const CREATED = 'created';
-    public const SENDING = 'sending';
-    public const SENT = 'sent';
-    public const ERROR = 'error';
-    public const RECEIVED = 'received';
+    public const STATE_CREATED = 'created';
+    public const STATE_SENDING = 'sending';
+    public const STATE_SENT = 'sent';
+    public const STATE_ERROR = 'error';
+    public const STATE_RECEIVED = 'received';
 
     public static $deliveryStatuses = [
-        self::CREATED,
-        self::SENDING,
-        self::SENT,
-        self::ERROR,
-        self::RECEIVED,
+        self::STATE_CREATED,
+        self::STATE_SENDING,
+        self::STATE_SENT,
+        self::STATE_ERROR,
+        self::STATE_RECEIVED,
     ];
 
     /**
@@ -60,23 +60,23 @@ class Mail extends Model
     }
 
     public function markAsCreated() {
-        $this->updateDeliveryStatus(self::CREATED);
+        $this->updateDeliveryStatus(self::STATE_CREATED);
     }
 
     public function markAsSending() {
-        $this->updateDeliveryStatus(self::SENDING);
+        $this->updateDeliveryStatus(self::STATE_SENDING);
     }
 
     public function markAsSent() {
-        $this->updateDeliveryStatus(self::SENT);
+        $this->updateDeliveryStatus(self::STATE_SENT);
     }
 
     public function markAsError() {
-        $this->updateDeliveryStatus(self::ERROR);
+        $this->updateDeliveryStatus(self::STATE_ERROR);
     }
 
     public function markAsReceived() {
-        $this->updateDeliveryStatus(self::RECEIVED);
+        $this->updateDeliveryStatus(self::STATE_RECEIVED);
     }
 
     public function updateDeliveryStatus($status)
