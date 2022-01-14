@@ -58,9 +58,9 @@ class Participant extends Model
         });
 
         static::deleting(function ($participant) {
-            $participant->dearSantas->each->delete();
-            $participant->exclusions->each->delete();
-            $participant->mail->delete();
+            $participant->dearSantas()->lazy()->each->delete();
+            $participant->exclusions()->delete();
+            $participant->mail()->delete();
         });
     }
 

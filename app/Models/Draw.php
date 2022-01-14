@@ -56,7 +56,7 @@ class Draw extends Model
     protected static function booted()
     {
         static::deleting(function ($draw) {
-            $draw->participants->each->delete();
+            $draw->participants()->lazy()->each->delete();
         });
     }
 
