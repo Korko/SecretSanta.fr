@@ -1,9 +1,13 @@
-@extends('emails/layout', ['title' => 'target_drawn'])
+@component('mail::message')
 
-@section('content')
-    <blockquote>{!! nl2br(htmlentities($content)) !!}</blockquote>
+# Bonjour {{ $name }},
 
-    <hr/>
+Vous êtes amené à participer à une remise de cadeaux et voici le message de votre organisateur :
 
-    <p style="padding-bottom:10px !important">Vous pouvez écrire à votre Père Noël Secret ! Ca se passe ici : <a href="{{ $dearSantaLink }}">{{ $dearSantaLink }}</a></p>
-@endsection
+> {{ $content }}
+
+@component('mail::button', ['url' => $dearSantaLink])
+Ecrire à mon Père Noël Secret
+@endcomponent
+
+@endcomponent

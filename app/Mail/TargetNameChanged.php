@@ -31,9 +31,9 @@ class TargetNameChanged extends Mailable
             ->subject(Lang::get('emails.name_changed.title', [
                 'draw' => $this->santa->draw->id
             ]))
-            ->view(['emails.name_changed', 'emails.name_changed_plain'], [
+            ->markdown('emails.name_changed', [
+                'name' => $this->santa->name,
                 'draw' => $this->santa->draw->id,
-                'santaName' => $this->santa->name,
                 'targetName' => $this->santa->target->name,
             ]);
     }

@@ -32,9 +32,9 @@ class OrganizerRecap extends Mailable
     {
         return $this
             ->subject(Lang::get('emails.organizer_recap.title', ['draw' => $this->draw->id]))
-            ->view(['emails.organizer_recap', 'emails.organizer_recap_plain'], [
+            ->markdown('emails.organizer_recap', [
+                'name' => $this->draw->organizer_name,
                 'draw' => $this->draw->id,
-                'organizerName' => $this->draw->organizer_name,
                 'deletionDate' => $this->draw->deletes_at->locale(App::getLocale())->isoFormat('LL'),
                 'nextSolvable' => $this->draw->next_solvable,
                 'panelLink' => URL::signedRoute('organizer.view', ['draw' => $this->draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),

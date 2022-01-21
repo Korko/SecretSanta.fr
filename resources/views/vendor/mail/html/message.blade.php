@@ -6,6 +6,10 @@
         @endcomponent
     @endslot
 
+    @component('mail::panel')
+        Ceci est un message automatique, merci de ne pas y répondre.
+    @endcomponent
+
     {{-- Body --}}
     {{ $slot }}
 

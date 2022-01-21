@@ -31,9 +31,9 @@ class TargetWithdrawn extends Mailable
             ->subject(Lang::get('emails.target_withdrawn.title', [
                 'draw' => $this->santa->draw->id
             ]))
-            ->view(['emails.target_withdrawn', 'emails.target_withdrawn_plain'], [
+            ->markdown('emails.target_withdrawn', [
+                'name' => $this->santa->name,
                 'draw' => $this->santa->draw->id,
-                'santaName' => $this->santa->name,
                 'targetName' => $this->santa->target->name,
             ]);
     }

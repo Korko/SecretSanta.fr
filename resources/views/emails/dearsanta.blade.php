@@ -1,7 +1,9 @@
-@extends('emails/layout', ['title' => 'dear_santa'])
+@component('mail::message')
 
-@section('content')
-    <p style="padding-bottom:10px !important">Message de {{ $targetName }}</p>
+# Bonjour {{ $name }},
 
-    <blockquote>{!! nl2br(htmlentities( $content )) !!}</blockquote>
-@endsection
+Voici un message de {{ $targetName }} :
+
+> {{ $content }}
+
+@endcomponent

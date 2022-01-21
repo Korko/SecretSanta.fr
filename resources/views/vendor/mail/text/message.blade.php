@@ -6,6 +6,8 @@
         @endcomponent
     @endslot
 
+    <p style="border:1px solid #000000;background-color:#dddddd;">Ceci est un message automatique, merci de ne pas y répondre.</p>
+
     {{-- Body --}}
     {{ $slot }}
 
@@ -21,7 +23,9 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            © {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+            <p style="padding-bottom:10px !important">Secrètement votre,</p>
+
+            <p><a href="{{ config('app.url') }}">{{ config('app.name') }}</a></p>
         @endcomponent
     @endslot
 @endcomponent

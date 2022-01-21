@@ -45,7 +45,8 @@ class TargetDrawn extends TrackedMailable
 
         return $this
             ->subject($title)
-            ->view(['emails.target_drawn', 'emails.target_drawn_plain'], [
+            ->markdown('emails.target_drawn', [
+                'name' => $this->santa->name,
                 'draw' => $this->santa->draw->id,
                 'content' => $content,
                 'dearSantaLink' => $url,
