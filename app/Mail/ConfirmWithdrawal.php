@@ -29,7 +29,7 @@ class ConfirmWithdrawal extends Mailable
     {
         return $this
             ->subject(Lang::get('emails.confirm_withdrawal.title', [
-                'draw' => $santa->draw->id
+                'draw' => $this->santa->draw->id
             ]))
             ->view('emails.confirm_withdrawal', [
                 'draw' => $santa->draw->id,
