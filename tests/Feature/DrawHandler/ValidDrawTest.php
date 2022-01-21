@@ -56,7 +56,7 @@ it('send to each participant a link to write to their santa', function ($partici
     foreach($draw->participants as $participant) {
         Notification::assertSentTo($participant, function (TargetDrawnNotification $notification) use ($participant) {
             return $notification->toMail($participant)->assertSeeInHtml(
-                URL::signedRoute('dearSanta', ['participant' => $participant->hash]).'#'.base64_encode(DrawCrypt::getIV())
+                URL::signedRoute('santa.view', ['participant' => $participant->hash]).'#'.base64_encode(DrawCrypt::getIV())
             );
         });
     }

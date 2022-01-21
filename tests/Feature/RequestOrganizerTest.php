@@ -12,7 +12,7 @@ test('the organizer can send again the target drawn email', function (Draw $draw
 
     $participant = $draw->participants->random();
 
-    $path = URL::signedRoute('organizerPanel.changeEmail', [
+    $path = URL::signedRoute('organizer.changeEmail', [
         'draw' => $draw,
         'participant' => $participant,
     ]);
@@ -29,7 +29,7 @@ test('the organizer can change a participant\'s email', function (Draw $draw) {
 
     $participant = $draw->participants->random();
 
-    $path = URL::signedRoute('organizerPanel.changeEmail', [
+    $path = URL::signedRoute('organizer.changeEmail', [
         'draw' => $draw,
         'participant' => $participant,
     ]);
@@ -54,7 +54,7 @@ test('the organizer can change a participant\'s name', function (Draw $draw) {
 
     $participant = $draw->participants->random();
 
-    $path = URL::signedRoute('organizerPanel.changeName', [
+    $path = URL::signedRoute('organizer.changeName', [
         'draw' => $draw,
         'participant' => $participant,
     ]);
@@ -79,7 +79,7 @@ test('the organizer cannot give twice the same name', function (Draw $draw) {
 
     [$participant, $other] = $draw->participants->random(2);
 
-    $path = URL::signedRoute('organizerPanel.changeName', [
+    $path = URL::signedRoute('organizer.changeName', [
         'draw' => $draw,
         'participant' => $participant,
     ]);
@@ -103,7 +103,7 @@ test('the organizer can withdraw a participant', function (Draw $draw) {
 
     $participant = $draw->participants->random();
 
-    ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), [
+    ajaxPost(URL::signedRoute('santa.contact', ['participant' => $participant]), [
             'content' => 'test dearSanta mail content',
         ])
         ->assertSuccessful()
@@ -114,7 +114,7 @@ test('the organizer can withdraw a participant', function (Draw $draw) {
     $santa = $participant->santa;
     $target = $participant->target;
 
-    ajaxGet(URL::signedRoute('organizerPanel.withdraw', [
+    ajaxGet(URL::signedRoute('organizer.withdraw', [
             'draw' => $draw,
             'participant' => $participant,
         ]))
@@ -131,7 +131,7 @@ test('the organizer can withdraw a participant', function (Draw $draw) {
 })->with('large draw');
 
 test('the organizer can download initial data', function (Draw $draw) {
-    $path = URL::signedRoute('organizerPanel.csvInit', [
+    $path = URL::signedRoute('organizer.csvInit', [
         'draw' => $draw,
     ]);
 
@@ -141,7 +141,7 @@ test('the organizer can download initial data', function (Draw $draw) {
 })->with('basic draw');
 
 test('the organizer cannot download total data if the draw is not finished', function (Draw $draw) {
-    $path = URL::signedRoute('organizerPanel.csvFinal', [
+    $path = URL::signedRoute('organizer.csvFinal', [
         'draw' => $draw,
     ]);
 
@@ -149,7 +149,7 @@ test('the organizer cannot download total data if the draw is not finished', fun
 })->with('basic draw');
 
 test('the organizer can download total data if the draw is finished', function (Draw $draw) {
-    $path = URL::signedRoute('organizerPanel.csvFinal', [
+    $path = URL::signedRoute('organizer.csvFinal', [
         'draw' => $draw,
     ]);
 
@@ -159,7 +159,7 @@ test('the organizer can download total data if the draw is finished', function (
 })->with('finished draw');
 
 test('the organizer can delete all data before the event', function (Draw $draw) {
-    $path = URL::signedRoute('organizerPanel.delete', [
+    $path = URL::signedRoute('organizer.delete', [
         'draw' => $draw,
     ]);
 
@@ -171,7 +171,7 @@ test('the organizer can delete all data before the event', function (Draw $draw)
 })->with('basic draw');
 
 test('the organizer can delete all data after the event', function (Draw $draw) {
-    $path = URL::signedRoute('organizerPanel.delete', [
+    $path = URL::signedRoute('organizer.delete', [
         'draw' => $draw,
     ]);
 
@@ -190,7 +190,7 @@ it('updates the draw update date when sending an email', function (Draw $draw) {
 
     sleep(2);
 
-    ajaxPost(URL::signedRoute('organizerPanel.changeEmail', [
+    ajaxPost(URL::signedRoute('organizer.changeEmail', [
             'draw' => $draw,
             'participant' => $participant,
         ]), ['email' => 'test@test2.com'])

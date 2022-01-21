@@ -29,11 +29,11 @@ class ListDraw extends Command
     {
         $this->setCryptIVFromUrl($this->argument('url'));
 
-        $participant = URLParser::parseByName('dearSanta', $this->argument('url'))->participant;
+        $participant = URLParser::parseByName('santa.view', $this->argument('url'))->participant;
         if($participant) {
             $draw = $participant->draw;
         } else {
-            $draw = URLParser::parseByName('organizerPanel', $this->argument('url'))->draw;
+            $draw = URLParser::parseByName('organizer.view', $this->argument('url'))->draw;
         }
 
         $this->table(

@@ -1,11 +1,8 @@
 @extends('templates/layout')
 
-@section('navbar')
-    <ul class="nav navbar-nav navbar-nav-left">
-        <li><a href="/">@lang('faq.nav.go')</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-nav-right">
-    </ul>
+@section('navbar-right')
+    <li><a href="{{ route('form.view') }}">@lang('faq.nav.go')</a></li>
+    <li><a href="{{ route('dashboard') }}">@lang('common.nav.dashboard')</a></li>
 @stop
 
 @section('content')

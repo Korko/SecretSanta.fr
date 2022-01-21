@@ -21,13 +21,6 @@ use Lang;
 
 class OrganizerController extends Controller
 {
-    public function view(Draw $draw)
-    {
-        return response()->view('organizer', [
-            'draw' => $draw->hash,
-        ]);
-    }
-
     public function fetch(Draw $draw)
     {
         $drawFields = ['hash', 'mail_title', 'created_at', 'finished_at', 'deletes_at', 'next_solvable', 'organizer_name'];
@@ -42,27 +35,18 @@ class OrganizerController extends Controller
             'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) use ($draw, $participantFields) {
                 return [
                     $participant->hash => $participant->only($participantFields) + [
-                        'changeEmailUrl' => $draw->finished ? '' : URL::signedRoute('organizerPanel.changeEmail', [
+                        'changeEmailUrl' => $draw->finished ? '' : URL::signedRoute('organizer.changeEmail', [
                             'draw' => $draw, 'participant' => $participant
                         ]),
-                        'changeNameUrl' => $draw->finished ? '' : URL::signedRoute('organizerPanel.changeName', [
+                        'changeNameUrl' => $draw->finished ? '' : URL::signedRoute('organizer.changeName', [
                             'draw' => $draw, 'participant' => $participant
                         ]),
-                        'withdrawalUrl' => $draw->finished ? '' : URL::signedRoute('organizerPanel.withdraw', [
+                        'withdrawalUrl' => $draw->finished ? '' : URL::signedRoute('organizer.withdraw', [
                             'draw' => $draw, 'participant' => $participant
                         ]),
                     ]
                 ];
             })
-        ]);
-    }
-
-    public function fetchState(Draw $draw)
-    {
-        return response()->json([
-            'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) {
-                return [$participant->hash => $participant->only(['hash', 'mail'])];
-            }),
         ]);
     }
 

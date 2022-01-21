@@ -16,11 +16,6 @@ use Notification;
 
 class RandomFormController extends Controller
 {
-    public function view()
-    {
-        return response()->view('randomForm');
-    }
-
     public function handle(RandomFormRequest $request)
     {
         $safe = $request->safe();
@@ -60,10 +55,5 @@ class RandomFormController extends Controller
         return response()->view('faq', [
             'questions' => Lang::get('faq.questions'),
         ]);
-    }
-
-    public function dashboard()
-    {
-        return response()->view('dashboard');
     }
 }

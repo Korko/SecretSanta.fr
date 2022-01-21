@@ -17,13 +17,6 @@ class DearSantaController extends Controller
 {
     protected $dearSantaPublicFields = ['id', 'mail_body', 'mail', 'created_at', 'updated_at'];
 
-    public function view(Participant $participant)
-    {
-        return response()->view('dearSanta', [
-            'participant' => $participant->hash,
-        ]);
-    }
-
     public function fetch(Participant $participant)
     {
         // The hash was validated in middleware so we can validate that the email was received
@@ -50,17 +43,6 @@ class DearSantaController extends Controller
             'resendTargetEmailsUrl' => $participant->draw->expired ? null : URL::signedRoute('dearSanta.resend_target', [
                 'participant' => $participant
             ])
-        ]);
-    }
-
-    public function fetchState(Participant $participant)
-    {
-        return response()->json([
-            'emails' => $participant->dearSantas->mapWithKeys(function ($dearSanta) {
-                return [
-                    $dearSanta->mail->id => $dearSanta->only($this->dearSantaPublicFields)
-                ];
-            }),
         ]);
     }
 
