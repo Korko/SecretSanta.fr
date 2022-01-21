@@ -15,10 +15,10 @@ class CreateDrawsTable extends Migration
     {
         Schema::create('draws', function (Blueprint $table) {
             $table->id();
-            $table->string('organizer_name');
-            $table->text('organizer_email');
-            $table->text('mail_title');
-            $table->text('mail_body');
+            $table->string('organizer_name');// Should be better with tinyBinary but not yet implemented
+            $table->binary('organizer_email');
+            $table->binary('mail_title');
+            $table->binary('mail_body');
             $table->boolean('next_solvable')->default(true);
             $table->timestamps();
         });

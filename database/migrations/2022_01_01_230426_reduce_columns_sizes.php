@@ -14,19 +14,19 @@ class ReduceColumnsSizes extends Migration
     public function up()
     {
         Schema::table('draws', function (Blueprint $table) {
-            $table->string('organizer_name')->change();
-            $table->text('organizer_email')->change();
-            $table->text('mail_title')->change();
-            $table->text('mail_body')->change();
+            $table->string('organizer_name')->change();// Should be better with tinyBinary but not yet implemented
+            $table->binary('organizer_email')->change();
+            $table->binary('mail_title')->change();
+            $table->binary('mail_body')->change();
         });
 
         Schema::table('participants', function (Blueprint $table) {
-            $table->string('name')->change();
-            $table->text('email')->change();
+            $table->string('name')->change();// Should be better with tinyBinary but not yet implemented
+            $table->binary('email')->change();
         });
 
         Schema::table('dear_santas', function (Blueprint $table) {
-            $table->text('mail_body')->change();
+            $table->binary('mail_body')->change();
         });
     }
 

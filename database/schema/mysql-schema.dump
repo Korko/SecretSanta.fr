@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS `dear_santas`;
 CREATE TABLE `dear_santas` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `sender_id` bigint unsigned NOT NULL,
-  `mail_body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mail_body` blob NOT NULL,
   PRIMARY KEY (`id`),
   KEY `dear_santas_sender_id_foreign` (`sender_id`),
   CONSTRAINT `dear_santas_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `participants` (`id`) ON DELETE CASCADE
@@ -22,9 +22,9 @@ DROP TABLE IF EXISTS `draws`;
 CREATE TABLE `draws` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `organizer_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `organizer_email` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mail_title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mail_body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `organizer_email` blob NOT NULL,
+  `mail_title` blob NOT NULL,
+  `mail_body` blob NOT NULL,
   `next_solvable` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE `participants` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `draw_id` bigint unsigned NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` blob NOT NULL,
   `target_id` bigint unsigned DEFAULT NULL,
   `redraw` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
