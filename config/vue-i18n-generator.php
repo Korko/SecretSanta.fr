@@ -24,6 +24,7 @@ return [
     */
 
     'langFiles' => [
+        'bmc',
         'common',
         'dearsanta',
         'faq',

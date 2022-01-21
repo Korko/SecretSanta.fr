@@ -6,7 +6,7 @@ const app = createApp({
         setTimeout(() => document.body.classList.remove('cssLoading'), 0);
     },
     components: {
-        RandomForm: defineAsyncComponent(() => import('./components/random/form.vue')),
+        PageRandom: defineAsyncComponent(() => import('./components/pageRandom.vue')),
         OrganizerForm: defineAsyncComponent(() => import('./components/organizer/form.vue')),
         DearSantaForm: defineAsyncComponent(() => import('./components/dearSantaForm.vue')),
         Dashboard: defineAsyncComponent(() => import('./components/dashboard.vue')),
