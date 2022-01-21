@@ -2518,6 +2518,16 @@ module.exports = __webpack_require__.p + "images/BMC Logo - Black.png?9735372c55
 
 /***/ }),
 
+/***/ "./resources/images/calendar-icon.avif":
+/*!*********************************************!*\
+  !*** ./resources/images/calendar-icon.avif ***!
+  \*********************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/calendar-icon.avif?d76c768e013323b7c0feb4c701513974";
+
+/***/ }),
+
 /***/ "./resources/images/calendar-icon.png":
 /*!********************************************!*\
   !*** ./resources/images/calendar-icon.png ***!
@@ -2525,6 +2535,26 @@ module.exports = __webpack_require__.p + "images/BMC Logo - Black.png?9735372c55
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "images/calendar-icon.png?d861f75478deb063e55b116ad32f378a";
+
+/***/ }),
+
+/***/ "./resources/images/calendar-icon.webp":
+/*!*********************************************!*\
+  !*** ./resources/images/calendar-icon.webp ***!
+  \*********************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/calendar-icon.webp?f5673d04202f946c83ebe495b1f78a4a";
+
+/***/ }),
+
+/***/ "./resources/images/clock-icon.avif":
+/*!******************************************!*\
+  !*** ./resources/images/clock-icon.avif ***!
+  \******************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/clock-icon.avif?a2c9b1c99b4333687e0350aa8b958dc1";
 
 /***/ }),
 
@@ -2538,6 +2568,26 @@ module.exports = __webpack_require__.p + "images/clock-icon.png?0c4c7fe9aa7d01fd
 
 /***/ }),
 
+/***/ "./resources/images/clock-icon.webp":
+/*!******************************************!*\
+  !*** ./resources/images/clock-icon.webp ***!
+  \******************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/clock-icon.webp?15539e088777867747c408d5b7e382de";
+
+/***/ }),
+
+/***/ "./resources/images/gifts-1.avif":
+/*!***************************************!*\
+  !*** ./resources/images/gifts-1.avif ***!
+  \***************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/gifts-1.avif?f5e7f5168e11ff2d5f4cb6739e85a532";
+
+/***/ }),
+
 /***/ "./resources/images/gifts-1.jpg":
 /*!**************************************!*\
   !*** ./resources/images/gifts-1.jpg ***!
@@ -2545,6 +2595,56 @@ module.exports = __webpack_require__.p + "images/clock-icon.png?0c4c7fe9aa7d01fd
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "images/gifts-1.jpg?96982ade072d2e74280c065031604ac8";
+
+/***/ }),
+
+/***/ "./resources/images/gifts-1.webp":
+/*!***************************************!*\
+  !*** ./resources/images/gifts-1.webp ***!
+  \***************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/gifts-1.webp?22001d161c1719690a572fd0f9f2c7c3";
+
+/***/ }),
+
+/***/ "./resources/images/gifts-1x2.jpg":
+/*!****************************************!*\
+  !*** ./resources/images/gifts-1x2.jpg ***!
+  \****************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/gifts-1x2.jpg?122decc3873734dc59292608236def8b";
+
+/***/ }),
+
+/***/ "./resources/images/gifts-1x3.jpg":
+/*!****************************************!*\
+  !*** ./resources/images/gifts-1x3.jpg ***!
+  \****************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/gifts-1x3.jpg?df96e77085409e6d120cbb93a5763d8d";
+
+/***/ }),
+
+/***/ "./resources/images/gifts-1x4.jpg":
+/*!****************************************!*\
+  !*** ./resources/images/gifts-1x4.jpg ***!
+  \****************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/gifts-1x4.jpg?a0b784740dbe6c9dce4c9ca7820ba28a";
+
+/***/ }),
+
+/***/ "./resources/images/gifts-2.avif":
+/*!***************************************!*\
+  !*** ./resources/images/gifts-2.avif ***!
+  \***************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/gifts-2.avif?d58c3c0026ca29ef45c8aa90b0658228";
 
 /***/ }),
 
@@ -2558,6 +2658,26 @@ module.exports = __webpack_require__.p + "images/gifts-2.jpg?c292d7be15f962a3277
 
 /***/ }),
 
+/***/ "./resources/images/gifts-2.webp":
+/*!***************************************!*\
+  !*** ./resources/images/gifts-2.webp ***!
+  \***************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/gifts-2.webp?e80243789805d1ea7d1d26523367527e";
+
+/***/ }),
+
+/***/ "./resources/images/gifts-3.avif":
+/*!***************************************!*\
+  !*** ./resources/images/gifts-3.avif ***!
+  \***************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/gifts-3.avif?a15c10d60f9f3eafbe68f606ad080fee";
+
+/***/ }),
+
 /***/ "./resources/images/gifts-3.jpg":
 /*!**************************************!*\
   !*** ./resources/images/gifts-3.jpg ***!
@@ -2565,6 +2685,26 @@ module.exports = __webpack_require__.p + "images/gifts-2.jpg?c292d7be15f962a3277
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "images/gifts-3.jpg?29e54931f9dd9830a68a8ee6d63e3125";
+
+/***/ }),
+
+/***/ "./resources/images/gifts-3.webp":
+/*!***************************************!*\
+  !*** ./resources/images/gifts-3.webp ***!
+  \***************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/gifts-3.webp?5f3fe5a48f2257d8536ac7bc3ce63e30";
+
+/***/ }),
+
+/***/ "./resources/images/languages.avif":
+/*!*****************************************!*\
+  !*** ./resources/images/languages.avif ***!
+  \*****************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/languages.avif?4fc6ffaaf9ed271879a87c0a0bd5f0d1";
 
 /***/ }),
 
@@ -2588,6 +2728,16 @@ module.exports = __webpack_require__.p + "images/languages.webp?531d1a5548b5fed0
 
 /***/ }),
 
+/***/ "./resources/images/mail-icon.avif":
+/*!*****************************************!*\
+  !*** ./resources/images/mail-icon.avif ***!
+  \*****************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/mail-icon.avif?fe30082db0389dce7671097030aee2a4";
+
+/***/ }),
+
 /***/ "./resources/images/mail-icon.png":
 /*!****************************************!*\
   !*** ./resources/images/mail-icon.png ***!
@@ -2595,6 +2745,26 @@ module.exports = __webpack_require__.p + "images/languages.webp?531d1a5548b5fed0
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "images/mail-icon.png?e1ef80463064c32bda056170d847c094";
+
+/***/ }),
+
+/***/ "./resources/images/mail-icon.webp":
+/*!*****************************************!*\
+  !*** ./resources/images/mail-icon.webp ***!
+  \*****************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/mail-icon.webp?bcf82e3e2643068793d3e229b5b73201";
+
+/***/ }),
+
+/***/ "./resources/images/paper-icon.avif":
+/*!******************************************!*\
+  !*** ./resources/images/paper-icon.avif ***!
+  \******************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/paper-icon.avif?3fdcdcf44ecb5961bea675d4a3327ddc";
 
 /***/ }),
 
@@ -2608,6 +2778,26 @@ module.exports = __webpack_require__.p + "images/paper-icon.png?2a5d292a8b496cdf
 
 /***/ }),
 
+/***/ "./resources/images/paper-icon.webp":
+/*!******************************************!*\
+  !*** ./resources/images/paper-icon.webp ***!
+  \******************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/paper-icon.webp?3749f36e12f3f4f483febcbbcae73883";
+
+/***/ }),
+
+/***/ "./resources/images/user-icon.avif":
+/*!*****************************************!*\
+  !*** ./resources/images/user-icon.avif ***!
+  \*****************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/user-icon.avif?0281906c27de339b48e4e9056e82267f";
+
+/***/ }),
+
 /***/ "./resources/images/user-icon.png":
 /*!****************************************!*\
   !*** ./resources/images/user-icon.png ***!
@@ -2615,6 +2805,16 @@ module.exports = __webpack_require__.p + "images/paper-icon.png?2a5d292a8b496cdf
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "images/user-icon.png?4e8bdc10cc69ce779ff4d29a65a9c25a";
+
+/***/ }),
+
+/***/ "./resources/images/user-icon.webp":
+/*!*****************************************!*\
+  !*** ./resources/images/user-icon.webp ***!
+  \*****************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/user-icon.webp?2f2297230c6fbf2cd887893ed71a1dd7";
 
 /***/ }),
 
@@ -2663,21 +2863,78 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _images_gifts_1_jpg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../images/gifts-1.jpg */ "./resources/images/gifts-1.jpg");
 /* harmony import */ var _images_gifts_1_jpg__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_1_jpg__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _images_gifts_2_jpg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../images/gifts-2.jpg */ "./resources/images/gifts-2.jpg");
-/* harmony import */ var _images_gifts_2_jpg__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_2_jpg__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _images_gifts_3_jpg__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../images/gifts-3.jpg */ "./resources/images/gifts-3.jpg");
-/* harmony import */ var _images_gifts_3_jpg__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_3_jpg__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _images_calendar_icon_png__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../images/calendar-icon.png */ "./resources/images/calendar-icon.png");
-/* harmony import */ var _images_calendar_icon_png__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_images_calendar_icon_png__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _images_user_icon_png__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../images/user-icon.png */ "./resources/images/user-icon.png");
-/* harmony import */ var _images_user_icon_png__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_images_user_icon_png__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _images_paper_icon_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../images/paper-icon.png */ "./resources/images/paper-icon.png");
-/* harmony import */ var _images_paper_icon_png__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_images_paper_icon_png__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _images_mail_icon_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../images/mail-icon.png */ "./resources/images/mail-icon.png");
-/* harmony import */ var _images_mail_icon_png__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_images_mail_icon_png__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _images_clock_icon_png__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../images/clock-icon.png */ "./resources/images/clock-icon.png");
-/* harmony import */ var _images_clock_icon_png__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_images_clock_icon_png__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _images_gifts_1_avif__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../images/gifts-1.avif */ "./resources/images/gifts-1.avif");
+/* harmony import */ var _images_gifts_1_avif__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_1_avif__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _images_gifts_1_webp__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../images/gifts-1.webp */ "./resources/images/gifts-1.webp");
+/* harmony import */ var _images_gifts_1_webp__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_1_webp__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _images_gifts_1x2_jpg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../images/gifts-1x2.jpg */ "./resources/images/gifts-1x2.jpg");
+/* harmony import */ var _images_gifts_1x2_jpg__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_1x2_jpg__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _images_gifts_1x3_jpg__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../images/gifts-1x3.jpg */ "./resources/images/gifts-1x3.jpg");
+/* harmony import */ var _images_gifts_1x3_jpg__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_1x3_jpg__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _images_gifts_1x4_jpg__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../images/gifts-1x4.jpg */ "./resources/images/gifts-1x4.jpg");
+/* harmony import */ var _images_gifts_1x4_jpg__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_1x4_jpg__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _images_gifts_2_jpg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../images/gifts-2.jpg */ "./resources/images/gifts-2.jpg");
+/* harmony import */ var _images_gifts_2_jpg__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_2_jpg__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _images_gifts_2_avif__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../images/gifts-2.avif */ "./resources/images/gifts-2.avif");
+/* harmony import */ var _images_gifts_2_avif__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_2_avif__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _images_gifts_2_webp__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../images/gifts-2.webp */ "./resources/images/gifts-2.webp");
+/* harmony import */ var _images_gifts_2_webp__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_2_webp__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _images_gifts_3_jpg__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../images/gifts-3.jpg */ "./resources/images/gifts-3.jpg");
+/* harmony import */ var _images_gifts_3_jpg__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_3_jpg__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _images_gifts_3_avif__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../images/gifts-3.avif */ "./resources/images/gifts-3.avif");
+/* harmony import */ var _images_gifts_3_avif__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_3_avif__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _images_gifts_3_webp__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../images/gifts-3.webp */ "./resources/images/gifts-3.webp");
+/* harmony import */ var _images_gifts_3_webp__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_images_gifts_3_webp__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var _images_calendar_icon_png__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../images/calendar-icon.png */ "./resources/images/calendar-icon.png");
+/* harmony import */ var _images_calendar_icon_png__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_images_calendar_icon_png__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _images_calendar_icon_avif__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../images/calendar-icon.avif */ "./resources/images/calendar-icon.avif");
+/* harmony import */ var _images_calendar_icon_avif__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_images_calendar_icon_avif__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _images_calendar_icon_webp__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../images/calendar-icon.webp */ "./resources/images/calendar-icon.webp");
+/* harmony import */ var _images_calendar_icon_webp__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_images_calendar_icon_webp__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var _images_user_icon_png__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../images/user-icon.png */ "./resources/images/user-icon.png");
+/* harmony import */ var _images_user_icon_png__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(_images_user_icon_png__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var _images_user_icon_avif__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../images/user-icon.avif */ "./resources/images/user-icon.avif");
+/* harmony import */ var _images_user_icon_avif__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(_images_user_icon_avif__WEBPACK_IMPORTED_MODULE_18__);
+/* harmony import */ var _images_user_icon_webp__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../images/user-icon.webp */ "./resources/images/user-icon.webp");
+/* harmony import */ var _images_user_icon_webp__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(_images_user_icon_webp__WEBPACK_IMPORTED_MODULE_19__);
+/* harmony import */ var _images_paper_icon_png__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../../images/paper-icon.png */ "./resources/images/paper-icon.png");
+/* harmony import */ var _images_paper_icon_png__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(_images_paper_icon_png__WEBPACK_IMPORTED_MODULE_20__);
+/* harmony import */ var _images_paper_icon_avif__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../../images/paper-icon.avif */ "./resources/images/paper-icon.avif");
+/* harmony import */ var _images_paper_icon_avif__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(_images_paper_icon_avif__WEBPACK_IMPORTED_MODULE_21__);
+/* harmony import */ var _images_paper_icon_webp__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../../images/paper-icon.webp */ "./resources/images/paper-icon.webp");
+/* harmony import */ var _images_paper_icon_webp__WEBPACK_IMPORTED_MODULE_22___default = /*#__PURE__*/__webpack_require__.n(_images_paper_icon_webp__WEBPACK_IMPORTED_MODULE_22__);
+/* harmony import */ var _images_mail_icon_png__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../../images/mail-icon.png */ "./resources/images/mail-icon.png");
+/* harmony import */ var _images_mail_icon_png__WEBPACK_IMPORTED_MODULE_23___default = /*#__PURE__*/__webpack_require__.n(_images_mail_icon_png__WEBPACK_IMPORTED_MODULE_23__);
+/* harmony import */ var _images_mail_icon_avif__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../../images/mail-icon.avif */ "./resources/images/mail-icon.avif");
+/* harmony import */ var _images_mail_icon_avif__WEBPACK_IMPORTED_MODULE_24___default = /*#__PURE__*/__webpack_require__.n(_images_mail_icon_avif__WEBPACK_IMPORTED_MODULE_24__);
+/* harmony import */ var _images_mail_icon_webp__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../../images/mail-icon.webp */ "./resources/images/mail-icon.webp");
+/* harmony import */ var _images_mail_icon_webp__WEBPACK_IMPORTED_MODULE_25___default = /*#__PURE__*/__webpack_require__.n(_images_mail_icon_webp__WEBPACK_IMPORTED_MODULE_25__);
+/* harmony import */ var _images_clock_icon_png__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ../../images/clock-icon.png */ "./resources/images/clock-icon.png");
+/* harmony import */ var _images_clock_icon_png__WEBPACK_IMPORTED_MODULE_26___default = /*#__PURE__*/__webpack_require__.n(_images_clock_icon_png__WEBPACK_IMPORTED_MODULE_26__);
+/* harmony import */ var _images_clock_icon_avif__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ../../images/clock-icon.avif */ "./resources/images/clock-icon.avif");
+/* harmony import */ var _images_clock_icon_avif__WEBPACK_IMPORTED_MODULE_27___default = /*#__PURE__*/__webpack_require__.n(_images_clock_icon_avif__WEBPACK_IMPORTED_MODULE_27__);
+/* harmony import */ var _images_clock_icon_webp__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ../../images/clock-icon.webp */ "./resources/images/clock-icon.webp");
+/* harmony import */ var _images_clock_icon_webp__WEBPACK_IMPORTED_MODULE_28___default = /*#__PURE__*/__webpack_require__.n(_images_clock_icon_webp__WEBPACK_IMPORTED_MODULE_28__);
 // Imports
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2690,15 +2947,34 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_1_jpg__WEBPACK_IMPORTED_MODULE_2___default()));
-var ___CSS_LOADER_URL_REPLACEMENT_1___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_2_jpg__WEBPACK_IMPORTED_MODULE_3___default()));
-var ___CSS_LOADER_URL_REPLACEMENT_2___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_3_jpg__WEBPACK_IMPORTED_MODULE_4___default()));
-var ___CSS_LOADER_URL_REPLACEMENT_3___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_calendar_icon_png__WEBPACK_IMPORTED_MODULE_5___default()));
-var ___CSS_LOADER_URL_REPLACEMENT_4___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_user_icon_png__WEBPACK_IMPORTED_MODULE_6___default()));
-var ___CSS_LOADER_URL_REPLACEMENT_5___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_paper_icon_png__WEBPACK_IMPORTED_MODULE_7___default()));
-var ___CSS_LOADER_URL_REPLACEMENT_6___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_mail_icon_png__WEBPACK_IMPORTED_MODULE_8___default()));
-var ___CSS_LOADER_URL_REPLACEMENT_7___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_clock_icon_png__WEBPACK_IMPORTED_MODULE_9___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_1___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_1_avif__WEBPACK_IMPORTED_MODULE_3___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_2___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_1_webp__WEBPACK_IMPORTED_MODULE_4___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_3___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_1x2_jpg__WEBPACK_IMPORTED_MODULE_5___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_4___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_1x3_jpg__WEBPACK_IMPORTED_MODULE_6___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_5___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_1x4_jpg__WEBPACK_IMPORTED_MODULE_7___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_6___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_2_jpg__WEBPACK_IMPORTED_MODULE_8___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_7___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_2_avif__WEBPACK_IMPORTED_MODULE_9___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_8___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_2_webp__WEBPACK_IMPORTED_MODULE_10___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_9___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_3_jpg__WEBPACK_IMPORTED_MODULE_11___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_10___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_3_avif__WEBPACK_IMPORTED_MODULE_12___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_11___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_gifts_3_webp__WEBPACK_IMPORTED_MODULE_13___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_12___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_calendar_icon_png__WEBPACK_IMPORTED_MODULE_14___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_13___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_calendar_icon_avif__WEBPACK_IMPORTED_MODULE_15___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_14___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_calendar_icon_webp__WEBPACK_IMPORTED_MODULE_16___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_15___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_user_icon_png__WEBPACK_IMPORTED_MODULE_17___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_16___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_user_icon_avif__WEBPACK_IMPORTED_MODULE_18___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_17___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_user_icon_webp__WEBPACK_IMPORTED_MODULE_19___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_18___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_paper_icon_png__WEBPACK_IMPORTED_MODULE_20___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_19___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_paper_icon_avif__WEBPACK_IMPORTED_MODULE_21___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_20___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_paper_icon_webp__WEBPACK_IMPORTED_MODULE_22___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_21___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_mail_icon_png__WEBPACK_IMPORTED_MODULE_23___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_22___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_mail_icon_avif__WEBPACK_IMPORTED_MODULE_24___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_23___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_mail_icon_webp__WEBPACK_IMPORTED_MODULE_25___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_24___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_clock_icon_png__WEBPACK_IMPORTED_MODULE_26___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_25___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_clock_icon_avif__WEBPACK_IMPORTED_MODULE_27___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_26___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()((_images_clock_icon_webp__WEBPACK_IMPORTED_MODULE_28___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n    /* ==========================================================================\n        02. Header\n    ========================================================================== */\n#header {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n        /*background-image: image-set(\n            url(\"../../images/gifts-1.avif\") type(\"image/avif\"),\n            url(\"../../images/gifts-1.webp\") type(\"image/webp\"),\n            url(\"../../images/gifts-1.jpg\") type(\"image/jpeg\")\n        );*/\n        background-size: cover;\n        background-position: center center;\n        background-attachment: fixed;\n        background-repeat: no-repeat;\n        position: relative;\n}\n    /*@media (max-width: 1140px) {\n        #header {\n            background-image: url(\"../../images/gifts-1x2.jpg\");\n            background-image: image-set(\n                url(\"../../images/gifts-1x2.avif\") type(\"image/avif\"),\n                url(\"../../images/gifts-1x2.webp\") type(\"image/webp\"),\n                url(\"../../images/gifts-1x2.jpg\") type(\"image/jpeg\")\n            );\n        }\n    }\n    @media (max-width: 960px) {\n        #header {\n            background-image: url(\"../../images/gifts-1x3.jpg\");\n            background-image: image-set(\n                url(\"../../images/gifts-1x3.avif\") type(\"image/avif\"),\n                url(\"../../images/gifts-1x3.webp\") type(\"image/webp\"),\n                url(\"../../images/gifts-1x3.jpg\") type(\"image/jpeg\")\n            );\n        }\n    }\n    @media (max-width: 480px) {\n        #header {\n            background-image: url(\"../../images/gifts-1x4.jpg\");\n            background-image: image-set(\n                url(\"../../images/gifts-1x4.avif\") type(\"image/avif\"),\n                url(\"../../images/gifts-1x4.webp\") type(\"image/webp\"),\n                url(\"../../images/gifts-1x4.jpg\") type(\"image/jpeg\")\n            );\n        }\n    }*/\n#header .center {\n        position: relative;\n        z-index: 1;\n        color: white;\n        padding: 70px 0;\n}\n#header .bottom {\n        color: white;\n}\n#header .center .slogan {\n        font-size: 26px;\n        text-transform: uppercase;\n}\n#header .banner h1 {\n        font-size: 100px;\n        color: white;\n        text-transform: uppercase;\n        font-weight: bold;\n        display: inline-block;\n        background: #a00;\n        padding: 0 18px;\n}\n#header .subtitle h4 {\n        display: inline-block;\n        background: white;\n        color: #a00;\n        font-size: 38px;\n        padding: 0 15px;\n}\n#header .bottom {\n        text-align: center;\n        width: 100%;\n        position: absolute;\n        bottom: 30px;\n}\n#header .bottom a {\n        font-size: 36px;\n        color: whitesmoke;\n        position: relative;\n        top: -5px;\n}\n.bg-overlay {\n        position: absolute;\n        top: 0;\n        left: 0;\n        right: 0;\n        bottom: 0;\n        background: rgba(44, 33, 5, 0.2);\n        z-index: 0;\n}\n\n    /* ==========================================================================\n        04. Parallax\n    ========================================================================== */\n.parallax {\n        background: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ") fixed no-repeat center center;\n        /*background-image: image-set(\n            url(\"../../images/gifts-2.avif\") type(\"image/avif\"),\n            url(\"../../images/gifts-2.webp\") type(\"image/webp\"),\n            url(\"../../images/gifts-2.jpg\") type(\"image/jpeg\")\n        );*/\n        background-size: cover;\n        position: relative;\n        color: #fff;\n}\n.parallax .inner {\n        padding-top: 130px;\n        padding-bottom: 130px;\n}\n.parallax.parallax2 {\n        background: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n        /*background-image: image-set(\n            url(\"../../images/gifts-3.avif\") type(\"image/avif\"),\n            url(\"../../images/gifts-3.webp\") type(\"image/webp\"),\n            url(\"../../images/gifts-3.jpg\") type(\"image/jpeg\")\n        );*/\n}\n\n    /* ==========================================================================\n        05. What/How\n    ========================================================================== */\n.light-wrapper {\n        background: #fbfbfb;\n}\n.light-wrapper .inner {\n        padding-top: 50px;\n        padding-bottom: 50px;\n}\n.section-title {\n        font-size: 36px;\n        line-height: 40px;\n        text-transform: uppercase;\n        margin-bottom: 15px;\n        font-weight: 600;\n}\n.main.lead {\n        margin-bottom: 80px;\n}\n.lead {\n        font-size: 17px;\n        line-height: 24px;\n        font-weight: normal;\n        text-transform: uppercase;\n        margin-bottom: 15px;\n        color: #2e2e2e;\n        position: relative;\n}\n.lead::after {\n        position: absolute;\n        content: ' ';\n        background: #a00;\n        width: 80px;\n        height: 3px;\n        bottom: -22px;\n        left: 50%;\n        margin-left: -40px;\n}\n.media {\n        min-height: 128px;\n}\n.media-icon-left {\n        background-position-x: left;\n        padding-left: 128px;\n}\n.media-icon-right {\n        background-position-x: right;\n        padding-right: 128px;\n}\n.media-calendar-icon {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n        /*background-image: image-set(\n            url(\"../../images/calendar-icon.avif\") type(\"image/avif\"),\n            url(\"../../images/calendar-icon.webp\") type(\"image/webp\"),\n            url(\"../../images/calendar-icon.png\") type(\"image/png\")\n        );*/\n        background-repeat: no-repeat;\n}\n.media-user-icon {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n        /*background-image: image-set(\n            url(\"../../images/user-icon.avif\") type(\"image/avif\"),\n            url(\"../../images/user-icon.webp\") type(\"image/webp\"),\n            url(\"../../images/user-icon.png\") type(\"image/png\")\n        );*/\n        background-repeat: no-repeat;\n}\n.media-paper-icon {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n        /*background-image: image-set(\n            url(\"../../images/paper-icon.avif\") type(\"image/avif\"),\n            url(\"../../images/paper-icon.webp\") type(\"image/webp\"),\n            url(\"../../images/paper-icon.png\") type(\"image/png\")\n        );*/\n        background-repeat: no-repeat;\n}\n.media-mail-icon {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ");\n        /*background-image: image-set(\n            url(\"../../images/mail-icon.avif\") type(\"image/avif\"),\n            url(\"../../images/mail-icon.webp\") type(\"image/webp\"),\n            url(\"../../images/mail-icon.png\") type(\"image/png\")\n        );*/\n        background-repeat: no-repeat;\n}\n.media-clock-icon {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_7___ + ");\n        /*background-image: image-set(\n            url(\"../../images/clock-icon.avif\") type(\"image/avif\"),\n            url(\"../../images/clock-icon.webp\") type(\"image/webp\"),\n            url(\"../../images/clock-icon.png\") type(\"image/png\")\n        );*/\n        background-repeat: no-repeat;\n}\n.media-body {\n        width: auto;\n        text-align: left;\n        margin: auto;\n}\n.media-heading {\n        font-weight: bold;\n}\ndiv.card-body {\n        font-style: italic;\n}\ndiv.card-body::first-line {\n        font-weight: bold;\n        font-style: normal;\n        text-transform: uppercase;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n    /* ==========================================================================\n        02. Header\n    ========================================================================== */\n#header {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n        background-image: -webkit-image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") type(\"image/jpeg\")\n        );\n        background-image: image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") type(\"image/jpeg\")\n        );\n        background-size: cover;\n        background-position: center center;\n        background-attachment: fixed;\n        background-repeat: no-repeat;\n        position: relative;\n}\n@media (max-width: 1140px) {\n#header {\n            background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n            /*background-image: image-set(\n                url(\"../../images/gifts-1x2.avif\") type(\"image/avif\"),\n                url(\"../../images/gifts-1x2.webp\") type(\"image/webp\"),\n                url(\"../../images/gifts-1x2.jpg\") type(\"image/jpeg\")\n            );*/\n}\n}\n@media (max-width: 960px) {\n#header {\n            background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n            /*background-image: image-set(\n                url(\"../../images/gifts-1x3.avif\") type(\"image/avif\"),\n                url(\"../../images/gifts-1x3.webp\") type(\"image/webp\"),\n                url(\"../../images/gifts-1x3.jpg\") type(\"image/jpeg\")\n            );*/\n}\n}\n@media (max-width: 480px) {\n#header {\n            background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n            /*background-image: image-set(\n                url(\"../../images/gifts-1x4.avif\") type(\"image/avif\"),\n                url(\"../../images/gifts-1x4.webp\") type(\"image/webp\"),\n                url(\"../../images/gifts-1x4.jpg\") type(\"image/jpeg\")\n            );*/\n}\n}\n#header .center {\n        position: relative;\n        z-index: 1;\n        color: white;\n        padding: 70px 0;\n}\n#header .bottom {\n        color: white;\n}\n#header .center .slogan {\n        font-size: 26px;\n        text-transform: uppercase;\n}\n#header .banner h1 {\n        font-size: 100px;\n        color: white;\n        text-transform: uppercase;\n        font-weight: bold;\n        display: inline-block;\n        background: #a00;\n        padding: 0 18px;\n}\n#header .subtitle h4 {\n        display: inline-block;\n        background: white;\n        color: #a00;\n        font-size: 38px;\n        padding: 0 15px;\n}\n#header .bottom {\n        text-align: center;\n        width: 100%;\n        position: absolute;\n        bottom: 30px;\n}\n#header .bottom a {\n        font-size: 36px;\n        color: whitesmoke;\n        position: relative;\n        top: -5px;\n}\n.bg-overlay {\n        position: absolute;\n        top: 0;\n        left: 0;\n        right: 0;\n        bottom: 0;\n        background: rgba(44, 33, 5, 0.2);\n        z-index: 0;\n}\n\n    /* ==========================================================================\n        04. Parallax\n    ========================================================================== */\n.parallax {\n        background: url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ") fixed no-repeat center center;\n        background-image: -webkit-image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_7___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_8___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ") type(\"image/jpeg\")\n        );\n        background-image: image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_7___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_8___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ") type(\"image/jpeg\")\n        );\n        background-size: cover;\n        position: relative;\n        color: #fff;\n}\n.parallax .inner {\n        padding-top: 130px;\n        padding-bottom: 130px;\n}\n.parallax.parallax2 {\n        background: url(" + ___CSS_LOADER_URL_REPLACEMENT_9___ + ");\n        background-image: -webkit-image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_10___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_11___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_9___ + ") type(\"image/jpeg\")\n        );\n        background-image: image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_10___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_11___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_9___ + ") type(\"image/jpeg\")\n        );\n}\n\n    /* ==========================================================================\n        05. What/How\n    ========================================================================== */\n.light-wrapper {\n        background: #fbfbfb;\n}\n.light-wrapper .inner {\n        padding-top: 50px;\n        padding-bottom: 50px;\n}\n.section-title {\n        font-size: 36px;\n        line-height: 40px;\n        text-transform: uppercase;\n        margin-bottom: 15px;\n        font-weight: 600;\n}\n.main.lead {\n        margin-bottom: 80px;\n}\n.lead {\n        font-size: 17px;\n        line-height: 24px;\n        font-weight: normal;\n        text-transform: uppercase;\n        margin-bottom: 15px;\n        color: #2e2e2e;\n        position: relative;\n}\n.lead::after {\n        position: absolute;\n        content: ' ';\n        background: #a00;\n        width: 80px;\n        height: 3px;\n        bottom: -22px;\n        left: 50%;\n        margin-left: -40px;\n}\n.media {\n        min-height: 128px;\n}\n.media-icon-left {\n        background-position-x: left;\n        padding-left: 128px;\n}\n.media-icon-right {\n        background-position-x: right;\n        padding-right: 128px;\n}\n.media-calendar-icon {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_12___ + ");\n        background-image: -webkit-image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_13___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_14___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_12___ + ") type(\"image/png\")\n        );\n        background-image: image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_13___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_14___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_12___ + ") type(\"image/png\")\n        );\n        background-repeat: no-repeat;\n}\n.media-user-icon {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_15___ + ");\n        background-image: -webkit-image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_16___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_17___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_15___ + ") type(\"image/png\")\n        );\n        background-image: image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_16___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_17___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_15___ + ") type(\"image/png\")\n        );\n        background-repeat: no-repeat;\n}\n.media-paper-icon {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_18___ + ");\n        background-image: -webkit-image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_19___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_20___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_18___ + ") type(\"image/png\")\n        );\n        background-image: image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_19___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_20___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_18___ + ") type(\"image/png\")\n        );\n        background-repeat: no-repeat;\n}\n.media-mail-icon {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_21___ + ");\n        background-image: -webkit-image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_22___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_23___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_21___ + ") type(\"image/png\")\n        );\n        background-image: image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_22___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_23___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_21___ + ") type(\"image/png\")\n        );\n        background-repeat: no-repeat;\n}\n.media-clock-icon {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_24___ + ");\n        background-image: -webkit-image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_25___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_26___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_24___ + ") type(\"image/png\")\n        );\n        background-image: image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_25___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_26___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_24___ + ") type(\"image/png\")\n        );\n        background-repeat: no-repeat;\n}\n.media-body {\n        width: auto;\n        text-align: left;\n        margin: auto;\n}\n.media-heading {\n        font-weight: bold;\n}\ndiv.card-body {\n        font-style: italic;\n}\ndiv.card-body::first-line {\n        font-weight: bold;\n        font-style: normal;\n        text-transform: uppercase;\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -2718,11 +2994,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_11_use_1_node_modules_toastify_js_src_toastify_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! -!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-11.use[1]!../../../../node_modules/toastify-js/src/toastify.css */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-11.use[1]!./node_modules/toastify-js/src/toastify.css");
 /* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/getUrl.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/getUrl.js");
 /* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _images_languages_webp__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../images/languages.webp */ "./resources/images/languages.webp");
-/* harmony import */ var _images_languages_webp__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_images_languages_webp__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _images_languages_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../images/languages.png */ "./resources/images/languages.png");
-/* harmony import */ var _images_languages_png__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_images_languages_png__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _images_languages_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../images/languages.png */ "./resources/images/languages.png");
+/* harmony import */ var _images_languages_png__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_images_languages_png__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _images_languages_avif__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../images/languages.avif */ "./resources/images/languages.avif");
+/* harmony import */ var _images_languages_avif__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_images_languages_avif__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _images_languages_webp__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../images/languages.webp */ "./resources/images/languages.webp");
+/* harmony import */ var _images_languages_webp__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_images_languages_webp__WEBPACK_IMPORTED_MODULE_5__);
 // Imports
+
 
 
 
@@ -2730,10 +3009,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.i(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_11_use_1_node_modules_toastify_js_src_toastify_css__WEBPACK_IMPORTED_MODULE_1__["default"]);
-var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()((_images_languages_webp__WEBPACK_IMPORTED_MODULE_3___default()));
-var ___CSS_LOADER_URL_REPLACEMENT_1___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()((_images_languages_png__WEBPACK_IMPORTED_MODULE_4___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()((_images_languages_png__WEBPACK_IMPORTED_MODULE_3___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_1___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()((_images_languages_avif__WEBPACK_IMPORTED_MODULE_4___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_2___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()((_images_languages_webp__WEBPACK_IMPORTED_MODULE_5___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.organizerToggle[data-v-23b37595] {\n        display: inline-block;\n}\n#participants[data-v-23b37595] {\n        margin-top: 80px;\n}\n\n    /* Fix tiny style glitches */\n.multiselect--active .multiselect__tags[data-v-23b37595] {\n        min-height: 41px;\n}\n.multiselect__input[data-v-23b37595], .multiselect__single[data-v-23b37595] {\n        padding: 0 !important;\n        line-height: 1.5 !important;\n}\n.multiselect[data-v-23b37595], .multiselect__input[data-v-23b37595], .multiselect__single[data-v-23b37595] {\n        font-size: 14px !important;\n}\n.multiselect__placeholder[data-v-23b37595] {\n        padding-top: 0 !important;\n}\n\n    /* ==========================================================================\n        06. Form\n    ========================================================================== */\nfieldset > div.form-group[data-v-23b37595] {\n        overflow: visible;\n}\ntable caption[data-v-23b37595] {\n        display: none;\n}\n.participant .participant-exclusions-wrapper[data-v-23b37595] {\n        padding-top: 11px;\n}\n.participant .participant-remove-wrapper[data-v-23b37595] {\n        width: 179px;\n        white-space: nowrap;\n}\n.input-group-addon.lang[data-v-23b37595] {\n        padding: 6px 8px;\n}\n.input-group-addon.lang[data-v-23b37595]::before {\n        background-repeat: no-repeat;\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n        height: 11px;\n        width: 14px;\n        content: '';\n        display: inline-block;\n        margin-right: 8px;\n}\nbody.nowebp .input-group-addon.lang[data-v-23b37595]::before {\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\n#mailContent[data-v-23b37595],\n    #mailPost[data-v-23b37595] {\n        max-width: 100%;\n        resize: none;\n}\n#mailContent[data-v-23b37595] {\n        border-bottom: 0;\n        border-bottom-right-radius: 0;\n        border-bottom-left-radius: 0;\n}\n#mailPost[data-v-23b37595] {\n        border-top: 0;\n        border-top-right-radius: 0;\n        border-top-left-radius: 0;\n        height: 55px;\n}\n#mailPost.extended[data-v-23b37595] {\n        height: 75px;\n}\n#form[data-v-23b37595] {\n        padding-bottom: 20px;\n}\n#form .container[data-v-23b37595] {\n        transition: all 0.4s;\n        position: relative;\n}\n#form.success .success-wrapper[data-v-23b37595] {\n        display: block;\n}\n.col-xs-0[data-v-23b37595] {\n        width: 1%;\n}\n.border-left[data-v-23b37595] {\n        border-left: 1px solid #ddd;\n}\n.border-right[data-v-23b37595] {\n        border-right: 1px solid #ddd;\n}\n.row.text-only[data-v-23b37595] {\n        line-height: 34px;\n}\n.input-inline-group[data-v-23b37595] {\n        position: relative;\n        display: inline-block;\n}\n.table-bordered.heavy-borders[data-v-23b37595],\n    .table-bordered.heavy-borders > tbody > tr > td[data-v-23b37595],\n    .table-bordered.heavy-borders > tbody > tr > th[data-v-23b37595],\n    .table-bordered.heavy-borders > tfoot > tr > td[data-v-23b37595],\n    .table-bordered.heavy-borders > tfoot > tr > th[data-v-23b37595],\n    .table-bordered.heavy-borders > thead > tr > td[data-v-23b37595],\n    .table-bordered.heavy-borders > thead > tr > th[data-v-23b37595] {\n        border-width: 3px;\n}\n.tips[data-v-23b37595] {\n        font-size: 12px;\n        font-style: italic;\n        box-shadow: 3px 3px 6px 0 #bbb;\n        margin: 10px auto 0 auto;\n        display: inline-block;\n        border: 1px solid #c0c0c0;\n        background-color: #ddd;\n        padding: 10px;\n}\n.tips p[data-v-23b37595] {\n        margin: 0;\n}\n.fade-enter-active[data-v-23b37595], .fade-leave-active[data-v-23b37595], .fade-move[data-v-23b37595] {\n        transition: all 1s;\n}\n.fade-enter[data-v-23b37595], .fade-leave-to[data-v-23b37595] {\n        opacity: 0;\n}\n\n    /* ==========================================================================\n        08. Responsive styles\n    ========================================================================== */\n@media (max-width: 1199px) {\n.participant-remove span[data-v-23b37595] {\n            display: none;\n}\n}\n@media (max-width: 767px) {\n#header .banner h1[data-v-23b37595] {\n            font-size: 60px;\n}\n#header .subtitle h4[data-v-23b37595] {\n            font-size: 22px;\n}\n}\n\n    /* ==========================================================================\n        12. Widgets\n    ========================================================================== */\n.participants-import button .fa-spinner[data-v-23b37595] {\n        margin-right: 10px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.organizerToggle[data-v-23b37595] {\n        display: inline-block;\n}\n#participants[data-v-23b37595] {\n        margin-top: 80px;\n}\n\n    /* Fix tiny style glitches */\n.multiselect--active .multiselect__tags[data-v-23b37595] {\n        min-height: 41px;\n}\n.multiselect__input[data-v-23b37595], .multiselect__single[data-v-23b37595] {\n        padding: 0 !important;\n        line-height: 1.5 !important;\n}\n.multiselect[data-v-23b37595], .multiselect__input[data-v-23b37595], .multiselect__single[data-v-23b37595] {\n        font-size: 14px !important;\n}\n.multiselect__placeholder[data-v-23b37595] {\n        padding-top: 0 !important;\n}\n\n    /* ==========================================================================\n        06. Form\n    ========================================================================== */\nfieldset > div.form-group[data-v-23b37595] {\n        overflow: visible;\n}\ntable caption[data-v-23b37595] {\n        display: none;\n}\n.participant .participant-exclusions-wrapper[data-v-23b37595] {\n        padding-top: 11px;\n}\n.participant .participant-remove-wrapper[data-v-23b37595] {\n        width: 179px;\n        white-space: nowrap;\n}\n.input-group-addon.lang[data-v-23b37595] {\n        padding: 6px 8px;\n}\n.input-group-addon.lang[data-v-23b37595]::before {\n        background-repeat: no-repeat;\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n        background-image: -webkit-image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") type(\"image/png\")\n        );\n        background-image: image-set(\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ") type(\"image/avif\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ") type(\"image/webp\"),\n            url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") type(\"image/png\")\n        );\n        height: 11px;\n        width: 14px;\n        content: '';\n        display: inline-block;\n        margin-right: 8px;\n}\n#mailContent[data-v-23b37595],\n    #mailPost[data-v-23b37595] {\n        max-width: 100%;\n        resize: none;\n}\n#mailContent[data-v-23b37595] {\n        border-bottom: 0;\n        border-bottom-right-radius: 0;\n        border-bottom-left-radius: 0;\n}\n#mailPost[data-v-23b37595] {\n        border-top: 0;\n        border-top-right-radius: 0;\n        border-top-left-radius: 0;\n        height: 55px;\n}\n#mailPost.extended[data-v-23b37595] {\n        height: 75px;\n}\n#form[data-v-23b37595] {\n        padding-bottom: 20px;\n}\n#form .container[data-v-23b37595] {\n        transition: all 0.4s;\n        position: relative;\n}\n#form.success .success-wrapper[data-v-23b37595] {\n        display: block;\n}\n.col-xs-0[data-v-23b37595] {\n        width: 1%;\n}\n.border-left[data-v-23b37595] {\n        border-left: 1px solid #ddd;\n}\n.border-right[data-v-23b37595] {\n        border-right: 1px solid #ddd;\n}\n.row.text-only[data-v-23b37595] {\n        line-height: 34px;\n}\n.input-inline-group[data-v-23b37595] {\n        position: relative;\n        display: inline-block;\n}\n.table-bordered.heavy-borders[data-v-23b37595],\n    .table-bordered.heavy-borders > tbody > tr > td[data-v-23b37595],\n    .table-bordered.heavy-borders > tbody > tr > th[data-v-23b37595],\n    .table-bordered.heavy-borders > tfoot > tr > td[data-v-23b37595],\n    .table-bordered.heavy-borders > tfoot > tr > th[data-v-23b37595],\n    .table-bordered.heavy-borders > thead > tr > td[data-v-23b37595],\n    .table-bordered.heavy-borders > thead > tr > th[data-v-23b37595] {\n        border-width: 3px;\n}\n.tips[data-v-23b37595] {\n        font-size: 12px;\n        font-style: italic;\n        box-shadow: 3px 3px 6px 0 #bbb;\n        margin: 10px auto 0 auto;\n        display: inline-block;\n        border: 1px solid #c0c0c0;\n        background-color: #ddd;\n        padding: 10px;\n}\n.tips p[data-v-23b37595] {\n        margin: 0;\n}\n.fade-enter-active[data-v-23b37595], .fade-leave-active[data-v-23b37595], .fade-move[data-v-23b37595] {\n        transition: all 1s;\n}\n.fade-enter[data-v-23b37595], .fade-leave-to[data-v-23b37595] {\n        opacity: 0;\n}\n\n    /* ==========================================================================\n        08. Responsive styles\n    ========================================================================== */\n@media (max-width: 1199px) {\n.participant-remove span[data-v-23b37595] {\n            display: none;\n}\n}\n@media (max-width: 767px) {\n#header .banner h1[data-v-23b37595] {\n            font-size: 60px;\n}\n#header .subtitle h4[data-v-23b37595] {\n            font-size: 22px;\n}\n}\n\n    /* ==========================================================================\n        12. Widgets\n    ========================================================================== */\n.participants-import button .fa-spinner[data-v-23b37595] {\n        margin-right: 10px;\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 

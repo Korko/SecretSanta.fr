@@ -1,4 +1,12 @@
 {
+    "/js/common.js": "/js/common.js?id=7dc43dae1600dc583401",
+    "/js/app.js": "/js/app.js?id=6fd944a69bf8e2901f68",
+    "/js/manifest.js": "/js/manifest.js?id=19b60ba4ec53305a639b",
+    "/css/vendor.css": "/css/vendor.css?id=f58de6f7998a39ec844d",
+    "/css/webfonts.css": "/css/webfonts.css?id=6df7c4c18812e7d1e299",
+    "/css/app.css": "/css/app.css?id=e0a3f7b6d92bcf68de63",
+    "/css/404.css": "/css/404.css?id=d6d96b00a34fdc0c49f9",
+    "/js/vendor.js": "/js/vendor.js?id=80f4ff2ff3232a7c9c00",
     "/images/logo.avif": "/images/logo.avif?id=cb15627674b1dec80295",
     "/images/logo.png": "/images/logo.png?id=d809190f5e24f89b3410",
     "/images/logo.webp": "/images/logo.webp?id=d84723936cccc5cff077",

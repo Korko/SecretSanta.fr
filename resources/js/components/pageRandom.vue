@@ -144,31 +144,31 @@
     @media (max-width: 1140px) {
         #header {
             background-image: url("../../images/gifts-1x2.jpg");
-            background-image: image-set(
+            /*background-image: image-set(
                 url("../../images/gifts-1x2.avif") type("image/avif"),
                 url("../../images/gifts-1x2.webp") type("image/webp"),
                 url("../../images/gifts-1x2.jpg") type("image/jpeg")
-            );
+            );*/
         }
     }
     @media (max-width: 960px) {
         #header {
             background-image: url("../../images/gifts-1x3.jpg");
-            background-image: image-set(
+            /*background-image: image-set(
                 url("../../images/gifts-1x3.avif") type("image/avif"),
                 url("../../images/gifts-1x3.webp") type("image/webp"),
                 url("../../images/gifts-1x3.jpg") type("image/jpeg")
-            );
+            );*/
         }
     }
     @media (max-width: 480px) {
         #header {
             background-image: url("../../images/gifts-1x4.jpg");
-            background-image: image-set(
+            /*background-image: image-set(
                 url("../../images/gifts-1x4.avif") type("image/avif"),
                 url("../../images/gifts-1x4.webp") type("image/webp"),
                 url("../../images/gifts-1x4.jpg") type("image/jpeg")
-            );
+            );*/
         }
     }
 
