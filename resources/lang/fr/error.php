@@ -11,4 +11,5 @@ return [
     'withdraw'   => 'Vous ne pouvez pas avoir moins de 3 participants.',
     'unfinished' => "Cet évènement n'est pas encore terminé",
     'solvable'   => 'Cet évènement ne permet pas cette génération',
+    'processing' => 'Ce tirage au sort est déjà en cours de traitement',
 ];

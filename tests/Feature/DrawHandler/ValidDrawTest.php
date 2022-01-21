@@ -6,24 +6,9 @@ use App\Models\Participant;
 use App\Notifications\TargetDrawn as TargetDrawnNotification;
 use App\Services\DrawFormHandler;
 
-function createServiceDraw($participants) : Draw {
-    return (new DrawFormHandler())
-        ->withParticipants($participants)
-        ->withTitle('test mail {SANTA} => {TARGET} title')
-        ->withBody('test mail {SANTA} => {TARGET} body')
-        ->save();
-}
-
-it('records new entries in case of success', function ($participants) {
-    assertModelCount(Draw::class, 0);
-    assertModelCount(Participant::class, 0);
-    assertModelCount(Exclusion::class, 0);
-
-    $draw = createServiceDraw($participants);
-
+it('records new entries in case of success', function ($participants, Draw $draw) {
     $exclusions = array_reduce($participants, function ($sum, $participant) { return $sum + count($participant['exclusions']); });
 
-    assertModelCount(Draw::class, 1);
     assertModelExists($draw);
     assertModelCount(Participant::class, count($participants));
     assertModelCount(Exclusion::class, $exclusions);
@@ -33,7 +18,7 @@ it('records new entries in case of success', function ($participants) {
         assertEquals($participant['name'], Participant::find($idx + 1)->name);
         assertEquals($participant['email'], Participant::find($idx + 1)->email);
     }
-})->with('participants list');
+})->with('validated participants list');
 
 it('saves the correct target', function ($participants, $targets) {
     $draw = createServiceDraw($participants);

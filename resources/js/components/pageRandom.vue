@@ -128,11 +128,11 @@
     ========================================================================== */
     #header {
         background-image: url("../../images/gifts-1.jpg");
-        /*background-image: image-set(
+        background-image: image-set(
             url("../../images/gifts-1.avif") type("image/avif"),
             url("../../images/gifts-1.webp") type("image/webp"),
             url("../../images/gifts-1.jpg") type("image/jpeg")
-        );*/
+        );
         -moz-background-size: cover;
         background-size: cover;
         background-position: center center;
@@ -140,7 +140,8 @@
         background-repeat: no-repeat;
         position: relative;
     }
-    /*@media (max-width: 1140px) {
+
+    @media (max-width: 1140px) {
         #header {
             background-image: url("../../images/gifts-1x2.jpg");
             background-image: image-set(
@@ -169,7 +170,7 @@
                 url("../../images/gifts-1x4.jpg") type("image/jpeg")
             );
         }
-    }*/
+    }
 
     #header .center {
         position: relative;
@@ -234,11 +235,11 @@
     ========================================================================== */
     .parallax {
         background: url("../../images/gifts-2.jpg") fixed no-repeat center center;
-        /*background-image: image-set(
+        background-image: image-set(
             url("../../images/gifts-2.avif") type("image/avif"),
             url("../../images/gifts-2.webp") type("image/webp"),
             url("../../images/gifts-2.jpg") type("image/jpeg")
-        );*/
+        );
         -moz-background-size: cover;
         background-size: cover;
         position: relative;
@@ -252,11 +253,11 @@
 
     .parallax.parallax2 {
         background: url("../../images/gifts-3.jpg");
-        /*background-image: image-set(
+        background-image: image-set(
             url("../../images/gifts-3.avif") type("image/avif"),
             url("../../images/gifts-3.webp") type("image/webp"),
             url("../../images/gifts-3.jpg") type("image/jpeg")
-        );*/
+        );
     }
 
     /* ==========================================================================
@@ -319,47 +320,47 @@
 
     .media-calendar-icon {
         background-image: url("../../images/calendar-icon.png");
-        /*background-image: image-set(
+        background-image: image-set(
             url("../../images/calendar-icon.avif") type("image/avif"),
             url("../../images/calendar-icon.webp") type("image/webp"),
             url("../../images/calendar-icon.png") type("image/png")
-        );*/
+        );
         background-repeat: no-repeat;
     }
     .media-user-icon {
         background-image: url("../../images/user-icon.png");
-        /*background-image: image-set(
+        background-image: image-set(
             url("../../images/user-icon.avif") type("image/avif"),
             url("../../images/user-icon.webp") type("image/webp"),
             url("../../images/user-icon.png") type("image/png")
-        );*/
+        );
         background-repeat: no-repeat;
     }
     .media-paper-icon {
         background-image: url("../../images/paper-icon.png");
-        /*background-image: image-set(
+        background-image: image-set(
             url("../../images/paper-icon.avif") type("image/avif"),
             url("../../images/paper-icon.webp") type("image/webp"),
             url("../../images/paper-icon.png") type("image/png")
-        );*/
+        );
         background-repeat: no-repeat;
     }
     .media-mail-icon {
         background-image: url("../../images/mail-icon.png");
-        /*background-image: image-set(
+        background-image: image-set(
             url("../../images/mail-icon.avif") type("image/avif"),
             url("../../images/mail-icon.webp") type("image/webp"),
             url("../../images/mail-icon.png") type("image/png")
-        );*/
+        );
         background-repeat: no-repeat;
     }
     .media-clock-icon {
         background-image: url("../../images/clock-icon.png");
-        /*background-image: image-set(
+        background-image: image-set(
             url("../../images/clock-icon.avif") type("image/avif"),
             url("../../images/clock-icon.webp") type("image/webp"),
             url("../../images/clock-icon.png") type("image/png")
-        );*/
+        );
         background-repeat: no-repeat;
     }
 

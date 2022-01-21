@@ -9,4 +9,5 @@ return [
     'target_withdrawn.title' => 'SecretSanta #:draw - Desistement du bénéficiaire de votre cadeau',
     'name_changed.title' => 'SecretSanta #:draw - Votre cible a changé de nom',
     'confirm_withdrawal.title' => 'SecretSanta #:draw - Confirmation de désistement',
+    'pending_draw.title' => 'SecretSanta - Attente de validation',
 ];

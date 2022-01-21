@@ -1,3 +1,5 @@
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
 #loadOverlay {
     display: none;
 }
@@ -69,28 +71,19 @@ Tiny bug when width <780px, there an horizontal scrollbar
 
 TABLE OF CONTENTS
     01 - General and Typography
-    02 - Header
-    03 - Navigation
-    04 - Parallax
-    05 - What/How
-    06 - Form
-    07 - Footer
-    08 - Responsive styles
-    09 - Ribbon
-    10 - Modal
-    11 - Readability
-    12 - Widgets
-    13 - Tooltip
+    02 - Navigation
+    03 - Content
+    04 - Footer
+    05 - Responsive styles
+    06 - Ribbon
+    07 - Modal
+    08 - Readability
+    09 - Widgets
 */
 
 /* ==========================================================================
     01. General and Typography
 ========================================================================== */
-
-@font-face {
-    font-family: kreon;
-    src: url(../fonts/Kreon-VariableFont_wght.ttf) format('truetype');
-}
 
 html {
     font-size: 14px;
@@ -177,7 +170,7 @@ a.link {
 }
 
 /* ==========================================================================
-    03. Navigation
+    02. Navigation
 ========================================================================== */
 #menu {
     background: rgba(33, 45, 57, 0.8);
@@ -233,18 +226,18 @@ nav#navbar {
     margin-left: 60px;
 }
 
-.navbar a[href]:not(:empty)::before {
+.navbar li a[href]:not(:empty)::before {
     content: "↪";
     padding-right: .2em;
     color: #ccc;
     display: inline-block;
     opacity: .4;
 }
-.navbar a[href]:not(:empty):hover::before {
+.navbar li a[href]:not(:empty):hover::before {
     text-decoration: none;
     color: #333;
 }
-.navbar a[href^="#"]:not(:empty)::before {
+.navbar li a[href^="#"]:not(:empty)::before {
     content: "#";
 }
 
@@ -254,38 +247,35 @@ nav#navbar {
     width: 110px;
     left: 50%;
     margin-left: calc(-55px - 0.5rem);/* Don't forget half the padding of .navbar */
-    background: rgba(33, 45, 57, 1);
-    -webkit-border-radius: 0 0 100% 100%;
-    -moz-border-radius: 0 0 100% 100%;
-    border-radius: 0 0 100% 100%;
-    padding: 12px;
     top: 0;
-    background-image: url(../images/logo.webp);
-    background-size: 86px;
-    background-repeat: no-repeat;
-    background-position: center center;
     height: 110px;
-}
-body.nowebp #logo {
-    background-image: url(../images/logo.png);
 }
 
 #logo a {
     width: 100%;
     height: 100%;
     display: inline-block;
+    padding: 12px;
+    background: rgba(33, 45, 57, 1);
+    -webkit-border-radius: 0 0 100% 100%;
+    -moz-border-radius: 0 0 100% 100%;
+    border-radius: 0 0 100% 100%;
 }
 
 /* ==========================================================================
-    06. Content
+    03. Content
 ========================================================================== */
 #content {
     padding-top: 140px;
     padding-bottom: 60px;
 }
 
+.paragraph {
+    white-space: pre-line;
+}
+
 /* ==========================================================================
-    07. Footer
+    04. Footer
 ========================================================================== */
 .dark-wrapper {
     background: #b50119;
@@ -307,7 +297,7 @@ footer .row {
 }
 
 /* ==========================================================================
-    08. Responsive styles
+    05. Responsive styles
 ========================================================================== */
 @media (max-width: 767px) {
     .navbar {
@@ -352,7 +342,7 @@ footer .row {
 }
 
 /* ==========================================================================
-    09. Ribbon
+    06. Ribbon
 ========================================================================== */
 #ribbon {
     display: none;
@@ -416,7 +406,7 @@ footer .row {
 }
 
 /* ==========================================================================
-    10. Modal
+    07. Modal
 ========================================================================== */
 .modal-mask {
     position: fixed;
@@ -483,7 +473,7 @@ footer .row {
 }
 
 /* ==========================================================================
-    11. Readability
+    08. Readability
 ========================================================================== */
 .btn-outline-success {
     color: #2c642c;
@@ -528,42 +518,9 @@ footer .row {
 }
 
 /* ==========================================================================
-    12. Widgets
+    09. Widgets
 ========================================================================== */
 .card-title {
     font-weight: bold;
     text-transform: uppercase;
-}
-
-@font-face {
-    font-family: Cookie;
-    src: url(../fonts/Cookie-Regular.ttf) format('truetype');
-}
-
-.bmc-button {
-    height: 60px;
-    display: inline-flex;
-    align-items: center;
-    color: #ffffff;
-    background-color: #DD6F36;
-    border-radius: 12px;
-    border: 1px solid transparent;
-    padding: 0 24px 0 calc(24px + 25px + 8px);
-    font-size: 22px;
-    letter-spacing: 0.6px;
-    box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5);
-    -webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5);
-    font-family: 'Cookie', cursive;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    -o-transition: 0.3s all linear;
-    -webkit-transition: 0.3s all linear;
-    -moz-transition: 0.3s all linear;
-    -ms-transition: 0.3s all linear;
-    transition: 0.3s all linear;
-    background-image: "../images/BMC Logo - Black.png";
-    background-image: image-set("../images/BMC Logo - Black.webp", "../images/BMC Logo - Black.png");
-    background-size: 25px 33px;
-    background-repeat: no-repeat;
-    background-position: 24px;
 }

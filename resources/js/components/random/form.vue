@@ -459,15 +459,17 @@
 
     .input-group-addon.lang::before {
         background-repeat: no-repeat;
-        background-image: url(../../../images/languages.webp);
+        background-image: url(../../../images/languages.png);
+        background-image: image-set(
+            url("../../../images/languages.avif") type("image/avif"),
+            url("../../../images/languages.webp") type("image/webp"),
+            url("../../../images/languages.png") type("image/png")
+        );
         height: 11px;
         width: 14px;
         content: '';
         display: inline-block;
         margin-right: 8px;
-    }
-    body.nowebp .input-group-addon.lang::before {
-        background-image: url(../../../images/languages.png);
     }
 
     #mailContent,

@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
+use App\Http\Controllers\StartController;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,21 @@ Route::controller(RandomFormController::class)
         Route::post('/process', 'handle')->name('process');
     });
 
+Route::controller(StartController::class)
+    ->middleware('signed')
+    ->prefix('/pending/{pending}')
+    ->name('pending.')
+    ->group(function() {
+        Route::get('/', function (PendingDraw $draw) {
+                return view('pending', [
+                    'draw' => $pending->only(['id', 'status', 'updated_at']),
+                ]);
+            })
+            ->name('view');
+        Route::get('/process', 'process')
+            ->middleware('decrypt.iv:pending,organizer_email')
+            ->name('process');
+    });
 
 Route::controller(DearSantaController::class)
     ->middleware('signed')

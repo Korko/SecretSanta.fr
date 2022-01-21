@@ -1,7 +1,7 @@
 <?php
 
 it('passes with nothing', function () {
-    test()->assertTrue(
+    assertTrue(
         Validator::make(
             [],
             ['content' => 'required_with_any:users.*.name']
@@ -10,7 +10,7 @@ it('passes with nothing', function () {
 });
 
 it('passes with empty array', function () {
-    test()->assertTrue(
+    assertTrue(
         Validator::make(
             ['users' => []],
             ['content' => 'required_with_any:users.*.name']
@@ -19,7 +19,7 @@ it('passes with empty array', function () {
 });
 
 it('fails when simply invalid', function () {
-    test()->assertFalse(
+    assertFalse(
         Validator::make(
             ['users' => [['name' => 'Foo']]],
             ['content' => 'required_with_any:users.*.name']
@@ -28,7 +28,7 @@ it('fails when simply invalid', function () {
 });
 
 it('fails when complex invalid', function () {
-    test()->assertFalse(
+    assertFalse(
         Validator::make(
             ['users' => ['list' => [['name' => ['txt' => 'Foo']]]]],
             ['content' => 'required_with_any:users.list.*.name.txt']
@@ -37,7 +37,7 @@ it('fails when complex invalid', function () {
 });
 
 it('passes when valid', function () {
-    test()->assertTrue(
+    assertTrue(
         Validator::make(
             ['users' => ['list' => [['name' => ['txt' => 'Foo']]]], 'content' => 'foobar'],
             ['content' => 'required_with_any:users.list.*.name.txt']

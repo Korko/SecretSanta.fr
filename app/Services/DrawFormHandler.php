@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\SolverException;
 use App\Models\Draw;
 use App\Models\Participant;
+use App\Models\PendingDraw;
 use Arr;
 use DB;
 
@@ -23,38 +24,52 @@ class DrawFormHandler
         $this->participants = [];
     }
 
-    public function withOrganizer(array $organizer) : self
+    public function handle(PendingDraw $pending) : Draw
+    {
+        if(!Arr::get($pending->data, 'participant-organizer', false)) {
+            $this->withOrganizer($pending->data['organizer']);
+        }
+
+        return $this
+            ->withParticipants($pending->data['participants'])
+            ->withTitle($pending->data['title'])
+            ->withBody($pending->data['content'])
+            ->save();
+    }
+
+    protected function withOrganizer(array $organizer) : self
     {
         $this->organizer = $organizer;
 
         return $this;
     }
 
-    public function withParticipants(array $participants) : self
+    protected function withParticipants(array $participants) : self
     {
         $this->participants = $participants;
         if(!isset($this->organizer)) {
-            $this->organizer = reset($participants);
+            $this->organizer = current($participants);
+            unset($this->organizer['exclusions']);
         }
 
         return $this;
     }
 
-    public function withTitle($title) : self
+    protected function withTitle($title) : self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function withBody($body) : self
+    protected function withBody($body) : self
     {
         $this->body = $body;
 
         return $this;
     }
 
-    public function save() : Draw
+    protected function save() : Draw
     {
         DB::beginTransaction();
 

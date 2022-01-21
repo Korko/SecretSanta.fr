@@ -136,7 +136,7 @@
 
 <template>
     <div>
-
+<!--
         <div id="container">
           <aside>
             <ul>
@@ -397,7 +397,7 @@
                 <i class="fas fa-redo" />
                 {{ $t('dearsanta.resend.button') }}
             </button>
-        </div>-->
+        </div>
     </div>
 </template>
 

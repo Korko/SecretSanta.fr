@@ -40,3 +40,11 @@ dataset('huge participants list', function () {
         return ['name' => $faker->unique()->name, 'email' => $faker->safeEmail, 'exclusions' => []];
     })->toArray()];
 });
+
+dataset('validated participants list', function () {
+    $participants = Collection::times(3, function () {
+        return ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => []];
+    })->toArray();
+
+    yield [$participants, fn() => createServiceDraw($participants)];
+});

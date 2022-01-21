@@ -1,27 +1,27 @@
 <script>
-export default {
-    props: {
-        questions: {
-            type: Object,
-            required: true
+    export default {
+        props: {
+            questions: {
+                type: Object,
+                required: true
+            }
+        },
+        data() {
+            return {
+                selectedCategory: Object.keys(this.questions)[0],
+                categories: Object.keys(this.questions),
+                qnas: this.questions,
+                showed: {}
+            };
+        },
+        computed: {
+            selectedQuestions() { return Object.keys(this.qnas[this.selectedCategory]); },
+            selectedAnswers() { return Object.values(this.qnas[this.selectedCategory]); }
+        },
+        watch: {
+            selectedCategory() { this.showed = {}; }
         }
-    },
-    data() {
-        return {
-            selectedCategory: Object.keys(this.questions)[0],
-            categories: Object.keys(this.questions),
-            qnas: this.questions,
-            showed: {}
-        };
-    },
-    computed: {
-        selectedQuestions() { return Object.keys(this.qnas[this.selectedCategory]); },
-        selectedAnswers() { return Object.values(this.qnas[this.selectedCategory]); }
-    },
-    watch: {
-        selectedCategory() { this.showed = {}; }
     }
-}
 </script>
 
 <template>

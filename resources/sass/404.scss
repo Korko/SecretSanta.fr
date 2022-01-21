@@ -40,15 +40,17 @@ Polaroid
     background: #fff;
     padding: 1rem;
     box-shadow: 0 0.2rem 1.2rem rgba(0,0,0,0.2);
-    background-image: url(../images/404-1.webp);
+    background-image: url("../images/404-1.jpg");
+    background-image: image-set(
+        url("../images/404-1.avif") type("image/avif"),
+        url("../images/404-1.webp") type("image/webp"),
+        url("../images/404-1.jpg") type("image/jpeg")
+    );
     background-origin: content-box;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
     height:  19vw;
-}
-body.nowebp .polaroid {
-    background-image: url(../images/404-1.jpg);
 }
 .polaroid .caption {
     font-size: 1.8rem;

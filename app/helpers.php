@@ -11,3 +11,10 @@ if (! function_exists('base64url_decode')) {
         return base64_decode(str_replace(['-', '_'], ['+', '/'], $s));
     }
 }
+
+if (! function_exists('convert')) {
+    function convert($size) {
+        $unit = ['b', 'kb', 'mb', 'gb', 'tb', 'pb'];
+        return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
+    }
+}

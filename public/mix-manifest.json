@@ -1,10 +1,7 @@
 {
-    "/js/common.js": "/js/common.js?id=ed952c33317213290707",
-    "/js/app.js": "/js/app.js?id=73397daa4489a88565a5",
-    "/js/manifest.js": "/js/manifest.js?id=aef2b6a7c7056ac3676b",
-    "/css/vendor.css": "/css/vendor.css?id=f58de6f7998a39ec844d",
-    "/css/404.css": "/css/404.css?id=382e99b45d780f43ef43",
-    "/css/app.css": "/css/app.css?id=175de2a079b9c82c07ab",
-    "/js/vendor.js": "/js/vendor.js?id=7bd1b29a1f013148e0cb",
-    "/images/logo_black.png": "/images/logo_black.png?id=4dec9fed0079d7b8140c"
+    "/images/logo.avif": "/images/logo.avif?id=cb15627674b1dec80295",
+    "/images/logo.png": "/images/logo.png?id=d809190f5e24f89b3410",
+    "/images/logo.webp": "/images/logo.webp?id=d84723936cccc5cff077",
+    "/images/logo_black.png": "/images/logo_black.png?id=4dec9fed0079d7b8140c",
+    "/images/email_bg1.png": "/images/email_bg1.png?id=c23d2b6602232707da57"
 }

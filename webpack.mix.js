@@ -72,7 +72,7 @@ mix.webpackConfig({
 //        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
 //      },
       {
-        test: /\.(jpg|png|webp)$/,
+        test: /\.(jpg|png|webp|avif)$/,
         loader: 'file-loader',
         options: {
           outputPath: 'images',
@@ -111,6 +111,7 @@ mix.js('resources/js/common.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css')
    .sass('resources/sass/404.scss', 'public/css')
    .sass('resources/sass/vendor.scss', 'public/css')
+   .sass('resources/sass/webfonts.scss', 'public/css')
 //   .purgeCss({
 //      content: [
 //        "app/**/*.php",
@@ -127,7 +128,9 @@ mix.js('resources/js/common.js', 'public/js')
 //        "node_modules/**/*.vue", // Added line, all the rest is copied from postcss-purgecss-laravel plugin
 //      ]
 //   })
-   .copy('resources/images/logo_black.png', 'public/images'); // Meta image for social networks
+   .copy('resources/images/logo.*', 'public/images') // No auto parsing of blades
+   .copy('resources/images/logo_black.png', 'public/images') // Meta image for social networks
+   .copy('resources/images/email_bg1.png', 'public/images'); // Background image in email
 
 if (mix.inProduction()) {
     mix.version();

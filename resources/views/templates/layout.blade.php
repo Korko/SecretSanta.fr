@@ -61,7 +61,14 @@
         <div id="menu" class="navbar navbar-dark fixed-top navbar-expand-md" role="navigation">
             <nav id="navbar">
                 <div id="logo">
-                    <a href="/"></a>
+                    <a href="/">
+                        <picture>
+                            <source type="image/avif" srcset="{{ mix('/images/logo.avif') }}">
+                            <source type="image/webp" srcset="{{ mix('/images/logo.webp') }}">
+                            <source type="image/png" srcset="{{ mix('/images/logo.png') }}">
+                            <img src="{{ mix('/images/logo.png') }}" alt="Logo">
+                        </picture>
+                    </a>
                 </div>
                 <ul class="nav navbar-nav navbar-nav-left">
                     @yield('navbar-left')
@@ -104,7 +111,6 @@
     </footer>
 
     @section('script')
-        <script src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" data-auto-replace-svg="nest"></script>
         <script type="text/javascript" src="{{ mix('/js/manifest.js') }}"></script>
         <script type="text/javascript" src="{{ mix('/js/vendor.js') }}"></script>
         <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>

@@ -19,6 +19,12 @@ it('cleans up expired draws', function ($drawNotExpired, $drawExpired) {
 it('cleans up everything', function () {
     seed(ExpiredDrawSeeder::class);
 
+    assertModelCountDiffer(Draw::class, 0);
+    assertModelCountDiffer(Participant::class, 0);
+    assertModelCountDiffer(Exclusion::class, 0);
+    assertModelCountDiffer(DearSanta::class, 0);
+    assertModelCountDiffer(Mail::class, 0);
+
     artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
 
     assertModelCount(Draw::class, 0);

@@ -50,5 +50,11 @@
         "vue-loader": "^16.8.3",
         "vue-template-compiler": "^2.6.12",
         "vuejs-dialog": "^1.4.2"
+    },
+    "dependencies": {
+        "@fontsource/caveat": "^4.5.0",
+        "@fontsource/cookie": "^4.5.0",
+        "@fontsource/kreon": "^4.5.1",
+        "@fortawesome/fontawesome-free": "^5.15.4"
     }
 }

@@ -1,5 +1,7 @@
 import { createApp, defineAsyncComponent } from 'vue';
 
+import '@fontsource/kreon';
+
 const app = createApp({
     mounted: function() {
         document.body.classList.add('cssLoading');
@@ -7,6 +9,7 @@ const app = createApp({
     },
     components: {
         PageRandom: defineAsyncComponent(() => import('./components/pageRandom.vue')),
+        Pending: defineAsyncComponent(() => import('./components/pending.vue')),
         OrganizerForm: defineAsyncComponent(() => import('./components/organizer/form.vue')),
         DearSantaForm: defineAsyncComponent(() => import('./components/dearSantaForm.vue')),
         Dashboard: defineAsyncComponent(() => import('./components/dashboard.vue')),
@@ -27,3 +30,6 @@ const i18n = createI18n({
 });
 
 app.use(i18n);
+
+import VuejsDialog from 'vuejs-dialog';
+app.use(VueJsDialog);

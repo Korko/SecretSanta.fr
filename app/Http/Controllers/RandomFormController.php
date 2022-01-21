@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Channels\MailChannel;
-use App\Exceptions\SolverException;
-use App\Models\Draw;
-use App\Models\Participant;
-use App\Notifications\OrganizerRecap;
+use App\Models\PendingDraw;
+use App\Notifications\PendingDraw as PendingDrawNotification;
 use App\Http\Requests\RandomFormRequest;
-use App\Services\DrawFormHandler;
 use Arr;
-use Exception;
 use Lang;
 use Notification;
 
@@ -20,40 +15,23 @@ class RandomFormController extends Controller
     {
         $safe = $request->safe();
 
-        try {
-            $drawForm = (new DrawFormHandler());
-
-            if(!Arr::get($safe, 'participant-organizer', false)) {
-                $drawForm->withOrganizer($safe['organizer']);
-            }
-
-            $draw = $drawForm
-                ->withParticipants($safe['participants'])
-                ->withTitle($safe['title'])
-                ->withBody($safe['content'])
-                ->save();
-
-            Notification::route('mail', [
-                ['name' => $draw->organizer_name, 'email' => $draw->organizer_email],
-            ])->notify(new OrganizerRecap($draw));
-
-            $draw->createMetric('new_draw')
-                ->addExtra('participants', count($draw->participants));
-
-            return response()->json([
-                'message' => trans('message.sent')
-            ]);
-        } catch(SolverException $e) {
-            return response()->json([
-                'message' => trans('error.solution'),
-            ], 422);
+        if(!Arr::get($safe, 'participant-organizer', false)) {
+            $organizer = $safe['organizer'];
+        } else {
+            $organizer = current($safe['participants']);
+            unset($organizer['exclusions']);
         }
-    }
 
-    public function faq()
-    {
-        return response()->view('faq', [
-            'questions' => Lang::get('faq.questions'),
+        $draw = new PendingDraw;
+        $draw->organizer_name = $organizer['name'];
+        $draw->organizer_email = $organizer['email'];
+        $draw->data = $safe->toArray();
+        $draw->save();
+
+        Notification::route('mail', [$organizer])->notify(new PendingDrawNotification($draw));
+
+        return response()->json([
+            'message' => trans('message.pending')
         ]);
     }
 }

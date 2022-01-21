@@ -1,7 +1,12 @@
 <?php
 
+use App\Models\Draw;
+use App\Models\PendingDraw;
+use App\Services\DrawFormHandler;
 use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\App;
 use Illuminate\Testing\TestResponse;
+use function Pest\Laravel\assertDatabaseCount;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,9 +46,27 @@ uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundat
  * @return $this
  */
 function assertModelCount($class, int $count) {
-    return test()->assertDatabaseCount(
+    return assertDatabaseCount(
         test()->getTable($class),
         $count
+    );
+}
+
+/**
+ * Assert the count of model entries differing.
+ *
+ * @param  string  $class
+ * @param  int  $count
+ * @return $this
+ */
+function assertModelCountDiffer($class, int $count) {
+    $database = App::make('db');
+    $database = $database->connection($database->getDefaultConnection());
+
+    $table = test()->getTable($class);
+
+    return test()->assertNotEquals(
+        $count, $database->table($table)->count()
     );
 }
 
@@ -79,6 +102,42 @@ function ajaxDelete($url, $headers = []) : TestResponse {
     return prepareAjax($headers)->json('DELETE', $url);
 }
 
+function createDraw($participants, $params = []) {
+    return ajaxPost('/', $params + [
+            'participant-organizer' => '1',
+            'participants'          => $participants,
+            'title'                 => 'this is a test',
+            'content'               => 'test mail {SANTA} => {TARGET}',
+        ])
+        ->assertJsonStructure(['message']);
+}
+
+function createPendingDraw($participants, $params = []) {
+    return PendingDraw::factory()
+        ->state(function (array $attributes) use ($participants, $params) {
+            return [
+                'data' => $params + [
+                    'participants' => $participants,
+                ] + $attributes['data']
+            ];
+        })
+        ->create();
+}
+
+function createServiceDraw($participants) : Draw {
+    $pendingDraw = PendingDraw::factory()
+        ->state(function (array $attributes) use ($participants) {
+            return [
+                'data' => [
+                    'participants' => $participants,
+                ] + $attributes['data']
+            ];
+        })
+        ->create();
+
+    return (new DrawFormHandler())->handle($pendingDraw);
+}
+
 /**
  * Laravel TestCase aliases
  */
@@ -87,26 +146,26 @@ function ajaxDelete($url, $headers = []) : TestResponse {
  * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithConsole
  */
 function artisan($command, $parameters = []) {
-    return test()->artisan($command, $parameters);
+    return test()->artisan(...func_get_args());
 }
 
 /**
  * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
  */
 function seed($class = 'Database\\Seeders\\DatabaseSeeder') {
-    return test()->seed($class);
+    return test()->seed(...func_get_args());
 }
 
 /**
  * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
  */
 function assertModelExists($model) {
-    return test()->assertModelExists($model);
+    return test()->assertModelExists(...func_get_args());
 }
 
 /**
  * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
  */
 function assertModelMissing($model) {
-    return test()->assertModelMissing($model);
+    return test()->assertModelMissing(...func_get_args());
 }

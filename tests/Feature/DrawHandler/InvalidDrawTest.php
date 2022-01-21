@@ -7,7 +7,7 @@ use App\Models\Participant;
 use App\Services\DrawFormHandler;
 
 it('throws an exception when there\'s no solution', function ($participants) {
-    (new DrawFormHandler())->withParticipants($participants)->save();
+    createServiceDraw($participants);
 })->with('invalid participants list')->throws(SolverException::class);
 
 it('does not record anything in case of error', function ($participants) {
@@ -15,7 +15,7 @@ it('does not record anything in case of error', function ($participants) {
     assertModelCount(Participant::class, 0);
     assertModelCount(Exclusion::class, 0);
 
-    try { (new DrawFormHandler())->withParticipants($participants)->save(); } catch (Exception $e) {}
+    try { createServiceDraw($participants); } catch (Exception $e) {}
 
     assertModelCount(Draw::class, 0);
     assertModelCount(Participant::class, 0);

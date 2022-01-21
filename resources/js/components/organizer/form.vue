@@ -43,6 +43,7 @@
             <tooltip direction="top">
                 <template #tooltip>
                     <picture>
+                        <source srcset="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.avif" type="image/avif" />
                         <source srcset="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.webp" type="image/webp" />
                         <source srcset="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" type="image/jpg" />
                         <img class="media-object" src="../../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" />
@@ -63,6 +64,7 @@
         <tooltip direction="top">
             <template #tooltip>
                 <picture>
+                    <source srcset="../../../images/lynda-hinton-QyDLHeUerd4-unsplash.avif" type="image/avif" />
                     <source srcset="../../../images/lynda-hinton-QyDLHeUerd4-unsplash.webp" type="image/webp" />
                     <source srcset="../../../images/lynda-hinton-QyDLHeUerd4-unsplash.jpg" type="image/jpg" />
                     <img class="media-object" src="../../../images/lynda-hinton-QyDLHeUerd4-unsplash.jpg" />
@@ -83,6 +85,7 @@
             <tooltip direction="top">
                 <template #tooltip>
                     <picture>
+                        <source srcset="../../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.avif" type="image/avif" />
                         <source srcset="../../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp" type="image/webp" />
                         <source srcset="../../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" type="image/jpg" />
                         <img class="media-object" src="../../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" />
@@ -102,6 +105,7 @@
             <tooltip direction="top">
                 <template #tooltip>
                     <picture>
+                        <source srcset="../../../images/mike-arney-9r-_2gzP37k-unsplash.avif" type="image/avif" />
                         <source srcset="../../../images/mike-arney-9r-_2gzP37k-unsplash.webp" type="image/webp" />
                         <source srcset="../../../images/mike-arney-9r-_2gzP37k-unsplash.jpg" type="image/jpg" />
                         <img class="media-object" src="../../../images/mike-arney-9r-_2gzP37k-unsplash.jpg" />
@@ -122,6 +126,7 @@
         <tooltip v-else direction="top">
             <template #tooltip>
                 <picture>
+                    <source srcset="../../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.avif" type="image/avif" />
                     <source srcset="../../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp" type="image/webp" />
                     <source srcset="../../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" type="image/jpg" />
                     <img class="media-object" src="../../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" />
@@ -142,11 +147,6 @@
 </template>
 
 <script>
-    /*import Vue from 'vue';
-
-    import VuejsDialog from 'vuejs-dialog';
-    Vue.use(VuejsDialog);*/
-
     import { download } from '../../partials/helpers.js';
 
     import Moment from 'moment';
