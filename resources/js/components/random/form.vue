@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :v$="v$" @reset="reset" send-icon="dice">
+            <ajax-form id="randomForm" :action="this.action" :button-send="$t('form.submit')" :v$="v$" @reset="reset" send-icon="dice">
                 <template #default="{ sending, sent, fieldError }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ $t('form.success') }}
@@ -244,6 +244,13 @@
             Participant,
             Tooltip,
             Toggle
+        },
+
+        props: {
+            action: {
+                type: String,
+                required: true
+            }
         },
 
         data: () => ({

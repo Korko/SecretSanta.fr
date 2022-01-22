@@ -11,5 +11,5 @@
 @stop
 
 @section('body')
-    <page-random bmc="{{ config('app.bmc') }}"></page-random>
+    <page-random bmc="{{ config('app.bmc') }}" process="{{ route('form.process') }}"></page-random>
 @stop

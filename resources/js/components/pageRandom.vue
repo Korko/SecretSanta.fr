@@ -11,6 +11,10 @@
             bmc: {
                 type: String,
                 required: true
+            },
+            process: {
+                type: String,
+                required: true
             }
         }
     }
@@ -116,7 +120,7 @@
         <div class="container inner">
             <h2 class="section-title text-center">{{ $t('form.section.go.title') }}</h2>
             <p class="lead main text-center">{{ $t('form.section.go.subtitle') }}</p>
-            <random-form id="randomForm" action="/"></random-form>
+            <random-form id="randomForm" :action="this.process"></random-form>
         </div><!-- /.container -->
         <section class="ss-style-bottom"></section>
     </div>
