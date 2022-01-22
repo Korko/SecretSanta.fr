@@ -31,5 +31,5 @@ const i18n = createI18n({
 
 app.use(i18n);
 
-import VuejsDialog from 'vuejs-dialog';
-app.use(VueJsDialog);
+//import VuejsDialog from 'vuejs-dialog';
+//app.use(VueJsDialog);
