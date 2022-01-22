@@ -17,6 +17,13 @@ class DearSantaController extends Controller
 {
     protected $dearSantaPublicFields = ['id', 'mail_body', 'mail', 'created_at', 'updated_at'];
 
+    public function index(Participant $participant)
+    {
+        return view('dearSanta', [
+            'participant' => $participant->hash,
+        ]);
+    }
+
     public function fetch(Participant $participant)
     {
         // The hash was validated in middleware so we can validate that the email was received
@@ -35,12 +42,12 @@ class DearSantaController extends Controller
             }),
             'resendEmailUrls' => $participant->draw->expired ? [] : $participant->dearSantas->mapWithKeys(function ($dearSanta) use ($participant) {
                 return [
-                    $dearSanta->mail->id => URL::signedRoute('dearSanta.resend', [
+                    $dearSanta->mail->id => URL::signedRoute('santa.resend', [
                         'participant' => $participant, 'dearSanta' => $dearSanta
                     ])
                 ];
             }),
-            'resendTargetEmailsUrl' => $participant->draw->expired ? null : URL::signedRoute('dearSanta.resend_target', [
+            'resendTargetEmailsUrl' => $participant->draw->expired ? null : URL::signedRoute('santa.resend_target', [
                 'participant' => $participant
             ])
         ]);
@@ -64,7 +71,7 @@ class DearSantaController extends Controller
                     'message' => $message,
                     'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
                 ]) :
-                redirect('/dearSanta/'.$participant->hash)->with('message', $message);
+                redirect()->route('santa.index', ['participant' => $participant->hash])->with('message', $message);
         } catch(Exception $e) {
             $error = trans('error.email');
 
@@ -73,7 +80,7 @@ class DearSantaController extends Controller
                     'error' => $error,
                     'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
                 ]) :
-                redirect('/dearSanta/'.$participant->hash)->with('error', $error);
+                redirect()->route('santa.index', ['participant' => $participant->hash])->with('error', $error);
         }
     }
 
@@ -93,7 +100,7 @@ class DearSantaController extends Controller
             response()->json([
                 'message' => $message,
             ]) :
-            redirect('/dearSanta/'.$participant->hash)->with('message', $message);
+            redirect()->route('santa.index', ['participant' => $participant->hash])->with('message', $message);
     }
 
     public function handle(Participant $participant, DearSantaRequest $request)
@@ -114,6 +121,6 @@ class DearSantaController extends Controller
                 'message' => $message,
                 'email' => DearSanta::find($dearSanta->id)->only($this->dearSantaPublicFields),
             ]) :
-            redirect('/dearSanta/'.$participant->hash)->with('message', $message);
+            redirect()->route('santa.index', ['participant' => $participant->hash])->with('message', $message);
     }
 }

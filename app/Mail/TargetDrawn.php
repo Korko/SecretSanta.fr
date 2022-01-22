@@ -34,20 +34,19 @@ class TargetDrawn extends TrackedMailable
      */
     public function build()
     {
-        $title = $this->parseKeywords(Lang::get('emails.target_drawn.title', [
+        $title = $this->parseKeywords(Lang::get('SecretSanta #:draw - :subject', [
             'draw' => $this->santa->draw->id,
             'subject' => $this->santa->draw->mail_title,
         ]), $this->santa);
 
         $content = $this->parseKeywords($this->santa->draw->mail_body, $this->santa);
 
-        $url = URL::signedRoute('santa.view', ['participant' => $this->santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
+        $url = URL::signedRoute('santa.index', ['participant' => $this->santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
 
         return $this
             ->subject($title)
             ->markdown('emails.target_drawn', [
                 'name' => $this->santa->name,
-                'draw' => $this->santa->draw->id,
                 'content' => $content,
                 'dearSantaLink' => $url,
             ]);

@@ -37,7 +37,7 @@ class OrganizerRecap extends Mailable
                 'draw' => $this->draw->id,
                 'deletionDate' => $this->draw->deletes_at->locale(App::getLocale())->isoFormat('LL'),
                 'nextSolvable' => $this->draw->next_solvable,
-                'panelLink' => URL::signedRoute('organizer.view', ['draw' => $this->draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
+                'panelLink' => URL::signedRoute('organizer.index', ['draw' => $this->draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
             ]);
     }
 }

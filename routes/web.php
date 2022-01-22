@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Draw;
+use App\Models\Participant;
+use App\Models\PendingDraw;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\OrganizerController;
@@ -36,7 +39,7 @@ Route::view('/legal', 'legal')->name('legal');
 Route::controller(RandomFormController::class)
     ->name('form.')
     ->group(function () {
-        Route::view('/', 'randomForm')->name('view');
+        Route::view('/', 'randomForm')->name('index');
         Route::post('/process', 'handle')->name('process');
     });
 
@@ -45,15 +48,9 @@ Route::controller(StartController::class)
     ->prefix('/pending/{pending}')
     ->name('pending.')
     ->group(function() {
-        Route::get('/', function (PendingDraw $draw) {
-                return view('pending', [
-                    'draw' => $pending->only(['id', 'status', 'updated_at']),
-                ]);
-            })
-            ->name('view');
-        Route::get('/process', 'process')
-            ->middleware('decrypt.iv:pending,organizer_email')
-            ->name('process');
+        Route::get('/', 'index')->name('view');
+        Route::get('/process', 'process')->name('process')
+            ->middleware('decrypt.iv:pending,organizer_email');
     });
 
 Route::controller(DearSantaController::class)
@@ -61,15 +58,10 @@ Route::controller(DearSantaController::class)
     ->prefix('/santa/{participant}')
     ->name('santa.')
     ->group(function() {
-        Route::get('/', function (Participant $santa) {
-                return view('dearSanta', [
-                    'participant' => $participant->hash,
-                ]);
-            })
+        Route::get('/', 'index')->name('index')
             ->missing(function () {
                 return response()->view('missingDraw', [], 404);
-            })
-            ->name('view');
+            });
 
         Route::middleware('decrypt.iv:participant,name')
             ->group(function () {
@@ -107,15 +99,10 @@ Route::controller(OrganizerController::class)
     ->prefix('/org/{draw}')
     ->name('organizer.')
     ->group(function() {
-        Route::get('/', function (Draw $draw) {
-                return view('organizer', [
-                    'draw' => $draw->hash,
-                ]);
-            })
+        Route::get('/', 'index')->name('index')
             ->missing(function () {
                 return response()->view('missingDraw', [], 404);
-            })
-            ->name('view');
+            });
 
         Route::middleware('decrypt.iv:draw,mail_title')->group(function () {
             Route::get('/fetch', 'fetch')->name('fetch');

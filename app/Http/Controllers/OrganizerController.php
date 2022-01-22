@@ -21,6 +21,13 @@ use Lang;
 
 class OrganizerController extends Controller
 {
+    public function index(Draw $draw)
+    {
+        return view('organizer', [
+            'draw' => $draw->hash,
+        ]);
+    }
+
     public function fetch(Draw $draw)
     {
         $drawFields = ['hash', 'mail_title', 'created_at', 'finished_at', 'deletes_at', 'next_solvable', 'organizer_name'];

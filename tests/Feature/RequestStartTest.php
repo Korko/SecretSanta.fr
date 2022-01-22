@@ -99,7 +99,7 @@ it('sends to the organizer the link to their panel', function ($participants) {
             return
                 $notifiable->routes['mail'] === [['name' => $draw->organizer_name, 'email' => $draw->organizer_email]] &&
                 $notification->toMail($notifiable)->assertSeeInHtml(
-                    URL::signedRoute('organizer.view', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV())
+                    URL::signedRoute('organizer.index', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV())
             );
         }
     );

@@ -11,6 +11,13 @@ use Notification;
 
 class StartController extends Controller
 {
+    public function index(PendingDraw $pending)
+    {
+        return view('pending', [
+            'draw' => $pending->only(['id', 'status', 'updated_at']),
+        ]);
+    }
+
     public function process(PendingDraw $pending)
     {
         abort_if(! $pending->isWaiting(), 422, Lang::get('error.processing'));// Maybe not the best system, can happen very often

@@ -34,7 +34,7 @@ class PendingDraw extends Mailable
             ->subject(Lang::get('emails.pending_draw.title', ['draw' => $this->draw->id]))
             ->markdown('emails.pending_draw', [
                 'name' => $this->draw->organizer_name,
-                'validationLink' => URL::signedRoute('pending.view', ['pending' => $this->draw->id]).'#'.base64_encode(DrawCrypt::getIV()),
+                'validationLink' => URL::signedRoute('pending.index', ['pending' => $this->draw->id]).'#'.base64_encode(DrawCrypt::getIV()),
             ]);
     }
 }
