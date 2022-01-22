@@ -534,63 +534,61 @@ var _withScopeId = function _withScopeId(n) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-600f7ca4"), n = n(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)(), n;
 };
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div id=\"container\" data-v-600f7ca4><aside data-v-600f7ca4><ul data-v-600f7ca4><li data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg\" alt=\"\" data-v-600f7ca4><div data-v-600f7ca4><h2 data-v-600f7ca4>Prénom Nom</h2><h3 data-v-600f7ca4><span class=\"status orange\" data-v-600f7ca4></span> offline </h3></div></li><li data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_02.jpg\" alt=\"\" data-v-600f7ca4><div data-v-600f7ca4><h2 data-v-600f7ca4>Prénom Nom</h2><h3 data-v-600f7ca4><span class=\"status green\" data-v-600f7ca4></span> online </h3></div></li><li data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_03.jpg\" alt=\"\" data-v-600f7ca4><div data-v-600f7ca4><h2 data-v-600f7ca4>Prénom Nom</h2><h3 data-v-600f7ca4><span class=\"status orange\" data-v-600f7ca4></span> offline </h3></div></li><li data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_04.jpg\" alt=\"\" data-v-600f7ca4><div data-v-600f7ca4><h2 data-v-600f7ca4>Prénom Nom</h2><h3 data-v-600f7ca4><span class=\"status green\" data-v-600f7ca4></span> online </h3></div></li><li data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_05.jpg\" alt=\"\" data-v-600f7ca4><div data-v-600f7ca4><h2 data-v-600f7ca4>Prénom Nom</h2><h3 data-v-600f7ca4><span class=\"status orange\" data-v-600f7ca4></span> offline </h3></div></li><li data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_06.jpg\" alt=\"\" data-v-600f7ca4><div data-v-600f7ca4><h2 data-v-600f7ca4>Prénom Nom</h2><h3 data-v-600f7ca4><span class=\"status green\" data-v-600f7ca4></span> online </h3></div></li><li data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_07.jpg\" alt=\"\" data-v-600f7ca4><div data-v-600f7ca4><h2 data-v-600f7ca4>Prénom Nom</h2><h3 data-v-600f7ca4><span class=\"status green\" data-v-600f7ca4></span> online </h3></div></li><li data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_08.jpg\" alt=\"\" data-v-600f7ca4><div data-v-600f7ca4><h2 data-v-600f7ca4>Prénom Nom</h2><h3 data-v-600f7ca4><span class=\"status green\" data-v-600f7ca4></span> online </h3></div></li><li data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_09.jpg\" alt=\"\" data-v-600f7ca4><div data-v-600f7ca4><h2 data-v-600f7ca4>Prénom Nom</h2><h3 data-v-600f7ca4><span class=\"status green\" data-v-600f7ca4></span> online </h3></div></li><li data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_10.jpg\" alt=\"\" data-v-600f7ca4><div data-v-600f7ca4><h2 data-v-600f7ca4>Prénom Nom</h2><h3 data-v-600f7ca4><span class=\"status orange\" data-v-600f7ca4></span> offline </h3></div></li></ul></aside><main data-v-600f7ca4><header data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg\" alt=\"\" data-v-600f7ca4><div data-v-600f7ca4><h2 data-v-600f7ca4>Chat with Vincent Porter</h2><h3 data-v-600f7ca4>already 1902 messages</h3></div><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png\" alt=\"\" data-v-600f7ca4></header><ul id=\"chat\" data-v-600f7ca4><li class=\"you\" data-v-600f7ca4><div class=\"entete\" data-v-600f7ca4><span class=\"status green\" data-v-600f7ca4></span><h2 data-v-600f7ca4>Vincent</h2><h3 data-v-600f7ca4>10:12AM, Today</h3></div><div class=\"triangle\" data-v-600f7ca4></div><div class=\"message\" data-v-600f7ca4> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. </div></li><li class=\"me\" data-v-600f7ca4><div class=\"entete\" data-v-600f7ca4><h3 data-v-600f7ca4>10:12AM, Today</h3><h2 data-v-600f7ca4>Vincent</h2><span class=\"status blue\" data-v-600f7ca4></span></div><div class=\"triangle\" data-v-600f7ca4></div><div class=\"message\" data-v-600f7ca4> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. </div></li><li class=\"me\" data-v-600f7ca4><div class=\"entete\" data-v-600f7ca4><h3 data-v-600f7ca4>10:12AM, Today</h3><h2 data-v-600f7ca4>Vincent</h2><span class=\"status blue\" data-v-600f7ca4></span></div><div class=\"triangle\" data-v-600f7ca4></div><div class=\"message\" data-v-600f7ca4> OK </div></li><li class=\"you\" data-v-600f7ca4><div class=\"entete\" data-v-600f7ca4><span class=\"status green\" data-v-600f7ca4></span><h2 data-v-600f7ca4>Vincent</h2><h3 data-v-600f7ca4>10:12AM, Today</h3></div><div class=\"triangle\" data-v-600f7ca4></div><div class=\"message\" data-v-600f7ca4> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. </div></li><li class=\"me\" data-v-600f7ca4><div class=\"entete\" data-v-600f7ca4><h3 data-v-600f7ca4>10:12AM, Today</h3><h2 data-v-600f7ca4>Vincent</h2><span class=\"status blue\" data-v-600f7ca4></span></div><div class=\"triangle\" data-v-600f7ca4></div><div class=\"message\" data-v-600f7ca4> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. </div></li><li class=\"me\" data-v-600f7ca4><div class=\"entete\" data-v-600f7ca4><h3 data-v-600f7ca4>10:12AM, Today</h3><h2 data-v-600f7ca4>Vincent</h2><span class=\"status blue\" data-v-600f7ca4></span></div><div class=\"triangle\" data-v-600f7ca4></div><div class=\"message\" data-v-600f7ca4> OK </div></li></ul><footer data-v-600f7ca4><textarea placeholder=\"Type your message\" data-v-600f7ca4></textarea><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_picture.png\" alt=\"\" data-v-600f7ca4><img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_file.png\" alt=\"\" data-v-600f7ca4><a href=\"#\" data-v-600f7ca4>Send</a></footer></main></div> --&gt; ", 2);
-
-var _hoisted_3 = {
+var _hoisted_1 = {
   key: 0,
   "class": "alert alert-warning",
   role: "alert"
 };
-var _hoisted_4 = {
+var _hoisted_2 = {
   "class": "form-group"
 };
-var _hoisted_5 = {
+var _hoisted_3 = {
   "for": "mailContent"
 };
-var _hoisted_6 = {
+var _hoisted_4 = {
   "class": "input-group"
 };
-var _hoisted_7 = ["placeholder", "aria-invalid"];
-var _hoisted_8 = {
+var _hoisted_5 = ["placeholder", "aria-invalid"];
+var _hoisted_6 = {
   key: 0,
   "class": "invalid-tooltip"
 };
-var _hoisted_9 = {
+var _hoisted_7 = {
   "class": "table table-hover"
 };
-var _hoisted_10 = {
+var _hoisted_8 = {
   "class": "table-active"
+};
+var _hoisted_9 = {
+  scope: "col"
+};
+var _hoisted_10 = {
+  scope: "col"
 };
 var _hoisted_11 = {
   scope: "col"
 };
-var _hoisted_12 = {
-  scope: "col"
-};
+var _hoisted_12 = ["innerHTML"];
 var _hoisted_13 = {
-  scope: "col"
-};
-var _hoisted_14 = ["innerHTML"];
-var _hoisted_15 = {
   key: 0,
   "class": "no-email"
 };
-var _hoisted_16 = {
+var _hoisted_14 = {
   colspan: "3"
 };
-var _hoisted_17 = {
+var _hoisted_15 = {
   "class": "text-center"
 };
-var _hoisted_18 = {
+var _hoisted_16 = {
   "class": "text-content"
 };
-var _hoisted_19 = {
+var _hoisted_17 = {
   disabled: true,
   type: "button",
   "class": "btn btn-outline-secondary"
 };
 
-var _hoisted_20 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_18 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fas fa-redo"
   }, null, -1
@@ -598,15 +596,13 @@ var _hoisted_20 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fas fa-redo"
   }, null, -1
   /* HOISTED */
   );
 });
-
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("--> ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ajax_form = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ajax-form");
@@ -615,7 +611,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_tooltip = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tooltip");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [_hoisted_1, _ctx.finished ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.finished', {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("\n        <div id=\"container\">\n          <aside>\n            <ul>\n              <li>\n                <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg\" alt=\"\">\n                <div>\n                  <h2>Prénom Nom</h2>\n                  <h3>\n                    <span class=\"status orange\"></span>\n                    offline\n                  </h3>\n                </div>\n              </li>\n              <li>\n                <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_02.jpg\" alt=\"\">\n                <div>\n                  <h2>Prénom Nom</h2>\n                  <h3>\n                    <span class=\"status green\"></span>\n                    online\n                  </h3>\n                </div>\n              </li>\n              <li>\n                <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_03.jpg\" alt=\"\">\n                <div>\n                  <h2>Prénom Nom</h2>\n                  <h3>\n                    <span class=\"status orange\"></span>\n                    offline\n                  </h3>\n                </div>\n              </li>\n              <li>\n                <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_04.jpg\" alt=\"\">\n                <div>\n                  <h2>Prénom Nom</h2>\n                  <h3>\n                    <span class=\"status green\"></span>\n                    online\n                  </h3>\n                </div>\n              </li>\n              <li>\n                <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_05.jpg\" alt=\"\">\n                <div>\n                  <h2>Prénom Nom</h2>\n                  <h3>\n                    <span class=\"status orange\"></span>\n                    offline\n                  </h3>\n                </div>\n              </li>\n              <li>\n                <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_06.jpg\" alt=\"\">\n                <div>\n                  <h2>Prénom Nom</h2>\n                  <h3>\n                    <span class=\"status green\"></span>\n                    online\n                  </h3>\n                </div>\n              </li>\n              <li>\n                <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_07.jpg\" alt=\"\">\n                <div>\n                  <h2>Prénom Nom</h2>\n                  <h3>\n                    <span class=\"status green\"></span>\n                    online\n                  </h3>\n                </div>\n              </li>\n              <li>\n                <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_08.jpg\" alt=\"\">\n                <div>\n                  <h2>Prénom Nom</h2>\n                  <h3>\n                    <span class=\"status green\"></span>\n                    online\n                  </h3>\n                </div>\n              </li>\n              <li>\n                <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_09.jpg\" alt=\"\">\n                <div>\n                  <h2>Prénom Nom</h2>\n                  <h3>\n                    <span class=\"status green\"></span>\n                    online\n                  </h3>\n                </div>\n              </li>\n              <li>\n                <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_10.jpg\" alt=\"\">\n                <div>\n                  <h2>Prénom Nom</h2>\n                  <h3>\n                    <span class=\"status orange\"></span>\n                    offline\n                  </h3>\n                </div>\n              </li>\n            </ul>\n          </aside>\n          <main>\n            <header>\n              <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg\" alt=\"\">\n              <div>\n                <h2>Chat with Vincent Porter</h2>\n                <h3>already 1902 messages</h3>\n              </div>\n              <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png\" alt=\"\">\n            </header>\n            <ul id=\"chat\">\n              <li class=\"you\">\n                <div class=\"entete\">\n                  <span class=\"status green\"></span>\n                  <h2>Vincent</h2>\n                  <h3>10:12AM, Today</h3>\n                </div>\n                <div class=\"triangle\"></div>\n                <div class=\"message\">\n                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.\n                </div>\n              </li>\n              <li class=\"me\">\n                <div class=\"entete\">\n                  <h3>10:12AM, Today</h3>\n                  <h2>Vincent</h2>\n                  <span class=\"status blue\"></span>\n                </div>\n                <div class=\"triangle\"></div>\n                <div class=\"message\">\n                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.\n                </div>\n              </li>\n              <li class=\"me\">\n                <div class=\"entete\">\n                  <h3>10:12AM, Today</h3>\n                  <h2>Vincent</h2>\n                  <span class=\"status blue\"></span>\n                </div>\n                <div class=\"triangle\"></div>\n                <div class=\"message\">\n                  OK\n                </div>\n              </li>\n              <li class=\"you\">\n                <div class=\"entete\">\n                  <span class=\"status green\"></span>\n                  <h2>Vincent</h2>\n                  <h3>10:12AM, Today</h3>\n                </div>\n                <div class=\"triangle\"></div>\n                <div class=\"message\">\n                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.\n                </div>\n              </li>\n              <li class=\"me\">\n                <div class=\"entete\">\n                  <h3>10:12AM, Today</h3>\n                  <h2>Vincent</h2>\n                  <span class=\"status blue\"></span>\n                </div>\n                <div class=\"triangle\"></div>\n                <div class=\"message\">\n                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.\n                </div>\n              </li>\n              <li class=\"me\">\n                <div class=\"entete\">\n                  <h3>10:12AM, Today</h3>\n                  <h2>Vincent</h2>\n                  <span class=\"status blue\"></span>\n                </div>\n                <div class=\"triangle\"></div>\n                <div class=\"message\">\n                  OK\n                </div>\n              </li>\n            </ul>\n            <footer>\n              <textarea placeholder=\"Type your message\"></textarea>\n              <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_picture.png\" alt=\"\">\n              <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_file.png\" alt=\"\">\n              <a href=\"#\">Send</a>\n            </footer>\n          </main>\n        </div>\n"), _ctx.finished ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.finished', {
     finished_at: _ctx.endDateLong
   })), 1
   /* TEXT */
@@ -627,9 +623,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     autoReset: true
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("fieldset", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.content.label')), 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("fieldset", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.content.label')), 1
       /* TEXT */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
         id: "mailContent",
         "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
           return $data.content = $event;
@@ -646,7 +642,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         })
       }, null, 42
       /* CLASS, PROPS, HYDRATE_EVENTS */
-      , _hoisted_7), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.content]]), !_ctx.v$.content.required ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('validation.custom.dearSanta.content.required')), 1
+      , _hoisted_5), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.content]]), !_ctx.v$.content.required ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('validation.custom.dearSanta.content.required')), 1
       /* TEXT */
       )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])];
     }),
@@ -655,13 +651,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["action", "v$", "onSuccess", "onReset"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("caption", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.list.caption')), 1
+  , ["action", "v$", "onSuccess", "onReset"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("caption", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.list.caption')), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.list.date')), 1
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.list.date')), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.list.body')), 1
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.list.body')), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.list.status')), 1
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.list.status')), 1
   /* TEXT */
   )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.emailsByDate, function (email) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
@@ -673,7 +669,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       innerHTML: $options.nl2br($options.e(email.mail_body))
     }, null, 8
     /* PROPS */
-    , _hoisted_14)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_email_status, {
+    , _hoisted_12)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_email_status, {
       delivery_status: email.mail.delivery_status,
       last_update: email.mail.updated_at,
       onRedo: function onRedo($event) {
@@ -684,19 +680,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["delivery_status", "last_update", "onRedo"])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), $props.emails.length === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.list.empty')), 1
+  )), $props.emails.length === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.list.empty')), 1
   /* TEXT */
-  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [$options.recentTargetDearSanta ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tooltip, {
+  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [$options.recentTargetDearSanta ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tooltip, {
     key: 0,
     direction: "top"
   }, {
     tooltip: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t("common.email.recent")), 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t("common.email.recent")), 1
       /* TEXT */
       )];
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.resend.button')), 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.resend.button')), 1
       /* TEXT */
       )])];
     }),
@@ -709,9 +705,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.resend_target && $options.resend_target.apply($options, arguments);
     })
-  }, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.resend.button')), 1
+  }, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$t('dearsanta.resend.button')), 1
   /* TEXT */
-  )]))]), _hoisted_22]);
+  )]))])]);
 }
 
 /***/ }),
@@ -1317,13 +1313,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ajaxForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _ajaxForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
 /* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
-/* harmony import */ var _home_korko_secretsanta_dev_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_home_korko_secretsanta_dev_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_ajaxForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ajaxForm_vue_vue_type_template_id_5d387b62__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/ajaxForm.vue"]])
+const __exports__ = /*#__PURE__*/(0,_var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_ajaxForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ajaxForm_vue_vue_type_template_id_5d387b62__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/ajaxForm.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -1345,7 +1341,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _dearSantaForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _dearSantaForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
 /* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
 /* harmony import */ var _dearSantaForm_vue_vue_type_style_index_0_id_600f7ca4_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dearSantaForm.vue?vue&type=style&index=0&id=600f7ca4&scoped=true&lang=css */ "./resources/js/components/dearSantaForm.vue?vue&type=style&index=0&id=600f7ca4&scoped=true&lang=css");
-/* harmony import */ var _home_korko_secretsanta_dev_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -1353,7 +1349,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,_home_korko_secretsanta_dev_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_dearSantaForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_dearSantaForm_vue_vue_type_template_id_600f7ca4_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-600f7ca4"],['__file',"resources/js/components/dearSantaForm.vue"]])
+const __exports__ = /*#__PURE__*/(0,_var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_dearSantaForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_dearSantaForm_vue_vue_type_template_id_600f7ca4_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-600f7ca4"],['__file',"resources/js/components/dearSantaForm.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -1375,7 +1371,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _emailStatus_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _emailStatus_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
 /* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
 /* harmony import */ var _emailStatus_vue_vue_type_style_index_0_id_babfc29a_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./emailStatus.vue?vue&type=style&index=0&id=babfc29a&scoped=true&lang=css */ "./resources/js/components/emailStatus.vue?vue&type=style&index=0&id=babfc29a&scoped=true&lang=css");
-/* harmony import */ var _home_korko_secretsanta_dev_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -1383,7 +1379,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,_home_korko_secretsanta_dev_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_emailStatus_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_emailStatus_vue_vue_type_template_id_babfc29a_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-babfc29a"],['__file',"resources/js/components/emailStatus.vue"]])
+const __exports__ = /*#__PURE__*/(0,_var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_emailStatus_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_emailStatus_vue_vue_type_template_id_babfc29a_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-babfc29a"],['__file',"resources/js/components/emailStatus.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -1404,13 +1400,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _form_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _form_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
 /* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
-/* harmony import */ var _home_korko_secretsanta_dev_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_home_korko_secretsanta_dev_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_form_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_form_vue_vue_type_template_id_87fdc4e2__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/form.vue"]])
+const __exports__ = /*#__PURE__*/(0,_var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_form_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_form_vue_vue_type_template_id_87fdc4e2__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/form.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -1432,7 +1428,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _tooltip_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _tooltip_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
 /* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
 /* harmony import */ var _tooltip_vue_vue_type_style_index_0_id_b3eccff0_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tooltip.vue?vue&type=style&index=0&id=b3eccff0&scoped=true&lang=css */ "./resources/js/components/tooltip.vue?vue&type=style&index=0&id=b3eccff0&scoped=true&lang=css");
-/* harmony import */ var _home_korko_secretsanta_dev_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -1440,7 +1436,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,_home_korko_secretsanta_dev_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_tooltip_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_tooltip_vue_vue_type_template_id_b3eccff0_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-b3eccff0"],['__file',"resources/js/components/tooltip.vue"]])
+const __exports__ = /*#__PURE__*/(0,_var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_tooltip_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_tooltip_vue_vue_type_template_id_b3eccff0_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-b3eccff0"],['__file',"resources/js/components/tooltip.vue"]])
 /* hot reload */
 if (false) {}
 
