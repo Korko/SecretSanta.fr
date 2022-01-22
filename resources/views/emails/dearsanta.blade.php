@@ -1,8 +1,8 @@
 @component('mail::message')
 
-# Bonjour {{ $name }},
+# {{ __('Bonjour :name,', ['name' => $name]) }}
 
-Voici un message de {{ $targetName }} :
+{{ __('Voici un message de :target :', ['target' => $targetName]) }}
 
 > {{ $content }}
 

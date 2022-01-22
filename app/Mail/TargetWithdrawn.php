@@ -28,7 +28,7 @@ class TargetWithdrawn extends Mailable
     public function build()
     {
         return $this
-            ->subject(Lang::get('emails.target_withdrawn.title', [
+            ->subject(Lang::get('SecretSanta #:draw - Desistement du bénéficiaire de votre cadeau', [
                 'draw' => $this->santa->draw->id
             ]))
             ->markdown('emails.target_withdrawn', [

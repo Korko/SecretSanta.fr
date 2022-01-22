@@ -7,11 +7,11 @@
     @endslot
 
     @component('mail::panel')
-        Ceci est un message automatique, merci de ne pas y répondre.
+        {{ __('Ceci est un message automatique, merci de ne pas y répondre.') }}
     @endcomponent
 
     {{-- Body --}}
-    {{ $slot }}
+    {{ Illuminate\Mail\Markdown::parse($slot) }}
 
     {{-- Subcopy --}}
     @isset($subcopy)
@@ -25,7 +25,9 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+{{ __('Secrètement votre,') }}
+
+[{{ config('app.name') }}]({{ config('app.url') }})
         @endcomponent
     @endslot
 @endcomponent

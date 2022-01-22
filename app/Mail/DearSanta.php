@@ -41,7 +41,7 @@ class DearSanta extends TrackedMailable
         $url = URL::signedRoute('santa.index', ['participant' => $this->santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
 
         return $this
-            ->subject(Lang::get('emails.dear_santa.title', ['draw' => $this->santa->draw->id]))
+            ->subject(Lang::get('SecretSanta #:draw - Message du bénéficiaire de votre cadeau', ['draw' => $this->santa->draw->id]))
             ->markdown('emails.dearsanta', [
                 'name' => $this->santa->name,
                 'draw' => $this->santa->draw->id,

@@ -1,13 +1,15 @@
 @component('mail::message')
 
-# Bonjour {{ $name }},
+# {{ __('Bonjour :name,', ['name' => $name]) }}
 
-Vous êtes amené à participer à une remise de cadeaux et voici le message de votre organisateur :
+{{ __('Vous êtes amené à participer à une remise de cadeaux et voici le message de votre organisateur :') }}
 
-> {{ $content }}
+@component('mail::quote')
+{{ $content }}
+@endcomponent
 
 @component('mail::button', ['url' => $dearSantaLink])
-Ecrire à mon Père Noël Secret
+{{ __('Ecrire à mon Père Noël Secret') }}
 @endcomponent
 
 @endcomponent

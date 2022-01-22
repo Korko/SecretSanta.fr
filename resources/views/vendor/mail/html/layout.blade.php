@@ -73,11 +73,11 @@
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: #ffffff;" align="center">
         <tr>
-            <td align="center" valign="top" style="background: rgba(33,45,57,.8) url({{ mix('/images/email_bg1.png') }} ); background-repeat: repeat-x; background-position: 0 0;">
+            <td align="center" valign="top" style="background: rgba(33,45,57,.8) url('{{ url('/images/email_bg1.png') }}'); background-image: url('{{ url('/images/email_bg1.png') }}'); background-repeat: repeat-x; background-position: 0 0;">
                 <table width="110" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td class="td" style="width:86px; min-width:86px; height:86px; min-height:86px; font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; background:#000;border-radius: 0 0 100% 100%;padding:12px;">
-                            <img src="{{ mix('/images/logo.png') }}" width="86" height="86" border="0" alt="" />
+                            <img src="{{ url('/images/logo.png') }}" width="86" height="86" border="0" alt="" />
                         </td>
                     </tr>
                 </table>
@@ -99,7 +99,7 @@
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                         <tr>
                                                             <td style="text-align:center; font-style:italic; padding-bottom:15px;">
-                                                                {{ Illuminate\Mail\Markdown::parse($slot) }}
+                                                                {{ $slot }}
 
                                                                 {{ $subcopy ?? '' }}
                                                             </td>

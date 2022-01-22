@@ -1,7 +1,7 @@
 @component('mail::message')
 
-# Bonjour {{ $name }},
+# {{ __('Bonjour :name,', ['name' => $name]) }}
 
-Votre organisateur/trice a décidé de renommer votre cible en {{ $targetName }}.
+{{ __('Votre organisateur/trice a décidé de renommer votre cible en :target.', ['target' => $targetName]) }}
 
 @endcomponent

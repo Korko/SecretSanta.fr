@@ -31,7 +31,7 @@ class PendingDraw extends Mailable
     public function build()
     {
         return $this
-            ->subject(Lang::get('emails.pending_draw.title', ['draw' => $this->draw->id]))
+            ->subject(Lang::get('SecretSanta - Attente de validation', ['draw' => $this->draw->id]))
             ->markdown('emails.pending_draw', [
                 'name' => $this->draw->organizer_name,
                 'validationLink' => URL::signedRoute('pending.index', ['pending' => $this->draw->id]).'#'.base64_encode(DrawCrypt::getIV()),

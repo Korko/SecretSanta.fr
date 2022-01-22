@@ -28,7 +28,7 @@ class ConfirmWithdrawal extends Mailable
     public function build()
     {
         return $this
-            ->subject(Lang::get('emails.confirm_withdrawal.title', [
+            ->subject(Lang::get('SecretSanta #:draw - Confirmation de désistement', [
                 'draw' => $this->santa->draw->id
             ]))
             ->markdown('emails.confirm_withdrawal', [

@@ -28,7 +28,7 @@ class TargetNameChanged extends Mailable
     public function build()
     {
         return $this
-            ->subject(Lang::get('emails.name_changed.title', [
+            ->subject(Lang::get('SecretSanta #:draw - Votre cible a changé de nom', [
                 'draw' => $this->santa->draw->id
             ]))
             ->markdown('emails.name_changed', [
