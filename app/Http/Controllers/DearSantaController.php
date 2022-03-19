@@ -19,11 +19,20 @@ class DearSantaController extends Controller
 
     public function index(Participant $participant)
     {
-        return view('dearSanta', [
-            'participant' => $participant->hash,
+        return static::renderWithInertia('DearSanta.vue', [
+            'routes' => [
+                'form' => URL::route('form.index'),
+                'dashboard' => URL::route('dashboard'),
+                'contact' => URL::signedRoute('santa.contact', ['participant' => $participant]),
+                'fetch' => URL::signedRoute('santa.fetch', ['participant' => $participant]),
+                'resendTarget' => URL::signedRoute('santa.resendTarget', ['participant' => $participant])
+            ]
         ]);
     }
 
+    /**
+     * Return encrypted data
+     */
     public function fetch(Participant $participant)
     {
         // The hash was validated in middleware so we can validate that the email was received
@@ -34,22 +43,21 @@ class DearSantaController extends Controller
         return response()->json([
             'participant' => $participant->only(['hash', 'name']),
             'draw' => $participant->draw->only(['hash', 'mail_title', 'created_at', 'finished_at', 'organizer_name']),
-            'targetDearSantaLastUpdate' => $participant->target->dearSantas->max('mail.updated_at'),
+            'targetDearSantaLastUpdate' => $participant->target->dearSantas->max('mail.updated_at') ?: Carbon::now(),
             'emails' => $participant->dearSantas->mapWithKeys(function ($email) {
                 return [
                     $email->mail->id => $email->only($this->dearSantaPublicFields)
                 ];
             }),
-            'resendEmailUrls' => $participant->draw->expired ? [] : $participant->dearSantas->mapWithKeys(function ($dearSanta) use ($participant) {
-                return [
-                    $dearSanta->mail->id => URL::signedRoute('santa.resend', [
-                        'participant' => $participant, 'dearSanta' => $dearSanta
-                    ])
-                ];
-            }),
-            'resendTargetEmailsUrl' => $participant->draw->expired ? null : URL::signedRoute('santa.resend_target', [
-                'participant' => $participant
-            ])
+            'routes' => [
+                'resendEmail' => $participant->draw->expired ? [] : $participant->dearSantas->mapWithKeys(function ($dearSanta) use ($participant) {
+                    return [
+                        $dearSanta->mail->id => URL::signedRoute('santa.resend', [
+                            'participant' => $participant, 'dearSanta' => $dearSanta
+                        ])
+                    ];
+                })
+            ]
         ]);
     }
 

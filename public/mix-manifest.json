@@ -1,15 +1,7 @@
 {
-    "/js/common.js": "/js/common.js?id=7dc43dae1600dc583401",
-    "/js/app.js": "/js/app.js?id=e50bca5a26db0e4f3778",
-    "/js/manifest.js": "/js/manifest.js?id=19b60ba4ec53305a639b",
-    "/css/vendor.css": "/css/vendor.css?id=f58de6f7998a39ec844d",
-    "/css/webfonts.css": "/css/webfonts.css?id=6df7c4c18812e7d1e299",
-    "/css/app.css": "/css/app.css?id=e0a3f7b6d92bcf68de63",
-    "/css/404.css": "/css/404.css?id=d6d96b00a34fdc0c49f9",
-    "/js/vendor.js": "/js/vendor.js?id=01c35e672ee714633285",
-    "/images/logo.avif": "/images/logo.avif?id=cb15627674b1dec80295",
-    "/images/logo.png": "/images/logo.png?id=d809190f5e24f89b3410",
-    "/images/logo.webp": "/images/logo.webp?id=d84723936cccc5cff077",
-    "/images/logo_black.png": "/images/logo_black.png?id=4dec9fed0079d7b8140c",
-    "/images/email_bg1.png": "/images/email_bg1.png?id=c23d2b6602232707da57"
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/css/webfonts.css": "/css/webfonts.css",
+    "/images/logo_black.png": "/images/logo_black.png",
+    "/images/email_bg1.png": "/images/email_bg1.png"
 }

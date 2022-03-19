@@ -5,8 +5,10 @@ use App\Models\Participant;
 use App\Models\PendingDraw;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DearSantaController;
+use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
+use App\Http\Controllers\SingleController;
 use App\Http\Controllers\StartController;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
@@ -32,14 +34,19 @@ Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').
 Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
 Route::pattern('dearSanta', '[0-9a-zA-Z]{'.config('hashids.connections.dearSanta.length').',}');
 
-Route::view('/faq', 'faq')->name('faq');
-Route::view('/dashboard', 'dashboard')->name('dashboard');
-Route::view('/legal', 'legal')->name('legal');
+Route::fallback([ErrorController::class, 'pageNotFound'])->name('404');
+
+Route::controller(SingleController::class)
+    ->group(function () {
+        Route::get('/faq', 'faq')->name('faq');
+        Route::get('/dashboard', 'dashboard')->name('dashboard');
+        Route::get('/legal', 'legal')->name('legal');
+    });
 
 Route::controller(RandomFormController::class)
     ->name('form.')
     ->group(function () {
-        Route::view('/', 'randomForm')->name('index');
+        Route::get('/', 'index')->name('index');
         Route::post('/process', 'handle')->name('process');
     });
 
@@ -49,8 +56,12 @@ Route::controller(StartController::class)
     ->name('pending.')
     ->group(function() {
         Route::get('/', 'index')->name('view');
-        Route::get('/process', 'process')->name('process')
-            ->middleware('decrypt.iv:pending,organizer_email');
+
+        Route::middleware('decrypt.iv:pending,organizer_email')
+            ->group(function () {
+                Route::get('/fetch', 'fetch')->name('fetch');
+                Route::get('/process', 'process')->name('process');
+            });
     });
 
 Route::controller(DearSantaController::class)
@@ -59,39 +70,15 @@ Route::controller(DearSantaController::class)
     ->name('santa.')
     ->group(function() {
         Route::get('/', 'index')->name('index')
-            ->missing(function () {
-                return response()->view('missingDraw', [], 404);
-            });
+            ->missing([ErrorController::class, 'drawNotFound']);
 
         Route::middleware('decrypt.iv:participant,name')
             ->group(function () {
                 Route::get('/fetch', 'fetch')->name('fetch');
                 Route::post('/send', 'handle')->name('contact');
                 Route::get('/{dearSanta}/resend', 'resend')->name('resend');
-                Route::get('/resendTarget', 'resendTarget')->name('resend_target');
+                Route::get('/resendTarget', 'resendTarget')->name('resendTarget');
             });
-
-        Route::post('/sub', function(Participant $participant, Request $request) {
-                $participant->updatePushSubscription(
-                    $request->input('endpoint'),
-                    $request->input('keys.p256dh'),
-                    $request->input('keys.auth')
-                );
-
-                return response()->json([
-                    'success' => true
-                ]);
-            })
-            ->name('sub');
-
-        Route::post('/unsub', function(Participant $participant, Request $request) {
-                $participant->deletePushSubscription($request->input('endpoint'));
-
-                return response()->json([
-                    'success' => true
-                ]);
-            })
-            ->name('unsub');
     });
 
 Route::controller(OrganizerController::class)
@@ -100,9 +87,7 @@ Route::controller(OrganizerController::class)
     ->name('organizer.')
     ->group(function() {
         Route::get('/', 'index')->name('index')
-            ->missing(function () {
-                return response()->view('missingDraw', [], 404);
-            });
+            ->missing([ErrorController::class, 'drawNotFound']);
 
         Route::middleware('decrypt.iv:draw,mail_title')->group(function () {
             Route::get('/fetch', 'fetch')->name('fetch');

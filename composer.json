@@ -15,6 +15,7 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "inertiajs/inertia-laravel": "^0.5.4",
         "korko/validator": "dev-master",
         "laravel/dusk": "^6.11",
         "laravel/framework": "^8.18",

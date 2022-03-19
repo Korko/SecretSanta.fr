@@ -1,23 +1,5 @@
-import { createApp, defineAsyncComponent } from 'vue';
-
-import '@fontsource/kreon';
-
-const app = createApp({
-    mounted: function() {
-        document.body.classList.add('cssLoading');
-        setTimeout(() => document.body.classList.remove('cssLoading'), 0);
-    },
-    components: {
-        PageRandom: defineAsyncComponent(() => import('./components/pageRandom.vue')),
-        Pending: defineAsyncComponent(() => import('./components/pending.vue')),
-        OrganizerForm: defineAsyncComponent(() => import('./components/organizer/form.vue')),
-        DearSantaForm: defineAsyncComponent(() => import('./components/dearSantaForm.vue')),
-        Dashboard: defineAsyncComponent(() => import('./components/dashboard.vue')),
-        Faq: defineAsyncComponent(() => import('./components/faq.vue')),
-        VueFetcher: defineAsyncComponent(() => import('./components/vueFetcher.vue'))
-    }
-});
-app.mount('#main');
+import { createApp, h } from 'vue';
+import { createInertiaApp } from '@inertiajs/inertia-vue3'
 
 const lang = document.documentElement.lang.substr(0, 2);
 import Locale from './vue-i18n-locales.generated.js';
@@ -29,7 +11,26 @@ const i18n = createI18n({
     globalInjection: true
 });
 
-app.use(i18n);
+createInertiaApp({
+    resolve: name => import(`./Pages/${name}`),
+    setup({ el, App, props, plugin }) {
+        createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .use(i18n)
+            .mount(el)
+    },
+});
 
 //import VuejsDialog from 'vuejs-dialog';
 //app.use(VueJsDialog);
+
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};

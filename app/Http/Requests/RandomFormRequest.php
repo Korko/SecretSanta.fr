@@ -38,7 +38,7 @@ class RandomFormRequest extends Request
             'participants.*.exclusions.*' => 'integer|in_keys:participants',
 
             'title'                       => 'required|string|max:36773',
-            'content'                     => 'required|string|max:36773|contains:{TARGET}',
+            'content'                     => 'required|string|max:36773',
         ];
     }
 
@@ -61,7 +61,6 @@ class RandomFormRequest extends Request
             'participants.*.email.email'     => Lang::get('validation.custom.randomform.participant.email.format'),
             'title.required'                 => Lang::get('validation.custom.randomform.title.required'),
             'content.required'               => Lang::get('validation.custom.randomform.content.required'),
-            'content.contains'               => Lang::get('validation.custom.randomform.content.contains'),
         ];
     }
 }

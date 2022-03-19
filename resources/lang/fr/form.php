@@ -36,15 +36,15 @@ A noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse 
             'content2' => "Ajoutez des exclusions. Si vous ne voulez pas que deux participant(e)s puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
             'heading3' => "Troisième étape : préparer l'e-mail",
             'content3' => "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participant(e)s recevront.
-Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".
-(Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
+Le mot clef \"{'{'}TARGET{'}'}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".
+(Optionel) Vous pouvez aussi utiliser le mot clef \"{'{'}SANTA{'}'}\" qui sera remplacé par le nom du destinataire du message.",
             'heading4' => 'Et après ?',
             'content4' => "Jusqu'au jour de l'évènement spécifiée à la fin, les participant(e)s peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email. Mais celui-ci ne peut pas répondre, au risque de dévoiler son identité.
 L'organisateur/organisatrice dispose aussi d'une interface dédiée pour retrouver le récapitulatif des participant(e)s et des exclusions.",
             'notice' => 'secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.
 Celles-ci sont chiffrées pour être inutilisables sans action de votre part.
 Aucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.
-Le code source est disponible sur <a href="https://github.com/Korko/SecretSanta">GitHub</a>',
+Le code source est disponible sur {sources}',
         ],
         'go' => [
             'title'    => 'À vous de jouer !',

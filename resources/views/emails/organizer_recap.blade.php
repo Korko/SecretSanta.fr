@@ -1,6 +1,6 @@
 @component('mail::message')
 
-# {{ __('Bonjour :name,', ['name' => $name]) }},
+# {{ __('Bonjour :name,', ['name' => $name]) }}
 
 {{ __('Afin de surveiller si tous les participants ont bien reçu leur email ou modifier une adresse en cas d\'erreur, rendez vous sur votre interface personnalisée.') }}
 

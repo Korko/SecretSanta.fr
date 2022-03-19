@@ -81,6 +81,9 @@ mix.webpackConfig({
         },
       }
     ]
+  },
+  output: {
+    chunkFilename: 'js/[name].js?id=[chunkhash]',
   }
 });
 
@@ -98,19 +101,14 @@ mix.options({
     imgLoaderOptions: false
 });
 
-mix.js('resources/js/common.js', 'public/js')
-   .js('resources/js/app.js', 'public/js')
-//   .js('resources/js/dearSanta.js', 'public/js')
-//   .js('resources/js/organizer.js', 'public/js')
+mix.js('resources/js/app.js', 'public/js')
    .vue({
       extractStyles: false,
       globalStyles: false
     })
 //   .polyfill({ entryPoints: "all" })
-   .extract()
+//   .extract()
    .sass('resources/sass/app.scss', 'public/css')
-   .sass('resources/sass/404.scss', 'public/css')
-   .sass('resources/sass/vendor.scss', 'public/css')
    .sass('resources/sass/webfonts.scss', 'public/css')
 //   .purgeCss({
 //      content: [
@@ -128,7 +126,7 @@ mix.js('resources/js/common.js', 'public/js')
 //        "node_modules/**/*.vue", // Added line, all the rest is copied from postcss-purgecss-laravel plugin
 //      ]
 //   })
-   .copy('resources/images/logo.*', 'public/images') // No auto parsing of blades
+//   .copy('resources/images/logo.*', 'public/images')
    .copy('resources/images/logo_black.png', 'public/images') // Meta image for social networks
    .copy('resources/images/email_bg1.png', 'public/images'); // Background image in email
 

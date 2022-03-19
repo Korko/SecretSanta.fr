@@ -8,9 +8,22 @@ use App\Http\Requests\RandomFormRequest;
 use Arr;
 use Lang;
 use Notification;
+use URL;
 
 class RandomFormController extends Controller
 {
+    public function index()
+    {
+        return static::renderWithInertia('RandomForm.vue', [
+            'routes' => [
+                'dashboard' => URL::route('dashboard'),
+                'faq' => URL::route('faq'),
+                'process' => URL::route('form.process')
+            ],
+            'bmc' => config('app.bmc'),
+        ]);
+    }
+
     public function handle(RandomFormRequest $request)
     {
         $safe = $request->safe();

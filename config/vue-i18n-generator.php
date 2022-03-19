@@ -31,6 +31,7 @@ return [
         'form',
         'organizer',
         'validation',
+        '404',
     ],
 
     /*

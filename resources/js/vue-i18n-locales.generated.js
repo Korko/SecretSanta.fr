@@ -68,7 +68,6 @@ export default {
         },
         "faq": {
             "nav": {
-                "go": "Allez, c'est parti !",
                 "contact": "J'ai encore une question"
             },
             "categories": {
@@ -329,10 +328,10 @@ export default {
                     "heading2": "Deuxième étape : préciser les exclusions",
                     "content2": "Ajoutez des exclusions. Si vous ne voulez pas que deux participant(e)s puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
                     "heading3": "Troisième étape : préparer l'e-mail",
-                    "content3": "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participant(e)s recevront.\nLe mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".\n(Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
+                    "content3": "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participant(e)s recevront.\nLe mot clef \"{'{'}TARGET{'}'}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".\n(Optionel) Vous pouvez aussi utiliser le mot clef \"{'{'}SANTA{'}'}\" qui sera remplacé par le nom du destinataire du message.",
                     "heading4": "Et après ?",
                     "content4": "Jusqu'au jour de l'évènement spécifiée à la fin, les participant(e)s peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email. Mais celui-ci ne peut pas répondre, au risque de dévoiler son identité.\nL'organisateur/organisatrice dispose aussi d'une interface dédiée pour retrouver le récapitulatif des participant(e)s et des exclusions.",
-                    "notice": "secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.\nCelles-ci sont chiffrées pour être inutilisables sans action de votre part.\nAucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.\nLe code source est disponible sur <a href=\"https://github.com/Korko/SecretSanta\">GitHub</a>"
+                    "notice": "secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.\nCelles-ci sont chiffrées pour être inutilisables sans action de votre part.\nAucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.\nLe code source est disponible sur {sources}"
                 },
                 "go": {
                     "title": "À vous de jouer !",
@@ -428,6 +427,12 @@ export default {
                 "button": "Me ré-envoyer les mails que j'ai reçu de ma cible"
             },
             "finished": "Votre évènement a été marqué comme terminé ({finished_at}). Le nom de votre cible a été révélé à l'organisateur et certaines actions ne sont plus disponibles, comme envoyer des emails."
+        },
+        "404": {
+            "title": "Oups, cette page n'existe pas",
+            "page_subtitle": "Le lutin a du se tromper en copiant le lien",
+            "draw_subtitle": "Votre évènement SecretSanta est probablement terminé",
+            "back": "Revenir sur la page d'accueil"
         }
     }
 }

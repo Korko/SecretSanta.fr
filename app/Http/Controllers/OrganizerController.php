@@ -23,11 +23,21 @@ class OrganizerController extends Controller
 {
     public function index(Draw $draw)
     {
-        return view('organizer', [
-            'draw' => $draw->hash,
+        return static::renderWithInertia('OrganizerPanel.vue', [
+            'routes' => [
+                'form' => URL::route('form.index'),
+                'dashboard' => URL::route('dashboard'),
+                'fetch' => URL::signedRoute('organizer.fetch', ['draw' => $draw]) ,
+                'csvInitUrl' => URL::signedRoute('organizer.csvInit', ['draw' => $draw]),
+                'csvFinalUrl' => URL::signedRoute('organizer.csvFinal', ['draw' => $draw]),
+                'deleteUrl' => URL::temporarySignedRoute('organizer.delete', 3600, ['draw' => $draw]),
+            ]
         ]);
     }
 
+    /**
+     * Return encrypted data
+     */
     public function fetch(Draw $draw)
     {
         $drawFields = ['hash', 'mail_title', 'created_at', 'finished_at', 'deletes_at', 'next_solvable', 'organizer_name'];
