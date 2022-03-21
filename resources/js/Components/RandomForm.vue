@@ -1,5 +1,4 @@
 <script>
-    import alertify from '../Modules/alertify.js';
     import Toastify from '../Modules/toastify.js';
     import scrollTo from '../Modules/scrollTo.js';
 
@@ -147,7 +146,8 @@
                     encoding,
                     error: function() {
                         this.importing = false;
-                        alertify.errorAlert(this.$t('form.csv.importError'));
+                        this.$dialog
+                            .alert(this.$t('form.csv.importError'));
                     },
                     complete: function(file) {
                         this.participants = [];

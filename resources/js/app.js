@@ -1,19 +1,16 @@
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3'
-
-const lang = document.documentElement.lang.substr(0, 2);
-import Locale from './vue-i18n-locales.generated.js';
-
 import { createI18n } from 'vue-i18n';
-const i18n = createI18n({
-    locale: lang,
-    messages: Locale,
-    globalInjection: true
-});
 
 createInertiaApp({
     resolve: name => import(`./Pages/${name}`),
     setup({ el, App, props, plugin }) {
+        const i18n = createI18n({
+            locale: props.initialPage.props.app.locale,
+            messages: props.initialPage.props.app.translations,
+            globalInjection: true
+        });
+
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(i18n)

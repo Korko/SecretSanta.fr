@@ -16,7 +16,6 @@
         "@vueform/multiselect": "^2.2.1",
         "@vuelidate/core": "^2.0.0-alpha.32",
         "@vuelidate/validators": "^2.0.0-alpha.25",
-        "alertifyjs": "^1.13.1",
         "axios": "^0.21",
         "bootstrap": "^4.6.0",
         "core-js": "^3.11.1",
@@ -45,7 +44,6 @@
         "toastify-js": "^1.11.2",
         "vue": "^3.2.24",
         "vue-autosize": "^1.0.2",
-        "vue-i18n": "^9.2.0-beta.23",
         "vue-loader": "^16.8.3",
         "vue-template-compiler": "^2.6.12",
         "vuejs-dialog": "^1.4.2"

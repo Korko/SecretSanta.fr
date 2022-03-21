@@ -1,6 +1,5 @@
 <script>
     import fetch from '../Modules/fetch.js';
-    import alertify from '../Modules/alertify.js';
 
     export default {
         props: {
@@ -100,7 +99,8 @@
                             }
 
                             if(!callback && !callback2 && this.fieldErrors.length > 0) {
-                                alertify.errorAlert(this.$t('form.internalError'));
+                                this.$dialog
+                                    .alert(this.$t('form.internalError'));
                             }
 
                             this.$emit('error');

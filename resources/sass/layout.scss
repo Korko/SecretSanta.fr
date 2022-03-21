@@ -1,8 +1,5 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 
-@import '~alertifyjs/build/css/alertify.min.css';
-@import '~alertifyjs/build/css/themes/bootstrap.min.css';
-
 @import "~@fortawesome/fontawesome-free/css/all.css";
 
 #loadOverlay {
@@ -14,12 +11,6 @@
   -ms-transition: none !important;
   -o-transition: none !important;
   transition: none !important;
-}
-
-.alertify .ajs-dialog {
-    top: 50%;
-    transform: translateY(-50%);
-    margin: auto;
 }
 
 /*
