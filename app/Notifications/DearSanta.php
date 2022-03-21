@@ -5,16 +5,10 @@ namespace App\Notifications;
 use App\Mail\DearSanta as DearSantaMailable;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeEncrypted;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
-use Illuminate\Queue\SerializesModels;
 
-class DearSanta extends Notification implements ShouldQueue, ShouldBeEncrypted
+class DearSanta extends Notification
 {
-    use Queueable, SerializesModels;
-
     protected $dearSanta;
 
     public function __construct(DearSantaModel $dearSanta)

@@ -77,24 +77,34 @@ class OrganizerController extends Controller
         ]);
 
         if ($participant->email === $request->input('email')) {
-            $message = trans('message.sent');
-
             $participant->createMetric('resend_email');
         } else {
             $participant->email = $request->input('email');
             $participant->save();
 
             $participant->createMetric('change_email');
-
-            $message = trans('organizer.changed');
         }
 
         $participant->mail->markAsCreated();
 
-        $participant->notify(new TargetDrawn);
+        try {
+            $participant->notify(new TargetDrawn);
 
-        return response()->json([
-            'message' => $message, 'participant' => $participant->only(['hash', 'mail']),
+            $response = [
+                'message' => $participant->wasChanged('email') ?
+                    trans('Adresse email modifiée avec succès !') :
+                    trans('Email réenvoyé avec succès !')
+            ];
+        } catch(Exception $e) {
+            $response = [
+                'error' => $participant->wasChanged('email') ?
+                    trans('Adresse modifiée avec succès mais une erreur est survenue à l\'envoi de l\'email.') :
+                    trans('Une erreur est survenue dans l\'envoi de l\'email. Veuillez réessayer plus tard.')
+            ];
+        }
+
+        return response()->json($response + [
+            'participant' => $participant->only(['hash', 'mail']),
         ]);
     }
 
@@ -112,10 +122,20 @@ class OrganizerController extends Controller
 
         $participant->createMetric('change_name');
 
-        $participant->santa->notify(new TargetNameChanged);
+        try {
+            $participant->santa->notify(new TargetNameChanged);
 
-        return response()->json([
-            'message' => trans('organizer.changed'), 'participant' => $participant->only(['hash', 'name']),
+            $response = [
+                'message' => trans('Nom modifié avec succès !')
+            ];
+        } catch(Exception $e) {
+            $response = [
+                'error' => trans('Nom modifié avec succès mais le père noël secrêt de cette personne n\'a pas pu être prévenu du changement.')
+            ];
+        }
+
+        return response()->json($response + [
+            'participant' => $participant->only(['hash', 'name']),
         ]);
     }
 
@@ -130,15 +150,24 @@ class OrganizerController extends Controller
         $santa->target()->associate($target);
         $santa->save();
 
-        $santa->notify(new TargetWithdrawn);
-        $target->dearSantas->each(function ($dearSanta) use ($santa) {
-            $santa->notify(new DearSanta($dearSanta));
-        });
+        try {
+            $santa->notify(new TargetWithdrawn);
+            $target->dearSantas->each(function ($dearSanta) use ($santa) {
+                $santa->notify(new DearSanta($dearSanta));
+            });
+        } catch(Exception $e) {
+//TODO
+        }
+
         $participant->delete();
-        $participant->notify(new ConfirmWithdrawal);
+        try {
+            $participant->notify(new ConfirmWithdrawal);
+        } catch(Exception $e) {
+//TODO
+        }
 
         return response()->json([
-            'message' => trans('organizer.withdrawn', ['name' => $participant->name]),
+            'message' => trans(':name ne participe plus à l\'évènement.', ['name' => $participant->name]),
         ]);
     }
 
