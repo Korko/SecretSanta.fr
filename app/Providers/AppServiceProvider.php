@@ -2,13 +2,8 @@
 
 namespace App\Providers;
 
-use App\Facades\DrawCrypt;
-use Illuminate\Foundation\Application;
-use Illuminate\Mail\Markdown;
-use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
-use Queue;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,20 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Queue::createPayloadUsing(function ($connection, $queue, $payload) {
-            return [
-                'data' => array_merge($payload['data'], [
-                    'iv' => base64_encode(DrawCrypt::getIV())
-                ])
-            ];
-        });
-
-        $this->app['events']->listen(\Illuminate\Queue\Events\JobProcessing::class, function ($event) {
-            if (isset($event->job->payload()['data']['iv'])) {
-                DrawCrypt::setIV(base64_decode($event->job->payload()['data']['iv']));
-            }
-        });
-
         $this->bootInertia();
     }
 

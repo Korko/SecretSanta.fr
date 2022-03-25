@@ -191,6 +191,7 @@ return [
         App\Providers\EncryptionServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\MailServiceProvider::class,
+        App\Providers\QueueServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ValidatorServiceProvider::class,
 
