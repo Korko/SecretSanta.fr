@@ -13,7 +13,11 @@ class PendingDraw extends Model
 {
     use HasFactory, MassPrunable;
 
-    protected const HOURS_BEFORE_DELETION = 24;
+    protected $retentionPerStatus = [
+        self::STATE_CREATED => 24,
+        self::STATE_STARTED => 24 * 7,
+        self::STATE_ERROR => 24 * 7,
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -49,10 +53,14 @@ class PendingDraw extends Model
     public function prunable()
     {
         return static::where(function ($query) {
-            $query
-                ->where('status', '=', self::STATE_CREATED)
-                ->where('updated_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.self::HOURS_BEFORE_DELETION.'D')));
-        })->orWhere('status', '=', self::STATE_STARTED);
+            foreach($this->retentionPerStatus as $status => $retention) {
+                $query->orWhere(function ($query) use ($status, $retention) {
+                    $query
+                        ->where('status', '=', $status)
+                        ->where('updated_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.$retention.'D')));
+                });
+            }
+        });
     }
 
     /**
@@ -61,7 +69,12 @@ class PendingDraw extends Model
     public const STATE_CREATED = 'created';
 
     /**
-     * The draw was validated and is processing
+     * The draw was validated and is ready to be processed
+     */
+    public const STATE_READY = 'ready';
+
+    /**
+     * The draw is processing
      */
     public const STATE_DRAWING = 'drawing';
 
@@ -70,14 +83,21 @@ class PendingDraw extends Model
      */
     public const STATE_STARTED = 'started';
 
+    /**
+     * The draw is unsolvable and thus, cannot be processed
+     */
+    public const STATE_ERROR = 'error';
+
     public static $statuses = [
         self::STATE_CREATED,
+        self::STATE_READY,
         self::STATE_DRAWING,
         self::STATE_STARTED,
+        self::STATE_ERROR
     ];
 
-    public function markAsWaiting() : void {
-        $this->updateStatus(self::STATE_CREATED);
+    public function markAsReady() : void {
+        $this->updateStatus(self::STATE_READY);
     }
 
     public function markAsDrawing() : void {
@@ -85,13 +105,24 @@ class PendingDraw extends Model
     }
 
     public function markAsStarted(Draw $draw) : void {
+        $this->data = null; // Dont keep data, the draw is already started
+        $this->save();
+
         $this->draw()->associate($draw);
 
         $this->updateStatus(self::STATE_STARTED);
     }
 
+    public function markAsUnsolvable() : void {
+        $this->updateStatus(self::STATE_ERROR);
+    }
+
     public function isWaiting() : bool {
         return $this->status === self::STATE_CREATED;
+    }
+
+    public function isReady() : bool {
+        return $this->status === self::STATE_READY;
     }
 
     public function updateStatus($status)
