@@ -21,7 +21,12 @@ class SingleController extends Controller
 
     public function dashboard()
     {
-
+        return static::renderWithInertia('Dashboard.vue', [
+            'routes' => [
+                'form' => URL::route('form.index'),
+                'faq' => URL::route('faq'),
+            ],
+        ]);
     }
 
     public function legal()
