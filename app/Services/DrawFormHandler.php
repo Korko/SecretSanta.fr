@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Exceptions\SolverException;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Models\PendingDraw;
 use Arr;
 use DB;
+use Throwable;
 
 class DrawFormHandler
 {
@@ -83,7 +83,7 @@ class DrawFormHandler
             DB::commit();
 
             return $draw;
-        } catch(SolverException $e) {
+        } catch(Throwable $e) {
             DB::rollBack();
 
             throw $e;
