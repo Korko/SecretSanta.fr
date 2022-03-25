@@ -26,6 +26,11 @@ class SingleController extends Controller
 
     public function legal()
     {
-
+        return static::renderWithInertia('Legal.vue', [
+            'routes' => [
+                'form' => URL::route('form.index'),
+                'dashboard' => URL::route('dashboard'),
+            ],
+        ]);
     }
 }
