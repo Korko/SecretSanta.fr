@@ -19,929 +19,3110 @@ function e(e){return e&&"object"==typeof e&&"default"in e?e.default:e}var r=e(__
   \*******************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-function e(e){return e&&"object"==typeof e&&"default"in e?e.default:e}var t=e(__webpack_require__(/*! axios */ "./node_modules/axios/index.js")),n=__webpack_require__(/*! qs */ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/index.js"),i=e(__webpack_require__(/*! deepmerge */ "./node_modules/deepmerge/dist/cjs.js"));function r(){return(r=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var i in n)Object.prototype.hasOwnProperty.call(n,i)&&(e[i]=n[i])}return e}).apply(this,arguments)}var o,s={modal:null,listener:null,show:function(e){var t=this;"object"==typeof e&&(e="All Inertia requests must receive a valid Inertia response, however a plain JSON response was received.<hr>"+JSON.stringify(e));var n=document.createElement("html");n.innerHTML=e,n.querySelectorAll("a").forEach(function(e){return e.setAttribute("target","_top")}),this.modal=document.createElement("div"),this.modal.style.position="fixed",this.modal.style.width="100vw",this.modal.style.height="100vh",this.modal.style.padding="50px",this.modal.style.boxSizing="border-box",this.modal.style.backgroundColor="rgba(0, 0, 0, .6)",this.modal.style.zIndex=2e5,this.modal.addEventListener("click",function(){return t.hide()});var i=document.createElement("iframe");if(i.style.backgroundColor="white",i.style.borderRadius="5px",i.style.width="100%",i.style.height="100%",this.modal.appendChild(i),document.body.prepend(this.modal),document.body.style.overflow="hidden",!i.contentWindow)throw new Error("iframe not yet ready.");i.contentWindow.document.open(),i.contentWindow.document.write(n.outerHTML),i.contentWindow.document.close(),this.listener=this.hideOnEscape.bind(this),document.addEventListener("keydown",this.listener)},hide:function(){this.modal.outerHTML="",this.modal=null,document.body.style.overflow="visible",document.removeEventListener("keydown",this.listener)},hideOnEscape:function(e){27===e.keyCode&&this.hide()}};function a(e,t){var n;return function(){var i=arguments,r=this;clearTimeout(n),n=setTimeout(function(){return e.apply(r,[].slice.call(i))},t)}}function c(e,t,n){for(var i in void 0===t&&(t=new FormData),void 0===n&&(n=null),e=e||{})Object.prototype.hasOwnProperty.call(e,i)&&d(t,l(n,i),e[i]);return t}function l(e,t){return e?e+"["+t+"]":t}function d(e,t,n){return Array.isArray(n)?Array.from(n.keys()).forEach(function(i){return d(e,l(t,i.toString()),n[i])}):n instanceof Date?e.append(t,n.toISOString()):n instanceof File?e.append(t,n,n.name):n instanceof Blob?e.append(t,n):"boolean"==typeof n?e.append(t,n?"1":"0"):"string"==typeof n?e.append(t,n):"number"==typeof n?e.append(t,""+n):null==n?e.append(t,""):void c(n,e,t)}function u(e){return new URL(e.toString(),window.location.toString())}function h(e,t,r,o){void 0===o&&(o="brackets");var s=/^https?:\/\//.test(t.toString()),a=s||t.toString().startsWith("/"),c=!a&&!t.toString().startsWith("#")&&!t.toString().startsWith("?"),l=t.toString().includes("?")||e===exports.Method.GET&&Object.keys(r).length,d=t.toString().includes("#"),u=new URL(t.toString(),"http://localhost");return e===exports.Method.GET&&Object.keys(r).length&&(u.search=n.stringify(i(n.parse(u.search,{ignoreQueryPrefix:!0}),r),{encodeValuesOnly:!0,arrayFormat:o}),r={}),[[s?u.protocol+"//"+u.host:"",a?u.pathname:"",c?u.pathname.substring(1):"",l?u.search:"",d?u.hash:""].join(""),r]}function p(e){return(e=new URL(e.href)).hash="",e}function f(e,t){return document.dispatchEvent(new CustomEvent("inertia:"+e,t))}(o=exports.Method||(exports.Method={})).GET="get",o.POST="post",o.PUT="put",o.PATCH="patch",o.DELETE="delete";var v=function(e){return f("finish",{detail:{visit:e}})},m=function(e){return f("navigate",{detail:{page:e}})},g="undefined"==typeof window,w=function(){function e(){this.visitId=null}var n=e.prototype;return n.init=function(e){var t=e.resolveComponent,n=e.swapComponent;this.page=e.initialPage,this.resolveComponent=t,this.swapComponent=n,this.isBackForwardVisit()?this.handleBackForwardVisit(this.page):this.isLocationVisit()?this.handleLocationVisit(this.page):this.handleInitialPageVisit(this.page),this.setupEventListeners()},n.handleInitialPageVisit=function(e){this.page.url+=window.location.hash,this.setPage(e,{preserveState:!0}).then(function(){return m(e)})},n.setupEventListeners=function(){window.addEventListener("popstate",this.handlePopstateEvent.bind(this)),document.addEventListener("scroll",a(this.handleScrollEvent.bind(this),100),!0)},n.scrollRegions=function(){return document.querySelectorAll("[scroll-region]")},n.handleScrollEvent=function(e){"function"==typeof e.target.hasAttribute&&e.target.hasAttribute("scroll-region")&&this.saveScrollPositions()},n.saveScrollPositions=function(){this.replaceState(r({},this.page,{scrollRegions:Array.from(this.scrollRegions()).map(function(e){return{top:e.scrollTop,left:e.scrollLeft}})}))},n.resetScrollPositions=function(){var e;document.documentElement.scrollTop=0,document.documentElement.scrollLeft=0,this.scrollRegions().forEach(function(e){e.scrollTop=0,e.scrollLeft=0}),this.saveScrollPositions(),window.location.hash&&(null==(e=document.getElementById(window.location.hash.slice(1)))||e.scrollIntoView())},n.restoreScrollPositions=function(){var e=this;this.page.scrollRegions&&this.scrollRegions().forEach(function(t,n){var i=e.page.scrollRegions[n];i&&(t.scrollTop=i.top,t.scrollLeft=i.left)})},n.isBackForwardVisit=function(){return window.history.state&&window.performance&&window.performance.getEntriesByType("navigation").length>0&&"back_forward"===window.performance.getEntriesByType("navigation")[0].type},n.handleBackForwardVisit=function(e){var t=this;window.history.state.version=e.version,this.setPage(window.history.state,{preserveScroll:!0,preserveState:!0}).then(function(){t.restoreScrollPositions(),m(e)})},n.locationVisit=function(e,t){try{window.sessionStorage.setItem("inertiaLocationVisit",JSON.stringify({preserveScroll:t})),window.location.href=e.href,p(window.location).href===p(e).href&&window.location.reload()}catch(e){return!1}},n.isLocationVisit=function(){try{return null!==window.sessionStorage.getItem("inertiaLocationVisit")}catch(e){return!1}},n.handleLocationVisit=function(e){var t,n,i,r,o=this,s=JSON.parse(window.sessionStorage.getItem("inertiaLocationVisit")||"");window.sessionStorage.removeItem("inertiaLocationVisit"),e.url+=window.location.hash,e.rememberedState=null!=(t=null==(n=window.history.state)?void 0:n.rememberedState)?t:{},e.scrollRegions=null!=(i=null==(r=window.history.state)?void 0:r.scrollRegions)?i:[],this.setPage(e,{preserveScroll:s.preserveScroll,preserveState:!0}).then(function(){s.preserveScroll&&o.restoreScrollPositions(),m(e)})},n.isLocationVisitResponse=function(e){return e&&409===e.status&&e.headers["x-inertia-location"]},n.isInertiaResponse=function(e){return null==e?void 0:e.headers["x-inertia"]},n.createVisitId=function(){return this.visitId={},this.visitId},n.cancelVisit=function(e,t){var n=t.cancelled,i=void 0!==n&&n,r=t.interrupted,o=void 0!==r&&r;!e||e.completed||e.cancelled||e.interrupted||(e.cancelToken.cancel(),e.onCancel(),e.completed=!1,e.cancelled=i,e.interrupted=o,v(e),e.onFinish(e))},n.finishVisit=function(e){e.cancelled||e.interrupted||(e.completed=!0,e.cancelled=!1,e.interrupted=!1,v(e),e.onFinish(e))},n.resolvePreserveOption=function(e,t){return"function"==typeof e?e(t):"errors"===e?Object.keys(t.props.errors||{}).length>0:e},n.visit=function(e,n){var i=this,o=void 0===n?{}:n,a=o.method,l=void 0===a?exports.Method.GET:a,d=o.data,v=void 0===d?{}:d,m=o.replace,g=void 0!==m&&m,w=o.preserveScroll,y=void 0!==w&&w,S=o.preserveState,b=void 0!==S&&S,E=o.only,P=void 0===E?[]:E,I=o.headers,x=void 0===I?{}:I,V=o.errorBag,T=void 0===V?"":V,L=o.forceFormData,O=void 0!==L&&L,k=o.onCancelToken,C=void 0===k?function(){}:k,M=o.onBefore,A=void 0===M?function(){}:M,F=o.onStart,R=void 0===F?function(){}:F,j=o.onProgress,D=void 0===j?function(){}:j,B=o.onFinish,q=void 0===B?function(){}:B,N=o.onCancel,H=void 0===N?function(){}:N,W=o.onSuccess,G=void 0===W?function(){}:W,U=o.onError,X=void 0===U?function(){}:U,J=o.queryStringArrayFormat,K=void 0===J?"brackets":J,_="string"==typeof e?u(e):e;if(!function e(t){return t instanceof File||t instanceof Blob||t instanceof FileList&&t.length>0||t instanceof FormData&&Array.from(t.values()).some(function(t){return e(t)})||"object"==typeof t&&null!==t&&Object.values(t).some(function(t){return e(t)})}(v)&&!O||v instanceof FormData||(v=c(v)),!(v instanceof FormData)){var z=h(l,_,v,K),Q=z[1];_=u(z[0]),v=Q}var Y={url:_,method:l,data:v,replace:g,preserveScroll:y,preserveState:b,only:P,headers:x,errorBag:T,forceFormData:O,queryStringArrayFormat:K,cancelled:!1,completed:!1,interrupted:!1};if(!1!==A(Y)&&function(e){return f("before",{cancelable:!0,detail:{visit:e}})}(Y)){this.activeVisit&&this.cancelVisit(this.activeVisit,{interrupted:!0}),this.saveScrollPositions();var Z=this.createVisitId();this.activeVisit=r({},Y,{onCancelToken:C,onBefore:A,onStart:R,onProgress:D,onFinish:q,onCancel:H,onSuccess:G,onError:X,queryStringArrayFormat:K,cancelToken:t.CancelToken.source()}),C({cancel:function(){i.activeVisit&&i.cancelVisit(i.activeVisit,{cancelled:!0})}}),function(e){f("start",{detail:{visit:e}})}(Y),R(Y),t({method:l,url:p(_).href,data:l===exports.Method.GET?{}:v,params:l===exports.Method.GET?v:{},cancelToken:this.activeVisit.cancelToken.token,headers:r({},x,{Accept:"text/html, application/xhtml+xml","X-Requested-With":"XMLHttpRequest","X-Inertia":!0},P.length?{"X-Inertia-Partial-Component":this.page.component,"X-Inertia-Partial-Data":P.join(",")}:{},T&&T.length?{"X-Inertia-Error-Bag":T}:{},this.page.version?{"X-Inertia-Version":this.page.version}:{}),onUploadProgress:function(e){v instanceof FormData&&(e.percentage=Math.round(e.loaded/e.total*100),function(e){f("progress",{detail:{progress:e}})}(e),D(e))}}).then(function(e){var t;if(!i.isInertiaResponse(e))return Promise.reject({response:e});var n=e.data;P.length&&n.component===i.page.component&&(n.props=r({},i.page.props,n.props)),y=i.resolvePreserveOption(y,n),(b=i.resolvePreserveOption(b,n))&&null!=(t=window.history.state)&&t.rememberedState&&n.component===i.page.component&&(n.rememberedState=window.history.state.rememberedState);var o=_,s=u(n.url);return o.hash&&!s.hash&&p(o).href===s.href&&(s.hash=o.hash,n.url=s.href),i.setPage(n,{visitId:Z,replace:g,preserveScroll:y,preserveState:b})}).then(function(){var e=i.page.props.errors||{};if(Object.keys(e).length>0){var t=T?e[T]?e[T]:{}:e;return function(e){f("error",{detail:{errors:e}})}(t),X(t)}return f("success",{detail:{page:i.page}}),G(i.page)}).catch(function(e){if(i.isInertiaResponse(e.response))return i.setPage(e.response.data,{visitId:Z});if(i.isLocationVisitResponse(e.response)){var t=u(e.response.headers["x-inertia-location"]),n=_;n.hash&&!t.hash&&p(n).href===t.href&&(t.hash=n.hash),i.locationVisit(t,!0===y)}else{if(!e.response)return Promise.reject(e);f("invalid",{cancelable:!0,detail:{response:e.response}})&&s.show(e.response.data)}}).then(function(){i.activeVisit&&i.finishVisit(i.activeVisit)}).catch(function(e){if(!t.isCancel(e)){var n=f("exception",{cancelable:!0,detail:{exception:e}});if(i.activeVisit&&i.finishVisit(i.activeVisit),n)return Promise.reject(e)}})}},n.setPage=function(e,t){var n=this,i=void 0===t?{}:t,r=i.visitId,o=void 0===r?this.createVisitId():r,s=i.replace,a=void 0!==s&&s,c=i.preserveScroll,l=void 0!==c&&c,d=i.preserveState,h=void 0!==d&&d;return Promise.resolve(this.resolveComponent(e.component)).then(function(t){o===n.visitId&&(e.scrollRegions=e.scrollRegions||[],e.rememberedState=e.rememberedState||{},(a=a||u(e.url).href===window.location.href)?n.replaceState(e):n.pushState(e),n.swapComponent({component:t,page:e,preserveState:h}).then(function(){l||n.resetScrollPositions(),a||m(e)}))})},n.pushState=function(e){this.page=e,window.history.pushState(e,"",e.url)},n.replaceState=function(e){this.page=e,window.history.replaceState(e,"",e.url)},n.handlePopstateEvent=function(e){var t=this;if(null!==e.state){var n=e.state,i=this.createVisitId();Promise.resolve(this.resolveComponent(n.component)).then(function(e){i===t.visitId&&(t.page=n,t.swapComponent({component:e,page:n,preserveState:!1}).then(function(){t.restoreScrollPositions(),m(n)}))})}else{var o=u(this.page.url);o.hash=window.location.hash,this.replaceState(r({},this.page,{url:o.href})),this.resetScrollPositions()}},n.get=function(e,t,n){return void 0===t&&(t={}),void 0===n&&(n={}),this.visit(e,r({},n,{method:exports.Method.GET,data:t}))},n.reload=function(e){return void 0===e&&(e={}),this.visit(window.location.href,r({},e,{preserveScroll:!0,preserveState:!0}))},n.replace=function(e,t){var n;return void 0===t&&(t={}),console.warn("Inertia.replace() has been deprecated and will be removed in a future release. Please use Inertia."+(null!=(n=t.method)?n:"get")+"() instead."),this.visit(e,r({preserveState:!0},t,{replace:!0}))},n.post=function(e,t,n){return void 0===t&&(t={}),void 0===n&&(n={}),this.visit(e,r({preserveState:!0},n,{method:exports.Method.POST,data:t}))},n.put=function(e,t,n){return void 0===t&&(t={}),void 0===n&&(n={}),this.visit(e,r({preserveState:!0},n,{method:exports.Method.PUT,data:t}))},n.patch=function(e,t,n){return void 0===t&&(t={}),void 0===n&&(n={}),this.visit(e,r({preserveState:!0},n,{method:exports.Method.PATCH,data:t}))},n.delete=function(e,t){return void 0===t&&(t={}),this.visit(e,r({preserveState:!0},t,{method:exports.Method.DELETE}))},n.remember=function(e,t){var n,i;void 0===t&&(t="default"),g||this.replaceState(r({},this.page,{rememberedState:r({},null==(n=this.page)?void 0:n.rememberedState,(i={},i[t]=e,i))}))},n.restore=function(e){var t,n;if(void 0===e&&(e="default"),!g)return null==(t=window.history.state)||null==(n=t.rememberedState)?void 0:n[e]},n.on=function(e,t){var n=function(e){var n=t(e);e.cancelable&&!e.defaultPrevented&&!1===n&&e.preventDefault()};return document.addEventListener("inertia:"+e,n),function(){return document.removeEventListener("inertia:"+e,n)}},e}(),y={buildDOMElement:function(e){var t=document.createElement("template");t.innerHTML=e;var n=t.content.firstChild;if(!e.startsWith("<script "))return n;var i=document.createElement("script");return i.innerHTML=n.innerHTML,n.getAttributeNames().forEach(function(e){i.setAttribute(e,n.getAttribute(e)||"")}),i},isInertiaManagedElement:function(e){return e.nodeType===Node.ELEMENT_NODE&&null!==e.getAttribute("inertia")},findMatchingElementIndex:function(e,t){var n=e.getAttribute("inertia");return null!==n?t.findIndex(function(e){return e.getAttribute("inertia")===n}):-1},update:a(function(e){var t=this,n=e.map(function(e){return t.buildDOMElement(e)});Array.from(document.head.childNodes).filter(function(e){return t.isInertiaManagedElement(e)}).forEach(function(e){var i=t.findMatchingElementIndex(e,n);if(-1!==i){var r,o=n.splice(i,1)[0];o&&!e.isEqualNode(o)&&(null==e||null==(r=e.parentNode)||r.replaceChild(o,e))}else{var s;null==e||null==(s=e.parentNode)||s.removeChild(e)}}),n.forEach(function(e){return document.head.appendChild(e)})},1)},S=new w;exports.Inertia=S,exports.createHeadManager=function(e,t,n){var i={},r=0;function o(){var e=Object.values(i).reduce(function(e,t){return e.concat(t)},[]).reduce(function(e,n){if(-1===n.indexOf("<"))return e;if(0===n.indexOf("<title ")){var i=n.match(/(<title [^>]+>)(.*?)(<\/title>)/);return e.title=i?""+i[1]+t(i[2])+i[3]:n,e}var r=n.match(/ inertia="[^"]+"/);return r?e[r[0]]=n:e[Object.keys(e).length]=n,e},{});return Object.values(e)}function s(){e?n(o()):y.update(o())}return{createProvider:function(){var e=function(){var e=r+=1;return i[e]=[],e.toString()}();return{update:function(t){return function(e,t){void 0===t&&(t=[]),null!==e&&Object.keys(i).indexOf(e)>-1&&(i[e]=t),s()}(e,t)},disconnect:function(){return function(e){null!==e&&-1!==Object.keys(i).indexOf(e)&&(delete i[e],s())}(e)}}}}},exports.hrefToUrl=u,exports.mergeDataIntoQueryString=h,exports.shouldIntercept=function(e){var t="a"===e.currentTarget.tagName.toLowerCase();return!(e.target&&null!=e&&e.target.isContentEditable||e.defaultPrevented||t&&e.which>1||t&&e.altKey||t&&e.ctrlKey||t&&e.metaKey||t&&e.shiftKey)},exports.urlWithoutHash=p;
+function e(e){return e&&"object"==typeof e&&"default"in e?e.default:e}var t=e(__webpack_require__(/*! axios */ "./node_modules/axios/index.js")),n=__webpack_require__(/*! qs */ "./node_modules/qs/lib/index.js"),i=e(__webpack_require__(/*! deepmerge */ "./node_modules/deepmerge/dist/cjs.js"));function r(){return(r=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var i in n)Object.prototype.hasOwnProperty.call(n,i)&&(e[i]=n[i])}return e}).apply(this,arguments)}var o,s={modal:null,listener:null,show:function(e){var t=this;"object"==typeof e&&(e="All Inertia requests must receive a valid Inertia response, however a plain JSON response was received.<hr>"+JSON.stringify(e));var n=document.createElement("html");n.innerHTML=e,n.querySelectorAll("a").forEach(function(e){return e.setAttribute("target","_top")}),this.modal=document.createElement("div"),this.modal.style.position="fixed",this.modal.style.width="100vw",this.modal.style.height="100vh",this.modal.style.padding="50px",this.modal.style.boxSizing="border-box",this.modal.style.backgroundColor="rgba(0, 0, 0, .6)",this.modal.style.zIndex=2e5,this.modal.addEventListener("click",function(){return t.hide()});var i=document.createElement("iframe");if(i.style.backgroundColor="white",i.style.borderRadius="5px",i.style.width="100%",i.style.height="100%",this.modal.appendChild(i),document.body.prepend(this.modal),document.body.style.overflow="hidden",!i.contentWindow)throw new Error("iframe not yet ready.");i.contentWindow.document.open(),i.contentWindow.document.write(n.outerHTML),i.contentWindow.document.close(),this.listener=this.hideOnEscape.bind(this),document.addEventListener("keydown",this.listener)},hide:function(){this.modal.outerHTML="",this.modal=null,document.body.style.overflow="visible",document.removeEventListener("keydown",this.listener)},hideOnEscape:function(e){27===e.keyCode&&this.hide()}};function a(e,t){var n;return function(){var i=arguments,r=this;clearTimeout(n),n=setTimeout(function(){return e.apply(r,[].slice.call(i))},t)}}function c(e,t,n){for(var i in void 0===t&&(t=new FormData),void 0===n&&(n=null),e=e||{})Object.prototype.hasOwnProperty.call(e,i)&&d(t,l(n,i),e[i]);return t}function l(e,t){return e?e+"["+t+"]":t}function d(e,t,n){return Array.isArray(n)?Array.from(n.keys()).forEach(function(i){return d(e,l(t,i.toString()),n[i])}):n instanceof Date?e.append(t,n.toISOString()):n instanceof File?e.append(t,n,n.name):n instanceof Blob?e.append(t,n):"boolean"==typeof n?e.append(t,n?"1":"0"):"string"==typeof n?e.append(t,n):"number"==typeof n?e.append(t,""+n):null==n?e.append(t,""):void c(n,e,t)}function u(e){return new URL(e.toString(),window.location.toString())}function h(e,t,r,o){void 0===o&&(o="brackets");var s=/^https?:\/\//.test(t.toString()),a=s||t.toString().startsWith("/"),c=!a&&!t.toString().startsWith("#")&&!t.toString().startsWith("?"),l=t.toString().includes("?")||e===exports.Method.GET&&Object.keys(r).length,d=t.toString().includes("#"),u=new URL(t.toString(),"http://localhost");return e===exports.Method.GET&&Object.keys(r).length&&(u.search=n.stringify(i(n.parse(u.search,{ignoreQueryPrefix:!0}),r),{encodeValuesOnly:!0,arrayFormat:o}),r={}),[[s?u.protocol+"//"+u.host:"",a?u.pathname:"",c?u.pathname.substring(1):"",l?u.search:"",d?u.hash:""].join(""),r]}function p(e){return(e=new URL(e.href)).hash="",e}function f(e,t){return document.dispatchEvent(new CustomEvent("inertia:"+e,t))}(o=exports.Method||(exports.Method={})).GET="get",o.POST="post",o.PUT="put",o.PATCH="patch",o.DELETE="delete";var v=function(e){return f("finish",{detail:{visit:e}})},m=function(e){return f("navigate",{detail:{page:e}})},g="undefined"==typeof window,w=function(){function e(){this.visitId=null}var n=e.prototype;return n.init=function(e){var t=e.resolveComponent,n=e.swapComponent;this.page=e.initialPage,this.resolveComponent=t,this.swapComponent=n,this.isBackForwardVisit()?this.handleBackForwardVisit(this.page):this.isLocationVisit()?this.handleLocationVisit(this.page):this.handleInitialPageVisit(this.page),this.setupEventListeners()},n.handleInitialPageVisit=function(e){this.page.url+=window.location.hash,this.setPage(e,{preserveState:!0}).then(function(){return m(e)})},n.setupEventListeners=function(){window.addEventListener("popstate",this.handlePopstateEvent.bind(this)),document.addEventListener("scroll",a(this.handleScrollEvent.bind(this),100),!0)},n.scrollRegions=function(){return document.querySelectorAll("[scroll-region]")},n.handleScrollEvent=function(e){"function"==typeof e.target.hasAttribute&&e.target.hasAttribute("scroll-region")&&this.saveScrollPositions()},n.saveScrollPositions=function(){this.replaceState(r({},this.page,{scrollRegions:Array.from(this.scrollRegions()).map(function(e){return{top:e.scrollTop,left:e.scrollLeft}})}))},n.resetScrollPositions=function(){var e;document.documentElement.scrollTop=0,document.documentElement.scrollLeft=0,this.scrollRegions().forEach(function(e){e.scrollTop=0,e.scrollLeft=0}),this.saveScrollPositions(),window.location.hash&&(null==(e=document.getElementById(window.location.hash.slice(1)))||e.scrollIntoView())},n.restoreScrollPositions=function(){var e=this;this.page.scrollRegions&&this.scrollRegions().forEach(function(t,n){var i=e.page.scrollRegions[n];i&&(t.scrollTop=i.top,t.scrollLeft=i.left)})},n.isBackForwardVisit=function(){return window.history.state&&window.performance&&window.performance.getEntriesByType("navigation").length>0&&"back_forward"===window.performance.getEntriesByType("navigation")[0].type},n.handleBackForwardVisit=function(e){var t=this;window.history.state.version=e.version,this.setPage(window.history.state,{preserveScroll:!0,preserveState:!0}).then(function(){t.restoreScrollPositions(),m(e)})},n.locationVisit=function(e,t){try{window.sessionStorage.setItem("inertiaLocationVisit",JSON.stringify({preserveScroll:t})),window.location.href=e.href,p(window.location).href===p(e).href&&window.location.reload()}catch(e){return!1}},n.isLocationVisit=function(){try{return null!==window.sessionStorage.getItem("inertiaLocationVisit")}catch(e){return!1}},n.handleLocationVisit=function(e){var t,n,i,r,o=this,s=JSON.parse(window.sessionStorage.getItem("inertiaLocationVisit")||"");window.sessionStorage.removeItem("inertiaLocationVisit"),e.url+=window.location.hash,e.rememberedState=null!=(t=null==(n=window.history.state)?void 0:n.rememberedState)?t:{},e.scrollRegions=null!=(i=null==(r=window.history.state)?void 0:r.scrollRegions)?i:[],this.setPage(e,{preserveScroll:s.preserveScroll,preserveState:!0}).then(function(){s.preserveScroll&&o.restoreScrollPositions(),m(e)})},n.isLocationVisitResponse=function(e){return e&&409===e.status&&e.headers["x-inertia-location"]},n.isInertiaResponse=function(e){return null==e?void 0:e.headers["x-inertia"]},n.createVisitId=function(){return this.visitId={},this.visitId},n.cancelVisit=function(e,t){var n=t.cancelled,i=void 0!==n&&n,r=t.interrupted,o=void 0!==r&&r;!e||e.completed||e.cancelled||e.interrupted||(e.cancelToken.cancel(),e.onCancel(),e.completed=!1,e.cancelled=i,e.interrupted=o,v(e),e.onFinish(e))},n.finishVisit=function(e){e.cancelled||e.interrupted||(e.completed=!0,e.cancelled=!1,e.interrupted=!1,v(e),e.onFinish(e))},n.resolvePreserveOption=function(e,t){return"function"==typeof e?e(t):"errors"===e?Object.keys(t.props.errors||{}).length>0:e},n.visit=function(e,n){var i=this,o=void 0===n?{}:n,a=o.method,l=void 0===a?exports.Method.GET:a,d=o.data,v=void 0===d?{}:d,m=o.replace,g=void 0!==m&&m,w=o.preserveScroll,y=void 0!==w&&w,S=o.preserveState,b=void 0!==S&&S,E=o.only,P=void 0===E?[]:E,I=o.headers,x=void 0===I?{}:I,V=o.errorBag,T=void 0===V?"":V,L=o.forceFormData,O=void 0!==L&&L,k=o.onCancelToken,C=void 0===k?function(){}:k,M=o.onBefore,A=void 0===M?function(){}:M,F=o.onStart,R=void 0===F?function(){}:F,j=o.onProgress,D=void 0===j?function(){}:j,B=o.onFinish,q=void 0===B?function(){}:B,N=o.onCancel,H=void 0===N?function(){}:N,W=o.onSuccess,G=void 0===W?function(){}:W,U=o.onError,X=void 0===U?function(){}:U,J=o.queryStringArrayFormat,K=void 0===J?"brackets":J,_="string"==typeof e?u(e):e;if(!function e(t){return t instanceof File||t instanceof Blob||t instanceof FileList&&t.length>0||t instanceof FormData&&Array.from(t.values()).some(function(t){return e(t)})||"object"==typeof t&&null!==t&&Object.values(t).some(function(t){return e(t)})}(v)&&!O||v instanceof FormData||(v=c(v)),!(v instanceof FormData)){var z=h(l,_,v,K),Q=z[1];_=u(z[0]),v=Q}var Y={url:_,method:l,data:v,replace:g,preserveScroll:y,preserveState:b,only:P,headers:x,errorBag:T,forceFormData:O,queryStringArrayFormat:K,cancelled:!1,completed:!1,interrupted:!1};if(!1!==A(Y)&&function(e){return f("before",{cancelable:!0,detail:{visit:e}})}(Y)){this.activeVisit&&this.cancelVisit(this.activeVisit,{interrupted:!0}),this.saveScrollPositions();var Z=this.createVisitId();this.activeVisit=r({},Y,{onCancelToken:C,onBefore:A,onStart:R,onProgress:D,onFinish:q,onCancel:H,onSuccess:G,onError:X,queryStringArrayFormat:K,cancelToken:t.CancelToken.source()}),C({cancel:function(){i.activeVisit&&i.cancelVisit(i.activeVisit,{cancelled:!0})}}),function(e){f("start",{detail:{visit:e}})}(Y),R(Y),t({method:l,url:p(_).href,data:l===exports.Method.GET?{}:v,params:l===exports.Method.GET?v:{},cancelToken:this.activeVisit.cancelToken.token,headers:r({},x,{Accept:"text/html, application/xhtml+xml","X-Requested-With":"XMLHttpRequest","X-Inertia":!0},P.length?{"X-Inertia-Partial-Component":this.page.component,"X-Inertia-Partial-Data":P.join(",")}:{},T&&T.length?{"X-Inertia-Error-Bag":T}:{},this.page.version?{"X-Inertia-Version":this.page.version}:{}),onUploadProgress:function(e){v instanceof FormData&&(e.percentage=Math.round(e.loaded/e.total*100),function(e){f("progress",{detail:{progress:e}})}(e),D(e))}}).then(function(e){var t;if(!i.isInertiaResponse(e))return Promise.reject({response:e});var n=e.data;P.length&&n.component===i.page.component&&(n.props=r({},i.page.props,n.props)),y=i.resolvePreserveOption(y,n),(b=i.resolvePreserveOption(b,n))&&null!=(t=window.history.state)&&t.rememberedState&&n.component===i.page.component&&(n.rememberedState=window.history.state.rememberedState);var o=_,s=u(n.url);return o.hash&&!s.hash&&p(o).href===s.href&&(s.hash=o.hash,n.url=s.href),i.setPage(n,{visitId:Z,replace:g,preserveScroll:y,preserveState:b})}).then(function(){var e=i.page.props.errors||{};if(Object.keys(e).length>0){var t=T?e[T]?e[T]:{}:e;return function(e){f("error",{detail:{errors:e}})}(t),X(t)}return f("success",{detail:{page:i.page}}),G(i.page)}).catch(function(e){if(i.isInertiaResponse(e.response))return i.setPage(e.response.data,{visitId:Z});if(i.isLocationVisitResponse(e.response)){var t=u(e.response.headers["x-inertia-location"]),n=_;n.hash&&!t.hash&&p(n).href===t.href&&(t.hash=n.hash),i.locationVisit(t,!0===y)}else{if(!e.response)return Promise.reject(e);f("invalid",{cancelable:!0,detail:{response:e.response}})&&s.show(e.response.data)}}).then(function(){i.activeVisit&&i.finishVisit(i.activeVisit)}).catch(function(e){if(!t.isCancel(e)){var n=f("exception",{cancelable:!0,detail:{exception:e}});if(i.activeVisit&&i.finishVisit(i.activeVisit),n)return Promise.reject(e)}})}},n.setPage=function(e,t){var n=this,i=void 0===t?{}:t,r=i.visitId,o=void 0===r?this.createVisitId():r,s=i.replace,a=void 0!==s&&s,c=i.preserveScroll,l=void 0!==c&&c,d=i.preserveState,h=void 0!==d&&d;return Promise.resolve(this.resolveComponent(e.component)).then(function(t){o===n.visitId&&(e.scrollRegions=e.scrollRegions||[],e.rememberedState=e.rememberedState||{},(a=a||u(e.url).href===window.location.href)?n.replaceState(e):n.pushState(e),n.swapComponent({component:t,page:e,preserveState:h}).then(function(){l||n.resetScrollPositions(),a||m(e)}))})},n.pushState=function(e){this.page=e,window.history.pushState(e,"",e.url)},n.replaceState=function(e){this.page=e,window.history.replaceState(e,"",e.url)},n.handlePopstateEvent=function(e){var t=this;if(null!==e.state){var n=e.state,i=this.createVisitId();Promise.resolve(this.resolveComponent(n.component)).then(function(e){i===t.visitId&&(t.page=n,t.swapComponent({component:e,page:n,preserveState:!1}).then(function(){t.restoreScrollPositions(),m(n)}))})}else{var o=u(this.page.url);o.hash=window.location.hash,this.replaceState(r({},this.page,{url:o.href})),this.resetScrollPositions()}},n.get=function(e,t,n){return void 0===t&&(t={}),void 0===n&&(n={}),this.visit(e,r({},n,{method:exports.Method.GET,data:t}))},n.reload=function(e){return void 0===e&&(e={}),this.visit(window.location.href,r({},e,{preserveScroll:!0,preserveState:!0}))},n.replace=function(e,t){var n;return void 0===t&&(t={}),console.warn("Inertia.replace() has been deprecated and will be removed in a future release. Please use Inertia."+(null!=(n=t.method)?n:"get")+"() instead."),this.visit(e,r({preserveState:!0},t,{replace:!0}))},n.post=function(e,t,n){return void 0===t&&(t={}),void 0===n&&(n={}),this.visit(e,r({preserveState:!0},n,{method:exports.Method.POST,data:t}))},n.put=function(e,t,n){return void 0===t&&(t={}),void 0===n&&(n={}),this.visit(e,r({preserveState:!0},n,{method:exports.Method.PUT,data:t}))},n.patch=function(e,t,n){return void 0===t&&(t={}),void 0===n&&(n={}),this.visit(e,r({preserveState:!0},n,{method:exports.Method.PATCH,data:t}))},n.delete=function(e,t){return void 0===t&&(t={}),this.visit(e,r({preserveState:!0},t,{method:exports.Method.DELETE}))},n.remember=function(e,t){var n,i;void 0===t&&(t="default"),g||this.replaceState(r({},this.page,{rememberedState:r({},null==(n=this.page)?void 0:n.rememberedState,(i={},i[t]=e,i))}))},n.restore=function(e){var t,n;if(void 0===e&&(e="default"),!g)return null==(t=window.history.state)||null==(n=t.rememberedState)?void 0:n[e]},n.on=function(e,t){var n=function(e){var n=t(e);e.cancelable&&!e.defaultPrevented&&!1===n&&e.preventDefault()};return document.addEventListener("inertia:"+e,n),function(){return document.removeEventListener("inertia:"+e,n)}},e}(),y={buildDOMElement:function(e){var t=document.createElement("template");t.innerHTML=e;var n=t.content.firstChild;if(!e.startsWith("<script "))return n;var i=document.createElement("script");return i.innerHTML=n.innerHTML,n.getAttributeNames().forEach(function(e){i.setAttribute(e,n.getAttribute(e)||"")}),i},isInertiaManagedElement:function(e){return e.nodeType===Node.ELEMENT_NODE&&null!==e.getAttribute("inertia")},findMatchingElementIndex:function(e,t){var n=e.getAttribute("inertia");return null!==n?t.findIndex(function(e){return e.getAttribute("inertia")===n}):-1},update:a(function(e){var t=this,n=e.map(function(e){return t.buildDOMElement(e)});Array.from(document.head.childNodes).filter(function(e){return t.isInertiaManagedElement(e)}).forEach(function(e){var i=t.findMatchingElementIndex(e,n);if(-1!==i){var r,o=n.splice(i,1)[0];o&&!e.isEqualNode(o)&&(null==e||null==(r=e.parentNode)||r.replaceChild(o,e))}else{var s;null==e||null==(s=e.parentNode)||s.removeChild(e)}}),n.forEach(function(e){return document.head.appendChild(e)})},1)},S=new w;exports.Inertia=S,exports.createHeadManager=function(e,t,n){var i={},r=0;function o(){var e=Object.values(i).reduce(function(e,t){return e.concat(t)},[]).reduce(function(e,n){if(-1===n.indexOf("<"))return e;if(0===n.indexOf("<title ")){var i=n.match(/(<title [^>]+>)(.*?)(<\/title>)/);return e.title=i?""+i[1]+t(i[2])+i[3]:n,e}var r=n.match(/ inertia="[^"]+"/);return r?e[r[0]]=n:e[Object.keys(e).length]=n,e},{});return Object.values(e)}function s(){e?n(o()):y.update(o())}return{createProvider:function(){var e=function(){var e=r+=1;return i[e]=[],e.toString()}();return{update:function(t){return function(e,t){void 0===t&&(t=[]),null!==e&&Object.keys(i).indexOf(e)>-1&&(i[e]=t),s()}(e,t)},disconnect:function(){return function(e){null!==e&&-1!==Object.keys(i).indexOf(e)&&(delete i[e],s())}(e)}}}}},exports.hrefToUrl=u,exports.mergeDataIntoQueryString=h,exports.shouldIntercept=function(e){var t="a"===e.currentTarget.tagName.toLowerCase();return!(e.target&&null!=e&&e.target.isContentEditable||e.defaultPrevented||t&&e.which>1||t&&e.altKey||t&&e.ctrlKey||t&&e.metaKey||t&&e.shiftKey)},exports.urlWithoutHash=p;
 //# sourceMappingURL=index.js.map
 
 
 /***/ }),
 
-/***/ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/formats.js":
-/*!************************************************************************!*\
-  !*** ./node_modules/@inertiajs/inertia/node_modules/qs/lib/formats.js ***!
-  \************************************************************************/
-/***/ (function(module) {
+/***/ "./node_modules/@intlify/core-base/dist/core-base.esm-bundler.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@intlify/core-base/dist/core-base.esm-bundler.js ***!
+  \***********************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MISSING_RESOLVE_VALUE": function() { return /* binding */ MISSING_RESOLVE_VALUE; },
+/* harmony export */   "NOT_REOSLVED": function() { return /* binding */ NOT_REOSLVED; },
+/* harmony export */   "VERSION": function() { return /* binding */ VERSION; },
+/* harmony export */   "clearCompileCache": function() { return /* binding */ clearCompileCache; },
+/* harmony export */   "clearDateTimeFormat": function() { return /* binding */ clearDateTimeFormat; },
+/* harmony export */   "clearNumberFormat": function() { return /* binding */ clearNumberFormat; },
+/* harmony export */   "compileToFunction": function() { return /* binding */ compileToFunction; },
+/* harmony export */   "createCompileError": function() { return /* reexport safe */ _intlify_message_compiler__WEBPACK_IMPORTED_MODULE_3__.createCompileError; },
+/* harmony export */   "createCoreContext": function() { return /* binding */ createCoreContext; },
+/* harmony export */   "createCoreError": function() { return /* binding */ createCoreError; },
+/* harmony export */   "datetime": function() { return /* binding */ datetime; },
+/* harmony export */   "getAdditionalMeta": function() { return /* binding */ getAdditionalMeta; },
+/* harmony export */   "getDevToolsHook": function() { return /* binding */ getDevToolsHook; },
+/* harmony export */   "getLocaleChain": function() { return /* binding */ getLocaleChain; },
+/* harmony export */   "getWarnMessage": function() { return /* binding */ getWarnMessage; },
+/* harmony export */   "handleMissing": function() { return /* binding */ handleMissing; },
+/* harmony export */   "initI18nDevTools": function() { return /* binding */ initI18nDevTools; },
+/* harmony export */   "isMessageFunction": function() { return /* binding */ isMessageFunction; },
+/* harmony export */   "isTranslateFallbackWarn": function() { return /* binding */ isTranslateFallbackWarn; },
+/* harmony export */   "isTranslateMissingWarn": function() { return /* binding */ isTranslateMissingWarn; },
+/* harmony export */   "number": function() { return /* binding */ number; },
+/* harmony export */   "parseDateTimeArgs": function() { return /* binding */ parseDateTimeArgs; },
+/* harmony export */   "parseNumberArgs": function() { return /* binding */ parseNumberArgs; },
+/* harmony export */   "parseTranslateArgs": function() { return /* binding */ parseTranslateArgs; },
+/* harmony export */   "registerMessageCompiler": function() { return /* binding */ registerMessageCompiler; },
+/* harmony export */   "setAdditionalMeta": function() { return /* binding */ setAdditionalMeta; },
+/* harmony export */   "setDevToolsHook": function() { return /* binding */ setDevToolsHook; },
+/* harmony export */   "translate": function() { return /* binding */ translate; },
+/* harmony export */   "translateDevTools": function() { return /* binding */ translateDevTools; },
+/* harmony export */   "updateFallbackLocale": function() { return /* binding */ updateFallbackLocale; }
+/* harmony export */ });
+/* harmony import */ var _intlify_shared__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @intlify/shared */ "./node_modules/@intlify/shared/dist/shared.esm-bundler.js");
+/* harmony import */ var _intlify_message_resolver__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @intlify/message-resolver */ "./node_modules/@intlify/message-resolver/dist/message-resolver.esm-bundler.js");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _intlify_message_resolver__WEBPACK_IMPORTED_MODULE_1__) if(["default","createCompileError","MISSING_RESOLVE_VALUE","NOT_REOSLVED","VERSION","clearCompileCache","clearDateTimeFormat","clearNumberFormat","compileToFunction","createCoreContext","createCoreError","datetime","getAdditionalMeta","getDevToolsHook","getLocaleChain","getWarnMessage","handleMissing","initI18nDevTools","isMessageFunction","isTranslateFallbackWarn","isTranslateMissingWarn","number","parseDateTimeArgs","parseNumberArgs","parseTranslateArgs","registerMessageCompiler","setAdditionalMeta","setDevToolsHook","translate","translateDevTools","updateFallbackLocale"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _intlify_message_resolver__WEBPACK_IMPORTED_MODULE_1__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+/* harmony import */ var _intlify_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @intlify/runtime */ "./node_modules/@intlify/runtime/dist/runtime.esm-bundler.js");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _intlify_runtime__WEBPACK_IMPORTED_MODULE_2__) if(["default","createCompileError","MISSING_RESOLVE_VALUE","NOT_REOSLVED","VERSION","clearCompileCache","clearDateTimeFormat","clearNumberFormat","compileToFunction","createCoreContext","createCoreError","datetime","getAdditionalMeta","getDevToolsHook","getLocaleChain","getWarnMessage","handleMissing","initI18nDevTools","isMessageFunction","isTranslateFallbackWarn","isTranslateMissingWarn","number","parseDateTimeArgs","parseNumberArgs","parseTranslateArgs","registerMessageCompiler","setAdditionalMeta","setDevToolsHook","translate","translateDevTools","updateFallbackLocale"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _intlify_runtime__WEBPACK_IMPORTED_MODULE_2__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+/* harmony import */ var _intlify_message_compiler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @intlify/message-compiler */ "./node_modules/@intlify/message-compiler/dist/message-compiler.esm-bundler.js");
+/* harmony import */ var _intlify_devtools_if__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @intlify/devtools-if */ "./node_modules/@intlify/devtools-if/dist/devtools-if.esm-bundler.js");
+/*!
+  * @intlify/core-base v9.1.9
+  * (c) 2021 kazuya kawaguchi
+  * Released under the MIT License.
+  */
 
 
-var replace = String.prototype.replace;
-var percentTwenties = /%20/g;
 
-var Format = {
-    RFC1738: 'RFC1738',
-    RFC3986: 'RFC3986'
+
+
+
+
+
+
+let devtools = null;
+function setDevToolsHook(hook) {
+    devtools = hook;
+}
+function getDevToolsHook() {
+    return devtools;
+}
+function initI18nDevTools(i18n, version, meta) {
+    // TODO: queue if devtools is undefined
+    devtools &&
+        devtools.emit(_intlify_devtools_if__WEBPACK_IMPORTED_MODULE_4__.IntlifyDevToolsHooks.I18nInit, {
+            timestamp: Date.now(),
+            i18n,
+            version,
+            meta
+        });
+}
+const translateDevTools = /* #__PURE__*/ createDevToolsHook(_intlify_devtools_if__WEBPACK_IMPORTED_MODULE_4__.IntlifyDevToolsHooks.FunctionTranslate);
+function createDevToolsHook(hook) {
+    return (payloads) => devtools && devtools.emit(hook, payloads);
+}
+
+/** @internal */
+const warnMessages = {
+    [0 /* NOT_FOUND_KEY */]: `Not found '{key}' key in '{locale}' locale messages.`,
+    [1 /* FALLBACK_TO_TRANSLATE */]: `Fall back to translate '{key}' key with '{target}' locale.`,
+    [2 /* CANNOT_FORMAT_NUMBER */]: `Cannot format a number value due to not supported Intl.NumberFormat.`,
+    [3 /* FALLBACK_TO_NUMBER_FORMAT */]: `Fall back to number format '{key}' key with '{target}' locale.`,
+    [4 /* CANNOT_FORMAT_DATE */]: `Cannot format a date value due to not supported Intl.DateTimeFormat.`,
+    [5 /* FALLBACK_TO_DATE_FORMAT */]: `Fall back to datetime format '{key}' key with '{target}' locale.`
 };
+function getWarnMessage(code, ...args) {
+    return (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.format)(warnMessages[code], ...args);
+}
 
-module.exports = {
-    'default': Format.RFC3986,
-    formatters: {
-        RFC1738: function (value) {
-            return replace.call(value, percentTwenties, '+');
-        },
-        RFC3986: function (value) {
-            return String(value);
-        }
-    },
-    RFC1738: Format.RFC1738,
-    RFC3986: Format.RFC3986
+/**
+ * Intlify core-base version
+ * @internal
+ */
+const VERSION = '9.1.9';
+const NOT_REOSLVED = -1;
+const MISSING_RESOLVE_VALUE = '';
+function getDefaultLinkedModifiers() {
+    return {
+        upper: (val) => ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(val) ? val.toUpperCase() : val),
+        lower: (val) => ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(val) ? val.toLowerCase() : val),
+        // prettier-ignore
+        capitalize: (val) => ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(val)
+            ? `${val.charAt(0).toLocaleUpperCase()}${val.substr(1)}`
+            : val)
+    };
+}
+let _compiler;
+function registerMessageCompiler(compiler) {
+    _compiler = compiler;
+}
+// Additional Meta for Intlify DevTools
+let _additionalMeta = null;
+const setAdditionalMeta = /* #__PURE__*/ (meta) => {
+    _additionalMeta = meta;
 };
-
-
-/***/ }),
-
-/***/ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/index.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@inertiajs/inertia/node_modules/qs/lib/index.js ***!
-  \**********************************************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var stringify = __webpack_require__(/*! ./stringify */ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/stringify.js");
-var parse = __webpack_require__(/*! ./parse */ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/parse.js");
-var formats = __webpack_require__(/*! ./formats */ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/formats.js");
-
-module.exports = {
-    formats: formats,
-    parse: parse,
-    stringify: stringify
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/parse.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@inertiajs/inertia/node_modules/qs/lib/parse.js ***!
-  \**********************************************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(/*! ./utils */ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/utils.js");
-
-var has = Object.prototype.hasOwnProperty;
-var isArray = Array.isArray;
-
-var defaults = {
-    allowDots: false,
-    allowPrototypes: false,
-    allowSparse: false,
-    arrayLimit: 20,
-    charset: 'utf-8',
-    charsetSentinel: false,
-    comma: false,
-    decoder: utils.decode,
-    delimiter: '&',
-    depth: 5,
-    ignoreQueryPrefix: false,
-    interpretNumericEntities: false,
-    parameterLimit: 1000,
-    parseArrays: true,
-    plainObjects: false,
-    strictNullHandling: false
-};
-
-var interpretNumericEntities = function (str) {
-    return str.replace(/&#(\d+);/g, function ($0, numberStr) {
-        return String.fromCharCode(parseInt(numberStr, 10));
-    });
-};
-
-var parseArrayValue = function (val, options) {
-    if (val && typeof val === 'string' && options.comma && val.indexOf(',') > -1) {
-        return val.split(',');
+const getAdditionalMeta = /* #__PURE__*/ () => _additionalMeta;
+// ID for CoreContext
+let _cid = 0;
+function createCoreContext(options = {}) {
+    // setup options
+    const version = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.version) ? options.version : VERSION;
+    const locale = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.locale) ? options.locale : 'en-US';
+    const fallbackLocale = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(options.fallbackLocale) ||
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.fallbackLocale) ||
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.fallbackLocale) ||
+        options.fallbackLocale === false
+        ? options.fallbackLocale
+        : locale;
+    const messages = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.messages)
+        ? options.messages
+        : { [locale]: {} };
+    const datetimeFormats = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.datetimeFormats)
+        ? options.datetimeFormats
+        : { [locale]: {} };
+    const numberFormats = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.numberFormats)
+        ? options.numberFormats
+        : { [locale]: {} };
+    const modifiers = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({}, options.modifiers || {}, getDefaultLinkedModifiers());
+    const pluralRules = options.pluralRules || {};
+    const missing = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.missing) ? options.missing : null;
+    const missingWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.missingWarn) || (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isRegExp)(options.missingWarn)
+        ? options.missingWarn
+        : true;
+    const fallbackWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.fallbackWarn) || (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isRegExp)(options.fallbackWarn)
+        ? options.fallbackWarn
+        : true;
+    const fallbackFormat = !!options.fallbackFormat;
+    const unresolving = !!options.unresolving;
+    const postTranslation = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.postTranslation)
+        ? options.postTranslation
+        : null;
+    const processor = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.processor) ? options.processor : null;
+    const warnHtmlMessage = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.warnHtmlMessage)
+        ? options.warnHtmlMessage
+        : true;
+    const escapeParameter = !!options.escapeParameter;
+    const messageCompiler = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.messageCompiler)
+        ? options.messageCompiler
+        : _compiler;
+    const onWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.onWarn) ? options.onWarn : _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn;
+    // setup internal options
+    const internalOptions = options;
+    const __datetimeFormatters = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(internalOptions.__datetimeFormatters)
+        ? internalOptions.__datetimeFormatters
+        : new Map();
+    const __numberFormatters = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(internalOptions.__numberFormatters)
+        ? internalOptions.__numberFormatters
+        : new Map();
+    const __meta = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(internalOptions.__meta) ? internalOptions.__meta : {};
+    _cid++;
+    const context = {
+        version,
+        cid: _cid,
+        locale,
+        fallbackLocale,
+        messages,
+        datetimeFormats,
+        numberFormats,
+        modifiers,
+        pluralRules,
+        missing,
+        missingWarn,
+        fallbackWarn,
+        fallbackFormat,
+        unresolving,
+        postTranslation,
+        processor,
+        warnHtmlMessage,
+        escapeParameter,
+        messageCompiler,
+        onWarn,
+        __datetimeFormatters,
+        __numberFormatters,
+        __meta
+    };
+    // for vue-devtools timeline event
+    if ((true)) {
+        context.__v_emitter =
+            internalOptions.__v_emitter != null
+                ? internalOptions.__v_emitter
+                : undefined;
     }
-
-    return val;
-};
-
-// This is what browsers will submit when the ✓ character occurs in an
-// application/x-www-form-urlencoded body and the encoding of the page containing
-// the form is iso-8859-1, or when the submitted form has an accept-charset
-// attribute of iso-8859-1. Presumably also with other charsets that do not contain
-// the ✓ character, such as us-ascii.
-var isoSentinel = 'utf8=%26%2310003%3B'; // encodeURIComponent('&#10003;')
-
-// These are the percent-encoded utf-8 octets representing a checkmark, indicating that the request actually is utf-8 encoded.
-var charsetSentinel = 'utf8=%E2%9C%93'; // encodeURIComponent('✓')
-
-var parseValues = function parseQueryStringValues(str, options) {
-    var obj = {};
-    var cleanStr = options.ignoreQueryPrefix ? str.replace(/^\?/, '') : str;
-    var limit = options.parameterLimit === Infinity ? undefined : options.parameterLimit;
-    var parts = cleanStr.split(options.delimiter, limit);
-    var skipIndex = -1; // Keep track of where the utf8 sentinel was found
-    var i;
-
-    var charset = options.charset;
-    if (options.charsetSentinel) {
-        for (i = 0; i < parts.length; ++i) {
-            if (parts[i].indexOf('utf8=') === 0) {
-                if (parts[i] === charsetSentinel) {
-                    charset = 'utf-8';
-                } else if (parts[i] === isoSentinel) {
-                    charset = 'iso-8859-1';
-                }
-                skipIndex = i;
-                i = parts.length; // The eslint settings do not allow break;
-            }
+    // NOTE: experimental !!
+    if (true) {
+        initI18nDevTools(context, version, __meta);
+    }
+    return context;
+}
+/** @internal */
+function isTranslateFallbackWarn(fallback, key) {
+    return fallback instanceof RegExp ? fallback.test(key) : fallback;
+}
+/** @internal */
+function isTranslateMissingWarn(missing, key) {
+    return missing instanceof RegExp ? missing.test(key) : missing;
+}
+/** @internal */
+function handleMissing(context, key, locale, missingWarn, type) {
+    const { missing, onWarn } = context;
+    // for vue-devtools timeline event
+    if ((true)) {
+        const emitter = context.__v_emitter;
+        if (emitter) {
+            emitter.emit("missing" /* MISSING */, {
+                locale,
+                key,
+                type,
+                groupId: `${type}:${key}`
+            });
         }
     }
-
-    for (i = 0; i < parts.length; ++i) {
-        if (i === skipIndex) {
-            continue;
+    if (missing !== null) {
+        const ret = missing(context, locale, key, type);
+        return (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(ret) ? ret : key;
+    }
+    else {
+        if (( true) && isTranslateMissingWarn(missingWarn, key)) {
+            onWarn(getWarnMessage(0 /* NOT_FOUND_KEY */, { key, locale }));
         }
-        var part = parts[i];
-
-        var bracketEqualsPos = part.indexOf(']=');
-        var pos = bracketEqualsPos === -1 ? part.indexOf('=') : bracketEqualsPos + 1;
-
-        var key, val;
-        if (pos === -1) {
-            key = options.decoder(part, defaults.decoder, charset, 'key');
-            val = options.strictNullHandling ? null : '';
-        } else {
-            key = options.decoder(part.slice(0, pos), defaults.decoder, charset, 'key');
-            val = utils.maybeMap(
-                parseArrayValue(part.slice(pos + 1), options),
-                function (encodedVal) {
-                    return options.decoder(encodedVal, defaults.decoder, charset, 'value');
-                }
-            );
+        return key;
+    }
+}
+/** @internal */
+function getLocaleChain(ctx, fallback, start) {
+    const context = ctx;
+    if (!context.__localeChainCache) {
+        context.__localeChainCache = new Map();
+    }
+    let chain = context.__localeChainCache.get(start);
+    if (!chain) {
+        chain = [];
+        // first block defined by start
+        let block = [start];
+        // while any intervening block found
+        while ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(block)) {
+            block = appendBlockToChain(chain, block, fallback);
         }
-
-        if (val && options.interpretNumericEntities && charset === 'iso-8859-1') {
-            val = interpretNumericEntities(val);
+        // prettier-ignore
+        // last block defined by default
+        const defaults = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(fallback)
+            ? fallback
+            : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(fallback)
+                ? fallback['default']
+                    ? fallback['default']
+                    : null
+                : fallback;
+        // convert defaults to array
+        block = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(defaults) ? [defaults] : defaults;
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(block)) {
+            appendBlockToChain(chain, block, false);
         }
-
-        if (part.indexOf('[]=') > -1) {
-            val = isArray(val) ? [val] : val;
-        }
-
-        if (has.call(obj, key)) {
-            obj[key] = utils.combine(obj[key], val);
-        } else {
-            obj[key] = val;
+        context.__localeChainCache.set(start, chain);
+    }
+    return chain;
+}
+function appendBlockToChain(chain, block, blocks) {
+    let follow = true;
+    for (let i = 0; i < block.length && (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(follow); i++) {
+        const locale = block[i];
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(locale)) {
+            follow = appendLocaleToChain(chain, block[i], blocks);
         }
     }
-
-    return obj;
-};
-
-var parseObject = function (chain, val, options, valuesParsed) {
-    var leaf = valuesParsed ? val : parseArrayValue(val, options);
-
-    for (var i = chain.length - 1; i >= 0; --i) {
-        var obj;
-        var root = chain[i];
-
-        if (root === '[]' && options.parseArrays) {
-            obj = [].concat(leaf);
-        } else {
-            obj = options.plainObjects ? Object.create(null) : {};
-            var cleanRoot = root.charAt(0) === '[' && root.charAt(root.length - 1) === ']' ? root.slice(1, -1) : root;
-            var index = parseInt(cleanRoot, 10);
-            if (!options.parseArrays && cleanRoot === '') {
-                obj = { 0: leaf };
-            } else if (
-                !isNaN(index)
-                && root !== cleanRoot
-                && String(index) === cleanRoot
-                && index >= 0
-                && (options.parseArrays && index <= options.arrayLimit)
+    return follow;
+}
+function appendLocaleToChain(chain, locale, blocks) {
+    let follow;
+    const tokens = locale.split('-');
+    do {
+        const target = tokens.join('-');
+        follow = appendItemToChain(chain, target, blocks);
+        tokens.splice(-1, 1);
+    } while (tokens.length && follow === true);
+    return follow;
+}
+function appendItemToChain(chain, target, blocks) {
+    let follow = false;
+    if (!chain.includes(target)) {
+        follow = true;
+        if (target) {
+            follow = target[target.length - 1] !== '!';
+            const locale = target.replace(/!/g, '');
+            chain.push(locale);
+            if (((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(blocks) || (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(blocks)) &&
+                blocks[locale] // eslint-disable-line @typescript-eslint/no-explicit-any
             ) {
-                obj = [];
-                obj[index] = leaf;
-            } else if (cleanRoot !== '__proto__') {
-                obj[cleanRoot] = leaf;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                follow = blocks[locale];
             }
         }
-
-        leaf = obj;
     }
+    return follow;
+}
+/** @internal */
+function updateFallbackLocale(ctx, locale, fallback) {
+    const context = ctx;
+    context.__localeChainCache = new Map();
+    getLocaleChain(ctx, fallback, locale);
+}
 
-    return leaf;
-};
-
-var parseKeys = function parseQueryStringKeys(givenKey, val, options, valuesParsed) {
-    if (!givenKey) {
-        return;
+const RE_HTML_TAG = /<\/?[\w\s="/.':;#-\/]+>/;
+const WARN_MESSAGE = `Detected HTML in '{source}' message. Recommend not using HTML messages to avoid XSS.`;
+function checkHtmlMessage(source, options) {
+    const warnHtmlMessage = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.warnHtmlMessage)
+        ? options.warnHtmlMessage
+        : true;
+    if (warnHtmlMessage && RE_HTML_TAG.test(source)) {
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.format)(WARN_MESSAGE, { source }));
     }
-
-    // Transform dot notation to bracket notation
-    var key = options.allowDots ? givenKey.replace(/\.([^.[]+)/g, '[$1]') : givenKey;
-
-    // The regex chunks
-
-    var brackets = /(\[[^[\]]*])/;
-    var child = /(\[[^[\]]*])/g;
-
-    // Get the parent
-
-    var segment = options.depth > 0 && brackets.exec(key);
-    var parent = segment ? key.slice(0, segment.index) : key;
-
-    // Stash the parent if it exists
-
-    var keys = [];
-    if (parent) {
-        // If we aren't using plain objects, optionally prefix keys that would overwrite object prototype properties
-        if (!options.plainObjects && has.call(Object.prototype, parent)) {
-            if (!options.allowPrototypes) {
-                return;
-            }
+}
+const defaultOnCacheKey = (source) => source;
+let compileCache = Object.create(null);
+function clearCompileCache() {
+    compileCache = Object.create(null);
+}
+function compileToFunction(source, options = {}) {
+    {
+        // check HTML message
+        ( true) && checkHtmlMessage(source, options);
+        // check caches
+        const onCacheKey = options.onCacheKey || defaultOnCacheKey;
+        const key = onCacheKey(source);
+        const cached = compileCache[key];
+        if (cached) {
+            return cached;
         }
-
-        keys.push(parent);
+        // compile error detecting
+        let occurred = false;
+        const onError = options.onError || _intlify_message_compiler__WEBPACK_IMPORTED_MODULE_3__.defaultOnError;
+        options.onError = (err) => {
+            occurred = true;
+            onError(err);
+        };
+        // compile
+        const { code } = (0,_intlify_message_compiler__WEBPACK_IMPORTED_MODULE_3__.baseCompile)(source, options);
+        // evaluate function
+        const msg = new Function(`return ${code}`)();
+        // if occurred compile error, don't cache
+        return !occurred ? (compileCache[key] = msg) : msg;
     }
+}
 
-    // Loop through children appending to the array until we hit depth
-
-    var i = 0;
-    while (options.depth > 0 && (segment = child.exec(key)) !== null && i < options.depth) {
-        i += 1;
-        if (!options.plainObjects && has.call(Object.prototype, segment[1].slice(1, -1))) {
-            if (!options.allowPrototypes) {
-                return;
-            }
-        }
-        keys.push(segment[1]);
-    }
-
-    // If there's a remainder, just add whatever is left
-
-    if (segment) {
-        keys.push('[' + key.slice(segment.index) + ']');
-    }
-
-    return parseObject(keys, val, options, valuesParsed);
+function createCoreError(code) {
+    return (0,_intlify_message_compiler__WEBPACK_IMPORTED_MODULE_3__.createCompileError)(code, null, ( true) ? { messages: errorMessages } : 0);
+}
+/** @internal */
+const errorMessages = {
+    [14 /* INVALID_ARGUMENT */]: 'Invalid arguments',
+    [15 /* INVALID_DATE_ARGUMENT */]: 'The date provided is an invalid Date object.' +
+        'Make sure your Date represents a valid date.',
+    [16 /* INVALID_ISO_DATE_ARGUMENT */]: 'The argument provided is not a valid ISO date string'
 };
 
-var normalizeParseOptions = function normalizeParseOptions(opts) {
-    if (!opts) {
-        return defaults;
-    }
-
-    if (opts.decoder !== null && opts.decoder !== undefined && typeof opts.decoder !== 'function') {
-        throw new TypeError('Decoder has to be a function.');
-    }
-
-    if (typeof opts.charset !== 'undefined' && opts.charset !== 'utf-8' && opts.charset !== 'iso-8859-1') {
-        throw new TypeError('The charset option must be either utf-8, iso-8859-1, or undefined');
-    }
-    var charset = typeof opts.charset === 'undefined' ? defaults.charset : opts.charset;
-
-    return {
-        allowDots: typeof opts.allowDots === 'undefined' ? defaults.allowDots : !!opts.allowDots,
-        allowPrototypes: typeof opts.allowPrototypes === 'boolean' ? opts.allowPrototypes : defaults.allowPrototypes,
-        allowSparse: typeof opts.allowSparse === 'boolean' ? opts.allowSparse : defaults.allowSparse,
-        arrayLimit: typeof opts.arrayLimit === 'number' ? opts.arrayLimit : defaults.arrayLimit,
-        charset: charset,
-        charsetSentinel: typeof opts.charsetSentinel === 'boolean' ? opts.charsetSentinel : defaults.charsetSentinel,
-        comma: typeof opts.comma === 'boolean' ? opts.comma : defaults.comma,
-        decoder: typeof opts.decoder === 'function' ? opts.decoder : defaults.decoder,
-        delimiter: typeof opts.delimiter === 'string' || utils.isRegExp(opts.delimiter) ? opts.delimiter : defaults.delimiter,
-        // eslint-disable-next-line no-implicit-coercion, no-extra-parens
-        depth: (typeof opts.depth === 'number' || opts.depth === false) ? +opts.depth : defaults.depth,
-        ignoreQueryPrefix: opts.ignoreQueryPrefix === true,
-        interpretNumericEntities: typeof opts.interpretNumericEntities === 'boolean' ? opts.interpretNumericEntities : defaults.interpretNumericEntities,
-        parameterLimit: typeof opts.parameterLimit === 'number' ? opts.parameterLimit : defaults.parameterLimit,
-        parseArrays: opts.parseArrays !== false,
-        plainObjects: typeof opts.plainObjects === 'boolean' ? opts.plainObjects : defaults.plainObjects,
-        strictNullHandling: typeof opts.strictNullHandling === 'boolean' ? opts.strictNullHandling : defaults.strictNullHandling
-    };
-};
-
-module.exports = function (str, opts) {
-    var options = normalizeParseOptions(opts);
-
-    if (str === '' || str === null || typeof str === 'undefined') {
-        return options.plainObjects ? Object.create(null) : {};
-    }
-
-    var tempObj = typeof str === 'string' ? parseValues(str, options) : str;
-    var obj = options.plainObjects ? Object.create(null) : {};
-
-    // Iterate over the keys and setup the new object
-
-    var keys = Object.keys(tempObj);
-    for (var i = 0; i < keys.length; ++i) {
-        var key = keys[i];
-        var newObj = parseKeys(key, tempObj[key], options, typeof str === 'string');
-        obj = utils.merge(obj, newObj, options);
-    }
-
-    if (options.allowSparse === true) {
-        return obj;
-    }
-
-    return utils.compact(obj);
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/stringify.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/@inertiajs/inertia/node_modules/qs/lib/stringify.js ***!
-  \**************************************************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var getSideChannel = __webpack_require__(/*! side-channel */ "./node_modules/side-channel/index.js");
-var utils = __webpack_require__(/*! ./utils */ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/utils.js");
-var formats = __webpack_require__(/*! ./formats */ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/formats.js");
-var has = Object.prototype.hasOwnProperty;
-
-var arrayPrefixGenerators = {
-    brackets: function brackets(prefix) {
-        return prefix + '[]';
-    },
-    comma: 'comma',
-    indices: function indices(prefix, key) {
-        return prefix + '[' + key + ']';
-    },
-    repeat: function repeat(prefix) {
-        return prefix;
-    }
-};
-
-var isArray = Array.isArray;
-var split = String.prototype.split;
-var push = Array.prototype.push;
-var pushToArray = function (arr, valueOrArray) {
-    push.apply(arr, isArray(valueOrArray) ? valueOrArray : [valueOrArray]);
-};
-
-var toISO = Date.prototype.toISOString;
-
-var defaultFormat = formats['default'];
-var defaults = {
-    addQueryPrefix: false,
-    allowDots: false,
-    charset: 'utf-8',
-    charsetSentinel: false,
-    delimiter: '&',
-    encode: true,
-    encoder: utils.encode,
-    encodeValuesOnly: false,
-    format: defaultFormat,
-    formatter: formats.formatters[defaultFormat],
-    // deprecated
-    indices: false,
-    serializeDate: function serializeDate(date) {
-        return toISO.call(date);
-    },
-    skipNulls: false,
-    strictNullHandling: false
-};
-
-var isNonNullishPrimitive = function isNonNullishPrimitive(v) {
-    return typeof v === 'string'
-        || typeof v === 'number'
-        || typeof v === 'boolean'
-        || typeof v === 'symbol'
-        || typeof v === 'bigint';
-};
-
-var sentinel = {};
-
-var stringify = function stringify(
-    object,
-    prefix,
-    generateArrayPrefix,
-    strictNullHandling,
-    skipNulls,
-    encoder,
-    filter,
-    sort,
-    allowDots,
-    serializeDate,
-    format,
-    formatter,
-    encodeValuesOnly,
-    charset,
-    sideChannel
-) {
-    var obj = object;
-
-    var tmpSc = sideChannel;
-    var step = 0;
-    var findFlag = false;
-    while ((tmpSc = tmpSc.get(sentinel)) !== void undefined && !findFlag) {
-        // Where object last appeared in the ref tree
-        var pos = tmpSc.get(object);
-        step += 1;
-        if (typeof pos !== 'undefined') {
-            if (pos === step) {
-                throw new RangeError('Cyclic object value');
-            } else {
-                findFlag = true; // Break while
-            }
-        }
-        if (typeof tmpSc.get(sentinel) === 'undefined') {
-            step = 0;
-        }
-    }
-
-    if (typeof filter === 'function') {
-        obj = filter(prefix, obj);
-    } else if (obj instanceof Date) {
-        obj = serializeDate(obj);
-    } else if (generateArrayPrefix === 'comma' && isArray(obj)) {
-        obj = utils.maybeMap(obj, function (value) {
-            if (value instanceof Date) {
-                return serializeDate(value);
-            }
-            return value;
-        });
-    }
-
-    if (obj === null) {
-        if (strictNullHandling) {
-            return encoder && !encodeValuesOnly ? encoder(prefix, defaults.encoder, charset, 'key', format) : prefix;
-        }
-
-        obj = '';
-    }
-
-    if (isNonNullishPrimitive(obj) || utils.isBuffer(obj)) {
-        if (encoder) {
-            var keyValue = encodeValuesOnly ? prefix : encoder(prefix, defaults.encoder, charset, 'key', format);
-            if (generateArrayPrefix === 'comma' && encodeValuesOnly) {
-                var valuesArray = split.call(String(obj), ',');
-                var valuesJoined = '';
-                for (var i = 0; i < valuesArray.length; ++i) {
-                    valuesJoined += (i === 0 ? '' : ',') + formatter(encoder(valuesArray[i], defaults.encoder, charset, 'value', format));
-                }
-                return [formatter(keyValue) + '=' + valuesJoined];
-            }
-            return [formatter(keyValue) + '=' + formatter(encoder(obj, defaults.encoder, charset, 'value', format))];
-        }
-        return [formatter(prefix) + '=' + formatter(String(obj))];
-    }
-
-    var values = [];
-
-    if (typeof obj === 'undefined') {
-        return values;
-    }
-
-    var objKeys;
-    if (generateArrayPrefix === 'comma' && isArray(obj)) {
-        // we need to join elements in
-        objKeys = [{ value: obj.length > 0 ? obj.join(',') || null : void undefined }];
-    } else if (isArray(filter)) {
-        objKeys = filter;
-    } else {
-        var keys = Object.keys(obj);
-        objKeys = sort ? keys.sort(sort) : keys;
-    }
-
-    for (var j = 0; j < objKeys.length; ++j) {
-        var key = objKeys[j];
-        var value = typeof key === 'object' && typeof key.value !== 'undefined' ? key.value : obj[key];
-
-        if (skipNulls && value === null) {
-            continue;
-        }
-
-        var keyPrefix = isArray(obj)
-            ? typeof generateArrayPrefix === 'function' ? generateArrayPrefix(prefix, key) : prefix
-            : prefix + (allowDots ? '.' + key : '[' + key + ']');
-
-        sideChannel.set(object, step);
-        var valueSideChannel = getSideChannel();
-        valueSideChannel.set(sentinel, sideChannel);
-        pushToArray(values, stringify(
-            value,
-            keyPrefix,
-            generateArrayPrefix,
-            strictNullHandling,
-            skipNulls,
-            encoder,
-            filter,
-            sort,
-            allowDots,
-            serializeDate,
-            format,
-            formatter,
-            encodeValuesOnly,
-            charset,
-            valueSideChannel
-        ));
-    }
-
-    return values;
-};
-
-var normalizeStringifyOptions = function normalizeStringifyOptions(opts) {
-    if (!opts) {
-        return defaults;
-    }
-
-    if (opts.encoder !== null && typeof opts.encoder !== 'undefined' && typeof opts.encoder !== 'function') {
-        throw new TypeError('Encoder has to be a function.');
-    }
-
-    var charset = opts.charset || defaults.charset;
-    if (typeof opts.charset !== 'undefined' && opts.charset !== 'utf-8' && opts.charset !== 'iso-8859-1') {
-        throw new TypeError('The charset option must be either utf-8, iso-8859-1, or undefined');
-    }
-
-    var format = formats['default'];
-    if (typeof opts.format !== 'undefined') {
-        if (!has.call(formats.formatters, opts.format)) {
-            throw new TypeError('Unknown format option provided.');
-        }
-        format = opts.format;
-    }
-    var formatter = formats.formatters[format];
-
-    var filter = defaults.filter;
-    if (typeof opts.filter === 'function' || isArray(opts.filter)) {
-        filter = opts.filter;
-    }
-
-    return {
-        addQueryPrefix: typeof opts.addQueryPrefix === 'boolean' ? opts.addQueryPrefix : defaults.addQueryPrefix,
-        allowDots: typeof opts.allowDots === 'undefined' ? defaults.allowDots : !!opts.allowDots,
-        charset: charset,
-        charsetSentinel: typeof opts.charsetSentinel === 'boolean' ? opts.charsetSentinel : defaults.charsetSentinel,
-        delimiter: typeof opts.delimiter === 'undefined' ? defaults.delimiter : opts.delimiter,
-        encode: typeof opts.encode === 'boolean' ? opts.encode : defaults.encode,
-        encoder: typeof opts.encoder === 'function' ? opts.encoder : defaults.encoder,
-        encodeValuesOnly: typeof opts.encodeValuesOnly === 'boolean' ? opts.encodeValuesOnly : defaults.encodeValuesOnly,
-        filter: filter,
-        format: format,
-        formatter: formatter,
-        serializeDate: typeof opts.serializeDate === 'function' ? opts.serializeDate : defaults.serializeDate,
-        skipNulls: typeof opts.skipNulls === 'boolean' ? opts.skipNulls : defaults.skipNulls,
-        sort: typeof opts.sort === 'function' ? opts.sort : null,
-        strictNullHandling: typeof opts.strictNullHandling === 'boolean' ? opts.strictNullHandling : defaults.strictNullHandling
-    };
-};
-
-module.exports = function (object, opts) {
-    var obj = object;
-    var options = normalizeStringifyOptions(opts);
-
-    var objKeys;
-    var filter;
-
-    if (typeof options.filter === 'function') {
-        filter = options.filter;
-        obj = filter('', obj);
-    } else if (isArray(options.filter)) {
-        filter = options.filter;
-        objKeys = filter;
-    }
-
-    var keys = [];
-
-    if (typeof obj !== 'object' || obj === null) {
-        return '';
-    }
-
-    var arrayFormat;
-    if (opts && opts.arrayFormat in arrayPrefixGenerators) {
-        arrayFormat = opts.arrayFormat;
-    } else if (opts && 'indices' in opts) {
-        arrayFormat = opts.indices ? 'indices' : 'repeat';
-    } else {
-        arrayFormat = 'indices';
-    }
-
-    var generateArrayPrefix = arrayPrefixGenerators[arrayFormat];
-
-    if (!objKeys) {
-        objKeys = Object.keys(obj);
-    }
-
-    if (options.sort) {
-        objKeys.sort(options.sort);
-    }
-
-    var sideChannel = getSideChannel();
-    for (var i = 0; i < objKeys.length; ++i) {
-        var key = objKeys[i];
-
-        if (options.skipNulls && obj[key] === null) {
-            continue;
-        }
-        pushToArray(keys, stringify(
-            obj[key],
+const NOOP_MESSAGE_FUNCTION = () => '';
+const isMessageFunction = (val) => (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(val);
+// implementation of `translate` function
+function translate(context, ...args) {
+    const { fallbackFormat, postTranslation, unresolving, fallbackLocale, messages } = context;
+    const [key, options] = parseTranslateArgs(...args);
+    const missingWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.missingWarn)
+        ? options.missingWarn
+        : context.missingWarn;
+    const fallbackWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.fallbackWarn)
+        ? options.fallbackWarn
+        : context.fallbackWarn;
+    const escapeParameter = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.escapeParameter)
+        ? options.escapeParameter
+        : context.escapeParameter;
+    const resolvedMessage = !!options.resolvedMessage;
+    // prettier-ignore
+    const defaultMsgOrKey = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.default) || (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.default) // default by function option
+        ? !(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.default)
+            ? options.default
+            : key
+        : fallbackFormat // default by `fallbackFormat` option
+            ? key
+            : '';
+    const enableDefaultMsg = fallbackFormat || defaultMsgOrKey !== '';
+    const locale = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.locale) ? options.locale : context.locale;
+    // escape params
+    escapeParameter && escapeParams(options);
+    // resolve message format
+    // eslint-disable-next-line prefer-const
+    let [format, targetLocale, message] = !resolvedMessage
+        ? resolveMessageFormat(context, key, locale, fallbackLocale, fallbackWarn, missingWarn)
+        : [
             key,
-            generateArrayPrefix,
-            options.strictNullHandling,
-            options.skipNulls,
-            options.encode ? options.encoder : null,
-            options.filter,
-            options.sort,
-            options.allowDots,
-            options.serializeDate,
-            options.format,
-            options.formatter,
-            options.encodeValuesOnly,
-            options.charset,
-            sideChannel
-        ));
-    }
-
-    var joined = keys.join(options.delimiter);
-    var prefix = options.addQueryPrefix === true ? '?' : '';
-
-    if (options.charsetSentinel) {
-        if (options.charset === 'iso-8859-1') {
-            // encodeURIComponent('&#10003;'), the "numeric entity" representation of a checkmark
-            prefix += 'utf8=%26%2310003%3B&';
-        } else {
-            // encodeURIComponent('✓')
-            prefix += 'utf8=%E2%9C%93&';
+            locale,
+            messages[locale] || {}
+        ];
+    // if you use default message, set it as message format!
+    let cacheBaseKey = key;
+    if (!resolvedMessage &&
+        !((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(format) || isMessageFunction(format))) {
+        if (enableDefaultMsg) {
+            format = defaultMsgOrKey;
+            cacheBaseKey = format;
         }
     }
+    // checking message format and target locale
+    if (!resolvedMessage &&
+        (!((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(format) || isMessageFunction(format)) ||
+            !(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(targetLocale))) {
+        return unresolving ? NOT_REOSLVED : key;
+    }
+    if (( true) && (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(format) && context.messageCompiler == null) {
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(`The message format compilation is not supported in this build. ` +
+            `Because message compiler isn't included. ` +
+            `You need to pre-compilation all message format. ` +
+            `So translate function return '${key}'.`);
+        return key;
+    }
+    // setup compile error detecting
+    let occurred = false;
+    const errorDetector = () => {
+        occurred = true;
+    };
+    // compile message format
+    const msg = !isMessageFunction(format)
+        ? compileMessageFormat(context, key, targetLocale, format, cacheBaseKey, errorDetector)
+        : format;
+    // if occurred compile error, return the message format
+    if (occurred) {
+        return format;
+    }
+    // evaluate message with context
+    const ctxOptions = getMessageContextOptions(context, targetLocale, message, options);
+    const msgContext = (0,_intlify_runtime__WEBPACK_IMPORTED_MODULE_2__.createMessageContext)(ctxOptions);
+    const messaged = evaluateMessage(context, msg, msgContext);
+    // if use post translation option, proceed it with handler
+    const ret = postTranslation ? postTranslation(messaged) : messaged;
+    // NOTE: experimental !!
+    if (true) {
+        // prettier-ignore
+        const payloads = {
+            timestamp: Date.now(),
+            key: (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(key)
+                ? key
+                : isMessageFunction(format)
+                    ? format.key
+                    : '',
+            locale: targetLocale || (isMessageFunction(format)
+                ? format.locale
+                : ''),
+            format: (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(format)
+                ? format
+                : isMessageFunction(format)
+                    ? format.source
+                    : '',
+            message: ret
+        };
+        payloads.meta = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({}, context.__meta, getAdditionalMeta() || {});
+        translateDevTools(payloads);
+    }
+    return ret;
+}
+function escapeParams(options) {
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(options.list)) {
+        options.list = options.list.map(item => (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(item) ? (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.escapeHtml)(item) : item);
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(options.named)) {
+        Object.keys(options.named).forEach(key => {
+            if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.named[key])) {
+                options.named[key] = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.escapeHtml)(options.named[key]);
+            }
+        });
+    }
+}
+function resolveMessageFormat(context, key, locale, fallbackLocale, fallbackWarn, missingWarn) {
+    const { messages, onWarn } = context;
+    const locales = getLocaleChain(context, fallbackLocale, locale);
+    let message = {};
+    let targetLocale;
+    let format = null;
+    let from = locale;
+    let to = null;
+    const type = 'translate';
+    for (let i = 0; i < locales.length; i++) {
+        targetLocale = to = locales[i];
+        if (( true) &&
+            locale !== targetLocale &&
+            isTranslateFallbackWarn(fallbackWarn, key)) {
+            onWarn(getWarnMessage(1 /* FALLBACK_TO_TRANSLATE */, {
+                key,
+                target: targetLocale
+            }));
+        }
+        // for vue-devtools timeline event
+        if (( true) && locale !== targetLocale) {
+            const emitter = context.__v_emitter;
+            if (emitter) {
+                emitter.emit("fallback" /* FALBACK */, {
+                    type,
+                    key,
+                    from,
+                    to,
+                    groupId: `${type}:${key}`
+                });
+            }
+        }
+        message =
+            messages[targetLocale] || {};
+        // for vue-devtools timeline event
+        let start = null;
+        let startTag;
+        let endTag;
+        if (( true) && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.inBrowser) {
+            start = window.performance.now();
+            startTag = 'intlify-message-resolve-start';
+            endTag = 'intlify-message-resolve-end';
+            _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark && (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark)(startTag);
+        }
+        if ((format = (0,_intlify_message_resolver__WEBPACK_IMPORTED_MODULE_1__.resolveValue)(message, key)) === null) {
+            // if null, resolve with object key path
+            format = message[key]; // eslint-disable-line @typescript-eslint/no-explicit-any
+        }
+        // for vue-devtools timeline event
+        if (( true) && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.inBrowser) {
+            const end = window.performance.now();
+            const emitter = context.__v_emitter;
+            if (emitter && start && format) {
+                emitter.emit("message-resolve" /* MESSAGE_RESOLVE */, {
+                    type: "message-resolve" /* MESSAGE_RESOLVE */,
+                    key,
+                    message: format,
+                    time: end - start,
+                    groupId: `${type}:${key}`
+                });
+            }
+            if (startTag && endTag && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.measure) {
+                (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark)(endTag);
+                (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.measure)('intlify message resolve', startTag, endTag);
+            }
+        }
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(format) || (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(format))
+            break;
+        const missingRet = handleMissing(context, key, targetLocale, missingWarn, type);
+        if (missingRet !== key) {
+            format = missingRet;
+        }
+        from = to;
+    }
+    return [format, targetLocale, message];
+}
+function compileMessageFormat(context, key, targetLocale, format, cacheBaseKey, errorDetector) {
+    const { messageCompiler, warnHtmlMessage } = context;
+    if (isMessageFunction(format)) {
+        const msg = format;
+        msg.locale = msg.locale || targetLocale;
+        msg.key = msg.key || key;
+        return msg;
+    }
+    // for vue-devtools timeline event
+    let start = null;
+    let startTag;
+    let endTag;
+    if (( true) && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.inBrowser) {
+        start = window.performance.now();
+        startTag = 'intlify-message-compilation-start';
+        endTag = 'intlify-message-compilation-end';
+        _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark && (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark)(startTag);
+    }
+    const msg = messageCompiler(format, getCompileOptions(context, targetLocale, cacheBaseKey, format, warnHtmlMessage, errorDetector));
+    // for vue-devtools timeline event
+    if (( true) && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.inBrowser) {
+        const end = window.performance.now();
+        const emitter = context.__v_emitter;
+        if (emitter && start) {
+            emitter.emit("message-compilation" /* MESSAGE_COMPILATION */, {
+                type: "message-compilation" /* MESSAGE_COMPILATION */,
+                message: format,
+                time: end - start,
+                groupId: `${'translate'}:${key}`
+            });
+        }
+        if (startTag && endTag && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.measure) {
+            (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark)(endTag);
+            (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.measure)('intlify message compilation', startTag, endTag);
+        }
+    }
+    msg.locale = targetLocale;
+    msg.key = key;
+    msg.source = format;
+    return msg;
+}
+function evaluateMessage(context, msg, msgCtx) {
+    // for vue-devtools timeline event
+    let start = null;
+    let startTag;
+    let endTag;
+    if (( true) && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.inBrowser) {
+        start = window.performance.now();
+        startTag = 'intlify-message-evaluation-start';
+        endTag = 'intlify-message-evaluation-end';
+        _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark && (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark)(startTag);
+    }
+    const messaged = msg(msgCtx);
+    // for vue-devtools timeline event
+    if (( true) && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.inBrowser) {
+        const end = window.performance.now();
+        const emitter = context.__v_emitter;
+        if (emitter && start) {
+            emitter.emit("message-evaluation" /* MESSAGE_EVALUATION */, {
+                type: "message-evaluation" /* MESSAGE_EVALUATION */,
+                value: messaged,
+                time: end - start,
+                groupId: `${'translate'}:${msg.key}`
+            });
+        }
+        if (startTag && endTag && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark && _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.measure) {
+            (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.mark)(endTag);
+            (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.measure)('intlify message evaluation', startTag, endTag);
+        }
+    }
+    return messaged;
+}
+/** @internal */
+function parseTranslateArgs(...args) {
+    const [arg1, arg2, arg3] = args;
+    const options = {};
+    if (!(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg1) && !(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(arg1) && !isMessageFunction(arg1)) {
+        throw createCoreError(14 /* INVALID_ARGUMENT */);
+    }
+    // prettier-ignore
+    const key = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(arg1)
+        ? String(arg1)
+        : isMessageFunction(arg1)
+            ? arg1
+            : arg1;
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(arg2)) {
+        options.plural = arg2;
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg2)) {
+        options.default = arg2;
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg2) && !(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isEmptyObject)(arg2)) {
+        options.named = arg2;
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(arg2)) {
+        options.list = arg2;
+    }
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(arg3)) {
+        options.plural = arg3;
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg3)) {
+        options.default = arg3;
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg3)) {
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)(options, arg3);
+    }
+    return [key, options];
+}
+function getCompileOptions(context, locale, key, source, warnHtmlMessage, errorDetector) {
+    return {
+        warnHtmlMessage,
+        onError: (err) => {
+            errorDetector && errorDetector(err);
+            if ((true)) {
+                const message = `Message compilation error: ${err.message}`;
+                const codeFrame = err.location &&
+                    (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.generateCodeFrame)(source, err.location.start.offset, err.location.end.offset);
+                const emitter = context
+                    .__v_emitter;
+                if (emitter) {
+                    emitter.emit("compile-error" /* COMPILE_ERROR */, {
+                        message: source,
+                        error: err.message,
+                        start: err.location && err.location.start.offset,
+                        end: err.location && err.location.end.offset,
+                        groupId: `${'translate'}:${key}`
+                    });
+                }
+                console.error(codeFrame ? `${message}\n${codeFrame}` : message);
+            }
+            else {}
+        },
+        onCacheKey: (source) => (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.generateFormatCacheKey)(locale, key, source)
+    };
+}
+function getMessageContextOptions(context, locale, message, options) {
+    const { modifiers, pluralRules } = context;
+    const resolveMessage = (key) => {
+        const val = (0,_intlify_message_resolver__WEBPACK_IMPORTED_MODULE_1__.resolveValue)(message, key);
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(val)) {
+            let occurred = false;
+            const errorDetector = () => {
+                occurred = true;
+            };
+            const msg = compileMessageFormat(context, key, locale, val, key, errorDetector);
+            return !occurred
+                ? msg
+                : NOOP_MESSAGE_FUNCTION;
+        }
+        else if (isMessageFunction(val)) {
+            return val;
+        }
+        else {
+            // TODO: should be implemented warning message
+            return NOOP_MESSAGE_FUNCTION;
+        }
+    };
+    const ctxOptions = {
+        locale,
+        modifiers,
+        pluralRules,
+        messages: resolveMessage
+    };
+    if (context.processor) {
+        ctxOptions.processor = context.processor;
+    }
+    if (options.list) {
+        ctxOptions.list = options.list;
+    }
+    if (options.named) {
+        ctxOptions.named = options.named;
+    }
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(options.plural)) {
+        ctxOptions.pluralIndex = options.plural;
+    }
+    return ctxOptions;
+}
 
-    return joined.length > 0 ? prefix + joined : '';
+const intlDefined = typeof Intl !== 'undefined';
+const Availabilities = {
+    dateTimeFormat: intlDefined && typeof Intl.DateTimeFormat !== 'undefined',
+    numberFormat: intlDefined && typeof Intl.NumberFormat !== 'undefined'
 };
+
+// implementation of `datetime` function
+function datetime(context, ...args) {
+    const { datetimeFormats, unresolving, fallbackLocale, onWarn } = context;
+    const { __datetimeFormatters } = context;
+    if (( true) && !Availabilities.dateTimeFormat) {
+        onWarn(getWarnMessage(4 /* CANNOT_FORMAT_DATE */));
+        return MISSING_RESOLVE_VALUE;
+    }
+    const [key, value, options, overrides] = parseDateTimeArgs(...args);
+    const missingWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.missingWarn)
+        ? options.missingWarn
+        : context.missingWarn;
+    const fallbackWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.fallbackWarn)
+        ? options.fallbackWarn
+        : context.fallbackWarn;
+    const part = !!options.part;
+    const locale = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.locale) ? options.locale : context.locale;
+    const locales = getLocaleChain(context, fallbackLocale, locale);
+    if (!(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(key) || key === '') {
+        return new Intl.DateTimeFormat(locale).format(value);
+    }
+    // resolve format
+    let datetimeFormat = {};
+    let targetLocale;
+    let format = null;
+    let from = locale;
+    let to = null;
+    const type = 'datetime format';
+    for (let i = 0; i < locales.length; i++) {
+        targetLocale = to = locales[i];
+        if (( true) &&
+            locale !== targetLocale &&
+            isTranslateFallbackWarn(fallbackWarn, key)) {
+            onWarn(getWarnMessage(5 /* FALLBACK_TO_DATE_FORMAT */, {
+                key,
+                target: targetLocale
+            }));
+        }
+        // for vue-devtools timeline event
+        if (( true) && locale !== targetLocale) {
+            const emitter = context.__v_emitter;
+            if (emitter) {
+                emitter.emit("fallback" /* FALBACK */, {
+                    type,
+                    key,
+                    from,
+                    to,
+                    groupId: `${type}:${key}`
+                });
+            }
+        }
+        datetimeFormat =
+            datetimeFormats[targetLocale] || {};
+        format = datetimeFormat[key];
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(format))
+            break;
+        handleMissing(context, key, targetLocale, missingWarn, type);
+        from = to;
+    }
+    // checking format and target locale
+    if (!(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(format) || !(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(targetLocale)) {
+        return unresolving ? NOT_REOSLVED : key;
+    }
+    let id = `${targetLocale}__${key}`;
+    if (!(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isEmptyObject)(overrides)) {
+        id = `${id}__${JSON.stringify(overrides)}`;
+    }
+    let formatter = __datetimeFormatters.get(id);
+    if (!formatter) {
+        formatter = new Intl.DateTimeFormat(targetLocale, (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({}, format, overrides));
+        __datetimeFormatters.set(id, formatter);
+    }
+    return !part ? formatter.format(value) : formatter.formatToParts(value);
+}
+/** @internal */
+function parseDateTimeArgs(...args) {
+    const [arg1, arg2, arg3, arg4] = args;
+    let options = {};
+    let overrides = {};
+    let value;
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg1)) {
+        // Only allow ISO strings - other date formats are often supported,
+        // but may cause different results in different browsers.
+        if (!/\d{4}-\d{2}-\d{2}(T.*)?/.test(arg1)) {
+            throw createCoreError(16 /* INVALID_ISO_DATE_ARGUMENT */);
+        }
+        value = new Date(arg1);
+        try {
+            // This will fail if the date is not valid
+            value.toISOString();
+        }
+        catch (e) {
+            throw createCoreError(16 /* INVALID_ISO_DATE_ARGUMENT */);
+        }
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isDate)(arg1)) {
+        if (isNaN(arg1.getTime())) {
+            throw createCoreError(15 /* INVALID_DATE_ARGUMENT */);
+        }
+        value = arg1;
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(arg1)) {
+        value = arg1;
+    }
+    else {
+        throw createCoreError(14 /* INVALID_ARGUMENT */);
+    }
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg2)) {
+        options.key = arg2;
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg2)) {
+        options = arg2;
+    }
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg3)) {
+        options.locale = arg3;
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg3)) {
+        overrides = arg3;
+    }
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg4)) {
+        overrides = arg4;
+    }
+    return [options.key || '', value, options, overrides];
+}
+/** @internal */
+function clearDateTimeFormat(ctx, locale, format) {
+    const context = ctx;
+    for (const key in format) {
+        const id = `${locale}__${key}`;
+        if (!context.__datetimeFormatters.has(id)) {
+            continue;
+        }
+        context.__datetimeFormatters.delete(id);
+    }
+}
+
+// implementation of `number` function
+function number(context, ...args) {
+    const { numberFormats, unresolving, fallbackLocale, onWarn } = context;
+    const { __numberFormatters } = context;
+    if (( true) && !Availabilities.numberFormat) {
+        onWarn(getWarnMessage(2 /* CANNOT_FORMAT_NUMBER */));
+        return MISSING_RESOLVE_VALUE;
+    }
+    const [key, value, options, overrides] = parseNumberArgs(...args);
+    const missingWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.missingWarn)
+        ? options.missingWarn
+        : context.missingWarn;
+    const fallbackWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.fallbackWarn)
+        ? options.fallbackWarn
+        : context.fallbackWarn;
+    const part = !!options.part;
+    const locale = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.locale) ? options.locale : context.locale;
+    const locales = getLocaleChain(context, fallbackLocale, locale);
+    if (!(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(key) || key === '') {
+        return new Intl.NumberFormat(locale).format(value);
+    }
+    // resolve format
+    let numberFormat = {};
+    let targetLocale;
+    let format = null;
+    let from = locale;
+    let to = null;
+    const type = 'number format';
+    for (let i = 0; i < locales.length; i++) {
+        targetLocale = to = locales[i];
+        if (( true) &&
+            locale !== targetLocale &&
+            isTranslateFallbackWarn(fallbackWarn, key)) {
+            onWarn(getWarnMessage(3 /* FALLBACK_TO_NUMBER_FORMAT */, {
+                key,
+                target: targetLocale
+            }));
+        }
+        // for vue-devtools timeline event
+        if (( true) && locale !== targetLocale) {
+            const emitter = context.__v_emitter;
+            if (emitter) {
+                emitter.emit("fallback" /* FALBACK */, {
+                    type,
+                    key,
+                    from,
+                    to,
+                    groupId: `${type}:${key}`
+                });
+            }
+        }
+        numberFormat =
+            numberFormats[targetLocale] || {};
+        format = numberFormat[key];
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(format))
+            break;
+        handleMissing(context, key, targetLocale, missingWarn, type);
+        from = to;
+    }
+    // checking format and target locale
+    if (!(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(format) || !(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(targetLocale)) {
+        return unresolving ? NOT_REOSLVED : key;
+    }
+    let id = `${targetLocale}__${key}`;
+    if (!(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isEmptyObject)(overrides)) {
+        id = `${id}__${JSON.stringify(overrides)}`;
+    }
+    let formatter = __numberFormatters.get(id);
+    if (!formatter) {
+        formatter = new Intl.NumberFormat(targetLocale, (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({}, format, overrides));
+        __numberFormatters.set(id, formatter);
+    }
+    return !part ? formatter.format(value) : formatter.formatToParts(value);
+}
+/** @internal */
+function parseNumberArgs(...args) {
+    const [arg1, arg2, arg3, arg4] = args;
+    let options = {};
+    let overrides = {};
+    if (!(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(arg1)) {
+        throw createCoreError(14 /* INVALID_ARGUMENT */);
+    }
+    const value = arg1;
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg2)) {
+        options.key = arg2;
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg2)) {
+        options = arg2;
+    }
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg3)) {
+        options.locale = arg3;
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg3)) {
+        overrides = arg3;
+    }
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg4)) {
+        overrides = arg4;
+    }
+    return [options.key || '', value, options, overrides];
+}
+/** @internal */
+function clearNumberFormat(ctx, locale, format) {
+    const context = ctx;
+    for (const key in format) {
+        const id = `${locale}__${key}`;
+        if (!context.__numberFormatters.has(id)) {
+            continue;
+        }
+        context.__numberFormatters.delete(id);
+    }
+}
+
+{
+    if (false) {}
+}
+
+
 
 
 /***/ }),
 
-/***/ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/utils.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@inertiajs/inertia/node_modules/qs/lib/utils.js ***!
-  \**********************************************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+/***/ "./node_modules/@intlify/devtools-if/dist/devtools-if.esm-bundler.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@intlify/devtools-if/dist/devtools-if.esm-bundler.js ***!
+  \***************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "IntlifyDevToolsHooks": function() { return /* binding */ IntlifyDevToolsHooks; }
+/* harmony export */ });
+/*!
+  * @intlify/devtools-if v9.1.9
+  * (c) 2021 kazuya kawaguchi
+  * Released under the MIT License.
+  */
+const IntlifyDevToolsHooks = {
+    I18nInit: 'i18n:init',
+    FunctionTranslate: 'function:translate'
+};
 
 
-var formats = __webpack_require__(/*! ./formats */ "./node_modules/@inertiajs/inertia/node_modules/qs/lib/formats.js");
 
-var has = Object.prototype.hasOwnProperty;
-var isArray = Array.isArray;
 
-var hexTable = (function () {
-    var array = [];
-    for (var i = 0; i < 256; ++i) {
-        array.push('%' + ((i < 16 ? '0' : '') + i.toString(16)).toUpperCase());
+/***/ }),
+
+/***/ "./node_modules/@intlify/message-compiler/dist/message-compiler.esm-bundler.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@intlify/message-compiler/dist/message-compiler.esm-bundler.js ***!
+  \*************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ERROR_DOMAIN": function() { return /* binding */ ERROR_DOMAIN; },
+/* harmony export */   "LocationStub": function() { return /* binding */ LocationStub; },
+/* harmony export */   "baseCompile": function() { return /* binding */ baseCompile; },
+/* harmony export */   "createCompileError": function() { return /* binding */ createCompileError; },
+/* harmony export */   "createLocation": function() { return /* binding */ createLocation; },
+/* harmony export */   "createParser": function() { return /* binding */ createParser; },
+/* harmony export */   "createPosition": function() { return /* binding */ createPosition; },
+/* harmony export */   "defaultOnError": function() { return /* binding */ defaultOnError; },
+/* harmony export */   "errorMessages": function() { return /* binding */ errorMessages; }
+/* harmony export */ });
+/* harmony import */ var _intlify_shared__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @intlify/shared */ "./node_modules/@intlify/shared/dist/shared.esm-bundler.js");
+/*!
+  * @intlify/message-compiler v9.1.9
+  * (c) 2021 kazuya kawaguchi
+  * Released under the MIT License.
+  */
+
+
+/** @internal */
+const errorMessages = {
+    // tokenizer error messages
+    [0 /* EXPECTED_TOKEN */]: `Expected token: '{0}'`,
+    [1 /* INVALID_TOKEN_IN_PLACEHOLDER */]: `Invalid token in placeholder: '{0}'`,
+    [2 /* UNTERMINATED_SINGLE_QUOTE_IN_PLACEHOLDER */]: `Unterminated single quote in placeholder`,
+    [3 /* UNKNOWN_ESCAPE_SEQUENCE */]: `Unknown escape sequence: \\{0}`,
+    [4 /* INVALID_UNICODE_ESCAPE_SEQUENCE */]: `Invalid unicode escape sequence: {0}`,
+    [5 /* UNBALANCED_CLOSING_BRACE */]: `Unbalanced closing brace`,
+    [6 /* UNTERMINATED_CLOSING_BRACE */]: `Unterminated closing brace`,
+    [7 /* EMPTY_PLACEHOLDER */]: `Empty placeholder`,
+    [8 /* NOT_ALLOW_NEST_PLACEHOLDER */]: `Not allowed nest placeholder`,
+    [9 /* INVALID_LINKED_FORMAT */]: `Invalid linked format`,
+    // parser error messages
+    [10 /* MUST_HAVE_MESSAGES_IN_PLURAL */]: `Plural must have messages`,
+    [11 /* UNEXPECTED_EMPTY_LINKED_MODIFIER */]: `Unexpected empty linked modifier`,
+    [12 /* UNEXPECTED_EMPTY_LINKED_KEY */]: `Unexpected empty linked key`,
+    [13 /* UNEXPECTED_LEXICAL_ANALYSIS */]: `Unexpected lexical analysis in token: '{0}'`
+};
+function createCompileError(code, loc, options = {}) {
+    const { domain, messages, args } = options;
+    const msg = ( true)
+        ? (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.format)((messages || errorMessages)[code] || '', ...(args || []))
+        : 0;
+    const error = new SyntaxError(String(msg));
+    error.code = code;
+    if (loc) {
+        error.location = loc;
     }
+    error.domain = domain;
+    return error;
+}
+/** @internal */
+function defaultOnError(error) {
+    throw error;
+}
 
-    return array;
-}());
+const LocationStub = {
+    start: { line: 1, column: 1, offset: 0 },
+    end: { line: 1, column: 1, offset: 0 }
+};
+function createPosition(line, column, offset) {
+    return { line, column, offset };
+}
+function createLocation(start, end, source) {
+    const loc = { start, end };
+    if (source != null) {
+        loc.source = source;
+    }
+    return loc;
+}
 
-var compactQueue = function compactQueue(queue) {
-    while (queue.length > 1) {
-        var item = queue.pop();
-        var obj = item.obj[item.prop];
+const CHAR_SP = ' ';
+const CHAR_CR = '\r';
+const CHAR_LF = '\n';
+const CHAR_LS = String.fromCharCode(0x2028);
+const CHAR_PS = String.fromCharCode(0x2029);
+function createScanner(str) {
+    const _buf = str;
+    let _index = 0;
+    let _line = 1;
+    let _column = 1;
+    let _peekOffset = 0;
+    const isCRLF = (index) => _buf[index] === CHAR_CR && _buf[index + 1] === CHAR_LF;
+    const isLF = (index) => _buf[index] === CHAR_LF;
+    const isPS = (index) => _buf[index] === CHAR_PS;
+    const isLS = (index) => _buf[index] === CHAR_LS;
+    const isLineEnd = (index) => isCRLF(index) || isLF(index) || isPS(index) || isLS(index);
+    const index = () => _index;
+    const line = () => _line;
+    const column = () => _column;
+    const peekOffset = () => _peekOffset;
+    const charAt = (offset) => isCRLF(offset) || isPS(offset) || isLS(offset) ? CHAR_LF : _buf[offset];
+    const currentChar = () => charAt(_index);
+    const currentPeek = () => charAt(_index + _peekOffset);
+    function next() {
+        _peekOffset = 0;
+        if (isLineEnd(_index)) {
+            _line++;
+            _column = 0;
+        }
+        if (isCRLF(_index)) {
+            _index++;
+        }
+        _index++;
+        _column++;
+        return _buf[_index];
+    }
+    function peek() {
+        if (isCRLF(_index + _peekOffset)) {
+            _peekOffset++;
+        }
+        _peekOffset++;
+        return _buf[_index + _peekOffset];
+    }
+    function reset() {
+        _index = 0;
+        _line = 1;
+        _column = 1;
+        _peekOffset = 0;
+    }
+    function resetPeek(offset = 0) {
+        _peekOffset = offset;
+    }
+    function skipToPeek() {
+        const target = _index + _peekOffset;
+        // eslint-disable-next-line no-unmodified-loop-condition
+        while (target !== _index) {
+            next();
+        }
+        _peekOffset = 0;
+    }
+    return {
+        index,
+        line,
+        column,
+        peekOffset,
+        charAt,
+        currentChar,
+        currentPeek,
+        next,
+        peek,
+        reset,
+        resetPeek,
+        skipToPeek
+    };
+}
 
-        if (isArray(obj)) {
-            var compacted = [];
-
-            for (var j = 0; j < obj.length; ++j) {
-                if (typeof obj[j] !== 'undefined') {
-                    compacted.push(obj[j]);
+const EOF = undefined;
+const LITERAL_DELIMITER = "'";
+const ERROR_DOMAIN$1 = 'tokenizer';
+function createTokenizer(source, options = {}) {
+    const location = options.location !== false;
+    const _scnr = createScanner(source);
+    const currentOffset = () => _scnr.index();
+    const currentPosition = () => createPosition(_scnr.line(), _scnr.column(), _scnr.index());
+    const _initLoc = currentPosition();
+    const _initOffset = currentOffset();
+    const _context = {
+        currentType: 14 /* EOF */,
+        offset: _initOffset,
+        startLoc: _initLoc,
+        endLoc: _initLoc,
+        lastType: 14 /* EOF */,
+        lastOffset: _initOffset,
+        lastStartLoc: _initLoc,
+        lastEndLoc: _initLoc,
+        braceNest: 0,
+        inLinked: false,
+        text: ''
+    };
+    const context = () => _context;
+    const { onError } = options;
+    function emitError(code, pos, offset, ...args) {
+        const ctx = context();
+        pos.column += offset;
+        pos.offset += offset;
+        if (onError) {
+            const loc = createLocation(ctx.startLoc, pos);
+            const err = createCompileError(code, loc, {
+                domain: ERROR_DOMAIN$1,
+                args
+            });
+            onError(err);
+        }
+    }
+    function getToken(context, type, value) {
+        context.endLoc = currentPosition();
+        context.currentType = type;
+        const token = { type };
+        if (location) {
+            token.loc = createLocation(context.startLoc, context.endLoc);
+        }
+        if (value != null) {
+            token.value = value;
+        }
+        return token;
+    }
+    const getEndToken = (context) => getToken(context, 14 /* EOF */);
+    function eat(scnr, ch) {
+        if (scnr.currentChar() === ch) {
+            scnr.next();
+            return ch;
+        }
+        else {
+            emitError(0 /* EXPECTED_TOKEN */, currentPosition(), 0, ch);
+            return '';
+        }
+    }
+    function peekSpaces(scnr) {
+        let buf = '';
+        while (scnr.currentPeek() === CHAR_SP || scnr.currentPeek() === CHAR_LF) {
+            buf += scnr.currentPeek();
+            scnr.peek();
+        }
+        return buf;
+    }
+    function skipSpaces(scnr) {
+        const buf = peekSpaces(scnr);
+        scnr.skipToPeek();
+        return buf;
+    }
+    function isIdentifierStart(ch) {
+        if (ch === EOF) {
+            return false;
+        }
+        const cc = ch.charCodeAt(0);
+        return ((cc >= 97 && cc <= 122) || // a-z
+            (cc >= 65 && cc <= 90) || // A-Z
+            cc === 95 // _
+        );
+    }
+    function isNumberStart(ch) {
+        if (ch === EOF) {
+            return false;
+        }
+        const cc = ch.charCodeAt(0);
+        return cc >= 48 && cc <= 57; // 0-9
+    }
+    function isNamedIdentifierStart(scnr, context) {
+        const { currentType } = context;
+        if (currentType !== 2 /* BraceLeft */) {
+            return false;
+        }
+        peekSpaces(scnr);
+        const ret = isIdentifierStart(scnr.currentPeek());
+        scnr.resetPeek();
+        return ret;
+    }
+    function isListIdentifierStart(scnr, context) {
+        const { currentType } = context;
+        if (currentType !== 2 /* BraceLeft */) {
+            return false;
+        }
+        peekSpaces(scnr);
+        const ch = scnr.currentPeek() === '-' ? scnr.peek() : scnr.currentPeek();
+        const ret = isNumberStart(ch);
+        scnr.resetPeek();
+        return ret;
+    }
+    function isLiteralStart(scnr, context) {
+        const { currentType } = context;
+        if (currentType !== 2 /* BraceLeft */) {
+            return false;
+        }
+        peekSpaces(scnr);
+        const ret = scnr.currentPeek() === LITERAL_DELIMITER;
+        scnr.resetPeek();
+        return ret;
+    }
+    function isLinkedDotStart(scnr, context) {
+        const { currentType } = context;
+        if (currentType !== 8 /* LinkedAlias */) {
+            return false;
+        }
+        peekSpaces(scnr);
+        const ret = scnr.currentPeek() === "." /* LinkedDot */;
+        scnr.resetPeek();
+        return ret;
+    }
+    function isLinkedModifierStart(scnr, context) {
+        const { currentType } = context;
+        if (currentType !== 9 /* LinkedDot */) {
+            return false;
+        }
+        peekSpaces(scnr);
+        const ret = isIdentifierStart(scnr.currentPeek());
+        scnr.resetPeek();
+        return ret;
+    }
+    function isLinkedDelimiterStart(scnr, context) {
+        const { currentType } = context;
+        if (!(currentType === 8 /* LinkedAlias */ ||
+            currentType === 12 /* LinkedModifier */)) {
+            return false;
+        }
+        peekSpaces(scnr);
+        const ret = scnr.currentPeek() === ":" /* LinkedDelimiter */;
+        scnr.resetPeek();
+        return ret;
+    }
+    function isLinkedReferStart(scnr, context) {
+        const { currentType } = context;
+        if (currentType !== 10 /* LinkedDelimiter */) {
+            return false;
+        }
+        const fn = () => {
+            const ch = scnr.currentPeek();
+            if (ch === "{" /* BraceLeft */) {
+                return isIdentifierStart(scnr.peek());
+            }
+            else if (ch === "@" /* LinkedAlias */ ||
+                ch === "%" /* Modulo */ ||
+                ch === "|" /* Pipe */ ||
+                ch === ":" /* LinkedDelimiter */ ||
+                ch === "." /* LinkedDot */ ||
+                ch === CHAR_SP ||
+                !ch) {
+                return false;
+            }
+            else if (ch === CHAR_LF) {
+                scnr.peek();
+                return fn();
+            }
+            else {
+                // other characters
+                return isIdentifierStart(ch);
+            }
+        };
+        const ret = fn();
+        scnr.resetPeek();
+        return ret;
+    }
+    function isPluralStart(scnr) {
+        peekSpaces(scnr);
+        const ret = scnr.currentPeek() === "|" /* Pipe */;
+        scnr.resetPeek();
+        return ret;
+    }
+    function isTextStart(scnr, reset = true) {
+        const fn = (hasSpace = false, prev = '', detectModulo = false) => {
+            const ch = scnr.currentPeek();
+            if (ch === "{" /* BraceLeft */) {
+                return prev === "%" /* Modulo */ ? false : hasSpace;
+            }
+            else if (ch === "@" /* LinkedAlias */ || !ch) {
+                return prev === "%" /* Modulo */ ? true : hasSpace;
+            }
+            else if (ch === "%" /* Modulo */) {
+                scnr.peek();
+                return fn(hasSpace, "%" /* Modulo */, true);
+            }
+            else if (ch === "|" /* Pipe */) {
+                return prev === "%" /* Modulo */ || detectModulo
+                    ? true
+                    : !(prev === CHAR_SP || prev === CHAR_LF);
+            }
+            else if (ch === CHAR_SP) {
+                scnr.peek();
+                return fn(true, CHAR_SP, detectModulo);
+            }
+            else if (ch === CHAR_LF) {
+                scnr.peek();
+                return fn(true, CHAR_LF, detectModulo);
+            }
+            else {
+                return true;
+            }
+        };
+        const ret = fn();
+        reset && scnr.resetPeek();
+        return ret;
+    }
+    function takeChar(scnr, fn) {
+        const ch = scnr.currentChar();
+        if (ch === EOF) {
+            return EOF;
+        }
+        if (fn(ch)) {
+            scnr.next();
+            return ch;
+        }
+        return null;
+    }
+    function takeIdentifierChar(scnr) {
+        const closure = (ch) => {
+            const cc = ch.charCodeAt(0);
+            return ((cc >= 97 && cc <= 122) || // a-z
+                (cc >= 65 && cc <= 90) || // A-Z
+                (cc >= 48 && cc <= 57) || // 0-9
+                cc === 95 || // _
+                cc === 36 // $
+            );
+        };
+        return takeChar(scnr, closure);
+    }
+    function takeDigit(scnr) {
+        const closure = (ch) => {
+            const cc = ch.charCodeAt(0);
+            return cc >= 48 && cc <= 57; // 0-9
+        };
+        return takeChar(scnr, closure);
+    }
+    function takeHexDigit(scnr) {
+        const closure = (ch) => {
+            const cc = ch.charCodeAt(0);
+            return ((cc >= 48 && cc <= 57) || // 0-9
+                (cc >= 65 && cc <= 70) || // A-F
+                (cc >= 97 && cc <= 102)); // a-f
+        };
+        return takeChar(scnr, closure);
+    }
+    function getDigits(scnr) {
+        let ch = '';
+        let num = '';
+        while ((ch = takeDigit(scnr))) {
+            num += ch;
+        }
+        return num;
+    }
+    function readText(scnr) {
+        let buf = '';
+        while (true) {
+            const ch = scnr.currentChar();
+            if (ch === "{" /* BraceLeft */ ||
+                ch === "}" /* BraceRight */ ||
+                ch === "@" /* LinkedAlias */ ||
+                ch === "|" /* Pipe */ ||
+                !ch) {
+                break;
+            }
+            else if (ch === "%" /* Modulo */) {
+                if (isTextStart(scnr)) {
+                    buf += ch;
+                    scnr.next();
+                }
+                else {
+                    break;
                 }
             }
-
-            item.obj[item.prop] = compacted;
-        }
-    }
-};
-
-var arrayToObject = function arrayToObject(source, options) {
-    var obj = options && options.plainObjects ? Object.create(null) : {};
-    for (var i = 0; i < source.length; ++i) {
-        if (typeof source[i] !== 'undefined') {
-            obj[i] = source[i];
-        }
-    }
-
-    return obj;
-};
-
-var merge = function merge(target, source, options) {
-    /* eslint no-param-reassign: 0 */
-    if (!source) {
-        return target;
-    }
-
-    if (typeof source !== 'object') {
-        if (isArray(target)) {
-            target.push(source);
-        } else if (target && typeof target === 'object') {
-            if ((options && (options.plainObjects || options.allowPrototypes)) || !has.call(Object.prototype, source)) {
-                target[source] = true;
-            }
-        } else {
-            return [target, source];
-        }
-
-        return target;
-    }
-
-    if (!target || typeof target !== 'object') {
-        return [target].concat(source);
-    }
-
-    var mergeTarget = target;
-    if (isArray(target) && !isArray(source)) {
-        mergeTarget = arrayToObject(target, options);
-    }
-
-    if (isArray(target) && isArray(source)) {
-        source.forEach(function (item, i) {
-            if (has.call(target, i)) {
-                var targetItem = target[i];
-                if (targetItem && typeof targetItem === 'object' && item && typeof item === 'object') {
-                    target[i] = merge(targetItem, item, options);
-                } else {
-                    target.push(item);
+            else if (ch === CHAR_SP || ch === CHAR_LF) {
+                if (isTextStart(scnr)) {
+                    buf += ch;
+                    scnr.next();
                 }
-            } else {
-                target[i] = item;
+                else if (isPluralStart(scnr)) {
+                    break;
+                }
+                else {
+                    buf += ch;
+                    scnr.next();
+                }
             }
-        });
-        return target;
-    }
-
-    return Object.keys(source).reduce(function (acc, key) {
-        var value = source[key];
-
-        if (has.call(acc, key)) {
-            acc[key] = merge(acc[key], value, options);
-        } else {
-            acc[key] = value;
-        }
-        return acc;
-    }, mergeTarget);
-};
-
-var assign = function assignSingleSource(target, source) {
-    return Object.keys(source).reduce(function (acc, key) {
-        acc[key] = source[key];
-        return acc;
-    }, target);
-};
-
-var decode = function (str, decoder, charset) {
-    var strWithoutPlus = str.replace(/\+/g, ' ');
-    if (charset === 'iso-8859-1') {
-        // unescape never throws, no try...catch needed:
-        return strWithoutPlus.replace(/%[0-9a-f]{2}/gi, unescape);
-    }
-    // utf-8
-    try {
-        return decodeURIComponent(strWithoutPlus);
-    } catch (e) {
-        return strWithoutPlus;
-    }
-};
-
-var encode = function encode(str, defaultEncoder, charset, kind, format) {
-    // This code was originally written by Brian White (mscdex) for the io.js core querystring library.
-    // It has been adapted here for stricter adherence to RFC 3986
-    if (str.length === 0) {
-        return str;
-    }
-
-    var string = str;
-    if (typeof str === 'symbol') {
-        string = Symbol.prototype.toString.call(str);
-    } else if (typeof str !== 'string') {
-        string = String(str);
-    }
-
-    if (charset === 'iso-8859-1') {
-        return escape(string).replace(/%u[0-9a-f]{4}/gi, function ($0) {
-            return '%26%23' + parseInt($0.slice(2), 16) + '%3B';
-        });
-    }
-
-    var out = '';
-    for (var i = 0; i < string.length; ++i) {
-        var c = string.charCodeAt(i);
-
-        if (
-            c === 0x2D // -
-            || c === 0x2E // .
-            || c === 0x5F // _
-            || c === 0x7E // ~
-            || (c >= 0x30 && c <= 0x39) // 0-9
-            || (c >= 0x41 && c <= 0x5A) // a-z
-            || (c >= 0x61 && c <= 0x7A) // A-Z
-            || (format === formats.RFC1738 && (c === 0x28 || c === 0x29)) // ( )
-        ) {
-            out += string.charAt(i);
-            continue;
-        }
-
-        if (c < 0x80) {
-            out = out + hexTable[c];
-            continue;
-        }
-
-        if (c < 0x800) {
-            out = out + (hexTable[0xC0 | (c >> 6)] + hexTable[0x80 | (c & 0x3F)]);
-            continue;
-        }
-
-        if (c < 0xD800 || c >= 0xE000) {
-            out = out + (hexTable[0xE0 | (c >> 12)] + hexTable[0x80 | ((c >> 6) & 0x3F)] + hexTable[0x80 | (c & 0x3F)]);
-            continue;
-        }
-
-        i += 1;
-        c = 0x10000 + (((c & 0x3FF) << 10) | (string.charCodeAt(i) & 0x3FF));
-        /* eslint operator-linebreak: [2, "before"] */
-        out += hexTable[0xF0 | (c >> 18)]
-            + hexTable[0x80 | ((c >> 12) & 0x3F)]
-            + hexTable[0x80 | ((c >> 6) & 0x3F)]
-            + hexTable[0x80 | (c & 0x3F)];
-    }
-
-    return out;
-};
-
-var compact = function compact(value) {
-    var queue = [{ obj: { o: value }, prop: 'o' }];
-    var refs = [];
-
-    for (var i = 0; i < queue.length; ++i) {
-        var item = queue[i];
-        var obj = item.obj[item.prop];
-
-        var keys = Object.keys(obj);
-        for (var j = 0; j < keys.length; ++j) {
-            var key = keys[j];
-            var val = obj[key];
-            if (typeof val === 'object' && val !== null && refs.indexOf(val) === -1) {
-                queue.push({ obj: obj, prop: key });
-                refs.push(val);
+            else {
+                buf += ch;
+                scnr.next();
             }
         }
+        return buf;
     }
+    function readNamedIdentifier(scnr) {
+        skipSpaces(scnr);
+        let ch = '';
+        let name = '';
+        while ((ch = takeIdentifierChar(scnr))) {
+            name += ch;
+        }
+        if (scnr.currentChar() === EOF) {
+            emitError(6 /* UNTERMINATED_CLOSING_BRACE */, currentPosition(), 0);
+        }
+        return name;
+    }
+    function readListIdentifier(scnr) {
+        skipSpaces(scnr);
+        let value = '';
+        if (scnr.currentChar() === '-') {
+            scnr.next();
+            value += `-${getDigits(scnr)}`;
+        }
+        else {
+            value += getDigits(scnr);
+        }
+        if (scnr.currentChar() === EOF) {
+            emitError(6 /* UNTERMINATED_CLOSING_BRACE */, currentPosition(), 0);
+        }
+        return value;
+    }
+    function readLiteral(scnr) {
+        skipSpaces(scnr);
+        eat(scnr, `\'`);
+        let ch = '';
+        let literal = '';
+        const fn = (x) => x !== LITERAL_DELIMITER && x !== CHAR_LF;
+        while ((ch = takeChar(scnr, fn))) {
+            if (ch === '\\') {
+                literal += readEscapeSequence(scnr);
+            }
+            else {
+                literal += ch;
+            }
+        }
+        const current = scnr.currentChar();
+        if (current === CHAR_LF || current === EOF) {
+            emitError(2 /* UNTERMINATED_SINGLE_QUOTE_IN_PLACEHOLDER */, currentPosition(), 0);
+            // TODO: Is it correct really?
+            if (current === CHAR_LF) {
+                scnr.next();
+                eat(scnr, `\'`);
+            }
+            return literal;
+        }
+        eat(scnr, `\'`);
+        return literal;
+    }
+    function readEscapeSequence(scnr) {
+        const ch = scnr.currentChar();
+        switch (ch) {
+            case '\\':
+            case `\'`:
+                scnr.next();
+                return `\\${ch}`;
+            case 'u':
+                return readUnicodeEscapeSequence(scnr, ch, 4);
+            case 'U':
+                return readUnicodeEscapeSequence(scnr, ch, 6);
+            default:
+                emitError(3 /* UNKNOWN_ESCAPE_SEQUENCE */, currentPosition(), 0, ch);
+                return '';
+        }
+    }
+    function readUnicodeEscapeSequence(scnr, unicode, digits) {
+        eat(scnr, unicode);
+        let sequence = '';
+        for (let i = 0; i < digits; i++) {
+            const ch = takeHexDigit(scnr);
+            if (!ch) {
+                emitError(4 /* INVALID_UNICODE_ESCAPE_SEQUENCE */, currentPosition(), 0, `\\${unicode}${sequence}${scnr.currentChar()}`);
+                break;
+            }
+            sequence += ch;
+        }
+        return `\\${unicode}${sequence}`;
+    }
+    function readInvalidIdentifier(scnr) {
+        skipSpaces(scnr);
+        let ch = '';
+        let identifiers = '';
+        const closure = (ch) => ch !== "{" /* BraceLeft */ &&
+            ch !== "}" /* BraceRight */ &&
+            ch !== CHAR_SP &&
+            ch !== CHAR_LF;
+        while ((ch = takeChar(scnr, closure))) {
+            identifiers += ch;
+        }
+        return identifiers;
+    }
+    function readLinkedModifier(scnr) {
+        let ch = '';
+        let name = '';
+        while ((ch = takeIdentifierChar(scnr))) {
+            name += ch;
+        }
+        return name;
+    }
+    function readLinkedRefer(scnr) {
+        const fn = (detect = false, buf) => {
+            const ch = scnr.currentChar();
+            if (ch === "{" /* BraceLeft */ ||
+                ch === "%" /* Modulo */ ||
+                ch === "@" /* LinkedAlias */ ||
+                ch === "|" /* Pipe */ ||
+                !ch) {
+                return buf;
+            }
+            else if (ch === CHAR_SP) {
+                return buf;
+            }
+            else if (ch === CHAR_LF) {
+                buf += ch;
+                scnr.next();
+                return fn(detect, buf);
+            }
+            else {
+                buf += ch;
+                scnr.next();
+                return fn(true, buf);
+            }
+        };
+        return fn(false, '');
+    }
+    function readPlural(scnr) {
+        skipSpaces(scnr);
+        const plural = eat(scnr, "|" /* Pipe */);
+        skipSpaces(scnr);
+        return plural;
+    }
+    // TODO: We need refactoring of token parsing ...
+    function readTokenInPlaceholder(scnr, context) {
+        let token = null;
+        const ch = scnr.currentChar();
+        switch (ch) {
+            case "{" /* BraceLeft */:
+                if (context.braceNest >= 1) {
+                    emitError(8 /* NOT_ALLOW_NEST_PLACEHOLDER */, currentPosition(), 0);
+                }
+                scnr.next();
+                token = getToken(context, 2 /* BraceLeft */, "{" /* BraceLeft */);
+                skipSpaces(scnr);
+                context.braceNest++;
+                return token;
+            case "}" /* BraceRight */:
+                if (context.braceNest > 0 &&
+                    context.currentType === 2 /* BraceLeft */) {
+                    emitError(7 /* EMPTY_PLACEHOLDER */, currentPosition(), 0);
+                }
+                scnr.next();
+                token = getToken(context, 3 /* BraceRight */, "}" /* BraceRight */);
+                context.braceNest--;
+                context.braceNest > 0 && skipSpaces(scnr);
+                if (context.inLinked && context.braceNest === 0) {
+                    context.inLinked = false;
+                }
+                return token;
+            case "@" /* LinkedAlias */:
+                if (context.braceNest > 0) {
+                    emitError(6 /* UNTERMINATED_CLOSING_BRACE */, currentPosition(), 0);
+                }
+                token = readTokenInLinked(scnr, context) || getEndToken(context);
+                context.braceNest = 0;
+                return token;
+            default:
+                let validNamedIdentifier = true;
+                let validListIdentifier = true;
+                let validLiteral = true;
+                if (isPluralStart(scnr)) {
+                    if (context.braceNest > 0) {
+                        emitError(6 /* UNTERMINATED_CLOSING_BRACE */, currentPosition(), 0);
+                    }
+                    token = getToken(context, 1 /* Pipe */, readPlural(scnr));
+                    // reset
+                    context.braceNest = 0;
+                    context.inLinked = false;
+                    return token;
+                }
+                if (context.braceNest > 0 &&
+                    (context.currentType === 5 /* Named */ ||
+                        context.currentType === 6 /* List */ ||
+                        context.currentType === 7 /* Literal */)) {
+                    emitError(6 /* UNTERMINATED_CLOSING_BRACE */, currentPosition(), 0);
+                    context.braceNest = 0;
+                    return readToken(scnr, context);
+                }
+                if ((validNamedIdentifier = isNamedIdentifierStart(scnr, context))) {
+                    token = getToken(context, 5 /* Named */, readNamedIdentifier(scnr));
+                    skipSpaces(scnr);
+                    return token;
+                }
+                if ((validListIdentifier = isListIdentifierStart(scnr, context))) {
+                    token = getToken(context, 6 /* List */, readListIdentifier(scnr));
+                    skipSpaces(scnr);
+                    return token;
+                }
+                if ((validLiteral = isLiteralStart(scnr, context))) {
+                    token = getToken(context, 7 /* Literal */, readLiteral(scnr));
+                    skipSpaces(scnr);
+                    return token;
+                }
+                if (!validNamedIdentifier && !validListIdentifier && !validLiteral) {
+                    // TODO: we should be re-designed invalid cases, when we will extend message syntax near the future ...
+                    token = getToken(context, 13 /* InvalidPlace */, readInvalidIdentifier(scnr));
+                    emitError(1 /* INVALID_TOKEN_IN_PLACEHOLDER */, currentPosition(), 0, token.value);
+                    skipSpaces(scnr);
+                    return token;
+                }
+                break;
+        }
+        return token;
+    }
+    // TODO: We need refactoring of token parsing ...
+    function readTokenInLinked(scnr, context) {
+        const { currentType } = context;
+        let token = null;
+        const ch = scnr.currentChar();
+        if ((currentType === 8 /* LinkedAlias */ ||
+            currentType === 9 /* LinkedDot */ ||
+            currentType === 12 /* LinkedModifier */ ||
+            currentType === 10 /* LinkedDelimiter */) &&
+            (ch === CHAR_LF || ch === CHAR_SP)) {
+            emitError(9 /* INVALID_LINKED_FORMAT */, currentPosition(), 0);
+        }
+        switch (ch) {
+            case "@" /* LinkedAlias */:
+                scnr.next();
+                token = getToken(context, 8 /* LinkedAlias */, "@" /* LinkedAlias */);
+                context.inLinked = true;
+                return token;
+            case "." /* LinkedDot */:
+                skipSpaces(scnr);
+                scnr.next();
+                return getToken(context, 9 /* LinkedDot */, "." /* LinkedDot */);
+            case ":" /* LinkedDelimiter */:
+                skipSpaces(scnr);
+                scnr.next();
+                return getToken(context, 10 /* LinkedDelimiter */, ":" /* LinkedDelimiter */);
+            default:
+                if (isPluralStart(scnr)) {
+                    token = getToken(context, 1 /* Pipe */, readPlural(scnr));
+                    // reset
+                    context.braceNest = 0;
+                    context.inLinked = false;
+                    return token;
+                }
+                if (isLinkedDotStart(scnr, context) ||
+                    isLinkedDelimiterStart(scnr, context)) {
+                    skipSpaces(scnr);
+                    return readTokenInLinked(scnr, context);
+                }
+                if (isLinkedModifierStart(scnr, context)) {
+                    skipSpaces(scnr);
+                    return getToken(context, 12 /* LinkedModifier */, readLinkedModifier(scnr));
+                }
+                if (isLinkedReferStart(scnr, context)) {
+                    skipSpaces(scnr);
+                    if (ch === "{" /* BraceLeft */) {
+                        // scan the placeholder
+                        return readTokenInPlaceholder(scnr, context) || token;
+                    }
+                    else {
+                        return getToken(context, 11 /* LinkedKey */, readLinkedRefer(scnr));
+                    }
+                }
+                if (currentType === 8 /* LinkedAlias */) {
+                    emitError(9 /* INVALID_LINKED_FORMAT */, currentPosition(), 0);
+                }
+                context.braceNest = 0;
+                context.inLinked = false;
+                return readToken(scnr, context);
+        }
+    }
+    // TODO: We need refactoring of token parsing ...
+    function readToken(scnr, context) {
+        let token = { type: 14 /* EOF */ };
+        if (context.braceNest > 0) {
+            return readTokenInPlaceholder(scnr, context) || getEndToken(context);
+        }
+        if (context.inLinked) {
+            return readTokenInLinked(scnr, context) || getEndToken(context);
+        }
+        const ch = scnr.currentChar();
+        switch (ch) {
+            case "{" /* BraceLeft */:
+                return readTokenInPlaceholder(scnr, context) || getEndToken(context);
+            case "}" /* BraceRight */:
+                emitError(5 /* UNBALANCED_CLOSING_BRACE */, currentPosition(), 0);
+                scnr.next();
+                return getToken(context, 3 /* BraceRight */, "}" /* BraceRight */);
+            case "@" /* LinkedAlias */:
+                return readTokenInLinked(scnr, context) || getEndToken(context);
+            default:
+                if (isPluralStart(scnr)) {
+                    token = getToken(context, 1 /* Pipe */, readPlural(scnr));
+                    // reset
+                    context.braceNest = 0;
+                    context.inLinked = false;
+                    return token;
+                }
+                if (isTextStart(scnr)) {
+                    return getToken(context, 0 /* Text */, readText(scnr));
+                }
+                if (ch === "%" /* Modulo */) {
+                    scnr.next();
+                    return getToken(context, 4 /* Modulo */, "%" /* Modulo */);
+                }
+                break;
+        }
+        return token;
+    }
+    function nextToken() {
+        const { currentType, offset, startLoc, endLoc } = _context;
+        _context.lastType = currentType;
+        _context.lastOffset = offset;
+        _context.lastStartLoc = startLoc;
+        _context.lastEndLoc = endLoc;
+        _context.offset = currentOffset();
+        _context.startLoc = currentPosition();
+        if (_scnr.currentChar() === EOF) {
+            return getToken(_context, 14 /* EOF */);
+        }
+        return readToken(_scnr, _context);
+    }
+    return {
+        nextToken,
+        currentOffset,
+        currentPosition,
+        context
+    };
+}
 
-    compactQueue(queue);
+const ERROR_DOMAIN = 'parser';
+// Backslash backslash, backslash quote, uHHHH, UHHHHHH.
+const KNOWN_ESCAPES = /(?:\\\\|\\'|\\u([0-9a-fA-F]{4})|\\U([0-9a-fA-F]{6}))/g;
+function fromEscapeSequence(match, codePoint4, codePoint6) {
+    switch (match) {
+        case `\\\\`:
+            return `\\`;
+        case `\\\'`:
+            return `\'`;
+        default: {
+            const codePoint = parseInt(codePoint4 || codePoint6, 16);
+            if (codePoint <= 0xd7ff || codePoint >= 0xe000) {
+                return String.fromCodePoint(codePoint);
+            }
+            // invalid ...
+            // Replace them with U+FFFD REPLACEMENT CHARACTER.
+            return '�';
+        }
+    }
+}
+function createParser(options = {}) {
+    const location = options.location !== false;
+    const { onError } = options;
+    function emitError(tokenzer, code, start, offset, ...args) {
+        const end = tokenzer.currentPosition();
+        end.offset += offset;
+        end.column += offset;
+        if (onError) {
+            const loc = createLocation(start, end);
+            const err = createCompileError(code, loc, {
+                domain: ERROR_DOMAIN,
+                args
+            });
+            onError(err);
+        }
+    }
+    function startNode(type, offset, loc) {
+        const node = {
+            type,
+            start: offset,
+            end: offset
+        };
+        if (location) {
+            node.loc = { start: loc, end: loc };
+        }
+        return node;
+    }
+    function endNode(node, offset, pos, type) {
+        node.end = offset;
+        if (type) {
+            node.type = type;
+        }
+        if (location && node.loc) {
+            node.loc.end = pos;
+        }
+    }
+    function parseText(tokenizer, value) {
+        const context = tokenizer.context();
+        const node = startNode(3 /* Text */, context.offset, context.startLoc);
+        node.value = value;
+        endNode(node, tokenizer.currentOffset(), tokenizer.currentPosition());
+        return node;
+    }
+    function parseList(tokenizer, index) {
+        const context = tokenizer.context();
+        const { lastOffset: offset, lastStartLoc: loc } = context; // get brace left loc
+        const node = startNode(5 /* List */, offset, loc);
+        node.index = parseInt(index, 10);
+        tokenizer.nextToken(); // skip brach right
+        endNode(node, tokenizer.currentOffset(), tokenizer.currentPosition());
+        return node;
+    }
+    function parseNamed(tokenizer, key) {
+        const context = tokenizer.context();
+        const { lastOffset: offset, lastStartLoc: loc } = context; // get brace left loc
+        const node = startNode(4 /* Named */, offset, loc);
+        node.key = key;
+        tokenizer.nextToken(); // skip brach right
+        endNode(node, tokenizer.currentOffset(), tokenizer.currentPosition());
+        return node;
+    }
+    function parseLiteral(tokenizer, value) {
+        const context = tokenizer.context();
+        const { lastOffset: offset, lastStartLoc: loc } = context; // get brace left loc
+        const node = startNode(9 /* Literal */, offset, loc);
+        node.value = value.replace(KNOWN_ESCAPES, fromEscapeSequence);
+        tokenizer.nextToken(); // skip brach right
+        endNode(node, tokenizer.currentOffset(), tokenizer.currentPosition());
+        return node;
+    }
+    function parseLinkedModifier(tokenizer) {
+        const token = tokenizer.nextToken();
+        const context = tokenizer.context();
+        const { lastOffset: offset, lastStartLoc: loc } = context; // get linked dot loc
+        const node = startNode(8 /* LinkedModifier */, offset, loc);
+        if (token.type !== 12 /* LinkedModifier */) {
+            // empty modifier
+            emitError(tokenizer, 11 /* UNEXPECTED_EMPTY_LINKED_MODIFIER */, context.lastStartLoc, 0);
+            node.value = '';
+            endNode(node, offset, loc);
+            return {
+                nextConsumeToken: token,
+                node
+            };
+        }
+        // check token
+        if (token.value == null) {
+            emitError(tokenizer, 13 /* UNEXPECTED_LEXICAL_ANALYSIS */, context.lastStartLoc, 0, getTokenCaption(token));
+        }
+        node.value = token.value || '';
+        endNode(node, tokenizer.currentOffset(), tokenizer.currentPosition());
+        return {
+            node
+        };
+    }
+    function parseLinkedKey(tokenizer, value) {
+        const context = tokenizer.context();
+        const node = startNode(7 /* LinkedKey */, context.offset, context.startLoc);
+        node.value = value;
+        endNode(node, tokenizer.currentOffset(), tokenizer.currentPosition());
+        return node;
+    }
+    function parseLinked(tokenizer) {
+        const context = tokenizer.context();
+        const linkedNode = startNode(6 /* Linked */, context.offset, context.startLoc);
+        let token = tokenizer.nextToken();
+        if (token.type === 9 /* LinkedDot */) {
+            const parsed = parseLinkedModifier(tokenizer);
+            linkedNode.modifier = parsed.node;
+            token = parsed.nextConsumeToken || tokenizer.nextToken();
+        }
+        // asset check token
+        if (token.type !== 10 /* LinkedDelimiter */) {
+            emitError(tokenizer, 13 /* UNEXPECTED_LEXICAL_ANALYSIS */, context.lastStartLoc, 0, getTokenCaption(token));
+        }
+        token = tokenizer.nextToken();
+        // skip brace left
+        if (token.type === 2 /* BraceLeft */) {
+            token = tokenizer.nextToken();
+        }
+        switch (token.type) {
+            case 11 /* LinkedKey */:
+                if (token.value == null) {
+                    emitError(tokenizer, 13 /* UNEXPECTED_LEXICAL_ANALYSIS */, context.lastStartLoc, 0, getTokenCaption(token));
+                }
+                linkedNode.key = parseLinkedKey(tokenizer, token.value || '');
+                break;
+            case 5 /* Named */:
+                if (token.value == null) {
+                    emitError(tokenizer, 13 /* UNEXPECTED_LEXICAL_ANALYSIS */, context.lastStartLoc, 0, getTokenCaption(token));
+                }
+                linkedNode.key = parseNamed(tokenizer, token.value || '');
+                break;
+            case 6 /* List */:
+                if (token.value == null) {
+                    emitError(tokenizer, 13 /* UNEXPECTED_LEXICAL_ANALYSIS */, context.lastStartLoc, 0, getTokenCaption(token));
+                }
+                linkedNode.key = parseList(tokenizer, token.value || '');
+                break;
+            case 7 /* Literal */:
+                if (token.value == null) {
+                    emitError(tokenizer, 13 /* UNEXPECTED_LEXICAL_ANALYSIS */, context.lastStartLoc, 0, getTokenCaption(token));
+                }
+                linkedNode.key = parseLiteral(tokenizer, token.value || '');
+                break;
+            default:
+                // empty key
+                emitError(tokenizer, 12 /* UNEXPECTED_EMPTY_LINKED_KEY */, context.lastStartLoc, 0);
+                const nextContext = tokenizer.context();
+                const emptyLinkedKeyNode = startNode(7 /* LinkedKey */, nextContext.offset, nextContext.startLoc);
+                emptyLinkedKeyNode.value = '';
+                endNode(emptyLinkedKeyNode, nextContext.offset, nextContext.startLoc);
+                linkedNode.key = emptyLinkedKeyNode;
+                endNode(linkedNode, nextContext.offset, nextContext.startLoc);
+                return {
+                    nextConsumeToken: token,
+                    node: linkedNode
+                };
+        }
+        endNode(linkedNode, tokenizer.currentOffset(), tokenizer.currentPosition());
+        return {
+            node: linkedNode
+        };
+    }
+    function parseMessage(tokenizer) {
+        const context = tokenizer.context();
+        const startOffset = context.currentType === 1 /* Pipe */
+            ? tokenizer.currentOffset()
+            : context.offset;
+        const startLoc = context.currentType === 1 /* Pipe */
+            ? context.endLoc
+            : context.startLoc;
+        const node = startNode(2 /* Message */, startOffset, startLoc);
+        node.items = [];
+        let nextToken = null;
+        do {
+            const token = nextToken || tokenizer.nextToken();
+            nextToken = null;
+            switch (token.type) {
+                case 0 /* Text */:
+                    if (token.value == null) {
+                        emitError(tokenizer, 13 /* UNEXPECTED_LEXICAL_ANALYSIS */, context.lastStartLoc, 0, getTokenCaption(token));
+                    }
+                    node.items.push(parseText(tokenizer, token.value || ''));
+                    break;
+                case 6 /* List */:
+                    if (token.value == null) {
+                        emitError(tokenizer, 13 /* UNEXPECTED_LEXICAL_ANALYSIS */, context.lastStartLoc, 0, getTokenCaption(token));
+                    }
+                    node.items.push(parseList(tokenizer, token.value || ''));
+                    break;
+                case 5 /* Named */:
+                    if (token.value == null) {
+                        emitError(tokenizer, 13 /* UNEXPECTED_LEXICAL_ANALYSIS */, context.lastStartLoc, 0, getTokenCaption(token));
+                    }
+                    node.items.push(parseNamed(tokenizer, token.value || ''));
+                    break;
+                case 7 /* Literal */:
+                    if (token.value == null) {
+                        emitError(tokenizer, 13 /* UNEXPECTED_LEXICAL_ANALYSIS */, context.lastStartLoc, 0, getTokenCaption(token));
+                    }
+                    node.items.push(parseLiteral(tokenizer, token.value || ''));
+                    break;
+                case 8 /* LinkedAlias */:
+                    const parsed = parseLinked(tokenizer);
+                    node.items.push(parsed.node);
+                    nextToken = parsed.nextConsumeToken || null;
+                    break;
+            }
+        } while (context.currentType !== 14 /* EOF */ &&
+            context.currentType !== 1 /* Pipe */);
+        // adjust message node loc
+        const endOffset = context.currentType === 1 /* Pipe */
+            ? context.lastOffset
+            : tokenizer.currentOffset();
+        const endLoc = context.currentType === 1 /* Pipe */
+            ? context.lastEndLoc
+            : tokenizer.currentPosition();
+        endNode(node, endOffset, endLoc);
+        return node;
+    }
+    function parsePlural(tokenizer, offset, loc, msgNode) {
+        const context = tokenizer.context();
+        let hasEmptyMessage = msgNode.items.length === 0;
+        const node = startNode(1 /* Plural */, offset, loc);
+        node.cases = [];
+        node.cases.push(msgNode);
+        do {
+            const msg = parseMessage(tokenizer);
+            if (!hasEmptyMessage) {
+                hasEmptyMessage = msg.items.length === 0;
+            }
+            node.cases.push(msg);
+        } while (context.currentType !== 14 /* EOF */);
+        if (hasEmptyMessage) {
+            emitError(tokenizer, 10 /* MUST_HAVE_MESSAGES_IN_PLURAL */, loc, 0);
+        }
+        endNode(node, tokenizer.currentOffset(), tokenizer.currentPosition());
+        return node;
+    }
+    function parseResource(tokenizer) {
+        const context = tokenizer.context();
+        const { offset, startLoc } = context;
+        const msgNode = parseMessage(tokenizer);
+        if (context.currentType === 14 /* EOF */) {
+            return msgNode;
+        }
+        else {
+            return parsePlural(tokenizer, offset, startLoc, msgNode);
+        }
+    }
+    function parse(source) {
+        const tokenizer = createTokenizer(source, (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({}, options));
+        const context = tokenizer.context();
+        const node = startNode(0 /* Resource */, context.offset, context.startLoc);
+        if (location && node.loc) {
+            node.loc.source = source;
+        }
+        node.body = parseResource(tokenizer);
+        // assert whether achieved to EOF
+        if (context.currentType !== 14 /* EOF */) {
+            emitError(tokenizer, 13 /* UNEXPECTED_LEXICAL_ANALYSIS */, context.lastStartLoc, 0, source[context.offset] || '');
+        }
+        endNode(node, tokenizer.currentOffset(), tokenizer.currentPosition());
+        return node;
+    }
+    return { parse };
+}
+function getTokenCaption(token) {
+    if (token.type === 14 /* EOF */) {
+        return 'EOF';
+    }
+    const name = (token.value || '').replace(/\r?\n/gu, '\\n');
+    return name.length > 10 ? name.slice(0, 9) + '…' : name;
+}
 
-    return value;
+function createTransformer(ast, options = {} // eslint-disable-line
+) {
+    const _context = {
+        ast,
+        helpers: new Set()
+    };
+    const context = () => _context;
+    const helper = (name) => {
+        _context.helpers.add(name);
+        return name;
+    };
+    return { context, helper };
+}
+function traverseNodes(nodes, transformer) {
+    for (let i = 0; i < nodes.length; i++) {
+        traverseNode(nodes[i], transformer);
+    }
+}
+function traverseNode(node, transformer) {
+    // TODO: if we need pre-hook of transform, should be implemented to here
+    switch (node.type) {
+        case 1 /* Plural */:
+            traverseNodes(node.cases, transformer);
+            transformer.helper("plural" /* PLURAL */);
+            break;
+        case 2 /* Message */:
+            traverseNodes(node.items, transformer);
+            break;
+        case 6 /* Linked */:
+            const linked = node;
+            traverseNode(linked.key, transformer);
+            transformer.helper("linked" /* LINKED */);
+            break;
+        case 5 /* List */:
+            transformer.helper("interpolate" /* INTERPOLATE */);
+            transformer.helper("list" /* LIST */);
+            break;
+        case 4 /* Named */:
+            transformer.helper("interpolate" /* INTERPOLATE */);
+            transformer.helper("named" /* NAMED */);
+            break;
+    }
+    // TODO: if we need post-hook of transform, should be implemented to here
+}
+// transform AST
+function transform(ast, options = {} // eslint-disable-line
+) {
+    const transformer = createTransformer(ast);
+    transformer.helper("normalize" /* NORMALIZE */);
+    // traverse
+    ast.body && traverseNode(ast.body, transformer);
+    // set meta information
+    const context = transformer.context();
+    ast.helpers = Array.from(context.helpers);
+}
+
+function createCodeGenerator(ast, options) {
+    const { sourceMap, filename, breakLineCode, needIndent: _needIndent } = options;
+    const _context = {
+        source: ast.loc.source,
+        filename,
+        code: '',
+        column: 1,
+        line: 1,
+        offset: 0,
+        map: undefined,
+        breakLineCode,
+        needIndent: _needIndent,
+        indentLevel: 0
+    };
+    const context = () => _context;
+    function push(code, node) {
+        _context.code += code;
+    }
+    function _newline(n, withBreakLine = true) {
+        const _breakLineCode = withBreakLine ? breakLineCode : '';
+        push(_needIndent ? _breakLineCode + `  `.repeat(n) : _breakLineCode);
+    }
+    function indent(withNewLine = true) {
+        const level = ++_context.indentLevel;
+        withNewLine && _newline(level);
+    }
+    function deindent(withNewLine = true) {
+        const level = --_context.indentLevel;
+        withNewLine && _newline(level);
+    }
+    function newline() {
+        _newline(_context.indentLevel);
+    }
+    const helper = (key) => `_${key}`;
+    const needIndent = () => _context.needIndent;
+    return {
+        context,
+        push,
+        indent,
+        deindent,
+        newline,
+        helper,
+        needIndent
+    };
+}
+function generateLinkedNode(generator, node) {
+    const { helper } = generator;
+    generator.push(`${helper("linked" /* LINKED */)}(`);
+    generateNode(generator, node.key);
+    if (node.modifier) {
+        generator.push(`, `);
+        generateNode(generator, node.modifier);
+    }
+    generator.push(`)`);
+}
+function generateMessageNode(generator, node) {
+    const { helper, needIndent } = generator;
+    generator.push(`${helper("normalize" /* NORMALIZE */)}([`);
+    generator.indent(needIndent());
+    const length = node.items.length;
+    for (let i = 0; i < length; i++) {
+        generateNode(generator, node.items[i]);
+        if (i === length - 1) {
+            break;
+        }
+        generator.push(', ');
+    }
+    generator.deindent(needIndent());
+    generator.push('])');
+}
+function generatePluralNode(generator, node) {
+    const { helper, needIndent } = generator;
+    if (node.cases.length > 1) {
+        generator.push(`${helper("plural" /* PLURAL */)}([`);
+        generator.indent(needIndent());
+        const length = node.cases.length;
+        for (let i = 0; i < length; i++) {
+            generateNode(generator, node.cases[i]);
+            if (i === length - 1) {
+                break;
+            }
+            generator.push(', ');
+        }
+        generator.deindent(needIndent());
+        generator.push(`])`);
+    }
+}
+function generateResource(generator, node) {
+    if (node.body) {
+        generateNode(generator, node.body);
+    }
+    else {
+        generator.push('null');
+    }
+}
+function generateNode(generator, node) {
+    const { helper } = generator;
+    switch (node.type) {
+        case 0 /* Resource */:
+            generateResource(generator, node);
+            break;
+        case 1 /* Plural */:
+            generatePluralNode(generator, node);
+            break;
+        case 2 /* Message */:
+            generateMessageNode(generator, node);
+            break;
+        case 6 /* Linked */:
+            generateLinkedNode(generator, node);
+            break;
+        case 8 /* LinkedModifier */:
+            generator.push(JSON.stringify(node.value), node);
+            break;
+        case 7 /* LinkedKey */:
+            generator.push(JSON.stringify(node.value), node);
+            break;
+        case 5 /* List */:
+            generator.push(`${helper("interpolate" /* INTERPOLATE */)}(${helper("list" /* LIST */)}(${node.index}))`, node);
+            break;
+        case 4 /* Named */:
+            generator.push(`${helper("interpolate" /* INTERPOLATE */)}(${helper("named" /* NAMED */)}(${JSON.stringify(node.key)}))`, node);
+            break;
+        case 9 /* Literal */:
+            generator.push(JSON.stringify(node.value), node);
+            break;
+        case 3 /* Text */:
+            generator.push(JSON.stringify(node.value), node);
+            break;
+        default:
+            if ((true)) {
+                throw new Error(`unhandled codegen node type: ${node.type}`);
+            }
+    }
+}
+// generate code from AST
+const generate = (ast, options = {} // eslint-disable-line
+) => {
+    const mode = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.mode) ? options.mode : 'normal';
+    const filename = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.filename)
+        ? options.filename
+        : 'message.intl';
+    const sourceMap = !!options.sourceMap;
+    // prettier-ignore
+    const breakLineCode = options.breakLineCode != null
+        ? options.breakLineCode
+        : mode === 'arrow'
+            ? ';'
+            : '\n';
+    const needIndent = options.needIndent ? options.needIndent : mode !== 'arrow';
+    const helpers = ast.helpers || [];
+    const generator = createCodeGenerator(ast, {
+        mode,
+        filename,
+        sourceMap,
+        breakLineCode,
+        needIndent
+    });
+    generator.push(mode === 'normal' ? `function __msg__ (ctx) {` : `(ctx) => {`);
+    generator.indent(needIndent);
+    if (helpers.length > 0) {
+        generator.push(`const { ${helpers.map(s => `${s}: _${s}`).join(', ')} } = ctx`);
+        generator.newline();
+    }
+    generator.push(`return `);
+    generateNode(generator, ast);
+    generator.deindent(needIndent);
+    generator.push(`}`);
+    const { code, map } = generator.context();
+    return {
+        ast,
+        code,
+        map: map ? map.toJSON() : undefined // eslint-disable-line @typescript-eslint/no-explicit-any
+    };
 };
 
-var isRegExp = function isRegExp(obj) {
-    return Object.prototype.toString.call(obj) === '[object RegExp]';
-};
+function baseCompile(source, options = {}) {
+    const assignedOptions = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({}, options);
+    // parse source codes
+    const parser = createParser(assignedOptions);
+    const ast = parser.parse(source);
+    // transform ASTs
+    transform(ast, assignedOptions);
+    // generate javascript codes
+    return generate(ast, assignedOptions);
+}
 
-var isBuffer = function isBuffer(obj) {
-    if (!obj || typeof obj !== 'object') {
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@intlify/message-resolver/dist/message-resolver.esm-bundler.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@intlify/message-resolver/dist/message-resolver.esm-bundler.js ***!
+  \*************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "handleFlatJson": function() { return /* binding */ handleFlatJson; },
+/* harmony export */   "parse": function() { return /* binding */ parse; },
+/* harmony export */   "resolveValue": function() { return /* binding */ resolveValue; }
+/* harmony export */ });
+/*!
+  * @intlify/message-resolver v9.1.9
+  * (c) 2021 kazuya kawaguchi
+  * Released under the MIT License.
+  */
+/**
+ * Original Utilities
+ * written by kazuya kawaguchi
+ */
+if ((true)) ;
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+function hasOwn(obj, key) {
+    return hasOwnProperty.call(obj, key);
+}
+const isObject = (val) => // eslint-disable-line
+ val !== null && typeof val === 'object';
+
+const pathStateMachine = [];
+pathStateMachine[0 /* BEFORE_PATH */] = {
+    ["w" /* WORKSPACE */]: [0 /* BEFORE_PATH */],
+    ["i" /* IDENT */]: [3 /* IN_IDENT */, 0 /* APPEND */],
+    ["[" /* LEFT_BRACKET */]: [4 /* IN_SUB_PATH */],
+    ["o" /* END_OF_FAIL */]: [7 /* AFTER_PATH */]
+};
+pathStateMachine[1 /* IN_PATH */] = {
+    ["w" /* WORKSPACE */]: [1 /* IN_PATH */],
+    ["." /* DOT */]: [2 /* BEFORE_IDENT */],
+    ["[" /* LEFT_BRACKET */]: [4 /* IN_SUB_PATH */],
+    ["o" /* END_OF_FAIL */]: [7 /* AFTER_PATH */]
+};
+pathStateMachine[2 /* BEFORE_IDENT */] = {
+    ["w" /* WORKSPACE */]: [2 /* BEFORE_IDENT */],
+    ["i" /* IDENT */]: [3 /* IN_IDENT */, 0 /* APPEND */],
+    ["0" /* ZERO */]: [3 /* IN_IDENT */, 0 /* APPEND */]
+};
+pathStateMachine[3 /* IN_IDENT */] = {
+    ["i" /* IDENT */]: [3 /* IN_IDENT */, 0 /* APPEND */],
+    ["0" /* ZERO */]: [3 /* IN_IDENT */, 0 /* APPEND */],
+    ["w" /* WORKSPACE */]: [1 /* IN_PATH */, 1 /* PUSH */],
+    ["." /* DOT */]: [2 /* BEFORE_IDENT */, 1 /* PUSH */],
+    ["[" /* LEFT_BRACKET */]: [4 /* IN_SUB_PATH */, 1 /* PUSH */],
+    ["o" /* END_OF_FAIL */]: [7 /* AFTER_PATH */, 1 /* PUSH */]
+};
+pathStateMachine[4 /* IN_SUB_PATH */] = {
+    ["'" /* SINGLE_QUOTE */]: [5 /* IN_SINGLE_QUOTE */, 0 /* APPEND */],
+    ["\"" /* DOUBLE_QUOTE */]: [6 /* IN_DOUBLE_QUOTE */, 0 /* APPEND */],
+    ["[" /* LEFT_BRACKET */]: [
+        4 /* IN_SUB_PATH */,
+        2 /* INC_SUB_PATH_DEPTH */
+    ],
+    ["]" /* RIGHT_BRACKET */]: [1 /* IN_PATH */, 3 /* PUSH_SUB_PATH */],
+    ["o" /* END_OF_FAIL */]: 8 /* ERROR */,
+    ["l" /* ELSE */]: [4 /* IN_SUB_PATH */, 0 /* APPEND */]
+};
+pathStateMachine[5 /* IN_SINGLE_QUOTE */] = {
+    ["'" /* SINGLE_QUOTE */]: [4 /* IN_SUB_PATH */, 0 /* APPEND */],
+    ["o" /* END_OF_FAIL */]: 8 /* ERROR */,
+    ["l" /* ELSE */]: [5 /* IN_SINGLE_QUOTE */, 0 /* APPEND */]
+};
+pathStateMachine[6 /* IN_DOUBLE_QUOTE */] = {
+    ["\"" /* DOUBLE_QUOTE */]: [4 /* IN_SUB_PATH */, 0 /* APPEND */],
+    ["o" /* END_OF_FAIL */]: 8 /* ERROR */,
+    ["l" /* ELSE */]: [6 /* IN_DOUBLE_QUOTE */, 0 /* APPEND */]
+};
+/**
+ * Check if an expression is a literal value.
+ */
+const literalValueRE = /^\s?(?:true|false|-?[\d.]+|'[^']*'|"[^"]*")\s?$/;
+function isLiteral(exp) {
+    return literalValueRE.test(exp);
+}
+/**
+ * Strip quotes from a string
+ */
+function stripQuotes(str) {
+    const a = str.charCodeAt(0);
+    const b = str.charCodeAt(str.length - 1);
+    return a === b && (a === 0x22 || a === 0x27) ? str.slice(1, -1) : str;
+}
+/**
+ * Determine the type of a character in a keypath.
+ */
+function getPathCharType(ch) {
+    if (ch === undefined || ch === null) {
+        return "o" /* END_OF_FAIL */;
+    }
+    const code = ch.charCodeAt(0);
+    switch (code) {
+        case 0x5b: // [
+        case 0x5d: // ]
+        case 0x2e: // .
+        case 0x22: // "
+        case 0x27: // '
+            return ch;
+        case 0x5f: // _
+        case 0x24: // $
+        case 0x2d: // -
+            return "i" /* IDENT */;
+        case 0x09: // Tab (HT)
+        case 0x0a: // Newline (LF)
+        case 0x0d: // Return (CR)
+        case 0xa0: // No-break space (NBSP)
+        case 0xfeff: // Byte Order Mark (BOM)
+        case 0x2028: // Line Separator (LS)
+        case 0x2029: // Paragraph Separator (PS)
+            return "w" /* WORKSPACE */;
+    }
+    return "i" /* IDENT */;
+}
+/**
+ * Format a subPath, return its plain form if it is
+ * a literal string or number. Otherwise prepend the
+ * dynamic indicator (*).
+ */
+function formatSubPath(path) {
+    const trimmed = path.trim();
+    // invalid leading 0
+    if (path.charAt(0) === '0' && isNaN(parseInt(path))) {
         return false;
     }
-
-    return !!(obj.constructor && obj.constructor.isBuffer && obj.constructor.isBuffer(obj));
-};
-
-var combine = function combine(a, b) {
-    return [].concat(a, b);
-};
-
-var maybeMap = function maybeMap(val, fn) {
-    if (isArray(val)) {
-        var mapped = [];
-        for (var i = 0; i < val.length; i += 1) {
-            mapped.push(fn(val[i]));
+    return isLiteral(trimmed)
+        ? stripQuotes(trimmed)
+        : "*" /* ASTARISK */ + trimmed;
+}
+/**
+ * Parse a string path into an array of segments
+ */
+function parse(path) {
+    const keys = [];
+    let index = -1;
+    let mode = 0 /* BEFORE_PATH */;
+    let subPathDepth = 0;
+    let c;
+    let key; // eslint-disable-line
+    let newChar;
+    let type;
+    let transition;
+    let action;
+    let typeMap;
+    const actions = [];
+    actions[0 /* APPEND */] = () => {
+        if (key === undefined) {
+            key = newChar;
         }
-        return mapped;
+        else {
+            key += newChar;
+        }
+    };
+    actions[1 /* PUSH */] = () => {
+        if (key !== undefined) {
+            keys.push(key);
+            key = undefined;
+        }
+    };
+    actions[2 /* INC_SUB_PATH_DEPTH */] = () => {
+        actions[0 /* APPEND */]();
+        subPathDepth++;
+    };
+    actions[3 /* PUSH_SUB_PATH */] = () => {
+        if (subPathDepth > 0) {
+            subPathDepth--;
+            mode = 4 /* IN_SUB_PATH */;
+            actions[0 /* APPEND */]();
+        }
+        else {
+            subPathDepth = 0;
+            if (key === undefined) {
+                return false;
+            }
+            key = formatSubPath(key);
+            if (key === false) {
+                return false;
+            }
+            else {
+                actions[1 /* PUSH */]();
+            }
+        }
+    };
+    function maybeUnescapeQuote() {
+        const nextChar = path[index + 1];
+        if ((mode === 5 /* IN_SINGLE_QUOTE */ &&
+            nextChar === "'" /* SINGLE_QUOTE */) ||
+            (mode === 6 /* IN_DOUBLE_QUOTE */ &&
+                nextChar === "\"" /* DOUBLE_QUOTE */)) {
+            index++;
+            newChar = '\\' + nextChar;
+            actions[0 /* APPEND */]();
+            return true;
+        }
     }
-    return fn(val);
+    while (mode !== null) {
+        index++;
+        c = path[index];
+        if (c === '\\' && maybeUnescapeQuote()) {
+            continue;
+        }
+        type = getPathCharType(c);
+        typeMap = pathStateMachine[mode];
+        transition = typeMap[type] || typeMap["l" /* ELSE */] || 8 /* ERROR */;
+        // check parse error
+        if (transition === 8 /* ERROR */) {
+            return;
+        }
+        mode = transition[0];
+        if (transition[1] !== undefined) {
+            action = actions[transition[1]];
+            if (action) {
+                newChar = c;
+                if (action() === false) {
+                    return;
+                }
+            }
+        }
+        // check parse finish
+        if (mode === 7 /* AFTER_PATH */) {
+            return keys;
+        }
+    }
+}
+// path token cache
+const cache = new Map();
+function resolveValue(obj, path) {
+    // check object
+    if (!isObject(obj)) {
+        return null;
+    }
+    // parse path
+    let hit = cache.get(path);
+    if (!hit) {
+        hit = parse(path);
+        if (hit) {
+            cache.set(path, hit);
+        }
+    }
+    // check hit
+    if (!hit) {
+        return null;
+    }
+    // resolve path value
+    const len = hit.length;
+    let last = obj;
+    let i = 0;
+    while (i < len) {
+        const val = last[hit[i]];
+        if (val === undefined) {
+            return null;
+        }
+        last = val;
+        i++;
+    }
+    return last;
+}
+/**
+ * Transform flat json in obj to normal json in obj
+ */
+function handleFlatJson(obj) {
+    // check obj
+    if (!isObject(obj)) {
+        return obj;
+    }
+    for (const key in obj) {
+        // check key
+        if (!hasOwn(obj, key)) {
+            continue;
+        }
+        // handle for normal json
+        if (!key.includes("." /* DOT */)) {
+            // recursive process value if value is also a object
+            if (isObject(obj[key])) {
+                handleFlatJson(obj[key]);
+            }
+        }
+        // handle for flat json, transform to normal json
+        else {
+            // go to the last object
+            const subKeys = key.split("." /* DOT */);
+            const lastIndex = subKeys.length - 1;
+            let currentObj = obj;
+            for (let i = 0; i < lastIndex; i++) {
+                if (!(subKeys[i] in currentObj)) {
+                    currentObj[subKeys[i]] = {};
+                }
+                currentObj = currentObj[subKeys[i]];
+            }
+            // update last object value, delete old property
+            currentObj[subKeys[lastIndex]] = obj[key];
+            delete obj[key];
+            // recursive process value if value is also a object
+            if (isObject(currentObj[subKeys[lastIndex]])) {
+                handleFlatJson(currentObj[subKeys[lastIndex]]);
+            }
+        }
+    }
+    return obj;
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@intlify/runtime/dist/runtime.esm-bundler.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@intlify/runtime/dist/runtime.esm-bundler.js ***!
+  \*******************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "DEFAULT_MESSAGE_DATA_TYPE": function() { return /* binding */ DEFAULT_MESSAGE_DATA_TYPE; },
+/* harmony export */   "createMessageContext": function() { return /* binding */ createMessageContext; }
+/* harmony export */ });
+/* harmony import */ var _intlify_shared__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @intlify/shared */ "./node_modules/@intlify/shared/dist/shared.esm-bundler.js");
+/*!
+  * @intlify/runtime v9.1.9
+  * (c) 2021 kazuya kawaguchi
+  * Released under the MIT License.
+  */
+
+
+const DEFAULT_MODIFIER = (str) => str;
+const DEFAULT_MESSAGE = (ctx) => ''; // eslint-disable-line
+const DEFAULT_MESSAGE_DATA_TYPE = 'text';
+const DEFAULT_NORMALIZE = (values) => values.length === 0 ? '' : values.join('');
+const DEFAULT_INTERPOLATE = _intlify_shared__WEBPACK_IMPORTED_MODULE_0__.toDisplayString;
+function pluralDefault(choice, choicesLength) {
+    choice = Math.abs(choice);
+    if (choicesLength === 2) {
+        // prettier-ignore
+        return choice
+            ? choice > 1
+                ? 1
+                : 0
+            : 1;
+    }
+    return choice ? Math.min(choice, 2) : 0;
+}
+function getPluralIndex(options) {
+    // prettier-ignore
+    const index = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(options.pluralIndex)
+        ? options.pluralIndex
+        : -1;
+    // prettier-ignore
+    return options.named && ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(options.named.count) || (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(options.named.n))
+        ? (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(options.named.count)
+            ? options.named.count
+            : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(options.named.n)
+                ? options.named.n
+                : index
+        : index;
+}
+function normalizeNamed(pluralIndex, props) {
+    if (!props.count) {
+        props.count = pluralIndex;
+    }
+    if (!props.n) {
+        props.n = pluralIndex;
+    }
+}
+function createMessageContext(options = {}) {
+    const locale = options.locale;
+    const pluralIndex = getPluralIndex(options);
+    const pluralRule = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(options.pluralRules) &&
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(locale) &&
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.pluralRules[locale])
+        ? options.pluralRules[locale]
+        : pluralDefault;
+    const orgPluralRule = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(options.pluralRules) &&
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(locale) &&
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.pluralRules[locale])
+        ? pluralDefault
+        : undefined;
+    const plural = (messages) => messages[pluralRule(pluralIndex, messages.length, orgPluralRule)];
+    const _list = options.list || [];
+    const list = (index) => _list[index];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const _named = options.named || {};
+    (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(options.pluralIndex) && normalizeNamed(pluralIndex, _named);
+    const named = (key) => _named[key];
+    // TODO: need to design resolve message function?
+    function message(key) {
+        // prettier-ignore
+        const msg = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.messages)
+            ? options.messages(key)
+            : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(options.messages)
+                ? options.messages[key]
+                : false;
+        return !msg
+            ? options.parent
+                ? options.parent.message(key) // resolve from parent messages
+                : DEFAULT_MESSAGE
+            : msg;
+    }
+    const _modifier = (name) => options.modifiers
+        ? options.modifiers[name]
+        : DEFAULT_MODIFIER;
+    const normalize = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.processor) && (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.processor.normalize)
+        ? options.processor.normalize
+        : DEFAULT_NORMALIZE;
+    const interpolate = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.processor) &&
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.processor.interpolate)
+        ? options.processor.interpolate
+        : DEFAULT_INTERPOLATE;
+    const type = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.processor) && (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.processor.type)
+        ? options.processor.type
+        : DEFAULT_MESSAGE_DATA_TYPE;
+    const ctx = {
+        ["list" /* LIST */]: list,
+        ["named" /* NAMED */]: named,
+        ["plural" /* PLURAL */]: plural,
+        ["linked" /* LINKED */]: (key, modifier) => {
+            // TODO: should check `key`
+            const msg = message(key)(ctx);
+            return (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(modifier) ? _modifier(modifier)(msg) : msg;
+        },
+        ["message" /* MESSAGE */]: message,
+        ["type" /* TYPE */]: type,
+        ["interpolate" /* INTERPOLATE */]: interpolate,
+        ["normalize" /* NORMALIZE */]: normalize
+    };
+    return ctx;
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@intlify/shared/dist/shared.esm-bundler.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@intlify/shared/dist/shared.esm-bundler.js ***!
+  \*****************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "assign": function() { return /* binding */ assign; },
+/* harmony export */   "createEmitter": function() { return /* binding */ createEmitter; },
+/* harmony export */   "escapeHtml": function() { return /* binding */ escapeHtml; },
+/* harmony export */   "format": function() { return /* binding */ format; },
+/* harmony export */   "friendlyJSONstringify": function() { return /* binding */ friendlyJSONstringify; },
+/* harmony export */   "generateCodeFrame": function() { return /* binding */ generateCodeFrame; },
+/* harmony export */   "generateFormatCacheKey": function() { return /* binding */ generateFormatCacheKey; },
+/* harmony export */   "getGlobalThis": function() { return /* binding */ getGlobalThis; },
+/* harmony export */   "hasOwn": function() { return /* binding */ hasOwn; },
+/* harmony export */   "inBrowser": function() { return /* binding */ inBrowser; },
+/* harmony export */   "isArray": function() { return /* binding */ isArray; },
+/* harmony export */   "isBoolean": function() { return /* binding */ isBoolean; },
+/* harmony export */   "isDate": function() { return /* binding */ isDate; },
+/* harmony export */   "isEmptyObject": function() { return /* binding */ isEmptyObject; },
+/* harmony export */   "isFunction": function() { return /* binding */ isFunction; },
+/* harmony export */   "isNumber": function() { return /* binding */ isNumber; },
+/* harmony export */   "isObject": function() { return /* binding */ isObject; },
+/* harmony export */   "isPlainObject": function() { return /* binding */ isPlainObject; },
+/* harmony export */   "isPromise": function() { return /* binding */ isPromise; },
+/* harmony export */   "isRegExp": function() { return /* binding */ isRegExp; },
+/* harmony export */   "isString": function() { return /* binding */ isString; },
+/* harmony export */   "isSymbol": function() { return /* binding */ isSymbol; },
+/* harmony export */   "makeSymbol": function() { return /* binding */ makeSymbol; },
+/* harmony export */   "mark": function() { return /* binding */ mark; },
+/* harmony export */   "measure": function() { return /* binding */ measure; },
+/* harmony export */   "objectToString": function() { return /* binding */ objectToString; },
+/* harmony export */   "toDisplayString": function() { return /* binding */ toDisplayString; },
+/* harmony export */   "toTypeString": function() { return /* binding */ toTypeString; },
+/* harmony export */   "warn": function() { return /* binding */ warn; }
+/* harmony export */ });
+/*!
+  * @intlify/shared v9.1.9
+  * (c) 2021 kazuya kawaguchi
+  * Released under the MIT License.
+  */
+/**
+ * Original Utilities
+ * written by kazuya kawaguchi
+ */
+const inBrowser = typeof window !== 'undefined';
+let mark;
+let measure;
+if ((true)) {
+    const perf = inBrowser && window.performance;
+    if (perf &&
+        perf.mark &&
+        perf.measure &&
+        perf.clearMarks &&
+        perf.clearMeasures) {
+        mark = (tag) => perf.mark(tag);
+        measure = (name, startTag, endTag) => {
+            perf.measure(name, startTag, endTag);
+            perf.clearMarks(startTag);
+            perf.clearMarks(endTag);
+        };
+    }
+}
+const RE_ARGS = /\{([0-9a-zA-Z]+)\}/g;
+/* eslint-disable */
+function format(message, ...args) {
+    if (args.length === 1 && isObject(args[0])) {
+        args = args[0];
+    }
+    if (!args || !args.hasOwnProperty) {
+        args = {};
+    }
+    return message.replace(RE_ARGS, (match, identifier) => {
+        return args.hasOwnProperty(identifier) ? args[identifier] : '';
+    });
+}
+const hasSymbol = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
+const makeSymbol = (name) => hasSymbol ? Symbol(name) : name;
+const generateFormatCacheKey = (locale, key, source) => friendlyJSONstringify({ l: locale, k: key, s: source });
+const friendlyJSONstringify = (json) => JSON.stringify(json)
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029')
+    .replace(/\u0027/g, '\\u0027');
+const isNumber = (val) => typeof val === 'number' && isFinite(val);
+const isDate = (val) => toTypeString(val) === '[object Date]';
+const isRegExp = (val) => toTypeString(val) === '[object RegExp]';
+const isEmptyObject = (val) => isPlainObject(val) && Object.keys(val).length === 0;
+function warn(msg, err) {
+    if (typeof console !== 'undefined') {
+        console.warn(`[intlify] ` + msg);
+        /* istanbul ignore if */
+        if (err) {
+            console.warn(err.stack);
+        }
+    }
+}
+const assign = Object.assign;
+let _globalThis;
+const getGlobalThis = () => {
+    // prettier-ignore
+    return (_globalThis ||
+        (_globalThis =
+            typeof globalThis !== 'undefined'
+                ? globalThis
+                : typeof self !== 'undefined'
+                    ? self
+                    : typeof window !== 'undefined'
+                        ? window
+                        : typeof __webpack_require__.g !== 'undefined'
+                            ? __webpack_require__.g
+                            : {}));
+};
+function escapeHtml(rawText) {
+    return rawText
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+}
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+function hasOwn(obj, key) {
+    return hasOwnProperty.call(obj, key);
+}
+/* eslint-enable */
+/**
+ * Useful Utilities By Evan you
+ * Modified by kazuya kawaguchi
+ * MIT License
+ * https://github.com/vuejs/vue-next/blob/master/packages/shared/src/index.ts
+ * https://github.com/vuejs/vue-next/blob/master/packages/shared/src/codeframe.ts
+ */
+const isArray = Array.isArray;
+const isFunction = (val) => typeof val === 'function';
+const isString = (val) => typeof val === 'string';
+const isBoolean = (val) => typeof val === 'boolean';
+const isSymbol = (val) => typeof val === 'symbol';
+const isObject = (val) => // eslint-disable-line
+ val !== null && typeof val === 'object';
+const isPromise = (val) => {
+    return isObject(val) && isFunction(val.then) && isFunction(val.catch);
+};
+const objectToString = Object.prototype.toString;
+const toTypeString = (value) => objectToString.call(value);
+const isPlainObject = (val) => toTypeString(val) === '[object Object]';
+// for converting list and named values to displayed strings.
+const toDisplayString = (val) => {
+    return val == null
+        ? ''
+        : isArray(val) || (isPlainObject(val) && val.toString === objectToString)
+            ? JSON.stringify(val, null, 2)
+            : String(val);
+};
+const RANGE = 2;
+function generateCodeFrame(source, start = 0, end = source.length) {
+    const lines = source.split(/\r?\n/);
+    let count = 0;
+    const res = [];
+    for (let i = 0; i < lines.length; i++) {
+        count += lines[i].length + 1;
+        if (count >= start) {
+            for (let j = i - RANGE; j <= i + RANGE || end > count; j++) {
+                if (j < 0 || j >= lines.length)
+                    continue;
+                const line = j + 1;
+                res.push(`${line}${' '.repeat(3 - String(line).length)}|  ${lines[j]}`);
+                const lineLength = lines[j].length;
+                if (j === i) {
+                    // push underline
+                    const pad = start - (count - lineLength) + 1;
+                    const length = Math.max(1, end > count ? lineLength - pad : end - start);
+                    res.push(`   |  ` + ' '.repeat(pad) + '^'.repeat(length));
+                }
+                else if (j > i) {
+                    if (end > count) {
+                        const length = Math.max(Math.min(end - count, lineLength), 1);
+                        res.push(`   |  ` + '^'.repeat(length));
+                    }
+                    count += lineLength + 1;
+                }
+            }
+            break;
+        }
+    }
+    return res.join('\n');
+}
+
+/**
+ * Event emitter, forked from the below:
+ * - original repository url: https://github.com/developit/mitt
+ * - code url: https://github.com/developit/mitt/blob/master/src/index.ts
+ * - author: Jason Miller (https://github.com/developit)
+ * - license: MIT
+ */
+/**
+ * Create a event emitter
+ *
+ * @returns An event emitter
+ */
+function createEmitter() {
+    const events = new Map();
+    const emitter = {
+        events,
+        on(event, handler) {
+            const handlers = events.get(event);
+            const added = handlers && handlers.push(handler);
+            if (!added) {
+                events.set(event, [handler]);
+            }
+        },
+        off(event, handler) {
+            const handlers = events.get(event);
+            if (handlers) {
+                handlers.splice(handlers.indexOf(handler) >>> 0, 1);
+            }
+        },
+        emit(event, payload) {
+            (events.get(event) || [])
+                .slice()
+                .map(handler => handler(payload));
+            (events.get('*') || [])
+                .slice()
+                .map(handler => handler(event, payload));
+        }
+    };
+    return emitter;
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@intlify/vue-devtools/dist/vue-devtools.esm-bundler.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@intlify/vue-devtools/dist/vue-devtools.esm-bundler.js ***!
+  \*****************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "VueDevToolsLabels": function() { return /* binding */ VueDevToolsLabels; },
+/* harmony export */   "VueDevToolsPlaceholders": function() { return /* binding */ VueDevToolsPlaceholders; },
+/* harmony export */   "VueDevToolsTimelineColors": function() { return /* binding */ VueDevToolsTimelineColors; }
+/* harmony export */ });
+/*!
+  * @intlify/vue-devtools v9.1.9
+  * (c) 2021 kazuya kawaguchi
+  * Released under the MIT License.
+  */
+const VueDevToolsLabels = {
+    ["vue-devtools-plugin-vue-i18n" /* PLUGIN */]: 'Vue I18n devtools',
+    ["vue-i18n-resource-inspector" /* CUSTOM_INSPECTOR */]: 'I18n Resources',
+    ["vue-i18n-timeline" /* TIMELINE */]: 'Vue I18n'
+};
+const VueDevToolsPlaceholders = {
+    ["vue-i18n-resource-inspector" /* CUSTOM_INSPECTOR */]: 'Search for scopes ...'
+};
+const VueDevToolsTimelineColors = {
+    ["vue-i18n-timeline" /* TIMELINE */]: 0xffcd19
 };
 
-module.exports = {
-    arrayToObject: arrayToObject,
-    assign: assign,
-    combine: combine,
-    compact: compact,
-    decode: decode,
-    encode: encode,
-    isBuffer: isBuffer,
-    isRegExp: isRegExp,
-    maybeMap: maybeMap,
-    merge: merge
-};
+
 
 
 /***/ }),
@@ -955,7 +3136,6 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "generateCodeFrame": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_0__.generateCodeFrame; },
 /* harmony export */   "BASE_TRANSITION": function() { return /* binding */ BASE_TRANSITION; },
 /* harmony export */   "CAMELIZE": function() { return /* binding */ CAMELIZE; },
 /* harmony export */   "CAPITALIZE": function() { return /* binding */ CAPITALIZE; },
@@ -1000,6 +3180,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "assert": function() { return /* binding */ assert; },
 /* harmony export */   "baseCompile": function() { return /* binding */ baseCompile; },
 /* harmony export */   "baseParse": function() { return /* binding */ baseParse; },
+/* harmony export */   "buildDirectiveArgs": function() { return /* binding */ buildDirectiveArgs; },
 /* harmony export */   "buildProps": function() { return /* binding */ buildProps; },
 /* harmony export */   "buildSlots": function() { return /* binding */ buildSlots; },
 /* harmony export */   "checkCompatEnabled": function() { return /* binding */ checkCompatEnabled; },
@@ -1029,6 +3210,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "findDir": function() { return /* binding */ findDir; },
 /* harmony export */   "findProp": function() { return /* binding */ findProp; },
 /* harmony export */   "generate": function() { return /* binding */ generate; },
+/* harmony export */   "generateCodeFrame": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_0__.generateCodeFrame; },
 /* harmony export */   "getBaseTransformPreset": function() { return /* binding */ getBaseTransformPreset; },
 /* harmony export */   "getInnerRange": function() { return /* binding */ getInnerRange; },
 /* harmony export */   "getMemoedVNodeCall": function() { return /* binding */ getMemoedVNodeCall; },
@@ -1038,7 +3220,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "hasScopeRef": function() { return /* binding */ hasScopeRef; },
 /* harmony export */   "helperNameMap": function() { return /* binding */ helperNameMap; },
 /* harmony export */   "injectProp": function() { return /* binding */ injectProp; },
-/* harmony export */   "isBindKey": function() { return /* binding */ isBindKey; },
 /* harmony export */   "isBuiltInType": function() { return /* binding */ isBuiltInType; },
 /* harmony export */   "isCoreComponent": function() { return /* binding */ isCoreComponent; },
 /* harmony export */   "isFunctionType": function() { return /* binding */ isFunctionType; },
@@ -1049,6 +3230,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "isReferencedIdentifier": function() { return /* binding */ isReferencedIdentifier; },
 /* harmony export */   "isSimpleIdentifier": function() { return /* binding */ isSimpleIdentifier; },
 /* harmony export */   "isSlotOutlet": function() { return /* binding */ isSlotOutlet; },
+/* harmony export */   "isStaticArgOf": function() { return /* binding */ isStaticArgOf; },
 /* harmony export */   "isStaticExp": function() { return /* binding */ isStaticExp; },
 /* harmony export */   "isStaticProperty": function() { return /* binding */ isStaticProperty; },
 /* harmony export */   "isStaticPropertyKey": function() { return /* binding */ isStaticPropertyKey; },
@@ -1594,12 +3776,12 @@ function findProp(node, name, dynamicOnly = false, allowEmpty = false) {
         }
         else if (p.name === 'bind' &&
             (p.exp || allowEmpty) &&
-            isBindKey(p.arg, name)) {
+            isStaticArgOf(p.arg, name)) {
             return p;
         }
     }
 }
-function isBindKey(arg, name) {
+function isStaticArgOf(arg, name) {
     return !!(arg && isStaticExp(arg) && arg.content === name);
 }
 function hasDynamicKeyVBind(node) {
@@ -1801,13 +3983,13 @@ const deprecationData = {
         message: `Platform-native elements with "is" prop will no longer be ` +
             `treated as components in Vue 3 unless the "is" value is explicitly ` +
             `prefixed with "vue:".`,
-        link: `https://v3.vuejs.org/guide/migration/custom-elements-interop.html`
+        link: `https://v3-migration.vuejs.org/breaking-changes/custom-elements-interop.html`
     },
     ["COMPILER_V_BIND_SYNC" /* COMPILER_V_BIND_SYNC */]: {
         message: key => `.sync modifier for v-bind has been removed. Use v-model with ` +
             `argument instead. \`v-bind:${key}.sync\` should be changed to ` +
             `\`v-model:${key}\`.`,
-        link: `https://v3.vuejs.org/guide/migration/v-model.html`
+        link: `https://v3-migration.vuejs.org/breaking-changes/v-model.html`
     },
     ["COMPILER_V_BIND_PROP" /* COMPILER_V_BIND_PROP */]: {
         message: `.prop modifier for v-bind has been removed and no longer necessary. ` +
@@ -1819,11 +4001,11 @@ const deprecationData = {
             `that appears before v-bind in the case of conflict. ` +
             `To retain 2.x behavior, move v-bind to make it the first attribute. ` +
             `You can also suppress this warning if the usage is intended.`,
-        link: `https://v3.vuejs.org/guide/migration/v-bind.html`
+        link: `https://v3-migration.vuejs.org/breaking-changes/v-bind.html`
     },
     ["COMPILER_V_ON_NATIVE" /* COMPILER_V_ON_NATIVE */]: {
         message: `.native modifier for v-on has been removed as is no longer necessary.`,
-        link: `https://v3.vuejs.org/guide/migration/v-on-native-modifier-removed.html`
+        link: `https://v3-migration.vuejs.org/breaking-changes/v-on-native-modifier-removed.html`
     },
     ["COMPILER_V_IF_V_FOR_PRECEDENCE" /* COMPILER_V_IF_V_FOR_PRECEDENCE */]: {
         message: `v-if / v-for precedence when used on the same element has changed ` +
@@ -1831,12 +4013,7 @@ const deprecationData = {
             `access to v-for scope variables. It is best to avoid the ambiguity ` +
             `with <template> tags or use a computed property that filters v-for ` +
             `data source.`,
-        link: `https://v3.vuejs.org/guide/migration/v-if-v-for.html`
-    },
-    ["COMPILER_V_FOR_REF" /* COMPILER_V_FOR_REF */]: {
-        message: `Ref usage on v-for no longer creates array ref values in Vue 3. ` +
-            `Consider using function refs or refactor to avoid ref usage altogether.`,
-        link: `https://v3.vuejs.org/guide/migration/array-refs.html`
+        link: `https://v3-migration.vuejs.org/breaking-changes/v-if-v-for.html`
     },
     ["COMPILER_NATIVE_TEMPLATE" /* COMPILER_NATIVE_TEMPLATE */]: {
         message: `<template> with no special directives will render as a native template ` +
@@ -1844,13 +4021,13 @@ const deprecationData = {
     },
     ["COMPILER_INLINE_TEMPLATE" /* COMPILER_INLINE_TEMPLATE */]: {
         message: `"inline-template" has been removed in Vue 3.`,
-        link: `https://v3.vuejs.org/guide/migration/inline-template-attribute.html`
+        link: `https://v3-migration.vuejs.org/breaking-changes/inline-template-attribute.html`
     },
     ["COMPILER_FILTER" /* COMPILER_FILTERS */]: {
         message: `filters have been removed in Vue 3. ` +
             `The "|" symbol will be treated as native JavaScript bitwise OR operator. ` +
             `Use method calls or computed properties instead.`,
-        link: `https://v3.vuejs.org/guide/migration/filters.html`
+        link: `https://v3-migration.vuejs.org/breaking-changes/filters.html`
     }
 };
 function getCompatValue(key, context) {
@@ -2357,7 +4534,7 @@ function isComponent(tag, props, context) {
             else if (
             // :is on plain element - only treat as component in compat mode
             p.name === 'bind' &&
-                isBindKey(p.arg, 'is') &&
+                isStaticArgOf(p.arg, 'is') &&
                 true &&
                 checkCompatEnabled("COMPILER_IS_ON_ELEMENT" /* COMPILER_IS_ON_ELEMENT */, context, p.loc)) {
                 return true;
@@ -2382,7 +4559,7 @@ function parseAttributes(context, type) {
         }
         const attr = parseAttribute(context, attributeNames);
         // Trim whitespace between class
-        // https://github.com/vuejs/vue-next/issues/4251
+        // https://github.com/vuejs/core/issues/4251
         if (attr.type === 6 /* ATTRIBUTE */ &&
             attr.value &&
             attr.name === 'class') {
@@ -2618,7 +4795,7 @@ function parseTextData(context, length, mode) {
     advanceBy(context, length);
     if (mode === 2 /* RAWTEXT */ ||
         mode === 3 /* CDATA */ ||
-        rawText.indexOf('&') === -1) {
+        !rawText.includes('&')) {
         return rawText;
     }
     else {
@@ -2815,6 +4992,11 @@ function getConstantType(node, context) {
             if (codegenNode.type !== 13 /* VNODE_CALL */) {
                 return 0 /* NOT_CONSTANT */;
             }
+            if (codegenNode.isBlock &&
+                node.tag !== 'svg' &&
+                node.tag !== 'foreignObject') {
+                return 0 /* NOT_CONSTANT */;
+            }
             const flag = getPatchFlag(codegenNode);
             if (!flag) {
                 let returnType = 3 /* CAN_STRINGIFY */;
@@ -2952,7 +5134,7 @@ function getGeneratedPropsConstantType(node, context) {
             else if (value.type === 14 /* JS_CALL_EXPRESSION */) {
                 // some helper calls can be hoisted,
                 // such as the `normalizeProps` generated by the compiler for pre-normalize class,
-                // in this case we need to respect the ConstantType of the helper's argments
+                // in this case we need to respect the ConstantType of the helper's arguments
                 valueType = getConstantTypeOfHelperCall(value, context);
             }
             else {
@@ -4237,6 +6419,7 @@ const transformFor = createStructuralDirectiveTransform('for', (node, dir, conte
         const renderExp = createCallExpression(helper(RENDER_LIST), [
             forNode.source
         ]);
+        const isTemplate = isTemplateNode(node);
         const memo = findDir(node, 'memo');
         const keyProp = findProp(node, `key`);
         const keyExp = keyProp &&
@@ -4256,7 +6439,6 @@ const transformFor = createStructuralDirectiveTransform('for', (node, dir, conte
         return () => {
             // finish the codegen now that all children have been traversed
             let childBlock;
-            const isTemplate = isTemplateNode(node);
             const { children } = forNode;
             // check <template v-for> key placement
             if (( true) && isTemplate) {
@@ -4744,10 +6926,7 @@ const transformElement = (node, context) => {
                 // updates inside get proper isSVG flag at runtime. (#639, #643)
                 // This is technically web-specific, but splitting the logic out of core
                 // leads to too much unnecessary complexity.
-                (tag === 'svg' ||
-                    tag === 'foreignObject' ||
-                    // #938: elements with dynamic keys should be forced into blocks
-                    findProp(node, 'key', true)));
+                (tag === 'svg' || tag === 'foreignObject'));
         // props
         if (props.length > 0) {
             const propsBuildResult = buildProps(node, context);
@@ -4759,6 +6938,9 @@ const transformElement = (node, context) => {
                 directives && directives.length
                     ? createArrayExpression(directives.map(dir => buildDirectiveArgs(dir, context)))
                     : undefined;
+            if (propsBuildResult.shouldUseBlock) {
+                shouldUseBlock = true;
+            }
         }
         // children
         if (node.children.length > 0) {
@@ -4888,11 +7070,13 @@ function resolveComponentType(node, context, ssr = false) {
     return toValidAssetId(tag, `component`);
 }
 function buildProps(node, context, props = node.props, ssr = false) {
-    const { tag, loc: elementLoc } = node;
+    const { tag, loc: elementLoc, children } = node;
     const isComponent = node.tagType === 1 /* COMPONENT */;
     let properties = [];
     const mergeArgs = [];
     const runtimeDirectives = [];
+    const hasChildren = children.length > 0;
+    let shouldUseBlock = false;
     // patchFlag analysis
     let patchFlag = 0;
     let hasRef = false;
@@ -4955,9 +7139,12 @@ function buildProps(node, context, props = node.props, ssr = false) {
         const prop = props[i];
         if (prop.type === 6 /* ATTRIBUTE */) {
             const { loc, name, value } = prop;
-            let valueNode = createSimpleExpression(value ? value.content : '', true, value ? value.loc : loc);
+            let isStatic = true;
             if (name === 'ref') {
                 hasRef = true;
+                if (context.scopes.vFor > 0) {
+                    properties.push(createObjectProperty(createSimpleExpression('ref_for', true), createSimpleExpression('true')));
+                }
             }
             // skip is on <component>, or is="vue:xxx"
             if (name === 'is' &&
@@ -4966,7 +7153,7 @@ function buildProps(node, context, props = node.props, ssr = false) {
                     (isCompatEnabled("COMPILER_IS_ON_ELEMENT" /* COMPILER_IS_ON_ELEMENT */, context)))) {
                 continue;
             }
-            properties.push(createObjectProperty(createSimpleExpression(name, true, getInnerRange(loc, 0, name.length)), valueNode));
+            properties.push(createObjectProperty(createSimpleExpression(name, true, getInnerRange(loc, 0, name.length)), createSimpleExpression(value ? value.content : '', isStatic, value ? value.loc : loc)));
         }
         else {
             // directives
@@ -4987,7 +7174,7 @@ function buildProps(node, context, props = node.props, ssr = false) {
             // skip v-is and :is on <component>
             if (name === 'is' ||
                 (isVBind &&
-                    isBindKey(arg, 'is') &&
+                    isStaticArgOf(arg, 'is') &&
                     (isComponentTag(tag) ||
                         (isCompatEnabled("COMPILER_IS_ON_ELEMENT" /* COMPILER_IS_ON_ELEMENT */, context))))) {
                 continue;
@@ -4995,6 +7182,17 @@ function buildProps(node, context, props = node.props, ssr = false) {
             // skip v-on in SSR compilation
             if (isVOn && ssr) {
                 continue;
+            }
+            if (
+            // #938: elements with dynamic keys should be forced into blocks
+            (isVBind && isStaticArgOf(arg, 'key')) ||
+                // inline before-update hooks need to force block so that it is invoked
+                // before children
+                (isVOn && hasChildren && isStaticArgOf(arg, 'vue:before-update'))) {
+                shouldUseBlock = true;
+            }
+            if (isVBind && isStaticArgOf(arg, 'ref') && context.scopes.vFor > 0) {
+                properties.push(createObjectProperty(createSimpleExpression('ref_for', true), createSimpleExpression('true')));
             }
             // special case for v-bind and v-on with no argument
             if (!arg && (isVBind || isVOn)) {
@@ -5066,16 +7264,15 @@ function buildProps(node, context, props = node.props, ssr = false) {
                     }
                 }
             }
-            else {
+            else if (!(0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.isBuiltInDirective)(name)) {
                 // no built-in transform, this is a user custom directive.
                 runtimeDirectives.push(prop);
+                // custom dirs may use beforeUpdate so they need to force blocks
+                // to ensure before-update gets called before children update
+                if (hasChildren) {
+                    shouldUseBlock = true;
+                }
             }
-        }
-        if (prop.type === 6 /* ATTRIBUTE */ &&
-            prop.name === 'ref' &&
-            context.scopes.vFor > 0 &&
-            checkCompatEnabled("COMPILER_V_FOR_REF" /* COMPILER_V_FOR_REF */, context, prop.loc)) {
-            properties.push(createObjectProperty(createSimpleExpression('refInFor', true), createSimpleExpression('true', false)));
         }
     }
     let propsExpression = undefined;
@@ -5113,7 +7310,8 @@ function buildProps(node, context, props = node.props, ssr = false) {
             patchFlag |= 32 /* HYDRATE_EVENTS */;
         }
     }
-    if ((patchFlag === 0 || patchFlag === 32 /* HYDRATE_EVENTS */) &&
+    if (!shouldUseBlock &&
+        (patchFlag === 0 || patchFlag === 32 /* HYDRATE_EVENTS */) &&
         (hasRef || hasVnodeHook || runtimeDirectives.length > 0)) {
         patchFlag |= 512 /* NEED_PATCH */;
     }
@@ -5180,7 +7378,8 @@ function buildProps(node, context, props = node.props, ssr = false) {
         props: propsExpression,
         directives: runtimeDirectives,
         patchFlag,
-        dynamicPropNames
+        dynamicPropNames,
+        shouldUseBlock
     };
 }
 // Dedupe props in an object literal.
@@ -5335,7 +7534,7 @@ function processSlotOutlet(node, context) {
             }
         }
         else {
-            if (p.name === 'bind' && isBindKey(p.arg, 'name')) {
+            if (p.name === 'bind' && isStaticArgOf(p.arg, 'name')) {
                 if (p.exp)
                     slotName = p.exp;
             }
@@ -5369,7 +7568,11 @@ const transformOn = (dir, node, context, augmentor) => {
     let eventName;
     if (arg.type === 4 /* SIMPLE_EXPRESSION */) {
         if (arg.isStatic) {
-            const rawName = arg.content;
+            let rawName = arg.content;
+            // TODO deprecate @vnodeXXX usage
+            if (rawName.startsWith('vue:')) {
+                rawName = `vnode-${rawName.slice(4)}`;
+            }
             // for all event listeners, auto convert it to camelCase. See issue #2249
             eventName = createSimpleExpression((0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.toHandlerKey)((0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.camelize)(rawName)), true, arg.loc);
         }
@@ -6417,6 +8620,405 @@ function parse(template, options = {}) {
 
 /***/ }),
 
+/***/ "./node_modules/@vue/devtools-api/lib/esm/api/api.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/api/api.js ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/api/app.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/api/app.js ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/api/component.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/api/component.js ***!
+  \*****************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/api/context.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/api/context.js ***!
+  \***************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/api/hooks.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/api/hooks.js ***!
+  \*************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/api/index.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/api/index.js ***!
+  \*************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api */ "./node_modules/@vue/devtools-api/lib/esm/api/api.js");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _api__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _api__WEBPACK_IMPORTED_MODULE_0__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app */ "./node_modules/@vue/devtools-api/lib/esm/api/app.js");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _app__WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _app__WEBPACK_IMPORTED_MODULE_1__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./component */ "./node_modules/@vue/devtools-api/lib/esm/api/component.js");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _component__WEBPACK_IMPORTED_MODULE_2__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _component__WEBPACK_IMPORTED_MODULE_2__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./context */ "./node_modules/@vue/devtools-api/lib/esm/api/context.js");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _context__WEBPACK_IMPORTED_MODULE_3__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _context__WEBPACK_IMPORTED_MODULE_3__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./hooks */ "./node_modules/@vue/devtools-api/lib/esm/api/hooks.js");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _hooks__WEBPACK_IMPORTED_MODULE_4__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _hooks__WEBPACK_IMPORTED_MODULE_4__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util */ "./node_modules/@vue/devtools-api/lib/esm/api/util.js");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _util__WEBPACK_IMPORTED_MODULE_5__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _util__WEBPACK_IMPORTED_MODULE_5__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/api/util.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/api/util.js ***!
+  \************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/const.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/const.js ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HOOK_PLUGIN_SETTINGS_SET": function() { return /* binding */ HOOK_PLUGIN_SETTINGS_SET; },
+/* harmony export */   "HOOK_SETUP": function() { return /* binding */ HOOK_SETUP; }
+/* harmony export */ });
+const HOOK_SETUP = 'devtools-plugin:setup';
+const HOOK_PLUGIN_SETTINGS_SET = 'plugin:settings:set';
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/env.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/env.js ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getDevtoolsGlobalHook": function() { return /* binding */ getDevtoolsGlobalHook; },
+/* harmony export */   "getTarget": function() { return /* binding */ getTarget; },
+/* harmony export */   "isProxyAvailable": function() { return /* binding */ isProxyAvailable; }
+/* harmony export */ });
+function getDevtoolsGlobalHook() {
+    return getTarget().__VUE_DEVTOOLS_GLOBAL_HOOK__;
+}
+function getTarget() {
+    // @ts-ignore
+    return (typeof navigator !== 'undefined' && typeof window !== 'undefined')
+        ? window
+        : typeof __webpack_require__.g !== 'undefined'
+            ? __webpack_require__.g
+            : {};
+}
+const isProxyAvailable = typeof Proxy === 'function';
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/index.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/index.js ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "setupDevtoolsPlugin": function() { return /* binding */ setupDevtoolsPlugin; }
+/* harmony export */ });
+/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./env */ "./node_modules/@vue/devtools-api/lib/esm/env.js");
+/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./const */ "./node_modules/@vue/devtools-api/lib/esm/const.js");
+/* harmony import */ var _proxy__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./proxy */ "./node_modules/@vue/devtools-api/lib/esm/proxy.js");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./api */ "./node_modules/@vue/devtools-api/lib/esm/api/index.js");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _api__WEBPACK_IMPORTED_MODULE_3__) if(["default","setupDevtoolsPlugin"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _api__WEBPACK_IMPORTED_MODULE_3__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+/* harmony import */ var _plugin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./plugin */ "./node_modules/@vue/devtools-api/lib/esm/plugin.js");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _plugin__WEBPACK_IMPORTED_MODULE_4__) if(["default","setupDevtoolsPlugin"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _plugin__WEBPACK_IMPORTED_MODULE_4__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+/* harmony import */ var _time__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./time */ "./node_modules/@vue/devtools-api/lib/esm/time.js");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _time__WEBPACK_IMPORTED_MODULE_5__) if(["default","setupDevtoolsPlugin"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = function(key) { return _time__WEBPACK_IMPORTED_MODULE_5__[key]; }.bind(0, __WEBPACK_IMPORT_KEY__)
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+
+
+
+
+
+
+function setupDevtoolsPlugin(pluginDescriptor, setupFn) {
+    const descriptor = pluginDescriptor;
+    const target = (0,_env__WEBPACK_IMPORTED_MODULE_0__.getTarget)();
+    const hook = (0,_env__WEBPACK_IMPORTED_MODULE_0__.getDevtoolsGlobalHook)();
+    const enableProxy = _env__WEBPACK_IMPORTED_MODULE_0__.isProxyAvailable && descriptor.enableEarlyProxy;
+    if (hook && (target.__VUE_DEVTOOLS_PLUGIN_API_AVAILABLE__ || !enableProxy)) {
+        hook.emit(_const__WEBPACK_IMPORTED_MODULE_1__.HOOK_SETUP, pluginDescriptor, setupFn);
+    }
+    else {
+        const proxy = enableProxy ? new _proxy__WEBPACK_IMPORTED_MODULE_2__.ApiProxy(descriptor, hook) : null;
+        const list = target.__VUE_DEVTOOLS_PLUGINS__ = target.__VUE_DEVTOOLS_PLUGINS__ || [];
+        list.push({
+            pluginDescriptor: descriptor,
+            setupFn,
+            proxy,
+        });
+        if (proxy)
+            setupFn(proxy.proxiedTarget);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/plugin.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/plugin.js ***!
+  \**********************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/proxy.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/proxy.js ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ApiProxy": function() { return /* binding */ ApiProxy; }
+/* harmony export */ });
+/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./const */ "./node_modules/@vue/devtools-api/lib/esm/const.js");
+/* harmony import */ var _time__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./time */ "./node_modules/@vue/devtools-api/lib/esm/time.js");
+
+
+class ApiProxy {
+    constructor(plugin, hook) {
+        this.target = null;
+        this.targetQueue = [];
+        this.onQueue = [];
+        this.plugin = plugin;
+        this.hook = hook;
+        const defaultSettings = {};
+        if (plugin.settings) {
+            for (const id in plugin.settings) {
+                const item = plugin.settings[id];
+                defaultSettings[id] = item.defaultValue;
+            }
+        }
+        const localSettingsSaveId = `__vue-devtools-plugin-settings__${plugin.id}`;
+        let currentSettings = Object.assign({}, defaultSettings);
+        try {
+            const raw = localStorage.getItem(localSettingsSaveId);
+            const data = JSON.parse(raw);
+            Object.assign(currentSettings, data);
+        }
+        catch (e) {
+            // noop
+        }
+        this.fallbacks = {
+            getSettings() {
+                return currentSettings;
+            },
+            setSettings(value) {
+                try {
+                    localStorage.setItem(localSettingsSaveId, JSON.stringify(value));
+                }
+                catch (e) {
+                    // noop
+                }
+                currentSettings = value;
+            },
+            now() {
+                return (0,_time__WEBPACK_IMPORTED_MODULE_1__.now)();
+            },
+        };
+        if (hook) {
+            hook.on(_const__WEBPACK_IMPORTED_MODULE_0__.HOOK_PLUGIN_SETTINGS_SET, (pluginId, value) => {
+                if (pluginId === this.plugin.id) {
+                    this.fallbacks.setSettings(value);
+                }
+            });
+        }
+        this.proxiedOn = new Proxy({}, {
+            get: (_target, prop) => {
+                if (this.target) {
+                    return this.target.on[prop];
+                }
+                else {
+                    return (...args) => {
+                        this.onQueue.push({
+                            method: prop,
+                            args,
+                        });
+                    };
+                }
+            },
+        });
+        this.proxiedTarget = new Proxy({}, {
+            get: (_target, prop) => {
+                if (this.target) {
+                    return this.target[prop];
+                }
+                else if (prop === 'on') {
+                    return this.proxiedOn;
+                }
+                else if (Object.keys(this.fallbacks).includes(prop)) {
+                    return (...args) => {
+                        this.targetQueue.push({
+                            method: prop,
+                            args,
+                            resolve: () => { },
+                        });
+                        return this.fallbacks[prop](...args);
+                    };
+                }
+                else {
+                    return (...args) => {
+                        return new Promise(resolve => {
+                            this.targetQueue.push({
+                                method: prop,
+                                args,
+                                resolve,
+                            });
+                        });
+                    };
+                }
+            },
+        });
+    }
+    async setRealTarget(target) {
+        this.target = target;
+        for (const item of this.onQueue) {
+            this.target.on[item.method](...item.args);
+        }
+        for (const item of this.targetQueue) {
+            item.resolve(await this.target[item.method](...item.args));
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@vue/devtools-api/lib/esm/time.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@vue/devtools-api/lib/esm/time.js ***!
+  \********************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "isPerformanceSupported": function() { return /* binding */ isPerformanceSupported; },
+/* harmony export */   "now": function() { return /* binding */ now; }
+/* harmony export */ });
+let supported;
+let perf;
+function isPerformanceSupported() {
+    var _a;
+    if (supported !== undefined) {
+        return supported;
+    }
+    if (typeof window !== 'undefined' && window.performance) {
+        supported = true;
+        perf = window.performance;
+    }
+    else if (typeof __webpack_require__.g !== 'undefined' && ((_a = __webpack_require__.g.perf_hooks) === null || _a === void 0 ? void 0 : _a.performance)) {
+        supported = true;
+        perf = __webpack_require__.g.perf_hooks.performance;
+    }
+    else {
+        supported = false;
+    }
+    return supported;
+}
+function now() {
+    return isPerformanceSupported() ? perf.now() : Date.now();
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js":
 /*!*********************************************************************!*\
   !*** ./node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js ***!
@@ -6440,6 +9042,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "isReactive": function() { return /* binding */ isReactive; },
 /* harmony export */   "isReadonly": function() { return /* binding */ isReadonly; },
 /* harmony export */   "isRef": function() { return /* binding */ isRef; },
+/* harmony export */   "isShallow": function() { return /* binding */ isShallow; },
 /* harmony export */   "markRaw": function() { return /* binding */ markRaw; },
 /* harmony export */   "onScopeDispose": function() { return /* binding */ onScopeDispose; },
 /* harmony export */   "pauseTracking": function() { return /* binding */ pauseTracking; },
@@ -6468,7 +9071,6 @@ function warn(msg, ...args) {
 }
 
 let activeEffectScope;
-const effectScopeStack = [];
 class EffectScope {
     constructor(detached = false) {
         this.active = true;
@@ -6483,11 +9085,11 @@ class EffectScope {
     run(fn) {
         if (this.active) {
             try {
-                this.on();
+                activeEffectScope = this;
                 return fn();
             }
             finally {
-                this.off();
+                activeEffectScope = this.parent;
             }
         }
         else if ((true)) {
@@ -6495,23 +9097,24 @@ class EffectScope {
         }
     }
     on() {
-        if (this.active) {
-            effectScopeStack.push(this);
-            activeEffectScope = this;
-        }
+        activeEffectScope = this;
     }
     off() {
-        if (this.active) {
-            effectScopeStack.pop();
-            activeEffectScope = effectScopeStack[effectScopeStack.length - 1];
-        }
+        activeEffectScope = this.parent;
     }
     stop(fromParent) {
         if (this.active) {
-            this.effects.forEach(e => e.stop());
-            this.cleanups.forEach(cleanup => cleanup());
+            let i, l;
+            for (i = 0, l = this.effects.length; i < l; i++) {
+                this.effects[i].stop();
+            }
+            for (i = 0, l = this.cleanups.length; i < l; i++) {
+                this.cleanups[i]();
+            }
             if (this.scopes) {
-                this.scopes.forEach(e => e.stop(true));
+                for (i = 0, l = this.scopes.length; i < l; i++) {
+                    this.scopes[i].stop(true);
+                }
             }
             // nested scope, dereference from parent to avoid memory leaks
             if (this.parent && !fromParent) {
@@ -6529,8 +9132,7 @@ class EffectScope {
 function effectScope(detached) {
     return new EffectScope(detached);
 }
-function recordEffectScope(effect, scope) {
-    scope = scope || activeEffectScope;
+function recordEffectScope(effect, scope = activeEffectScope) {
     if (scope && scope.active) {
         scope.effects.push(effect);
     }
@@ -6593,7 +9195,6 @@ let trackOpBit = 1;
  * When recursion depth is greater, fall back to using a full cleanup.
  */
 const maxMarkerBits = 30;
-const effectStack = [];
 let activeEffect;
 const ITERATE_KEY = Symbol(( true) ? 'iterate' : 0);
 const MAP_KEY_ITERATE_KEY = Symbol(( true) ? 'Map key iterate' : 0);
@@ -6603,35 +9204,42 @@ class ReactiveEffect {
         this.scheduler = scheduler;
         this.active = true;
         this.deps = [];
+        this.parent = undefined;
         recordEffectScope(this, scope);
     }
     run() {
         if (!this.active) {
             return this.fn();
         }
-        if (!effectStack.includes(this)) {
-            try {
-                effectStack.push((activeEffect = this));
-                enableTracking();
-                trackOpBit = 1 << ++effectTrackDepth;
-                if (effectTrackDepth <= maxMarkerBits) {
-                    initDepMarkers(this);
-                }
-                else {
-                    cleanupEffect(this);
-                }
-                return this.fn();
+        let parent = activeEffect;
+        let lastShouldTrack = shouldTrack;
+        while (parent) {
+            if (parent === this) {
+                return;
             }
-            finally {
-                if (effectTrackDepth <= maxMarkerBits) {
-                    finalizeDepMarkers(this);
-                }
-                trackOpBit = 1 << --effectTrackDepth;
-                resetTracking();
-                effectStack.pop();
-                const n = effectStack.length;
-                activeEffect = n > 0 ? effectStack[n - 1] : undefined;
+            parent = parent.parent;
+        }
+        try {
+            this.parent = activeEffect;
+            activeEffect = this;
+            shouldTrack = true;
+            trackOpBit = 1 << ++effectTrackDepth;
+            if (effectTrackDepth <= maxMarkerBits) {
+                initDepMarkers(this);
             }
+            else {
+                cleanupEffect(this);
+            }
+            return this.fn();
+        }
+        finally {
+            if (effectTrackDepth <= maxMarkerBits) {
+                finalizeDepMarkers(this);
+            }
+            trackOpBit = 1 << --effectTrackDepth;
+            activeEffect = this.parent;
+            shouldTrack = lastShouldTrack;
+            this.parent = undefined;
         }
     }
     stop() {
@@ -6688,24 +9296,20 @@ function resetTracking() {
     shouldTrack = last === undefined ? true : last;
 }
 function track(target, type, key) {
-    if (!isTracking()) {
-        return;
+    if (shouldTrack && activeEffect) {
+        let depsMap = targetMap.get(target);
+        if (!depsMap) {
+            targetMap.set(target, (depsMap = new Map()));
+        }
+        let dep = depsMap.get(key);
+        if (!dep) {
+            depsMap.set(key, (dep = createDep()));
+        }
+        const eventInfo = ( true)
+            ? { effect: activeEffect, target, type, key }
+            : 0;
+        trackEffects(dep, eventInfo);
     }
-    let depsMap = targetMap.get(target);
-    if (!depsMap) {
-        targetMap.set(target, (depsMap = new Map()));
-    }
-    let dep = depsMap.get(key);
-    if (!dep) {
-        depsMap.set(key, (dep = createDep()));
-    }
-    const eventInfo = ( true)
-        ? { effect: activeEffect, target, type, key }
-        : 0;
-    trackEffects(dep, eventInfo);
-}
-function isTracking() {
-    return shouldTrack && activeEffect !== undefined;
 }
 function trackEffects(dep, debuggerEventExtraInfo) {
     let shouldTrack = false;
@@ -6869,6 +9473,9 @@ function createGetter(isReadonly = false, shallow = false) {
         else if (key === "__v_isReadonly" /* IS_READONLY */) {
             return isReadonly;
         }
+        else if (key === "__v_isShallow" /* IS_SHALLOW */) {
+            return shallow;
+        }
         else if (key === "__v_raw" /* RAW */ &&
             receiver ===
                 (isReadonly
@@ -6913,9 +9520,14 @@ const shallowSet = /*#__PURE__*/ createSetter(true);
 function createSetter(shallow = false) {
     return function set(target, key, value, receiver) {
         let oldValue = target[key];
+        if (isReadonly(oldValue) && isRef(oldValue) && !isRef(value)) {
+            return false;
+        }
         if (!shallow && !isReadonly(value)) {
-            value = toRaw(value);
-            oldValue = toRaw(oldValue);
+            if (!isShallow(value)) {
+                value = toRaw(value);
+                oldValue = toRaw(oldValue);
+            }
             if (!(0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(target) && isRef(oldValue) && !isRef(value)) {
                 oldValue.value = value;
                 return true;
@@ -7303,7 +9915,7 @@ function getTargetType(value) {
 }
 function reactive(target) {
     // if trying to observe a readonly proxy, return the readonly version.
-    if (target && target["__v_isReadonly" /* IS_READONLY */]) {
+    if (isReadonly(target)) {
         return target;
     }
     return createReactiveObject(target, false, mutableHandlers, mutableCollectionHandlers, reactiveMap);
@@ -7368,6 +9980,9 @@ function isReactive(value) {
 function isReadonly(value) {
     return !!(value && value["__v_isReadonly" /* IS_READONLY */]);
 }
+function isShallow(value) {
+    return !!(value && value["__v_isShallow" /* IS_SHALLOW */]);
+}
 function isProxy(value) {
     return isReactive(value) || isReadonly(value);
 }
@@ -7383,13 +9998,10 @@ const toReactive = (value) => (0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.isObje
 const toReadonly = (value) => (0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(value) ? readonly(value) : value;
 
 function trackRefValue(ref) {
-    if (isTracking()) {
+    if (shouldTrack && activeEffect) {
         ref = toRaw(ref);
-        if (!ref.dep) {
-            ref.dep = createDep();
-        }
         if ((true)) {
-            trackEffects(ref.dep, {
+            trackEffects(ref.dep || (ref.dep = createDep()), {
                 target: ref,
                 type: "get" /* GET */,
                 key: 'value'
@@ -7413,7 +10025,7 @@ function triggerRefValue(ref, newVal) {
     }
 }
 function isRef(r) {
-    return Boolean(r && r.__v_isRef === true);
+    return !!(r && r.__v_isRef === true);
 }
 function ref(value) {
     return createRef(value, false);
@@ -7428,22 +10040,22 @@ function createRef(rawValue, shallow) {
     return new RefImpl(rawValue, shallow);
 }
 class RefImpl {
-    constructor(value, _shallow) {
-        this._shallow = _shallow;
+    constructor(value, __v_isShallow) {
+        this.__v_isShallow = __v_isShallow;
         this.dep = undefined;
         this.__v_isRef = true;
-        this._rawValue = _shallow ? value : toRaw(value);
-        this._value = _shallow ? value : toReactive(value);
+        this._rawValue = __v_isShallow ? value : toRaw(value);
+        this._value = __v_isShallow ? value : toReactive(value);
     }
     get value() {
         trackRefValue(this);
         return this._value;
     }
     set value(newVal) {
-        newVal = this._shallow ? newVal : toRaw(newVal);
+        newVal = this.__v_isShallow ? newVal : toRaw(newVal);
         if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.hasChanged)(newVal, this._rawValue)) {
             this._rawValue = newVal;
-            this._value = this._shallow ? newVal : toReactive(newVal);
+            this._value = this.__v_isShallow ? newVal : toReactive(newVal);
             triggerRefValue(this, newVal);
         }
     }
@@ -7501,42 +10113,48 @@ function toRefs(object) {
     return ret;
 }
 class ObjectRefImpl {
-    constructor(_object, _key) {
+    constructor(_object, _key, _defaultValue) {
         this._object = _object;
         this._key = _key;
+        this._defaultValue = _defaultValue;
         this.__v_isRef = true;
     }
     get value() {
-        return this._object[this._key];
+        const val = this._object[this._key];
+        return val === undefined ? this._defaultValue : val;
     }
     set value(newVal) {
         this._object[this._key] = newVal;
     }
 }
-function toRef(object, key) {
+function toRef(object, key, defaultValue) {
     const val = object[key];
-    return isRef(val) ? val : new ObjectRefImpl(object, key);
+    return isRef(val)
+        ? val
+        : new ObjectRefImpl(object, key, defaultValue);
 }
 
 class ComputedRefImpl {
-    constructor(getter, _setter, isReadonly) {
+    constructor(getter, _setter, isReadonly, isSSR) {
         this._setter = _setter;
         this.dep = undefined;
-        this._dirty = true;
         this.__v_isRef = true;
+        this._dirty = true;
         this.effect = new ReactiveEffect(getter, () => {
             if (!this._dirty) {
                 this._dirty = true;
                 triggerRefValue(this);
             }
         });
+        this.effect.computed = this;
+        this.effect.active = this._cacheable = !isSSR;
         this["__v_isReadonly" /* IS_READONLY */] = isReadonly;
     }
     get value() {
         // the computed ref may get wrapped by other proxies e.g. readonly() #3376
         const self = toRaw(this);
         trackRefValue(self);
-        if (self._dirty) {
+        if (self._dirty || !self._cacheable) {
             self._dirty = false;
             self._value = self.effect.run();
         }
@@ -7546,7 +10164,7 @@ class ComputedRefImpl {
         this._setter(newValue);
     }
 }
-function computed(getterOrOptions, debugOptions) {
+function computed(getterOrOptions, debugOptions, isSSR = false) {
     let getter;
     let setter;
     const onlyGetter = (0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(getterOrOptions);
@@ -7562,8 +10180,8 @@ function computed(getterOrOptions, debugOptions) {
         getter = getterOrOptions.get;
         setter = getterOrOptions.set;
     }
-    const cRef = new ComputedRefImpl(getter, setter, onlyGetter || !setter);
-    if (( true) && debugOptions) {
+    const cRef = new ComputedRefImpl(getter, setter, onlyGetter || !setter, isSSR);
+    if (( true) && debugOptions && !isSSR) {
         cRef.effect.onTrack = debugOptions.onTrack;
         cRef.effect.onTrigger = debugOptions.onTrigger;
     }
@@ -7618,14 +10236,14 @@ class DeferredComputedRefImpl {
                 // value invalidation in case of sync access; normal effects are
                 // deferred to be triggered in scheduler.
                 for (const e of this.dep) {
-                    if (e.computed) {
+                    if (e.computed instanceof DeferredComputedRefImpl) {
                         e.scheduler(true /* computedTrigger */);
                     }
                 }
             }
             this._dirty = true;
         });
-        this.effect.computed = true;
+        this.effect.computed = this;
     }
     _get() {
         if (this._dirty) {
@@ -7659,51 +10277,23 @@ function deferredComputed(getter) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "EffectScope": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.EffectScope; },
-/* harmony export */   "ReactiveEffect": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.ReactiveEffect; },
-/* harmony export */   "computed": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.computed; },
-/* harmony export */   "customRef": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.customRef; },
-/* harmony export */   "effect": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.effect; },
-/* harmony export */   "effectScope": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.effectScope; },
-/* harmony export */   "getCurrentScope": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.getCurrentScope; },
-/* harmony export */   "isProxy": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isProxy; },
-/* harmony export */   "isReactive": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isReactive; },
-/* harmony export */   "isReadonly": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isReadonly; },
-/* harmony export */   "isRef": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef; },
-/* harmony export */   "markRaw": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.markRaw; },
-/* harmony export */   "onScopeDispose": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.onScopeDispose; },
-/* harmony export */   "proxyRefs": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.proxyRefs; },
-/* harmony export */   "reactive": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.reactive; },
-/* harmony export */   "readonly": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.readonly; },
-/* harmony export */   "ref": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.ref; },
-/* harmony export */   "shallowReactive": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.shallowReactive; },
-/* harmony export */   "shallowReadonly": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.shallowReadonly; },
-/* harmony export */   "shallowRef": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.shallowRef; },
-/* harmony export */   "stop": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.stop; },
-/* harmony export */   "toRaw": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.toRaw; },
-/* harmony export */   "toRef": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.toRef; },
-/* harmony export */   "toRefs": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.toRefs; },
-/* harmony export */   "triggerRef": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.triggerRef; },
-/* harmony export */   "unref": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.unref; },
-/* harmony export */   "camelize": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.camelize; },
-/* harmony export */   "capitalize": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.capitalize; },
-/* harmony export */   "normalizeClass": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.normalizeClass; },
-/* harmony export */   "normalizeProps": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.normalizeProps; },
-/* harmony export */   "normalizeStyle": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.normalizeStyle; },
-/* harmony export */   "toDisplayString": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.toDisplayString; },
-/* harmony export */   "toHandlerKey": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.toHandlerKey; },
 /* harmony export */   "BaseTransition": function() { return /* binding */ BaseTransition; },
 /* harmony export */   "Comment": function() { return /* binding */ Comment; },
+/* harmony export */   "EffectScope": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.EffectScope; },
 /* harmony export */   "Fragment": function() { return /* binding */ Fragment; },
 /* harmony export */   "KeepAlive": function() { return /* binding */ KeepAlive; },
+/* harmony export */   "ReactiveEffect": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.ReactiveEffect; },
 /* harmony export */   "Static": function() { return /* binding */ Static; },
 /* harmony export */   "Suspense": function() { return /* binding */ Suspense; },
 /* harmony export */   "Teleport": function() { return /* binding */ Teleport; },
 /* harmony export */   "Text": function() { return /* binding */ Text; },
 /* harmony export */   "callWithAsyncErrorHandling": function() { return /* binding */ callWithAsyncErrorHandling; },
 /* harmony export */   "callWithErrorHandling": function() { return /* binding */ callWithErrorHandling; },
+/* harmony export */   "camelize": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.camelize; },
+/* harmony export */   "capitalize": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.capitalize; },
 /* harmony export */   "cloneVNode": function() { return /* binding */ cloneVNode; },
 /* harmony export */   "compatUtils": function() { return /* binding */ compatUtils; },
+/* harmony export */   "computed": function() { return /* binding */ computed; },
 /* harmony export */   "createBlock": function() { return /* binding */ createBlock; },
 /* harmony export */   "createCommentVNode": function() { return /* binding */ createCommentVNode; },
 /* harmony export */   "createElementBlock": function() { return /* binding */ createElementBlock; },
@@ -7715,13 +10305,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "createStaticVNode": function() { return /* binding */ createStaticVNode; },
 /* harmony export */   "createTextVNode": function() { return /* binding */ createTextVNode; },
 /* harmony export */   "createVNode": function() { return /* binding */ createVNode; },
+/* harmony export */   "customRef": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.customRef; },
 /* harmony export */   "defineAsyncComponent": function() { return /* binding */ defineAsyncComponent; },
 /* harmony export */   "defineComponent": function() { return /* binding */ defineComponent; },
 /* harmony export */   "defineEmits": function() { return /* binding */ defineEmits; },
 /* harmony export */   "defineExpose": function() { return /* binding */ defineExpose; },
 /* harmony export */   "defineProps": function() { return /* binding */ defineProps; },
 /* harmony export */   "devtools": function() { return /* binding */ devtools; },
+/* harmony export */   "effect": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.effect; },
+/* harmony export */   "effectScope": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.effectScope; },
 /* harmony export */   "getCurrentInstance": function() { return /* binding */ getCurrentInstance; },
+/* harmony export */   "getCurrentScope": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.getCurrentScope; },
 /* harmony export */   "getTransitionRawChildren": function() { return /* binding */ getTransitionRawChildren; },
 /* harmony export */   "guardReactiveProps": function() { return /* binding */ guardReactiveProps; },
 /* harmony export */   "h": function() { return /* binding */ h; },
@@ -7729,11 +10323,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "initCustomFormatter": function() { return /* binding */ initCustomFormatter; },
 /* harmony export */   "inject": function() { return /* binding */ inject; },
 /* harmony export */   "isMemoSame": function() { return /* binding */ isMemoSame; },
+/* harmony export */   "isProxy": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isProxy; },
+/* harmony export */   "isReactive": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isReactive; },
+/* harmony export */   "isReadonly": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isReadonly; },
+/* harmony export */   "isRef": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef; },
 /* harmony export */   "isRuntimeOnly": function() { return /* binding */ isRuntimeOnly; },
+/* harmony export */   "isShallow": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isShallow; },
 /* harmony export */   "isVNode": function() { return /* binding */ isVNode; },
+/* harmony export */   "markRaw": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.markRaw; },
 /* harmony export */   "mergeDefaults": function() { return /* binding */ mergeDefaults; },
 /* harmony export */   "mergeProps": function() { return /* binding */ mergeProps; },
 /* harmony export */   "nextTick": function() { return /* binding */ nextTick; },
+/* harmony export */   "normalizeClass": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.normalizeClass; },
+/* harmony export */   "normalizeProps": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.normalizeProps; },
+/* harmony export */   "normalizeStyle": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.normalizeStyle; },
 /* harmony export */   "onActivated": function() { return /* binding */ onActivated; },
 /* harmony export */   "onBeforeMount": function() { return /* binding */ onBeforeMount; },
 /* harmony export */   "onBeforeUnmount": function() { return /* binding */ onBeforeUnmount; },
@@ -7743,14 +10346,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "onMounted": function() { return /* binding */ onMounted; },
 /* harmony export */   "onRenderTracked": function() { return /* binding */ onRenderTracked; },
 /* harmony export */   "onRenderTriggered": function() { return /* binding */ onRenderTriggered; },
+/* harmony export */   "onScopeDispose": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.onScopeDispose; },
 /* harmony export */   "onServerPrefetch": function() { return /* binding */ onServerPrefetch; },
 /* harmony export */   "onUnmounted": function() { return /* binding */ onUnmounted; },
 /* harmony export */   "onUpdated": function() { return /* binding */ onUpdated; },
 /* harmony export */   "openBlock": function() { return /* binding */ openBlock; },
 /* harmony export */   "popScopeId": function() { return /* binding */ popScopeId; },
 /* harmony export */   "provide": function() { return /* binding */ provide; },
+/* harmony export */   "proxyRefs": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.proxyRefs; },
 /* harmony export */   "pushScopeId": function() { return /* binding */ pushScopeId; },
 /* harmony export */   "queuePostFlushCb": function() { return /* binding */ queuePostFlushCb; },
+/* harmony export */   "reactive": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.reactive; },
+/* harmony export */   "readonly": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.readonly; },
+/* harmony export */   "ref": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.ref; },
 /* harmony export */   "registerRuntimeCompiler": function() { return /* binding */ registerRuntimeCompiler; },
 /* harmony export */   "renderList": function() { return /* binding */ renderList; },
 /* harmony export */   "renderSlot": function() { return /* binding */ renderSlot; },
@@ -7762,10 +10370,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setBlockTracking": function() { return /* binding */ setBlockTracking; },
 /* harmony export */   "setDevtoolsHook": function() { return /* binding */ setDevtoolsHook; },
 /* harmony export */   "setTransitionHooks": function() { return /* binding */ setTransitionHooks; },
+/* harmony export */   "shallowReactive": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.shallowReactive; },
+/* harmony export */   "shallowReadonly": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.shallowReadonly; },
+/* harmony export */   "shallowRef": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.shallowRef; },
 /* harmony export */   "ssrContextKey": function() { return /* binding */ ssrContextKey; },
 /* harmony export */   "ssrUtils": function() { return /* binding */ ssrUtils; },
+/* harmony export */   "stop": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.stop; },
+/* harmony export */   "toDisplayString": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.toDisplayString; },
+/* harmony export */   "toHandlerKey": function() { return /* reexport safe */ _vue_shared__WEBPACK_IMPORTED_MODULE_1__.toHandlerKey; },
 /* harmony export */   "toHandlers": function() { return /* binding */ toHandlers; },
+/* harmony export */   "toRaw": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.toRaw; },
+/* harmony export */   "toRef": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.toRef; },
+/* harmony export */   "toRefs": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.toRefs; },
 /* harmony export */   "transformVNodeArgs": function() { return /* binding */ transformVNodeArgs; },
+/* harmony export */   "triggerRef": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.triggerRef; },
+/* harmony export */   "unref": function() { return /* reexport safe */ _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.unref; },
 /* harmony export */   "useAttrs": function() { return /* binding */ useAttrs; },
 /* harmony export */   "useSSRContext": function() { return /* binding */ useSSRContext; },
 /* harmony export */   "useSlots": function() { return /* binding */ useSlots; },
@@ -7789,6 +10408,432 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+const stack = [];
+function pushWarningContext(vnode) {
+    stack.push(vnode);
+}
+function popWarningContext() {
+    stack.pop();
+}
+function warn(msg, ...args) {
+    // avoid props formatting or warn handler tracking deps that might be mutated
+    // during patch, leading to infinite recursion.
+    (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.pauseTracking)();
+    const instance = stack.length ? stack[stack.length - 1].component : null;
+    const appWarnHandler = instance && instance.appContext.config.warnHandler;
+    const trace = getComponentTrace();
+    if (appWarnHandler) {
+        callWithErrorHandling(appWarnHandler, instance, 11 /* APP_WARN_HANDLER */, [
+            msg + args.join(''),
+            instance && instance.proxy,
+            trace
+                .map(({ vnode }) => `at <${formatComponentName(instance, vnode.type)}>`)
+                .join('\n'),
+            trace
+        ]);
+    }
+    else {
+        const warnArgs = [`[Vue warn]: ${msg}`, ...args];
+        /* istanbul ignore if */
+        if (trace.length &&
+            // avoid spamming console during tests
+            !false) {
+            warnArgs.push(`\n`, ...formatTrace(trace));
+        }
+        console.warn(...warnArgs);
+    }
+    (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.resetTracking)();
+}
+function getComponentTrace() {
+    let currentVNode = stack[stack.length - 1];
+    if (!currentVNode) {
+        return [];
+    }
+    // we can't just use the stack because it will be incomplete during updates
+    // that did not start from the root. Re-construct the parent chain using
+    // instance parent pointers.
+    const normalizedStack = [];
+    while (currentVNode) {
+        const last = normalizedStack[0];
+        if (last && last.vnode === currentVNode) {
+            last.recurseCount++;
+        }
+        else {
+            normalizedStack.push({
+                vnode: currentVNode,
+                recurseCount: 0
+            });
+        }
+        const parentInstance = currentVNode.component && currentVNode.component.parent;
+        currentVNode = parentInstance && parentInstance.vnode;
+    }
+    return normalizedStack;
+}
+/* istanbul ignore next */
+function formatTrace(trace) {
+    const logs = [];
+    trace.forEach((entry, i) => {
+        logs.push(...(i === 0 ? [] : [`\n`]), ...formatTraceEntry(entry));
+    });
+    return logs;
+}
+function formatTraceEntry({ vnode, recurseCount }) {
+    const postfix = recurseCount > 0 ? `... (${recurseCount} recursive calls)` : ``;
+    const isRoot = vnode.component ? vnode.component.parent == null : false;
+    const open = ` at <${formatComponentName(vnode.component, vnode.type, isRoot)}`;
+    const close = `>` + postfix;
+    return vnode.props
+        ? [open, ...formatProps(vnode.props), close]
+        : [open + close];
+}
+/* istanbul ignore next */
+function formatProps(props) {
+    const res = [];
+    const keys = Object.keys(props);
+    keys.slice(0, 3).forEach(key => {
+        res.push(...formatProp(key, props[key]));
+    });
+    if (keys.length > 3) {
+        res.push(` ...`);
+    }
+    return res;
+}
+/* istanbul ignore next */
+function formatProp(key, value, raw) {
+    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(value)) {
+        value = JSON.stringify(value);
+        return raw ? value : [`${key}=${value}`];
+    }
+    else if (typeof value === 'number' ||
+        typeof value === 'boolean' ||
+        value == null) {
+        return raw ? value : [`${key}=${value}`];
+    }
+    else if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(value)) {
+        value = formatProp(key, (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.toRaw)(value.value), true);
+        return raw ? value : [`${key}=Ref<`, value, `>`];
+    }
+    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(value)) {
+        return [`${key}=fn${value.name ? `<${value.name}>` : ``}`];
+    }
+    else {
+        value = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.toRaw)(value);
+        return raw ? value : [`${key}=`, value];
+    }
+}
+
+const ErrorTypeStrings = {
+    ["sp" /* SERVER_PREFETCH */]: 'serverPrefetch hook',
+    ["bc" /* BEFORE_CREATE */]: 'beforeCreate hook',
+    ["c" /* CREATED */]: 'created hook',
+    ["bm" /* BEFORE_MOUNT */]: 'beforeMount hook',
+    ["m" /* MOUNTED */]: 'mounted hook',
+    ["bu" /* BEFORE_UPDATE */]: 'beforeUpdate hook',
+    ["u" /* UPDATED */]: 'updated',
+    ["bum" /* BEFORE_UNMOUNT */]: 'beforeUnmount hook',
+    ["um" /* UNMOUNTED */]: 'unmounted hook',
+    ["a" /* ACTIVATED */]: 'activated hook',
+    ["da" /* DEACTIVATED */]: 'deactivated hook',
+    ["ec" /* ERROR_CAPTURED */]: 'errorCaptured hook',
+    ["rtc" /* RENDER_TRACKED */]: 'renderTracked hook',
+    ["rtg" /* RENDER_TRIGGERED */]: 'renderTriggered hook',
+    [0 /* SETUP_FUNCTION */]: 'setup function',
+    [1 /* RENDER_FUNCTION */]: 'render function',
+    [2 /* WATCH_GETTER */]: 'watcher getter',
+    [3 /* WATCH_CALLBACK */]: 'watcher callback',
+    [4 /* WATCH_CLEANUP */]: 'watcher cleanup function',
+    [5 /* NATIVE_EVENT_HANDLER */]: 'native event handler',
+    [6 /* COMPONENT_EVENT_HANDLER */]: 'component event handler',
+    [7 /* VNODE_HOOK */]: 'vnode hook',
+    [8 /* DIRECTIVE_HOOK */]: 'directive hook',
+    [9 /* TRANSITION_HOOK */]: 'transition hook',
+    [10 /* APP_ERROR_HANDLER */]: 'app errorHandler',
+    [11 /* APP_WARN_HANDLER */]: 'app warnHandler',
+    [12 /* FUNCTION_REF */]: 'ref function',
+    [13 /* ASYNC_COMPONENT_LOADER */]: 'async component loader',
+    [14 /* SCHEDULER */]: 'scheduler flush. This is likely a Vue internals bug. ' +
+        'Please open an issue at https://new-issue.vuejs.org/?repo=vuejs/core'
+};
+function callWithErrorHandling(fn, instance, type, args) {
+    let res;
+    try {
+        res = args ? fn(...args) : fn();
+    }
+    catch (err) {
+        handleError(err, instance, type);
+    }
+    return res;
+}
+function callWithAsyncErrorHandling(fn, instance, type, args) {
+    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(fn)) {
+        const res = callWithErrorHandling(fn, instance, type, args);
+        if (res && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isPromise)(res)) {
+            res.catch(err => {
+                handleError(err, instance, type);
+            });
+        }
+        return res;
+    }
+    const values = [];
+    for (let i = 0; i < fn.length; i++) {
+        values.push(callWithAsyncErrorHandling(fn[i], instance, type, args));
+    }
+    return values;
+}
+function handleError(err, instance, type, throwInDev = true) {
+    const contextVNode = instance ? instance.vnode : null;
+    if (instance) {
+        let cur = instance.parent;
+        // the exposed instance is the render proxy to keep it consistent with 2.x
+        const exposedInstance = instance.proxy;
+        // in production the hook receives only the error code
+        const errorInfo = ( true) ? ErrorTypeStrings[type] : 0;
+        while (cur) {
+            const errorCapturedHooks = cur.ec;
+            if (errorCapturedHooks) {
+                for (let i = 0; i < errorCapturedHooks.length; i++) {
+                    if (errorCapturedHooks[i](err, exposedInstance, errorInfo) === false) {
+                        return;
+                    }
+                }
+            }
+            cur = cur.parent;
+        }
+        // app-level handling
+        const appErrorHandler = instance.appContext.config.errorHandler;
+        if (appErrorHandler) {
+            callWithErrorHandling(appErrorHandler, null, 10 /* APP_ERROR_HANDLER */, [err, exposedInstance, errorInfo]);
+            return;
+        }
+    }
+    logError(err, type, contextVNode, throwInDev);
+}
+function logError(err, type, contextVNode, throwInDev = true) {
+    if ((true)) {
+        const info = ErrorTypeStrings[type];
+        if (contextVNode) {
+            pushWarningContext(contextVNode);
+        }
+        warn(`Unhandled error${info ? ` during execution of ${info}` : ``}`);
+        if (contextVNode) {
+            popWarningContext();
+        }
+        // crash in dev by default so it's more noticeable
+        if (throwInDev) {
+            throw err;
+        }
+        else {
+            console.error(err);
+        }
+    }
+    else {}
+}
+
+let isFlushing = false;
+let isFlushPending = false;
+const queue = [];
+let flushIndex = 0;
+const pendingPreFlushCbs = [];
+let activePreFlushCbs = null;
+let preFlushIndex = 0;
+const pendingPostFlushCbs = [];
+let activePostFlushCbs = null;
+let postFlushIndex = 0;
+const resolvedPromise = Promise.resolve();
+let currentFlushPromise = null;
+let currentPreFlushParentJob = null;
+const RECURSION_LIMIT = 100;
+function nextTick(fn) {
+    const p = currentFlushPromise || resolvedPromise;
+    return fn ? p.then(this ? fn.bind(this) : fn) : p;
+}
+// #2768
+// Use binary-search to find a suitable position in the queue,
+// so that the queue maintains the increasing order of job's id,
+// which can prevent the job from being skipped and also can avoid repeated patching.
+function findInsertionIndex(id) {
+    // the start index should be `flushIndex + 1`
+    let start = flushIndex + 1;
+    let end = queue.length;
+    while (start < end) {
+        const middle = (start + end) >>> 1;
+        const middleJobId = getId(queue[middle]);
+        middleJobId < id ? (start = middle + 1) : (end = middle);
+    }
+    return start;
+}
+function queueJob(job) {
+    // the dedupe search uses the startIndex argument of Array.includes()
+    // by default the search index includes the current job that is being run
+    // so it cannot recursively trigger itself again.
+    // if the job is a watch() callback, the search will start with a +1 index to
+    // allow it recursively trigger itself - it is the user's responsibility to
+    // ensure it doesn't end up in an infinite loop.
+    if ((!queue.length ||
+        !queue.includes(job, isFlushing && job.allowRecurse ? flushIndex + 1 : flushIndex)) &&
+        job !== currentPreFlushParentJob) {
+        if (job.id == null) {
+            queue.push(job);
+        }
+        else {
+            queue.splice(findInsertionIndex(job.id), 0, job);
+        }
+        queueFlush();
+    }
+}
+function queueFlush() {
+    if (!isFlushing && !isFlushPending) {
+        isFlushPending = true;
+        currentFlushPromise = resolvedPromise.then(flushJobs);
+    }
+}
+function invalidateJob(job) {
+    const i = queue.indexOf(job);
+    if (i > flushIndex) {
+        queue.splice(i, 1);
+    }
+}
+function queueCb(cb, activeQueue, pendingQueue, index) {
+    if (!(0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(cb)) {
+        if (!activeQueue ||
+            !activeQueue.includes(cb, cb.allowRecurse ? index + 1 : index)) {
+            pendingQueue.push(cb);
+        }
+    }
+    else {
+        // if cb is an array, it is a component lifecycle hook which can only be
+        // triggered by a job, which is already deduped in the main queue, so
+        // we can skip duplicate check here to improve perf
+        pendingQueue.push(...cb);
+    }
+    queueFlush();
+}
+function queuePreFlushCb(cb) {
+    queueCb(cb, activePreFlushCbs, pendingPreFlushCbs, preFlushIndex);
+}
+function queuePostFlushCb(cb) {
+    queueCb(cb, activePostFlushCbs, pendingPostFlushCbs, postFlushIndex);
+}
+function flushPreFlushCbs(seen, parentJob = null) {
+    if (pendingPreFlushCbs.length) {
+        currentPreFlushParentJob = parentJob;
+        activePreFlushCbs = [...new Set(pendingPreFlushCbs)];
+        pendingPreFlushCbs.length = 0;
+        if ((true)) {
+            seen = seen || new Map();
+        }
+        for (preFlushIndex = 0; preFlushIndex < activePreFlushCbs.length; preFlushIndex++) {
+            if (( true) &&
+                checkRecursiveUpdates(seen, activePreFlushCbs[preFlushIndex])) {
+                continue;
+            }
+            activePreFlushCbs[preFlushIndex]();
+        }
+        activePreFlushCbs = null;
+        preFlushIndex = 0;
+        currentPreFlushParentJob = null;
+        // recursively flush until it drains
+        flushPreFlushCbs(seen, parentJob);
+    }
+}
+function flushPostFlushCbs(seen) {
+    if (pendingPostFlushCbs.length) {
+        const deduped = [...new Set(pendingPostFlushCbs)];
+        pendingPostFlushCbs.length = 0;
+        // #1947 already has active queue, nested flushPostFlushCbs call
+        if (activePostFlushCbs) {
+            activePostFlushCbs.push(...deduped);
+            return;
+        }
+        activePostFlushCbs = deduped;
+        if ((true)) {
+            seen = seen || new Map();
+        }
+        activePostFlushCbs.sort((a, b) => getId(a) - getId(b));
+        for (postFlushIndex = 0; postFlushIndex < activePostFlushCbs.length; postFlushIndex++) {
+            if (( true) &&
+                checkRecursiveUpdates(seen, activePostFlushCbs[postFlushIndex])) {
+                continue;
+            }
+            activePostFlushCbs[postFlushIndex]();
+        }
+        activePostFlushCbs = null;
+        postFlushIndex = 0;
+    }
+}
+const getId = (job) => job.id == null ? Infinity : job.id;
+function flushJobs(seen) {
+    isFlushPending = false;
+    isFlushing = true;
+    if ((true)) {
+        seen = seen || new Map();
+    }
+    flushPreFlushCbs(seen);
+    // Sort queue before flush.
+    // This ensures that:
+    // 1. Components are updated from parent to child. (because parent is always
+    //    created before the child so its render effect will have smaller
+    //    priority number)
+    // 2. If a component is unmounted during a parent component's update,
+    //    its update can be skipped.
+    queue.sort((a, b) => getId(a) - getId(b));
+    // conditional usage of checkRecursiveUpdate must be determined out of
+    // try ... catch block since Rollup by default de-optimizes treeshaking
+    // inside try-catch. This can leave all warning code unshaked. Although
+    // they would get eventually shaken by a minifier like terser, some minifiers
+    // would fail to do that (e.g. https://github.com/evanw/esbuild/issues/1610)
+    const check = ( true)
+        ? (job) => checkRecursiveUpdates(seen, job)
+        : 0;
+    try {
+        for (flushIndex = 0; flushIndex < queue.length; flushIndex++) {
+            const job = queue[flushIndex];
+            if (job && job.active !== false) {
+                if (( true) && check(job)) {
+                    continue;
+                }
+                // console.log(`running:`, job.id)
+                callWithErrorHandling(job, null, 14 /* SCHEDULER */);
+            }
+        }
+    }
+    finally {
+        flushIndex = 0;
+        queue.length = 0;
+        flushPostFlushCbs(seen);
+        isFlushing = false;
+        currentFlushPromise = null;
+        // some postFlushCb queued jobs!
+        // keep flushing until it drains.
+        if (queue.length ||
+            pendingPreFlushCbs.length ||
+            pendingPostFlushCbs.length) {
+            flushJobs(seen);
+        }
+    }
+}
+function checkRecursiveUpdates(seen, fn) {
+    if (!seen.has(fn)) {
+        seen.set(fn, 1);
+    }
+    else {
+        const count = seen.get(fn);
+        if (count > RECURSION_LIMIT) {
+            const instance = fn.ownerInstance;
+            const componentName = instance && getComponentName(instance.type);
+            warn(`Maximum recursive updates exceeded${componentName ? ` in component <${componentName}>` : ``}. ` +
+                `This means you have a reactive effect that is mutating its own ` +
+                `dependencies and thus recursively triggering itself. Possible sources ` +
+                `include component template, render function, updated hook or ` +
+                `watcher source function.`);
+            return true;
+        }
+        else {
+            seen.set(fn, count + 1);
+        }
+    }
+}
 
 /* eslint-disable no-restricted-globals */
 let isHmrUpdating = false;
@@ -8975,7 +12020,7 @@ function inject(key, defaultValue, treatDefaultAsFactory = false) {
     if (instance) {
         // #2400
         // to support `app.use` plugins,
-        // fallback to appContext's `provides` if the intance is at root
+        // fallback to appContext's `provides` if the instance is at root
         const provides = instance.parent == null
             ? instance.vnode.appContext && instance.vnode.appContext.provides
             : instance.parent.provides;
@@ -8995,6 +12040,274 @@ function inject(key, defaultValue, treatDefaultAsFactory = false) {
     else if ((true)) {
         warn(`inject() can only be used inside setup() or functional components.`);
     }
+}
+
+// Simple effect.
+function watchEffect(effect, options) {
+    return doWatch(effect, null, options);
+}
+function watchPostEffect(effect, options) {
+    return doWatch(effect, null, (( true)
+        ? Object.assign(options || {}, { flush: 'post' })
+        : 0));
+}
+function watchSyncEffect(effect, options) {
+    return doWatch(effect, null, (( true)
+        ? Object.assign(options || {}, { flush: 'sync' })
+        : 0));
+}
+// initial value for watchers to trigger on undefined initial values
+const INITIAL_WATCHER_VALUE = {};
+// implementation
+function watch(source, cb, options) {
+    if (( true) && !(0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(cb)) {
+        warn(`\`watch(fn, options?)\` signature has been moved to a separate API. ` +
+            `Use \`watchEffect(fn, options?)\` instead. \`watch\` now only ` +
+            `supports \`watch(source, cb, options?) signature.`);
+    }
+    return doWatch(source, cb, options);
+}
+function doWatch(source, cb, { immediate, deep, flush, onTrack, onTrigger } = _vue_shared__WEBPACK_IMPORTED_MODULE_1__.EMPTY_OBJ) {
+    if (( true) && !cb) {
+        if (immediate !== undefined) {
+            warn(`watch() "immediate" option is only respected when using the ` +
+                `watch(source, callback, options?) signature.`);
+        }
+        if (deep !== undefined) {
+            warn(`watch() "deep" option is only respected when using the ` +
+                `watch(source, callback, options?) signature.`);
+        }
+    }
+    const warnInvalidSource = (s) => {
+        warn(`Invalid watch source: `, s, `A watch source can only be a getter/effect function, a ref, ` +
+            `a reactive object, or an array of these types.`);
+    };
+    const instance = currentInstance;
+    let getter;
+    let forceTrigger = false;
+    let isMultiSource = false;
+    if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(source)) {
+        getter = () => source.value;
+        forceTrigger = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isShallow)(source);
+    }
+    else if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isReactive)(source)) {
+        getter = () => source;
+        deep = true;
+    }
+    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(source)) {
+        isMultiSource = true;
+        forceTrigger = source.some(_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isReactive);
+        getter = () => source.map(s => {
+            if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(s)) {
+                return s.value;
+            }
+            else if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isReactive)(s)) {
+                return traverse(s);
+            }
+            else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(s)) {
+                return callWithErrorHandling(s, instance, 2 /* WATCH_GETTER */);
+            }
+            else {
+                ( true) && warnInvalidSource(s);
+            }
+        });
+    }
+    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(source)) {
+        if (cb) {
+            // getter with cb
+            getter = () => callWithErrorHandling(source, instance, 2 /* WATCH_GETTER */);
+        }
+        else {
+            // no cb -> simple effect
+            getter = () => {
+                if (instance && instance.isUnmounted) {
+                    return;
+                }
+                if (cleanup) {
+                    cleanup();
+                }
+                return callWithAsyncErrorHandling(source, instance, 3 /* WATCH_CALLBACK */, [onCleanup]);
+            };
+        }
+    }
+    else {
+        getter = _vue_shared__WEBPACK_IMPORTED_MODULE_1__.NOOP;
+        ( true) && warnInvalidSource(source);
+    }
+    if (cb && deep) {
+        const baseGetter = getter;
+        getter = () => traverse(baseGetter());
+    }
+    let cleanup;
+    let onCleanup = (fn) => {
+        cleanup = effect.onStop = () => {
+            callWithErrorHandling(fn, instance, 4 /* WATCH_CLEANUP */);
+        };
+    };
+    // in SSR there is no need to setup an actual effect, and it should be noop
+    // unless it's eager
+    if (isInSSRComponentSetup) {
+        // we will also not call the invalidate callback (+ runner is not set up)
+        onCleanup = _vue_shared__WEBPACK_IMPORTED_MODULE_1__.NOOP;
+        if (!cb) {
+            getter();
+        }
+        else if (immediate) {
+            callWithAsyncErrorHandling(cb, instance, 3 /* WATCH_CALLBACK */, [
+                getter(),
+                isMultiSource ? [] : undefined,
+                onCleanup
+            ]);
+        }
+        return _vue_shared__WEBPACK_IMPORTED_MODULE_1__.NOOP;
+    }
+    let oldValue = isMultiSource ? [] : INITIAL_WATCHER_VALUE;
+    const job = () => {
+        if (!effect.active) {
+            return;
+        }
+        if (cb) {
+            // watch(source, cb)
+            const newValue = effect.run();
+            if (deep ||
+                forceTrigger ||
+                (isMultiSource
+                    ? newValue.some((v, i) => (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasChanged)(v, oldValue[i]))
+                    : (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasChanged)(newValue, oldValue)) ||
+                (false  )) {
+                // cleanup before running cb again
+                if (cleanup) {
+                    cleanup();
+                }
+                callWithAsyncErrorHandling(cb, instance, 3 /* WATCH_CALLBACK */, [
+                    newValue,
+                    // pass undefined as the old value when it's changed for the first time
+                    oldValue === INITIAL_WATCHER_VALUE ? undefined : oldValue,
+                    onCleanup
+                ]);
+                oldValue = newValue;
+            }
+        }
+        else {
+            // watchEffect
+            effect.run();
+        }
+    };
+    // important: mark the job as a watcher callback so that scheduler knows
+    // it is allowed to self-trigger (#1727)
+    job.allowRecurse = !!cb;
+    let scheduler;
+    if (flush === 'sync') {
+        scheduler = job; // the scheduler function gets called directly
+    }
+    else if (flush === 'post') {
+        scheduler = () => queuePostRenderEffect(job, instance && instance.suspense);
+    }
+    else {
+        // default: 'pre'
+        scheduler = () => {
+            if (!instance || instance.isMounted) {
+                queuePreFlushCb(job);
+            }
+            else {
+                // with 'pre' option, the first call must happen before
+                // the component is mounted so it is called synchronously.
+                job();
+            }
+        };
+    }
+    const effect = new _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.ReactiveEffect(getter, scheduler);
+    if ((true)) {
+        effect.onTrack = onTrack;
+        effect.onTrigger = onTrigger;
+    }
+    // initial run
+    if (cb) {
+        if (immediate) {
+            job();
+        }
+        else {
+            oldValue = effect.run();
+        }
+    }
+    else if (flush === 'post') {
+        queuePostRenderEffect(effect.run.bind(effect), instance && instance.suspense);
+    }
+    else {
+        effect.run();
+    }
+    return () => {
+        effect.stop();
+        if (instance && instance.scope) {
+            (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.remove)(instance.scope.effects, effect);
+        }
+    };
+}
+// this.$watch
+function instanceWatch(source, value, options) {
+    const publicThis = this.proxy;
+    const getter = (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(source)
+        ? source.includes('.')
+            ? createPathGetter(publicThis, source)
+            : () => publicThis[source]
+        : source.bind(publicThis, publicThis);
+    let cb;
+    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(value)) {
+        cb = value;
+    }
+    else {
+        cb = value.handler;
+        options = value;
+    }
+    const cur = currentInstance;
+    setCurrentInstance(this);
+    const res = doWatch(getter, cb.bind(publicThis), options);
+    if (cur) {
+        setCurrentInstance(cur);
+    }
+    else {
+        unsetCurrentInstance();
+    }
+    return res;
+}
+function createPathGetter(ctx, path) {
+    const segments = path.split('.');
+    return () => {
+        let cur = ctx;
+        for (let i = 0; i < segments.length && cur; i++) {
+            cur = cur[segments[i]];
+        }
+        return cur;
+    };
+}
+function traverse(value, seen) {
+    if (!(0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isObject)(value) || value["__v_skip" /* SKIP */]) {
+        return value;
+    }
+    seen = seen || new Set();
+    if (seen.has(value)) {
+        return value;
+    }
+    seen.add(value);
+    if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(value)) {
+        traverse(value.value, seen);
+    }
+    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(value)) {
+        for (let i = 0; i < value.length; i++) {
+            traverse(value[i], seen);
+        }
+    }
+    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isSet)(value) || (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isMap)(value)) {
+        value.forEach((v) => {
+            traverse(v, seen);
+        });
+    }
+    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isPlainObject)(value)) {
+        for (const key in value) {
+            traverse(value[key], seen);
+        }
+    }
+    return value;
 }
 
 function useTransitionState() {
@@ -9529,7 +12842,7 @@ const KeepAliveImpl = {
         function unmount(vnode) {
             // reset the shapeFlag so it can be properly unmounted
             resetShapeFlag(vnode);
-            _unmount(vnode, instance, parentSuspense);
+            _unmount(vnode, instance, parentSuspense, true);
         }
         function pruneCache(filter) {
             cache.forEach((vnode, key) => {
@@ -9668,7 +12981,7 @@ function matches(pattern, name) {
         return pattern.some((p) => matches(p, name));
     }
     else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(pattern)) {
-        return pattern.split(',').indexOf(name) > -1;
+        return pattern.split(',').includes(name);
     }
     else if (pattern.test) {
         return pattern.test(name);
@@ -9923,7 +13236,7 @@ function applyOptions(instance) {
                         warn(`Write operation failed: computed property "${key}" is readonly.`);
                     }
                     : 0;
-            const c = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.computed)({
+            const c = computed({
                 get,
                 set
             });
@@ -10324,7 +13637,9 @@ function updateProps(instance, rawProps, rawPrevProps, optimized) {
         // attrs point to the same object so it should already have been updated.
         if (attrs !== rawCurrentProps) {
             for (const key in attrs) {
-                if (!rawProps || !(0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(rawProps, key)) {
+                if (!rawProps ||
+                    (!(0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(rawProps, key) &&
+                        (!false ))) {
                     delete attrs[key];
                     hasAttrsChanged = true;
                 }
@@ -10775,9 +14090,8 @@ return withDirectives(h(comp), [
   [bar, this.y]
 ])
 */
-const isBuiltInDirective = /*#__PURE__*/ (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.makeMap)('bind,cloak,else-if,else,for,html,if,model,on,once,pre,show,slot,text,memo');
 function validateDirectiveName(name) {
-    if (isBuiltInDirective(name)) {
+    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isBuiltInDirective)(name)) {
         warn('Do not use built-in directive ids as custom directive id: ' + name);
     }
 }
@@ -11004,6 +14318,102 @@ function createAppAPI(render, hydrate) {
     };
 }
 
+/**
+ * Function for handling a template ref
+ */
+function setRef(rawRef, oldRawRef, parentSuspense, vnode, isUnmount = false) {
+    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(rawRef)) {
+        rawRef.forEach((r, i) => setRef(r, oldRawRef && ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(oldRawRef) ? oldRawRef[i] : oldRawRef), parentSuspense, vnode, isUnmount));
+        return;
+    }
+    if (isAsyncWrapper(vnode) && !isUnmount) {
+        // when mounting async components, nothing needs to be done,
+        // because the template ref is forwarded to inner component
+        return;
+    }
+    const refValue = vnode.shapeFlag & 4 /* STATEFUL_COMPONENT */
+        ? getExposeProxy(vnode.component) || vnode.component.proxy
+        : vnode.el;
+    const value = isUnmount ? null : refValue;
+    const { i: owner, r: ref } = rawRef;
+    if (( true) && !owner) {
+        warn(`Missing ref owner context. ref cannot be used on hoisted vnodes. ` +
+            `A vnode with ref must be created inside the render function.`);
+        return;
+    }
+    const oldRef = oldRawRef && oldRawRef.r;
+    const refs = owner.refs === _vue_shared__WEBPACK_IMPORTED_MODULE_1__.EMPTY_OBJ ? (owner.refs = {}) : owner.refs;
+    const setupState = owner.setupState;
+    // dynamic ref changed. unset old ref
+    if (oldRef != null && oldRef !== ref) {
+        if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(oldRef)) {
+            refs[oldRef] = null;
+            if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(setupState, oldRef)) {
+                setupState[oldRef] = null;
+            }
+        }
+        else if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(oldRef)) {
+            oldRef.value = null;
+        }
+    }
+    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(ref)) {
+        callWithErrorHandling(ref, owner, 12 /* FUNCTION_REF */, [value, refs]);
+    }
+    else {
+        const _isString = (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(ref);
+        const _isRef = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(ref);
+        if (_isString || _isRef) {
+            const doSet = () => {
+                if (rawRef.f) {
+                    const existing = _isString ? refs[ref] : ref.value;
+                    if (isUnmount) {
+                        (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(existing) && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.remove)(existing, refValue);
+                    }
+                    else {
+                        if (!(0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(existing)) {
+                            if (_isString) {
+                                refs[ref] = [refValue];
+                            }
+                            else {
+                                ref.value = [refValue];
+                                if (rawRef.k)
+                                    refs[rawRef.k] = ref.value;
+                            }
+                        }
+                        else if (!existing.includes(refValue)) {
+                            existing.push(refValue);
+                        }
+                    }
+                }
+                else if (_isString) {
+                    refs[ref] = value;
+                    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(setupState, ref)) {
+                        setupState[ref] = value;
+                    }
+                }
+                else if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(ref)) {
+                    ref.value = value;
+                    if (rawRef.k)
+                        refs[rawRef.k] = value;
+                }
+                else if ((true)) {
+                    warn('Invalid template ref type:', ref, `(${typeof ref})`);
+                }
+            };
+            if (value) {
+                doSet.id = -1;
+                queuePostRenderEffect(doSet, parentSuspense);
+            }
+            else {
+                doSet();
+            }
+        }
+        else if ((true)) {
+            warn('Invalid template ref type:', ref, `(${typeof ref})`);
+        }
+    }
+}
+
 let hasMismatch = false;
 const isSVGContainer = (container) => /svg/.test(container.namespaceURI) && container.tagName !== 'foreignObject';
 const isComment = (node) => node.nodeType === 8 /* COMMENT */;
@@ -11163,7 +14573,8 @@ function createHydrationFunctions(rendererInternals) {
         // e.g. <option :value="obj">, <input type="checkbox" :true-value="1">
         const forcePatchValue = (type === 'input' && dirs) || type === 'option';
         // skip props & children if this is hoisted static nodes
-        if (forcePatchValue || patchFlag !== -1 /* HOISTED */) {
+        // #5405 in dev, always hydrate children for HMR
+        if (true /* HOISTED */) {
             if (dirs) {
                 invokeDirectiveHook(vnode, null, parentComponent, 'created');
             }
@@ -11330,6 +14741,7 @@ function createHydrationFunctions(rendererInternals) {
     return [hydrate, hydrateNode];
 }
 
+/* eslint-disable no-restricted-globals */
 let supported;
 let perf;
 function startMeasure(instance, type) {
@@ -11357,7 +14769,6 @@ function isSupported() {
     if (supported !== undefined) {
         return supported;
     }
-    /* eslint-disable no-restricted-globals */
     if (typeof window !== 'undefined' && window.performance) {
         supported = true;
         perf = window.performance;
@@ -11365,7 +14776,6 @@ function isSupported() {
     else {
         supported = false;
     }
-    /* eslint-enable no-restricted-globals */
     return supported;
 }
 
@@ -11386,7 +14796,7 @@ function initFeatureFlags() {
             `which expects these compile-time feature flags to be globally injected ` +
             `via the bundler config in order to get better tree-shaking in the ` +
             `production bundle.\n\n` +
-            `For more details, see http://link.vuejs.org/feature-flags.`);
+            `For more details, see https://link.vuejs.org/feature-flags.`);
     }
 }
 
@@ -11506,7 +14916,7 @@ function baseCreateRenderer(options, createHydrationFns) {
         }
     };
     const mountStaticNode = (n2, container, anchor, isSVG) => {
-        [n2.el, n2.anchor] = hostInsertStaticContent(n2.children, container, anchor, isSVG);
+        [n2.el, n2.anchor] = hostInsertStaticContent(n2.children, container, anchor, isSVG, n2.el, n2.anchor);
     };
     /**
      * Dev / HMR only
@@ -11667,12 +15077,15 @@ function baseCreateRenderer(options, createHydrationFns) {
         const oldProps = n1.props || _vue_shared__WEBPACK_IMPORTED_MODULE_1__.EMPTY_OBJ;
         const newProps = n2.props || _vue_shared__WEBPACK_IMPORTED_MODULE_1__.EMPTY_OBJ;
         let vnodeHook;
+        // disable recurse in beforeUpdate hooks
+        parentComponent && toggleRecurse(parentComponent, false);
         if ((vnodeHook = newProps.onVnodeBeforeUpdate)) {
             invokeVNodeHook(vnodeHook, parentComponent, n2, n1);
         }
         if (dirs) {
             invokeDirectiveHook(n2, n1, parentComponent, 'beforeUpdate');
         }
+        parentComponent && toggleRecurse(parentComponent, true);
         if (( true) && isHmrUpdating) {
             // HMR updated, force full diff
             patchFlag = 0;
@@ -11952,7 +15365,7 @@ function baseCreateRenderer(options, createHydrationFns) {
                 const { el, props } = initialVNode;
                 const { bm, m, parent } = instance;
                 const isAsyncWrapperVNode = isAsyncWrapper(initialVNode);
-                effect.allowRecurse = false;
+                toggleRecurse(instance, false);
                 // beforeMount hook
                 if (bm) {
                     (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.invokeArrayFns)(bm);
@@ -11962,7 +15375,7 @@ function baseCreateRenderer(options, createHydrationFns) {
                     (vnodeHook = props && props.onVnodeBeforeMount)) {
                     invokeVNodeHook(vnodeHook, parent, initialVNode);
                 }
-                effect.allowRecurse = true;
+                toggleRecurse(instance, true);
                 if (el && hydrateNode) {
                     // vnode has adopted host node - perform hydration instead of mount.
                     const hydrateSubTree = () => {
@@ -12044,7 +15457,7 @@ function baseCreateRenderer(options, createHydrationFns) {
                     pushWarningContext(next || instance.vnode);
                 }
                 // Disallow component effect recursion during pre-lifecycle hooks.
-                effect.allowRecurse = false;
+                toggleRecurse(instance, false);
                 if (next) {
                     next.el = vnode.el;
                     updateComponentPreRender(instance, next, optimized);
@@ -12060,7 +15473,7 @@ function baseCreateRenderer(options, createHydrationFns) {
                 if ((vnodeHook = next.props && next.props.onVnodeBeforeUpdate)) {
                     invokeVNodeHook(vnodeHook, parent, next, vnode);
                 }
-                effect.allowRecurse = true;
+                toggleRecurse(instance, true);
                 // render
                 if ((true)) {
                     startMeasure(instance, `render`);
@@ -12106,13 +15519,13 @@ function baseCreateRenderer(options, createHydrationFns) {
             }
         };
         // create reactive effect for rendering
-        const effect = new _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.ReactiveEffect(componentUpdateFn, () => queueJob(instance.update), instance.scope // track it in component's effect scope
-        );
+        const effect = (instance.effect = new _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.ReactiveEffect(componentUpdateFn, () => queueJob(instance.update), instance.scope // track it in component's effect scope
+        ));
         const update = (instance.update = effect.run.bind(effect));
         update.id = instance.uid;
         // allowRecurse
         // #1801, #2043 component render effects should allow recursive updates
-        effect.allowRecurse = update.allowRecurse = true;
+        toggleRecurse(instance, true);
         if ((true)) {
             effect.onTrack = instance.rtc
                 ? e => (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.invokeArrayFns)(instance.rtc, e)
@@ -12636,85 +16049,8 @@ function baseCreateRenderer(options, createHydrationFns) {
         createApp: createAppAPI(render, hydrate)
     };
 }
-function setRef(rawRef, oldRawRef, parentSuspense, vnode, isUnmount = false) {
-    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(rawRef)) {
-        rawRef.forEach((r, i) => setRef(r, oldRawRef && ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(oldRawRef) ? oldRawRef[i] : oldRawRef), parentSuspense, vnode, isUnmount));
-        return;
-    }
-    if (isAsyncWrapper(vnode) && !isUnmount) {
-        // when mounting async components, nothing needs to be done,
-        // because the template ref is forwarded to inner component
-        return;
-    }
-    const refValue = vnode.shapeFlag & 4 /* STATEFUL_COMPONENT */
-        ? getExposeProxy(vnode.component) || vnode.component.proxy
-        : vnode.el;
-    const value = isUnmount ? null : refValue;
-    const { i: owner, r: ref } = rawRef;
-    if (( true) && !owner) {
-        warn(`Missing ref owner context. ref cannot be used on hoisted vnodes. ` +
-            `A vnode with ref must be created inside the render function.`);
-        return;
-    }
-    const oldRef = oldRawRef && oldRawRef.r;
-    const refs = owner.refs === _vue_shared__WEBPACK_IMPORTED_MODULE_1__.EMPTY_OBJ ? (owner.refs = {}) : owner.refs;
-    const setupState = owner.setupState;
-    // dynamic ref changed. unset old ref
-    if (oldRef != null && oldRef !== ref) {
-        if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(oldRef)) {
-            refs[oldRef] = null;
-            if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(setupState, oldRef)) {
-                setupState[oldRef] = null;
-            }
-        }
-        else if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(oldRef)) {
-            oldRef.value = null;
-        }
-    }
-    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(ref)) {
-        const doSet = () => {
-            {
-                refs[ref] = value;
-            }
-            if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(setupState, ref)) {
-                setupState[ref] = value;
-            }
-        };
-        // #1789: for non-null values, set them after render
-        // null values means this is unmount and it should not overwrite another
-        // ref with the same key
-        if (value) {
-            doSet.id = -1;
-            queuePostRenderEffect(doSet, parentSuspense);
-        }
-        else {
-            doSet();
-        }
-    }
-    else if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(ref)) {
-        const doSet = () => {
-            ref.value = value;
-        };
-        if (value) {
-            doSet.id = -1;
-            queuePostRenderEffect(doSet, parentSuspense);
-        }
-        else {
-            doSet();
-        }
-    }
-    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(ref)) {
-        callWithErrorHandling(ref, owner, 12 /* FUNCTION_REF */, [value, refs]);
-    }
-    else if ((true)) {
-        warn('Invalid template ref type:', value, `(${typeof value})`);
-    }
-}
-function invokeVNodeHook(hook, instance, vnode, prevVNode = null) {
-    callWithAsyncErrorHandling(hook, instance, 7 /* VNODE_HOOK */, [
-        vnode,
-        prevVNode
-    ]);
+function toggleRecurse({ effect, update }, allowed) {
+    effect.allowRecurse = update.allowRecurse = allowed;
 }
 /**
  * #1156
@@ -13178,10 +16514,10 @@ const createVNodeWithArgsTransform = (...args) => {
 };
 const InternalObjectKey = `__vInternal`;
 const normalizeKey = ({ key }) => key != null ? key : null;
-const normalizeRef = ({ ref }) => {
+const normalizeRef = ({ ref, ref_key, ref_for }) => {
     return (ref != null
         ? (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(ref) || (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(ref) || (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(ref)
-            ? { i: currentRenderingInstance, r: ref }
+            ? { i: currentRenderingInstance, r: ref, k: ref_key, f: !!ref_for }
             : ref
         : null);
 };
@@ -13348,7 +16684,7 @@ function cloneVNode(vnode, extraProps, mergeRef = false) {
         shapeFlag: vnode.shapeFlag,
         // if the vnode is cloned with extra props, we can no longer assume its
         // existing patch flag to be reliable and need to add the FULL_PROPS flag.
-        // note: perserve flag for fragments since they use the flag for children
+        // note: preserve flag for fragments since they use the flag for children
         // fast paths only.
         patchFlag: extraProps && vnode.type !== Fragment
             ? patchFlag === -1 // hoisted node
@@ -13510,7 +16846,8 @@ function mergeProps(...args) {
             else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isOn)(key)) {
                 const existing = ret[key];
                 const incoming = toMerge[key];
-                if (existing !== incoming &&
+                if (incoming &&
+                    existing !== incoming &&
                     !((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(existing) && existing.includes(incoming))) {
                     ret[key] = existing
                         ? [].concat(existing, incoming)
@@ -13523,6 +16860,12 @@ function mergeProps(...args) {
         }
     }
     return ret;
+}
+function invokeVNodeHook(hook, instance, vnode, prevVNode = null) {
+    callWithAsyncErrorHandling(hook, instance, 7 /* VNODE_HOOK */, [
+        vnode,
+        prevVNode
+    ]);
 }
 
 /**
@@ -13801,9 +17144,11 @@ const PublicInstanceProxyHandlers = {
         const { data, setupState, ctx } = instance;
         if (setupState !== _vue_shared__WEBPACK_IMPORTED_MODULE_1__.EMPTY_OBJ && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(setupState, key)) {
             setupState[key] = value;
+            return true;
         }
         else if (data !== _vue_shared__WEBPACK_IMPORTED_MODULE_1__.EMPTY_OBJ && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(data, key)) {
             data[key] = value;
+            return true;
         }
         else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(instance.props, key)) {
             ( true) &&
@@ -13839,6 +17184,15 @@ const PublicInstanceProxyHandlers = {
             (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(ctx, key) ||
             (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(publicPropertiesMap, key) ||
             (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasOwn)(appContext.config.globalProperties, key));
+    },
+    defineProperty(target, key, descriptor) {
+        if (descriptor.get != null) {
+            this.set(target, key, descriptor.get(), null);
+        }
+        else if (descriptor.value != null) {
+            this.set(target, key, descriptor.value, null);
+        }
+        return Reflect.defineProperty(target, key, descriptor);
     }
 };
 if (true) {
@@ -13938,6 +17292,7 @@ function createComponentInstance(vnode, parent, suspense) {
         root: null,
         next: null,
         subTree: null,
+        effect: null,
         update: null,
         scope: new _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.EffectScope(true /* detached */),
         render: null,
@@ -14161,7 +17516,7 @@ function finishComponentSetup(instance, isSSR, skipOptions) {
     // template / render function normalization
     // could be already set when returned from setup()
     if (!instance.render) {
-        // only do on-the-fly compile if not in SSR - SSR on-the-fly compliation
+        // only do on-the-fly compile if not in SSR - SSR on-the-fly compilation
         // is done by server-renderer
         if (!isSSR && compile && !Component.render) {
             const template = Component.template;
@@ -14307,699 +17662,10 @@ function isClassComponent(value) {
     return (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(value) && '__vccOpts' in value;
 }
 
-const stack = [];
-function pushWarningContext(vnode) {
-    stack.push(vnode);
-}
-function popWarningContext() {
-    stack.pop();
-}
-function warn(msg, ...args) {
-    // avoid props formatting or warn handler tracking deps that might be mutated
-    // during patch, leading to infinite recursion.
-    (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.pauseTracking)();
-    const instance = stack.length ? stack[stack.length - 1].component : null;
-    const appWarnHandler = instance && instance.appContext.config.warnHandler;
-    const trace = getComponentTrace();
-    if (appWarnHandler) {
-        callWithErrorHandling(appWarnHandler, instance, 11 /* APP_WARN_HANDLER */, [
-            msg + args.join(''),
-            instance && instance.proxy,
-            trace
-                .map(({ vnode }) => `at <${formatComponentName(instance, vnode.type)}>`)
-                .join('\n'),
-            trace
-        ]);
-    }
-    else {
-        const warnArgs = [`[Vue warn]: ${msg}`, ...args];
-        /* istanbul ignore if */
-        if (trace.length &&
-            // avoid spamming console during tests
-            !false) {
-            warnArgs.push(`\n`, ...formatTrace(trace));
-        }
-        console.warn(...warnArgs);
-    }
-    (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.resetTracking)();
-}
-function getComponentTrace() {
-    let currentVNode = stack[stack.length - 1];
-    if (!currentVNode) {
-        return [];
-    }
-    // we can't just use the stack because it will be incomplete during updates
-    // that did not start from the root. Re-construct the parent chain using
-    // instance parent pointers.
-    const normalizedStack = [];
-    while (currentVNode) {
-        const last = normalizedStack[0];
-        if (last && last.vnode === currentVNode) {
-            last.recurseCount++;
-        }
-        else {
-            normalizedStack.push({
-                vnode: currentVNode,
-                recurseCount: 0
-            });
-        }
-        const parentInstance = currentVNode.component && currentVNode.component.parent;
-        currentVNode = parentInstance && parentInstance.vnode;
-    }
-    return normalizedStack;
-}
-/* istanbul ignore next */
-function formatTrace(trace) {
-    const logs = [];
-    trace.forEach((entry, i) => {
-        logs.push(...(i === 0 ? [] : [`\n`]), ...formatTraceEntry(entry));
-    });
-    return logs;
-}
-function formatTraceEntry({ vnode, recurseCount }) {
-    const postfix = recurseCount > 0 ? `... (${recurseCount} recursive calls)` : ``;
-    const isRoot = vnode.component ? vnode.component.parent == null : false;
-    const open = ` at <${formatComponentName(vnode.component, vnode.type, isRoot)}`;
-    const close = `>` + postfix;
-    return vnode.props
-        ? [open, ...formatProps(vnode.props), close]
-        : [open + close];
-}
-/* istanbul ignore next */
-function formatProps(props) {
-    const res = [];
-    const keys = Object.keys(props);
-    keys.slice(0, 3).forEach(key => {
-        res.push(...formatProp(key, props[key]));
-    });
-    if (keys.length > 3) {
-        res.push(` ...`);
-    }
-    return res;
-}
-/* istanbul ignore next */
-function formatProp(key, value, raw) {
-    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(value)) {
-        value = JSON.stringify(value);
-        return raw ? value : [`${key}=${value}`];
-    }
-    else if (typeof value === 'number' ||
-        typeof value === 'boolean' ||
-        value == null) {
-        return raw ? value : [`${key}=${value}`];
-    }
-    else if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(value)) {
-        value = formatProp(key, (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.toRaw)(value.value), true);
-        return raw ? value : [`${key}=Ref<`, value, `>`];
-    }
-    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(value)) {
-        return [`${key}=fn${value.name ? `<${value.name}>` : ``}`];
-    }
-    else {
-        value = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.toRaw)(value);
-        return raw ? value : [`${key}=`, value];
-    }
-}
-
-const ErrorTypeStrings = {
-    ["sp" /* SERVER_PREFETCH */]: 'serverPrefetch hook',
-    ["bc" /* BEFORE_CREATE */]: 'beforeCreate hook',
-    ["c" /* CREATED */]: 'created hook',
-    ["bm" /* BEFORE_MOUNT */]: 'beforeMount hook',
-    ["m" /* MOUNTED */]: 'mounted hook',
-    ["bu" /* BEFORE_UPDATE */]: 'beforeUpdate hook',
-    ["u" /* UPDATED */]: 'updated',
-    ["bum" /* BEFORE_UNMOUNT */]: 'beforeUnmount hook',
-    ["um" /* UNMOUNTED */]: 'unmounted hook',
-    ["a" /* ACTIVATED */]: 'activated hook',
-    ["da" /* DEACTIVATED */]: 'deactivated hook',
-    ["ec" /* ERROR_CAPTURED */]: 'errorCaptured hook',
-    ["rtc" /* RENDER_TRACKED */]: 'renderTracked hook',
-    ["rtg" /* RENDER_TRIGGERED */]: 'renderTriggered hook',
-    [0 /* SETUP_FUNCTION */]: 'setup function',
-    [1 /* RENDER_FUNCTION */]: 'render function',
-    [2 /* WATCH_GETTER */]: 'watcher getter',
-    [3 /* WATCH_CALLBACK */]: 'watcher callback',
-    [4 /* WATCH_CLEANUP */]: 'watcher cleanup function',
-    [5 /* NATIVE_EVENT_HANDLER */]: 'native event handler',
-    [6 /* COMPONENT_EVENT_HANDLER */]: 'component event handler',
-    [7 /* VNODE_HOOK */]: 'vnode hook',
-    [8 /* DIRECTIVE_HOOK */]: 'directive hook',
-    [9 /* TRANSITION_HOOK */]: 'transition hook',
-    [10 /* APP_ERROR_HANDLER */]: 'app errorHandler',
-    [11 /* APP_WARN_HANDLER */]: 'app warnHandler',
-    [12 /* FUNCTION_REF */]: 'ref function',
-    [13 /* ASYNC_COMPONENT_LOADER */]: 'async component loader',
-    [14 /* SCHEDULER */]: 'scheduler flush. This is likely a Vue internals bug. ' +
-        'Please open an issue at https://new-issue.vuejs.org/?repo=vuejs/vue-next'
-};
-function callWithErrorHandling(fn, instance, type, args) {
-    let res;
-    try {
-        res = args ? fn(...args) : fn();
-    }
-    catch (err) {
-        handleError(err, instance, type);
-    }
-    return res;
-}
-function callWithAsyncErrorHandling(fn, instance, type, args) {
-    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(fn)) {
-        const res = callWithErrorHandling(fn, instance, type, args);
-        if (res && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isPromise)(res)) {
-            res.catch(err => {
-                handleError(err, instance, type);
-            });
-        }
-        return res;
-    }
-    const values = [];
-    for (let i = 0; i < fn.length; i++) {
-        values.push(callWithAsyncErrorHandling(fn[i], instance, type, args));
-    }
-    return values;
-}
-function handleError(err, instance, type, throwInDev = true) {
-    const contextVNode = instance ? instance.vnode : null;
-    if (instance) {
-        let cur = instance.parent;
-        // the exposed instance is the render proxy to keep it consistent with 2.x
-        const exposedInstance = instance.proxy;
-        // in production the hook receives only the error code
-        const errorInfo = ( true) ? ErrorTypeStrings[type] : 0;
-        while (cur) {
-            const errorCapturedHooks = cur.ec;
-            if (errorCapturedHooks) {
-                for (let i = 0; i < errorCapturedHooks.length; i++) {
-                    if (errorCapturedHooks[i](err, exposedInstance, errorInfo) === false) {
-                        return;
-                    }
-                }
-            }
-            cur = cur.parent;
-        }
-        // app-level handling
-        const appErrorHandler = instance.appContext.config.errorHandler;
-        if (appErrorHandler) {
-            callWithErrorHandling(appErrorHandler, null, 10 /* APP_ERROR_HANDLER */, [err, exposedInstance, errorInfo]);
-            return;
-        }
-    }
-    logError(err, type, contextVNode, throwInDev);
-}
-function logError(err, type, contextVNode, throwInDev = true) {
-    if ((true)) {
-        const info = ErrorTypeStrings[type];
-        if (contextVNode) {
-            pushWarningContext(contextVNode);
-        }
-        warn(`Unhandled error${info ? ` during execution of ${info}` : ``}`);
-        if (contextVNode) {
-            popWarningContext();
-        }
-        // crash in dev by default so it's more noticeable
-        if (throwInDev) {
-            throw err;
-        }
-        else {
-            console.error(err);
-        }
-    }
-    else {}
-}
-
-let isFlushing = false;
-let isFlushPending = false;
-const queue = [];
-let flushIndex = 0;
-const pendingPreFlushCbs = [];
-let activePreFlushCbs = null;
-let preFlushIndex = 0;
-const pendingPostFlushCbs = [];
-let activePostFlushCbs = null;
-let postFlushIndex = 0;
-const resolvedPromise = Promise.resolve();
-let currentFlushPromise = null;
-let currentPreFlushParentJob = null;
-const RECURSION_LIMIT = 100;
-function nextTick(fn) {
-    const p = currentFlushPromise || resolvedPromise;
-    return fn ? p.then(this ? fn.bind(this) : fn) : p;
-}
-// #2768
-// Use binary-search to find a suitable position in the queue,
-// so that the queue maintains the increasing order of job's id,
-// which can prevent the job from being skipped and also can avoid repeated patching.
-function findInsertionIndex(id) {
-    // the start index should be `flushIndex + 1`
-    let start = flushIndex + 1;
-    let end = queue.length;
-    while (start < end) {
-        const middle = (start + end) >>> 1;
-        const middleJobId = getId(queue[middle]);
-        middleJobId < id ? (start = middle + 1) : (end = middle);
-    }
-    return start;
-}
-function queueJob(job) {
-    // the dedupe search uses the startIndex argument of Array.includes()
-    // by default the search index includes the current job that is being run
-    // so it cannot recursively trigger itself again.
-    // if the job is a watch() callback, the search will start with a +1 index to
-    // allow it recursively trigger itself - it is the user's responsibility to
-    // ensure it doesn't end up in an infinite loop.
-    if ((!queue.length ||
-        !queue.includes(job, isFlushing && job.allowRecurse ? flushIndex + 1 : flushIndex)) &&
-        job !== currentPreFlushParentJob) {
-        if (job.id == null) {
-            queue.push(job);
-        }
-        else {
-            queue.splice(findInsertionIndex(job.id), 0, job);
-        }
-        queueFlush();
-    }
-}
-function queueFlush() {
-    if (!isFlushing && !isFlushPending) {
-        isFlushPending = true;
-        currentFlushPromise = resolvedPromise.then(flushJobs);
-    }
-}
-function invalidateJob(job) {
-    const i = queue.indexOf(job);
-    if (i > flushIndex) {
-        queue.splice(i, 1);
-    }
-}
-function queueCb(cb, activeQueue, pendingQueue, index) {
-    if (!(0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(cb)) {
-        if (!activeQueue ||
-            !activeQueue.includes(cb, cb.allowRecurse ? index + 1 : index)) {
-            pendingQueue.push(cb);
-        }
-    }
-    else {
-        // if cb is an array, it is a component lifecycle hook which can only be
-        // triggered by a job, which is already deduped in the main queue, so
-        // we can skip duplicate check here to improve perf
-        pendingQueue.push(...cb);
-    }
-    queueFlush();
-}
-function queuePreFlushCb(cb) {
-    queueCb(cb, activePreFlushCbs, pendingPreFlushCbs, preFlushIndex);
-}
-function queuePostFlushCb(cb) {
-    queueCb(cb, activePostFlushCbs, pendingPostFlushCbs, postFlushIndex);
-}
-function flushPreFlushCbs(seen, parentJob = null) {
-    if (pendingPreFlushCbs.length) {
-        currentPreFlushParentJob = parentJob;
-        activePreFlushCbs = [...new Set(pendingPreFlushCbs)];
-        pendingPreFlushCbs.length = 0;
-        if ((true)) {
-            seen = seen || new Map();
-        }
-        for (preFlushIndex = 0; preFlushIndex < activePreFlushCbs.length; preFlushIndex++) {
-            if (( true) &&
-                checkRecursiveUpdates(seen, activePreFlushCbs[preFlushIndex])) {
-                continue;
-            }
-            activePreFlushCbs[preFlushIndex]();
-        }
-        activePreFlushCbs = null;
-        preFlushIndex = 0;
-        currentPreFlushParentJob = null;
-        // recursively flush until it drains
-        flushPreFlushCbs(seen, parentJob);
-    }
-}
-function flushPostFlushCbs(seen) {
-    if (pendingPostFlushCbs.length) {
-        const deduped = [...new Set(pendingPostFlushCbs)];
-        pendingPostFlushCbs.length = 0;
-        // #1947 already has active queue, nested flushPostFlushCbs call
-        if (activePostFlushCbs) {
-            activePostFlushCbs.push(...deduped);
-            return;
-        }
-        activePostFlushCbs = deduped;
-        if ((true)) {
-            seen = seen || new Map();
-        }
-        activePostFlushCbs.sort((a, b) => getId(a) - getId(b));
-        for (postFlushIndex = 0; postFlushIndex < activePostFlushCbs.length; postFlushIndex++) {
-            if (( true) &&
-                checkRecursiveUpdates(seen, activePostFlushCbs[postFlushIndex])) {
-                continue;
-            }
-            activePostFlushCbs[postFlushIndex]();
-        }
-        activePostFlushCbs = null;
-        postFlushIndex = 0;
-    }
-}
-const getId = (job) => job.id == null ? Infinity : job.id;
-function flushJobs(seen) {
-    isFlushPending = false;
-    isFlushing = true;
-    if ((true)) {
-        seen = seen || new Map();
-    }
-    flushPreFlushCbs(seen);
-    // Sort queue before flush.
-    // This ensures that:
-    // 1. Components are updated from parent to child. (because parent is always
-    //    created before the child so its render effect will have smaller
-    //    priority number)
-    // 2. If a component is unmounted during a parent component's update,
-    //    its update can be skipped.
-    queue.sort((a, b) => getId(a) - getId(b));
-    // conditional usage of checkRecursiveUpdate must be determined out of
-    // try ... catch block since Rollup by default de-optimizes treeshaking
-    // inside try-catch. This can leave all warning code unshaked. Although
-    // they would get eventually shaken by a minifier like terser, some minifiers
-    // would fail to do that (e.g. https://github.com/evanw/esbuild/issues/1610)
-    const check = ( true)
-        ? (job) => checkRecursiveUpdates(seen, job)
-        : 0;
-    try {
-        for (flushIndex = 0; flushIndex < queue.length; flushIndex++) {
-            const job = queue[flushIndex];
-            if (job && job.active !== false) {
-                if (( true) && check(job)) {
-                    continue;
-                }
-                // console.log(`running:`, job.id)
-                callWithErrorHandling(job, null, 14 /* SCHEDULER */);
-            }
-        }
-    }
-    finally {
-        flushIndex = 0;
-        queue.length = 0;
-        flushPostFlushCbs(seen);
-        isFlushing = false;
-        currentFlushPromise = null;
-        // some postFlushCb queued jobs!
-        // keep flushing until it drains.
-        if (queue.length ||
-            pendingPreFlushCbs.length ||
-            pendingPostFlushCbs.length) {
-            flushJobs(seen);
-        }
-    }
-}
-function checkRecursiveUpdates(seen, fn) {
-    if (!seen.has(fn)) {
-        seen.set(fn, 1);
-    }
-    else {
-        const count = seen.get(fn);
-        if (count > RECURSION_LIMIT) {
-            const instance = fn.ownerInstance;
-            const componentName = instance && getComponentName(instance.type);
-            warn(`Maximum recursive updates exceeded${componentName ? ` in component <${componentName}>` : ``}. ` +
-                `This means you have a reactive effect that is mutating its own ` +
-                `dependencies and thus recursively triggering itself. Possible sources ` +
-                `include component template, render function, updated hook or ` +
-                `watcher source function.`);
-            return true;
-        }
-        else {
-            seen.set(fn, count + 1);
-        }
-    }
-}
-
-// Simple effect.
-function watchEffect(effect, options) {
-    return doWatch(effect, null, options);
-}
-function watchPostEffect(effect, options) {
-    return doWatch(effect, null, (( true)
-        ? Object.assign(options || {}, { flush: 'post' })
-        : 0));
-}
-function watchSyncEffect(effect, options) {
-    return doWatch(effect, null, (( true)
-        ? Object.assign(options || {}, { flush: 'sync' })
-        : 0));
-}
-// initial value for watchers to trigger on undefined initial values
-const INITIAL_WATCHER_VALUE = {};
-// implementation
-function watch(source, cb, options) {
-    if (( true) && !(0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(cb)) {
-        warn(`\`watch(fn, options?)\` signature has been moved to a separate API. ` +
-            `Use \`watchEffect(fn, options?)\` instead. \`watch\` now only ` +
-            `supports \`watch(source, cb, options?) signature.`);
-    }
-    return doWatch(source, cb, options);
-}
-function doWatch(source, cb, { immediate, deep, flush, onTrack, onTrigger } = _vue_shared__WEBPACK_IMPORTED_MODULE_1__.EMPTY_OBJ) {
-    if (( true) && !cb) {
-        if (immediate !== undefined) {
-            warn(`watch() "immediate" option is only respected when using the ` +
-                `watch(source, callback, options?) signature.`);
-        }
-        if (deep !== undefined) {
-            warn(`watch() "deep" option is only respected when using the ` +
-                `watch(source, callback, options?) signature.`);
-        }
-    }
-    const warnInvalidSource = (s) => {
-        warn(`Invalid watch source: `, s, `A watch source can only be a getter/effect function, a ref, ` +
-            `a reactive object, or an array of these types.`);
-    };
-    const instance = currentInstance;
-    let getter;
-    let forceTrigger = false;
-    let isMultiSource = false;
-    if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(source)) {
-        getter = () => source.value;
-        forceTrigger = !!source._shallow;
-    }
-    else if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isReactive)(source)) {
-        getter = () => source;
-        deep = true;
-    }
-    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(source)) {
-        isMultiSource = true;
-        forceTrigger = source.some(_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isReactive);
-        getter = () => source.map(s => {
-            if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(s)) {
-                return s.value;
-            }
-            else if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isReactive)(s)) {
-                return traverse(s);
-            }
-            else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(s)) {
-                return callWithErrorHandling(s, instance, 2 /* WATCH_GETTER */);
-            }
-            else {
-                ( true) && warnInvalidSource(s);
-            }
-        });
-    }
-    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(source)) {
-        if (cb) {
-            // getter with cb
-            getter = () => callWithErrorHandling(source, instance, 2 /* WATCH_GETTER */);
-        }
-        else {
-            // no cb -> simple effect
-            getter = () => {
-                if (instance && instance.isUnmounted) {
-                    return;
-                }
-                if (cleanup) {
-                    cleanup();
-                }
-                return callWithAsyncErrorHandling(source, instance, 3 /* WATCH_CALLBACK */, [onInvalidate]);
-            };
-        }
-    }
-    else {
-        getter = _vue_shared__WEBPACK_IMPORTED_MODULE_1__.NOOP;
-        ( true) && warnInvalidSource(source);
-    }
-    if (cb && deep) {
-        const baseGetter = getter;
-        getter = () => traverse(baseGetter());
-    }
-    let cleanup;
-    let onInvalidate = (fn) => {
-        cleanup = effect.onStop = () => {
-            callWithErrorHandling(fn, instance, 4 /* WATCH_CLEANUP */);
-        };
-    };
-    // in SSR there is no need to setup an actual effect, and it should be noop
-    // unless it's eager
-    if (isInSSRComponentSetup) {
-        // we will also not call the invalidate callback (+ runner is not set up)
-        onInvalidate = _vue_shared__WEBPACK_IMPORTED_MODULE_1__.NOOP;
-        if (!cb) {
-            getter();
-        }
-        else if (immediate) {
-            callWithAsyncErrorHandling(cb, instance, 3 /* WATCH_CALLBACK */, [
-                getter(),
-                isMultiSource ? [] : undefined,
-                onInvalidate
-            ]);
-        }
-        return _vue_shared__WEBPACK_IMPORTED_MODULE_1__.NOOP;
-    }
-    let oldValue = isMultiSource ? [] : INITIAL_WATCHER_VALUE;
-    const job = () => {
-        if (!effect.active) {
-            return;
-        }
-        if (cb) {
-            // watch(source, cb)
-            const newValue = effect.run();
-            if (deep ||
-                forceTrigger ||
-                (isMultiSource
-                    ? newValue.some((v, i) => (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasChanged)(v, oldValue[i]))
-                    : (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.hasChanged)(newValue, oldValue)) ||
-                (false  )) {
-                // cleanup before running cb again
-                if (cleanup) {
-                    cleanup();
-                }
-                callWithAsyncErrorHandling(cb, instance, 3 /* WATCH_CALLBACK */, [
-                    newValue,
-                    // pass undefined as the old value when it's changed for the first time
-                    oldValue === INITIAL_WATCHER_VALUE ? undefined : oldValue,
-                    onInvalidate
-                ]);
-                oldValue = newValue;
-            }
-        }
-        else {
-            // watchEffect
-            effect.run();
-        }
-    };
-    // important: mark the job as a watcher callback so that scheduler knows
-    // it is allowed to self-trigger (#1727)
-    job.allowRecurse = !!cb;
-    let scheduler;
-    if (flush === 'sync') {
-        scheduler = job; // the scheduler function gets called directly
-    }
-    else if (flush === 'post') {
-        scheduler = () => queuePostRenderEffect(job, instance && instance.suspense);
-    }
-    else {
-        // default: 'pre'
-        scheduler = () => {
-            if (!instance || instance.isMounted) {
-                queuePreFlushCb(job);
-            }
-            else {
-                // with 'pre' option, the first call must happen before
-                // the component is mounted so it is called synchronously.
-                job();
-            }
-        };
-    }
-    const effect = new _vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.ReactiveEffect(getter, scheduler);
-    if ((true)) {
-        effect.onTrack = onTrack;
-        effect.onTrigger = onTrigger;
-    }
-    // initial run
-    if (cb) {
-        if (immediate) {
-            job();
-        }
-        else {
-            oldValue = effect.run();
-        }
-    }
-    else if (flush === 'post') {
-        queuePostRenderEffect(effect.run.bind(effect), instance && instance.suspense);
-    }
-    else {
-        effect.run();
-    }
-    return () => {
-        effect.stop();
-        if (instance && instance.scope) {
-            (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.remove)(instance.scope.effects, effect);
-        }
-    };
-}
-// this.$watch
-function instanceWatch(source, value, options) {
-    const publicThis = this.proxy;
-    const getter = (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(source)
-        ? source.includes('.')
-            ? createPathGetter(publicThis, source)
-            : () => publicThis[source]
-        : source.bind(publicThis, publicThis);
-    let cb;
-    if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(value)) {
-        cb = value;
-    }
-    else {
-        cb = value.handler;
-        options = value;
-    }
-    const cur = currentInstance;
-    setCurrentInstance(this);
-    const res = doWatch(getter, cb.bind(publicThis), options);
-    if (cur) {
-        setCurrentInstance(cur);
-    }
-    else {
-        unsetCurrentInstance();
-    }
-    return res;
-}
-function createPathGetter(ctx, path) {
-    const segments = path.split('.');
-    return () => {
-        let cur = ctx;
-        for (let i = 0; i < segments.length && cur; i++) {
-            cur = cur[segments[i]];
-        }
-        return cur;
-    };
-}
-function traverse(value, seen) {
-    if (!(0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isObject)(value) || value["__v_skip" /* SKIP */]) {
-        return value;
-    }
-    seen = seen || new Set();
-    if (seen.has(value)) {
-        return value;
-    }
-    seen.add(value);
-    if ((0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isRef)(value)) {
-        traverse(value.value, seen);
-    }
-    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isArray)(value)) {
-        for (let i = 0; i < value.length; i++) {
-            traverse(value[i], seen);
-        }
-    }
-    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isSet)(value) || (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isMap)(value)) {
-        value.forEach((v) => {
-            traverse(v, seen);
-        });
-    }
-    else if ((0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isPlainObject)(value)) {
-        for (const key in value) {
-            traverse(value[key], seen);
-        }
-    }
-    return value;
-}
+const computed = ((getterOrOptions, debugOptions) => {
+    // @ts-ignore
+    return (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.computed)(getterOrOptions, debugOptions, isInSSRComponentSetup);
+});
 
 // dev only
 const warnRuntimeUsage = (method) => warn(`${method}() is a compiler-hint helper that is only usable inside ` +
@@ -15024,7 +17690,7 @@ function defineEmits() {
  * instance properties when it is accessed by a parent component via template
  * refs.
  *
- * `<script setup>` components are closed by default - i.e. varaibles inside
+ * `<script setup>` components are closed by default - i.e. variables inside
  * the `<script setup>` scope is not exposed to parent unless explicitly exposed
  * via `defineExpose`.
  *
@@ -15193,6 +17859,10 @@ const useSSRContext = () => {
     }
 };
 
+function isShallow(value) {
+    return !!(value && value["__v_isShallow" /* IS_SHALLOW */]);
+}
+
 function initCustomFormatter() {
     /* eslint-disable no-restricted-globals */
     if ( false || typeof window === 'undefined') {
@@ -15227,7 +17897,7 @@ function initCustomFormatter() {
                 return [
                     'div',
                     {},
-                    ['span', vueStyle, 'Reactive'],
+                    ['span', vueStyle, isShallow(obj) ? 'ShallowReactive' : 'Reactive'],
                     '<',
                     formatValue(obj),
                     `>${(0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.isReadonly)(obj) ? ` (readonly)` : ``}`
@@ -15237,7 +17907,7 @@ function initCustomFormatter() {
                 return [
                     'div',
                     {},
-                    ['span', vueStyle, 'Readonly'],
+                    ['span', vueStyle, isShallow(obj) ? 'ShallowReadonly' : 'Readonly'],
                     '<',
                     formatValue(obj),
                     '>'
@@ -15366,7 +18036,7 @@ function initCustomFormatter() {
         }
     }
     function genRefFlag(v) {
-        if (v._shallow) {
+        if (isShallow(v)) {
             return `ShallowRef`;
         }
         if (v.effect) {
@@ -15410,7 +18080,7 @@ function isMemoSame(cached, memo) {
 }
 
 // Core API ------------------------------------------------------------------
-const version = "3.2.24";
+const version = "3.2.31";
 const _ssrUtils = {
     createComponentInstance,
     setupComponent,
@@ -15479,7 +18149,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const svgNS = 'http://www.w3.org/2000/svg';
 const doc = (typeof document !== 'undefined' ? document : null);
-const staticTemplateCache = new Map();
+const templateContainer = doc && doc.createElement('template');
 const nodeOps = {
     insert: (child, parent, anchor) => {
         parent.insertBefore(child, anchor || null);
@@ -15533,14 +18203,24 @@ const nodeOps = {
     // Reason: innerHTML.
     // Static content here can only come from compiled templates.
     // As long as the user only uses trusted templates, this is safe.
-    insertStaticContent(content, parent, anchor, isSVG) {
+    insertStaticContent(content, parent, anchor, isSVG, start, end) {
         // <parent> before | first ... last | anchor </parent>
         const before = anchor ? anchor.previousSibling : parent.lastChild;
-        let template = staticTemplateCache.get(content);
-        if (!template) {
-            const t = doc.createElement('template');
-            t.innerHTML = isSVG ? `<svg>${content}</svg>` : content;
-            template = t.content;
+        // #5308 can only take cached path if:
+        // - has a single root node
+        // - nextSibling info is still available
+        if (start && (start === end || start.nextSibling)) {
+            // cached
+            while (true) {
+                parent.insertBefore(start.cloneNode(true), anchor);
+                if (start === end || !(start = start.nextSibling))
+                    break;
+            }
+        }
+        else {
+            // fresh insert
+            templateContainer.innerHTML = isSVG ? `<svg>${content}</svg>` : content;
+            const template = templateContainer.content;
             if (isSVG) {
                 // remove outer svg wrapper
                 const wrapper = template.firstChild;
@@ -15549,9 +18229,8 @@ const nodeOps = {
                 }
                 template.removeChild(wrapper);
             }
-            staticTemplateCache.set(content, template);
+            parent.insertBefore(template, anchor);
         }
-        parent.insertBefore(template.cloneNode(true), anchor);
         return [
             // first
             before ? before.nextSibling : parent.firstChild,
@@ -15843,7 +18522,7 @@ function patchStopImmediatePropagation(e, value) {
             originalStop.call(e);
             e._stopped = true;
         };
-        return value.map(fn => (e) => !e._stopped && fn(e));
+        return value.map(fn => (e) => !e._stopped && fn && fn(e));
     }
     else {
         return value;
@@ -17180,6 +19859,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "invokeArrayFns": function() { return /* binding */ invokeArrayFns; },
 /* harmony export */   "isArray": function() { return /* binding */ isArray; },
 /* harmony export */   "isBooleanAttr": function() { return /* binding */ isBooleanAttr; },
+/* harmony export */   "isBuiltInDirective": function() { return /* binding */ isBuiltInDirective; },
 /* harmony export */   "isDate": function() { return /* binding */ isDate; },
 /* harmony export */   "isFunction": function() { return /* binding */ isFunction; },
 /* harmony export */   "isGloballyWhitelisted": function() { return /* binding */ isGloballyWhitelisted; },
@@ -17336,7 +20016,7 @@ const isBooleanAttr = /*#__PURE__*/ makeMap(specialBooleanAttrs +
     `checked,muted,multiple,selected`);
 /**
  * Boolean attributes should be included if the value is truthy or ''.
- * e.g. <select multiple> compiles to { multiple: '' }
+ * e.g. `<select multiple>` compiles to `{ multiple: '' }`
  */
 function includeBooleanAttr(value) {
     return !!value || value === '';
@@ -17544,8 +20224,20 @@ const SVG_TAGS = 'svg,animate,animateMotion,animateTransform,circle,clipPath,col
     'polygon,polyline,radialGradient,rect,set,solidcolor,stop,switch,symbol,' +
     'text,textPath,title,tspan,unknown,use,view';
 const VOID_TAGS = 'area,base,br,col,embed,hr,img,input,link,meta,param,source,track,wbr';
+/**
+ * Compiler only.
+ * Do NOT use in runtime code paths unless behind `(process.env.NODE_ENV !== 'production')` flag.
+ */
 const isHTMLTag = /*#__PURE__*/ makeMap(HTML_TAGS);
+/**
+ * Compiler only.
+ * Do NOT use in runtime code paths unless behind `(process.env.NODE_ENV !== 'production')` flag.
+ */
 const isSVGTag = /*#__PURE__*/ makeMap(SVG_TAGS);
+/**
+ * Compiler only.
+ * Do NOT use in runtime code paths unless behind `(process.env.NODE_ENV !== 'production')` flag.
+ */
 const isVoidTag = /*#__PURE__*/ makeMap(VOID_TAGS);
 
 const escapeRE = /["'&<>]/;
@@ -17648,13 +20340,15 @@ function looseIndexOf(arr, val) {
  * @private
  */
 const toDisplayString = (val) => {
-    return val == null
-        ? ''
-        : isArray(val) ||
-            (isObject(val) &&
-                (val.toString === objectToString || !isFunction(val.toString)))
-            ? JSON.stringify(val, replacer, 2)
-            : String(val);
+    return isString(val)
+        ? val
+        : val == null
+            ? ''
+            : isArray(val) ||
+                (isObject(val) &&
+                    (val.toString === objectToString || !isFunction(val.toString)))
+                ? JSON.stringify(val, replacer, 2)
+                : String(val);
 };
 const replacer = (_key, val) => {
     // can't use isRef here since @vue/shared has no deps
@@ -17725,10 +20419,11 @@ const isIntegerKey = (key) => isString(key) &&
     '' + parseInt(key, 10) === key;
 const isReservedProp = /*#__PURE__*/ makeMap(
 // the leading comma is intentional so empty string "" is also included
-',key,ref,' +
+',key,ref,ref_for,ref_key,' +
     'onVnodeBeforeMount,onVnodeMounted,' +
     'onVnodeBeforeUpdate,onVnodeUpdated,' +
     'onVnodeBeforeUnmount,onVnodeUnmounted');
+const isBuiltInDirective = /*#__PURE__*/ makeMap('bind,cloak,else-if,else,for,html,if,model,on,once,pre,show,slot,text,memo');
 const cacheStringFunction = (fn) => {
     const cache = Object.create(null);
     return ((str) => {
@@ -19881,8 +22576,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     }).use(plugin).use(i18n).mount(el);
   }
-}); //import VuejsDialog from 'vuejs-dialog';
-//app.use(VueJsDialog);
+});
 
 Array.prototype.remove = function () {
   var what,
@@ -25003,6 +27697,927 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/qs/lib/formats.js":
+/*!****************************************!*\
+  !*** ./node_modules/qs/lib/formats.js ***!
+  \****************************************/
+/***/ (function(module) {
+
+"use strict";
+
+
+var replace = String.prototype.replace;
+var percentTwenties = /%20/g;
+
+var Format = {
+    RFC1738: 'RFC1738',
+    RFC3986: 'RFC3986'
+};
+
+module.exports = {
+    'default': Format.RFC3986,
+    formatters: {
+        RFC1738: function (value) {
+            return replace.call(value, percentTwenties, '+');
+        },
+        RFC3986: function (value) {
+            return String(value);
+        }
+    },
+    RFC1738: Format.RFC1738,
+    RFC3986: Format.RFC3986
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/qs/lib/index.js":
+/*!**************************************!*\
+  !*** ./node_modules/qs/lib/index.js ***!
+  \**************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var stringify = __webpack_require__(/*! ./stringify */ "./node_modules/qs/lib/stringify.js");
+var parse = __webpack_require__(/*! ./parse */ "./node_modules/qs/lib/parse.js");
+var formats = __webpack_require__(/*! ./formats */ "./node_modules/qs/lib/formats.js");
+
+module.exports = {
+    formats: formats,
+    parse: parse,
+    stringify: stringify
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/qs/lib/parse.js":
+/*!**************************************!*\
+  !*** ./node_modules/qs/lib/parse.js ***!
+  \**************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./utils */ "./node_modules/qs/lib/utils.js");
+
+var has = Object.prototype.hasOwnProperty;
+var isArray = Array.isArray;
+
+var defaults = {
+    allowDots: false,
+    allowPrototypes: false,
+    allowSparse: false,
+    arrayLimit: 20,
+    charset: 'utf-8',
+    charsetSentinel: false,
+    comma: false,
+    decoder: utils.decode,
+    delimiter: '&',
+    depth: 5,
+    ignoreQueryPrefix: false,
+    interpretNumericEntities: false,
+    parameterLimit: 1000,
+    parseArrays: true,
+    plainObjects: false,
+    strictNullHandling: false
+};
+
+var interpretNumericEntities = function (str) {
+    return str.replace(/&#(\d+);/g, function ($0, numberStr) {
+        return String.fromCharCode(parseInt(numberStr, 10));
+    });
+};
+
+var parseArrayValue = function (val, options) {
+    if (val && typeof val === 'string' && options.comma && val.indexOf(',') > -1) {
+        return val.split(',');
+    }
+
+    return val;
+};
+
+// This is what browsers will submit when the ✓ character occurs in an
+// application/x-www-form-urlencoded body and the encoding of the page containing
+// the form is iso-8859-1, or when the submitted form has an accept-charset
+// attribute of iso-8859-1. Presumably also with other charsets that do not contain
+// the ✓ character, such as us-ascii.
+var isoSentinel = 'utf8=%26%2310003%3B'; // encodeURIComponent('&#10003;')
+
+// These are the percent-encoded utf-8 octets representing a checkmark, indicating that the request actually is utf-8 encoded.
+var charsetSentinel = 'utf8=%E2%9C%93'; // encodeURIComponent('✓')
+
+var parseValues = function parseQueryStringValues(str, options) {
+    var obj = {};
+    var cleanStr = options.ignoreQueryPrefix ? str.replace(/^\?/, '') : str;
+    var limit = options.parameterLimit === Infinity ? undefined : options.parameterLimit;
+    var parts = cleanStr.split(options.delimiter, limit);
+    var skipIndex = -1; // Keep track of where the utf8 sentinel was found
+    var i;
+
+    var charset = options.charset;
+    if (options.charsetSentinel) {
+        for (i = 0; i < parts.length; ++i) {
+            if (parts[i].indexOf('utf8=') === 0) {
+                if (parts[i] === charsetSentinel) {
+                    charset = 'utf-8';
+                } else if (parts[i] === isoSentinel) {
+                    charset = 'iso-8859-1';
+                }
+                skipIndex = i;
+                i = parts.length; // The eslint settings do not allow break;
+            }
+        }
+    }
+
+    for (i = 0; i < parts.length; ++i) {
+        if (i === skipIndex) {
+            continue;
+        }
+        var part = parts[i];
+
+        var bracketEqualsPos = part.indexOf(']=');
+        var pos = bracketEqualsPos === -1 ? part.indexOf('=') : bracketEqualsPos + 1;
+
+        var key, val;
+        if (pos === -1) {
+            key = options.decoder(part, defaults.decoder, charset, 'key');
+            val = options.strictNullHandling ? null : '';
+        } else {
+            key = options.decoder(part.slice(0, pos), defaults.decoder, charset, 'key');
+            val = utils.maybeMap(
+                parseArrayValue(part.slice(pos + 1), options),
+                function (encodedVal) {
+                    return options.decoder(encodedVal, defaults.decoder, charset, 'value');
+                }
+            );
+        }
+
+        if (val && options.interpretNumericEntities && charset === 'iso-8859-1') {
+            val = interpretNumericEntities(val);
+        }
+
+        if (part.indexOf('[]=') > -1) {
+            val = isArray(val) ? [val] : val;
+        }
+
+        if (has.call(obj, key)) {
+            obj[key] = utils.combine(obj[key], val);
+        } else {
+            obj[key] = val;
+        }
+    }
+
+    return obj;
+};
+
+var parseObject = function (chain, val, options, valuesParsed) {
+    var leaf = valuesParsed ? val : parseArrayValue(val, options);
+
+    for (var i = chain.length - 1; i >= 0; --i) {
+        var obj;
+        var root = chain[i];
+
+        if (root === '[]' && options.parseArrays) {
+            obj = [].concat(leaf);
+        } else {
+            obj = options.plainObjects ? Object.create(null) : {};
+            var cleanRoot = root.charAt(0) === '[' && root.charAt(root.length - 1) === ']' ? root.slice(1, -1) : root;
+            var index = parseInt(cleanRoot, 10);
+            if (!options.parseArrays && cleanRoot === '') {
+                obj = { 0: leaf };
+            } else if (
+                !isNaN(index)
+                && root !== cleanRoot
+                && String(index) === cleanRoot
+                && index >= 0
+                && (options.parseArrays && index <= options.arrayLimit)
+            ) {
+                obj = [];
+                obj[index] = leaf;
+            } else if (cleanRoot !== '__proto__') {
+                obj[cleanRoot] = leaf;
+            }
+        }
+
+        leaf = obj;
+    }
+
+    return leaf;
+};
+
+var parseKeys = function parseQueryStringKeys(givenKey, val, options, valuesParsed) {
+    if (!givenKey) {
+        return;
+    }
+
+    // Transform dot notation to bracket notation
+    var key = options.allowDots ? givenKey.replace(/\.([^.[]+)/g, '[$1]') : givenKey;
+
+    // The regex chunks
+
+    var brackets = /(\[[^[\]]*])/;
+    var child = /(\[[^[\]]*])/g;
+
+    // Get the parent
+
+    var segment = options.depth > 0 && brackets.exec(key);
+    var parent = segment ? key.slice(0, segment.index) : key;
+
+    // Stash the parent if it exists
+
+    var keys = [];
+    if (parent) {
+        // If we aren't using plain objects, optionally prefix keys that would overwrite object prototype properties
+        if (!options.plainObjects && has.call(Object.prototype, parent)) {
+            if (!options.allowPrototypes) {
+                return;
+            }
+        }
+
+        keys.push(parent);
+    }
+
+    // Loop through children appending to the array until we hit depth
+
+    var i = 0;
+    while (options.depth > 0 && (segment = child.exec(key)) !== null && i < options.depth) {
+        i += 1;
+        if (!options.plainObjects && has.call(Object.prototype, segment[1].slice(1, -1))) {
+            if (!options.allowPrototypes) {
+                return;
+            }
+        }
+        keys.push(segment[1]);
+    }
+
+    // If there's a remainder, just add whatever is left
+
+    if (segment) {
+        keys.push('[' + key.slice(segment.index) + ']');
+    }
+
+    return parseObject(keys, val, options, valuesParsed);
+};
+
+var normalizeParseOptions = function normalizeParseOptions(opts) {
+    if (!opts) {
+        return defaults;
+    }
+
+    if (opts.decoder !== null && opts.decoder !== undefined && typeof opts.decoder !== 'function') {
+        throw new TypeError('Decoder has to be a function.');
+    }
+
+    if (typeof opts.charset !== 'undefined' && opts.charset !== 'utf-8' && opts.charset !== 'iso-8859-1') {
+        throw new TypeError('The charset option must be either utf-8, iso-8859-1, or undefined');
+    }
+    var charset = typeof opts.charset === 'undefined' ? defaults.charset : opts.charset;
+
+    return {
+        allowDots: typeof opts.allowDots === 'undefined' ? defaults.allowDots : !!opts.allowDots,
+        allowPrototypes: typeof opts.allowPrototypes === 'boolean' ? opts.allowPrototypes : defaults.allowPrototypes,
+        allowSparse: typeof opts.allowSparse === 'boolean' ? opts.allowSparse : defaults.allowSparse,
+        arrayLimit: typeof opts.arrayLimit === 'number' ? opts.arrayLimit : defaults.arrayLimit,
+        charset: charset,
+        charsetSentinel: typeof opts.charsetSentinel === 'boolean' ? opts.charsetSentinel : defaults.charsetSentinel,
+        comma: typeof opts.comma === 'boolean' ? opts.comma : defaults.comma,
+        decoder: typeof opts.decoder === 'function' ? opts.decoder : defaults.decoder,
+        delimiter: typeof opts.delimiter === 'string' || utils.isRegExp(opts.delimiter) ? opts.delimiter : defaults.delimiter,
+        // eslint-disable-next-line no-implicit-coercion, no-extra-parens
+        depth: (typeof opts.depth === 'number' || opts.depth === false) ? +opts.depth : defaults.depth,
+        ignoreQueryPrefix: opts.ignoreQueryPrefix === true,
+        interpretNumericEntities: typeof opts.interpretNumericEntities === 'boolean' ? opts.interpretNumericEntities : defaults.interpretNumericEntities,
+        parameterLimit: typeof opts.parameterLimit === 'number' ? opts.parameterLimit : defaults.parameterLimit,
+        parseArrays: opts.parseArrays !== false,
+        plainObjects: typeof opts.plainObjects === 'boolean' ? opts.plainObjects : defaults.plainObjects,
+        strictNullHandling: typeof opts.strictNullHandling === 'boolean' ? opts.strictNullHandling : defaults.strictNullHandling
+    };
+};
+
+module.exports = function (str, opts) {
+    var options = normalizeParseOptions(opts);
+
+    if (str === '' || str === null || typeof str === 'undefined') {
+        return options.plainObjects ? Object.create(null) : {};
+    }
+
+    var tempObj = typeof str === 'string' ? parseValues(str, options) : str;
+    var obj = options.plainObjects ? Object.create(null) : {};
+
+    // Iterate over the keys and setup the new object
+
+    var keys = Object.keys(tempObj);
+    for (var i = 0; i < keys.length; ++i) {
+        var key = keys[i];
+        var newObj = parseKeys(key, tempObj[key], options, typeof str === 'string');
+        obj = utils.merge(obj, newObj, options);
+    }
+
+    if (options.allowSparse === true) {
+        return obj;
+    }
+
+    return utils.compact(obj);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/qs/lib/stringify.js":
+/*!******************************************!*\
+  !*** ./node_modules/qs/lib/stringify.js ***!
+  \******************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var getSideChannel = __webpack_require__(/*! side-channel */ "./node_modules/side-channel/index.js");
+var utils = __webpack_require__(/*! ./utils */ "./node_modules/qs/lib/utils.js");
+var formats = __webpack_require__(/*! ./formats */ "./node_modules/qs/lib/formats.js");
+var has = Object.prototype.hasOwnProperty;
+
+var arrayPrefixGenerators = {
+    brackets: function brackets(prefix) {
+        return prefix + '[]';
+    },
+    comma: 'comma',
+    indices: function indices(prefix, key) {
+        return prefix + '[' + key + ']';
+    },
+    repeat: function repeat(prefix) {
+        return prefix;
+    }
+};
+
+var isArray = Array.isArray;
+var split = String.prototype.split;
+var push = Array.prototype.push;
+var pushToArray = function (arr, valueOrArray) {
+    push.apply(arr, isArray(valueOrArray) ? valueOrArray : [valueOrArray]);
+};
+
+var toISO = Date.prototype.toISOString;
+
+var defaultFormat = formats['default'];
+var defaults = {
+    addQueryPrefix: false,
+    allowDots: false,
+    charset: 'utf-8',
+    charsetSentinel: false,
+    delimiter: '&',
+    encode: true,
+    encoder: utils.encode,
+    encodeValuesOnly: false,
+    format: defaultFormat,
+    formatter: formats.formatters[defaultFormat],
+    // deprecated
+    indices: false,
+    serializeDate: function serializeDate(date) {
+        return toISO.call(date);
+    },
+    skipNulls: false,
+    strictNullHandling: false
+};
+
+var isNonNullishPrimitive = function isNonNullishPrimitive(v) {
+    return typeof v === 'string'
+        || typeof v === 'number'
+        || typeof v === 'boolean'
+        || typeof v === 'symbol'
+        || typeof v === 'bigint';
+};
+
+var sentinel = {};
+
+var stringify = function stringify(
+    object,
+    prefix,
+    generateArrayPrefix,
+    strictNullHandling,
+    skipNulls,
+    encoder,
+    filter,
+    sort,
+    allowDots,
+    serializeDate,
+    format,
+    formatter,
+    encodeValuesOnly,
+    charset,
+    sideChannel
+) {
+    var obj = object;
+
+    var tmpSc = sideChannel;
+    var step = 0;
+    var findFlag = false;
+    while ((tmpSc = tmpSc.get(sentinel)) !== void undefined && !findFlag) {
+        // Where object last appeared in the ref tree
+        var pos = tmpSc.get(object);
+        step += 1;
+        if (typeof pos !== 'undefined') {
+            if (pos === step) {
+                throw new RangeError('Cyclic object value');
+            } else {
+                findFlag = true; // Break while
+            }
+        }
+        if (typeof tmpSc.get(sentinel) === 'undefined') {
+            step = 0;
+        }
+    }
+
+    if (typeof filter === 'function') {
+        obj = filter(prefix, obj);
+    } else if (obj instanceof Date) {
+        obj = serializeDate(obj);
+    } else if (generateArrayPrefix === 'comma' && isArray(obj)) {
+        obj = utils.maybeMap(obj, function (value) {
+            if (value instanceof Date) {
+                return serializeDate(value);
+            }
+            return value;
+        });
+    }
+
+    if (obj === null) {
+        if (strictNullHandling) {
+            return encoder && !encodeValuesOnly ? encoder(prefix, defaults.encoder, charset, 'key', format) : prefix;
+        }
+
+        obj = '';
+    }
+
+    if (isNonNullishPrimitive(obj) || utils.isBuffer(obj)) {
+        if (encoder) {
+            var keyValue = encodeValuesOnly ? prefix : encoder(prefix, defaults.encoder, charset, 'key', format);
+            if (generateArrayPrefix === 'comma' && encodeValuesOnly) {
+                var valuesArray = split.call(String(obj), ',');
+                var valuesJoined = '';
+                for (var i = 0; i < valuesArray.length; ++i) {
+                    valuesJoined += (i === 0 ? '' : ',') + formatter(encoder(valuesArray[i], defaults.encoder, charset, 'value', format));
+                }
+                return [formatter(keyValue) + '=' + valuesJoined];
+            }
+            return [formatter(keyValue) + '=' + formatter(encoder(obj, defaults.encoder, charset, 'value', format))];
+        }
+        return [formatter(prefix) + '=' + formatter(String(obj))];
+    }
+
+    var values = [];
+
+    if (typeof obj === 'undefined') {
+        return values;
+    }
+
+    var objKeys;
+    if (generateArrayPrefix === 'comma' && isArray(obj)) {
+        // we need to join elements in
+        objKeys = [{ value: obj.length > 0 ? obj.join(',') || null : void undefined }];
+    } else if (isArray(filter)) {
+        objKeys = filter;
+    } else {
+        var keys = Object.keys(obj);
+        objKeys = sort ? keys.sort(sort) : keys;
+    }
+
+    for (var j = 0; j < objKeys.length; ++j) {
+        var key = objKeys[j];
+        var value = typeof key === 'object' && typeof key.value !== 'undefined' ? key.value : obj[key];
+
+        if (skipNulls && value === null) {
+            continue;
+        }
+
+        var keyPrefix = isArray(obj)
+            ? typeof generateArrayPrefix === 'function' ? generateArrayPrefix(prefix, key) : prefix
+            : prefix + (allowDots ? '.' + key : '[' + key + ']');
+
+        sideChannel.set(object, step);
+        var valueSideChannel = getSideChannel();
+        valueSideChannel.set(sentinel, sideChannel);
+        pushToArray(values, stringify(
+            value,
+            keyPrefix,
+            generateArrayPrefix,
+            strictNullHandling,
+            skipNulls,
+            encoder,
+            filter,
+            sort,
+            allowDots,
+            serializeDate,
+            format,
+            formatter,
+            encodeValuesOnly,
+            charset,
+            valueSideChannel
+        ));
+    }
+
+    return values;
+};
+
+var normalizeStringifyOptions = function normalizeStringifyOptions(opts) {
+    if (!opts) {
+        return defaults;
+    }
+
+    if (opts.encoder !== null && typeof opts.encoder !== 'undefined' && typeof opts.encoder !== 'function') {
+        throw new TypeError('Encoder has to be a function.');
+    }
+
+    var charset = opts.charset || defaults.charset;
+    if (typeof opts.charset !== 'undefined' && opts.charset !== 'utf-8' && opts.charset !== 'iso-8859-1') {
+        throw new TypeError('The charset option must be either utf-8, iso-8859-1, or undefined');
+    }
+
+    var format = formats['default'];
+    if (typeof opts.format !== 'undefined') {
+        if (!has.call(formats.formatters, opts.format)) {
+            throw new TypeError('Unknown format option provided.');
+        }
+        format = opts.format;
+    }
+    var formatter = formats.formatters[format];
+
+    var filter = defaults.filter;
+    if (typeof opts.filter === 'function' || isArray(opts.filter)) {
+        filter = opts.filter;
+    }
+
+    return {
+        addQueryPrefix: typeof opts.addQueryPrefix === 'boolean' ? opts.addQueryPrefix : defaults.addQueryPrefix,
+        allowDots: typeof opts.allowDots === 'undefined' ? defaults.allowDots : !!opts.allowDots,
+        charset: charset,
+        charsetSentinel: typeof opts.charsetSentinel === 'boolean' ? opts.charsetSentinel : defaults.charsetSentinel,
+        delimiter: typeof opts.delimiter === 'undefined' ? defaults.delimiter : opts.delimiter,
+        encode: typeof opts.encode === 'boolean' ? opts.encode : defaults.encode,
+        encoder: typeof opts.encoder === 'function' ? opts.encoder : defaults.encoder,
+        encodeValuesOnly: typeof opts.encodeValuesOnly === 'boolean' ? opts.encodeValuesOnly : defaults.encodeValuesOnly,
+        filter: filter,
+        format: format,
+        formatter: formatter,
+        serializeDate: typeof opts.serializeDate === 'function' ? opts.serializeDate : defaults.serializeDate,
+        skipNulls: typeof opts.skipNulls === 'boolean' ? opts.skipNulls : defaults.skipNulls,
+        sort: typeof opts.sort === 'function' ? opts.sort : null,
+        strictNullHandling: typeof opts.strictNullHandling === 'boolean' ? opts.strictNullHandling : defaults.strictNullHandling
+    };
+};
+
+module.exports = function (object, opts) {
+    var obj = object;
+    var options = normalizeStringifyOptions(opts);
+
+    var objKeys;
+    var filter;
+
+    if (typeof options.filter === 'function') {
+        filter = options.filter;
+        obj = filter('', obj);
+    } else if (isArray(options.filter)) {
+        filter = options.filter;
+        objKeys = filter;
+    }
+
+    var keys = [];
+
+    if (typeof obj !== 'object' || obj === null) {
+        return '';
+    }
+
+    var arrayFormat;
+    if (opts && opts.arrayFormat in arrayPrefixGenerators) {
+        arrayFormat = opts.arrayFormat;
+    } else if (opts && 'indices' in opts) {
+        arrayFormat = opts.indices ? 'indices' : 'repeat';
+    } else {
+        arrayFormat = 'indices';
+    }
+
+    var generateArrayPrefix = arrayPrefixGenerators[arrayFormat];
+
+    if (!objKeys) {
+        objKeys = Object.keys(obj);
+    }
+
+    if (options.sort) {
+        objKeys.sort(options.sort);
+    }
+
+    var sideChannel = getSideChannel();
+    for (var i = 0; i < objKeys.length; ++i) {
+        var key = objKeys[i];
+
+        if (options.skipNulls && obj[key] === null) {
+            continue;
+        }
+        pushToArray(keys, stringify(
+            obj[key],
+            key,
+            generateArrayPrefix,
+            options.strictNullHandling,
+            options.skipNulls,
+            options.encode ? options.encoder : null,
+            options.filter,
+            options.sort,
+            options.allowDots,
+            options.serializeDate,
+            options.format,
+            options.formatter,
+            options.encodeValuesOnly,
+            options.charset,
+            sideChannel
+        ));
+    }
+
+    var joined = keys.join(options.delimiter);
+    var prefix = options.addQueryPrefix === true ? '?' : '';
+
+    if (options.charsetSentinel) {
+        if (options.charset === 'iso-8859-1') {
+            // encodeURIComponent('&#10003;'), the "numeric entity" representation of a checkmark
+            prefix += 'utf8=%26%2310003%3B&';
+        } else {
+            // encodeURIComponent('✓')
+            prefix += 'utf8=%E2%9C%93&';
+        }
+    }
+
+    return joined.length > 0 ? prefix + joined : '';
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/qs/lib/utils.js":
+/*!**************************************!*\
+  !*** ./node_modules/qs/lib/utils.js ***!
+  \**************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var formats = __webpack_require__(/*! ./formats */ "./node_modules/qs/lib/formats.js");
+
+var has = Object.prototype.hasOwnProperty;
+var isArray = Array.isArray;
+
+var hexTable = (function () {
+    var array = [];
+    for (var i = 0; i < 256; ++i) {
+        array.push('%' + ((i < 16 ? '0' : '') + i.toString(16)).toUpperCase());
+    }
+
+    return array;
+}());
+
+var compactQueue = function compactQueue(queue) {
+    while (queue.length > 1) {
+        var item = queue.pop();
+        var obj = item.obj[item.prop];
+
+        if (isArray(obj)) {
+            var compacted = [];
+
+            for (var j = 0; j < obj.length; ++j) {
+                if (typeof obj[j] !== 'undefined') {
+                    compacted.push(obj[j]);
+                }
+            }
+
+            item.obj[item.prop] = compacted;
+        }
+    }
+};
+
+var arrayToObject = function arrayToObject(source, options) {
+    var obj = options && options.plainObjects ? Object.create(null) : {};
+    for (var i = 0; i < source.length; ++i) {
+        if (typeof source[i] !== 'undefined') {
+            obj[i] = source[i];
+        }
+    }
+
+    return obj;
+};
+
+var merge = function merge(target, source, options) {
+    /* eslint no-param-reassign: 0 */
+    if (!source) {
+        return target;
+    }
+
+    if (typeof source !== 'object') {
+        if (isArray(target)) {
+            target.push(source);
+        } else if (target && typeof target === 'object') {
+            if ((options && (options.plainObjects || options.allowPrototypes)) || !has.call(Object.prototype, source)) {
+                target[source] = true;
+            }
+        } else {
+            return [target, source];
+        }
+
+        return target;
+    }
+
+    if (!target || typeof target !== 'object') {
+        return [target].concat(source);
+    }
+
+    var mergeTarget = target;
+    if (isArray(target) && !isArray(source)) {
+        mergeTarget = arrayToObject(target, options);
+    }
+
+    if (isArray(target) && isArray(source)) {
+        source.forEach(function (item, i) {
+            if (has.call(target, i)) {
+                var targetItem = target[i];
+                if (targetItem && typeof targetItem === 'object' && item && typeof item === 'object') {
+                    target[i] = merge(targetItem, item, options);
+                } else {
+                    target.push(item);
+                }
+            } else {
+                target[i] = item;
+            }
+        });
+        return target;
+    }
+
+    return Object.keys(source).reduce(function (acc, key) {
+        var value = source[key];
+
+        if (has.call(acc, key)) {
+            acc[key] = merge(acc[key], value, options);
+        } else {
+            acc[key] = value;
+        }
+        return acc;
+    }, mergeTarget);
+};
+
+var assign = function assignSingleSource(target, source) {
+    return Object.keys(source).reduce(function (acc, key) {
+        acc[key] = source[key];
+        return acc;
+    }, target);
+};
+
+var decode = function (str, decoder, charset) {
+    var strWithoutPlus = str.replace(/\+/g, ' ');
+    if (charset === 'iso-8859-1') {
+        // unescape never throws, no try...catch needed:
+        return strWithoutPlus.replace(/%[0-9a-f]{2}/gi, unescape);
+    }
+    // utf-8
+    try {
+        return decodeURIComponent(strWithoutPlus);
+    } catch (e) {
+        return strWithoutPlus;
+    }
+};
+
+var encode = function encode(str, defaultEncoder, charset, kind, format) {
+    // This code was originally written by Brian White (mscdex) for the io.js core querystring library.
+    // It has been adapted here for stricter adherence to RFC 3986
+    if (str.length === 0) {
+        return str;
+    }
+
+    var string = str;
+    if (typeof str === 'symbol') {
+        string = Symbol.prototype.toString.call(str);
+    } else if (typeof str !== 'string') {
+        string = String(str);
+    }
+
+    if (charset === 'iso-8859-1') {
+        return escape(string).replace(/%u[0-9a-f]{4}/gi, function ($0) {
+            return '%26%23' + parseInt($0.slice(2), 16) + '%3B';
+        });
+    }
+
+    var out = '';
+    for (var i = 0; i < string.length; ++i) {
+        var c = string.charCodeAt(i);
+
+        if (
+            c === 0x2D // -
+            || c === 0x2E // .
+            || c === 0x5F // _
+            || c === 0x7E // ~
+            || (c >= 0x30 && c <= 0x39) // 0-9
+            || (c >= 0x41 && c <= 0x5A) // a-z
+            || (c >= 0x61 && c <= 0x7A) // A-Z
+            || (format === formats.RFC1738 && (c === 0x28 || c === 0x29)) // ( )
+        ) {
+            out += string.charAt(i);
+            continue;
+        }
+
+        if (c < 0x80) {
+            out = out + hexTable[c];
+            continue;
+        }
+
+        if (c < 0x800) {
+            out = out + (hexTable[0xC0 | (c >> 6)] + hexTable[0x80 | (c & 0x3F)]);
+            continue;
+        }
+
+        if (c < 0xD800 || c >= 0xE000) {
+            out = out + (hexTable[0xE0 | (c >> 12)] + hexTable[0x80 | ((c >> 6) & 0x3F)] + hexTable[0x80 | (c & 0x3F)]);
+            continue;
+        }
+
+        i += 1;
+        c = 0x10000 + (((c & 0x3FF) << 10) | (string.charCodeAt(i) & 0x3FF));
+        /* eslint operator-linebreak: [2, "before"] */
+        out += hexTable[0xF0 | (c >> 18)]
+            + hexTable[0x80 | ((c >> 12) & 0x3F)]
+            + hexTable[0x80 | ((c >> 6) & 0x3F)]
+            + hexTable[0x80 | (c & 0x3F)];
+    }
+
+    return out;
+};
+
+var compact = function compact(value) {
+    var queue = [{ obj: { o: value }, prop: 'o' }];
+    var refs = [];
+
+    for (var i = 0; i < queue.length; ++i) {
+        var item = queue[i];
+        var obj = item.obj[item.prop];
+
+        var keys = Object.keys(obj);
+        for (var j = 0; j < keys.length; ++j) {
+            var key = keys[j];
+            var val = obj[key];
+            if (typeof val === 'object' && val !== null && refs.indexOf(val) === -1) {
+                queue.push({ obj: obj, prop: key });
+                refs.push(val);
+            }
+        }
+    }
+
+    compactQueue(queue);
+
+    return value;
+};
+
+var isRegExp = function isRegExp(obj) {
+    return Object.prototype.toString.call(obj) === '[object RegExp]';
+};
+
+var isBuffer = function isBuffer(obj) {
+    if (!obj || typeof obj !== 'object') {
+        return false;
+    }
+
+    return !!(obj.constructor && obj.constructor.isBuffer && obj.constructor.isBuffer(obj));
+};
+
+var combine = function combine(a, b) {
+    return [].concat(a, b);
+};
+
+var maybeMap = function maybeMap(val, fn) {
+    if (isArray(val)) {
+        var mapped = [];
+        for (var i = 0; i < val.length; i += 1) {
+            mapped.push(fn(val[i]));
+        }
+        return mapped;
+    }
+    return fn(val);
+};
+
+module.exports = {
+    arrayToObject: arrayToObject,
+    assign: assign,
+    combine: combine,
+    compact: compact,
+    decode: decode,
+    encode: encode,
+    isBuffer: isBuffer,
+    isRegExp: isRegExp,
+    maybeMap: maybeMap,
+    merge: merge
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/side-channel/index.js":
 /*!********************************************!*\
   !*** ./node_modules/side-channel/index.js ***!
@@ -25142,9 +28757,2248 @@ module.exports = function getSideChannel() {
 /*!************************************************************!*\
   !*** ./node_modules/vue-i18n/dist/vue-i18n.esm-bundler.js ***!
   \************************************************************/
-/***/ (function() {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/home/korko/secretsanta.dev/node_modules/vue-i18n/dist/vue-i18n.esm-bundler.js'");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "DatetimeFormat": function() { return /* binding */ DatetimeFormat; },
+/* harmony export */   "NumberFormat": function() { return /* binding */ NumberFormat; },
+/* harmony export */   "Translation": function() { return /* binding */ Translation; },
+/* harmony export */   "VERSION": function() { return /* binding */ VERSION; },
+/* harmony export */   "createI18n": function() { return /* binding */ createI18n; },
+/* harmony export */   "useI18n": function() { return /* binding */ useI18n; },
+/* harmony export */   "vTDirective": function() { return /* binding */ vTDirective; }
+/* harmony export */ });
+/* harmony import */ var _intlify_shared__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @intlify/shared */ "./node_modules/@intlify/shared/dist/shared.esm-bundler.js");
+/* harmony import */ var _intlify_core_base__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @intlify/core-base */ "./node_modules/@intlify/core-base/dist/core-base.esm-bundler.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _vue_devtools_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @vue/devtools-api */ "./node_modules/@vue/devtools-api/lib/esm/index.js");
+/* harmony import */ var _intlify_vue_devtools__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @intlify/vue-devtools */ "./node_modules/@intlify/vue-devtools/dist/vue-devtools.esm-bundler.js");
+/*!
+  * vue-i18n v9.1.9
+  * (c) 2021 kazuya kawaguchi
+  * Released under the MIT License.
+  */
+
+
+
+
+
+
+/**
+ * Vue I18n Version
+ *
+ * @remarks
+ * Semver format. Same format as the package.json `version` field.
+ *
+ * @VueI18nGeneral
+ */
+const VERSION = '9.1.9';
+/**
+ * This is only called in esm-bundler builds.
+ * istanbul-ignore-next
+ */
+function initFeatureFlags() {
+    let needWarn = false;
+    if (false) {}
+    if (false) {}
+    if (typeof __VUE_I18N_PROD_DEVTOOLS__ !== 'boolean') {
+        needWarn = true;
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.getGlobalThis)().__VUE_I18N_PROD_DEVTOOLS__ = false;
+    }
+    if (false) {}
+    if (true) {
+        needWarn = true;
+    }
+    if (( true) && needWarn) {
+        console.warn(`You are running the esm-bundler build of vue-i18n. It is recommended to ` +
+            `configure your bundler to explicitly replace feature flag globals ` +
+            `with boolean literals to get proper tree-shaking in the final bundle.`);
+    }
+}
+
+const warnMessages = {
+    [6 /* FALLBACK_TO_ROOT */]: `Fall back to {type} '{key}' with root locale.`,
+    [7 /* NOT_SUPPORTED_PRESERVE */]: `Not supported 'preserve'.`,
+    [8 /* NOT_SUPPORTED_FORMATTER */]: `Not supported 'formatter'.`,
+    [9 /* NOT_SUPPORTED_PRESERVE_DIRECTIVE */]: `Not supported 'preserveDirectiveContent'.`,
+    [10 /* NOT_SUPPORTED_GET_CHOICE_INDEX */]: `Not supported 'getChoiceIndex'.`,
+    [11 /* COMPONENT_NAME_LEGACY_COMPATIBLE */]: `Component name legacy compatible: '{name}' -> 'i18n'`,
+    [12 /* NOT_FOUND_PARENT_SCOPE */]: `Not found parent scope. use the global scope.`
+};
+function getWarnMessage(code, ...args) {
+    return (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.format)(warnMessages[code], ...args);
+}
+
+function createI18nError(code, ...args) {
+    return (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.createCompileError)(code, null, ( true) ? { messages: errorMessages, args } : 0);
+}
+const errorMessages = {
+    [14 /* UNEXPECTED_RETURN_TYPE */]: 'Unexpected return type in composer',
+    [15 /* INVALID_ARGUMENT */]: 'Invalid argument',
+    [16 /* MUST_BE_CALL_SETUP_TOP */]: 'Must be called at the top of a `setup` function',
+    [17 /* NOT_INSLALLED */]: 'Need to install with `app.use` function',
+    [22 /* UNEXPECTED_ERROR */]: 'Unexpected error',
+    [18 /* NOT_AVAILABLE_IN_LEGACY_MODE */]: 'Not available in legacy mode',
+    [19 /* REQUIRED_VALUE */]: `Required in value: {0}`,
+    [20 /* INVALID_VALUE */]: `Invalid value`,
+    [21 /* CANNOT_SETUP_VUE_DEVTOOLS_PLUGIN */]: `Cannot setup vue-devtools plugin`
+};
+
+const DEVTOOLS_META = '__INTLIFY_META__';
+const TransrateVNodeSymbol = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.makeSymbol)('__transrateVNode');
+const DatetimePartsSymbol = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.makeSymbol)('__datetimeParts');
+const NumberPartsSymbol = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.makeSymbol)('__numberParts');
+const EnableEmitter = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.makeSymbol)('__enableEmitter');
+const DisableEmitter = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.makeSymbol)('__disableEmitter');
+const SetPluralRulesSymbol = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.makeSymbol)('__setPluralRules');
+(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.makeSymbol)('__intlifyMeta');
+const InejctWithOption = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.makeSymbol)('__injectWithOption');
+let composerID = 0;
+function defineCoreMissingHandler(missing) {
+    return ((ctx, locale, key, type) => {
+        return missing(locale, key, (0,vue__WEBPACK_IMPORTED_MODULE_2__.getCurrentInstance)() || undefined, type);
+    });
+}
+function getLocaleMessages(locale, options) {
+    const { messages, __i18n } = options;
+    // prettier-ignore
+    const ret = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(messages)
+        ? messages
+        : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(__i18n)
+            ? {}
+            : { [locale]: {} };
+    // merge locale messages of i18n custom block
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(__i18n)) {
+        __i18n.forEach(({ locale, resource }) => {
+            if (locale) {
+                ret[locale] = ret[locale] || {};
+                deepCopy(resource, ret[locale]);
+            }
+            else {
+                deepCopy(resource, ret);
+            }
+        });
+    }
+    // handle messages for flat json
+    if (options.flatJson) {
+        for (const key in ret) {
+            if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.hasOwn)(ret, key)) {
+                (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.handleFlatJson)(ret[key]);
+            }
+        }
+    }
+    return ret;
+}
+const isNotObjectOrIsArray = (val) => !(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(val) || (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(val);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function deepCopy(src, des) {
+    // src and des should both be objects, and non of then can be a array
+    if (isNotObjectOrIsArray(src) || isNotObjectOrIsArray(des)) {
+        throw createI18nError(20 /* INVALID_VALUE */);
+    }
+    for (const key in src) {
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.hasOwn)(src, key)) {
+            if (isNotObjectOrIsArray(src[key]) || isNotObjectOrIsArray(des[key])) {
+                // replace with src[key] when:
+                // src[key] or des[key] is not a object, or
+                // src[key] or des[key] is a array
+                des[key] = src[key];
+            }
+            else {
+                // src[key] and des[key] are both object, merge them
+                deepCopy(src[key], des[key]);
+            }
+        }
+    }
+}
+// for Intlify DevTools
+const getMetaInfo = /* #__PURE__*/ () => {
+    const instance = (0,vue__WEBPACK_IMPORTED_MODULE_2__.getCurrentInstance)();
+    return instance && instance.type[DEVTOOLS_META] // eslint-disable-line @typescript-eslint/no-explicit-any
+        ? { [DEVTOOLS_META]: instance.type[DEVTOOLS_META] } // eslint-disable-line @typescript-eslint/no-explicit-any
+        : null;
+};
+/**
+ * Create composer interface factory
+ *
+ * @internal
+ */
+function createComposer(options = {}) {
+    const { __root } = options;
+    const _isGlobal = __root === undefined;
+    let _inheritLocale = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.inheritLocale)
+        ? options.inheritLocale
+        : true;
+    const _locale = (0,vue__WEBPACK_IMPORTED_MODULE_2__.ref)(
+    // prettier-ignore
+    __root && _inheritLocale
+        ? __root.locale.value
+        : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.locale)
+            ? options.locale
+            : 'en-US');
+    const _fallbackLocale = (0,vue__WEBPACK_IMPORTED_MODULE_2__.ref)(
+    // prettier-ignore
+    __root && _inheritLocale
+        ? __root.fallbackLocale.value
+        : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.fallbackLocale) ||
+            (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(options.fallbackLocale) ||
+            (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.fallbackLocale) ||
+            options.fallbackLocale === false
+            ? options.fallbackLocale
+            : _locale.value);
+    const _messages = (0,vue__WEBPACK_IMPORTED_MODULE_2__.ref)(getLocaleMessages(_locale.value, options));
+    const _datetimeFormats = (0,vue__WEBPACK_IMPORTED_MODULE_2__.ref)((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.datetimeFormats)
+        ? options.datetimeFormats
+        : { [_locale.value]: {} });
+    const _numberFormats = (0,vue__WEBPACK_IMPORTED_MODULE_2__.ref)((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.numberFormats)
+        ? options.numberFormats
+        : { [_locale.value]: {} });
+    // warning suppress options
+    // prettier-ignore
+    let _missingWarn = __root
+        ? __root.missingWarn
+        : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.missingWarn) || (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isRegExp)(options.missingWarn)
+            ? options.missingWarn
+            : true;
+    // prettier-ignore
+    let _fallbackWarn = __root
+        ? __root.fallbackWarn
+        : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.fallbackWarn) || (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isRegExp)(options.fallbackWarn)
+            ? options.fallbackWarn
+            : true;
+    // prettier-ignore
+    let _fallbackRoot = __root
+        ? __root.fallbackRoot
+        : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.fallbackRoot)
+            ? options.fallbackRoot
+            : true;
+    // configure fall back to root
+    let _fallbackFormat = !!options.fallbackFormat;
+    // runtime missing
+    let _missing = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.missing) ? options.missing : null;
+    let _runtimeMissing = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.missing)
+        ? defineCoreMissingHandler(options.missing)
+        : null;
+    // postTranslation handler
+    let _postTranslation = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.postTranslation)
+        ? options.postTranslation
+        : null;
+    let _warnHtmlMessage = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.warnHtmlMessage)
+        ? options.warnHtmlMessage
+        : true;
+    let _escapeParameter = !!options.escapeParameter;
+    // custom linked modifiers
+    // prettier-ignore
+    const _modifiers = __root
+        ? __root.modifiers
+        : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.modifiers)
+            ? options.modifiers
+            : {};
+    // pluralRules
+    let _pluralRules = options.pluralRules || (__root && __root.pluralRules);
+    // runtime context
+    // eslint-disable-next-line prefer-const
+    let _context;
+    function getCoreContext() {
+        return (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.createCoreContext)({
+            version: VERSION,
+            locale: _locale.value,
+            fallbackLocale: _fallbackLocale.value,
+            messages: _messages.value,
+            datetimeFormats: _datetimeFormats.value,
+            numberFormats: _numberFormats.value,
+            modifiers: _modifiers,
+            pluralRules: _pluralRules,
+            missing: _runtimeMissing === null ? undefined : _runtimeMissing,
+            missingWarn: _missingWarn,
+            fallbackWarn: _fallbackWarn,
+            fallbackFormat: _fallbackFormat,
+            unresolving: true,
+            postTranslation: _postTranslation === null ? undefined : _postTranslation,
+            warnHtmlMessage: _warnHtmlMessage,
+            escapeParameter: _escapeParameter,
+            __datetimeFormatters: (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(_context)
+                ? _context.__datetimeFormatters
+                : undefined,
+            __numberFormatters: (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(_context)
+                ? _context.__numberFormatters
+                : undefined,
+            __v_emitter: (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(_context)
+                ? _context.__v_emitter
+                : undefined,
+            __meta: { framework: 'vue' }
+        });
+    }
+    _context = getCoreContext();
+    (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.updateFallbackLocale)(_context, _locale.value, _fallbackLocale.value);
+    // track reactivity
+    function trackReactivityValues() {
+        return [
+            _locale.value,
+            _fallbackLocale.value,
+            _messages.value,
+            _datetimeFormats.value,
+            _numberFormats.value
+        ];
+    }
+    // locale
+    const locale = (0,vue__WEBPACK_IMPORTED_MODULE_2__.computed)({
+        get: () => _locale.value,
+        set: val => {
+            _locale.value = val;
+            _context.locale = _locale.value;
+        }
+    });
+    // fallbackLocale
+    const fallbackLocale = (0,vue__WEBPACK_IMPORTED_MODULE_2__.computed)({
+        get: () => _fallbackLocale.value,
+        set: val => {
+            _fallbackLocale.value = val;
+            _context.fallbackLocale = _fallbackLocale.value;
+            (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.updateFallbackLocale)(_context, _locale.value, val);
+        }
+    });
+    // messages
+    const messages = (0,vue__WEBPACK_IMPORTED_MODULE_2__.computed)(() => _messages.value);
+    // datetimeFormats
+    const datetimeFormats = (0,vue__WEBPACK_IMPORTED_MODULE_2__.computed)(() => _datetimeFormats.value);
+    // numberFormats
+    const numberFormats = (0,vue__WEBPACK_IMPORTED_MODULE_2__.computed)(() => _numberFormats.value);
+    // getPostTranslationHandler
+    function getPostTranslationHandler() {
+        return (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(_postTranslation) ? _postTranslation : null;
+    }
+    // setPostTranslationHandler
+    function setPostTranslationHandler(handler) {
+        _postTranslation = handler;
+        _context.postTranslation = handler;
+    }
+    // getMissingHandler
+    function getMissingHandler() {
+        return _missing;
+    }
+    // setMissingHandler
+    function setMissingHandler(handler) {
+        if (handler !== null) {
+            _runtimeMissing = defineCoreMissingHandler(handler);
+        }
+        _missing = handler;
+        _context.missing = _runtimeMissing;
+    }
+    function isResolvedTranslateMessage(type, arg // eslint-disable-line @typescript-eslint/no-explicit-any
+    ) {
+        return type !== 'translate' || !!arg.resolvedMessage === false;
+    }
+    function wrapWithDeps(fn, argumentParser, warnType, fallbackSuccess, fallbackFail, successCondition) {
+        trackReactivityValues(); // track reactive dependency
+        // NOTE: experimental !!
+        let ret;
+        if (true) {
+            try {
+                (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.setAdditionalMeta)(getMetaInfo());
+                ret = fn(_context);
+            }
+            finally {
+                (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.setAdditionalMeta)(null);
+            }
+        }
+        else {}
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(ret) && ret === _intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.NOT_REOSLVED) {
+            const [key, arg2] = argumentParser();
+            if (( true) &&
+                __root &&
+                (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(key) &&
+                isResolvedTranslateMessage(warnType, arg2)) {
+                if (_fallbackRoot &&
+                    ((0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.isTranslateFallbackWarn)(_fallbackWarn, key) ||
+                        (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.isTranslateMissingWarn)(_missingWarn, key))) {
+                    (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(getWarnMessage(6 /* FALLBACK_TO_ROOT */, {
+                        key,
+                        type: warnType
+                    }));
+                }
+                // for vue-devtools timeline event
+                if ((true)) {
+                    const { __v_emitter: emitter } = _context;
+                    if (emitter && _fallbackRoot) {
+                        emitter.emit("fallback" /* FALBACK */, {
+                            type: warnType,
+                            key,
+                            to: 'global',
+                            groupId: `${warnType}:${key}`
+                        });
+                    }
+                }
+            }
+            return __root && _fallbackRoot
+                ? fallbackSuccess(__root)
+                : fallbackFail(key);
+        }
+        else if (successCondition(ret)) {
+            return ret;
+        }
+        else {
+            /* istanbul ignore next */
+            throw createI18nError(14 /* UNEXPECTED_RETURN_TYPE */);
+        }
+    }
+    // t
+    function t(...args) {
+        return wrapWithDeps(context => (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.translate)(context, ...args), () => (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.parseTranslateArgs)(...args), 'translate', root => root.t(...args), key => key, val => (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(val));
+    }
+    // rt
+    function rt(...args) {
+        const [arg1, arg2, arg3] = args;
+        if (arg3 && !(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(arg3)) {
+            throw createI18nError(15 /* INVALID_ARGUMENT */);
+        }
+        return t(...[arg1, arg2, (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({ resolvedMessage: true }, arg3 || {})]);
+    }
+    // d
+    function d(...args) {
+        return wrapWithDeps(context => (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.datetime)(context, ...args), () => (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.parseDateTimeArgs)(...args), 'datetime format', root => root.d(...args), () => _intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.MISSING_RESOLVE_VALUE, val => (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(val));
+    }
+    // n
+    function n(...args) {
+        return wrapWithDeps(context => (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.number)(context, ...args), () => (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.parseNumberArgs)(...args), 'number format', root => root.n(...args), () => _intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.MISSING_RESOLVE_VALUE, val => (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(val));
+    }
+    // for custom processor
+    function normalize(values) {
+        return values.map(val => (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(val) ? (0,vue__WEBPACK_IMPORTED_MODULE_2__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_2__.Text, null, val, 0) : val);
+    }
+    const interpolate = (val) => val;
+    const processor = {
+        normalize,
+        interpolate,
+        type: 'vnode'
+    };
+    // transrateVNode, using for `i18n-t` component
+    function transrateVNode(...args) {
+        return wrapWithDeps(context => {
+            let ret;
+            const _context = context;
+            try {
+                _context.processor = processor;
+                ret = (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.translate)(_context, ...args);
+            }
+            finally {
+                _context.processor = null;
+            }
+            return ret;
+        }, () => (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.parseTranslateArgs)(...args), 'translate', 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        root => root[TransrateVNodeSymbol](...args), key => [(0,vue__WEBPACK_IMPORTED_MODULE_2__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_2__.Text, null, key, 0)], val => (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(val));
+    }
+    // numberParts, using for `i18n-n` component
+    function numberParts(...args) {
+        return wrapWithDeps(context => (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.number)(context, ...args), () => (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.parseNumberArgs)(...args), 'number format', 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        root => root[NumberPartsSymbol](...args), () => [], val => (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(val) || (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(val));
+    }
+    // datetimeParts, using for `i18n-d` component
+    function datetimeParts(...args) {
+        return wrapWithDeps(context => (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.datetime)(context, ...args), () => (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.parseDateTimeArgs)(...args), 'datetime format', 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        root => root[DatetimePartsSymbol](...args), () => [], val => (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(val) || (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(val));
+    }
+    function setPluralRules(rules) {
+        _pluralRules = rules;
+        _context.pluralRules = _pluralRules;
+    }
+    // te
+    function te(key, locale) {
+        const targetLocale = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(locale) ? locale : _locale.value;
+        const message = getLocaleMessage(targetLocale);
+        return (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.resolveValue)(message, key) !== null;
+    }
+    function resolveMessages(key) {
+        let messages = null;
+        const locales = (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.getLocaleChain)(_context, _fallbackLocale.value, _locale.value);
+        for (let i = 0; i < locales.length; i++) {
+            const targetLocaleMessages = _messages.value[locales[i]] || {};
+            const messageValue = (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.resolveValue)(targetLocaleMessages, key);
+            if (messageValue != null) {
+                messages = messageValue;
+                break;
+            }
+        }
+        return messages;
+    }
+    // tm
+    function tm(key) {
+        const messages = resolveMessages(key);
+        // prettier-ignore
+        return messages != null
+            ? messages
+            : __root
+                ? __root.tm(key) || {}
+                : {};
+    }
+    // getLocaleMessage
+    function getLocaleMessage(locale) {
+        return (_messages.value[locale] || {});
+    }
+    // setLocaleMessage
+    function setLocaleMessage(locale, message) {
+        _messages.value[locale] = message;
+        _context.messages = _messages.value;
+    }
+    // mergeLocaleMessage
+    function mergeLocaleMessage(locale, message) {
+        _messages.value[locale] = _messages.value[locale] || {};
+        deepCopy(message, _messages.value[locale]);
+        _context.messages = _messages.value;
+    }
+    // getDateTimeFormat
+    function getDateTimeFormat(locale) {
+        return _datetimeFormats.value[locale] || {};
+    }
+    // setDateTimeFormat
+    function setDateTimeFormat(locale, format) {
+        _datetimeFormats.value[locale] = format;
+        _context.datetimeFormats = _datetimeFormats.value;
+        (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.clearDateTimeFormat)(_context, locale, format);
+    }
+    // mergeDateTimeFormat
+    function mergeDateTimeFormat(locale, format) {
+        _datetimeFormats.value[locale] = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)(_datetimeFormats.value[locale] || {}, format);
+        _context.datetimeFormats = _datetimeFormats.value;
+        (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.clearDateTimeFormat)(_context, locale, format);
+    }
+    // getNumberFormat
+    function getNumberFormat(locale) {
+        return _numberFormats.value[locale] || {};
+    }
+    // setNumberFormat
+    function setNumberFormat(locale, format) {
+        _numberFormats.value[locale] = format;
+        _context.numberFormats = _numberFormats.value;
+        (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.clearNumberFormat)(_context, locale, format);
+    }
+    // mergeNumberFormat
+    function mergeNumberFormat(locale, format) {
+        _numberFormats.value[locale] = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)(_numberFormats.value[locale] || {}, format);
+        _context.numberFormats = _numberFormats.value;
+        (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.clearNumberFormat)(_context, locale, format);
+    }
+    // for debug
+    composerID++;
+    // watch root locale & fallbackLocale
+    if (__root) {
+        (0,vue__WEBPACK_IMPORTED_MODULE_2__.watch)(__root.locale, (val) => {
+            if (_inheritLocale) {
+                _locale.value = val;
+                _context.locale = val;
+                (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.updateFallbackLocale)(_context, _locale.value, _fallbackLocale.value);
+            }
+        });
+        (0,vue__WEBPACK_IMPORTED_MODULE_2__.watch)(__root.fallbackLocale, (val) => {
+            if (_inheritLocale) {
+                _fallbackLocale.value = val;
+                _context.fallbackLocale = val;
+                (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.updateFallbackLocale)(_context, _locale.value, _fallbackLocale.value);
+            }
+        });
+    }
+    // define composition API!
+    const composer = {
+        id: composerID,
+        locale,
+        fallbackLocale,
+        get inheritLocale() {
+            return _inheritLocale;
+        },
+        set inheritLocale(val) {
+            _inheritLocale = val;
+            if (val && __root) {
+                _locale.value = __root.locale.value;
+                _fallbackLocale.value = __root.fallbackLocale.value;
+                (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.updateFallbackLocale)(_context, _locale.value, _fallbackLocale.value);
+            }
+        },
+        get availableLocales() {
+            return Object.keys(_messages.value).sort();
+        },
+        messages,
+        datetimeFormats,
+        numberFormats,
+        get modifiers() {
+            return _modifiers;
+        },
+        get pluralRules() {
+            return _pluralRules || {};
+        },
+        get isGlobal() {
+            return _isGlobal;
+        },
+        get missingWarn() {
+            return _missingWarn;
+        },
+        set missingWarn(val) {
+            _missingWarn = val;
+            _context.missingWarn = _missingWarn;
+        },
+        get fallbackWarn() {
+            return _fallbackWarn;
+        },
+        set fallbackWarn(val) {
+            _fallbackWarn = val;
+            _context.fallbackWarn = _fallbackWarn;
+        },
+        get fallbackRoot() {
+            return _fallbackRoot;
+        },
+        set fallbackRoot(val) {
+            _fallbackRoot = val;
+        },
+        get fallbackFormat() {
+            return _fallbackFormat;
+        },
+        set fallbackFormat(val) {
+            _fallbackFormat = val;
+            _context.fallbackFormat = _fallbackFormat;
+        },
+        get warnHtmlMessage() {
+            return _warnHtmlMessage;
+        },
+        set warnHtmlMessage(val) {
+            _warnHtmlMessage = val;
+            _context.warnHtmlMessage = val;
+        },
+        get escapeParameter() {
+            return _escapeParameter;
+        },
+        set escapeParameter(val) {
+            _escapeParameter = val;
+            _context.escapeParameter = val;
+        },
+        t,
+        rt,
+        d,
+        n,
+        te,
+        tm,
+        getLocaleMessage,
+        setLocaleMessage,
+        mergeLocaleMessage,
+        getDateTimeFormat,
+        setDateTimeFormat,
+        mergeDateTimeFormat,
+        getNumberFormat,
+        setNumberFormat,
+        mergeNumberFormat,
+        getPostTranslationHandler,
+        setPostTranslationHandler,
+        getMissingHandler,
+        setMissingHandler,
+        [TransrateVNodeSymbol]: transrateVNode,
+        [NumberPartsSymbol]: numberParts,
+        [DatetimePartsSymbol]: datetimeParts,
+        [SetPluralRulesSymbol]: setPluralRules,
+        [InejctWithOption]: options.__injectWithOption // eslint-disable-line @typescript-eslint/no-explicit-any
+    };
+    // for vue-devtools timeline event
+    if ((true)) {
+        composer[EnableEmitter] = (emitter) => {
+            _context.__v_emitter = emitter;
+        };
+        composer[DisableEmitter] = () => {
+            _context.__v_emitter = undefined;
+        };
+    }
+    return composer;
+}
+
+/**
+ * Convert to I18n Composer Options from VueI18n Options
+ *
+ * @internal
+ */
+function convertComposerOptions(options) {
+    const locale = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.locale) ? options.locale : 'en-US';
+    const fallbackLocale = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.fallbackLocale) ||
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(options.fallbackLocale) ||
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.fallbackLocale) ||
+        options.fallbackLocale === false
+        ? options.fallbackLocale
+        : locale;
+    const missing = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.missing) ? options.missing : undefined;
+    const missingWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.silentTranslationWarn) ||
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isRegExp)(options.silentTranslationWarn)
+        ? !options.silentTranslationWarn
+        : true;
+    const fallbackWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.silentFallbackWarn) ||
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isRegExp)(options.silentFallbackWarn)
+        ? !options.silentFallbackWarn
+        : true;
+    const fallbackRoot = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.fallbackRoot)
+        ? options.fallbackRoot
+        : true;
+    const fallbackFormat = !!options.formatFallbackMessages;
+    const modifiers = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.modifiers) ? options.modifiers : {};
+    const pluralizationRules = options.pluralizationRules;
+    const postTranslation = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(options.postTranslation)
+        ? options.postTranslation
+        : undefined;
+    const warnHtmlMessage = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(options.warnHtmlInMessage)
+        ? options.warnHtmlInMessage !== 'off'
+        : true;
+    const escapeParameter = !!options.escapeParameterHtml;
+    const inheritLocale = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(options.sync) ? options.sync : true;
+    if (( true) && options.formatter) {
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(getWarnMessage(8 /* NOT_SUPPORTED_FORMATTER */));
+    }
+    if (( true) && options.preserveDirectiveContent) {
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(getWarnMessage(9 /* NOT_SUPPORTED_PRESERVE_DIRECTIVE */));
+    }
+    let messages = options.messages;
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options.sharedMessages)) {
+        const sharedMessages = options.sharedMessages;
+        const locales = Object.keys(sharedMessages);
+        messages = locales.reduce((messages, locale) => {
+            const message = messages[locale] || (messages[locale] = {});
+            (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)(message, sharedMessages[locale]);
+            return messages;
+        }, (messages || {}));
+    }
+    const { __i18n, __root, __injectWithOption } = options;
+    const datetimeFormats = options.datetimeFormats;
+    const numberFormats = options.numberFormats;
+    const flatJson = options.flatJson;
+    return {
+        locale,
+        fallbackLocale,
+        messages,
+        flatJson,
+        datetimeFormats,
+        numberFormats,
+        missing,
+        missingWarn,
+        fallbackWarn,
+        fallbackRoot,
+        fallbackFormat,
+        modifiers,
+        pluralRules: pluralizationRules,
+        postTranslation,
+        warnHtmlMessage,
+        escapeParameter,
+        inheritLocale,
+        __i18n,
+        __root,
+        __injectWithOption
+    };
+}
+/**
+ * create VueI18n interface factory
+ *
+ * @internal
+ */
+function createVueI18n(options = {}) {
+    const composer = createComposer(convertComposerOptions(options));
+    // defines VueI18n
+    const vueI18n = {
+        // id
+        id: composer.id,
+        // locale
+        get locale() {
+            return composer.locale.value;
+        },
+        set locale(val) {
+            composer.locale.value = val;
+        },
+        // fallbackLocale
+        get fallbackLocale() {
+            return composer.fallbackLocale.value;
+        },
+        set fallbackLocale(val) {
+            composer.fallbackLocale.value = val;
+        },
+        // messages
+        get messages() {
+            return composer.messages.value;
+        },
+        // datetimeFormats
+        get datetimeFormats() {
+            return composer.datetimeFormats.value;
+        },
+        // numberFormats
+        get numberFormats() {
+            return composer.numberFormats.value;
+        },
+        // availableLocales
+        get availableLocales() {
+            return composer.availableLocales;
+        },
+        // formatter
+        get formatter() {
+            ( true) && (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(getWarnMessage(8 /* NOT_SUPPORTED_FORMATTER */));
+            // dummy
+            return {
+                interpolate() {
+                    return [];
+                }
+            };
+        },
+        set formatter(val) {
+            ( true) && (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(getWarnMessage(8 /* NOT_SUPPORTED_FORMATTER */));
+        },
+        // missing
+        get missing() {
+            return composer.getMissingHandler();
+        },
+        set missing(handler) {
+            composer.setMissingHandler(handler);
+        },
+        // silentTranslationWarn
+        get silentTranslationWarn() {
+            return (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(composer.missingWarn)
+                ? !composer.missingWarn
+                : composer.missingWarn;
+        },
+        set silentTranslationWarn(val) {
+            composer.missingWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(val) ? !val : val;
+        },
+        // silentFallbackWarn
+        get silentFallbackWarn() {
+            return (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(composer.fallbackWarn)
+                ? !composer.fallbackWarn
+                : composer.fallbackWarn;
+        },
+        set silentFallbackWarn(val) {
+            composer.fallbackWarn = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(val) ? !val : val;
+        },
+        // modifiers
+        get modifiers() {
+            return composer.modifiers;
+        },
+        // formatFallbackMessages
+        get formatFallbackMessages() {
+            return composer.fallbackFormat;
+        },
+        set formatFallbackMessages(val) {
+            composer.fallbackFormat = val;
+        },
+        // postTranslation
+        get postTranslation() {
+            return composer.getPostTranslationHandler();
+        },
+        set postTranslation(handler) {
+            composer.setPostTranslationHandler(handler);
+        },
+        // sync
+        get sync() {
+            return composer.inheritLocale;
+        },
+        set sync(val) {
+            composer.inheritLocale = val;
+        },
+        // warnInHtmlMessage
+        get warnHtmlInMessage() {
+            return composer.warnHtmlMessage ? 'warn' : 'off';
+        },
+        set warnHtmlInMessage(val) {
+            composer.warnHtmlMessage = val !== 'off';
+        },
+        // escapeParameterHtml
+        get escapeParameterHtml() {
+            return composer.escapeParameter;
+        },
+        set escapeParameterHtml(val) {
+            composer.escapeParameter = val;
+        },
+        // preserveDirectiveContent
+        get preserveDirectiveContent() {
+            ( true) &&
+                (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(getWarnMessage(9 /* NOT_SUPPORTED_PRESERVE_DIRECTIVE */));
+            return true;
+        },
+        set preserveDirectiveContent(val) {
+            ( true) &&
+                (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(getWarnMessage(9 /* NOT_SUPPORTED_PRESERVE_DIRECTIVE */));
+        },
+        // pluralizationRules
+        get pluralizationRules() {
+            return composer.pluralRules || {};
+        },
+        // for internal
+        __composer: composer,
+        // t
+        t(...args) {
+            const [arg1, arg2, arg3] = args;
+            const options = {};
+            let list = null;
+            let named = null;
+            if (!(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg1)) {
+                throw createI18nError(15 /* INVALID_ARGUMENT */);
+            }
+            const key = arg1;
+            if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg2)) {
+                options.locale = arg2;
+            }
+            else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(arg2)) {
+                list = arg2;
+            }
+            else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg2)) {
+                named = arg2;
+            }
+            if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(arg3)) {
+                list = arg3;
+            }
+            else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg3)) {
+                named = arg3;
+            }
+            return composer.t(key, list || named || {}, options);
+        },
+        rt(...args) {
+            return composer.rt(...args);
+        },
+        // tc
+        tc(...args) {
+            const [arg1, arg2, arg3] = args;
+            const options = { plural: 1 };
+            let list = null;
+            let named = null;
+            if (!(0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg1)) {
+                throw createI18nError(15 /* INVALID_ARGUMENT */);
+            }
+            const key = arg1;
+            if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg2)) {
+                options.locale = arg2;
+            }
+            else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(arg2)) {
+                options.plural = arg2;
+            }
+            else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(arg2)) {
+                list = arg2;
+            }
+            else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg2)) {
+                named = arg2;
+            }
+            if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(arg3)) {
+                options.locale = arg3;
+            }
+            else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(arg3)) {
+                list = arg3;
+            }
+            else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(arg3)) {
+                named = arg3;
+            }
+            return composer.t(key, list || named || {}, options);
+        },
+        // te
+        te(key, locale) {
+            return composer.te(key, locale);
+        },
+        // tm
+        tm(key) {
+            return composer.tm(key);
+        },
+        // getLocaleMessage
+        getLocaleMessage(locale) {
+            return composer.getLocaleMessage(locale);
+        },
+        // setLocaleMessage
+        setLocaleMessage(locale, message) {
+            composer.setLocaleMessage(locale, message);
+        },
+        // mergeLocaleMessage
+        mergeLocaleMessage(locale, message) {
+            composer.mergeLocaleMessage(locale, message);
+        },
+        // d
+        d(...args) {
+            return composer.d(...args);
+        },
+        // getDateTimeFormat
+        getDateTimeFormat(locale) {
+            return composer.getDateTimeFormat(locale);
+        },
+        // setDateTimeFormat
+        setDateTimeFormat(locale, format) {
+            composer.setDateTimeFormat(locale, format);
+        },
+        // mergeDateTimeFormat
+        mergeDateTimeFormat(locale, format) {
+            composer.mergeDateTimeFormat(locale, format);
+        },
+        // n
+        n(...args) {
+            return composer.n(...args);
+        },
+        // getNumberFormat
+        getNumberFormat(locale) {
+            return composer.getNumberFormat(locale);
+        },
+        // setNumberFormat
+        setNumberFormat(locale, format) {
+            composer.setNumberFormat(locale, format);
+        },
+        // mergeNumberFormat
+        mergeNumberFormat(locale, format) {
+            composer.mergeNumberFormat(locale, format);
+        },
+        // getChoiceIndex
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        getChoiceIndex(choice, choicesLength) {
+            ( true) &&
+                (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(getWarnMessage(10 /* NOT_SUPPORTED_GET_CHOICE_INDEX */));
+            return -1;
+        },
+        // for internal
+        __onComponentInstanceCreated(target) {
+            const { componentInstanceCreatedListener } = options;
+            if (componentInstanceCreatedListener) {
+                componentInstanceCreatedListener(target, vueI18n);
+            }
+        }
+    };
+    // for vue-devtools timeline event
+    if ((true)) {
+        vueI18n.__enableEmitter = (emitter) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const __composer = composer;
+            __composer[EnableEmitter] && __composer[EnableEmitter](emitter);
+        };
+        vueI18n.__disableEmitter = () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const __composer = composer;
+            __composer[DisableEmitter] && __composer[DisableEmitter]();
+        };
+    }
+    return vueI18n;
+}
+
+const baseFormatProps = {
+    tag: {
+        type: [String, Object]
+    },
+    locale: {
+        type: String
+    },
+    scope: {
+        type: String,
+        validator: (val) => val === 'parent' || val === 'global',
+        default: 'parent'
+    },
+    i18n: {
+        type: Object
+    }
+};
+
+/**
+ * Translation Component
+ *
+ * @remarks
+ * See the following items for property about details
+ *
+ * @VueI18nSee [TranslationProps](component#translationprops)
+ * @VueI18nSee [BaseFormatProps](component#baseformatprops)
+ * @VueI18nSee [Component Interpolation](../guide/advanced/component)
+ *
+ * @example
+ * ```html
+ * <div id="app">
+ *   <!-- ... -->
+ *   <i18n path="term" tag="label" for="tos">
+ *     <a :href="url" target="_blank">{{ $t('tos') }}</a>
+ *   </i18n>
+ *   <!-- ... -->
+ * </div>
+ * ```
+ * ```js
+ * import { createApp } from 'vue'
+ * import { createI18n } from 'vue-i18n'
+ *
+ * const messages = {
+ *   en: {
+ *     tos: 'Term of Service',
+ *     term: 'I accept xxx {0}.'
+ *   },
+ *   ja: {
+ *     tos: '利用規約',
+ *     term: '私は xxx の{0}に同意します。'
+ *   }
+ * }
+ *
+ * const i18n = createI18n({
+ *   locale: 'en',
+ *   messages
+ * })
+ *
+ * const app = createApp({
+ *   data: {
+ *     url: '/term'
+ *   }
+ * }).use(i18n).mount('#app')
+ * ```
+ *
+ * @VueI18nComponent
+ */
+const Translation = {
+    /* eslint-disable */
+    name: 'i18n-t',
+    props: (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({
+        keypath: {
+            type: String,
+            required: true
+        },
+        plural: {
+            type: [Number, String],
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            validator: (val) => (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(val) || !isNaN(val)
+        }
+    }, baseFormatProps),
+    /* eslint-enable */
+    setup(props, context) {
+        const { slots, attrs } = context;
+        const i18n = props.i18n ||
+            useI18n({
+                useScope: props.scope,
+                __useComponent: true
+            });
+        const keys = Object.keys(slots).filter(key => key !== '_');
+        return () => {
+            const options = {};
+            if (props.locale) {
+                options.locale = props.locale;
+            }
+            if (props.plural !== undefined) {
+                options.plural = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(props.plural) ? +props.plural : props.plural;
+            }
+            const arg = getInterpolateArg(context, keys);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const children = i18n[TransrateVNodeSymbol](props.keypath, arg, options);
+            const assignedAttrs = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({}, attrs);
+            // prettier-ignore
+            return (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(props.tag)
+                ? (0,vue__WEBPACK_IMPORTED_MODULE_2__.h)(props.tag, assignedAttrs, children)
+                : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(props.tag)
+                    ? (0,vue__WEBPACK_IMPORTED_MODULE_2__.h)(props.tag, assignedAttrs, children)
+                    : (0,vue__WEBPACK_IMPORTED_MODULE_2__.h)(vue__WEBPACK_IMPORTED_MODULE_2__.Fragment, assignedAttrs, children);
+        };
+    }
+};
+function getInterpolateArg({ slots }, keys) {
+    if (keys.length === 1 && keys[0] === 'default') {
+        // default slot only
+        return slots.default ? slots.default() : [];
+    }
+    else {
+        // named slots
+        return keys.reduce((arg, key) => {
+            const slot = slots[key];
+            if (slot) {
+                arg[key] = slot();
+            }
+            return arg;
+        }, {});
+    }
+}
+
+function renderFormatter(props, context, slotKeys, partFormatter) {
+    const { slots, attrs } = context;
+    return () => {
+        const options = { part: true };
+        let overrides = {};
+        if (props.locale) {
+            options.locale = props.locale;
+        }
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(props.format)) {
+            options.key = props.format;
+        }
+        else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(props.format)) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(props.format.key)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                options.key = props.format.key;
+            }
+            // Filter out number format options only
+            overrides = Object.keys(props.format).reduce((options, prop) => {
+                return slotKeys.includes(prop)
+                    ? (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({}, options, { [prop]: props.format[prop] }) // eslint-disable-line @typescript-eslint/no-explicit-any
+                    : options;
+            }, {});
+        }
+        const parts = partFormatter(...[props.value, options, overrides]);
+        let children = [options.key];
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(parts)) {
+            children = parts.map((part, index) => {
+                const slot = slots[part.type];
+                return slot
+                    ? slot({ [part.type]: part.value, index, parts })
+                    : [part.value];
+            });
+        }
+        else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(parts)) {
+            children = [parts];
+        }
+        const assignedAttrs = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({}, attrs);
+        // prettier-ignore
+        return (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(props.tag)
+            ? (0,vue__WEBPACK_IMPORTED_MODULE_2__.h)(props.tag, assignedAttrs, children)
+            : (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(props.tag)
+                ? (0,vue__WEBPACK_IMPORTED_MODULE_2__.h)(props.tag, assignedAttrs, children)
+                : (0,vue__WEBPACK_IMPORTED_MODULE_2__.h)(vue__WEBPACK_IMPORTED_MODULE_2__.Fragment, assignedAttrs, children);
+    };
+}
+
+const NUMBER_FORMAT_KEYS = [
+    'localeMatcher',
+    'style',
+    'unit',
+    'unitDisplay',
+    'currency',
+    'currencyDisplay',
+    'useGrouping',
+    'numberingSystem',
+    'minimumIntegerDigits',
+    'minimumFractionDigits',
+    'maximumFractionDigits',
+    'minimumSignificantDigits',
+    'maximumSignificantDigits',
+    'notation',
+    'formatMatcher'
+];
+/**
+ * Number Format Component
+ *
+ * @remarks
+ * See the following items for property about details
+ *
+ * @VueI18nSee [FormattableProps](component#formattableprops)
+ * @VueI18nSee [BaseFormatProps](component#baseformatprops)
+ * @VueI18nSee [Custom Formatting](../guide/essentials/number#custom-formatting)
+ *
+ * @VueI18nDanger
+ * Not supported IE, due to no support `Intl.NumberFormat#formatToParts` in [IE](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/formatToParts)
+ *
+ * If you want to use it, you need to use [polyfill](https://github.com/formatjs/formatjs/tree/main/packages/intl-numberformat)
+ *
+ * @VueI18nComponent
+ */
+const NumberFormat = {
+    /* eslint-disable */
+    name: 'i18n-n',
+    props: (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({
+        value: {
+            type: Number,
+            required: true
+        },
+        format: {
+            type: [String, Object]
+        }
+    }, baseFormatProps),
+    /* eslint-enable */
+    setup(props, context) {
+        const i18n = props.i18n ||
+            useI18n({ useScope: 'parent', __useComponent: true });
+        return renderFormatter(props, context, NUMBER_FORMAT_KEYS, (...args) => 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        i18n[NumberPartsSymbol](...args));
+    }
+};
+
+const DATETIME_FORMAT_KEYS = [
+    'dateStyle',
+    'timeStyle',
+    'fractionalSecondDigits',
+    'calendar',
+    'dayPeriod',
+    'numberingSystem',
+    'localeMatcher',
+    'timeZone',
+    'hour12',
+    'hourCycle',
+    'formatMatcher',
+    'weekday',
+    'era',
+    'year',
+    'month',
+    'day',
+    'hour',
+    'minute',
+    'second',
+    'timeZoneName'
+];
+/**
+ * Datetime Format Component
+ *
+ * @remarks
+ * See the following items for property about details
+ *
+ * @VueI18nSee [FormattableProps](component#formattableprops)
+ * @VueI18nSee [BaseFormatProps](component#baseformatprops)
+ * @VueI18nSee [Custom Formatting](../guide/essentials/datetime#custom-formatting)
+ *
+ * @VueI18nDanger
+ * Not supported IE, due to no support `Intl.DateTimeFormat#formatToParts` in [IE](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatToParts)
+ *
+ * If you want to use it, you need to use [polyfill](https://github.com/formatjs/formatjs/tree/main/packages/intl-datetimeformat)
+ *
+ * @VueI18nComponent
+ */
+const DatetimeFormat = {
+    /* eslint-disable */
+    name: 'i18n-d',
+    props: (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({
+        value: {
+            type: [Number, Date],
+            required: true
+        },
+        format: {
+            type: [String, Object]
+        }
+    }, baseFormatProps),
+    /* eslint-enable */
+    setup(props, context) {
+        const i18n = props.i18n ||
+            useI18n({ useScope: 'parent', __useComponent: true });
+        return renderFormatter(props, context, DATETIME_FORMAT_KEYS, (...args) => 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        i18n[DatetimePartsSymbol](...args));
+    }
+};
+
+function getComposer$2(i18n, instance) {
+    const i18nInternal = i18n;
+    if (i18n.mode === 'composition') {
+        return (i18nInternal.__getInstance(instance) || i18n.global);
+    }
+    else {
+        const vueI18n = i18nInternal.__getInstance(instance);
+        return vueI18n != null
+            ? vueI18n.__composer
+            : i18n.global.__composer;
+    }
+}
+function vTDirective(i18n) {
+    const bind = (el, { instance, value, modifiers }) => {
+        /* istanbul ignore if */
+        if (!instance || !instance.$) {
+            throw createI18nError(22 /* UNEXPECTED_ERROR */);
+        }
+        const composer = getComposer$2(i18n, instance.$);
+        if (( true) && modifiers.preserve) {
+            (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(getWarnMessage(7 /* NOT_SUPPORTED_PRESERVE */));
+        }
+        const parsedValue = parseValue(value);
+        el.textContent = composer.t(...makeParams(parsedValue));
+    };
+    return {
+        beforeMount: bind,
+        beforeUpdate: bind
+    };
+}
+function parseValue(value) {
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(value)) {
+        return { path: value };
+    }
+    else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(value)) {
+        if (!('path' in value)) {
+            throw createI18nError(19 /* REQUIRED_VALUE */, 'path');
+        }
+        return value;
+    }
+    else {
+        throw createI18nError(20 /* INVALID_VALUE */);
+    }
+}
+function makeParams(value) {
+    const { path, locale, args, choice, plural } = value;
+    const options = {};
+    const named = args || {};
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(locale)) {
+        options.locale = locale;
+    }
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(choice)) {
+        options.plural = choice;
+    }
+    if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isNumber)(plural)) {
+        options.plural = plural;
+    }
+    return [path, named, options];
+}
+
+function apply(app, i18n, ...options) {
+    const pluginOptions = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(options[0])
+        ? options[0]
+        : {};
+    const useI18nComponentName = !!pluginOptions.useI18nComponentName;
+    const globalInstall = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(pluginOptions.globalInstall)
+        ? pluginOptions.globalInstall
+        : true;
+    if (( true) && globalInstall && useI18nComponentName) {
+        (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(getWarnMessage(11 /* COMPONENT_NAME_LEGACY_COMPATIBLE */, {
+            name: Translation.name
+        }));
+    }
+    if (globalInstall) {
+        // install components
+        app.component(!useI18nComponentName ? Translation.name : 'i18n', Translation);
+        app.component(NumberFormat.name, NumberFormat);
+        app.component(DatetimeFormat.name, DatetimeFormat);
+    }
+    // install directive
+    app.directive('t', vTDirective(i18n));
+}
+
+const VUE_I18N_COMPONENT_TYPES = 'vue-i18n: composer properties';
+let devtoolsApi;
+async function enableDevTools(app, i18n) {
+    return new Promise((resolve, reject) => {
+        try {
+            (0,_vue_devtools_api__WEBPACK_IMPORTED_MODULE_3__.setupDevtoolsPlugin)({
+                id: "vue-devtools-plugin-vue-i18n" /* PLUGIN */,
+                label: _intlify_vue_devtools__WEBPACK_IMPORTED_MODULE_4__.VueDevToolsLabels["vue-devtools-plugin-vue-i18n"],
+                packageName: 'vue-i18n',
+                homepage: 'https://vue-i18n.intlify.dev',
+                logo: 'https://vue-i18n.intlify.dev/vue-i18n-devtools-logo.png',
+                componentStateTypes: [VUE_I18N_COMPONENT_TYPES],
+                app
+            }, api => {
+                devtoolsApi = api;
+                api.on.visitComponentTree(({ componentInstance, treeNode }) => {
+                    updateComponentTreeTags(componentInstance, treeNode, i18n);
+                });
+                api.on.inspectComponent(({ componentInstance, instanceData }) => {
+                    if (componentInstance.vnode.el.__VUE_I18N__ && instanceData) {
+                        if (i18n.mode === 'legacy') {
+                            // ignore global scope on legacy mode
+                            if (componentInstance.vnode.el.__VUE_I18N__ !==
+                                i18n.global.__composer) {
+                                inspectComposer(instanceData, componentInstance.vnode.el.__VUE_I18N__);
+                            }
+                        }
+                        else {
+                            inspectComposer(instanceData, componentInstance.vnode.el.__VUE_I18N__);
+                        }
+                    }
+                });
+                api.addInspector({
+                    id: "vue-i18n-resource-inspector" /* CUSTOM_INSPECTOR */,
+                    label: _intlify_vue_devtools__WEBPACK_IMPORTED_MODULE_4__.VueDevToolsLabels["vue-i18n-resource-inspector"],
+                    icon: 'language',
+                    treeFilterPlaceholder: _intlify_vue_devtools__WEBPACK_IMPORTED_MODULE_4__.VueDevToolsPlaceholders["vue-i18n-resource-inspector"]
+                });
+                api.on.getInspectorTree(payload => {
+                    if (payload.app === app &&
+                        payload.inspectorId === "vue-i18n-resource-inspector" /* CUSTOM_INSPECTOR */) {
+                        registerScope(payload, i18n);
+                    }
+                });
+                api.on.getInspectorState(payload => {
+                    if (payload.app === app &&
+                        payload.inspectorId === "vue-i18n-resource-inspector" /* CUSTOM_INSPECTOR */) {
+                        inspectScope(payload, i18n);
+                    }
+                });
+                api.on.editInspectorState(payload => {
+                    if (payload.app === app &&
+                        payload.inspectorId === "vue-i18n-resource-inspector" /* CUSTOM_INSPECTOR */) {
+                        editScope(payload, i18n);
+                    }
+                });
+                api.addTimelineLayer({
+                    id: "vue-i18n-timeline" /* TIMELINE */,
+                    label: _intlify_vue_devtools__WEBPACK_IMPORTED_MODULE_4__.VueDevToolsLabels["vue-i18n-timeline"],
+                    color: _intlify_vue_devtools__WEBPACK_IMPORTED_MODULE_4__.VueDevToolsTimelineColors["vue-i18n-timeline"]
+                });
+                resolve(true);
+            });
+        }
+        catch (e) {
+            console.error(e);
+            reject(false);
+        }
+    });
+}
+function updateComponentTreeTags(instance, // eslint-disable-line @typescript-eslint/no-explicit-any
+treeNode, i18n) {
+    // prettier-ignore
+    const global = i18n.mode === 'composition'
+        ? i18n.global
+        : i18n.global.__composer;
+    if (instance && instance.vnode.el.__VUE_I18N__) {
+        // add custom tags local scope only
+        if (instance.vnode.el.__VUE_I18N__ !== global) {
+            const label = instance.type.name || instance.type.displayName || instance.type.__file;
+            const tag = {
+                label: `i18n (${label} Scope)`,
+                textColor: 0x000000,
+                backgroundColor: 0xffcd19
+            };
+            treeNode.tags.push(tag);
+        }
+    }
+}
+function inspectComposer(instanceData, composer) {
+    const type = VUE_I18N_COMPONENT_TYPES;
+    instanceData.state.push({
+        type,
+        key: 'locale',
+        editable: true,
+        value: composer.locale.value
+    });
+    instanceData.state.push({
+        type,
+        key: 'availableLocales',
+        editable: false,
+        value: composer.availableLocales
+    });
+    instanceData.state.push({
+        type,
+        key: 'fallbackLocale',
+        editable: true,
+        value: composer.fallbackLocale.value
+    });
+    instanceData.state.push({
+        type,
+        key: 'inheritLocale',
+        editable: true,
+        value: composer.inheritLocale
+    });
+    instanceData.state.push({
+        type,
+        key: 'messages',
+        editable: false,
+        value: getLocaleMessageValue(composer.messages.value)
+    });
+    instanceData.state.push({
+        type,
+        key: 'datetimeFormats',
+        editable: false,
+        value: composer.datetimeFormats.value
+    });
+    instanceData.state.push({
+        type,
+        key: 'numberFormats',
+        editable: false,
+        value: composer.numberFormats.value
+    });
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getLocaleMessageValue(messages) {
+    const value = {};
+    Object.keys(messages).forEach((key) => {
+        const v = messages[key];
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isFunction)(v) && 'source' in v) {
+            value[key] = getMessageFunctionDetails(v);
+        }
+        else if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(v)) {
+            value[key] = getLocaleMessageValue(v);
+        }
+        else {
+            value[key] = v;
+        }
+    });
+    return value;
+}
+const ESC = {
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    '&': '&amp;'
+};
+function escape(s) {
+    return s.replace(/[<>"&]/g, escapeChar);
+}
+function escapeChar(a) {
+    return ESC[a] || a;
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getMessageFunctionDetails(func) {
+    const argString = func.source ? `("${escape(func.source)}")` : `(?)`;
+    return {
+        _custom: {
+            type: 'function',
+            display: `<span>ƒ</span> ${argString}`
+        }
+    };
+}
+function registerScope(payload, i18n) {
+    payload.rootNodes.push({
+        id: 'global',
+        label: 'Global Scope'
+    });
+    // prettier-ignore
+    const global = i18n.mode === 'composition'
+        ? i18n.global
+        : i18n.global.__composer;
+    for (const [keyInstance, instance] of i18n.__instances) {
+        // prettier-ignore
+        const composer = i18n.mode === 'composition'
+            ? instance
+            : instance.__composer;
+        if (global === composer) {
+            continue;
+        }
+        const label = keyInstance.type.name ||
+            keyInstance.type.displayName ||
+            keyInstance.type.__file;
+        payload.rootNodes.push({
+            id: composer.id.toString(),
+            label: `${label} Scope`
+        });
+    }
+}
+function getComposer$1(nodeId, i18n) {
+    if (nodeId === 'global') {
+        return i18n.mode === 'composition'
+            ? i18n.global
+            : i18n.global.__composer;
+    }
+    else {
+        const instance = Array.from(i18n.__instances.values()).find(item => item.id.toString() === nodeId);
+        if (instance) {
+            return i18n.mode === 'composition'
+                ? instance
+                : instance.__composer;
+        }
+        else {
+            return null;
+        }
+    }
+}
+function inspectScope(payload, i18n) {
+    const composer = getComposer$1(payload.nodeId, i18n);
+    if (composer) {
+        payload.state = makeScopeInspectState(composer);
+    }
+}
+function makeScopeInspectState(composer) {
+    const state = {};
+    const localeType = 'Locale related info';
+    const localeStates = [
+        {
+            type: localeType,
+            key: 'locale',
+            editable: true,
+            value: composer.locale.value
+        },
+        {
+            type: localeType,
+            key: 'fallbackLocale',
+            editable: true,
+            value: composer.fallbackLocale.value
+        },
+        {
+            type: localeType,
+            key: 'availableLocales',
+            editable: false,
+            value: composer.availableLocales
+        },
+        {
+            type: localeType,
+            key: 'inheritLocale',
+            editable: true,
+            value: composer.inheritLocale
+        }
+    ];
+    state[localeType] = localeStates;
+    const localeMessagesType = 'Locale messages info';
+    const localeMessagesStates = [
+        {
+            type: localeMessagesType,
+            key: 'messages',
+            editable: false,
+            value: getLocaleMessageValue(composer.messages.value)
+        }
+    ];
+    state[localeMessagesType] = localeMessagesStates;
+    const datetimeFormatsType = 'Datetime formats info';
+    const datetimeFormatsStates = [
+        {
+            type: datetimeFormatsType,
+            key: 'datetimeFormats',
+            editable: false,
+            value: composer.datetimeFormats.value
+        }
+    ];
+    state[datetimeFormatsType] = datetimeFormatsStates;
+    const numberFormatsType = 'Datetime formats info';
+    const numberFormatsStates = [
+        {
+            type: numberFormatsType,
+            key: 'numberFormats',
+            editable: false,
+            value: composer.numberFormats.value
+        }
+    ];
+    state[numberFormatsType] = numberFormatsStates;
+    return state;
+}
+function addTimelineEvent(event, payload) {
+    if (devtoolsApi) {
+        let groupId;
+        if (payload && 'groupId' in payload) {
+            groupId = payload.groupId;
+            delete payload.groupId;
+        }
+        devtoolsApi.addTimelineEvent({
+            layerId: "vue-i18n-timeline" /* TIMELINE */,
+            event: {
+                title: event,
+                groupId,
+                time: Date.now(),
+                meta: {},
+                data: payload || {},
+                logType: event === "compile-error" /* COMPILE_ERROR */
+                    ? 'error'
+                    : event === "fallback" /* FALBACK */ ||
+                        event === "missing" /* MISSING */
+                        ? 'warning'
+                        : 'default'
+            }
+        });
+    }
+}
+function editScope(payload, i18n) {
+    const composer = getComposer$1(payload.nodeId, i18n);
+    if (composer) {
+        const [field] = payload.path;
+        if (field === 'locale' && (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(payload.state.value)) {
+            composer.locale.value = payload.state.value;
+        }
+        else if (field === 'fallbackLocale' &&
+            ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isString)(payload.state.value) ||
+                (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(payload.state.value) ||
+                (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(payload.state.value))) {
+            composer.fallbackLocale.value = payload.state.value;
+        }
+        else if (field === 'inheritLocale' && (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isBoolean)(payload.state.value)) {
+            composer.inheritLocale = payload.state.value;
+        }
+    }
+}
+
+// supports compatibility for legacy vue-i18n APIs
+function defineMixin(vuei18n, composer, i18n) {
+    return {
+        beforeCreate() {
+            const instance = (0,vue__WEBPACK_IMPORTED_MODULE_2__.getCurrentInstance)();
+            /* istanbul ignore if */
+            if (!instance) {
+                throw createI18nError(22 /* UNEXPECTED_ERROR */);
+            }
+            const options = this.$options;
+            if (options.i18n) {
+                const optionsI18n = options.i18n;
+                if (options.__i18n) {
+                    optionsI18n.__i18n = options.__i18n;
+                }
+                optionsI18n.__root = composer;
+                if (this === this.$root) {
+                    this.$i18n = mergeToRoot(vuei18n, optionsI18n);
+                }
+                else {
+                    optionsI18n.__injectWithOption = true;
+                    this.$i18n = createVueI18n(optionsI18n);
+                }
+            }
+            else if (options.__i18n) {
+                if (this === this.$root) {
+                    this.$i18n = mergeToRoot(vuei18n, options);
+                }
+                else {
+                    this.$i18n = createVueI18n({
+                        __i18n: options.__i18n,
+                        __injectWithOption: true,
+                        __root: composer
+                    });
+                }
+            }
+            else {
+                // set global
+                this.$i18n = vuei18n;
+            }
+            vuei18n.__onComponentInstanceCreated(this.$i18n);
+            i18n.__setInstance(instance, this.$i18n);
+            // defines vue-i18n legacy APIs
+            this.$t = (...args) => this.$i18n.t(...args);
+            this.$rt = (...args) => this.$i18n.rt(...args);
+            this.$tc = (...args) => this.$i18n.tc(...args);
+            this.$te = (key, locale) => this.$i18n.te(key, locale);
+            this.$d = (...args) => this.$i18n.d(...args);
+            this.$n = (...args) => this.$i18n.n(...args);
+            this.$tm = (key) => this.$i18n.tm(key);
+        },
+        mounted() {
+            /* istanbul ignore if */
+            if (true) {
+                this.$el.__VUE_I18N__ = this.$i18n.__composer;
+                const emitter = (this.__v_emitter = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.createEmitter)());
+                const _vueI18n = this.$i18n;
+                _vueI18n.__enableEmitter && _vueI18n.__enableEmitter(emitter);
+                emitter.on('*', addTimelineEvent);
+            }
+        },
+        beforeUnmount() {
+            const instance = (0,vue__WEBPACK_IMPORTED_MODULE_2__.getCurrentInstance)();
+            /* istanbul ignore if */
+            if (!instance) {
+                throw createI18nError(22 /* UNEXPECTED_ERROR */);
+            }
+            /* istanbul ignore if */
+            if (true) {
+                if (this.__v_emitter) {
+                    this.__v_emitter.off('*', addTimelineEvent);
+                    delete this.__v_emitter;
+                }
+                const _vueI18n = this.$i18n;
+                _vueI18n.__disableEmitter && _vueI18n.__disableEmitter();
+                delete this.$el.__VUE_I18N__;
+            }
+            delete this.$t;
+            delete this.$rt;
+            delete this.$tc;
+            delete this.$te;
+            delete this.$d;
+            delete this.$n;
+            delete this.$tm;
+            i18n.__deleteInstance(instance);
+            delete this.$i18n;
+        }
+    };
+}
+function mergeToRoot(root, options) {
+    root.locale = options.locale || root.locale;
+    root.fallbackLocale = options.fallbackLocale || root.fallbackLocale;
+    root.missing = options.missing || root.missing;
+    root.silentTranslationWarn =
+        options.silentTranslationWarn || root.silentFallbackWarn;
+    root.silentFallbackWarn =
+        options.silentFallbackWarn || root.silentFallbackWarn;
+    root.formatFallbackMessages =
+        options.formatFallbackMessages || root.formatFallbackMessages;
+    root.postTranslation = options.postTranslation || root.postTranslation;
+    root.warnHtmlInMessage = options.warnHtmlInMessage || root.warnHtmlInMessage;
+    root.escapeParameterHtml =
+        options.escapeParameterHtml || root.escapeParameterHtml;
+    root.sync = options.sync || root.sync;
+    root.__composer[SetPluralRulesSymbol](options.pluralizationRules || root.pluralizationRules);
+    const messages = getLocaleMessages(root.locale, {
+        messages: options.messages,
+        __i18n: options.__i18n
+    });
+    Object.keys(messages).forEach(locale => root.mergeLocaleMessage(locale, messages[locale]));
+    if (options.datetimeFormats) {
+        Object.keys(options.datetimeFormats).forEach(locale => root.mergeDateTimeFormat(locale, options.datetimeFormats[locale]));
+    }
+    if (options.numberFormats) {
+        Object.keys(options.numberFormats).forEach(locale => root.mergeNumberFormat(locale, options.numberFormats[locale]));
+    }
+    return root;
+}
+
+/**
+ * Vue I18n factory
+ *
+ * @param options - An options, see the {@link I18nOptions}
+ *
+ * @returns {@link I18n} instance
+ *
+ * @remarks
+ * If you use Legacy API mode, you need toto specify {@link VueI18nOptions} and `legacy: true` option.
+ *
+ * If you use composition API mode, you need to specify {@link ComposerOptions}.
+ *
+ * @VueI18nSee [Getting Started](../guide/)
+ * @VueI18nSee [Composition API](../guide/advanced/composition)
+ *
+ * @example
+ * case: for Legacy API
+ * ```js
+ * import { createApp } from 'vue'
+ * import { createI18n } from 'vue-i18n'
+ *
+ * // call with I18n option
+ * const i18n = createI18n({
+ *   locale: 'ja',
+ *   messages: {
+ *     en: { ... },
+ *     ja: { ... }
+ *   }
+ * })
+ *
+ * const App = {
+ *   // ...
+ * }
+ *
+ * const app = createApp(App)
+ *
+ * // install!
+ * app.use(i18n)
+ * app.mount('#app')
+ * ```
+ *
+ * @example
+ * case: for composition API
+ * ```js
+ * import { createApp } from 'vue'
+ * import { createI18n, useI18n } from 'vue-i18n'
+ *
+ * // call with I18n option
+ * const i18n = createI18n({
+ *   legacy: false, // you must specify 'legacy: false' option
+ *   locale: 'ja',
+ *   messages: {
+ *     en: { ... },
+ *     ja: { ... }
+ *   }
+ * })
+ *
+ * const App = {
+ *   setup() {
+ *     // ...
+ *     const { t } = useI18n({ ... })
+ *     return { ... , t }
+ *   }
+ * }
+ *
+ * const app = createApp(App)
+ *
+ * // install!
+ * app.use(i18n)
+ * app.mount('#app')
+ * ```
+ *
+ * @VueI18nGeneral
+ */
+function createI18n(options = {}) {
+    // prettier-ignore
+    const __legacyMode =  false
+        ? 0
+        : false;
+    const __globalInjection = !!options.globalInjection;
+    const __instances = new Map();
+    // prettier-ignore
+    const __global =  false
+        ? 0
+        : createComposer(options);
+    const symbol = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.makeSymbol)(( true) ? 'vue-i18n' : 0);
+    const i18n = {
+        // mode
+        get mode() {
+            // prettier-ignore
+            return  false
+                ? 0
+                : 'composition';
+        },
+        // install plugin
+        async install(app, ...options) {
+            if (true) {
+                app.__VUE_I18N__ = i18n;
+            }
+            // setup global provider
+            app.__VUE_I18N_SYMBOL__ = symbol;
+            app.provide(app.__VUE_I18N_SYMBOL__, i18n);
+            // global method and properties injection for Composition API
+            if (!__legacyMode && __globalInjection) {
+                injectGlobalFields(app, i18n.global);
+            }
+            // install built-in components and directive
+            if (true) {
+                apply(app, i18n, ...options);
+            }
+            // setup mixin for Legacy API
+            if (false) {}
+            // setup vue-devtools plugin
+            if (true) {
+                const ret = await enableDevTools(app, i18n);
+                if (!ret) {
+                    throw createI18nError(21 /* CANNOT_SETUP_VUE_DEVTOOLS_PLUGIN */);
+                }
+                const emitter = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.createEmitter)();
+                if (__legacyMode) {
+                    const _vueI18n = __global;
+                    _vueI18n.__enableEmitter && _vueI18n.__enableEmitter(emitter);
+                }
+                else {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const _composer = __global;
+                    _composer[EnableEmitter] && _composer[EnableEmitter](emitter);
+                }
+                emitter.on('*', addTimelineEvent);
+            }
+        },
+        // global accessor
+        get global() {
+            return __global;
+        },
+        // @internal
+        __instances,
+        // @internal
+        __getInstance(component) {
+            return __instances.get(component) || null;
+        },
+        // @internal
+        __setInstance(component, instance) {
+            __instances.set(component, instance);
+        },
+        // @internal
+        __deleteInstance(component) {
+            __instances.delete(component);
+        }
+    };
+    return i18n;
+}
+/**
+ * Use Composition API for Vue I18n
+ *
+ * @param options - An options, see {@link UseI18nOptions}
+ *
+ * @returns {@link Composer} instance
+ *
+ * @remarks
+ * This function is mainly used by `setup`.
+ *
+ * If options are specified, Composer instance is created for each component and you can be localized on the component.
+ *
+ * If options are not specified, you can be localized using the global Composer.
+ *
+ * @example
+ * case: Component resource base localization
+ * ```html
+ * <template>
+ *   <form>
+ *     <label>{{ t('language') }}</label>
+ *     <select v-model="locale">
+ *       <option value="en">en</option>
+ *       <option value="ja">ja</option>
+ *     </select>
+ *   </form>
+ *   <p>message: {{ t('hello') }}</p>
+ * </template>
+ *
+ * <script>
+ * import { useI18n } from 'vue-i18n'
+ *
+ * export default {
+ *  setup() {
+ *    const { t, locale } = useI18n({
+ *      locale: 'ja',
+ *      messages: {
+ *        en: { ... },
+ *        ja: { ... }
+ *      }
+ *    })
+ *    // Something to do ...
+ *
+ *    return { ..., t, locale }
+ *  }
+ * }
+ * </script>
+ * ```
+ *
+ * @VueI18nComposition
+ */
+function useI18n(options = {}) {
+    const instance = (0,vue__WEBPACK_IMPORTED_MODULE_2__.getCurrentInstance)();
+    if (instance == null) {
+        throw createI18nError(16 /* MUST_BE_CALL_SETUP_TOP */);
+    }
+    if (!instance.appContext.app.__VUE_I18N_SYMBOL__) {
+        throw createI18nError(17 /* NOT_INSLALLED */);
+    }
+    const i18n = (0,vue__WEBPACK_IMPORTED_MODULE_2__.inject)(instance.appContext.app.__VUE_I18N_SYMBOL__);
+    /* istanbul ignore if */
+    if (!i18n) {
+        throw createI18nError(22 /* UNEXPECTED_ERROR */);
+    }
+    // prettier-ignore
+    const global = i18n.mode === 'composition'
+        ? i18n.global
+        : i18n.global.__composer;
+    // prettier-ignore
+    const scope = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isEmptyObject)(options)
+        ? ('__i18n' in instance.type)
+            ? 'local'
+            : 'global'
+        : !options.useScope
+            ? 'local'
+            : options.useScope;
+    if (scope === 'global') {
+        let messages = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(options.messages) ? options.messages : {};
+        if ('__i18nGlobal' in instance.type) {
+            messages = getLocaleMessages(global.locale.value, {
+                messages,
+                __i18n: instance.type.__i18nGlobal
+            });
+        }
+        // merge locale messages
+        const locales = Object.keys(messages);
+        if (locales.length) {
+            locales.forEach(locale => {
+                global.mergeLocaleMessage(locale, messages[locale]);
+            });
+        }
+        // merge datetime formats
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(options.datetimeFormats)) {
+            const locales = Object.keys(options.datetimeFormats);
+            if (locales.length) {
+                locales.forEach(locale => {
+                    global.mergeDateTimeFormat(locale, options.datetimeFormats[locale]);
+                });
+            }
+        }
+        // merge number formats
+        if ((0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.isObject)(options.numberFormats)) {
+            const locales = Object.keys(options.numberFormats);
+            if (locales.length) {
+                locales.forEach(locale => {
+                    global.mergeNumberFormat(locale, options.numberFormats[locale]);
+                });
+            }
+        }
+        return global;
+    }
+    if (scope === 'parent') {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let composer = getComposer(i18n, instance, options.__useComponent);
+        if (composer == null) {
+            if ((true)) {
+                (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.warn)(getWarnMessage(12 /* NOT_FOUND_PARENT_SCOPE */));
+            }
+            composer = global;
+        }
+        return composer;
+    }
+    // scope 'local' case
+    if (i18n.mode === 'legacy') {
+        throw createI18nError(18 /* NOT_AVAILABLE_IN_LEGACY_MODE */);
+    }
+    const i18nInternal = i18n;
+    let composer = i18nInternal.__getInstance(instance);
+    if (composer == null) {
+        const type = instance.type;
+        const composerOptions = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.assign)({}, options);
+        if (type.__i18n) {
+            composerOptions.__i18n = type.__i18n;
+        }
+        if (global) {
+            composerOptions.__root = global;
+        }
+        composer = createComposer(composerOptions);
+        setupLifeCycle(i18nInternal, instance, composer);
+        i18nInternal.__setInstance(instance, composer);
+    }
+    return composer;
+}
+function getComposer(i18n, target, useComponent = false) {
+    let composer = null;
+    const root = target.root;
+    let current = target.parent;
+    while (current != null) {
+        const i18nInternal = i18n;
+        if (i18n.mode === 'composition') {
+            composer = i18nInternal.__getInstance(current);
+        }
+        else {
+            const vueI18n = i18nInternal.__getInstance(current);
+            if (vueI18n != null) {
+                composer = vueI18n
+                    .__composer;
+            }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if (useComponent && composer && !composer[InejctWithOption]) {
+                composer = null;
+            }
+        }
+        if (composer != null) {
+            break;
+        }
+        if (root === current) {
+            break;
+        }
+        current = current.parent;
+    }
+    return composer;
+}
+function setupLifeCycle(i18n, target, composer) {
+    let emitter = null;
+    (0,vue__WEBPACK_IMPORTED_MODULE_2__.onMounted)(() => {
+        // inject composer instance to DOM for intlify-devtools
+        if ( true &&
+            target.vnode.el) {
+            target.vnode.el.__VUE_I18N__ = composer;
+            emitter = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.createEmitter)();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const _composer = composer;
+            _composer[EnableEmitter] && _composer[EnableEmitter](emitter);
+            emitter.on('*', addTimelineEvent);
+        }
+    }, target);
+    (0,vue__WEBPACK_IMPORTED_MODULE_2__.onUnmounted)(() => {
+        // remove composer instance from DOM for intlify-devtools
+        if ( true &&
+            target.vnode.el &&
+            target.vnode.el.__VUE_I18N__) {
+            emitter && emitter.off('*', addTimelineEvent);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const _composer = composer;
+            _composer[DisableEmitter] && _composer[DisableEmitter]();
+            delete target.vnode.el.__VUE_I18N__;
+        }
+        i18n.__deleteInstance(target);
+    }, target);
+}
+const globalExportProps = [
+    'locale',
+    'fallbackLocale',
+    'availableLocales'
+];
+const globalExportMethods = ['t', 'rt', 'd', 'n', 'tm'];
+function injectGlobalFields(app, composer) {
+    const i18n = Object.create(null);
+    globalExportProps.forEach(prop => {
+        const desc = Object.getOwnPropertyDescriptor(composer, prop);
+        if (!desc) {
+            throw createI18nError(22 /* UNEXPECTED_ERROR */);
+        }
+        const wrap = (0,vue__WEBPACK_IMPORTED_MODULE_2__.isRef)(desc.value) // check computed props
+            ? {
+                get() {
+                    return desc.value.value;
+                },
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                set(val) {
+                    desc.value.value = val;
+                }
+            }
+            : {
+                get() {
+                    return desc.get && desc.get();
+                }
+            };
+        Object.defineProperty(i18n, prop, wrap);
+    });
+    app.config.globalProperties.$i18n = i18n;
+    globalExportMethods.forEach(method => {
+        const desc = Object.getOwnPropertyDescriptor(composer, method);
+        if (!desc || !desc.value) {
+            throw createI18nError(22 /* UNEXPECTED_ERROR */);
+        }
+        Object.defineProperty(app.config.globalProperties, `$${method}`, desc);
+    });
+}
+
+// register message compiler at vue-i18n
+(0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.registerMessageCompiler)(_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.compileToFunction);
+{
+    initFeatureFlags();
+}
+// NOTE: experimental !!
+if (true) {
+    const target = (0,_intlify_shared__WEBPACK_IMPORTED_MODULE_0__.getGlobalThis)();
+    target.__INTLIFY__ = true;
+    (0,_intlify_core_base__WEBPACK_IMPORTED_MODULE_1__.setDevToolsHook)(target.__INTLIFY_DEVTOOLS_GLOBAL_HOOK__);
+}
+if ((true)) ;
+
+
+
 
 /***/ }),
 
@@ -25243,6 +31097,14 @@ function compileToFunction(template, options) {
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 var map = {
+	"./Dashboard": [
+		"./resources/js/Pages/Dashboard.vue",
+		"resources_js_Pages_Dashboard_vue"
+	],
+	"./Dashboard.vue": [
+		"./resources/js/Pages/Dashboard.vue",
+		"resources_js_Pages_Dashboard_vue"
+	],
 	"./DearSanta": [
 		"./resources/js/Pages/DearSanta.vue",
 		"resources_js_Pages_DearSanta_vue"
@@ -25282,6 +31144,14 @@ var map = {
 	"./Layout.vue": [
 		"./resources/js/Pages/Layout.vue",
 		"resources_js_Pages_Layout_vue"
+	],
+	"./Legal": [
+		"./resources/js/Pages/Legal.vue",
+		"resources_js_Pages_Legal_vue"
+	],
+	"./Legal.vue": [
+		"./resources/js/Pages/Legal.vue",
+		"resources_js_Pages_Legal_vue"
 	],
 	"./OrganizerPanel": [
 		"./resources/js/Pages/OrganizerPanel.vue",
@@ -25466,7 +31336,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = function(chunkId) {
 /******/ 			// return url for filenames based on template
-/******/ 			return "js/" + chunkId + ".js?id=" + {"resources_js_Pages_DearSanta_vue":"648a8f2292707d50","resources_js_Pages_DrawNotFound_vue":"86f382505ea9691e","resources_js_Pages_FetcherLayout_vue":"36106b335ca329f0","resources_js_Pages_FrequentlyAskedQuestions_vue":"47e1390353c3a4e9","resources_js_Pages_Layout_vue":"429d61601b1ea241","resources_js_Pages_OrganizerPanel_vue":"b0b03c7e2b17406f","resources_js_Pages_PageNotFound_vue":"85f5b053ca803aea","resources_js_Pages_PendingDraw_vue":"b023b4e3e5ea6b5e","resources_js_Pages_RandomForm_vue":"e93b0bad5fa5f8cc"}[chunkId] + "";
+/******/ 			return "js/" + chunkId + ".js?id=" + {"resources_js_Pages_Dashboard_vue":"1186ffe95e3da65b","resources_js_Pages_DearSanta_vue":"6e6f070b96c3de9a","resources_js_Pages_DrawNotFound_vue":"86f382505ea9691e","resources_js_Pages_FetcherLayout_vue":"bbc7271688c9dff6","resources_js_Pages_FrequentlyAskedQuestions_vue":"47e1390353c3a4e9","resources_js_Pages_Layout_vue":"429d61601b1ea241","resources_js_Pages_Legal_vue":"14f745684b0bf20a","resources_js_Pages_OrganizerPanel_vue":"e2343874e4a3afaa","resources_js_Pages_PageNotFound_vue":"85f5b053ca803aea","resources_js_Pages_PendingDraw_vue":"c943a3d14e5e06c1","resources_js_Pages_RandomForm_vue":"0b4e0e5e279b54da"}[chunkId] + "";
 /******/ 		};
 /******/ 	}();
 /******/ 	
@@ -25660,7 +31530,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
 /******/ 					installedChunks[chunkId][0]();
 /******/ 				}
-/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 				installedChunks[chunkId] = 0;
 /******/ 			}
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}

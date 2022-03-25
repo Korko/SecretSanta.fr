@@ -18,9 +18,6 @@ createInertiaApp({
     },
 });
 
-//import VuejsDialog from 'vuejs-dialog';
-//app.use(VueJsDialog);
-
 Array.prototype.remove = function() {
     var what, a = arguments, L = a.length, ax;
     while (L && this.length) {

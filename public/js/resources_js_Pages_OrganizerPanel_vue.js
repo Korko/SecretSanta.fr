@@ -27,7 +27,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_demi__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-demi */ "./node_modules/@vuelidate/core/node_modules/vue-demi/lib/index.mjs");
 
 
-function unwrapObj(obj, ignoreKeys = []) {
+function unwrapObj(obj) {
+  let ignoreKeys = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   return Object.keys(obj).reduce((o, k) => {
     if (ignoreKeys.includes(k)) return o;
     o[k] = (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.unref)(obj[k]);
@@ -88,16 +89,22 @@ function normalizeValidatorResponse(result) {
  */
 
 
-function createAsyncResult(rule, model, $pending, $dirty, {
-  $lazy,
-  $rewardEarly
-}, $response, instance, watchTargets = [], siblingState, $lastInvalidState, $lastCommittedOn) {
+function createAsyncResult(rule, model, $pending, $dirty, _ref, $response, instance) {
+  let {
+    $lazy,
+    $rewardEarly
+  } = _ref;
+  let watchTargets = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : [];
+  let siblingState = arguments.length > 8 ? arguments[8] : undefined;
+  let $lastInvalidState = arguments.length > 9 ? arguments[9] : undefined;
+  let $lastCommittedOn = arguments.length > 10 ? arguments[10] : undefined;
   const $invalid = (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.ref)(!!$dirty.value);
   const $pendingCounter = (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.ref)(0);
   $pending.value = false;
   const $unwatch = (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.watch)([model, $dirty].concat(watchTargets, $lastCommittedOn), () => {
     if ( // if $lazy and not dirty, return
-    $lazy && !$dirty.value || $rewardEarly && !$lastInvalidState.value && !$pending.value) {
+    $lazy && !$dirty.value || // if in $rewardEarly mode and no previous errors, nothing pending, return
+    $rewardEarly && !$lastInvalidState.value && !$pending.value) {
       return;
     }
 
@@ -149,15 +156,19 @@ function createAsyncResult(rule, model, $pending, $dirty, {
  */
 
 
-function createSyncResult(rule, model, $dirty, {
-  $lazy,
-  $rewardEarly
-}, $response, instance, siblingState, $lastInvalidState) {
+function createSyncResult(rule, model, $dirty, _ref2, $response, instance, siblingState, $lastInvalidState) {
+  let {
+    $lazy,
+    $rewardEarly
+  } = _ref2;
+
   const $unwatch = () => ({});
 
   const $invalid = (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.computed)(() => {
     if ( // return early if $lazy mode and not touched
-    $lazy && !$dirty.value || $rewardEarly && !$lastInvalidState.value) {
+    $lazy && !$dirty.value || // If $rewardEarly mode is ON and last invalid was false (no error), return it.
+    // If we want to invalidate, we just flip the last state to true, causing the computed to run again
+    $rewardEarly && !$lastInvalidState.value) {
       return false;
     }
 
@@ -243,7 +254,8 @@ function createValidatorResult(rule, model, $dirty, config, instance, validatorN
  * @return {{ rules: Object<NormalizedValidator>, nestedValidators: Object, config: GlobalConfig }}
  */
 
-function sortValidations(validationsRaw = {}) {
+function sortValidations() {
+  let validationsRaw = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   const validations = (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.unref)(validationsRaw);
   const validationKeys = Object.keys(validations);
   const rules = {};
@@ -656,17 +668,7 @@ function createMetaFields(results, nestedResults, childResults) {
  */
 
 
-function setValidations({
-  validations,
-  state,
-  key,
-  parentKey,
-  childResults,
-  resultsCache,
-  globalConfig = {},
-  instance,
-  externalResults
-}) {
+function setValidations(_ref) {
   /**
    * Executes the validators and returns the result.
    * @return {Promise<boolean>}
@@ -700,6 +702,17 @@ function setValidations({
    */
 
 
+  let {
+    validations,
+    state,
+    key,
+    parentKey,
+    childResults,
+    resultsCache,
+    globalConfig = {},
+    instance,
+    externalResults
+  } = _ref;
   const path = parentKey ? `${parentKey}.${key}` : key; // Sort out the validation object into:
   // – rules = validators for current state tree fragment
   // — nestedValidators = nested state fragments keys that might contain more validators
@@ -904,10 +917,11 @@ const VuelidateRemoveChildResults = Symbol('vuelidate#removeChiildResults');
  * @return {{sendValidationResultsToParent: function[], childResults: ComputedRef<Object>, removeValidationResultsFromParent: function[]}}
  */
 
-function nestedValidations({
-  $scope,
-  instance
-}) {
+function nestedValidations(_ref) {
+  let {
+    $scope,
+    instance
+  } = _ref;
   const childResultsRaw = {};
   const childResultsKeys = (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
   const childResults = (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.computed)(() => childResultsKeys.value.reduce((results, key) => {
@@ -922,11 +936,12 @@ function nestedValidations({
    * @param {String | Number | Boolean} args.$scope - the $scope key
    */
 
-  function injectChildResultsIntoParent(results, {
-    $registerAs: key,
-    $scope: childScope,
-    $stopPropagation
-  }) {
+  function injectChildResultsIntoParent(results, _ref2) {
+    let {
+      $registerAs: key,
+      $scope: childScope,
+      $stopPropagation
+    } = _ref2;
     if ($stopPropagation || $scope === CollectFlag.COLLECT_NONE || childScope === CollectFlag.COLLECT_NONE || $scope !== CollectFlag.COLLECT_ALL && $scope !== childScope) return;
     childResultsRaw[key] = results;
     childResultsKeys.value.push(key);
@@ -998,7 +1013,9 @@ function ComputedProxyFactory(target) {
  * @return {ComputedRef<*>}
  */
 
-function useVuelidate(validations, state, globalConfig = {}) {
+function useVuelidate(validations, state) {
+  let globalConfig = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
   // if we pass only one argument, its most probably the globalConfig.
   // This use case is so parents can just collect results of child forms.
   if (arguments.length === 1) {
@@ -1011,9 +1028,10 @@ function useVuelidate(validations, state, globalConfig = {}) {
     $registerAs,
     $scope = CollectFlag.COLLECT_ALL,
     $stopPropagation,
-    $externalResults
+    $externalResults,
+    currentVueInstance
   } = globalConfig;
-  const instance = (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.getCurrentInstance)();
+  const instance = currentVueInstance || (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.getCurrentInstance)();
   const componentOptions = instance ? vue_demi__WEBPACK_IMPORTED_MODULE_0__.isVue3 ? instance.type : instance.proxy.$options : {}; // if there is no registration name, add one.
 
   if (!$registerAs && instance) {
@@ -1226,7 +1244,8 @@ function withMessage($message, $validator) {
  * @return {{$async: boolean, $validator: asyncValidator, $watchTargets: watchTargets}}
  */
 
-function withAsync($validator, $watchTargets = []) {
+function withAsync($validator) {
+  let $watchTargets = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   const validatorObj = normalizeValidatorObject($validator);
   return Object.assign({}, validatorObj, {
     $async: true,
@@ -1236,15 +1255,21 @@ function withAsync($validator, $watchTargets = []) {
 
 function forEach(validators) {
   return {
-    $validator(collection, ...others) {
+    $validator(collection) {
+      for (var _len = arguments.length, others = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        others[_key - 1] = arguments[_key];
+      }
+
       // go over the collection. It can be a ref as well.
       return (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.unref)(collection).reduce((previous, collectionItem) => {
         // go over each property
-        const collectionEntryResult = Object.entries(collectionItem).reduce((all, [property, $model]) => {
+        const collectionEntryResult = Object.entries(collectionItem).reduce((all, _ref) => {
+          let [property, $model] = _ref;
           // get the validators for this property
           const innerValidators = validators[property] || {}; // go over each validator and run it
 
-          const propertyResult = Object.entries(innerValidators).reduce((all, [validatorName, currentValidator]) => {
+          const propertyResult = Object.entries(innerValidators).reduce((all, _ref2) => {
+            let [validatorName, currentValidator] = _ref2;
             // extract the validator. Supports simple and extended validators.
             const validatorFunction = unwrapNormalizedValidator(currentValidator); // Call the validator, passing the VM as this, the value, current iterated object and the rest.
 
@@ -1317,11 +1342,14 @@ function forEach(validators) {
     },
 
     // collect all the validation errors into a 2 dimensional array, for each entry in the collection, you have an array of error messages.
-    $message: ({
-      $response
-    }) => $response ? $response.$errors.map(context => {
-      return Object.values(context).map(errors => errors.map(error => error.$message)).reduce((a, b) => a.concat(b), []);
-    }) : []
+    $message: _ref3 => {
+      let {
+        $response
+      } = _ref3;
+      return $response ? $response.$errors.map(context => {
+        return Object.values(context).map(errors => errors.map(error => error.$message)).reduce((a, b) => a.concat(b), []);
+      }) : [];
+    }
   };
 }
 
@@ -1373,10 +1401,14 @@ const len = value => {
  * @return {function(*=): boolean}
  */
 
-function regex(expr) {
+function regex() {
+  for (var _len = arguments.length, expr = new Array(_len), _key = 0; _key < _len; _key++) {
+    expr[_key] = arguments[_key];
+  }
+
   return value => {
     value = (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.unref)(value);
-    return !req(value) || expr.test(value);
+    return !req(value) || expr.every(reg => reg.test(value));
   };
 }
 
@@ -1461,9 +1493,12 @@ function between$1 (min, max) {
 function between (min, max) {
   return {
     $validator: between$1(min, max),
-    $message: ({
-      $params
-    }) => `The value must be between ${$params.min} and ${$params.max}`,
+    $message: _ref => {
+      let {
+        $params
+      } = _ref;
+      return `The value must be between ${$params.min} and ${$params.max}`;
+    },
     $params: {
       min,
       max,
@@ -1543,7 +1578,8 @@ var ipAddress = {
  * @returns {function(*): boolean}
  */
 
-function macAddress$1 (separator = ':') {
+function macAddress$1 () {
+  let separator = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ':';
   return value => {
     separator = (0,vue_demi__WEBPACK_IMPORTED_MODULE_0__.unref)(separator);
 
@@ -1596,9 +1632,12 @@ function maxLength$1 (length) {
 function maxLength (max) {
   return {
     $validator: maxLength$1(max),
-    $message: ({
-      $params
-    }) => `The maximum length allowed is ${$params.max}`,
+    $message: _ref => {
+      let {
+        $params
+      } = _ref;
+      return `The maximum length allowed is ${$params.max}`;
+    },
     $params: {
       max,
       type: 'maxLength'
@@ -1625,9 +1664,12 @@ function minLength$1 (length) {
 function minLength (min) {
   return {
     $validator: minLength$1(min),
-    $message: ({
-      $params
-    }) => `This field should be at least ${$params.min} long`,
+    $message: _ref => {
+      let {
+        $params
+      } = _ref;
+      return `This field should be at least ${$params.min} long`;
+    },
     $params: {
       min,
       type: 'minLength'
@@ -1662,7 +1704,7 @@ var required = {
   }
 };
 
-const validate$1 = (prop, val) => prop ? req(val) : true;
+const validate$1 = (prop, val) => prop ? req(typeof val === 'string' ? val.trim() : val) : true;
 /**
  * Returns required if the passed property is truthy
  * @param {Boolean | String | function(any): Boolean | Ref<string | boolean>} propOrFunction
@@ -1698,7 +1740,7 @@ function requiredIf (prop) {
   };
 }
 
-const validate = (prop, val) => !prop ? req(val) : true;
+const validate = (prop, val) => !prop ? req(typeof val === 'string' ? val.trim() : val) : true;
 /**
  * Returns required if the passed property is falsy.
  * @param {Boolean | String | function(any): Boolean | Ref<string | boolean>} propOrFunction
@@ -1751,12 +1793,13 @@ function sameAs$1 (equalTo) {
  * @return {NormalizedValidator}
  */
 
-function sameAs (equalTo, otherName = 'other') {
+function sameAs (equalTo) {
+  let otherName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'other';
   return {
     $validator: sameAs$1(equalTo),
-    $message: ({
-      $params
-    }) => `The value must be equal to the ${otherName} value`,
+    $message: _ref => {
+      return `The value must be equal to the ${otherName} value`;
+    },
     $params: {
       equalTo,
       otherName,
@@ -1798,7 +1841,11 @@ function _await$1(value, then, direct) {
 }
 
 function syncOr(validators) {
-  return function (...args) {
+  return function () {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
     return validators.reduce((valid, fn) => {
       if (unwrapValidatorResponse(valid)) return valid;
       return unwrapNormalizedValidator(fn).apply(this, args);
@@ -1807,8 +1854,12 @@ function syncOr(validators) {
 }
 
 function asyncOr(validators) {
-  return function (...args) {
+  return function () {
     const _this = this;
+
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
 
     return validators.reduce(function (valid, fn) {
       return _await$1(valid, function (r) {
@@ -1824,7 +1875,11 @@ function asyncOr(validators) {
  */
 
 
-function or$1(...validators) {
+function or$1() {
+  for (var _len3 = arguments.length, validators = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+    validators[_key3] = arguments[_key3];
+  }
+
   const $async = validators.some(v => v.$async);
   const $watchTargets = validators.reduce((all, v) => {
     if (!v.$watchTargets) return all;
@@ -1847,10 +1902,10 @@ function or$1(...validators) {
  * @return {NormalizedValidator}
  */
 
-function or (...validators) {
+function or () {
   return withParams({
     type: 'or'
-  }, withMessage('The value does not match any of the provided validators', or$1(...validators)));
+  }, withMessage('The value does not match any of the provided validators', or$1(...arguments)));
 }
 
 function _await(value, then, direct) {
@@ -1872,7 +1927,11 @@ function _await(value, then, direct) {
 
 
 function syncAnd(validators) {
-  return function (...args) {
+  return function () {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
     return validators.reduce((valid, fn) => {
       if (!unwrapValidatorResponse(valid)) return valid;
       return unwrapNormalizedValidator(fn).apply(this, args);
@@ -1881,8 +1940,12 @@ function syncAnd(validators) {
 }
 
 function asyncAnd(validators) {
-  return function (...args) {
+  return function () {
     const _this = this;
+
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
 
     return validators.reduce(function (valid, fn) {
       return _await(valid, function (r) {
@@ -1898,7 +1961,11 @@ function asyncAnd(validators) {
  */
 
 
-function and$1(...validators) {
+function and$1() {
+  for (var _len3 = arguments.length, validators = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+    validators[_key3] = arguments[_key3];
+  }
+
   const $async = validators.some(v => v.$async);
   const $watchTargets = validators.reduce((all, v) => {
     if (!v.$watchTargets) return all;
@@ -1921,10 +1988,10 @@ function and$1(...validators) {
  * @returns {NormalizedValidator}
  */
 
-function and (...validators) {
+function and () {
   return withParams({
     type: 'and'
-  }, withMessage('The value does not match all of the provided validators', and$1(...validators)));
+  }, withMessage('The value does not match all of the provided validators', and$1(...arguments)));
 }
 
 /**
@@ -1977,9 +2044,12 @@ function minValue$1 (min) {
 function minValue (min) {
   return {
     $validator: minValue$1(min),
-    $message: ({
-      $params
-    }) => `The minimum value allowed is ${$params.min}`,
+    $message: _ref => {
+      let {
+        $params
+      } = _ref;
+      return `The minimum value allowed is ${$params.min}`;
+    },
     $params: {
       min,
       type: 'minValue'
@@ -2005,9 +2075,12 @@ function maxValue$1 (max) {
 
 var maxValue = (max => ({
   $validator: maxValue$1(max),
-  $message: ({
-    $params
-  }) => `The maximum value is ${$params.max}`,
+  $message: _ref => {
+    let {
+      $params
+    } = _ref;
+    return `The maximum value is ${$params.max}`;
+  },
   $params: {
     max,
     type: 'maxValue'
@@ -2053,18 +2126,24 @@ var decimal = {
  * @param {function} [messageParams] - a function to augment the params, passed to `t` for each message.
  */
 
-function createI18nMessage({
-  t,
-  messagePath = ({
-    $validator
-  }) => `validations.${$validator}`,
-  messageParams = params => params
-}) {
-  return function withI18nMessage(validator, {
-    withArguments = false,
-    messagePath: localMessagePath = messagePath,
-    messageParams: localMessageParams = messageParams
-  } = {}) {
+function createI18nMessage(_ref) {
+  let {
+    t,
+    messagePath = _ref2 => {
+      let {
+        $validator
+      } = _ref2;
+      return `validations.${$validator}`;
+    },
+    messageParams = params => params
+  } = _ref;
+  return function withI18nMessage(validator) {
+    let {
+      withArguments = false,
+      messagePath: localMessagePath = messagePath,
+      messageParams: localMessageParams = messageParams
+    } = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     function message(props) {
       return t(localMessagePath(props), localMessageParams(Object.assign({
         model: props.$model,
@@ -2078,7 +2157,9 @@ function createI18nMessage({
     }
 
     if (withArguments && typeof validator === 'function') {
-      return (...args) => withMessage(message, validator(...args));
+      return function () {
+        return withMessage(message, validator(...arguments));
+      };
     }
 
     return withMessage(message, validator);
@@ -4044,9 +4125,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": function() { return /* export default binding */ __WEBPACK_DEFAULT_EXPORT__; }
 /* harmony export */ });
 /* harmony import */ var _helpers_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers.js */ "./resources/js/helpers.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -4121,16 +4202,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "deepMerge": function() { return /* binding */ deepMerge; },
 /* harmony export */   "download": function() { return /* binding */ download; },
-/* harmony export */   "isString": function() { return /* binding */ isString; },
-/* harmony export */   "isObject": function() { return /* binding */ isObject; },
+/* harmony export */   "get": function() { return /* binding */ get; },
+/* harmony export */   "has": function() { return /* binding */ has; },
 /* harmony export */   "isArray": function() { return /* binding */ isArray; },
 /* harmony export */   "isBoolean": function() { return /* binding */ isBoolean; },
-/* harmony export */   "has": function() { return /* binding */ has; },
-/* harmony export */   "get": function() { return /* binding */ get; },
+/* harmony export */   "isObject": function() { return /* binding */ isObject; },
+/* harmony export */   "isString": function() { return /* binding */ isString; },
 /* harmony export */   "px": function() { return /* binding */ px; },
-/* harmony export */   "translate": function() { return /* binding */ translate; },
-/* harmony export */   "deepMerge": function() { return /* binding */ deepMerge; }
+/* harmony export */   "translate": function() { return /* binding */ translate; }
 /* harmony export */ });
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
@@ -15269,6 +15350,9 @@ return jQuery;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ Echo; }
+/* harmony export */ });
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -15289,6 +15373,9 @@ function _defineProperties(target, props) {
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
+  Object.defineProperty(Constructor, "prototype", {
+    writable: false
+  });
   return Constructor;
 }
 
@@ -15322,6 +15409,9 @@ function _inherits(subClass, superClass) {
       configurable: true
     }
   });
+  Object.defineProperty(subClass, "prototype", {
+    writable: false
+  });
   if (superClass) _setPrototypeOf(subClass, superClass);
 }
 
@@ -15347,7 +15437,7 @@ function _isNativeReflectConstruct() {
   if (typeof Proxy === "function") return true;
 
   try {
-    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
     return true;
   } catch (e) {
     return false;
@@ -15365,6 +15455,8 @@ function _assertThisInitialized(self) {
 function _possibleConstructorReturn(self, call) {
   if (call && (typeof call === "object" || typeof call === "function")) {
     return call;
+  } else if (call !== void 0) {
+    throw new TypeError("Derived constructors may only return object or undefined");
   }
 
   return _assertThisInitialized(self);
@@ -15373,7 +15465,7 @@ function _possibleConstructorReturn(self, call) {
 function _createSuper(Derived) {
   var hasNativeReflectConstruct = _isNativeReflectConstruct();
 
-  return function () {
+  return function _createSuperInternal() {
     var Super = _getPrototypeOf(Derived),
         result;
 
@@ -15463,11 +15555,11 @@ var Channel = /*#__PURE__*/function () {
 
   _createClass(Channel, [{
     key: "listenForWhisper",
-
+    value:
     /**
      * Listen for a whisper event on the channel instance.
      */
-    value: function listenForWhisper(event, callback) {
+    function listenForWhisper(event, callback) {
       return this.listen('.client-' + event, callback);
     }
     /**
@@ -15698,11 +15790,11 @@ var PusherPrivateChannel = /*#__PURE__*/function (_PusherChannel) {
 
   _createClass(PusherPrivateChannel, [{
     key: "whisper",
-
+    value:
     /**
      * Trigger client event on the channel.
      */
-    value: function whisper(eventName, data) {
+    function whisper(eventName, data) {
       this.pusher.channels.channels[this.name].trigger("client-".concat(eventName), data);
       return this;
     }
@@ -15728,11 +15820,11 @@ var PusherEncryptedPrivateChannel = /*#__PURE__*/function (_PusherChannel) {
 
   _createClass(PusherEncryptedPrivateChannel, [{
     key: "whisper",
-
+    value:
     /**
      * Trigger client event on the channel.
      */
-    value: function whisper(eventName, data) {
+    function whisper(eventName, data) {
       this.pusher.channels.channels[this.name].trigger("client-".concat(eventName), data);
       return this;
     }
@@ -15758,11 +15850,11 @@ var PusherPresenceChannel = /*#__PURE__*/function (_PusherChannel) {
 
   _createClass(PusherPresenceChannel, [{
     key: "here",
-
+    value:
     /**
      * Register a callback to be called anytime the member list changes.
      */
-    value: function here(callback) {
+    function here(callback) {
       this.on('pusher:subscription_succeeded', function (data) {
         callback(Object.keys(data.members).map(function (k) {
           return data.members[k];
@@ -15998,11 +16090,11 @@ var SocketIoPrivateChannel = /*#__PURE__*/function (_SocketIoChannel) {
 
   _createClass(SocketIoPrivateChannel, [{
     key: "whisper",
-
+    value:
     /**
      * Trigger client event on the channel.
      */
-    value: function whisper(eventName, data) {
+    function whisper(eventName, data) {
       this.socket.emit('client event', {
         channel: this.name,
         event: "client-".concat(eventName),
@@ -16032,11 +16124,11 @@ var SocketIoPresenceChannel = /*#__PURE__*/function (_SocketIoPrivateChann) {
 
   _createClass(SocketIoPresenceChannel, [{
     key: "here",
-
+    value:
     /**
      * Register a callback to be called anytime the member list changes.
      */
-    value: function here(callback) {
+    function here(callback) {
       this.on('presence:subscribed', function (members) {
         callback(members.map(function (m) {
           return m.user_info;
@@ -16090,20 +16182,20 @@ var NullChannel = /*#__PURE__*/function (_Channel) {
 
   _createClass(NullChannel, [{
     key: "subscribe",
-
+    value:
     /**
      * Subscribe to a channel.
      */
-    value: function subscribe() {} //
-
+    function subscribe() {//
+    }
     /**
      * Unsubscribe from a channel.
      */
 
   }, {
     key: "unsubscribe",
-    value: function unsubscribe() {} //
-
+    value: function unsubscribe() {//
+    }
     /**
      * Listen for an event on the channel instance.
      */
@@ -16171,11 +16263,11 @@ var NullPrivateChannel = /*#__PURE__*/function (_NullChannel) {
 
   _createClass(NullPrivateChannel, [{
     key: "whisper",
-
+    value:
     /**
      * Trigger client event on the channel.
      */
-    value: function whisper(eventName, data) {
+    function whisper(eventName, data) {
       return this;
     }
   }]);
@@ -16200,11 +16292,11 @@ var NullPresenceChannel = /*#__PURE__*/function (_NullChannel) {
 
   _createClass(NullPresenceChannel, [{
     key: "here",
-
+    value:
     /**
      * Register a callback to be called anytime the member list changes.
      */
-    value: function here(callback) {
+    function here(callback) {
       return this;
     }
     /**
@@ -16569,8 +16661,8 @@ var NullConnector = /*#__PURE__*/function (_Connector) {
 
   _createClass(NullConnector, [{
     key: "connect",
-    value: function connect() {} //
-
+    value: function connect() {//
+    }
     /**
      * Listen for an event on a channel instance.
      */
@@ -16613,16 +16705,16 @@ var NullConnector = /*#__PURE__*/function (_Connector) {
 
   }, {
     key: "leave",
-    value: function leave(name) {} //
-
+    value: function leave(name) {//
+    }
     /**
      * Leave the given channel.
      */
 
   }, {
     key: "leaveChannel",
-    value: function leaveChannel(name) {} //
-
+    value: function leaveChannel(name) {//
+    }
     /**
      * Get the socket ID for the connection.
      */
@@ -16838,7 +16930,7 @@ var Echo = /*#__PURE__*/function () {
   return Echo;
 }();
 
-/* harmony default export */ __webpack_exports__["default"] = (Echo);
+
 
 
 /***/ }),
@@ -50959,13 +51051,13 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "set": function() { return /* binding */ set; },
-/* harmony export */   "del": function() { return /* binding */ del; },
 /* harmony export */   "Vue": function() { return /* reexport module object */ vue__WEBPACK_IMPORTED_MODULE_0__; },
 /* harmony export */   "Vue2": function() { return /* binding */ Vue2; },
+/* harmony export */   "del": function() { return /* binding */ del; },
+/* harmony export */   "install": function() { return /* binding */ install; },
 /* harmony export */   "isVue2": function() { return /* binding */ isVue2; },
 /* harmony export */   "isVue3": function() { return /* binding */ isVue3; },
-/* harmony export */   "install": function() { return /* binding */ install; }
+/* harmony export */   "set": function() { return /* binding */ set; }
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
@@ -51012,13 +51104,13 @@ function del(target, key) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "set": function() { return /* binding */ set; },
-/* harmony export */   "del": function() { return /* binding */ del; },
 /* harmony export */   "Vue": function() { return /* reexport module object */ vue__WEBPACK_IMPORTED_MODULE_0__; },
 /* harmony export */   "Vue2": function() { return /* binding */ Vue2; },
+/* harmony export */   "del": function() { return /* binding */ del; },
+/* harmony export */   "install": function() { return /* binding */ install; },
 /* harmony export */   "isVue2": function() { return /* binding */ isVue2; },
 /* harmony export */   "isVue3": function() { return /* binding */ isVue3; },
-/* harmony export */   "install": function() { return /* binding */ install; }
+/* harmony export */   "set": function() { return /* binding */ set; }
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
