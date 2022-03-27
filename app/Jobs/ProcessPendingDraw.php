@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Exceptions\SolverException;
-use App\Model\PendingDraw;
+use App\Models\PendingDraw;
 use App\Notifications\OrganizerRecap;
 use App\Services\DrawFormHandler;
 use Exception;
