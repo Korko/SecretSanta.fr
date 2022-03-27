@@ -103,7 +103,7 @@ function ajaxDelete($url, $headers = []) : TestResponse {
 }
 
 function createDraw($participants, $params = []) {
-    return ajaxPost('/', $params + [
+    return ajaxPost(URL::route('form.process'), $params + [
             'participant-organizer' => '1',
             'participants'          => $participants,
             'title'                 => 'this is a test',

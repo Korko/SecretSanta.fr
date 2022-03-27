@@ -1,27 +1,27 @@
 <?php
 
 it('fails if nothing sent', function () {
-    ajaxPost('/', ['a' => 'b'])
-        ->assertStatus(422)
+    ajaxPost(URL::route('form.process'), ['a' => 'b'])
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
             'organizer.name', 'organizer.email', 'participants', 'title', 'content',
         ]);
 });
 
 it('needs at least three names', function () {
-    ajaxPost('/', ['participants' => [
+    ajaxPost(URL::route('form.process'), ['participants' => [
             ['name' => 'toto'],
         ]])
-        ->assertStatus(422)
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
             'organizer.name', 'organizer.email', 'participants', 'participants.0.email', 'title', 'content',
         ]);
 
-    ajaxPost('/', ['participants' => [
+    ajaxPost(URL::route('form.process'), ['participants' => [
             ['name' => 'toto'],
             ['name' => 'tata'],
         ]])
-        ->assertStatus(422)
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
             'organizer.name', 'organizer.email',
             'participants', 'participants.0.email', 'participants.1.email',
@@ -30,11 +30,11 @@ it('needs at least three names', function () {
 });
 
 it('fails if names are duplicates', function () {
-    ajaxPost('/', ['participants' => [
+    ajaxPost(URL::route('form.process'), ['participants' => [
             ['name' => 'toto'],
             ['name' => 'toto'],
         ]])
-        ->assertStatus(422)
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
             'organizer.name', 'organizer.email', 'participants',
             'participants.0.name', 'participants.0.email',
@@ -44,24 +44,24 @@ it('fails if names are duplicates', function () {
 });
 
 it('requires emails', function () {
-    ajaxPost('/', ['participants' => [
+    ajaxPost(URL::route('form.process'), ['participants' => [
             ['name' => 'toto'],
             ['name' => 'tata'],
             ['name' => 'tutu'],
         ]])
-        ->assertStatus(422)
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
             'organizer.name', 'organizer.email',
             'participants.0.email', 'participants.1.email', 'participants.2.email',
             'title', 'content',
         ]);
 
-    ajaxPost('/', ['participants' => [
+    ajaxPost(URL::route('form.process'), ['participants' => [
             ['name' => 'toto'],
             ['name' => 'tata', 'email' => 'test@test.com'],
             ['name' => 'tutu'],
         ]])
-        ->assertStatus(422)
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
             'organizer.name', 'organizer.email',
             'participants.0.email', 'participants.2.email',
@@ -70,12 +70,12 @@ it('requires emails', function () {
 });
 
 it('needs valid email format', function () {
-    ajaxPost('/', ['participants' => [
+    ajaxPost(URL::route('form.process'), ['participants' => [
             ['name' => 'toto', 'email' => 'invalidformat'],
             ['name' => 'tata', 'email' => 'test@test.com'],
             ['name' => 'tutu', 'email' => 'tata@test.com'],
         ]])
-        ->assertStatus(422)
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
             'organizer.name', 'organizer.email',
             'participants.0.email',
@@ -84,24 +84,24 @@ it('needs valid email format', function () {
 });
 
 it('needs email body', function () {
-    ajaxPost('/', ['participants' => [
+    ajaxPost(URL::route('form.process'), ['participants' => [
             ['name' => 'toto', 'email' => 'test@est.com'],
             ['name' => 'tata', 'email' => 'test@test.com'],
             ['name' => 'tutu', 'email' => 'test@test.com'],
         ]])
-        ->assertStatus(422)
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
             'organizer.name', 'organizer.email', 'title', 'content',
         ]);
 });
 
 it('fails if exclusion does not exist', function () {
-    ajaxPost('/', ['participants' => [
+    ajaxPost(URL::route('form.process'), ['participants' => [
             ['name' => 'toto', 'exclusions' => ['87']],
             ['name' => 'tata'],
             ['name' => 'tutu'],
         ]])
-        ->assertStatus(422)
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
             'organizer.name', 'organizer.email',
             'participants.0.exclusions.0', 'participants.0.email',
@@ -111,12 +111,12 @@ it('fails if exclusion does not exist', function () {
 });
 
 it('works with valid exclusion', function () {
-    ajaxPost('/', ['participants' => [
+    ajaxPost(URL::route('form.process'), ['participants' => [
             ['name' => 'toto', 'exclusions' => ['1']],
             ['name' => 'tata'],
             ['name' => 'tutu'],
         ]])
-        ->assertStatus(422)
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
             'organizer.name', 'organizer.email',
             'participants.0.email',
