@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ProcessPendingDraw;
 use App\Models\PendingDraw;
+use Lang;
 use URL;
 
 class StartController extends Controller
