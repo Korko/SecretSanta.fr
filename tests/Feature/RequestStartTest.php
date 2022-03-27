@@ -10,8 +10,7 @@ it('sends no notifications in case of error', function ($participants) {
     $pendingDraw = createPendingDraw($participants);
 
     ajaxGet(URL::signedRoute('pending.process', ['pending' => $pendingDraw->id]))
-        ->assertUnprocessable()
-        ->assertJsonStructure(['message']);
+        ->assertSuccessful();
 
     Notification::assertNothingSent();
 })->with('invalid participants list');
@@ -22,8 +21,7 @@ it('sends notifications in case of success', function ($participants) {
     $pendingDraw = createPendingDraw($participants);
 
     ajaxGet(URL::signedRoute('pending.process', ['pending' => $pendingDraw->id]))
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+        ->assertSuccessful();
 
     $draw = $pendingDraw->fresh()->draw;
     assertModelExists($draw);
@@ -54,8 +52,7 @@ it('can create draws with a non participant organizer', function ($participants)
         ]);
 
     ajaxGet(URL::signedRoute('pending.process', ['pending' => $pendingDraw->id]))
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+        ->assertSuccessful();
 
     $draw = $pendingDraw->fresh()->draw;
 
@@ -86,8 +83,7 @@ it('sends to the organizer the link to their panel', function ($participants) {
     $pendingDraw = createPendingDraw($participants);
 
     ajaxGet(URL::signedRoute('pending.process', ['pending' => $pendingDraw->id]))
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+        ->assertSuccessful();
 
     $draw = $pendingDraw->fresh()->draw;
 
@@ -111,8 +107,7 @@ it('can deal with thousands of participants', function ($participants) {
     $pendingDraw = createPendingDraw($participants);
 
     ajaxGet(URL::signedRoute('pending.process', ['pending' => $pendingDraw->id]))
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+        ->assertSuccessful();
 
     $draw = $pendingDraw->fresh()->draw;
 
