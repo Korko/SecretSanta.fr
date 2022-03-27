@@ -28,4 +28,21 @@ it('can create pending draws (and just pending ones)', function ($participants) 
             return $notifiable->routes['mail'] === [['name' => $draw->organizer_name, 'email' => $draw->organizer_email]];
         }
     );
-})->with('participants list');;
+})->with('participants list');
+
+it('respects limit in participants count', function ($participants) {
+    Notification::fake();
+
+    config()->set('app.participants_limit', count($participants) - 1);
+
+    createDraw($participants)
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors([
+            'participants'
+        ]);
+
+    config()->set('app.participants_limit', count($participants));
+
+    createDraw($participants)
+        ->assertSuccessful();
+})->with('participants list');

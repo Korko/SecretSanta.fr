@@ -255,4 +255,6 @@ return [
 
     'bmc' => env('BMC_ME'),
 
+    'participants_limit' => env('PARTICIPANTS_LIMIT'),
+
 ];

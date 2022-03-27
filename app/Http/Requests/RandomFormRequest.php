@@ -24,21 +24,23 @@ class RandomFormRequest extends Request
     public function rules()
     {
         return parent::rules() + [
-            'participant-organizer'       => 'sometimes|boolean',
+            'participant-organizer'       => ['sometimes', 'boolean'],
 
-            'organizer'                   => 'sometimes|array',
-            'organizer.name'              => 'exclude_if:participant-organizer,true|required|max:55',
-            'organizer.email'             => 'exclude_if:participant-organizer,true|required|email|max:320',
+            'organizer'                   => ['sometimes', 'array'],
+            'organizer.name'              => ['exclude_if:participant-organizer,true', 'required', 'max:55'],
+            'organizer.email'             => ['exclude_if:participant-organizer,true', 'required', 'email', 'max:320'],
 
-            'participants'                => 'required|array|min:3',
+            'participants'                => [
+                'required', 'array', 'min:3', config('app.participants_limit') ? 'max:'.config('app.participants_limit') : null
+            ],
 
-            'participants.*.name'         => 'required|distinct|max:55',
-            'participants.*.email'        => 'required|email|max:320',
-            'participants.*.exclusions'   => 'sometimes|array',
-            'participants.*.exclusions.*' => 'integer|in_keys:participants',
+            'participants.*.name'         => ['required', 'distinct', 'max:55'],
+            'participants.*.email'        => ['required', 'email', 'max:320'],
+            'participants.*.exclusions'   => ['sometimes', 'array'],
+            'participants.*.exclusions.*' => ['integer', 'in_keys:participants'],
 
-            'title'                       => 'required|string|max:36773',
-            'content'                     => 'required|string|max:36773',
+            'title'                       => ['required', 'string', 'max:36773'],
+            'content'                     => ['required', 'string', 'max:36773'],
         ];
     }
 

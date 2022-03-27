@@ -16,7 +16,7 @@ dataset('invalid participants list', function () {
 
 // Valid list where a solution is possible
 dataset('participants list', function () {
-    yield [Collection::times(3, function () {
+    yield [Collection::times(5, function () {
         return ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => []];
     })->toArray()];
 });
