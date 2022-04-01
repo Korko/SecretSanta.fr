@@ -16734,6 +16734,37 @@
      
 }
 
+    namespace Elhebert\SubresourceIntegrity { 
+            /**
+     * 
+     *
+     */ 
+        class SriFacade {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function html($path, $useCredentials = false)
+        {
+                        /** @var \Elhebert\SubresourceIntegrity\Sri $instance */
+                        return $instance->html($path, $useCredentials);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function hash($path)
+        {
+                        /** @var \Elhebert\SubresourceIntegrity\Sri $instance */
+                        return $instance->hash($path);
+        }
+         
+    }
+     
+}
+
     namespace Facade\Ignition\Facades { 
             /**
      * Class Flare.
@@ -20848,6 +20879,7 @@ namespace  {
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
             class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
+            class Sri extends \Elhebert\SubresourceIntegrity\SriFacade {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
             class Metrics extends \STS\Metrics\MetricsFacade {}
             class Client extends \Webklex\IMAP\Facades\Client {}

@@ -21,3 +21,4 @@ public/assets/*.map
 npm-debug.log
 yarn-error.log
 .php_cs.cache
+settings.json

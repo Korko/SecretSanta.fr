@@ -41,8 +41,18 @@
         <link rel="image_src" href="{{ url('/images/opengraph_banner_19.1_1.png') }}" />
 
         <!-- media -->
-        <link rel="stylesheet" href="{{ mix('/css/app.css') }}" />
-        <script type="text/javascript" src="{{ mix('/js/app.js') }}" defer></script>
+        <link
+            rel="stylesheet"
+            href="{{ mix('/css/app.css') }}"
+            integrity="{{ Sri::hash('/css/app.css') }}"
+            crossorigin="anonymous"
+        />
+        <script
+            type="text/javascript"
+            src="{{ mix('/js/app.js') }}"
+            integrity="{{ Sri::hash('/js/app.js') }}"
+            defer
+        ></script>
 
         @inertiaHead
     </head>
