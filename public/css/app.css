@@ -4637,8 +4637,20 @@ body {
   height: 100%;
 }
 
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+          hyphens: auto;
+}
+
 #app, #app:empty ~ noscript {
-  min-height: 100vh;
+  isolation: isolate;
+  min-height: 100%;
   padding-bottom: 100px;
   display: flex;
   flex-direction: column;

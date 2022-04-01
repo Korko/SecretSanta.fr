@@ -29,10 +29,19 @@ and your footer gets pushed down a bit more, creating vertical scroll bars in th
 html,
 body { height: 100%; }
 
+input, button, textarea, select {
+    font: inherit;
+}
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
 $footer-height: 90px !default;
 
 #app, #app:empty ~ noscript {
-    min-height: 100vh;
+    isolation: isolate;
+    min-height: 100%;
     padding-bottom: $footer-height + 10px;
     display: flex;
     flex-direction: column;
