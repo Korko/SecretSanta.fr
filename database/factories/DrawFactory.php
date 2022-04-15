@@ -6,6 +6,9 @@ use App\Models\Draw;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Draw>
+ */
 class DrawFactory extends Factory
 {
     /**
@@ -18,7 +21,7 @@ class DrawFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
@@ -30,6 +33,11 @@ class DrawFactory extends Factory
         ];
     }
 
+    /**
+     * Indicate that the draw has just ended.
+     *
+     * @return static
+     */
     public function finished()
     {
         return $this->state(function () {
@@ -39,6 +47,11 @@ class DrawFactory extends Factory
         });
     }
 
+    /**
+     * Indicate that the draw is ready for pruning.
+     *
+     * @return static
+     */
     public function expired()
     {
         return $this->state(function () {

@@ -6,6 +6,9 @@ use App\Models\Exclusion;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Exclusion>
+ */
 class ExclusionFactory extends Factory
 {
     /**
@@ -18,7 +21,7 @@ class ExclusionFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {

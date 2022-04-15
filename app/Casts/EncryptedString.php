@@ -3,6 +3,7 @@
 namespace App\Casts;
 
 use App\Facades\DrawCrypt;
+use InvalidArgumentException;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class EncryptedString implements CastsAttributes
@@ -12,9 +13,9 @@ class EncryptedString implements CastsAttributes
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
-     * @param  mixed  $value
+     * @param  string  $value
      * @param  array  $attributes
-     * @return string
+     * @return mixed
      */
     public function get($model, $key, $value, $attributes)
     {
@@ -26,12 +27,12 @@ class EncryptedString implements CastsAttributes
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
-     * @param  string  $value
+     * @param  mixed  $value
      * @param  array  $attributes
      * @return string
      */
     public function set($model, $key, $value, $attributes)
     {
-        return $value === null ? null : DrawCrypt::encrypt($value);
+        return DrawCrypt::encrypt($value);
     }
 }

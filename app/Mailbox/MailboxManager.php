@@ -2,6 +2,7 @@
 
 namespace App\Mailbox;
 
+use InvalidArgumentException;
 use Webklex\PHPIMAP\ClientManager as ImapClientManager;
 
 class MailboxManager

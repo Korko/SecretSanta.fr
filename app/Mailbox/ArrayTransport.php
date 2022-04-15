@@ -4,26 +4,19 @@ namespace App\Mailbox;
 
 use App\Contracts\Mailbox as MailboxContract;
 use Illuminate\Mail\Transport\ArrayTransport as BaseArrayTransport;
-use Swift_Mime_SimpleMessage;
+use Symfony\Component\Mailer\SentMessage;
+use Symfony\Component\Mime\Address;
 
 class ArrayTransport extends BaseArrayTransport implements MailboxContract
 {
     /**
      * {@inheritdoc}
-     *
-     * @return int
      */
-    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
-    {
-        $message = new Message($message);
-
-        return parent::send($message, $failedRecipients);
-    }
-
     public function getUnseenMails(): Iterable
     {
-        return $this->messages
-            ->filter
-            ->isUnseen();
+        return $this->messages()
+            ->map(function (SentMessage $message) {
+                return array_map(fn(Address $recipient) => $recipient->getAddress(), $message->getEnvelope()->getRecipients());
+            });
     }
 }

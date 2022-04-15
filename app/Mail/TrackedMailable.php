@@ -3,7 +3,8 @@
 namespace App\Mail;
 
 use Facades\App\Services\MailTracker;
-use Swift_TransportException;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mime\Email;
 
 abstract class TrackedMailable extends Mailable
 {
@@ -20,7 +21,7 @@ abstract class TrackedMailable extends Mailable
         $this->mailable = $this->getMailable();
         $this->mailable->mail()->create();
 
-        $this->withSwiftMessage(function ($message) {
+        $this->withSymfonyMessage(function (Email $message) {
             // In case of Bounce
             $message->getHeaders()->addPathHeader('Return-Path', MailTracker::getBounceReturnPath($this->mailable->mail));
 
@@ -36,7 +37,7 @@ abstract class TrackedMailable extends Mailable
             parent::send($mailer);
 
             $this->mailable->mail->markAsSent();
-        } catch (Swift_TransportException $exception) {
+        } catch (TransportExceptionInterface $exception) {
             $this->mailable->mail->markAsError();
         }
     }

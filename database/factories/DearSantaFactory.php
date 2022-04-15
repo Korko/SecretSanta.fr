@@ -7,6 +7,9 @@ use App\Models\Mail;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DearSanta>
+ */
 class DearSantaFactory extends Factory
 {
     /**
@@ -19,7 +22,7 @@ class DearSantaFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
@@ -32,7 +35,7 @@ class DearSantaFactory extends Factory
     /**
      * Indicate that the dearSanta is resendable.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return static
      */
     public function resendable()
     {

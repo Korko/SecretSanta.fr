@@ -10,8 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Contracts\Mailbox;
-use App\Mailbox\EmailMessage;
-use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
+use App\Contracts\EmailMessage;
 
 class ParseBounces implements ShouldQueue
 {
@@ -29,21 +28,16 @@ class ParseBounces implements ShouldQueue
     protected function getRecipients(Mailbox $mailbox)
     {
         $unseenMails = $mailbox->getUnseenMails();
-        foreach ($unseenMails as $unseenMail) {
+        foreach ($unseenMails as $index => &$unseenMail) {
             yield $this->getFirstRecipientAddress($unseenMail);
 
-            try {
-                $unseenMail->move(config('imap.folders.trash'));
-            } catch(MessageHeaderFetchingException $e) {
-                // Ignore that error
-            }
+            unset($unseenMails[$index]);
         }
+        unset($unseenMail);
     }
 
     protected function getFirstRecipientAddress(EmailMessage $message): string
     {
-        $recipient = $message->getTo()[0];
-
-        return is_object($recipient) ? $recipient->mailbox : '';
+        return $message->getTo()[0];
     }
 }

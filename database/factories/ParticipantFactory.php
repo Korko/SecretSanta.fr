@@ -4,8 +4,12 @@ namespace Database\Factories;
 
 use App\Models\Draw;
 use App\Models\Participant;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Participant>
+ */
 class ParticipantFactory extends Factory
 {
     /**
@@ -18,7 +22,7 @@ class ParticipantFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
@@ -30,6 +34,11 @@ class ParticipantFactory extends Factory
         ];
     }
 
+    /**
+     * Indicate that the participant exclusions will
+     *
+     * @return static
+     */
     // TODO: check
     public function bijective()
     {

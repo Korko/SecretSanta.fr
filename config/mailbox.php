@@ -33,6 +33,7 @@ return [
     */
 
     'mailboxes' => [
+
         'imap' => [
             'account' => 'default',
             'transport' => 'imap'
@@ -41,6 +42,7 @@ return [
         'array' => [
             'transport' => 'array',
         ],
+
     ],
 
 ];

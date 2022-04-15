@@ -41,6 +41,9 @@ return [
                 'host' => 'https://127.0.0.1',
                 'port' => env('PUSHER_APP_PORT', 6001),
             ],
+            'client_options' => [
+                // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
+            ],
         ],
 
         'ably' => [

@@ -3,7 +3,8 @@
 namespace App\Mail;
 
 use Illuminate\Mail\Mailable as BaseMailable;
-use Swift_Signers_DKIMSigner;
+use Symfony\Component\Mime\Crypto\DkimSigner;
+use Symfony\Component\Mime\Email;
 
 class Mailable extends BaseMailable
 {
@@ -16,27 +17,21 @@ class Mailable extends BaseMailable
     public function send($mailer)
     {
         // Sign DKIM
-        $this->withSwiftMessage(function ($message) {
+        $this->withSymfonyMessage(function (Email $message) {
             if (
                 config('mail.dkim_private_key') &&
                 file_exists(config('mail.dkim_private_key')) &&
                 config('mail.dkim_selector') &&
                 config('mail.dkim_domain')
             ) {
-                $signer = new Swift_Signers_DKIMSigner(
+                $signer = new DkimSigner(
                     file_get_contents(config('mail.dkim_private_key')),
                     config('mail.dkim_domain'),
                     config('mail.dkim_selector'),
                     config('mail.dkim_passphrase')
                 );
 
-                $signer->setHashAlgorithm(config('mail.dkim_algo'));
-
-                if (config('mail.dkim_identity')) {
-                    $signer->setSignerIdentity(config('mail.dkim_identity'));
-                }
-
-                $message->attachSigner($signer);
+                $signer->sign($message);
             }
         });
 

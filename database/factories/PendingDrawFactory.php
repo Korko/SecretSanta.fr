@@ -6,6 +6,9 @@ use App\Models\PendingDraw;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PendingDraw>
+ */
 class PendingDrawFactory extends Factory
 {
     /**
@@ -18,7 +21,7 @@ class PendingDrawFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
@@ -34,6 +37,11 @@ class PendingDrawFactory extends Factory
         ];
     }
 
+    /**
+     * Indicate that the pending draw has been validated and is ready to be processed.
+     *
+     * @return static
+     */
     public function validated()
     {
         return $this->state(function () {

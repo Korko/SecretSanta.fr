@@ -30,16 +30,19 @@ if (! function_exists('translations')) {
     {
         $storage = Storage::build([
             'driver' => 'local',
-            'root' => resource_path("lang"),
+            'root' => app()->langPath(),
         ]);
 
         /*
            ['en' => ['validation' => ['accepted' => '...']]]
         */
-        return collect($storage->allFiles("${locale}"))
+        return collect($storage->allFiles($locale))
             ->map(fn($file) => [
-                'path' => explode('/', pathinfo($file, \PATHINFO_DIRNAME).'/'.pathinfo($file, \PATHINFO_FILENAME)),
-                'translations' => require(resource_path("lang/${locale}/${file}"))
+                'path' => explode(
+                    DIRECTORY_SEPARATOR,
+                    pathinfo($file, \PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR . pathinfo($file, \PATHINFO_FILENAME)
+                ),
+                'translations' => require(app()->langPath($locale . DIRECTORY_SEPARATOR . $file))
             ])
             ->reduce(fn($tree, $file) => array_merge_recursive(
                 $tree,
