@@ -46,3 +46,12 @@ it('respects limit in participants count', function ($participants) {
     createDraw($participants)
         ->assertSuccessful();
 })->with('participants list');
+
+it('handles no limit in participants count', function ($participants) {
+    Notification::fake();
+
+    config()->set('app.participants_limit', null);
+
+    createDraw($participants)
+        ->assertSuccessful();
+})->with('participants list');
