@@ -86,7 +86,16 @@
                     </p>
 
                     <transition name="fade">
+                        <ul
+                            v-if="Array.isArray(selectedAnswers[i])"
+                            v-show="showed[i]"
+                            :id="`answer${i}`"
+                            class="card-body"
+                        >
+                            <li v-for="answer in selectedAnswers[i]">{{ answer }}</li>
+                        </ul>
                         <div
+                            v-else
                             v-show="showed[i]"
                             :id="`answer${i}`"
                             class="card-body"

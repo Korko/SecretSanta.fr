@@ -37,14 +37,53 @@ return [
         ],
 
         'news' => [
-            //'Le panneau de contrôle' => 'Fin 2022 : Fini la corvée pour ceux qui sont organisateur ou participant de plusieurs tirage au sort de retrouver quel évènement correspond à quel email et à qui etc. Maintenant un lien unique permet de retrouver toutes ces informations qui sont enregistrées sur votre machine donc accessibles même non connecté !',
-            //'La messagerie' => "Fin 2022 : SecretSanta.fr est maintenant fourni avec une véritable messagerie complète où un père noël peut écrire à sa cible, plus ou moins librement selon les règles définies par l'organisateur. L'interface a été revue pour mieux retrouver et suivre ces échanges de messages.",
-            //"Validation de l'email organisateur" => "Fin 2022 : Afin de prévenir de certains robots et pour éviter quelques surprises, il est maintenant demandé à l'organisateur de valider son email via un lien avant de résoudre le tirage au sort et de transmettre à tout le monde le nom de sa cible. Par ailleurs, cette résolution est maintenant plus flexible et permet d'accueillir toujours plus de gens !",
-            "La date d'expiration" => "Fin 2022 : Plus besoin de préciser la date de l'évènement lors de la création. Maintenant elle est manuellement déclenchée dans la panneau d'organisateur. Dans le cas où plus aucun message n'est échangé (d'un participant à un autre ou une relance de nom de cible) pendant 3 mois, toutes les données seront automatiquement supprimées.",
-            'Un nouvel algorithme' => "Fin 2022 : Un nouveau système de résolution du tirage au sort à été mis en place. Plus rapide et plus efficace, il devrait éviter au maximum les personnes isolées qui s'offrent l'une à l'autre et privilégier plutôt les chaînes de cadeau, en plus de permettre de plus grandes chaînes !",
-            'La relance du nom de la cible' => "Fin 2021 : Quand on a supprimé son email qui donne le nom de sa cible mais qu'on a encore le lien vers le panneau, on peut maintenant redemander soit-même le réenvoie de cet email depuis ce même panneau.",
-            'Le retrait de participant' => "Fin 2021 : On peut désormais retirer un participant d'un tirage au sort. Il faut être au minimum 4.",
-            'Organisateur non participant' => "Fin 2021 : Un organisateur peut maintenant ne plus participer. Il garde accès à son panneau de supervision mais n'est plus tiré au sort et ne reçoit pas de cible non plus.",
+            'Noël 2022' => [
+                'Limitation du nombre de participants au total pour une meilleure stabilité du site',
+                'Amélioration du tirage au sort avec un nouvel algorithme plus rapide',
+                'Suppression de la date de suppression, il s\'agit maintenant d\'une expiration indiquée sur les différents panneaux',
+                'Ajout dans le panneau participant de la possibilité de recevoir de nouveau l\'email contenant le nom de la personne à qui faire un cadeau',
+                'Ajout d\'une validation de l\'email de l\'organisateur avant le tirage au sort',
+                'Ajout de la possibilité pour un organisateur de changer le nom d\'un participant',
+            ],
+            'Noël 2021' => [
+                'Ajout de la possibilité pour un organisateur de ne pas être participant',
+                'Ajout de la possibilité pour un organisateur de retirer un participant durant l\'évènement',
+                'Amélioration du système de suivi des emails en respectant la vie privée',
+                'Ajout pour les participants du système de réenvoi d\'un email pour leur père noël secrêt',
+                'Ajout d\'une page légale pour préciser les intentions du projet en terme de données personnelles',
+                'Chiffrement de la liste des emails à envoyer pour améliorer encore plus la sécurité des données personnelles',
+                'Ajout pour l\'organisateur du réenvoi d\'email même si celui-ci est sensé avoir été reçu',
+                'Limitation de la date de suppression a 6 mois',
+            ],
+            'Noël 2020' => [
+                'Ajout dans le panneau d\'organisateur d\'un bouton pour télécharger la liste des participants, ainsi qu\'une version finalisée avec les cibles dans les exclusions',
+                'Suivi des emails revenus en erreur et affichage en direct dans le panneau d\'organisateur sans avoir besoin de rafraichir la page',
+                'Amélioration de réception des emails en ajoutant une signature numérique à chacun',
+                'Amélioration de la sécurité des données personnelles dans les liens vers les différents panneaux',
+                'Ajout de tooltips sur la date d\'expiration et sur les boutons de téléchargements',
+                'Suppression du captcha, Google pouvait tracer les utilisateurs',
+                'Ajout dans le panneau d\'organisateur d\'un bouton pour supprimer la totalité des données du tirage au sort peu importe la date d\'expiration',
+                'Ajout d\'une foire aux questions',
+                'Ajout du suivi des emails envoyés par les participants à leur père noël secrêt, directement dans leur panneau respectif',
+            ],
+            'Noël 2018' => [
+                'Ajout pour les organisateurs d\'un panneau pour voir la liste des participants',
+                'Suppression de l\'envoi de SMS, coût beaucoup trop important',
+                'Utilisation d\'un captcha invisible pour plus de fluidité',
+            ],
+            'Noël 2017' => [
+                'Ajout de la possibilité pour chaque participant d\'écrire à leur père noël sans dévoiler son identité',
+                'Amélioration de la vitesse de résolution du tirage au sort',
+            ],
+            'Noël 2016' => [
+                'Ajout de la possibilité d\'ajouter plusieurs exclusions par participant au lieu d\'une seule',
+                'Ajout de la traduction pour permettre une version anglaise',
+                'Ajout de la possibilité d\'envoyer la cible de chaque participant par sms',
+            ],
+            'Noël 2015' => [
+                'Ajout d\'un captcha pour se protéger des bots',
+                'Développement initial du projet',
+            ],
         ]
     ],
 ];

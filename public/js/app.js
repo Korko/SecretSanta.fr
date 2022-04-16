@@ -31336,7 +31336,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = function(chunkId) {
 /******/ 			// return url for filenames based on template
-/******/ 			return "js/" + chunkId + ".js?id=" + {"resources_js_Pages_Dashboard_vue":"1186ffe95e3da65b","resources_js_Pages_DearSanta_vue":"6e6f070b96c3de9a","resources_js_Pages_DrawNotFound_vue":"86f382505ea9691e","resources_js_Pages_FetcherLayout_vue":"bbc7271688c9dff6","resources_js_Pages_FrequentlyAskedQuestions_vue":"47e1390353c3a4e9","resources_js_Pages_Layout_vue":"429d61601b1ea241","resources_js_Pages_Legal_vue":"14f745684b0bf20a","resources_js_Pages_OrganizerPanel_vue":"e2343874e4a3afaa","resources_js_Pages_PageNotFound_vue":"85f5b053ca803aea","resources_js_Pages_PendingDraw_vue":"c943a3d14e5e06c1","resources_js_Pages_RandomForm_vue":"0b4e0e5e279b54da"}[chunkId] + "";
+/******/ 			return "js/" + chunkId + ".js?id=" + {"resources_js_Pages_Dashboard_vue":"1186ffe95e3da65b","resources_js_Pages_DearSanta_vue":"6e6f070b96c3de9a","resources_js_Pages_DrawNotFound_vue":"86f382505ea9691e","resources_js_Pages_FetcherLayout_vue":"bbc7271688c9dff6","resources_js_Pages_FrequentlyAskedQuestions_vue":"9f11162bb6edffcb","resources_js_Pages_Layout_vue":"429d61601b1ea241","resources_js_Pages_Legal_vue":"14f745684b0bf20a","resources_js_Pages_OrganizerPanel_vue":"e2343874e4a3afaa","resources_js_Pages_PageNotFound_vue":"85f5b053ca803aea","resources_js_Pages_PendingDraw_vue":"c943a3d14e5e06c1","resources_js_Pages_RandomForm_vue":"0b4e0e5e279b54da"}[chunkId] + "";
 /******/ 		};
 /******/ 	}();
 /******/ 	

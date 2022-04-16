@@ -266,6 +266,7 @@ var _hoisted_1 = {
 var _hoisted_2 = ["onClick"];
 var _hoisted_3 = ["id", "aria-expanded", "aria-controls", "onClick"];
 var _hoisted_4 = ["id"];
+var _hoisted_5 = ["id"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_i18n_t = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("i18n-t");
 
@@ -358,14 +359,27 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           name: "fade"
         }, {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+            return [Array.isArray($options.selectedAnswers[i]) ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("ul", {
+              key: 0,
+              id: "answer".concat(i),
+              "class": "card-body"
+            }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.selectedAnswers[i], function (answer) {
+              return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(answer), 1
+              /* TEXT */
+              );
+            }), 256
+            /* UNKEYED_FRAGMENT */
+            ))], 8
+            /* PROPS */
+            , _hoisted_4)), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.showed[i]]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+              key: 1,
               id: "answer".concat(i),
               "class": "card-body"
             }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.selectedAnswers[i]), 1
             /* TEXT */
             )], 8
             /* PROPS */
-            , _hoisted_4), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.showed[i]]])];
+            , _hoisted_5)), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.showed[i]]])];
           }),
           _: 2
           /* DYNAMIC */

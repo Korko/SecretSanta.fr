@@ -4996,6 +4996,10 @@ footer .row {
   text-transform: uppercase;
 }
 
+.card-body {
+  list-style-position: inside;
+}
+
 /**
 Wasted
 **/
