@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Draw;
-use App\Models\Exclusion;
 use App\Models\Participant;
 use App\Notifications\TargetDrawn as TargetDrawnNotification;
 use App\Services\DrawFormHandler;
@@ -11,7 +10,6 @@ it('records new entries in case of success', function ($participants, Draw $draw
 
     assertModelExists($draw);
     assertModelCount(Participant::class, count($participants));
-    assertModelCount(Exclusion::class, $exclusions);
 
     // Carreful, array is 0..n, Db is 1..n
     foreach($participants as $idx => $participant) {

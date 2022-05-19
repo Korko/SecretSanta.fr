@@ -2,11 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Draw;
-use App\Models\Participant;
-use App\Models\Exclusion;
 use App\Models\DearSanta;
+use App\Models\Draw;
 use App\Models\Mail;
+use App\Models\Participant;
 use Database\Seeders\ExpiredDrawSeeder;
 
 it('cleans up expired draws', function ($drawNotExpired, $drawExpired) {
@@ -21,7 +20,6 @@ it('cleans up everything', function () {
 
     assertModelCountDiffer(Draw::class, 0);
     assertModelCountDiffer(Participant::class, 0);
-    assertModelCountDiffer(Exclusion::class, 0);
     assertModelCountDiffer(DearSanta::class, 0);
     assertModelCountDiffer(Mail::class, 0);
 
@@ -29,7 +27,6 @@ it('cleans up everything', function () {
 
     assertModelCount(Draw::class, 0);
     assertModelCount(Participant::class, 0);
-    assertModelCount(Exclusion::class, 0);
     assertModelCount(DearSanta::class, 0);
     assertModelCount(Mail::class, 0);
 });
