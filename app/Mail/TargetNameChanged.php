@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Participant;
+use Illuminate\Mail\Mailable;
 use Lang;
 
 class TargetNameChanged extends Mailable

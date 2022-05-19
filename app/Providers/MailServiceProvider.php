@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Contracts\Mailbox;
 use App\Mailbox\MailboxManager;
+use App\Services\SigningMailer;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class MailServiceProvider extends ServiceProvider
@@ -15,7 +16,20 @@ class MailServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->replaceMailer();
         $this->registerMailbox();
+    }
+
+    /**
+     * Replace the built-in mailer to allow for DKIM signed mails
+     *
+     * @return void
+     */
+    protected function replaceMailer()
+    {
+        $this->app->bind('mailer', function() {
+            return $this->app->make(SigningMailer::class);
+        });
     }
 
     /**
