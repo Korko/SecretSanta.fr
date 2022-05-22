@@ -54,13 +54,10 @@ class Participant extends Model
         parent::boot();
 
         static::created(function($participant) {
-            $participant->mail()->save(new Mail);
-        });
+            $mail = new Mail;
+            $mail->draw()->associate($participant->draw);
 
-        static::deleting(function ($participant) {
-            $participant->dearSantas()->lazy()->each->delete();
-            $participant->exclusions()->delete();
-            $participant->mail()->delete();
+            $participant->mail()->save($mail);
         });
     }
 

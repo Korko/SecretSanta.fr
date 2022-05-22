@@ -9,12 +9,12 @@ use DateInterval;
 use DateTime;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Database\Eloquent\MassPrunable;
 use Metrics;
 
 class Draw extends Model
 {
-    use HasFactory, HashId, Prunable;
+    use HasFactory, HashId, MassPrunable;
 
     // Consider a draw expired N months after the last mail sent
     public const MONTHS_BEFORE_EXPIRATION = 3;
@@ -51,13 +51,6 @@ class Draw extends Model
     protected $dates = [
         'finished_at',
     ];
-
-    protected static function booted()
-    {
-        static::deleting(function ($draw) {
-            $draw->participants()->lazy()->each->delete();
-        });
-    }
 
     /**
      * Get the prunable model query.

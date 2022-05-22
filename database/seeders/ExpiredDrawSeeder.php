@@ -34,6 +34,7 @@ class ExpiredDrawSeeder extends Seeder
         // Fake some communications
         for($i = 0; $i < 20; $i++) {
             DearSanta::factory()
+                ->for($draw, 'draw')
                 ->for($draw->participants->random(), 'sender')
                 ->create();
         }

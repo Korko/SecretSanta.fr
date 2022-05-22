@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('mails', function (Blueprint $table) {
             $table->id();
             $table->uuid('notification')->unique();
+            $table->foreignId('draw_id')->constrained()->cascadeOnDelete();
             $table->morphs('mailable');
             $table->enum('delivery_status', Mail::$deliveryStatuses);
             $table->timestamps();

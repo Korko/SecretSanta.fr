@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use Facades\App\Services\MailTracker;
+use Illuminate\Mail\Mailable;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Email;
 
@@ -19,7 +20,6 @@ abstract class TrackedMailable extends Mailable
     public function send($mailer)
     {
         $this->mailable = $this->getMailable();
-        $this->mailable->mail()->create();
 
         $this->withSymfonyMessage(function (Email $message) {
             // In case of Bounce

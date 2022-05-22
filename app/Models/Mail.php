@@ -42,6 +42,13 @@ class Mail extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = ['draw_id', 'notification', 'delivery_status'];
+
+    /**
      * All of the relationships to be touched.
      *
      * @var array
@@ -99,6 +106,6 @@ class Mail extends Model
 
     public function draw()
     {
-        return $this->mailable->draw();
+        return $this->belongsTo(Draw::class);
     }
 }

@@ -129,6 +129,7 @@ class DearSantaController extends Controller
     public function handle(Participant $participant, DearSantaRequest $request)
     {
         $dearSanta = new DearSanta();
+        $dearSanta->draw()->associate($participant->draw);
         $dearSanta->sender()->associate($participant);
         $dearSanta->mail_body = $request->input('content');
         $dearSanta->save();

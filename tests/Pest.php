@@ -3,10 +3,10 @@
 use App\Models\Draw;
 use App\Models\PendingDraw;
 use App\Services\DrawFormHandler;
-use PHPUnit\Framework\TestCase;
+use function Pest\Laravel\assertDatabaseCount;
 use Illuminate\Support\Facades\App;
 use Illuminate\Testing\TestResponse;
-use function Pest\Laravel\assertDatabaseCount;
+use PHPUnit\Framework\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ use function Pest\Laravel\assertDatabaseCount;
 
 uses(Tests\DuskTestCase::class)->in('Browser');
 uses(Tests\TestCase::class)->in('Feature');
-uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundation\Testing\DatabaseTransactions::class)->in('Feature');
+uses(Illuminate\Foundation\Testing\DatabaseMigrations::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------

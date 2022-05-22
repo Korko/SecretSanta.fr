@@ -80,6 +80,7 @@ DROP TABLE IF EXISTS `mails`;
 CREATE TABLE `mails` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `notification` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `draw_id` bigint unsigned NOT NULL,
   `mailable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mailable_id` bigint unsigned NOT NULL,
   `delivery_status` enum('created','sending','sent','error','received') COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -87,7 +88,9 @@ CREATE TABLE `mails` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `mails_notification_unique` (`notification`),
+  KEY `mails_draw_id_foreign` (`draw_id`),
   KEY `mails_mailable_type_mailable_id_index` (`mailable_type`,`mailable_id`)
+  CONSTRAINT `mails_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `migrations`;

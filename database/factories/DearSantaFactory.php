@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\DearSanta;
+use App\Models\Draw;
 use App\Models\Mail;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -27,6 +28,7 @@ class DearSantaFactory extends Factory
     public function definition()
     {
         return [
+            'draw_id'     => Draw::factory(),
             'sender_id'   => Participant::factory(),
             'mail_body'   => $this->faker->text,
         ];

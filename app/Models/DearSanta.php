@@ -16,7 +16,7 @@ class DearSanta extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['mail_body', 'sender_id'];
+    protected $fillable = ['mail_body', 'draw_id', 'sender_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -46,12 +46,16 @@ class DearSanta extends Model
         parent::boot();
 
         static::created(function($dearSanta) {
-            $dearSanta->mail()->save(new Mail);
-        });
+            $mail = new Mail;
+            $mail->draw()->associate($dearSanta->draw);
 
-        static::deleting(function ($dearSanta) {
-            $dearSanta->mail()->delete();
+            $dearSanta->mail()->save($mail);
         });
+    }
+
+    public function draw()
+    {
+        return $this->belongsTo(Draw::class, 'draw_id');
     }
 
     public function sender()

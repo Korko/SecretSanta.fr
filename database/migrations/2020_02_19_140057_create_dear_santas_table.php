@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('dear_santas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('draw_id')->constrained('draws')->cascadeOnDelete();
             $table->foreignId('sender_id')->constrained('participants')->cascadeOnDelete();
             $table->binary('mail_body');
         });
