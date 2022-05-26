@@ -40,7 +40,7 @@ class Draw extends Model
         'mail_body' => EncryptedString::class,
         'next_solvable' => 'boolean',
         'organizer_name' => EncryptedString::class,
-        'organizer_email' => EncryptedString::class,
+        'organizer_email' => EncryptedString::class
     ];
 
     /**
@@ -78,7 +78,7 @@ class Draw extends Model
         return $this->updated_at->addMonths(self::MONTHS_BEFORE_EXPIRATION);
     }
 
-    public function getFinishedAttribute()
+    public function getIsFinishedAttribute()
     {
         return $this->finished_at ? $this->finished_at->isPast() : false;
     }

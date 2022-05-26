@@ -1,8 +1,9 @@
 <?php
 
+use App\Enums\AppMode;
 use App\Models\Draw;
-use App\Models\PendingDraw;
 use App\Models\Participant;
+use App\Models\PendingDraw;
 use App\Notifications\PendingDraw as PendingDrawNotification;
 use Illuminate\Notifications\AnonymousNotifiable;
 
@@ -19,7 +20,7 @@ it('can create pending draws (and just pending ones)', function ($participants) 
     assertModelCount(Draw::class, 0);
     assertModelCount(Participant::class, 0);
 
-    $draw = PendingDraw::find(1);
+    $draw = PendingDraw::first();
 
     Notification::assertSentTo(
         new AnonymousNotifiable,
@@ -33,7 +34,7 @@ it('can create pending draws (and just pending ones)', function ($participants) 
 it('respects limit in participants count', function ($participants) {
     Notification::fake();
 
-    config()->set('app.participants_limit', count($participants) - 1);
+    config()->set('modes.limitations.participants.'.(AppMode::FREE)->value, count($participants) - 1);
 
     createDraw($participants)
         ->assertUnprocessable()
@@ -41,16 +42,7 @@ it('respects limit in participants count', function ($participants) {
             'participants'
         ]);
 
-    config()->set('app.participants_limit', count($participants));
-
-    createDraw($participants)
-        ->assertSuccessful();
-})->with('participants list');
-
-it('handles no limit in participants count', function ($participants) {
-    Notification::fake();
-
-    config()->set('app.participants_limit', null);
+    config()->set('modes.limitations.participants.'.(AppMode::FREE)->value, count($participants));
 
     createDraw($participants)
         ->assertSuccessful();

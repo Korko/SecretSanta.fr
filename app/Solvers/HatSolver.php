@@ -3,6 +3,7 @@
 namespace App\Solvers;
 
 use Generator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class HatSolver extends Solver
@@ -35,10 +36,16 @@ class HatSolver extends Solver
         foreach ($hat as $drawnParticipant) {
             // Create a new possible solution with the participant drawn
             $newCombination = $combination + [$participantIdx => $drawnParticipant];
+
             $newHat = $currentHat->diff([$drawnParticipant]);
 
             // Further check if this solution is possible
-            yield from $this->solveWithExclusions($participantIdx + 1, $newCombination, $allExclusions, $newHat);
+            yield from $this->solveWithExclusions(
+                $participantIdx + 1,
+                $newCombination,
+                $allExclusions,
+                $newHat
+            );
         }
     }
 }

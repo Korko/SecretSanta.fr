@@ -38,7 +38,7 @@ class DrawFactory extends Factory
      *
      * @return static
      */
-    public function finished()
+    public function isFinished()
     {
         return $this->state(function () {
             return [
@@ -52,7 +52,7 @@ class DrawFactory extends Factory
      *
      * @return static
      */
-    public function expired()
+    public function isExpired()
     {
         return $this->state(function () {
             return [

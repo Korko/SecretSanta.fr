@@ -127,6 +127,11 @@ return [
                 'required' => 'Le contenu du message est requis.',
             ],
         ],
+        'dearTarget' => [
+            'type' => [
+                'required' => 'Le contenu du message est requis.',
+            ],
+        ],
         'organizer' => [
             'email' => [
                 'required' => 'La nouvelle adresse est requise.',

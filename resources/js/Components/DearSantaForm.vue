@@ -29,7 +29,7 @@
                 type: Object,
                 required: true
             },
-            emails: {
+            dearSantas: {
                 type: Object,
                 required: true
             },
@@ -48,8 +48,8 @@
             };
         },
         computed: {
-            emailsByDate() {
-                return Object.values(this.emails)
+            dearSantasByDate() {
+                return Object.values(this.dearSantas)
                     .map(email => Object.assign(email, email.mail))
                     .sort((email1, email2) => (new Date(email1.created_at) > new Date(email2.created_at) ? -1 : 1))
                     .map(email => {
@@ -61,7 +61,7 @@
                 return !!this.draw.finished_at;
             },
             checkUpdates() {
-                return !!Object.values(this.emails).find(
+                return !!Object.values(this.dearSantas).find(
                     email => email.mail.delivery_status !== 'error'
                 );
             },
@@ -72,9 +72,9 @@
         created() {
             Echo.channel('draw.'+this.draw.hash)
                 .listen('.mail.update', data => {
-                    if(this.emails[data.id]) {
-                        this.emails[data.id].mail.delivery_status = data.delivery_status;
-                        this.emails[data.id].mail.updated_at = data.updated_at;
+                    if(this.dearSantas[data.id]) {
+                        this.dearSantas[data.id].mail.delivery_status = data.delivery_status;
+                        this.dearSantas[data.id].mail.updated_at = data.updated_at;
                     }
                 });
 
@@ -98,16 +98,16 @@
                 if(!data.email.updated_at) {
                     data.email.updated_at = new Date();
                 }
-                this.$set(this.emails, data.email.id, data.email);
+                this.$set(this.dearSantas, data.email.id, data.email);
             },
             reset() {
                 this.content = '';
             },
             resend(id) {
-                this.emails[id].mail.delivery_status = 'created';
-                this.emails[id].mail.updated_at = new Date().getTime();
+                this.dearSantas[id].mail.delivery_status = 'created';
+                this.dearSantas[id].mail.updated_at = new Date().getTime();
 
-                return fetch(this.routes.resendEmail[id]);
+                return fetch(this.dearSantas[id].resendUrl);
             },
             resend_target() {
                 this.targetDearSantaLastUpdate = new Date().getTime();
@@ -166,7 +166,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="email in emailsByDate" :key="email.id" class="email">
+                <tr v-for="email in dearSantasByDate" :key="email.id" class="email">
                     <td>{{ email.created_at }}</td>
                     <td><p v-html="nl2br(e(email.mail_body))"></p></td>
                     <td><EmailStatus :delivery_status="email.mail.delivery_status" :last_update="email.mail.updated_at" @redo="resend(email.id)"/></td>

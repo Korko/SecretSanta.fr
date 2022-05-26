@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Lang;
 use URL;
 
 class ErrorController extends Controller

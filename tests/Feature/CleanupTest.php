@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\DearSanta;
+use App\Models\DearTarget;
 use App\Models\Draw;
 use App\Models\Mail;
 use App\Models\Participant;
@@ -21,6 +22,7 @@ it('cleans up everything', function () {
     assertModelCountDiffer(Draw::class, 0);
     assertModelCountDiffer(Participant::class, 0);
     assertModelCountDiffer(DearSanta::class, 0);
+    assertModelCountDiffer(DearTarget::class, 0);
     assertModelCountDiffer(Mail::class, 0);
 
     artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
@@ -28,5 +30,6 @@ it('cleans up everything', function () {
     assertModelCount(Draw::class, 0);
     assertModelCount(Participant::class, 0);
     assertModelCount(DearSanta::class, 0);
+    assertModelCount(DearTarget::class, 0);
     assertModelCount(Mail::class, 0);
 });

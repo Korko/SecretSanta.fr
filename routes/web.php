@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Draw;
-use App\Models\Participant;
-use App\Models\PendingDraw;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\ErrorController;
@@ -10,6 +7,10 @@ use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
 use App\Http\Controllers\SingleController;
 use App\Http\Controllers\StartController;
+use App\Models\Draw;
+use App\Models\Participant;
+use App\Models\PendingDraw;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,7 @@ RateLimiter::for('global', function (Request $request) {
 Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
 Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
 Route::pattern('dearSanta', '[0-9a-zA-Z]{'.config('hashids.connections.dearSanta.length').',}');
+Route::pattern('dearTarget', '[0-9a-zA-Z]{'.config('hashids.connections.dearTarget.length').',}');
 
 Route::fallback([ErrorController::class, 'pageNotFound'])->name('404');
 
@@ -75,8 +77,10 @@ Route::controller(DearSantaController::class)
         Route::middleware('decrypt.iv:participant,name')
             ->group(function () {
                 Route::get('/fetch', 'fetch')->name('fetch');
-                Route::post('/send', 'handle')->name('contact');
-                Route::get('/{dearSanta}/resend', 'resend')->name('resend');
+                Route::post('/sendSanta', 'handleSanta')->name('contactSanta');
+                Route::post('/sendTarget', 'handleTarget')->name('contactTarget');
+                Route::get('/{dearSanta}/resend', 'resendDearSanta')->name('resendDearSanta');
+                Route::get('/{dearTarget}/resend', 'resendDearTarget')->name('resendDearTarget');
                 Route::get('/resendTarget', 'resendTarget')->name('resendTarget');
             });
     });

@@ -3,6 +3,7 @@
 namespace App\Solvers;
 
 use Generator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class GraphSolver extends Solver
@@ -13,6 +14,10 @@ class GraphSolver extends Solver
         return $this->findPaths($participantsIdx->shuffle(), $allExclusions);
     }
 
+    /**
+     * @param Collection<int> $nodesLeft
+     * @param Collection<array<int>> $allExclusions
+     */
     protected function findPaths(Collection $nodesLeft, Collection $allExclusions)
     {
         // Preformat nodes to weight them by the amount of exclusions for each one
@@ -45,8 +50,9 @@ class GraphSolver extends Solver
             });
             unset($availableNodes[$nextNode]);
 
-            // Remove the node from the list but keep the weight to add it later on
+            // Keep the weight if we need to remove and add it back again later on
             $nextNodeWeight = $nodesLeft[$nextNode];
+
             $nodesLeft->offsetUnset($nextNode);
 
             $list[$startNode] = $nextNode;

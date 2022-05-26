@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\AppMode;
+use App\Rules\Limitation;
+use Illuminate\Validation\Rules\Enum;
 use Lang;
 
 class RandomFormRequest extends Request
@@ -31,7 +34,10 @@ class RandomFormRequest extends Request
             'organizer.email'             => ['exclude_if:participant-organizer,true', 'required', 'email', 'max:320'],
 
             'participants'                => [
-                'required', 'array', 'min:3', config('app.participants_limit') ? 'max:'.config('app.participants_limit') : null
+                'required', 'array', 'min:3', new Limitation(
+                    // Max rule is ignored if there no 'array' rule with it (to detect how to count)
+                    array_map(fn($limit) => 'array|max:'.$limit, config('modes.limitations.participants'))
+                )
             ],
 
             'participants.*.name'         => ['required', 'distinct', 'max:55'],
@@ -41,6 +47,8 @@ class RandomFormRequest extends Request
 
             'title'                       => ['required', 'string', 'max:36773'],
             'content'                     => ['required', 'string', 'max:36773'],
+
+            'mode'                        => ['sometimes', new Enum(AppMode::class)]
         ];
     }
 

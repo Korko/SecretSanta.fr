@@ -21,6 +21,7 @@ return new class extends Migration
             $table->binary('mail_body');
             $table->boolean('next_solvable')->default(true);
             $table->timestamps();
+            $table->timestamp('finished_at')->nullable();
         });
     }
 

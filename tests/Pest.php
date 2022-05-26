@@ -4,9 +4,11 @@ use App\Models\Draw;
 use App\Models\PendingDraw;
 use App\Services\DrawFormHandler;
 use function Pest\Laravel\assertDatabaseCount;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Illuminate\Testing\TestResponse;
-use PHPUnit\Framework\TestCase;
+use Tests\DuskTestCase;
+use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +21,10 @@ use PHPUnit\Framework\TestCase;
 |
 */
 
-uses(Tests\DuskTestCase::class)->in('Browser');
-uses(Tests\TestCase::class)->in('Feature');
-uses(Illuminate\Foundation\Testing\DatabaseMigrations::class)->in('Feature');
+uses(DuskTestCase::class)->in('Browser');
+uses(TestCase::class)->in('Feature');
+uses(RefreshDatabase::class)->in('Feature');
+//uses(Illuminate\Foundation\Testing\DatabaseMigrations::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -43,10 +46,10 @@ uses(Illuminate\Foundation\Testing\DatabaseMigrations::class)->in('Feature');
  *
  * @param  string  $class
  * @param  int  $count
- * @return $this
+ * @return void
  */
 function assertModelCount($class, int $count) {
-    return assertDatabaseCount(
+    assertDatabaseCount(
         test()->getTable($class),
         $count
     );
@@ -57,7 +60,7 @@ function assertModelCount($class, int $count) {
  *
  * @param  string  $class
  * @param  int  $count
- * @return $this
+ * @return void
  */
 function assertModelCountDiffer($class, int $count) {
     $database = App::make('db');
@@ -65,7 +68,7 @@ function assertModelCountDiffer($class, int $count) {
 
     $table = test()->getTable($class);
 
-    return test()->assertNotEquals(
+    test()->assertNotEquals(
         $count, $database->table($table)->count()
     );
 }
@@ -124,13 +127,13 @@ function createPendingDraw($participants, $params = []) {
         ->create();
 }
 
-function createServiceDraw($participants) : Draw {
+function createServiceDraw($participants, $data = []) : Draw {
     $pendingDraw = PendingDraw::factory()
-        ->state(function (array $attributes) use ($participants) {
+        ->state(function (array $attributes) use ($participants, $data) {
             return [
                 'data' => [
                     'participants' => $participants,
-                ] + $attributes['data']
+                ] + $data + $attributes['data']
             ];
         })
         ->create();

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Draw;
+use App\Models\Exclusion;
 use App\Models\Participant;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -30,7 +31,7 @@ class ParticipantFactory extends Factory
             'draw_id'   => Draw::factory(),
             'name'      => $this->faker->name,
             'email'     => $this->faker->email,
-            'target_id' => null,
+            'target_id'  => null,
         ];
     }
 

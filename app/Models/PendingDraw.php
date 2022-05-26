@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Casts\EncryptedString;
 use App\Events\PendingDrawStatusUpdated;
+use DateInterval;
+use DateTime;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;

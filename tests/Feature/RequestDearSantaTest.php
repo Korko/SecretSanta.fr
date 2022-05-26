@@ -3,14 +3,14 @@
 use App\Models\DearSanta;
 use App\Models\Draw;
 use App\Notifications\DearSanta as DearSantaNotification;
-use App\Notifications\TargetDrawn as TargetDrawnNotification;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
 it('lets each participant write to their santa', function (Draw $draw) {
     Notification::fake();
 
     foreach ($draw->participants as $participant) {
-        ajaxPost(URL::signedRoute('santa.contact', ['participant' => $participant]), [
+        ajaxPost(URL::signedRoute('santa.contactSanta', ['participant' => $participant]), [
                 'content' => 'test dearSanta mail content',
             ])
             ->assertSuccessful()
@@ -23,7 +23,7 @@ it('lets each participant write to their santa', function (Draw $draw) {
 test('it does not let a participant resend the email to their santa just after sending', function (DearSanta $dearSanta) {
     Notification::fake();
 
-    ajaxGet(URL::signedRoute('santa.resend', ['participant' => $dearSanta->sender, 'dearSanta' => $dearSanta]))
+    ajaxGet(URL::signedRoute('santa.resendDearSanta', ['participant' => $dearSanta->sender, 'dearSanta' => $dearSanta]))
         ->assertForbidden()
         ->assertJsonStructure(['message']);
 
@@ -34,7 +34,7 @@ test('it does not let a participant resend the email to their santa just after s
 test('it lets a participant resend the email to their santa in case of error', function (DearSanta $dearSanta) {
     Notification::fake();
 
-    ajaxGet(URL::signedRoute('santa.resend', ['participant' => $dearSanta->sender, 'dearSanta' => $dearSanta]))
+    ajaxGet(URL::signedRoute('santa.resendDearSanta', ['participant' => $dearSanta->sender, 'dearSanta' => $dearSanta]))
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
@@ -49,7 +49,7 @@ test('it updates the draw update date when writing to a santa', function (Draw $
 
     sleep(2);
 
-    ajaxPost(URL::signedRoute('santa.contact', ['participant' => $participant]), [
+    ajaxPost(URL::signedRoute('santa.contactSanta', ['participant' => $participant]), [
             'content' => 'test dearSanta mail content',
         ])
         ->assertSuccessful()

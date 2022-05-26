@@ -3,19 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Draw;
-use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use App\Notifications\ConfirmWithdrawal;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
-use App\Notifications\TargetWithdrawn;
 use App\Notifications\TargetNameChanged;
-use Carbon\Carbon;
-use Csv;
+use App\Notifications\TargetWithdrawn;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Lang;
 
@@ -43,7 +39,7 @@ class OrganizerController extends Controller
         $drawFields = ['hash', 'mail_title', 'created_at', 'finished_at', 'deletes_at', 'next_solvable', 'organizer_name'];
         $participantFields = ['hash', 'name', 'email', 'mail' => ['id', 'updated_at', 'delivery_status']];
 
-        if ($draw->finished) {
+        if ($draw->isFinished) {
             $participantFields[] = ['target' => ['hash', 'name']];
         }
 
@@ -52,13 +48,13 @@ class OrganizerController extends Controller
             'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) use ($draw, $participantFields) {
                 return [
                     $participant->hash => $participant->only($participantFields) + [
-                        'changeEmailUrl' => $draw->finished ? '' : URL::signedRoute('organizer.changeEmail', [
+                        'changeEmailUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.changeEmail', [
                             'draw' => $draw, 'participant' => $participant
                         ]),
-                        'changeNameUrl' => $draw->finished ? '' : URL::signedRoute('organizer.changeName', [
+                        'changeNameUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.changeName', [
                             'draw' => $draw, 'participant' => $participant
                         ]),
-                        'withdrawalUrl' => $draw->finished ? '' : URL::signedRoute('organizer.withdraw', [
+                        'withdrawalUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.withdraw', [
                             'draw' => $draw, 'participant' => $participant
                         ]),
                     ]
@@ -123,7 +119,7 @@ class OrganizerController extends Controller
         $participant->createMetric('change_name');
 
         try {
-            $participant->santa->notify(new TargetNameChanged);
+            $participant->santa->notify(new TargetNameChanged($participant));
 
             $response = [
                 'message' => trans('Nom modifié avec succès !')
@@ -143,27 +139,24 @@ class OrganizerController extends Controller
     {
         abort_unless($draw->participants->count() > 3, 403, Lang::get('error.withdraw'));
 
-        $santa = $participant->santa;
-        $target = $participant->target;
-
         // A -> B -> C => A -> C
-        $santa->target()->associate($target);
-        $santa->save();
+        $participant->santa->target()->associate($participant->target);
+        $participant->santa->save();
 
         try {
-            $santa->notify(new TargetWithdrawn);
-            $target->dearSantas->each(function ($dearSanta) use ($santa) {
-                $santa->notify(new DearSanta($dearSanta));
+            $participant->santa->notify(new TargetWithdrawn($participant, $participant->target));
+            $participant->target->dearSantas->each(function ($dearSanta) use ($participant) {
+                $participant->santa->notify(new DearSanta($dearSanta));
             });
         } catch(Exception $e) {
-//TODO
+            //TODO
         }
 
         $participant->delete();
         try {
             $participant->notify(new ConfirmWithdrawal);
         } catch(Exception $e) {
-//TODO
+            //TODO
         }
 
         return response()->json([
@@ -188,7 +181,7 @@ class OrganizerController extends Controller
 
     public function csvFinal(Draw $draw)
     {
-        abort_unless($draw->finished, 403, Lang::get('error.finished'));
+        abort_unless($draw->isFinished, 403, Lang::get('error.finished'));
         abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
 
         $draw->createMetric('csv_final_download');

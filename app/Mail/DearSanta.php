@@ -46,7 +46,7 @@ class DearSanta extends TrackedMailable
                 'name' => $this->santa->name,
                 'draw' => $this->santa->draw->id,
                 'content' => $this->dearSanta->mail_body,
-                'targetName' => $this->santa->target->name,
+                'targetName' => $this->dearSanta->sender->name,
                 'dearSantaLink' => $url
             ]);
     }

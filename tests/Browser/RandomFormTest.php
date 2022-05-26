@@ -3,12 +3,11 @@
 namespace Tests\Browser;
 
 use Faker\Factory as FakerFactory;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
-use Tests\Browser\Pages\RandomFormPage;
-use Tests\Browser\Components\ExclusionPicker;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Dusk\Browser;
+use Tests\Browser\Components\ExclusionPicker;
+use Tests\Browser\Pages\RandomFormPage;
+use Tests\DuskTestCase;
 
 class RandomFormTest extends DuskTestCase
 {

@@ -8,7 +8,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.1",
         "beyondcode/laravel-websockets": "^1.9",
         "doctrine/dbal": "^3.0",
         "elhebert/laravel-sri": "^3.1",

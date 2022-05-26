@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\DearSanta;
+use App\Models\DearTarget;
 use App\Models\Draw;
+use App\Models\Exclusion;
 use App\Models\Participant;
 use App\Services\DrawHandler;
 use Carbon\Carbon;
@@ -32,10 +34,17 @@ class ExpiredDrawSeeder extends Seeder
         DrawHandler::solve($draw, $draw->participants);
 
         // Fake some communications
-        for($i = 0; $i < 20; $i++) {
+        for($i = 0; $i < 10; $i++) {
+            $target = $draw->participants->random();
             DearSanta::factory()
                 ->for($draw, 'draw')
-                ->for($draw->participants->random(), 'sender')
+                ->for($target, 'sender')
+                ->create();
+
+            $santa = $draw->participants->random();
+            DearTarget::factory()
+                ->for($draw, 'draw')
+                ->for($santa, 'sender')
                 ->create();
         }
 

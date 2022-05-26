@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\AppMode;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\TargetDrawn as TargetDrawnNotification;
@@ -11,10 +12,11 @@ it('records new entries in case of success', function ($participants, Draw $draw
     assertModelExists($draw);
     assertModelCount(Participant::class, count($participants));
 
-    // Carreful, array is 0..n, Db is 1..n
+    $indb = Participant::all();
+
     foreach($participants as $idx => $participant) {
-        assertEquals($participant['name'], Participant::find($idx + 1)->name);
-        assertEquals($participant['email'], Participant::find($idx + 1)->email);
+        assertEquals($participant['name'], $indb[$idx]->name);
+        assertEquals($participant['email'], $indb[$idx]->email);
     }
 })->with('validated participants list');
 
@@ -22,11 +24,7 @@ it('saves the correct target', function ($participants, $targets) {
     $draw = createServiceDraw($participants);
 
     foreach($participants as $idx => $participant) {
-        // idx (array offset, starting at 0) = id (database offset, starting at 1) - 1
-        assertEquals($participants[$targets[$idx]]['name'], $draw->participants[$draw->participants[$idx]->target_id - 1]->name);
         assertEquals($participants[$targets[$idx]]['name'], $draw->participants[$idx]->target->name);
-
-        assertEquals($participant['name'], $draw->participants[$draw->participants[$idx]->target_id - 1]->santa->name);
         assertEquals($participant['name'], $draw->participants[$idx]->target->santa->name);
     }
 })->with('unique participants list');

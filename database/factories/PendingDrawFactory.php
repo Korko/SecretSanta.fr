@@ -32,7 +32,7 @@ class PendingDrawFactory extends Factory
                 'participant-organizer' => '1',
                 'participants'          => [],
                 'title'                 => $this->faker->sentence,
-                'content'               => $this->faker->text
+                'content'               => $this->faker->text,
             ]
         ];
     }
@@ -42,11 +42,11 @@ class PendingDrawFactory extends Factory
      *
      * @return static
      */
-    public function validated()
+    public function ready()
     {
         return $this->state(function () {
             return [
-                'status' => PendingDraw::STATE_VALIDATED
+                'status' => PendingDraw::STATE_READY
             ];
         });
     }

@@ -81,6 +81,11 @@ class Participant extends Model
         return $this->hasMany(DearSanta::class, 'sender_id')->with('mail');
     }
 
+    public function dearTargets()
+    {
+        return $this->hasMany(DearTarget::class, 'sender_id')->with('mail');
+    }
+
     public function mail()
     {
         return $this->morphOne(Mail::class, 'mailable');
@@ -107,7 +112,7 @@ class Participant extends Model
     {
         $participant = $this->baseResolver($value, $field);
 
-        throw_if($participant->draw->finished, ModelNotFoundException::class);
+        throw_if($participant->draw->isFinished, ModelNotFoundException::class);
 
         return $participant;
     }

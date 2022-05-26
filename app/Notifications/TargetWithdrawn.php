@@ -8,6 +8,15 @@ use Illuminate\Notifications\Notification;
 
 class TargetWithdrawn extends Notification
 {
+    protected $oldTarget;
+    protected $newTarget;
+
+    public function __construct(Participant $oldTarget, Participant $newTarget)
+    {
+        $this->oldTarget = $oldTarget;
+        $this->newTarget = $newTarget;
+    }
+
     /**
      * Get the notification's delivery channels.
      *
@@ -27,7 +36,7 @@ class TargetWithdrawn extends Notification
      */
     public function toMail(Participant $santa)
     {
-        return (new TargetWithdrawnMailable($santa))
+        return (new TargetWithdrawnMailable($santa, $this->oldTarget, $this->newTarget))
             ->to($santa->routeNotificationFor('mail'));
     }
 }

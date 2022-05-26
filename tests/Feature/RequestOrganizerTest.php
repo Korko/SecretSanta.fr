@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\Draw;
 use App\Notifications\ConfirmWithdrawal;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetNameChanged;
 use App\Notifications\TargetWithdrawn;
-use App\Models\Draw;
 
 test('the organizer can send again the target drawn email', function (Draw $draw) {
     Notification::fake();
@@ -103,7 +103,7 @@ test('the organizer can withdraw a participant', function (Draw $draw) {
 
     $participant = $draw->participants->random();
 
-    ajaxPost(URL::signedRoute('santa.contact', ['participant' => $participant]), [
+    ajaxPost(URL::signedRoute('santa.contactSanta', ['participant' => $participant]), [
             'content' => 'test dearSanta mail content',
         ])
         ->assertSuccessful()

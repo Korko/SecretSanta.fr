@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\DearSanta;
+use App\Models\DearTarget;
 use App\Models\Draw;
 use App\Services\DrawHandler;
+use Illuminate\Support\Facades\Notification;
 
 // Should use yield with a Closure to call the actual closure when the test runs
 // So after the setupBeforeClass, else we don't have a database up and cannot insert anything
@@ -40,7 +42,7 @@ dataset('finished draw', function () {
         Notification::fake();
 
         $draw = Draw::factory()
-            ->finished()
+            ->isFinished()
             ->hasParticipants(3)
             ->create();
 
@@ -55,7 +57,7 @@ dataset('expired draw', function () {
         Notification::fake();
 
         $draw = Draw::factory()
-            ->expired()
+            ->isExpired()
             ->hasParticipants(3)
             ->create();
 
@@ -92,6 +94,39 @@ dataset('resendable dear santa', function () {
         DrawHandler::solve($draw, $draw->participants);
 
         return DearSanta::factory()
+            ->resendable()
+            ->for($draw->participants->random(), 'sender')
+            ->create();
+    };
+});
+
+dataset('dear target', function () {
+    yield 'dear target #0' => function() {
+        Notification::fake();
+
+        $draw = Draw::factory()
+            ->hasParticipants(3)
+            ->create();
+
+        DrawHandler::solve($draw, $draw->participants);
+
+        return DearTarget::factory()
+            ->for($draw->participants->random(), 'sender')
+            ->create();
+    };
+});
+
+dataset('resendable dear target', function () {
+    yield 'resendable dear target #0' => function() {
+        Notification::fake();
+
+        $draw = Draw::factory()
+            ->hasParticipants(3)
+            ->create();
+
+        DrawHandler::solve($draw, $draw->participants);
+
+        return DearTarget::factory()
             ->resendable()
             ->for($draw->participants->random(), 'sender')
             ->create();

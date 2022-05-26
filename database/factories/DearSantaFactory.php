@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\DearSanta;
 use App\Models\Draw;
-use App\Models\Mail;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -9,16 +9,19 @@ use Lang;
 class TargetNameChanged extends Mailable
 {
     protected $santa;
+    protected $target;
 
     /**
      * Create a new message instance.
      *
      * @param  \App\Models\Participant  $santa
+     * @param  \App\Models\Participant  $target
      * @return void
      */
-    public function __construct(Participant $santa)
+    public function __construct(Participant $santa, Participant $target)
     {
         $this->santa = $santa;
+        $this->target = $target;
     }
 
     /**
@@ -35,7 +38,7 @@ class TargetNameChanged extends Mailable
             ->markdown('emails.name_changed', [
                 'name' => $this->santa->name,
                 'draw' => $this->santa->draw->id,
-                'targetName' => $this->santa->target->name,
+                'targetName' => $this->target->name,
             ]);
     }
 }

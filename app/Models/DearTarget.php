@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Casts\EncryptedString;
+use App\Enums\QuestionToSanta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class DearSanta extends Model
+class DearTarget extends Model
 {
     use HasFactory, HashId;
 
-    protected $hashConnection = 'dearSanta';
+    protected $hashConnection = 'dearTarget';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var string[]
      */
-    protected $fillable = ['mail_body', 'draw_id', 'sender_id'];
+    protected $fillable = ['draw_id', 'mail_type', 'sender_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -31,7 +31,7 @@ class DearSanta extends Model
      * @var array
      */
     protected $casts = [
-        'mail_body' => EncryptedString::class,
+        'mail_type' => QuestionToSanta::class,
     ];
 
     /**
@@ -45,11 +45,10 @@ class DearSanta extends Model
     {
         parent::boot();
 
-        static::created(function($dearSanta) {
-            $mail = new Mail;
-            $mail->draw()->associate($dearSanta->draw);
-
-            $dearSanta->mail()->save($mail);
+        static::created(function($dearTarget) {
+            $mail = new Mail();
+            $mail->draw()->associate($dearTarget->draw);
+            $dearTarget->mail()->save($mail);
         });
     }
 
@@ -70,11 +69,11 @@ class DearSanta extends Model
 
     public function getTargetAttribute()
     {
-        return $this->sender->santa;
+        return $this->sender->target;
     }
 
-    public function getDrawAttribute()
+    public function getMailBodyAttribute()
     {
-        return $this->sender->draw;
+        return $this->mail_type->body();
     }
 }

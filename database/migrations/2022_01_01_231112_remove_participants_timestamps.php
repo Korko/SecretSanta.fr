@@ -27,8 +27,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('participants', function (Blueprint $table) {
-            $table->timestamps();
-        });
+        if (! Schema::hasColumn('participants', 'created_at')) {
+            Schema::table('participants', function (Blueprint $table) {
+                $table->timestamps();
+            });
+        }
     }
 };

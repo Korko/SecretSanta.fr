@@ -36,7 +36,11 @@ class DrawHandler
     {
         return Solver::one(
             $participants->pluck('id', 'id'),
-            $participants->pluck('exclusions.*.id', 'id')->filter()
+            $participants
+                ->pluck('exclusions.*.id', 'id')
+                // Remove empty exclusions lists (or lists with only empty values)
+                ->map(fn($exclusion) => array_filter((array)$exclusion))
+                ->filter(fn($exclusion) => !empty($exclusion))
         );
     }
 
