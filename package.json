@@ -13,7 +13,6 @@
         "core-js": "^3.11.1",
         "cross-env": "^7.0.3",
         "laravel-echo": "^1.10.0",
-        "laravel-mix": "^6.0.6",
         "laravel-mix-modernizr": "^1.0.2",
         "laravel-mix-polyfill": "^3.0.0",
         "laravel-mix-purgecss": "^6.0.0",
@@ -24,7 +23,9 @@
         "sass": "^1.32.12",
         "sass-loader": "^8.0.0",
         "vue-loader": "^15.9.6",
-        "vue-template-compiler": "^2.6.12"
+        "vue-template-compiler": "^2.6.12",
+        "vite": "^2.9.12",
+        "laravel-vite-plugin": "^0.2.2"
     },
     "dependencies": {
         "alertifyjs": "^1.13.1",
@@ -43,6 +44,7 @@
         "vue-multiselect": "^2.1.6",
         "vue-recaptcha": "^1.3.0",
         "vuejs-dialog": "^1.4.2",
-        "vuelidate": "^0.7.6"
+        "vuelidate": "^0.7.6",
+        "@vitejs/plugin-vue": "^2.3.3"
     }
 }
