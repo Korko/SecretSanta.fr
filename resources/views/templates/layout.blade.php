@@ -94,10 +94,10 @@
 
     @section('script')
         <script src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" data-auto-replace-svg="nest"></script>
-        <script src="{{ mix('/js/manifest.js') }}"></script>
-        <script src="{{ mix('/js/vendors-vue.js') }}"></script>
-        <script src="{{ mix('/js/vendors-jquery.js') }}"></script>
-        <script src="{{ mix('/js/vendors-ui.js') }}"></script>
+        @vite('resources/js/manifest.js')
+        @vite('resources/js/vendors-vue.js')
+        @vite('resources/js/vendors-jquery.js')
+        @vite('resources/js/vendors-ui.js')
     @show
 </body>
 </html>

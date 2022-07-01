@@ -10,6 +10,6 @@
         ]
     ])
 
-    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('/js/dearSanta.js') }}"></script>
+    @vite('resources/js/common.js')
+    @vite('resources/js/dearSanta.js')
 @stop
