@@ -18,7 +18,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "korko/validator": "dev-master",
         "laravel/dusk": "^6.11",
-        "laravel/framework": "^8.18",
+        "laravel/framework": "^9.19",
         "laravel/tinker": "^2.5",
         "pusher/pusher-php-server": "^4.1",
         "spatie/laravel-blade-javascript": "^2.5",
