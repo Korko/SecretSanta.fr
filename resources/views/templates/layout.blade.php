@@ -48,8 +48,8 @@
         <link rel="image_src" href="{{ url('/images/opengraph_banner_19.1_1.png') }}" />
 
         <!-- css -->
-        <link rel="stylesheet" href="{{ mix('/css/vendor.css') }}" />
-        <link rel="stylesheet" href="{{ mix('/css/app.css') }}" />
+        @vite('resources/css/vendor.css')
+        @vite('resources/css/app.css')
     @show
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
@@ -111,10 +111,10 @@
     </footer>
 
     @section('script')
-        <script type="text/javascript" src="{{ mix('/js/manifest.js') }}"></script>
-        <script type="text/javascript" src="{{ mix('/js/vendor.js') }}"></script>
-        <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
-        <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
+        @vite('resources/js/manifest.js')
+        @vite('resources/js/vendor.js')
+        @vite('resources/js/common.js')
+        @vite('resources/js/app.js')
 
         @javascript([
             'pusher' => [
