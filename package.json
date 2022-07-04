@@ -33,7 +33,7 @@
         "lodash": "^4.17.21",
         "mini-css-extract-plugin": "^1.6.2",
         "moment": "^2.29.1",
-        "npm": "^7.20.0",
+        "npm": "^8.11.0",
         "papaparse": "^5.3.0",
         "postcss": "^8.2.13",
         "pusher-js": "^4.3.1",
