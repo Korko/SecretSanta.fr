@@ -18,7 +18,7 @@
         "inertiajs/inertia-laravel": "^0.5.4",
         "korko/validator": "dev-master",
         "laravel/dusk": "^6.11",
-        "laravel/framework": "^9.2",
+        "laravel/framework": "^9.19",
         "laravel/tinker": "^2.7",
         "pusher/pusher-php-server": "^7.0",
         "spatie/laravel-blade-javascript": "^2.5",
