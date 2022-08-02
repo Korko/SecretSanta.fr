@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\DearSanta;
 use App\Models\DearTarget;
 use App\Models\Draw;
-use App\Models\Exclusion;
 use App\Models\Participant;
 use App\Services\DrawHandler;
 use Carbon\Carbon;
