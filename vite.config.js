@@ -14,6 +14,7 @@ export default defineConfig(({ command, mode }) => {
         plugins: [
             laravel([
                 'resources/js/app.js',
+                'resources/sass/webfonts.scss'
             ]),
             vue({
                 template: {
