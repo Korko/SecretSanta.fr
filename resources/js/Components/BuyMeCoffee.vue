@@ -16,7 +16,7 @@
 </template>
 
 <style scoped>
-    @import "~@fontsource/cookie/index.css";
+    @import "@fontsource/cookie/index.css";
 
     .bmc-button {
         height: 60px;

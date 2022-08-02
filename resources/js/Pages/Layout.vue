@@ -42,7 +42,7 @@
         01. Navigation
     ========================================================================== */
     #menu {
-        background: rgba(33, 45, 57, 0.8);
+        background: var(--main);
         margin-bottom: 0;
     }
 

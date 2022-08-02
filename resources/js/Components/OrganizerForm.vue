@@ -319,8 +319,6 @@
 </template>
 
 <style scoped>
-    @import "~vuejs-dialog/dist/vuejs-dialog.min.css";
-
     .table td {
         vertical-align: middle !important;
     }

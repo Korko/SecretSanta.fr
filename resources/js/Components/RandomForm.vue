@@ -388,7 +388,7 @@
 </template>
 
 <style scoped>
-    @import "~toastify-js/src/toastify.css";
+    @import "toastify-js/src/toastify.css";
 
     .organizerToggle {
         display: inline-block;

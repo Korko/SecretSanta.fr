@@ -3,7 +3,7 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { createI18n } from 'vue-i18n';
 
 createInertiaApp({
-    resolve: name => import(`./Pages/${name}`),
+    resolve: name => import(`./Pages/${name}.vue`),
     setup({ el, App, props, plugin }) {
         const i18n = createI18n({
             locale: props.initialPage.props.app.locale,
