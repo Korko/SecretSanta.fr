@@ -12,14 +12,14 @@ class FixParticipant extends Command
      *
      * @var string
      */
-    protected $signature = 'fix:participant {url : The URL received by one of the participants to write to their santa} {id : The participant id} {email : The correct email of the participant}';
+    protected $signature = 'secretsanta:fix-participant {url : The URL received by one of the participants to write to their santa} {id : The participant id} {email? : The correct email of the participant}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Fix a participant email';
+    protected $description = 'Fix a participant email and send them again their target';
 
     /**
      * Execute the console command.
@@ -33,8 +33,11 @@ class FixParticipant extends Command
         $draw = URLParser::parseByName('dearSanta', $this->argument('url'))->participant->draw;
 
         $participant = $draw->participants->find($this->argument('id'));
-        $participant->email = $this->argument('email');
-        $participant->save();
+
+        if ($this->argument('email')) {
+            $participant->email = $this->argument('email');
+            $participant->save();
+        }
 
         $participant->notifyNow(new TargetDrawn);
         $this->info('Participant mail sent');

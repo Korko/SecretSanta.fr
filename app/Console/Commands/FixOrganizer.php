@@ -14,14 +14,14 @@ class FixOrganizer extends Command
      *
      * @var string
      */
-    protected $signature = 'fix:organizer {url : The URL received by one of the participants to write to their santa} {email : The correct email of the organizer}';
+    protected $signature = 'secretsanta:fix-organizer {url : The URL received by one of the participants to write to their santa} {email? : The correct email of the organizer}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Fix an organizer email';
+    protected $description = 'Fix an organizer email and send them again the link to their panel';
 
     /**
      * Execute the console command.
@@ -34,8 +34,10 @@ class FixOrganizer extends Command
 
         $draw = URLParser::parseByName('dearSanta', $this->argument('url'))->participant->draw;
 
-        $draw->organizer_email = $this->argument('email');
-        $draw->save();
+        if ($this->argument('email')) {
+            $draw->organizer_email = $this->argument('email');
+            $draw->save();
+        }
 
         Notification::route('mail', [
             $draw->organizer_email => $draw->organizer_name
