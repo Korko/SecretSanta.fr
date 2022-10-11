@@ -13,5 +13,9 @@ chmod -R ugo+rw /.composer
 if [ $# -gt 0 ];then
     exec gosu $WWWUSER "$@"
 else
-    /usr/bin/supervisord
+    /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 fi
+
+cp -R /root/.ssh /home/sail/.ssh
+chown -R sail:sail /home/sail/.ssh
+chmod 600 /home/sail/.ssh/*
