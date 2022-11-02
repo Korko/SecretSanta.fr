@@ -35,6 +35,6 @@ class OrganizerRecap extends Notification
     public function toMail($organizer)
     {
         return (new OrganizerRecapMailable($this->draw))
-            ->to($organizer->routeNotificationFor('mail'));
+            ->to($organizer);
     }
 }

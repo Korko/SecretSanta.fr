@@ -22,13 +22,7 @@ it('can create pending draws (and just pending ones)', function ($participants) 
 
     $draw = PendingDraw::first();
 
-    Notification::assertSentTo(
-        new AnonymousNotifiable,
-        PendingDrawNotification::class,
-        function ($notification, $channels, $notifiable) use ($draw) {
-            return $notifiable->routes['mail'] === [['name' => $draw->organizer_name, 'email' => $draw->organizer_email]];
-        }
-    );
+    Notification::assertSentTo($draw->organizer, PendingDrawNotification::class);
 })->with('participants list');
 
 it('respects limit in participants count', function ($participants) {

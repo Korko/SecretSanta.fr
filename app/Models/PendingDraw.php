@@ -10,6 +10,7 @@ use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\AnonymousNotifiable;
 
 /**
  * App\Models\PendingDraw
@@ -62,6 +63,7 @@ class PendingDraw extends Model
      */
     protected $casts = [
         'data' => EncryptedString::class,
+        'organizer_name' => EncryptedString::class,
         'organizer_email' => EncryptedString::class,
     ];
 
@@ -175,5 +177,12 @@ class PendingDraw extends Model
     public function draw()
     {
         return $this->belongsTo(Draw::class);
+    }
+
+    public function getOrganizerAttribute()
+    {
+        return new AnonymousNotifiable([
+            $this->organizer_email => $this->organizer_name,
+        ]);
     }
 }

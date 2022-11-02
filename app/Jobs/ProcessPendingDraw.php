@@ -72,9 +72,7 @@ class ProcessPendingDraw implements ShouldQueue
 
             $draw = $handler->handle($this->pending);
 
-            Notification::route('mail', [
-                ['name' => $draw->organizer_name, 'email' => $draw->organizer_email],
-            ])->notify(new OrganizerRecap($draw));
+            $draw->organizer->notify(new OrganizerRecap($draw));
 
             $draw->createMetric('new_draw')
                 ->addExtra('participants', count($draw->participants));

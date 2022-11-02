@@ -28,13 +28,7 @@ it('sends notifications in case of success', function ($participants) {
 
     // Ensure Organizer receives his recap
     Notification::assertSentTimes(OrganizerRecap::class, 1);
-    Notification::assertSentTo(
-        new AnonymousNotifiable,
-        OrganizerRecap::class,
-        function ($notification, $channels, $notifiable) use ($draw) {
-            return $notifiable->routes['mail'] === [['name' => $draw->organizer_name, 'email' => $draw->organizer_email]];
-        }
-    );
+    Notification::assertSentTo($draw->organizer, OrganizerRecap::class);
 
     // Ensure Participants receive their own recap
     Notification::assertSentTimes(TargetDrawn::class, count($draw->participants));
@@ -61,13 +55,7 @@ it('can create draws with a non participant organizer', function ($participants)
 
     // Ensure Organizer receives his recap
     Notification::assertSentTimes(OrganizerRecap::class, 1);
-    Notification::assertSentTo(
-        new AnonymousNotifiable,
-        OrganizerRecap::class,
-        function ($notification, $channels, $notifiable) use ($draw) {
-            return $notifiable->routes['mail'] === [['name' => $draw->organizer_name, 'email' => $draw->organizer_email]];
-        }
-    );
+    Notification::assertSentTo($draw->organizer, OrganizerRecap::class);
 
     // Ensure Participants receive their own recap
     Notification::assertSentTimes(TargetDrawn::class, count($draw->participants));
@@ -88,17 +76,12 @@ it('sends to the organizer the link to their panel', function ($participants) {
     $draw = $pendingDraw->fresh()->draw;
 
     // Ensure Organizer receives his recap
-    Notification::assertSentTo(
-        new AnonymousNotifiable,
-        OrganizerRecap::class,
-        function ($notification, $channels, $notifiable) use ($draw) {
-            return
-                $notifiable->routes['mail'] === [['name' => $draw->organizer_name, 'email' => $draw->organizer_email]] &&
-                $notification->toMail($notifiable)->assertSeeInHtml(
-                    URL::signedRoute('organizer.index', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV())
-                );
-        }
-    );
+    Notification::assertSentTo($draw->organizer, OrganizerRecap::class, function ($notification, $channels, $notifiable) use ($draw) {
+        return
+            $notification->toMail($notifiable)->assertSeeInHtml(
+                URL::hashedSignedRoute('organizer.index', ['draw' => $draw->hash])
+            );
+    });
 })->with('participants list');
 
 it('can deal with thousands of participants', function ($participants) {

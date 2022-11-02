@@ -9,6 +9,7 @@ use DateTime;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Metrics;
 
 /**
@@ -111,7 +112,10 @@ class Draw extends Model
 
     public function getOrganizerAttribute()
     {
-        return $this->participants->first();
+        return $this->organizer_participant ?
+            $this->participants->first() : new AnonymousNotifiable([
+            $this->organizer_email => $this->organizer_name,
+        ]);
     }
 
     public function getExpiresAtAttribute()

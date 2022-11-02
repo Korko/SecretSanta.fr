@@ -23,8 +23,8 @@ class DrawFormHandler
         if (! Arr::get($pending->data, 'participant-organizer', false)) {
             $organizer = $pending->data['organizer'];
         } else {
-            $organizer = current($pending->data['participants']);
-            unset($organizer['exclusions']);
+            $organizer = null;
+
         }
 
         return DB::transaction(function () use ($organizer, $pending): Draw {
@@ -41,13 +41,22 @@ class DrawFormHandler
         });
     }
 
-    protected function createDraw(array $organizer, array $participants, string $title, string $body): Draw
+    /**
+     * If organizer is null, then it's the first participant. If defined, it's not a participant.
+     * @param array|null $organizer
+     * @param array $participants
+     * @param string $title
+     * @param string $body
+     * @return Draw
+     */
+    protected function createDraw(array $organizer = null, array $participants, string $title, string $body): Draw
     {
         $draw = new Draw();
         $draw->mail_title = $title;
         $draw->mail_body = $body;
-        $draw->organizer_name = $organizer['name'];
-        $draw->organizer_email = $organizer['email'];
+        $draw->organizer_participant = is_null($organizer);
+        $draw->organizer_name = $organizer['name'] ?? current($participants)['name'];
+        $draw->organizer_email = $organizer['email'] ?? current($participants)['email'];
         $draw->save();
 
         foreach ($participants as $idx => $santa) {

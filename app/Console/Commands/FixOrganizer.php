@@ -36,11 +36,6 @@ class FixOrganizer extends Command
     {
         $draw = $this->getDrawFromURL($this->argument('url'));
 
-        $participantOrganizer = false;
-        if ($draw->organizer->email === $draw->organizer_email) {
-            $participantOrganizer = true;
-        }
-
         if ($this->argument('email')) {
             app(ChangeOrganizerEmail::class)->change($draw, $this->argument('email'));
         } else {
@@ -49,7 +44,7 @@ class FixOrganizer extends Command
 
         $this->info('Organizer Recap sent');
 
-        if ($participantOrganizer) {
+        if ($draw->organizer_participant) {
             if ($this->argument('email')) {
                 app(ChangeParticipantEmail::class)->change($draw->organizer, $this->argument('email'));
             } else {
