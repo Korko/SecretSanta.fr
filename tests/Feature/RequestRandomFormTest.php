@@ -152,6 +152,43 @@ it('sends to the organizer the link to their panel', function () {
     );
 });
 
+it('sends to the organizer the initial recap', function () {
+    Notification::fake();
+
+    ajaxPost('/', [
+            'participant-organizer' => '1',
+            'participants'          => generateParticipants(3),
+            'title'                 => 'this is a test',
+            'content-email'         => 'test mail {SANTA} => {TARGET}',
+            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
+        ])
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    $draw = Draw::find(1);
+
+    // Ensure Organizer receives his recap
+    Notification::assertSentTo(
+        new AnonymousNotifiable,
+        OrganizerRecapNotif::class,
+        function ($notification, $channels, $notifiable) use ($draw) {
+            $attachments = $notification->toMail($notifiable)->rawAttachments;
+
+            assertCount(1, $attachments);
+            assertEquals('text/csv', $attachments[0]['options']['mime']);
+
+            // CSV have a BOM at start, remove it to parse, then check the amount of lines not starting with '#' (comments in CSV)
+            $attachments[0]['data'] = str_replace("\xEF\xBB\xBF", '', $attachments[0]['data']);
+            assertCount($draw->participants()->count(), collect(explode("\n", $attachments[0]['data']))
+                ->map(fn($line) => str_getcsv($line))
+                ->filter(fn($data) => $data[0][0] !== '#')
+            );
+
+            return TRUE;
+        }
+    );
+});
+
 it('can deal with thousands of participants', function () {
     assertEquals(0, Draw::count());
     assertEquals(0, Participant::count());

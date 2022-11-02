@@ -68,6 +68,17 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
                 'deletionDate' => $this->draw->deleted_at->locale(App::getLocale())->isoFormat('LL'),
                 'nextSolvable' => $this->draw->next_solvable,
                 'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $this->draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
+            ])
+            ->attachData(
+                "\xEF\xBB\xBF".// UTF-8 BOM
+                $this->draw->participants
+                    ->toCsv(['name', 'email', 'exclusionsNames'])
+                    ->prepend([
+                            ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
+                            ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
+                    ]),
+            'secretsanta_'.$this->draw->expires_at->isoFormat('YYYY-MM-DD').'_init.csv', [
+                'mime' => 'text/csv',
             ]);
     }
 }
