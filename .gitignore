@@ -1,6 +1,5 @@
 /node_modules
 /public/hot
-/public/build
 /public/storage
 /storage/*.key
 /vendor
@@ -14,12 +13,5 @@ npm-debug.log
 yarn-error.log
 database/tests.sqlite
 public/assets/*.map
-/public/hot
-/public/build
-/public/storage
-/storage/*.key
-.phpunit.result.cache
-npm-debug.log
-yarn-error.log
 .php_cs.cache
 settings.json
