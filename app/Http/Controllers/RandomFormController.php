@@ -13,7 +13,7 @@ class RandomFormController extends Controller
 {
     public function index()
     {
-        return static::renderWithInertia('RandomForm.vue', [
+        return response()->inertia('RandomForm.vue', [
             'routes' => [
                 'dashboard' => URL::route('dashboard'),
                 'faq' => URL::route('faq'),

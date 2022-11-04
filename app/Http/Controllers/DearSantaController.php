@@ -23,7 +23,7 @@ class DearSantaController extends Controller
 
     public function index(Participant $participant)
     {
-        return static::renderWithInertia('DearSanta.vue', [
+        return response()->inertia('DearSanta.vue', [
             'routes' => [
                 'form' => URL::route('form.index'),
                 'dashboard' => URL::route('dashboard'),

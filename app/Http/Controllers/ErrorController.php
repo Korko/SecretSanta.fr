@@ -8,7 +8,7 @@ class ErrorController extends Controller
 {
     public static function pageNotFound()
     {
-        return static::renderWithInertia('PageNotFound.vue', [
+        return response()->inertia('PageNotFound.vue', [
             'routes' => [
                 'form' => URL::route('form.index'),
                 'dashboard' => URL::route('dashboard'),
@@ -18,7 +18,7 @@ class ErrorController extends Controller
 
     public static function drawNotFound()
     {
-        return static::renderWithInertia('DrawNotFound.vue', [
+        return response()->inertia('DrawNotFound.vue', [
             'routes' => [
                 'form' => URL::route('form.index'),
                 'dashboard' => URL::route('dashboard'),

@@ -9,7 +9,7 @@ class SingleController extends Controller
 {
     public function faq()
     {
-        return static::renderWithInertia('FrequentlyAskedQuestions.vue', [
+        return response()->inertia('FrequentlyAskedQuestions.vue', [
             'routes' => [
                 'form' => URL::route('form.index'),
                 'dashboard' => URL::route('dashboard'),
@@ -21,7 +21,7 @@ class SingleController extends Controller
 
     public function dashboard()
     {
-        return static::renderWithInertia('Dashboard.vue', [
+        return response()->inertia('Dashboard.vue', [
             'routes' => [
                 'form' => URL::route('form.index'),
                 'faq' => URL::route('faq'),
@@ -31,7 +31,7 @@ class SingleController extends Controller
 
     public function legal()
     {
-        return static::renderWithInertia('Legal.vue', [
+        return response()->inertia('Legal.vue', [
             'routes' => [
                 'form' => URL::route('form.index'),
                 'dashboard' => URL::route('dashboard'),

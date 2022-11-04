@@ -19,7 +19,7 @@ class OrganizerController extends Controller
 {
     public function index(Draw $draw)
     {
-        return static::renderWithInertia('OrganizerPanel.vue', [
+        return response()->inertia('OrganizerPanel.vue', [
             'routes' => [
                 'form' => URL::route('form.index'),
                 'dashboard' => URL::route('dashboard'),

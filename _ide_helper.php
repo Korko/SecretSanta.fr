@@ -18945,6 +18945,25 @@
         }
          
     }
+            /**
+     * 
+     *
+     */ 
+        class Response {
+                    /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::bootInertia()
+         * @param string $page
+         * @param array $parameters
+         * @static 
+         */ 
+        public static function inertia($page, $parameters = [])
+        {
+                        return \Illuminate\Http\Response::inertia($page, $parameters);
+        }
+         
+    }
      
 }
 

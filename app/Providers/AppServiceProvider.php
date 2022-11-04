@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Response;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 
@@ -53,5 +54,12 @@ class AppServiceProvider extends ServiceProvider
                 'translations' => fn() => translations()
             ],
         ]);
+
+        Response::macro('inertia', function (string $page, array $parameters = []) {
+            return Inertia::render($page, $parameters)
+                ->withViewData([
+                    'version' => exec('git describe --tags --always --abbrev=0')
+                ]);
+        });
     }
 }
