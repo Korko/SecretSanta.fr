@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->binary('organizer_name');
             $table->binary('organizer_email');
-            $table->longText('data')->nullable();// Should be better with longBinary but not yet implemented
+            $table->longText('data')->nullable(); // Should be better with longBinary but not yet implemented
             $table->enum('status', PendingDraw::$statuses);
             $table->foreignId('draw_id')->nullable()->constrained('draws')->nullOnDelete();
             $table->timestamps();

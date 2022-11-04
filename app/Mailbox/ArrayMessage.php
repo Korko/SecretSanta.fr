@@ -7,8 +7,7 @@ use Illuminate\Mail\SentMessage as BaseSentMessage;
 
 class ArrayMessage extends BaseSentMessage implements EmailMessage
 {
-    public function getTo() : array
+    public function getTo(): array
     {
-
     }
 }

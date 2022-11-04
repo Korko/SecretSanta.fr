@@ -104,8 +104,8 @@ test('the organizer can withdraw a participant', function (Draw $draw) {
     $participant = $draw->participants->random();
 
     ajaxPost(URL::signedRoute('santa.contactSanta', ['participant' => $participant]), [
-            'content' => 'test dearSanta mail content',
-        ])
+        'content' => 'test dearSanta mail content',
+    ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
@@ -115,9 +115,9 @@ test('the organizer can withdraw a participant', function (Draw $draw) {
     $target = $participant->target;
 
     ajaxGet(URL::signedRoute('organizer.withdraw', [
-            'draw' => $draw,
-            'participant' => $participant,
-        ]))
+        'draw' => $draw,
+        'participant' => $participant,
+    ]))
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
@@ -191,9 +191,9 @@ it('updates the draw update date when sending an email', function (Draw $draw) {
     sleep(2);
 
     ajaxPost(URL::signedRoute('organizer.changeEmail', [
-            'draw' => $draw,
-            'participant' => $participant,
-        ]), ['email' => 'test@test2.com'])
+        'draw' => $draw,
+        'participant' => $participant,
+    ]), ['email' => 'test@test2.com'])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Notification;
 // So after the setupBeforeClass, else we don't have a database up and cannot insert anything
 
 dataset('basic draw', function () {
-    yield 'basic draw #0' => function() {
+    yield 'basic draw #0' => function () {
         Notification::fake();
 
         $draw = Draw::factory()
@@ -24,7 +24,7 @@ dataset('basic draw', function () {
 });
 
 dataset('large draw', function () {
-    yield 'large draw #0' => function() {
+    yield 'large draw #0' => function () {
         Notification::fake();
 
         $draw = Draw::factory()
@@ -38,7 +38,7 @@ dataset('large draw', function () {
 });
 
 dataset('finished draw', function () {
-    yield 'finished draw #0' => function() {
+    yield 'finished draw #0' => function () {
         Notification::fake();
 
         $draw = Draw::factory()
@@ -53,7 +53,7 @@ dataset('finished draw', function () {
 });
 
 dataset('expired draw', function () {
-    yield 'expired draw #0' => function() {
+    yield 'expired draw #0' => function () {
         Notification::fake();
 
         $draw = Draw::factory()
@@ -68,7 +68,7 @@ dataset('expired draw', function () {
 });
 
 dataset('dear santa', function () {
-    yield 'dear santa #0' => function() {
+    yield 'dear santa #0' => function () {
         Notification::fake();
 
         $draw = Draw::factory()
@@ -84,7 +84,7 @@ dataset('dear santa', function () {
 });
 
 dataset('resendable dear santa', function () {
-    yield 'resendable dear santa #0' => function() {
+    yield 'resendable dear santa #0' => function () {
         Notification::fake();
 
         $draw = Draw::factory()
@@ -101,7 +101,7 @@ dataset('resendable dear santa', function () {
 });
 
 dataset('dear target', function () {
-    yield 'dear target #0' => function() {
+    yield 'dear target #0' => function () {
         Notification::fake();
 
         $draw = Draw::factory()
@@ -117,7 +117,7 @@ dataset('dear target', function () {
 });
 
 dataset('resendable dear target', function () {
-    yield 'resendable dear target #0' => function() {
+    yield 'resendable dear target #0' => function () {
         Notification::fake();
 
         $draw = Draw::factory()

@@ -30,7 +30,7 @@ class ListDraw extends Command
         $this->setCryptIVFromUrl($this->argument('url'));
 
         $participant = URLParser::parseByName('santa.index', $this->argument('url'))->participant;
-        if($participant) {
+        if ($participant) {
             $draw = $participant->draw;
         } else {
             $draw = URLParser::parseByName('organizer.index', $this->argument('url'))->draw;
@@ -41,7 +41,7 @@ class ListDraw extends Command
             $draw->participants()
                 ->with(['mail'])
                 ->get()
-                ->map(fn($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')])
+                ->map(fn ($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')])
                 ->toArray()
         );
     }

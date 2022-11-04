@@ -12,11 +12,11 @@ class ArrayTransport extends BaseArrayTransport implements MailboxContract
     /**
      * {@inheritdoc}
      */
-    public function getUnseenMails(): Iterable
+    public function getUnseenMails(): iterable
     {
         return $this->messages()
             ->map(function (SentMessage $message) {
-                return array_map(fn(Address $recipient) => $recipient->getAddress(), $message->getEnvelope()->getRecipients());
+                return array_map(fn (Address $recipient) => $recipient->getAddress(), $message->getEnvelope()->getRecipients());
             });
     }
 }

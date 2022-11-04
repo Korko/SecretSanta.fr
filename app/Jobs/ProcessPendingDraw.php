@@ -6,7 +6,6 @@ use App\Exceptions\SolverException;
 use App\Models\PendingDraw;
 use App\Notifications\OrganizerRecap;
 use App\Services\DrawFormHandler;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -41,7 +40,7 @@ class ProcessPendingDraw implements ShouldQueue
     public function backoff()
     {
         // 30s, 5min, 30min
-        return [30, 5*60, 30*60];
+        return [30, 5 * 60, 30 * 60];
     }
 
     /**

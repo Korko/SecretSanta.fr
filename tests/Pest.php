@@ -3,10 +3,10 @@
 use App\Models\Draw;
 use App\Models\PendingDraw;
 use App\Services\DrawFormHandler;
-use function Pest\Laravel\assertDatabaseCount;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Illuminate\Testing\TestResponse;
+use function Pest\Laravel\assertDatabaseCount;
 use Tests\DuskTestCase;
 use Tests\TestCase;
 
@@ -48,7 +48,8 @@ uses(RefreshDatabase::class)->in('Feature');
  * @param  int  $count
  * @return void
  */
-function assertModelCount($class, int $count) {
+function assertModelCount($class, int $count)
+{
     assertDatabaseCount(
         test()->getTable($class),
         $count
@@ -62,7 +63,8 @@ function assertModelCount($class, int $count) {
  * @param  int  $count
  * @return void
  */
-function assertModelCountDiffer($class, int $count) {
+function assertModelCountDiffer($class, int $count)
+{
     $database = App::make('db');
     $database = $database->connection($database->getDefaultConnection());
 
@@ -84,56 +86,64 @@ function assertModelCountDiffer($class, int $count) {
 |
 */
 
-function prepareAjax($headers = []) : TestCase {
+function prepareAjax($headers = []): TestCase
+{
     $headers = $headers + [
-        'Accept'           => 'application/json',
+        'Accept' => 'application/json',
         'X-Requested-With' => 'XMLHttpRequest',
-        'X-HASH-IV'       => base64_encode(DrawCrypt::getIV())
+        'X-HASH-IV' => base64_encode(DrawCrypt::getIV()),
     ];
+
     return test()->withHeaders($headers);
 }
 
-function ajaxPost($url, array $postArgs = [], $headers = []) : TestResponse {
+function ajaxPost($url, array $postArgs = [], $headers = []): TestResponse
+{
     return prepareAjax($headers)->json('POST', $url, $postArgs);
 }
 
-function ajaxGet($url, $headers = []) : TestResponse {
+function ajaxGet($url, $headers = []): TestResponse
+{
     return prepareAjax($headers)->json('GET', $url);
 }
 
-function ajaxDelete($url, $headers = []) : TestResponse {
+function ajaxDelete($url, $headers = []): TestResponse
+{
     return prepareAjax($headers)->json('DELETE', $url);
 }
 
-function createDraw($participants, $params = []) {
+function createDraw($participants, $params = [])
+{
     return ajaxPost(URL::route('form.process'), $params + [
-            'participant-organizer' => '1',
-            'participants'          => $participants,
-            'title'                 => 'this is a test',
-            'content'               => 'test mail {SANTA} => {TARGET}',
-        ])
+        'participant-organizer' => '1',
+        'participants' => $participants,
+        'title' => 'this is a test',
+        'content' => 'test mail {SANTA} => {TARGET}',
+    ])
         ->assertJsonStructure(['message']);
 }
 
-function createPendingDraw($participants, $params = []) {
+function createPendingDraw($participants, $params = [])
+{
     return PendingDraw::factory()
         ->state(function (array $attributes) use ($participants, $params) {
             return [
                 'data' => $params + [
                     'participants' => $participants,
-                ] + $attributes['data']
+                ] + $attributes['data'],
             ];
         })
         ->create();
 }
 
-function createServiceDraw($participants, $data = []) : Draw {
+function createServiceDraw($participants, $data = []): Draw
+{
     $pendingDraw = PendingDraw::factory()
         ->state(function (array $attributes) use ($participants, $data) {
             return [
                 'data' => [
                     'participants' => $participants,
-                ] + $data + $attributes['data']
+                ] + $data + $attributes['data'],
             ];
         })
         ->create();
@@ -148,27 +158,31 @@ function createServiceDraw($participants, $data = []) : Draw {
 /**
  * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithConsole
  */
-function artisan($command, $parameters = []) {
+function artisan($command, $parameters = [])
+{
     return test()->artisan(...func_get_args());
 }
 
 /**
  * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
  */
-function seed($class = 'Database\\Seeders\\DatabaseSeeder') {
+function seed($class = 'Database\\Seeders\\DatabaseSeeder')
+{
     return test()->seed(...func_get_args());
 }
 
 /**
  * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
  */
-function assertModelExists($model) {
+function assertModelExists($model)
+{
     return test()->assertModelExists(...func_get_args());
 }
 
 /**
  * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
  */
-function assertModelMissing($model) {
+function assertModelMissing($model)
+{
     return test()->assertModelMissing(...func_get_args());
 }

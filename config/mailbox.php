@@ -36,7 +36,7 @@ return [
 
         'imap' => [
             'account' => 'default',
-            'transport' => 'imap'
+            'transport' => 'imap',
         ],
 
         'array' => [

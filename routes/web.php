@@ -1,15 +1,11 @@
 <?php
 
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
 use App\Http\Controllers\SingleController;
 use App\Http\Controllers\StartController;
-use App\Models\Draw;
-use App\Models\Participant;
-use App\Models\PendingDraw;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
@@ -26,10 +22,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 RateLimiter::for('global', function (Request $request) {
-        return Limit::perMinute(100)->by($request->ip())->response(function () {
-            return abort(429);
-        });
+    return Limit::perMinute(100)->by($request->ip())->response(function () {
+        return abort(429);
     });
+});
 
 Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
 Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
@@ -56,7 +52,7 @@ Route::controller(StartController::class)
     ->middleware('signed')
     ->prefix('/pending/{pending}')
     ->name('pending.')
-    ->group(function() {
+    ->group(function () {
         Route::get('/', 'index')->name('view');
 
         Route::middleware('decrypt.iv:pending,organizer_email')
@@ -70,7 +66,7 @@ Route::controller(DearSantaController::class)
     ->middleware('signed')
     ->prefix('/santa/{participant}')
     ->name('santa.')
-    ->group(function() {
+    ->group(function () {
         Route::get('/', 'index')->name('index')
             ->missing([ErrorController::class, 'drawNotFound']);
 
@@ -89,7 +85,7 @@ Route::controller(OrganizerController::class)
     ->middleware('signed')
     ->prefix('/org/{draw}')
     ->name('organizer.')
-    ->group(function() {
+    ->group(function () {
         Route::get('/', 'index')->name('index')
             ->missing([ErrorController::class, 'drawNotFound']);
 

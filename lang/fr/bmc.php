@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'button' => 'Offrez moi un café'
+    'button' => 'Offrez moi un café',
 ];

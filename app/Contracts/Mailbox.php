@@ -5,7 +5,7 @@ namespace App\Contracts;
 interface Mailbox
 {
     /**
-     * @return \Iterable<\App\Contracts\EmailMessage>
+     * @return \iterable<\App\Contracts\EmailMessage>
      */
-    public function getUnseenMails() : Iterable;
+    public function getUnseenMails(): iterable;
 }

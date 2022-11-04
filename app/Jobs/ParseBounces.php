@@ -2,15 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Mail\TrackedMailable;
+use App\Contracts\EmailMessage;
+use App\Contracts\Mailbox;
 use App\Services\MailTracker;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Contracts\Mailbox;
-use App\Contracts\EmailMessage;
 
 class ParseBounces implements ShouldQueue
 {
@@ -20,7 +19,7 @@ class ParseBounces implements ShouldQueue
     {
         $recipients = $this->getRecipients($mailbox);
 
-        foreach($recipients as $recipient) {
+        foreach ($recipients as $recipient) {
             $tracker->handle($recipient);
         }
     }

@@ -6,9 +6,9 @@ return [
     ],
 
     'categories' => [
-        'general'   => 'Générales',
+        'general' => 'Générales',
         'technical' => 'Techniques',
-        'news'      => 'Dernières Nouveautés',
+        'news' => 'Dernières Nouveautés',
     ],
 
     'questions' => [
@@ -19,13 +19,13 @@ return [
             "J'ai supprimé mon email d'accès au panneau d'organisateur/organisatrice." => "Pour corriger ce problème, soit vous organizez un autre tirage, soit vous demandez à un des participant de vous transmettre l'adresse web qui lui permet d'écrire à son/sa père/mère noël secret et vous l'envoyez par mail à l'adresse suivante : help@secretsanta.fr. Après vérification et durant son temps libre, le développeur pourra peut-être vous aider.",
             "Je me suis trompé dans l'adresse d'un participant." => "Lorsque vous avez organisé votre secret santa, vous avez dû recevoir un email avec un lien vers un panneau d'organisateur/organisatrice. Vous pourrez modifier l'adresse email de chaque participant depuis cette interface.",
             "Un des participants n'a pas reçu l'email." => "Alors même que l'adresse renseignée est bonne, il arrive que l'email se perde, finisse en spam ou qu'un problème survienne faisant que l'email n'est pas arrivé. Depuis votre panneau d'organisateur/organisatrice, vous pouvez retrouver un bouton à côté du status de réception de l'email du participant pour pouvoir réenvoyer le-dit email. Comme ça, le participant pourra enfin savoir qui est sa cible et comment parler à son Santa.",
-            "Un des participants ne souhaite plus participer." => "Depuis le panneau d'organisateur, tant que vous êtes plus de 3 participants, vous pouvez retirer un participant de l'évènement. Attention cela est définitif, il n'existe aucun moyen de rajouter quelqu'un. Le santa de la personne qui abandonne sera prévenu du nom de sa nouvelle cible puis recevra la totalité des messages que celle-ci aurait écrit à son ancien santa (la personne qui a abandonnée). Il n'y a donc rien d'autre à faire.",
-            "Je suis organisateur et je ne voudrais pas participer." => "Depuis le formulaire de création de l'évènement, il est possible de préciser que l'organisateur ne participe pas. Vous recevrez quand même le lien vers le panneau d'organisateur mais pas de cible (et personne ne vous piochera). Si jamais vous avez déjà organisé l'évènement, depuis le panneau d'organisateur, vous pouvez vous retirer vous même de la liste des participants (si vous êtes 4 ou plus). Vous resterez l'organisateur mais vous ne serez plus participant.",
-            "Est-il possible de parler à sa cible ?" => "Afin de conserver son identité secrête, un santa ne peut pas écrire à sa cible.",
+            'Un des participants ne souhaite plus participer.' => "Depuis le panneau d'organisateur, tant que vous êtes plus de 3 participants, vous pouvez retirer un participant de l'évènement. Attention cela est définitif, il n'existe aucun moyen de rajouter quelqu'un. Le santa de la personne qui abandonne sera prévenu du nom de sa nouvelle cible puis recevra la totalité des messages que celle-ci aurait écrit à son ancien santa (la personne qui a abandonnée). Il n'y a donc rien d'autre à faire.",
+            'Je suis organisateur et je ne voudrais pas participer.' => "Depuis le formulaire de création de l'évènement, il est possible de préciser que l'organisateur ne participe pas. Vous recevrez quand même le lien vers le panneau d'organisateur mais pas de cible (et personne ne vous piochera). Si jamais vous avez déjà organisé l'évènement, depuis le panneau d'organisateur, vous pouvez vous retirer vous même de la liste des participants (si vous êtes 4 ou plus). Vous resterez l'organisateur mais vous ne serez plus participant.",
+            'Est-il possible de parler à sa cible ?' => 'Afin de conserver son identité secrête, un santa ne peut pas écrire à sa cible.',
             "A quoi correspondent les status d'envoi des emails ?" => "Les emails peuvent avoir 5 états : tout d'abord ils sont \"En attente d'envoi\" c'est à dire qu'ils sont sur la piste de décolage. Ensuite c'est \"Envoi en cours\", cette étape est tellement rapide que personne ne devrait l'observer. Viennent les 3 principaux status : \"Envoyé\" c'est à dire que le mail est bien parti, je n'ai pas encore de retour d'erreur encore, \"Reçu\", le destinataire a bien confirmé l'avoir reçu et enfin \"Erreur\", quelque chose ne va pas. Soit l'email est invalide, soit il faut retenter un peu plus tard, un problème passager peut arriver quand une trop grande quantité de mails sont envoyés en peu de temps.",
             'Quand sont supprimés mes données personnelles ?' => "Toutes vos données d'un tirage sont supprimées 7 jours après la date de fin d'un tirage au sort ou 3 mois après l'envoi du dernier email. Ce délai a été fixé afin de laisser le temps à l'organisateur/organisatrice de télécharger depuis son interface la liste des participants avec leur cible piochée. Cela permettra d'aider à l'organisation d'un secretsanta avec les mêmes personnes plus tard en évitant de retomber sur les mêmes cibles.",
-            "Comment est définie la date de fin d'un tirage au sort ? A quoi ça sert ?" => "Un organisateur peut à tout moment décider via son panneau dédié, de terminer un tirage au sort. A ce moment là, plus aucun email ne peut être envoyé, les cibles de tous les participants sont affichées et un fichier final peut être téléchargé pour préparer plus facilement le prochain tirage au sort avec les mêmes participants. Cette action est définitive.",
-            "Comment rajouter un participant à un tirage déjà effectué ?" => "Malheureusement, de par sa conception, SecretSanta.fr ne permet pas de rajouter quelqu'un une fois le tirage effectué. Il vous reste cependant une option, autre que relancer le tirage : vous pouvez attribuez à cette personne votre propre cible et offrir vous même un cadeau à ce nouveau participant.",
+            "Comment est définie la date de fin d'un tirage au sort ? A quoi ça sert ?" => 'Un organisateur peut à tout moment décider via son panneau dédié, de terminer un tirage au sort. A ce moment là, plus aucun email ne peut être envoyé, les cibles de tous les participants sont affichées et un fichier final peut être téléchargé pour préparer plus facilement le prochain tirage au sort avec les mêmes participants. Cette action est définitive.',
+            'Comment rajouter un participant à un tirage déjà effectué ?' => "Malheureusement, de par sa conception, SecretSanta.fr ne permet pas de rajouter quelqu'un une fois le tirage effectué. Il vous reste cependant une option, autre que relancer le tirage : vous pouvez attribuez à cette personne votre propre cible et offrir vous même un cadeau à ce nouveau participant.",
             'Qui peut savoir la liste des cibles ?' => "Pour faire court : personne. Pour faire long : cette liste n'est affichée nulle part tant que l'évènement n'est pas terminé.",
         ],
 
@@ -84,6 +84,6 @@ return [
                 'Ajout d\'un captcha pour se protéger des bots',
                 'Développement initial du projet',
             ],
-        ]
+        ],
     ],
 ];

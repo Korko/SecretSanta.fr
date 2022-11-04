@@ -28,9 +28,13 @@ class Mail extends Model
     ];
 
     public const STATE_CREATED = 'created';
+
     public const STATE_SENDING = 'sending';
+
     public const STATE_SENT = 'sent';
+
     public const STATE_ERROR = 'error';
+
     public const STATE_RECEIVED = 'received';
 
     public static $deliveryStatuses = [
@@ -59,28 +63,33 @@ class Mail extends Model
     {
         parent::boot();
 
-        static::creating(function($mail) {
+        static::creating(function ($mail) {
             $mail->notification = Str::uuid();
         });
     }
 
-    public function markAsCreated() {
+    public function markAsCreated()
+    {
         $this->updateDeliveryStatus(self::STATE_CREATED);
     }
 
-    public function markAsSending() {
+    public function markAsSending()
+    {
         $this->updateDeliveryStatus(self::STATE_SENDING);
     }
 
-    public function markAsSent() {
+    public function markAsSent()
+    {
         $this->updateDeliveryStatus(self::STATE_SENT);
     }
 
-    public function markAsError() {
+    public function markAsError()
+    {
         $this->updateDeliveryStatus(self::STATE_ERROR);
     }
 
-    public function markAsReceived() {
+    public function markAsReceived()
+    {
         $this->updateDeliveryStatus(self::STATE_RECEIVED);
     }
 

@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Initialize inertia js
      */
-    private function bootInertia() : void
+    private function bootInertia(): void
     {
         // Boot inertia here. For example the version, the errors handlers...
 
@@ -51,14 +51,14 @@ class AppServiceProvider extends ServiceProvider
                 // Here we properly return the translation to Vue.
                 // Note that it is lazy loaded, so Inertia will not load the translations in every request.
                 // Inertia will load only on demand. Using, VueJs, will call this method only once, when the app is open.
-                'translations' => fn() => translations()
+                'translations' => fn () => translations(),
             ],
         ]);
 
         Response::macro('inertia', function (string $page, array $parameters = []) {
             return Inertia::render($page, $parameters)
                 ->withViewData([
-                    'version' => exec('git describe --tags --always --abbrev=0')
+                    'version' => exec('git describe --tags --always --abbrev=0'),
                 ]);
         });
     }

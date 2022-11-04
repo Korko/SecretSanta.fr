@@ -19,6 +19,7 @@ use Lang;
 class DearSantaController extends Controller
 {
     protected $dearSantaPublicFields = ['id', 'mail_body', 'mail', 'created_at', 'updated_at'];
+
     protected $dearTargetPublicFields = ['id', 'mail_type', 'mail_body', 'mail', 'created_at', 'updated_at'];
 
     public function index(Participant $participant)
@@ -29,9 +30,9 @@ class DearSantaController extends Controller
                 'dashboard' => URL::route('dashboard'),
                 'contactSanta' => URL::signedRoute('santa.contactSanta', ['participant' => $participant]),
                 'fetch' => URL::signedRoute('santa.fetch', ['participant' => $participant]),
-                'resendTarget' => URL::signedRoute('santa.resendTarget', ['participant' => $participant])
+                'resendTarget' => URL::signedRoute('santa.resendTarget', ['participant' => $participant]),
             ],
-            'dearTargetTypes' => QuestionToSanta::cases()
+            'dearTargetTypes' => QuestionToSanta::cases(),
         ]);
     }
 
@@ -60,18 +61,18 @@ class DearSantaController extends Controller
                 return [
                     $email->mail->id => $email->only($this->dearSantaPublicFields) + [
                         'resendUrl' => URL::signedRoute('santa.resendDearSanta', [
-                            'participant' => $participant, 'dearSanta' => $email
-                        ])
-                    ]
+                            'participant' => $participant, 'dearSanta' => $email,
+                        ]),
+                    ],
                 ];
             }),
             'dearTargets' => $participant->dearTargets->mapWithKeys(function ($email) use ($participant) {
                 return [
                     $email->mail->id => $email->only($this->dearTargetPublicFields) + [
                         'resendUrl' => URL::signedRoute('santa.resendDearTarget', [
-                            'participant' => $participant, 'dearTarget' => $email
-                        ])
-                    ]
+                            'participant' => $participant, 'dearTarget' => $email,
+                        ]),
+                    ],
                 ];
             }),
         ]);

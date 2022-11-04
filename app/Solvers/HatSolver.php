@@ -3,17 +3,16 @@
 namespace App\Solvers;
 
 use Generator;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class HatSolver extends Solver
 {
-    protected function solve(Collection $participantsIdx, Collection $exclusions) : Generator
+    protected function solve(Collection $participantsIdx, Collection $exclusions): Generator
     {
         return $this->solveWithExclusions((int) $participantsIdx->first(), [], $exclusions, $participantsIdx->shuffle());
     }
 
-    private function solveWithExclusions(int $participantIdx, array $combination, Collection $allExclusions, Collection $currentHat) : Generator
+    private function solveWithExclusions(int $participantIdx, array $combination, Collection $allExclusions, Collection $currentHat): Generator
     {
         // End of a loop, we've found a possible combination
         if ($currentHat->isEmpty()) {

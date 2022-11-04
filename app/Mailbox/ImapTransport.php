@@ -16,7 +16,7 @@ class ImapTransport implements MailboxContract
     /**
      * {@inheritdoc}
      */
-    public function getUnseenMails() : Iterable
+    public function getUnseenMails(): iterable
     {
         $oFolder = $this->delegate->getFolder(config('imap.folders.inbox'));
 
@@ -29,9 +29,8 @@ class ImapTransport implements MailboxContract
     /**
      * Proxies all methods to the delegate.
      *
-     * @param string $method
-     * @param array  $args
-     *
+     * @param  string  $method
+     * @param  array  $args
      * @return mixed
      */
     public function __call($method, $args)

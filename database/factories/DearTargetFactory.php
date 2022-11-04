@@ -28,22 +28,22 @@ class DearTargetFactory extends Factory
     public function definition()
     {
         return [
-            'draw_id'     => Draw::factory(),
-            'sender_id'   => Participant::factory(),
-            'mail_type'   => $this->faker->randomElement(QuestionToSanta::cases())->value,
+            'draw_id' => Draw::factory(),
+            'sender_id' => Participant::factory(),
+            'mail_type' => $this->faker->randomElement(QuestionToSanta::cases())->value,
         ];
     }
 
-    /**
-     * Indicate that the dearTarget is resendable.
-     *
-     * @return static
-     */
+     /**
+      * Indicate that the dearTarget is resendable.
+      *
+      * @return static
+      */
      public function resendable()
-    {
-        return $this->afterCreating(function (DearTarget $dearTarget) {
-            $dearTarget->mail->updated_at = $dearTarget->mail->updated_at->subSeconds(config('mail.resend_delay'));
-            $dearTarget->mail->save();
-        });
-    }
+     {
+         return $this->afterCreating(function (DearTarget $dearTarget) {
+             $dearTarget->mail->updated_at = $dearTarget->mail->updated_at->subSeconds(config('mail.resend_delay'));
+             $dearTarget->mail->save();
+         });
+     }
 }

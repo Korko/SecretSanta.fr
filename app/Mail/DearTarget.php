@@ -11,6 +11,7 @@ use Lang;
 class DearTarget extends TrackedMailable
 {
     protected $target;
+
     protected $dearTarget;
 
     /**
@@ -47,7 +48,7 @@ class DearTarget extends TrackedMailable
                 'draw' => $this->target->draw->id,
                 'content' => $this->dearTarget->mail_body,
                 'santaName' => $this->target->santa->name,
-                'dearSantaLink' => $url
+                'dearSantaLink' => $url,
             ]);
     }
 }

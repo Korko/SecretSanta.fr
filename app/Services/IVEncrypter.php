@@ -89,7 +89,7 @@ class IVEncrypter extends BaseEncrypter
      */
     public static function supportedIV($iv, $cipher)
     {
-        return (mb_strlen($iv, '8bit') === openssl_cipher_iv_length($cipher));
+        return mb_strlen($iv, '8bit') === openssl_cipher_iv_length($cipher);
     }
 
     /**

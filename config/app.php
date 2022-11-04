@@ -211,12 +211,12 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Arr'             => App\Collections\Arr::class,
-        'Csv'             => App\Services\CsvGenerator::class,
-        'DrawCrypt'       => App\Facades\DrawCrypt::class,
-        'Hashids'         => Vinkla\Hashids\Facades\Hashids::class,
-        'Solver'          => App\Facades\Solver::class,
-        'URLParser'       => Facades\App\Services\URLParser::class,
+        'Arr' => App\Collections\Arr::class,
+        'Csv' => App\Services\CsvGenerator::class,
+        'DrawCrypt' => App\Facades\DrawCrypt::class,
+        'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
+        'Solver' => App\Facades\Solver::class,
+        'URLParser' => Facades\App\Services\URLParser::class,
     ])->toArray(),
 
     'bmc' => env('BMC_ME'),

@@ -23,11 +23,11 @@ class OrganizerController extends Controller
             'routes' => [
                 'form' => URL::route('form.index'),
                 'dashboard' => URL::route('dashboard'),
-                'fetch' => URL::signedRoute('organizer.fetch', ['draw' => $draw]) ,
+                'fetch' => URL::signedRoute('organizer.fetch', ['draw' => $draw]),
                 'csvInitUrl' => URL::signedRoute('organizer.csvInit', ['draw' => $draw]),
                 'csvFinalUrl' => URL::signedRoute('organizer.csvFinal', ['draw' => $draw]),
                 'deleteUrl' => URL::temporarySignedRoute('organizer.delete', 3600, ['draw' => $draw]),
-            ]
+            ],
         ]);
     }
 
@@ -49,27 +49,27 @@ class OrganizerController extends Controller
                 return [
                     $participant->hash => $participant->only($participantFields) + [
                         'changeEmailUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.changeEmail', [
-                            'draw' => $draw, 'participant' => $participant
+                            'draw' => $draw, 'participant' => $participant,
                         ]),
                         'changeNameUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.changeName', [
-                            'draw' => $draw, 'participant' => $participant
+                            'draw' => $draw, 'participant' => $participant,
                         ]),
                         'withdrawalUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.withdraw', [
-                            'draw' => $draw, 'participant' => $participant
+                            'draw' => $draw, 'participant' => $participant,
                         ]),
-                    ]
+                    ],
                 ];
-            })
+            }),
         ]);
     }
 
     public function changeEmail(Request $request, Draw $draw, Participant $participant)
     {
         $validated = $request->validate([
-            'email' => ['required', 'email', 'max:320']
+            'email' => ['required', 'email', 'max:320'],
         ], [
             'email.required' => Lang::get('validation.custom.organizer.email.required'),
-            'email.email'    => Lang::get('validation.custom.organizer.email.format'),
+            'email.email' => Lang::get('validation.custom.organizer.email.format'),
         ]);
 
         if ($participant->email === $request->input('email')) {
@@ -89,13 +89,13 @@ class OrganizerController extends Controller
             $response = [
                 'message' => $participant->wasChanged('email') ?
                     trans('Adresse email modifiée avec succès !') :
-                    trans('Email réenvoyé avec succès !')
+                    trans('Email réenvoyé avec succès !'),
             ];
         } catch(Exception $e) {
             $response = [
                 'error' => $participant->wasChanged('email') ?
                     trans('Adresse modifiée avec succès mais une erreur est survenue à l\'envoi de l\'email.') :
-                    trans('Une erreur est survenue dans l\'envoi de l\'email. Veuillez réessayer plus tard.')
+                    trans('Une erreur est survenue dans l\'envoi de l\'email. Veuillez réessayer plus tard.'),
             ];
         }
 
@@ -122,11 +122,11 @@ class OrganizerController extends Controller
             $participant->santa->notify(new TargetNameChanged($participant));
 
             $response = [
-                'message' => trans('Nom modifié avec succès !')
+                'message' => trans('Nom modifié avec succès !'),
             ];
         } catch(Exception $e) {
             $response = [
-                'error' => trans('Nom modifié avec succès mais le père noël secrêt de cette personne n\'a pas pu être prévenu du changement.')
+                'error' => trans('Nom modifié avec succès mais le père noël secrêt de cette personne n\'a pas pu être prévenu du changement.'),
             ];
         }
 

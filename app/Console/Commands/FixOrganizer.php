@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Notifications\OrganizerRecap;
-use App\Notifications\TargetDrawn;
 use Notification;
 use URLParser;
 
@@ -40,7 +39,7 @@ class FixOrganizer extends Command
         }
 
         Notification::route('mail', [
-            $draw->organizer_email => $draw->organizer_name
+            $draw->organizer_email => $draw->organizer_name,
         ])->notify(new OrganizerRecap($draw));
         $this->info('Organizer Recap sent');
     }

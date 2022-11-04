@@ -7,6 +7,7 @@ use App\Models\Mail as MailModel;
 class MailTracker
 {
     protected const BOUNCE = 'bounce';
+
     protected const CONFIRM = 'confirm';
 
     public function getBounceReturnPath($mail)
@@ -23,7 +24,7 @@ class MailTracker
     {
         $params = $this->parseReturnPath($returnPath);
 
-        if (!empty($params[0])) {
+        if (! empty($params[0])) {
             $mail = MailModel::where('notification', stristr($params[1], '@', true) ?: $params[1])->first();
 
             if ($mail) {

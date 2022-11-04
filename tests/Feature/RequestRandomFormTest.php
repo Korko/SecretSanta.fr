@@ -39,7 +39,7 @@ it('respects limit in participants count', function ($participants) {
     createDraw($participants)
         ->assertUnprocessable()
         ->assertJsonValidationErrors([
-            'participants'
+            'participants',
         ]);
 
     config()->set('modes.limitations.participants.'.(AppMode::FREE)->value, count($participants));
