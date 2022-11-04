@@ -73,23 +73,15 @@ class DrawFormHandler
 
     protected function save(): Draw
     {
-        DB::beginTransaction();
+        return DB::transaction(function (): Draw {
+            $draw = $this->createDraw();
 
-        $draw = $this->createDraw();
-
-        try {
-            $this->solveExclusions($draw);
+            $this->solveExclusions();
 
             DrawHandler::solve($draw);
 
-            DB::commit();
-
             return $draw;
-        } catch(Throwable $e) {
-            DB::rollBack();
-
-            throw $e;
-        }
+        });
     }
 
     protected function createDraw(): Draw
