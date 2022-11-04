@@ -9,29 +9,11 @@ DROP TABLE IF EXISTS `dear_santas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dear_santas` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `draw_id` bigint unsigned NOT NULL,
   `sender_id` bigint unsigned NOT NULL,
-  `mail_body` blob NOT NULL,
+  `mail_body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `dear_santas_draw_id_foreign` (`draw_id`),
   KEY `dear_santas_sender_id_foreign` (`sender_id`),
-  CONSTRAINT `dear_santas_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE,
   CONSTRAINT `dear_santas_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `participants` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `dear_targets`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `dear_targets` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `draw_id` bigint unsigned NOT NULL,
-  `sender_id` bigint unsigned NOT NULL,
-  `mail_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `dear_targets_draw_id_foreign` (`draw_id`),
-  KEY `dear_targets_sender_id_foreign` (`sender_id`),
-  CONSTRAINT `dear_targets_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `dear_targets_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `participants` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `draws`;
@@ -39,14 +21,14 @@ DROP TABLE IF EXISTS `draws`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `draws` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `organizer_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `organizer_email` blob NOT NULL,
-  `mail_title` blob NOT NULL,
-  `mail_body` blob NOT NULL,
+  `organizer_name` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `organizer_email` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mail_title` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mail_body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expires_at` date NOT NULL,
   `next_solvable` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `finished_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -98,7 +80,6 @@ DROP TABLE IF EXISTS `mails`;
 CREATE TABLE `mails` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `notification` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `draw_id` bigint unsigned NOT NULL,
   `mailable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mailable_id` bigint unsigned NOT NULL,
   `delivery_status` enum('created','sending','sent','error','received') COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -106,9 +87,7 @@ CREATE TABLE `mails` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `mails_notification_unique` (`notification`),
-  KEY `mails_draw_id_foreign` (`draw_id`),
-  KEY `mails_mailable_type_mailable_id_index` (`mailable_type`,`mailable_id`),
-  CONSTRAINT `mails_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE
+  KEY `mails_mailable_type_mailable_id_index` (`mailable_type`,`mailable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `migrations`;
@@ -127,32 +106,17 @@ DROP TABLE IF EXISTS `participants`;
 CREATE TABLE `participants` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `draw_id` bigint unsigned NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` blob NOT NULL,
+  `name` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `target_id` bigint unsigned DEFAULT NULL,
   `redraw` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `participants_draw_id_foreign` (`draw_id`),
   KEY `participants_target_id_foreign` (`target_id`),
   CONSTRAINT `participants_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE,
   CONSTRAINT `participants_target_id_foreign` FOREIGN KEY (`target_id`) REFERENCES `participants` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `pending_draws`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pending_draws` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `organizer_name` blob NOT NULL,
-  `organizer_email` blob NOT NULL,
-  `data` longtext COLLATE utf8mb4_unicode_ci,
-  `status` enum('created','ready','drawing','started','error') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `draw_id` bigint unsigned DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `pending_draws_draw_id_foreign` (`draw_id`),
-  CONSTRAINT `pending_draws_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `websockets_statistics_entries`;
@@ -184,8 +148,4 @@ INSERT INTO `migrations` VALUES (5,'2019_12_06_003707_create_jobs_table',1);
 INSERT INTO `migrations` VALUES (6,'2019_12_11_232036_create_failed_jobs_table',1);
 INSERT INTO `migrations` VALUES (7,'2020_02_19_140057_create_dear_santas_table',1);
 INSERT INTO `migrations` VALUES (8,'2020_11_15_235209_create_exclusions_table',1);
-INSERT INTO `migrations` VALUES (9,'2022_01_01_230426_reduce_columns_sizes',1);
-INSERT INTO `migrations` VALUES (10,'2022_01_01_231112_remove_participants_timestamps',1);
-INSERT INTO `migrations` VALUES (11,'2022_01_02_001503_remove_draw_expiration',1);
-INSERT INTO `migrations` VALUES (12,'2022_02_01_113055_create_pending_draws_table',1);
-INSERT INTO `migrations` VALUES (13,'2022_04_17_211703_create_dear_targets_table',1);
+INSERT INTO `migrations` VALUES (9,'2021_12_06_125715_organizer_in_draw',1);
