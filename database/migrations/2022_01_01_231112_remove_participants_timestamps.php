@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        if (Schema::hasColumn('participants', 'created_at')) {
-            Schema::table('participants', function (Blueprint $table) {
-                $table->dropTimestamps();
-            });
-        }
+        Schema::table('participants', function (Blueprint $table) {
+            $table->dropTimestamps();
+        });
     }
 
     /**
@@ -27,10 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        if (! Schema::hasColumn('participants', 'created_at')) {
-            Schema::table('participants', function (Blueprint $table) {
-                $table->timestamps();
-            });
-        }
+        Schema::table('participants', function (Blueprint $table) {
+            $table->timestamps();
+        });
     }
 };

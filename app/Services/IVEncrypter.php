@@ -13,10 +13,10 @@ class IVEncrypter extends BaseEncrypter
      * For MySQL database sizes,
      * FORMAT (max mysql length) => max length before encryption (length after encryption) / max length + 1
      *
-     * TINYTEXT (255) => 55 (232) / 56 (260)
-     * TEXT (65,535) => 36,773 (65,512) / 36,774 (65,540)
-     * MEDIUMTEXT (16,777,215) => 9,437,091 (16,777,192) / 9,437,092 (16,777,220)
-     * LONGTEXT (4,294,967,295) => 2,415,919,007 (4,294,967,272) / 2,415,919,008 (4,294,967,300)
+     * TINYBLOB (255) => 55 (232) / 56 (260)
+     * BLOB (65,535) => 36,773 (65,512) / 36,774 (65,540)
+     * MEDIUMBLOB (16,777,215) => 9,437,091 (16,777,192) / 9,437,092 (16,777,220)
+     * LONGBLOB (4,294,967,295) => 2,415,919,007 (4,294,967,272) / 2,415,919,008 (4,294,967,300)
      *
      * Serialize: 7 + n + log10(n + 1)
      * Encrypted: ceil(n/16) * 16
@@ -27,10 +27,13 @@ class IVEncrypter extends BaseEncrypter
      *
      * Final: 4 * ceil((4 * ceil(ceil((7 + length + log10(length + 1))/16) * 16/3) + 64 + 21) / 3)
      */
-    const TINYTEXT_MAXLENGTH = 55;
-    const TEXT_MAXLENGTH = 36773;
-    const MEDIUMTEXT_MAXLENGTH = 9437091;
-    const LONGTEXT_MAXLENGTH = 2415919007;
+    const TINYBLOB_MAXLENGTH = 55;
+
+    const BLOB_MAXLENGTH = 36773;
+
+    const MEDIUMBLOB_MAXLENGTH = 9437091;
+
+    const LONGBLOB_MAXLENGTH = 2415919007;
 
     /**
      * The initialization vector.

@@ -14,25 +14,23 @@ return new class extends Migration
      */
     public function up()
     {
-        if (Schema::hasColumn('draws', 'expires_at')) {
-            Schema::table('draws', function (Blueprint $table) {
-                $table->date('finished_at')->nullable();
-            });
+        Schema::table('draws', function (Blueprint $table) {
+            $table->timestamp('finished_at')->nullable();
+        });
 
-            if(config('app.env') !== 'testing') {
-                DB::table('draws')
-                    ->update(
-                        array(
-                            'updated_at' => DB::raw('GREATEST(updated_at, DATE_SUB(expires_at, INTERVAL '.Draw::MONTHS_BEFORE_EXPIRATION.' MONTH))'),
-                            'finished_at' => DB::raw('IF(expires_at >= NOW(), expires_at, NULL)')
-                        )
-                    );
-            }
-
-            Schema::table('draws', function (Blueprint $table) {
-                $table->dropColumn('expires_at');
-            });
+        if (config('app.env') !== 'testing') {
+            DB::table('draws')
+                ->update(
+                    [
+                        'updated_at' => DB::raw('GREATEST(updated_at, DATE_SUB(expires_at, INTERVAL '.Draw::MONTHS_BEFORE_EXPIRATION.' MONTH))'),
+                        'finished_at' => DB::raw('IF(expires_at >= NOW(), expires_at, NULL)'),
+                    ]
+                );
         }
+
+        Schema::table('draws', function (Blueprint $table) {
+            $table->dropColumn('expires_at');
+        });
     }
 
     /**
@@ -42,27 +40,22 @@ return new class extends Migration
      */
     public function down()
     {
-        if (Schema::hasColumn('draws', 'finished_at')) {
-            Schema::table('draws', function (Blueprint $table) {
-                $table->date('expires_at')->nullable();
-            });
+        Schema::table('draws', function (Blueprint $table) {
+            $table->timestamp('expires_at')->nullable();
+        });
 
-            if(config('app.env') !== 'testing') {
-                DB::table('draws')
-                    ->update(
-                        array(
-                            'expires_at' => DB::raw('GREATEST(finished_at, DATE_ADD(updated_at, INTERVAL '.Draw::MONTHS_BEFORE_EXPIRATION.' MONTH))'),
-                        )
-                    );
-            }
-
-            Schema::table('draws', function (Blueprint $table) {
-                $table->date('expires_at')->change();
-
-                if (Schema::hasColumn('draws', 'finished_at')) {
-                    $table->dropColumn('finished_at');
-                }
-            });
+        if (config('app.env') !== 'testing') {
+            DB::table('draws')
+                ->update(
+                    [
+                        'expires_at' => DB::raw('GREATEST(finished_at, DATE_ADD(updated_at, INTERVAL '.Draw::MONTHS_BEFORE_EXPIRATION.' MONTH))'),
+                    ]
+                );
         }
+
+        Schema::table('draws', function (Blueprint $table) {
+            $table->timestamp('expires_at')->change();
+            $table->dropColumn('finished_at');
+        });
     }
 };

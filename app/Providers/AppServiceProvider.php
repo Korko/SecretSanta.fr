@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\IVEncrypter;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Response;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
@@ -28,6 +30,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blueprint::macro('tinyBlob', function ($column) {
+            return $this->addColumn('blob', $column, ['length' => IVEncrypter::TINYBLOB_MAXLENGTH])->charset('')->collation('');
+        });
+        Blueprint::macro('blob', function ($column) {
+            return $this->addColumn('blob', $column, ['length' => IVEncrypter::BLOB_MAXLENGTH])->charset('')->collation('');
+        });
+
         $this->bootInertia();
     }
 
