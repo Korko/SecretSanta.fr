@@ -12740,6 +12740,20 @@
         {
                         \Illuminate\Routing\ResponseFactory::flushMacros();
         }
+                    /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::boot()
+         * @param \Closure $closure
+         * @param mixed $onSuccess
+         * @param mixed $onFailure
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function jsonTry($closure, $onSuccess, $onFailure)
+        {
+                        return \Illuminate\Routing\ResponseFactory::jsonTry($closure, $onSuccess, $onFailure);
+        }
          
     }
             /**
@@ -18949,6 +18963,26 @@
      * 
      *
      */ 
+        class JsonResponse {
+                    /**
+         * 
+         *
+         * @see JsonResponse::setData
+         * @see \App\Providers\AppServiceProvider::boot()
+         * @param mixed $data
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function addData($data)
+        {
+                        return \Illuminate\Http\JsonResponse::addData($data);
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
         class Response {
                     /**
          * 
@@ -18989,6 +19023,27 @@
         }
          
     }
+            /**
+     * 
+     *
+     */ 
+        class ResponseFactory {
+                    /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::boot()
+         * @param \Closure $closure
+         * @param mixed $onSuccess
+         * @param mixed $onFailure
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function jsonTry($closure, $onSuccess, $onFailure)
+        {
+                        return \Illuminate\Routing\ResponseFactory::jsonTry($closure, $onSuccess, $onFailure);
+        }
+         
+    }
      
 }
 
@@ -19019,6 +19074,39 @@
         public static function inertiaPage()
         {
                         return \Illuminate\Testing\TestResponse::inertiaPage();
+        }
+         
+    }
+     
+}
+
+    namespace Illuminate\Database\Schema { 
+            /**
+     * 
+     *
+     */ 
+        class Blueprint {
+                    /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::boot()
+         * @param mixed $column
+         * @static 
+         */ 
+        public static function tinyBlob($column)
+        {
+                        return \Illuminate\Database\Schema\Blueprint::tinyBlob($column);
+        }
+                    /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::boot()
+         * @param mixed $column
+         * @static 
+         */ 
+        public static function blob($column)
+        {
+                        return \Illuminate\Database\Schema\Blueprint::blob($column);
         }
          
     }

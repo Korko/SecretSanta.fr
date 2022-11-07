@@ -112,6 +112,12 @@
                             .then(() => window.location.pathname = '/');
                     });
             },
+            resendTarget(k) {
+                this.participants[k].mail.delivery_status = 'created';
+                this.participants[k].mail.updated_at = new Date().getTime();
+
+                return fetch(this.participants[k].resendTargetUrl);
+            },
             updateEmail(k, email) {
                 this.participants[k].email = email;
                 this.participants[k].mail.delivery_status = 'created';
@@ -207,7 +213,7 @@
                     :canWithdraw="canWithdraw"
                     :updateEmail="(email) => updateEmail(k, email)"
                     :updateName="(name) => updateName(k, name)"
-                    @resend="() => updateEmail(k, participant.email)"
+                    @resend="() => resendTarget(k)"
                 ></tr>
             </tbody>
         </table>

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Notifications\OrganizerRecap;
-use Notification;
+use App\Actions\ChangeOrganizerEmail;
+use App\Actions\SendPanelToOrganizer;
 use URLParser;
 
 class FixOrganizer extends Command
@@ -34,13 +34,11 @@ class FixOrganizer extends Command
         $draw = URLParser::parseByName('dearSanta', $this->argument('url'))->participant->draw;
 
         if ($this->argument('email')) {
-            $draw->organizer_email = $this->argument('email');
-            $draw->save();
+            app(ChangeOrganizerEmail::class)->change($draw, $this->argument('email'));
+        } else {
+            app(SendPanelToOrganizer::class)->send($draw);
         }
 
-        Notification::route('mail', [
-            $draw->organizer_email => $draw->organizer_name,
-        ])->notify(new OrganizerRecap($draw));
         $this->info('Organizer Recap sent');
     }
 }

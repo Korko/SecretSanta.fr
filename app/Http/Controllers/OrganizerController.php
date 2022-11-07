@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\ChangeParticipantEmail;
+use App\Actions\ChangeParticipantName;
+use App\Actions\GenerateDrawCsv;
+use App\Actions\WithdrawParticipant;
 use App\Models\Draw;
 use App\Models\Participant;
-use App\Notifications\ConfirmWithdrawal;
-use App\Notifications\DearSanta;
-use App\Notifications\TargetDrawn;
-use App\Notifications\TargetNameChanged;
-use App\Notifications\TargetWithdrawn;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
@@ -48,6 +46,9 @@ class OrganizerController extends Controller
             'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) use ($draw, $participantFields) {
                 return [
                     $participant->hash => $participant->only($participantFields) + [
+                        'resendTargetUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.resendTarget', [
+                            'draw' => $draw, 'participant' => $participant,
+                        ]),
                         'changeEmailUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.changeEmail', [
                             'draw' => $draw, 'participant' => $participant,
                         ]),
@@ -63,101 +64,76 @@ class OrganizerController extends Controller
         ]);
     }
 
+    public function resendTarget(Draw $draw, Participant $participant)
+    {
+        return response()->jsonTry(
+            function () use ($participant) {
+                app(SendTargetToParticipant::class)->send($participant);
+
+                $participant->createMetric('resend_target_email');
+
+                return [
+                    'participant' => $participant->only(['hash', 'mail']),
+                ];
+            },
+            trans('Email réenvoyé avec succès !'),
+            trans('Une erreur est survenue dans l\'envoi de l\'email. Veuillez réessayer plus tard.')
+        );
+    }
+
     public function changeEmail(Request $request, Draw $draw, Participant $participant)
     {
-        $validated = $request->validate([
+        $request->validate([
             'email' => ['required', 'email', 'max:320'],
         ], [
             'email.required' => Lang::get('validation.custom.organizer.email.required'),
             'email.email' => Lang::get('validation.custom.organizer.email.format'),
         ]);
 
-        if ($participant->email === $request->input('email')) {
-            $participant->createMetric('resend_email');
-        } else {
-            $participant->email = $request->input('email');
-            $participant->save();
+        return response()->jsonTry(
+            function () use ($participant, $request) {
+                app(ChangeParticipantEmail::class)->change($participant, $request->input('email'));
 
-            $participant->createMetric('change_email');
-        }
+                $participant->createMetric('change_email');
 
-        $participant->mail->markAsCreated();
-
-        try {
-            $participant->notify(new TargetDrawn);
-
-            $response = [
-                'message' => $participant->wasChanged('email') ?
-                    trans('Adresse email modifiée avec succès !') :
-                    trans('Email réenvoyé avec succès !'),
-            ];
-        } catch(Exception $e) {
-            $response = [
-                'error' => $participant->wasChanged('email') ?
-                    trans('Adresse modifiée avec succès mais une erreur est survenue à l\'envoi de l\'email.') :
-                    trans('Une erreur est survenue dans l\'envoi de l\'email. Veuillez réessayer plus tard.'),
-            ];
-        }
-
-        return response()->json($response + [
-            'participant' => $participant->only(['hash', 'mail']),
-        ]);
+                return [
+                    'participant' => $participant->only(['hash', 'mail']),
+                ];
+            },
+            trans('Adresse email modifiée avec succès !'),
+            trans('Adresse modifiée avec succès mais une erreur est survenue à l\'envoi de l\'email.')
+        );
     }
 
     public function changeName(Request $request, Draw $draw, Participant $participant)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => ['required', 'max:55', Rule::notIn($draw->participants->pluck('name'))],
         ], [
             'name.required' => Lang::get('validation.custom.organizer.name.required'),
             'name.not_in' => Lang::get('validation.custom.organizer.name.not_in'),
         ]);
 
-        $participant->name = $request->input('name');
-        $participant->save();
+        return response()->jsonTry(
+            function () use ($participant, $request) {
+                app(ChangeParticipantName::class)->change($participant, $request->input('name'));
 
-        $participant->createMetric('change_name');
+                $participant->createMetric('change_name');
 
-        try {
-            $participant->santa->notify(new TargetNameChanged($participant));
-
-            $response = [
-                'message' => trans('Nom modifié avec succès !'),
-            ];
-        } catch(Exception $e) {
-            $response = [
-                'error' => trans('Nom modifié avec succès mais le père noël secrêt de cette personne n\'a pas pu être prévenu du changement.'),
-            ];
-        }
-
-        return response()->json($response + [
-            'participant' => $participant->only(['hash', 'name']),
-        ]);
+                return [
+                    'participant' => $participant->only(['hash', 'name']),
+                ];
+            },
+            trans('Nom modifié avec succès !'),
+            trans('Nom modifié avec succès mais le père noël secrêt de cette personne n\'a pas pu être prévenu du changement.')
+        );
     }
 
     public function withdraw(Draw $draw, Participant $participant)
     {
         abort_unless($draw->participants->count() > 3, 403, Lang::get('error.withdraw'));
 
-        // A -> B -> C => A -> C
-        $participant->santa->target()->associate($participant->target);
-        $participant->santa->save();
-
-        try {
-            $participant->santa->notify(new TargetWithdrawn($participant, $participant->target));
-            $participant->target->dearSantas->each(function ($dearSanta) use ($participant) {
-                $participant->santa->notify(new DearSanta($dearSanta));
-            });
-        } catch(Exception $e) {
-            //TODO
-        }
-
-        $participant->delete();
-        try {
-            $participant->notify(new ConfirmWithdrawal);
-        } catch(Exception $e) {
-            //TODO
-        }
+        app(WithdrawParticipant::class)->withdraw($participant);
 
         return response()->json([
             'message' => trans(':name ne participe plus à l\'évènement.', ['name' => $participant->name]),
@@ -169,14 +145,9 @@ class OrganizerController extends Controller
         $draw->createMetric('csv_initial_download');
 
         return response(
-            "\xEF\xBB\xBF".// UTF-8 BOM
-            $draw->participants
-                ->toCsv(['name', 'email', 'exclusionsNames'])
-                ->prepend([
-                    ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
-                    ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
-                ]),
-            200, ['Content-Type' => 'text/csv; charset=UTF-8']);
+            content: app(GenerateDrawCsv::class)->generateInitial($draw),
+            headers: ['Content-Type' => 'text/csv; charset=UTF-8']
+        );
     }
 
     public function csvFinal(Draw $draw)
@@ -187,18 +158,12 @@ class OrganizerController extends Controller
         $draw->createMetric('csv_final_download');
 
         return response(
-            "\xEF\xBB\xBF".// UTF-8 BOM
-            $draw->participants
-                ->appendTargetToExclusions()
-                ->toCsv(['name', 'email', 'exclusionsNames'])
-                ->prepend([
-                    ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
-                    ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
-                ]),
-            200, ['Content-Type' => 'text/csv; charset=UTF-8']);
+            content: app(GenerateDrawCsv::class)->generateFinal($draw),
+            headers: ['Content-Type' => 'text/csv; charset=UTF-8']
+        );
     }
 
-    public function delete(Request $request, Draw $draw)
+    public function delete(Draw $draw)
     {
         $draw->delete();
 

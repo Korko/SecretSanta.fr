@@ -97,6 +97,7 @@ Route::controller(OrganizerController::class)
         });
 
         Route::middleware('decrypt.iv:participant,name')->group(function () {
+            Route::get('/{participant}/resend', 'resendTarget')->name('resendTarget');
             Route::post('/{participant}/changeEmail', 'changeEmail')->name('changeEmail');
             Route::post('/{participant}/changeName', 'changeName')->name('changeName');
             Route::get('/{participant}/withdraw', 'withdraw')->name('withdraw');

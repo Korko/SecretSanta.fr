@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Notifications\TargetDrawn;
+use App\Actions\ChangeParticipantEmail;
+use App\Actions\SendTargetToParticipant;
 use URLParser;
 
 class FixParticipant extends Command
@@ -35,11 +36,11 @@ class FixParticipant extends Command
         $participant = $draw->participants->find($this->argument('id'));
 
         if ($this->argument('email')) {
-            $participant->email = $this->argument('email');
-            $participant->save();
+            app(ChangeParticipantEmail::class)->change($participant, $this->argument('email'));
+        } else {
+            app(SendTargetToParticipant::class)->send($participant);
         }
 
-        $participant->notifyNow(new TargetDrawn);
         $this->info('Participant mail sent');
     }
 }

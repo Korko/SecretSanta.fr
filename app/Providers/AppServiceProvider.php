@@ -3,8 +3,12 @@
 namespace App\Providers;
 
 use App\Services\IVEncrypter;
+use Closure;
+use Exception;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 
@@ -31,10 +35,42 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Blueprint::macro('tinyBlob', function ($column) {
+            /** @var Blueprint $this */
             return $this->addColumn('blob', $column, ['length' => IVEncrypter::TINYBLOB_MAXLENGTH])->charset('')->collation('');
         });
         Blueprint::macro('blob', function ($column) {
+            /** @var Blueprint $this */
             return $this->addColumn('blob', $column, ['length' => IVEncrypter::BLOB_MAXLENGTH])->charset('')->collation('');
+        });
+
+        /**
+         * @see JsonResponse::setData
+         */
+        JsonResponse::macro('addData', function ($data): JsonResponse {
+            /** @var JsonResponse $this */
+            $originalData = $this->getData(true);
+            $this->setData($data);
+            $newData = $this->getData(true);
+
+            return $this->setData($originalData + $newData);
+        });
+
+        ResponseFactory::macro('jsonTry', function (Closure $closure, $onSuccess, $onFailure): JsonResponse {
+            /** @var ResponseFactory $this */
+            try {
+                $data = $closure() ?: [];
+
+                return $this
+                    ->json([
+                        'message' => $onSuccess,
+                    ])
+                    ->addData($data);
+            } catch(Exception) {
+                return $this
+                    ->json([
+                        'message' => $onFailure,
+                    ], 401);
+            }
         });
 
         $this->bootInertia();

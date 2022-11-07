@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SendMessageToSanta;
+use App\Actions\SendTargetToParticipant;
 use App\Enums\QuestionToSanta;
 use App\Http\Requests\DearSantaRequest;
 use App\Http\Requests\DearTargetRequest;
 use App\Models\DearSanta;
 use App\Models\DearTarget;
 use App\Models\Participant;
-use App\Notifications\DearSanta as DearSantaNotification;
-use App\Notifications\DearTarget as DearTargetNotification;
-use App\Notifications\TargetDrawn as TargetDrawnNotification;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Support\Facades\URL;
 use Lang;
 
@@ -78,160 +76,90 @@ class DearSantaController extends Controller
         ]);
     }
 
-    public function resendDearSanta(Participant $participant, DearSanta $dearSanta, \Illuminate\Http\Request $request)
+    public function resendDearSanta(Participant $participant, DearSanta $dearSanta)
     {
         abort_unless($dearSanta->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
-        $dearSanta->mail->markAsCreated();
+        return response()->jsonTry(
+            function () use ($dearSanta) {
+                app(SendMessageToSanta::class)->resend($dearSanta);
 
-        $participant->createMetric('resend_email');
+                $dearSanta->sender->createMetric('resend_dearSanta');
 
-        try {
-            $dearSanta->target->notify(new DearSantaNotification($dearSanta));
-
-            $message = trans('message.sent');
-
-            return $request->ajax() ?
-                response()->json([
-                    'message' => $message,
+                return [
                     'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
-                ]) :
-                redirect()->route('santa.index', ['participant' => $participant->hash])->with('message', $message);
-        } catch(Exception $e) {
-            $error = trans('error.email');
-
-            return $request->ajax() ?
-                response()->json([
-                    'error' => $error,
-                    'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
-                ]) :
-                redirect()->route('santa.index', ['participant' => $participant->hash])->with('error', $error);
-        }
+                ];
+            },
+            trans('message.sent'),
+            trans('error.email')
+        );
     }
 
-    public function resendDearTarget(Participant $participant, DearTarget $dearTarget, \Illuminate\Http\Request $request)
+    public function resendDearTarget(Participant $participant, DearTarget $dearTarget)
     {
         abort_unless($dearTarget->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
-        $dearTarget->mail->markAsCreated();
+        return response()->jsonTry(
+            function () use ($dearTarget) {
+                app(SendMessageToTarget::class)->resend($dearTarget);
 
-        $participant->createMetric('resend_email');
+                $dearTarget->sender->createMetric('resend_dearTarget');
 
-        try {
-            $dearTarget->target->notify(new DearTargetNotification($dearTarget));
-
-            $message = trans('message.sent');
-
-            return $request->ajax() ?
-                response()->json([
-                    'message' => $message,
+                return [
                     'email' => $dearTarget->refresh()->only($this->dearTargetPublicFields),
-                ]) :
-                redirect()->route('santa.index', ['participant' => $participant->hash])->with('message', $message);
-        } catch(Exception $e) {
-            $error = trans('error.email');
-
-            return $request->ajax() ?
-                response()->json([
-                    'error' => $error,
-                    'email' => $dearTarget->refresh()->only($this->dearTargetPublicFields),
-                ]) :
-                redirect()->route('santa.index', ['participant' => $participant->hash])->with('error', $error);
-        }
+                ];
+            },
+            trans('message.sent'),
+            trans('error.email')
+        );
     }
 
-    public function resendTarget(Participant $participant, \Illuminate\Http\Request $request)
+    public function resendTarget(Participant $participant)
     {
         abort_unless($participant->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
-        $participant->mail->markAsCreated();
+        return response()->jsonTry(
+            function () use ($participant) {
+                app(SendTargetToParticipant::class)->send($participant);
 
-        $participant->createMetric('resend_email');
-
-        try {
-            $participant->notify(new TargetDrawnNotification);
-
-            $message = trans('message.sent');
-
-            return $request->ajax() ?
-                response()->json([
-                    'message' => $message,
-                ]) :
-                redirect()->route('santa.index', ['participant' => $participant->hash])->with('message', $message);
-        } catch(Exception $e) {
-            $error = trans('error.email');
-
-            return $request->ajax() ?
-                response()->json([
-                    'error' => $error,
-                ]) :
-                redirect()->route('santa.index', ['participant' => $participant->hash])->with('error', $error);
-        }
+                $participant->createMetric('resend_target');
+            },
+            trans('message.sent'),
+            trans('error.email')
+        );
     }
 
     public function handleSanta(Participant $participant, DearSantaRequest $request)
     {
-        $dearSanta = new DearSanta();
-        $dearSanta->draw()->associate($participant->draw);
-        $dearSanta->sender()->associate($participant);
-        $dearSanta->mail_body = $request->input('content');
-        $dearSanta->save();
+        return response()->jsonTry(
+            function () use ($participant, $request) {
+                $dearSanta = app(SendMessageToSanta::class)->send($participant, $request->input('content'));
 
-        $participant->createMetric('dearSanta');
+                $participant->createMetric('dearSanta');
 
-        try {
-            $dearSanta->target->notify(new DearSantaNotification($dearSanta));
-
-            $message = trans('message.sent');
-
-            return $request->ajax() ?
-                response()->json([
-                    'message' => $message,
+                return [
                     'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
-                ]) :
-                redirect()->route('santa.index', ['participant' => $participant->hash])->with('message', $message);
-        } catch(Exception $e) {
-            $error = trans('error.email');
-
-            return $request->ajax() ?
-                response()->json([
-                    'error' => $error,
-                    'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
-                ]) :
-                redirect()->route('santa.index', ['participant' => $participant->hash])->with('error', $error);
-        }
+                ];
+            },
+            trans('message.sent'),
+            trans('error.email')
+        );
     }
 
     public function handleTarget(Participant $participant, DearTargetRequest $request)
     {
-        $dearTarget = new DearTarget();
-        $dearTarget->draw()->associate($participant->draw);
-        $dearTarget->sender()->associate($participant);
-        $dearTarget->mail_type = $request->input('type');
-        $dearTarget->save();
+        return response()->jsonTry(
+            function () use ($participant, $request) {
+                $dearTarget = app(SendMessageToTarget::class)->send($participant, $request->input('type'));
 
-        $participant->createMetric('dearTarget');
+                $participant->createMetric('dearTarget');
 
-        try {
-            $dearTarget->target->notify(new DearTargetNotification($dearTarget));
-
-            $message = trans('message.sent');
-
-            return $request->ajax() ?
-                response()->json([
-                    'message' => $message,
+                return [
                     'email' => $dearTarget->refresh()->only($this->dearTargetPublicFields),
-                ]) :
-                redirect()->route('santa.index', ['participant' => $participant->hash])->with('message', $message);
-        } catch(Exception $e) {
-            $error = trans('error.email');
-
-            return $request->ajax() ?
-                response()->json([
-                    'error' => $error,
-                    'email' => $dearTarget->refresh()->only($this->dearTargetPublicFields),
-                ]) :
-                redirect()->route('santa.index', ['participant' => $participant->hash])->with('error', $error);
-        }
+                ];
+            },
+            trans('message.sent'),
+            trans('error.email')
+        );
     }
 }
