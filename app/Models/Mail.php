@@ -7,6 +7,33 @@ use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Str;
 
+/**
+ * App\Models\Mail
+ *
+ * @property int $id
+ * @property string $notification
+ * @property string $mailable_type
+ * @property int $mailable_id
+ * @property string $delivery_status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $draw_id
+ * @property-read \App\Models\Draw $draw
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $mailable
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail whereDeliveryStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail whereDrawId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail whereMailableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail whereMailableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail whereNotification($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Mail extends Model
 {
     use HasFactory;

@@ -10,6 +10,46 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Notifications\Notifiable;
 use Metrics;
 
+/**
+ * App\Models\Participant
+ *
+ * @property int $id
+ * @property int $draw_id
+ * @property mixed $name
+ * @property mixed $email
+ * @property int|null $target_id
+ * @property int $redraw
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\DearSanta[] $dearSantas
+ * @property-read int|null $dear_santas_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\DearTarget[] $dearTargets
+ * @property-read int|null $dear_targets_count
+ * @property-read \App\Models\Draw $draw
+ * @property-read ParticipantsCollection|Participant[] $exclusions
+ * @property-read int|null $exclusions_count
+ * @property-read mixed $exclusions_names
+ * @property-read mixed $hash
+ * @property-read mixed $metric_id
+ * @property-read \App\Models\Mail|null $mail
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read Participant|null $santa
+ * @property-read Participant|null $target
+ *
+ * @method static ParticipantsCollection|static[] all($columns = ['*'])
+ * @method static \Database\Factories\ParticipantFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant findByHashOrFail($hash)
+ * @method static ParticipantsCollection|static[] get($columns = ['*'])
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereDrawId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereRedraw($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereTargetId($value)
+ * @mixin \Eloquent
+ */
 class Participant extends Model
 {
     use HasFactory, Notifiable, HashId {

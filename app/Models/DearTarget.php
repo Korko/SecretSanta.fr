@@ -5,6 +5,31 @@ namespace App\Models;
 use App\Enums\QuestionToSanta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * App\Models\DearTarget
+ *
+ * @property int $id
+ * @property int $draw_id
+ * @property int $sender_id
+ * @property QuestionToSanta $mail_type
+ * @property-read \App\Models\Draw $draw
+ * @property-read mixed $hash
+ * @property-read mixed $mail_body
+ * @property-read mixed $target
+ * @property-read \App\Models\Mail|null $mail
+ * @property-read \App\Models\Participant $sender
+ *
+ * @method static \Database\Factories\DearTargetFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|DearTarget findByHashOrFail($hash)
+ * @method static \Illuminate\Database\Eloquent\Builder|DearTarget newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DearTarget newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DearTarget query()
+ * @method static \Illuminate\Database\Eloquent\Builder|DearTarget whereDrawId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DearTarget whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DearTarget whereMailType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DearTarget whereSenderId($value)
+ * @mixin \Eloquent
+ */
 class DearTarget extends Model
 {
     use HasFactory, HashId;

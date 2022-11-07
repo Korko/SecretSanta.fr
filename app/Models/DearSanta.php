@@ -5,6 +5,30 @@ namespace App\Models;
 use App\Casts\EncryptedString;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * App\Models\DearSanta
+ *
+ * @property int $id
+ * @property int $sender_id
+ * @property mixed $mail_body
+ * @property int $draw_id
+ * @property-read \App\Models\Draw $draw
+ * @property-read mixed $hash
+ * @property-read mixed $target
+ * @property-read \App\Models\Mail|null $mail
+ * @property-read \App\Models\Participant $sender
+ *
+ * @method static \Database\Factories\DearSantaFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|DearSanta findByHashOrFail($hash)
+ * @method static \Illuminate\Database\Eloquent\Builder|DearSanta newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DearSanta newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DearSanta query()
+ * @method static \Illuminate\Database\Eloquent\Builder|DearSanta whereDrawId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DearSanta whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DearSanta whereMailBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DearSanta whereSenderId($value)
+ * @mixin \Eloquent
+ */
 class DearSanta extends Model
 {
     use HasFactory, HashId;

@@ -11,6 +11,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\PendingDraw
+ *
+ * @property int $id
+ * @property mixed $organizer_name
+ * @property mixed $organizer_email
+ * @property mixed|null $data
+ * @property string $status
+ * @property int|null $draw_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Draw|null $draw
+ *
+ * @method static \Database\Factories\PendingDrawFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingDraw newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingDraw newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingDraw query()
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingDraw whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingDraw whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingDraw whereDrawId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingDraw whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingDraw whereOrganizerEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingDraw whereOrganizerName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingDraw whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingDraw whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class PendingDraw extends Model
 {
     use HasFactory, MassPrunable;

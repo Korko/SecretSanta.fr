@@ -11,6 +11,44 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Metrics;
 
+/**
+ * App\Models\Draw
+ *
+ * @property int $id
+ * @property mixed $organizer_name
+ * @property mixed $organizer_email
+ * @property mixed $mail_title
+ * @property mixed $mail_body
+ * @property bool $next_solvable
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $finished_at
+ * @property-read mixed $can_redraw
+ * @property-read mixed $deletes_at
+ * @property-read mixed $expires_at
+ * @property-read mixed $hash
+ * @property-read mixed $is_finished
+ * @property-read mixed $metric_id
+ * @property-read mixed $organizer
+ * @property-read \App\Collections\ParticipantsCollection|\App\Models\Participant[] $participants
+ * @property-read int|null $participants_count
+ *
+ * @method static \Database\Factories\DrawFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw findByHashOrFail($hash)
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw whereFinishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw whereMailBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw whereMailTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw whereNextSolvable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw whereOrganizerEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw whereOrganizerName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Draw whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Draw extends Model
 {
     use HasFactory, HashId, MassPrunable;
