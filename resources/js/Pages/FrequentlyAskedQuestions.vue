@@ -42,13 +42,13 @@
 <template>
     <Layout>
         <template #navbar-right>
-            <NavPageLink :href="routes.form">
+            <NavPageLink :href="route('form.index')">
                 <i18n-t keypath="common.nav.go" />
             </NavPageLink>
             <NavLink :href="`mailto:`+app_email">
                 <i18n-t keypath="faq.nav.contact" />
             </NavLink>
-            <NavPageLink :href="routes.dashboard">
+            <NavPageLink :href="route('dashboard')">
                 <i18n-t keypath="common.nav.dashboard" />
             </NavPageLink>
         </template>

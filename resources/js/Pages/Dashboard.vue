@@ -10,11 +10,6 @@
             NavLink,
             NavPageLink
         },
-        props: {
-            routes: {
-                type: Object
-            }
-        },
         data() {
             return {
                 draws: {}
@@ -29,10 +24,10 @@
 <template>
     <Layout>
         <template #navbar-right>
-            <NavPageLink :href="routes.form">
+            <NavPageLink :href="route('form.index')">
                 <i18n-t keypath="common.nav.go" />
             </NavPageLink>
-            <NavPageLink :href="routes.faq">
+            <NavPageLink :href="route('faq')">
                 <i18n-t keypath="common.nav.faq" />
             </NavPageLink>
         </template>

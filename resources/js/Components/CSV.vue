@@ -1,7 +1,7 @@
 <script>
     import Modal from './Modal.vue';
 
-    const jschardet = require("jschardet")
+    import jschardet from 'jschardet';
 
     export default {
         components: { Modal },

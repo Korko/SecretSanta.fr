@@ -1,6 +1,7 @@
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { createI18n } from 'vue-i18n';
+import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
 createInertiaApp({
     resolve: name => import(`./Pages/${name}.vue`),
@@ -14,6 +15,7 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(i18n)
+            .use(ZiggyVue, Ziggy)
             .mount(el)
     },
 });

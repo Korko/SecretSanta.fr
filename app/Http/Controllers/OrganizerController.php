@@ -17,10 +17,8 @@ class OrganizerController extends Controller
 {
     public function index(Draw $draw)
     {
-        return response()->inertia('OrganizerPanel.vue', [
+        return response()->inertia('OrganizerPanel', [
             'routes' => [
-                'form' => URL::route('form.index'),
-                'dashboard' => URL::route('dashboard'),
                 'fetch' => URL::signedRoute('organizer.fetch', ['draw' => $draw]),
                 'csvInitUrl' => URL::signedRoute('organizer.csvInit', ['draw' => $draw]),
                 'csvFinalUrl' => URL::signedRoute('organizer.csvFinal', ['draw' => $draw]),

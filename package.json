@@ -37,6 +37,7 @@
         "sass-resources-loader": "^2.2.4",
         "toastify-js": "^1.11.2",
         "vite": "^2.9.12",
+        "vite-plugin-manifest-sri": "^0.1.0",
         "vue": "^3.2.24",
         "vue-autosize": "^1.0.2",
         "vue-loader": "^16.8.3",

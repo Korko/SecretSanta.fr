@@ -11,10 +11,8 @@ class StartController extends Controller
 {
     public function index(PendingDraw $pending)
     {
-        return response()->inertia('PendingDraw.vue', [
+        return response()->inertia('PendingDraw', [
             'routes' => [
-                'form' => URL::route('form.index'),
-                'dashboard' => URL::route('dashboard'),
                 'fetch' => URL::signedRoute('pending.fetch', ['pending' => $pending]),
                 'process' => URL::signedRoute('pending.process', ['pending' => $pending]),
             ],

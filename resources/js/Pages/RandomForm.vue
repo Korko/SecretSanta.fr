@@ -19,9 +19,6 @@
         props: {
             bmc: {
                 type: String
-            },
-            routes: {
-                type: Object
             }
         },
         methods: {
@@ -58,13 +55,13 @@
         </template>
         <template #navbar-right>
             <NavPageLink
-                :href="routes.dashboard"
+                :href="route('dashboard')"
                 target="_blank"
             >
                 <i18n-t keypath="common.nav.dashboard" />
             </NavPageLink>
             <NavPageLink
-                :href="routes.faq"
+                :href="route('faq')"
                 class="d-md-none"
                 target="_blank"
             >
@@ -224,7 +221,7 @@
                     </p>
                     <random-form
                         id="randomForm"
-                        :action="routes.process"
+                        :action="route('form.process')"
                     ></random-form>
                 </div>
                 <section class="ss-style-bottom"></section>

@@ -7,11 +7,6 @@
         components: {
             Layout,
             NavPageLink
-        },
-        props: {
-            routes: {
-                type: Object
-            }
         }
     }
 </script>
@@ -19,10 +14,10 @@
 <template>
     <Layout>
         <template #navbar-right>
-            <NavPageLink :href="routes.form">
+            <NavPageLink :href="route('form.index')">
                 <i18n-t keypath="common.nav.go" />
             </NavPageLink>
-            <NavPageLink :href="routes.dashboard">
+            <NavPageLink :href="route('dashboard')">
                 <i18n-t keypath="common.nav.dashboard" />
             </NavPageLink>
         </template>

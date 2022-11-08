@@ -12754,6 +12754,18 @@
         {
                         return \Illuminate\Routing\ResponseFactory::jsonTry($closure, $onSuccess, $onFailure);
         }
+                    /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::bootInertia()
+         * @param string $page
+         * @param array $parameters
+         * @static 
+         */ 
+        public static function inertia($page, $parameters = [])
+        {
+                        return \Illuminate\Routing\ResponseFactory::inertia($page, $parameters);
+        }
          
     }
             /**
@@ -17110,8 +17122,8 @@
          * @static 
          */ 
         public static function cspNonce()
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->cspNonce();
         }
                     /**
@@ -17122,32 +17134,32 @@
          * @static 
          */ 
         public static function useCspNonce($nonce = null)
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->useCspNonce($nonce);
         }
                     /**
          * Use the given key to detect integrity hashes in the manifest.
          *
          * @param string|false $key
-         * @return \Illuminate\Foundation\Vite 
+         * @return \LEXO\DeferVite\Services\DeferViteService 
          * @static 
          */ 
         public static function useIntegrityKey($key)
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->useIntegrityKey($key);
         }
                     /**
          * Set the Vite entry points.
          *
          * @param array $entryPoints
-         * @return \Illuminate\Foundation\Vite 
+         * @return \LEXO\DeferVite\Services\DeferViteService 
          * @static 
          */ 
         public static function withEntryPoints($entryPoints)
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->withEntryPoints($entryPoints);
         }
                     /**
@@ -17157,56 +17169,56 @@
          * @static 
          */ 
         public static function hotFile()
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->hotFile();
         }
                     /**
          * Set the Vite "hot" file path.
          *
          * @param string $path
-         * @return \Illuminate\Foundation\Vite 
+         * @return \LEXO\DeferVite\Services\DeferViteService 
          * @static 
          */ 
         public static function useHotFile($path)
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->useHotFile($path);
         }
                     /**
          * Set the Vite build directory.
          *
          * @param string $path
-         * @return \Illuminate\Foundation\Vite 
+         * @return \LEXO\DeferVite\Services\DeferViteService 
          * @static 
          */ 
         public static function useBuildDirectory($path)
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->useBuildDirectory($path);
         }
                     /**
          * Use the given callback to resolve attributes for script tags.
          *
          * @param \Illuminate\Foundation\(callable(string,  string, ?array, ?array): array)|array  $attributes
-         * @return \Illuminate\Foundation\Vite 
+         * @return \LEXO\DeferVite\Services\DeferViteService 
          * @static 
          */ 
         public static function useScriptTagAttributes($attributes)
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->useScriptTagAttributes($attributes);
         }
                     /**
          * Use the given callback to resolve attributes for style tags.
          *
          * @param \Illuminate\Foundation\(callable(string,  string, ?array, ?array): array)|array  $attributes
-         * @return \Illuminate\Foundation\Vite 
+         * @return \LEXO\DeferVite\Services\DeferViteService 
          * @static 
          */ 
         public static function useStyleTagAttributes($attributes)
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->useStyleTagAttributes($attributes);
         }
                     /**
@@ -17216,8 +17228,8 @@
          * @static 
          */ 
         public static function reactRefresh()
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->reactRefresh();
         }
                     /**
@@ -17229,8 +17241,8 @@
          * @static 
          */ 
         public static function asset($asset, $buildDirectory = null)
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->asset($asset, $buildDirectory);
         }
                     /**
@@ -17240,8 +17252,8 @@
          * @static 
          */ 
         public static function manifestHash($buildDirectory = null)
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->manifestHash($buildDirectory);
         }
                     /**
@@ -17251,8 +17263,8 @@
          * @static 
          */ 
         public static function toHtml()
-        {
-                        /** @var \Illuminate\Foundation\Vite $instance */
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
                         return $instance->toHtml();
         }
                     /**
@@ -17264,8 +17276,8 @@
          * @static 
          */ 
         public static function macro($name, $macro)
-        {
-                        \Illuminate\Foundation\Vite::macro($name, $macro);
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        \LEXO\DeferVite\Services\DeferViteService::macro($name, $macro);
         }
                     /**
          * Mix another object into the class.
@@ -17277,8 +17289,8 @@
          * @static 
          */ 
         public static function mixin($mixin, $replace = true)
-        {
-                        \Illuminate\Foundation\Vite::mixin($mixin, $replace);
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        \LEXO\DeferVite\Services\DeferViteService::mixin($mixin, $replace);
         }
                     /**
          * Checks if macro is registered.
@@ -17288,8 +17300,8 @@
          * @static 
          */ 
         public static function hasMacro($name)
-        {
-                        return \Illuminate\Foundation\Vite::hasMacro($name);
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        return \LEXO\DeferVite\Services\DeferViteService::hasMacro($name);
         }
                     /**
          * Flush the existing macros.
@@ -17298,8 +17310,8 @@
          * @static 
          */ 
         public static function flushMacros()
-        {
-                        \Illuminate\Foundation\Vite::flushMacros();
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        \LEXO\DeferVite\Services\DeferViteService::flushMacros();
         }
          
     }
@@ -18979,25 +18991,6 @@
         }
          
     }
-            /**
-     * 
-     *
-     */ 
-        class Response {
-                    /**
-         * 
-         *
-         * @see \App\Providers\AppServiceProvider::bootInertia()
-         * @param string $page
-         * @param array $parameters
-         * @static 
-         */ 
-        public static function inertia($page, $parameters = [])
-        {
-                        return \Illuminate\Http\Response::inertia($page, $parameters);
-        }
-         
-    }
      
 }
 
@@ -19041,6 +19034,18 @@
         public static function jsonTry($closure, $onSuccess, $onFailure)
         {
                         return \Illuminate\Routing\ResponseFactory::jsonTry($closure, $onSuccess, $onFailure);
+        }
+                    /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::bootInertia()
+         * @param string $page
+         * @param array $parameters
+         * @static 
+         */ 
+        public static function inertia($page, $parameters = [])
+        {
+                        return \Illuminate\Routing\ResponseFactory::inertia($page, $parameters);
         }
          
     }

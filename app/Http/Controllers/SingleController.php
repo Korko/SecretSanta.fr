@@ -9,11 +9,7 @@ class SingleController extends Controller
 {
     public function faq()
     {
-        return response()->inertia('FrequentlyAskedQuestions.vue', [
-            'routes' => [
-                'form' => URL::route('form.index'),
-                'dashboard' => URL::route('dashboard'),
-            ],
+        return response()->inertia('FrequentlyAskedQuestions', [
             'app_email' => config('app.email'),
             'questions' => Lang::get('faq.questions'),
         ]);
@@ -21,21 +17,11 @@ class SingleController extends Controller
 
     public function dashboard()
     {
-        return response()->inertia('Dashboard.vue', [
-            'routes' => [
-                'form' => URL::route('form.index'),
-                'faq' => URL::route('faq'),
-            ],
-        ]);
+        return response()->inertia('Dashboard');
     }
 
     public function legal()
     {
-        return response()->inertia('Legal.vue', [
-            'routes' => [
-                'form' => URL::route('form.index'),
-                'dashboard' => URL::route('dashboard'),
-            ],
-        ]);
+        return response()->inertia('Legal');
     }
 }

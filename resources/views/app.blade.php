@@ -40,19 +40,22 @@
         <!-- facebook image -->
         <link rel="image_src" href="{{ url('/images/opengraph_banner_19.1_1.png') }}" />
 
+        @routes
+
         <!-- media -->
-        <link
+        @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+        <!--<link
             rel="stylesheet"
-            href="{{ mix('/css/app.css') }}"
-            integrity="{{ Sri::hash('/css/app.css') }}"
+            href="{{ Vite::asset('resources/sass/app.scss') }}"
+            integrity=""
             crossorigin="anonymous"
         />
         <script
             type="text/javascript"
-            src="{{ mix('/js/app.js') }}"
-            integrity="{{ Sri::hash('/js/app.js') }}"
+            src="{{ Vite::asset('resources/js/app.js') }}"
+            integrity=""
             defer
-        ></script>
+        ></script>-->
 
         @inertiaHead
     </head>

@@ -1,17 +1,18 @@
---main: #812122;
---main-hover:
---main-disabled:
---secondary: #B59331;
---secondary-hover:
---third: #1D4431;
---third-hover:
---secondary-disabled:
---white: #F3F4F6;
---light-grey: #A89FA8;
---dark-grey: #4B444B;
---warning: #383B43;
---danger: #383B43;
-
+html {
+    --main: #812122;
+    --main-hover:
+    --main-disabled:
+    --secondary: #B59331;
+    --secondary-hover:
+    --third: #1D4431;
+    --third-hover:
+    --secondary-disabled:
+    --white: #F3F4F6;
+    --light-grey: #A89FA8;
+    --dark-grey: #4B444B;
+    --warning: #383B43;
+    --danger: #383B43;
+}
 
 $mainColor: #812122;
 $secondColor: #383B43;

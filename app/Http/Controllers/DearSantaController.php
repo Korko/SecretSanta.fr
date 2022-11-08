@@ -22,10 +22,8 @@ class DearSantaController extends Controller
 
     public function index(Participant $participant)
     {
-        return response()->inertia('DearSanta.vue', [
+        return response()->inertia('DearSanta', [
             'routes' => [
-                'form' => URL::route('form.index'),
-                'dashboard' => URL::route('dashboard'),
                 'contactSanta' => URL::signedRoute('santa.contactSanta', ['participant' => $participant]),
                 'fetch' => URL::signedRoute('santa.fetch', ['participant' => $participant]),
                 'resendTarget' => URL::signedRoute('santa.resendTarget', ['participant' => $participant]),
