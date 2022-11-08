@@ -100,7 +100,7 @@ class AppServiceProvider extends ServiceProvider
             ],
         ]);
 
-        Response::macro('inertia', function (string $page, array $parameters = []) {
+        ResponseFactory::macro('inertia', function (string $page, array $parameters = []) {
             return Inertia::render($page, $parameters)
                 ->withViewData([
                     'version' => exec('git describe --tags --always --abbrev=0'),
