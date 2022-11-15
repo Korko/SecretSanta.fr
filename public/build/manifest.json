@@ -294,6 +294,12 @@
     ],
     "integrity": "sha384-a59vy3eh+RJpV0lpjJzwOX5IIGuBiMSDYqwNq3KSNPUottwKgV4ujEd7Cv0F6t9L"
   },
+  "resources/sass/webfonts.scss": {
+    "file": "assets/webfonts.d4ff830f.css",
+    "src": "resources/sass/webfonts.scss",
+    "isEntry": true,
+    "integrity": "sha384-GAtsnPseuAW0cFF/CrukYBtrmEDXGCcTpJPP/7yXlvFFzdzivGkYepSsh/p9kE4s"
+  },
   "resources/sass/app.scss": {
     "file": "assets/app.37c3f86e.css",
     "src": "resources/sass/app.scss",

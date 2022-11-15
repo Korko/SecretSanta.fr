@@ -14,8 +14,9 @@ export default defineConfig(({ command, mode }) => {
         },
         plugins: [
             laravel([
-                'resources/js/app.js',
-                'resources/sass/app.scss'
+                'resources/js/app.js', // main js
+                'resources/sass/app.scss', // main sass
+                'resources/sass/webfonts.scss', // mails layout
             ]),
             vue({
                 template: {
