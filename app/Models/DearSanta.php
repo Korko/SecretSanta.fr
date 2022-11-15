@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class DearSanta extends Model
 {
-    use HasFactory, HashId;
+    use HasFactory, HasHash;
 
     protected $hashConnection = 'dearSanta';
 

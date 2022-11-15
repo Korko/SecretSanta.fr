@@ -5,7 +5,7 @@ namespace App\Models;
 use Hashids;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-trait HashId
+trait HasHash
 {
     /**
      * The accessors to append to the model's array form.

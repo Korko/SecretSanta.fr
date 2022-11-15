@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class DearTarget extends Model
 {
-    use HasFactory, HashId;
+    use HasFactory, HasHash;
 
     protected $hashConnection = 'dearTarget';
 

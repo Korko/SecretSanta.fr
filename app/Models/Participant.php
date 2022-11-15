@@ -52,7 +52,7 @@ use Metrics;
  */
 class Participant extends Model
 {
-    use HasFactory, Notifiable, HashId {
+    use HasFactory, Notifiable, HasHash {
         resolveRouteBinding as public baseResolver;
     }
 

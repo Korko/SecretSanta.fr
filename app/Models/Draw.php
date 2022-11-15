@@ -51,7 +51,7 @@ use Metrics;
  */
 class Draw extends Model
 {
-    use HasFactory, HashId, MassPrunable;
+    use HasFactory, HasHash, MassPrunable;
 
     // Consider a draw expired N months after the last mail sent
     public const MONTHS_BEFORE_EXPIRATION = 3;
