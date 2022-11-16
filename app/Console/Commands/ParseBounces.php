@@ -28,6 +28,6 @@ class ParseBounces extends Command
      */
     public function handle()
     {
-        Job::dispatchNow();
+        Job::dispatchSync();
     }
 }
