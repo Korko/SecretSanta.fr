@@ -5,9 +5,9 @@ namespace App\Providers;
 use App\Services\IVEncrypter;
 use Closure;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
@@ -74,6 +74,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->bootInertia();
+
+        Model::shouldBeStrict(! $this->app->isProduction());
     }
 
     /**
