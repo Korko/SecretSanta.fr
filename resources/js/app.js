@@ -3,6 +3,10 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { createI18n } from 'vue-i18n';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
+// Assign to unused constants or Vite triggers Unexpected token...
+// Will be used in Blade
+const logos = import.meta.glob('../images/logo.*', { eager: true });
+
 createInertiaApp({
     resolve: name => import(`./Pages/${name}.vue`),
     setup({ el, App, props, plugin }) {
