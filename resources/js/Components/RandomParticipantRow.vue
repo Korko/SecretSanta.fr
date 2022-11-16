@@ -179,6 +179,7 @@
     </tr>
 </template>
 
-<style scoped>
+<!-- Don't scope the style, multiselect does not handle it -->
+<style>
     @import '@vueform/multiselect/themes/default.css';
 </style>
