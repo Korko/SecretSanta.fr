@@ -42,20 +42,7 @@
 
         @routes
 
-        <!-- media -->
-        @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-        <!--<link
-            rel="stylesheet"
-            href="{{ Vite::asset('resources/sass/app.scss') }}"
-            integrity=""
-            crossorigin="anonymous"
-        />
-        <script
-            type="text/javascript"
-            src="{{ Vite::asset('resources/js/app.js') }}"
-            integrity=""
-            defer
-        ></script>-->
+        @vite('resources/sass/app.scss')
 
         @inertiaHead
     </head>
@@ -91,6 +78,8 @@
             </div>
             <!-- /.container -->
         </footer>
+
+        @vite('resources/js/app.js')
 
         @javascript([
             'pusher' => [
