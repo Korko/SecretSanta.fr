@@ -2,14 +2,13 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Draw;
+use App\Traits\Console\ListsDraw;
 use App\Traits\ParsesUrl;
-use Arr;
 use Illuminate\Console\Command;
 
 class ListDraw extends Command
 {
-    use ParsesUrl;
+    use ParsesUrl, ListsDraw;
 
     /**
      * The name and signature of the console command.
@@ -34,21 +33,5 @@ class ListDraw extends Command
     {
         $draw = $this->getDrawFromURL($this->argument('url'));
         $this->displayDraw($draw);
-    }
-
-    public function displayDraw(Draw $draw): void
-    {
-        $this->table(
-            ['ID', 'Name', 'Email', 'Status'],
-            $draw->participants()
-                ->with('mail')
-                ->get()
-                ->map(function ($col) {
-                    return
-                        Arr::only($col->toArray(), ['id', 'name', 'email']) +
-                        ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')];
-                })
-                ->toArray()
-        );
     }
 }
