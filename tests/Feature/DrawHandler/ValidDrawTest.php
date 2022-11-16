@@ -6,7 +6,7 @@ use App\Notifications\TargetDrawn as TargetDrawnNotification;
 
 it('records new entries in case of success', function ($participants, Draw $draw) {
     $exclusions = array_reduce($participants, function ($sum, $participant) {
-    return $sum + count($participant['exclusions']);
+        return $sum + count($participant['exclusions']);
     });
 
     assertModelExists($draw);

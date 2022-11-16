@@ -9,25 +9,25 @@ class HatSolver extends Solver
 {
     protected function solve(Collection $participantsIdx, Collection $exclusions): Generator
     {
-        return $this->solveWithExclusions(participantIdx: (int) $participantsIdx->first(), allExclusions: $exclusions, currentHat: $participantsIdx->shuffle());
+        return $this->solveWithExclusions(participantIdx: (int) $participantsIdx->first(), exclusions: $exclusions, hat: $participantsIdx->shuffle());
     }
 
-    private function solveWithExclusions(int $participantIdx, array $combination, Collection $allExclusions, Collection $currentHat): Generator
+    private function solveWithExclusions(int $participantIdx, array $combination, Collection $exclusions, Collection $hat): Generator
     {
         // End of a loop, we've found a possible combination
-        if ($currentHat->isEmpty()) {
+        if ($hat->isEmpty()) {
             yield $combination;
         }
 
         if (isset($combination[$participantIdx])) {
-            yield from $this->solveWithExclusions($participantIdx + 1, $combination, $allExclusions, $currentHat);
+            yield from $this->solveWithExclusions($participantIdx + 1, $combination, $exclusions, $hat);
         }
 
         // Get the exclusions requested for that participant
         // And remove them from the hat (+ the current participant)
-        $exclusions = $allExclusions->get($participantIdx, []);
-        $hat = $currentHat
-            ->diff($exclusions)
+        $participantExclusions = $exclusions->get($participantIdx, []);
+        $hat = $hat
+            ->diff($participantExclusions)
             ->diff([$participantIdx]);
 
         // If nothing available in the hat for that participant
@@ -36,14 +36,14 @@ class HatSolver extends Solver
             // Create a new possible solution with the participant drawn
             $newCombination = $combination + [$participantIdx => $drawnParticipant];
 
-            $newHat = $currentHat->diff([$drawnParticipant]);
+            $newHat = $hat->diff([$drawnParticipant]);
 
             // Further check if this solution is possible
             yield from $this->solveWithExclusions(
                 participantIdx: $participantIdx + 1,
                 combination: $newCombination,
-                allExclusions: $allExclusions,
-                currentHat: $newHat
+                exclusions: $exclusions,
+                hat: $newHat
             );
         }
     }

@@ -7,7 +7,6 @@ use App\Models\PendingDraw;
 use App\Notifications\PendingDraw as PendingDrawNotification;
 use Arr;
 use Notification;
-use URL;
 
 class RandomFormController extends Controller
 {

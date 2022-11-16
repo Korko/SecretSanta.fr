@@ -14,7 +14,7 @@ class DrawHandler
     {
         $participants = ($participants ?: $draw->participants)
             ->mapWithKeys(function ($participant) {
-            return [$participant->id => $participant];
+                return [$participant->id => $participant];
             });
 
         $hat = self::getHat($participants);

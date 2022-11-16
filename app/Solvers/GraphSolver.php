@@ -8,41 +8,41 @@ use Illuminate\Support\Collection;
 class GraphSolver extends Solver
 {
     //TODO: seed shuffle?
-    protected function solve(Collection $participantsIdx, Collection $allExclusions): Generator
+    protected function solve(Collection $participantsIdx, Collection $exclusions): Generator
     {
-        return $this->findPaths($participantsIdx->shuffle(), $allExclusions);
+        return $this->findPaths($participantsIdx->shuffle(), $exclusions);
     }
 
     /**
      * @param  Collection<int>  $nodesLeft
-     * @param  Collection<array<int>>  $allExclusions
+     * @param  Collection<array<int>>  $exclusions
      */
-    protected function findPaths(Collection $nodesLeft, Collection $allExclusions)
+    protected function findPaths(Collection $nodesLeft, Collection $exclusions)
     {
         // Preformat nodes to weight them by the amount of exclusions for each one
         $nodesLeft = $nodesLeft
-            ->mapWithKeys(function ($nodeIdx) use ($allExclusions) {
+            ->mapWithKeys(function ($nodeIdx) use ($exclusions) {
                 // The more the nodeIdx have exclusions, the more we should pick it (min weight should be 1)
-                return [$nodeIdx => 1 + count($allExclusions->get($nodeIdx, []))];
+                return [$nodeIdx => 1 + count($exclusions->get($nodeIdx, []))];
             });
 
         // Preformat the exclusions to have the same format as participants [node => [exclusion1 => 0, exclusion2 => 0, ...]]
-        foreach ($allExclusions as $idx => $exclusions) {
-            $allExclusions[$idx] = array_flip($exclusions);
+        foreach ($exclusions as $idx => $participantExclusions) {
+            $exclusions[$idx] = array_flip($participantExclusions);
         }
 
         return $this->findPathsFrom(
             startNode: $nodesLeft->firstKey(),
             nodesLeft: $nodesLeft,
-            exclusions: $allExclusions
+            exclusions: $exclusions
         );
     }
 
-    private function findPathsFrom($startNode, Collection $nodesLeft, Collection $allExclusions, $list = [])
+    private function findPathsFrom($startNode, Collection $nodesLeft, Collection $exclusions, $list = [])
     {
         $availableNodes = $nodesLeft
             ->diffKeys([$startNode => 0])
-            ->diffKeys($allExclusions->get($startNode, []));
+            ->diffKeys($exclusions->get($startNode, []));
 
         while (count($availableNodes) > 0) {
             // Pick a random number between 0 and the sum of all weights
@@ -62,10 +62,10 @@ class GraphSolver extends Solver
 
             if (! isset($list[$nextNode])) {
                 // We need to go deeper
-                yield from $this->findPathsFrom($nextNode, $nodesLeft, $allExclusions, $list);
+                yield from $this->findPathsFrom($nextNode, $nodesLeft, $exclusions, $list);
             } elseif ($nodesLeft->count() >= 2) {
                 // Another partial graph is possible
-                yield from $this->findPathsFrom($nodesLeft->firstKey(), $nodesLeft, $allExclusions, $list);
+                yield from $this->findPathsFrom($nodesLeft->firstKey(), $nodesLeft, $exclusions, $list);
             } elseif ($nodesLeft->count() === 0) {
                 // Solution found
                 yield $list;

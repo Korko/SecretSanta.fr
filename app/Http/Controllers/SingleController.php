@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Lang;
-use URL;
 
 class SingleController extends Controller
 {

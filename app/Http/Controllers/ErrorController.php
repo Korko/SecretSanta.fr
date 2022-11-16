@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use URL;
-
 class ErrorController extends Controller
 {
     public static function pageNotFound()
