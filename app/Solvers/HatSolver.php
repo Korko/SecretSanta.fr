@@ -9,7 +9,7 @@ class HatSolver extends Solver
 {
     protected function solve(Collection $participantsIdx, Collection $exclusions): Generator
     {
-        return $this->solveWithExclusions((int) $participantsIdx->first(), [], $exclusions, $participantsIdx->shuffle());
+        return $this->solveWithExclusions(participantIdx: (int) $participantsIdx->first(), allExclusions: $exclusions, currentHat: $participantsIdx->shuffle());
     }
 
     private function solveWithExclusions(int $participantIdx, array $combination, Collection $allExclusions, Collection $currentHat): Generator
@@ -40,10 +40,10 @@ class HatSolver extends Solver
 
             // Further check if this solution is possible
             yield from $this->solveWithExclusions(
-                $participantIdx + 1,
-                $newCombination,
-                $allExclusions,
-                $newHat
+                participantIdx: $participantIdx + 1,
+                combination: $newCombination,
+                allExclusions: $allExclusions,
+                currentHat: $newHat
             );
         }
     }

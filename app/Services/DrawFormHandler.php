@@ -18,65 +18,22 @@ class DrawFormHandler
 
     protected $participants;
 
-    public function __construct()
-    {
-        $this->title = '';
-        $this->body = '';
-        $this->organizer = null;
-        $this->participants = [];
-    }
-
     public function handle(PendingDraw $pending): Draw
     {
         if (! Arr::get($pending->data, 'participant-organizer', false)) {
-            $this->withOrganizer($pending->data['organizer']);
+            $organizer = $pending->data['organizer'];
+        } else {
+            $organizer = current($pending->data['participants']);
+            unset($organizer['exclusions']);
         }
 
-        return $this
-            ->withParticipants($pending->data['participants'])
-            ->withTitle($pending->data['title'])
-            ->withBody($pending->data['content'])
-            ->save();
-    }
-
-    protected function withOrganizer(array $organizer): self
-    {
-        $this->organizer = $organizer;
-
-        return $this;
-    }
-
-    protected function withParticipants(array $participants): self
-    {
-        $this->participants = $participants;
-        if (! isset($this->organizer)) {
-            $this->organizer = current($participants);
-            unset($this->organizer['exclusions']);
-        }
-
-        return $this;
-    }
-
-    protected function withTitle($title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    protected function withBody($body): self
-    {
-        $this->body = $body;
-
-        return $this;
-    }
-
-    protected function save(): Draw
-    {
-        return DB::transaction(function (): Draw {
-            $draw = $this->createDraw();
-
-            $this->solveExclusions();
+        return DB::transaction(function () use ($organizer, $pending): Draw {
+            $draw = $this->createDraw(
+                organizer: $organizer,
+                participants: $pending->data['participants'],
+                title: $pending->data['title'],
+                body: $pending->data['content']
+            );
 
             DrawHandler::solve($draw);
 
@@ -84,40 +41,34 @@ class DrawFormHandler
         });
     }
 
-    protected function createDraw(): Draw
+    protected function createDraw(array $organizer, array $participants, string $title, string $body): Draw
     {
         $draw = new Draw();
-        $draw->mail_title = $this->title;
-        $draw->mail_body = $this->body;
-        $draw->organizer_name = $this->organizer['name'];
-        $draw->organizer_email = $this->organizer['email'];
+        $draw->mail_title = $title;
+        $draw->mail_body = $body;
+        $draw->organizer_name = $organizer['name'];
+        $draw->organizer_email = $organizer['email'];
         $draw->save();
 
-        foreach ($this->participants as $idx => $santa) {
+        foreach ($participants as $idx => $santa) {
             $participant = new Participant();
             $participant->draw()->associate($draw);
             $participant->name = $santa['name'];
             $participant->email = Arr::get($santa, 'email');
             $participant->save();
 
-            $this->participants[$idx]['model'] = $participant;
+            $participants[$idx]['model'] = $participant;
             $draw->participants()->save($participant);
         }
 
-        return $draw;
-    }
-
-    protected function solveExclusions(): void
-    {
-        $participants = $this->participants;
-        for ($i = 0; $i < count($participants); $i++) {
-            $participant = $participants[$i];
-
+        foreach ($participants as $idx => $participant) {
             $participant['model']->exclusions()->attach(
                 array_map(function ($participantId) use ($participants) {
                     return $participants[intval($participantId)]['model']->id;
                 }, Arr::get($participant, 'exclusions', []))
             );
         }
+
+        return $draw;
     }
 }

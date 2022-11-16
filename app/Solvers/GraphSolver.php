@@ -31,7 +31,11 @@ class GraphSolver extends Solver
             $allExclusions[$idx] = array_flip($exclusions);
         }
 
-        return $this->findPathsFrom($nodesLeft->firstKey(), $nodesLeft, $allExclusions, []);
+        return $this->findPathsFrom(
+            startNode: $nodesLeft->firstKey(),
+            nodesLeft: $nodesLeft,
+            exclusions: $allExclusions
+        );
     }
 
     private function findPathsFrom($startNode, Collection $nodesLeft, Collection $allExclusions, $list = [])
