@@ -1,10 +1,10 @@
 <script>
-    import Layout from './Layout.vue';
+    import Layout from '@/Layouts/Main.vue';
 
-    import NavLink from '../Components/NavLink.vue';
-    import NavPageLink from '../Components/NavPageLink.vue';
-    import BuyMeCoffee from '../Components/BuyMeCoffee.vue';
-    import RandomForm from '../Components/RandomForm.vue';
+    import NavLink from '@/Components/NavLink.vue';
+    import NavPageLink from '@/Components/NavPageLink.vue';
+    import BuyMeCoffee from '@/Components/BuyMeCoffee.vue';
+    import RandomForm from '@/Components/RandomForm.vue';
 
     import VueScrollTo from 'vue-scrollto';
 

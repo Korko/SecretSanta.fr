@@ -1,9 +1,6 @@
 <script>
-    import Toastify from '../Modules/toastify.js';
-    import scrollTo from '../Modules/scrollTo.js';
-
-    import { useVuelidate } from '@vuelidate/core';
-    import { required, minLength, maxLength , email, requiredIf } from '@vuelidate/validators';
+    import Toastify from '@/Modules/toastify.js';
+    import scrollTo from '@/Modules/scrollTo.js';
 
     import Moment from 'moment';
     import 'moment/locale/fr';
@@ -11,12 +8,12 @@
 
     import Papa from 'papaparse';
 
-    import AjaxForm from './AjaxForm.vue';
-    import AutoTextarea from './AutoTextarea.vue';
-    import Csv from './CSV.vue';
-    import ParticipantRow from './RandomParticipantRow.vue';
-    import Tooltip from './Tooltip.vue';
-    import Toggle from './Toggle.vue';
+    import AjaxForm from '@/Components/AjaxForm.vue';
+    import AutoTextarea from '@/Components/AutoTextarea.vue';
+    import Csv from '@/Components/CSV.vue';
+    import ParticipantRow from '@/Components/RandomParticipantRow.vue';
+    import Tooltip from '@/Components/Tooltip.vue';
+    import Toggle from '@/Components/Toggle.vue';
 
     const formatMoment = (amount, unit) => Moment(window.now).add(amount, unit).format('YYYY-MM-DD')
 
@@ -49,40 +46,6 @@
             now: window.now,
             showModal: false,
             importing: false
-        }),
-
-        setup: () => ({ v$: useVuelidate() }),
-        validations: () => ({
-            organizer: {
-                name: {
-                    required: requiredIf(function() {
-                        return !this.participantOrganizer;
-                    }),
-                    maxLength: maxLength(55)
-                },
-                email: {
-                    required: requiredIf(function() {
-                        return !this.participantOrganizer;
-                    }),
-                    maxLength: maxLength(320),
-                    format: email
-                }
-            },
-            participants: {
-                required,
-                minLength: minLength(3)
-            },
-            title: {
-                required,
-                maxLength: maxLength(36773)
-            },
-            content: {
-                required,
-                maxLength: maxLength(36773),
-                contains(value) {
-                   return value.indexOf('{TARGET}') >= 0;
-                }
-            }
         }),
 
         watch: {
@@ -190,8 +153,8 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <AjaxForm id="randomForm" :action="this.action" :button-send="$t('form.submit')" :v$="v$" @reset="reset" send-icon="dice">
-                <template #default="{ sending, sent, fieldError }">
+            <AjaxForm id="randomForm" :action="this.action" :button-send="$t('form.submit')" @reset="reset" send-icon="dice">
+                <template #default="{ sent, fieldError }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ $t('form.success') }}
                     </div>
@@ -224,12 +187,10 @@
                                                     :placeholder="$t('form.participant.name.placeholder')"
                                                     v-model="organizer.name"
                                                     class="form-control participant-name"
-                                                    :class="{ 'is-invalid': $v.organizer.name.$error || fieldError(`organizer.name`)}"
-                                                    :aria-invalid="$v.organizer.name.$error || fieldError(`organizer.name`)"
-                                                    @blur="$v.organizer.name.$touch()"
+                                                    :class="{ 'is-invalid': fieldError(`organizer.name`)}"
+                                                    :aria-invalid="fieldError(`organizer.name`)"
                                                 />
-                                                <div v-if="!$v.organizer.name.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.name.required') }}</div>
-                                                <div v-else-if="fieldError(`organizer.name`)" class="invalid-tooltip">{{ fieldError(`organizer.name`) }}</div>
+                                                <div v-if="fieldError(`organizer.name`)" class="invalid-tooltip">{{ fieldError(`organizer.name`) }}</div>
                                             </div>
                                         </td>
                                     </tr>
@@ -245,13 +206,10 @@
                                                     :placeholder="$t('form.participant.email.placeholder')"
                                                     v-model="organizer.email"
                                                     class="form-control participant-email"
-                                                    :class="{ 'is-invalid': $v.organizer.email.$error || fieldError(`organizer.email`)}"
-                                                    :aria-invalid="$v.organizer.email.$error || fieldError(`organizer.email`)"
-                                                    @blur="$v.organizer.email.$touch()"
+                                                    :class="{ 'is-invalid': fieldError(`organizer.email`)}"
+                                                    :aria-invalid="fieldError(`organizer.email`)"
                                                 />
-                                                <div v-if="!$v.organizer.email.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.required') }}</div>
-                                                <div v-else-if="!$v.organizer.email.format" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.format') }}</div>
-                                                <div v-else-if="fieldError(`organizer.email`)" class="invalid-tooltip">{{ fieldError(`organizer.email`) }}</div>
+                                                <div v-if="fieldError(`organizer.email`)" class="invalid-tooltip">{{ fieldError(`organizer.email`) }}</div>
                                             </div>
                                         </td>
                                     </tr>
@@ -338,8 +296,8 @@
                                             v-model="title"
                                             :placeholder="$t('form.mail.title.placeholder')"
                                             class="form-control"
-                                            :class="{ 'is-invalid': v$.title.$error || fieldError('title') }"
-                                            :aria-invalid="v$.title.$error || fieldError('title')"
+                                            :class="{ 'is-invalid': fieldError('title') }"
+                                            :aria-invalid="fieldError('title')"
                                         />
                                         <div class="invalid-tooltip">{{ $t('validation.custom.randomform.title.required') }}</div>
                                     </div>
@@ -354,12 +312,11 @@
                                             :placeholder="$t('form.mail.content.placeholder')"
                                             rows="3"
                                             class="form-control"
-                                            :class="{ 'is-invalid': v$.content.$error || fieldError('content') }"
-                                            :aria-invalid="v$.content.$error || fieldError('content')"
+                                            :class="{ 'is-invalid': fieldError('content') }"
+                                            :aria-invalid="fieldError('content')"
                                             style="width: 100%;"
                                         />
-                                        <div v-if="!v$.content.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.required') }}</div>
-                                        <div v-else-if="fieldError('content')" class="invalid-tooltip">{{ fieldError('content') }}</div>
+                                        <div v-if="fieldError('content')" class="invalid-tooltip">{{ fieldError('content') }}</div>
                                     </div>
                                     <textarea
                                         id="mailPost"

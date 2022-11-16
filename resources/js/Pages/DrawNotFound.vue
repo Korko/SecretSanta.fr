@@ -1,5 +1,5 @@
 <script>
-    import PageNotFound from './PageNotFound.vue';
+    import PageNotFound from '@/Pages/PageNotFound.vue';
 
     export default {
         components: {

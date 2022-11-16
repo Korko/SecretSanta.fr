@@ -1,7 +1,5 @@
 <script>
-    import { useVuelidate } from '@vuelidate/core';
-
-    import StateMachine from '../Mixins/StateMachine.js';
+    import StateMachine from '@/Mixins/StateMachine.js';
 
     export default {
         mixins: [StateMachine],
@@ -15,22 +13,14 @@
                 type: Function,
                 required: true
             },
-            validation: {
-                type: Object,
-                default: null
+            validate: {
+                type: Function,
+                required: true
             },
             disabled: {
                 type: Boolean,
                 default: false
             }
-        },
-        setup: () => ({ v$: useVuelidate() }),
-        validations() {
-            // This test is just to prevent infinite loop if validation is done during setup
-            if (this.$el)
-                return {
-                    newValue: this.validation || {}
-                };
         },
         data() {
             return {
@@ -91,19 +81,15 @@
         },
         methods: {
             onBlur() {
-                this.v$.$touch();
                 this.send('blur');
             },
             onCancel() {
-                this.v$.$reset();
                 this.send('cancel');
             },
             onInput() {
-                this.v$.$error && this.v$.$touch();
                 this.send('validate');
             },
             onSubmit() {
-                this.v$.$touch();
                 this.send('submit');
             },
             onResend() {
@@ -123,11 +109,13 @@
                 }
             },
             stateEditingValidating() {
-                if (this.v$.$invalid || this.$el.querySelectorAll('input:invalid').length > 0) {
-                    this.send('invalid');
-                } else {
-                    this.send('valid');
-                }
+                this.validate(this.newValue)
+                    .then(() => {
+                        this.send('valid');
+                    })
+                    .catch((message) => {
+                        this.send('invalid', {message});
+                    });
             },
             stateViewUpdating() {
                 this.submit(this.newValue)
@@ -166,13 +154,13 @@
                     v-model="newValue"
                     name="input"
                     v-bind="$attrs"
-                    :class="{ 'form-control': true, 'is-invalid': v$.$error }"
+                    :class="{ 'form-control': true, 'is-invalid': state.endsWith('Invalid') }"
                     :disabled="view"
-                    :aria-invalid="v$.$error"
+                    :aria-invalid="state.endsWith('Invalid')"
                     :title="data.message"
                     @input="onInput"
                 />
-                <slot name="errors"></slot>
+                <div v-if="state.endsWith('Invalid')" class="invalid-tooltip">{{ data.message }}</div>
                 <div class="input-group-append">
                     <button
                         v-if="state === 'viewError'"

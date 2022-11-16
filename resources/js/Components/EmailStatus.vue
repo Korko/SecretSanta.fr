@@ -1,5 +1,5 @@
 <script>
-    import Tooltip from './Tooltip.vue';
+    import Tooltip from '@/Components/Tooltip.vue';
 
     export default {
         components: {

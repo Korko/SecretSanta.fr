@@ -1,10 +1,10 @@
 <script>
-    import FetcherLayout from './FetcherLayout.vue';
+    import FetcherLayout from '@/Layouts/Fetcher.vue';
 
-    import NavPageLink from '../Components/NavPageLink.vue';
-    import DearSantaForm from '../Components/DearSantaForm.vue';
+    import NavPageLink from '@/Components/NavPageLink.vue';
+    import DearSantaForm from '@/Components/DearSantaForm.vue';
 
-    import { deepMerge } from '../helpers.js';
+    import { deepMerge } from '@/helpers.js';
 
     export default {
         components: {

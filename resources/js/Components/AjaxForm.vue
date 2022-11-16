@@ -1,5 +1,5 @@
 <script>
-    import fetch from '../Modules/fetch.js';
+    import { post, precog } from '@/Modules/fetch.js';
 
     export default {
         props: {
@@ -27,10 +27,6 @@
                 type: String,
                 default: ''
             },
-            v$: {
-                type: Object,
-                default: null
-            },
             sendIcon: {
                 type: String,
                 default: 'paper-plane'
@@ -54,19 +50,30 @@
             fieldError(field) {
                 return this.fieldErrors[field] ? this.fieldErrors[field][0] : null;
             },
+            precog(url, data) {
+                return precog(url, data)
+                    .then(() => {
+                        // Remove data keys from fieldErrors as they were validated
+                        this.fieldErrors = Object.keys(this.fieldErrors)
+                            .filter((key) => data[key])
+                            .reduce((obj, key) => {
+                                return Object.assign(obj, {
+                                    [key]: this.fieldErrors[key]
+                                });
+                            }, {});
+                    })
+                    .catch(response => {
+                        if (response && response.errors)
+                            this.fieldErrors = Object.assign(this.fieldErrors, response.errors);
+                    });
+            },
             call(url, options) {
                 if (!this.sending && !this.sent) {
-                    this.v$ && this.v$.$touch();
-
-                    if (this.v$ && this.v$.$invalid) {
-                        return false;
-                    }
-
                     this.sending = true;
 
-                    return fetch(url, 'POST', options.data)
+                    return post(url, options.data)
                         .then(response => {
-                            this.fieldErrors = [];
+                            this.fieldErrors = {};
                             this.sending = false;
 
                             if(!this.autoReset) {
@@ -112,10 +119,12 @@
             },
             onReset() {
                 this.$emit('reset');
-                this.fieldErrors = [];
-                this.v$.$reset();
+                this.fieldErrors = {};
                 this.sending = false;
                 this.sent = false;
+            },
+            validate(field, value) {
+                return this.precog(this.action, {[field]: value});
             },
             submit(postData, options) {
                 this.$emit('beforeSubmit');

@@ -1,8 +1,8 @@
 <script>
-    import FetcherLayout from './FetcherLayout.vue';
+    import FetcherLayout from '@/Layouts/Fetcher.vue';
 
-    import NavPageLink from '../Components/NavPageLink.vue';
-    import PendingDrawForm from '../Components/PendingDrawForm.vue';
+    import NavPageLink from '@/Components/NavPageLink.vue';
+    import PendingDrawForm from '@/Components/PendingDrawForm.vue';
 
     export default {
         components: {

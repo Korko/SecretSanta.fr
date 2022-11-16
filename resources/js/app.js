@@ -1,5 +1,6 @@
 import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/inertia-vue3'
+import { createInertiaApp } from '@inertiajs/inertia-vue3';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createI18n } from 'vue-i18n';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
@@ -8,7 +9,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 const logos = import.meta.glob('../images/logo.*', { eager: true });
 
 createInertiaApp({
-    resolve: name => import(`./Pages/${name}.vue`),
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
         const i18n = createI18n({
             locale: props.initialPage.props.app.locale,

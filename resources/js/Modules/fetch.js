@@ -1,6 +1,6 @@
-import { isString, isObject, isArray } from '../helpers.js';
+import { isString, isObject, isArray } from '@/helpers.js';
 
-export default function(url, method, data, headers) {
+async function fetch(url, method, data, headers) {
     let body = undefined;
     if(isObject(data) || isArray(data)) {
         body = new FormData();
@@ -35,4 +35,17 @@ export default function(url, method, data, headers) {
         }
         return data;
     });
+};
+
+const get = (url, headers) => fetch(url, 'GET', {}, headers);
+const post = (url, data, headers) => fetch(url, 'POST', data, headers);
+const precog = (url, data, headers) => fetch(url, 'POST', data, Object.assign({}, headers, { Precognition: true, 'Precognition-Validate-Only': Object.keys(data).join(',') }));
+
+export default fetch;
+
+export {
+    fetch,
+    get,
+    post,
+    precog
 };

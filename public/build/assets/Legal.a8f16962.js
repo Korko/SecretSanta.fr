@@ -1,4 +1,4 @@
-import{_ as r,L as u}from"./Layout.7e513d1b.js";import{N as l}from"./NavLink.06e2084b.js";import{N as c}from"./NavPageLink.4d27d314.js";import{r as s,o as d,c as p,w as e,a as n,e as m}from"./app.6256a668.js";const v={components:{Layout:u,NavLink:l,NavPageLink:c}},f=m("pre",null,`                # Usage
+import{L as r,N as u}from"./NavPageLink.08e97645.js";import{N as l}from"./NavLink.76ddf01b.js";import{_ as c}from"./plugin-vue_export-helper.f2aa9cb4.js";import{r as s,o as d,c as p,w as e,a as n,e as m}from"./app.bdaf2afe.js";const v={components:{Layout:r,NavLink:l,NavPageLink:u}},f=m("pre",null,`                # Usage
 
                 Votre utilisation du site Web indique que vous avez lu et accept\xE9 nos pratiques de confidentialit\xE9, telles qu'\xE9nonc\xE9es dans cette politique.
                 Si vous n'acceptez pas les modalit\xE9s d'utilisation de cette politique, veuillez, s'il-vous-pla\xEEt, ne pas utiliser ce site Web.
@@ -7,6 +7,9 @@ import{_ as r,L as u}from"./Layout.7e513d1b.js";import{N as l}from"./NavLink.06e
                 Le site SecretSanta.fr collecte des informations personnelles comme le nom et l'adresse email des participants soumis par un visiteur.
                 Alors organisateur d'\xE9v\xE8nement, vous reconnaissez avoir eu le consentement des autres participants pour partager leurs donn\xE9es personnelles dans cet outil.
                 Ces donn\xE9es ne sont utilis\xE9es que pour la gestion de cet \xE9v\xE8nement organis\xE9 et ne sont partag\xE9es avec aucun partenaire.
+
+                Vous vous engagez \xE0 ne pas utiliser SecretSanta.fr pour diffuser du contenu commercial non solicit\xE9 (spam), des messages harcelants ou \xE0 caract\xE8res abusifs, diffamatoires, obs\xE8ne ou tout autre contenu ill\xE9gal.
+                Vous vous engagez \xE9galement \xE0 ne pas utiliser SecretSanta.fr en vous faisant passer pour une autre personne, pour proc\xE9der \xE0 du hame\xE7onnage (phishing), ou autre escroquerie.
 
                 Le d\xE9veloppeur se r\xE9serve le droit de supprimer \xE0 tout moment un \xE9v\xE8nement ainsi que toutes les donn\xE9es associ\xE9es, notamment en cas d'abus \xE9vident de l'outil.
 
@@ -58,4 +61,8 @@ import{_ as r,L as u}from"./Layout.7e513d1b.js";import{N as l}from"./NavLink.06e
 
                 Un \xAB cookie \xBB est un fichier de petite taille qui enregistre des informations relatives \xE0 la navigation d\u2019un utilisateur sur un site.
                 Le site SecretSanta.fr n'utilise aucun cookie et se passe donc de demande d'autorisation pour ceux-ci.
-            `,-1);function g(t,h,L,b,q,_){const o=s("i18n-t"),i=s("NavPageLink"),a=s("Layout");return d(),p(a,null,{"navbar-right":e(()=>[n(i,{href:t.route("form.index")},{default:e(()=>[n(o,{keypath:"common.nav.go"})]),_:1},8,["href"]),n(i,{href:t.route("dashboard")},{default:e(()=>[n(o,{keypath:"common.nav.dashboard"})]),_:1},8,["href"])]),content:e(()=>[f]),_:1})}var z=r(v,[["render",g]]);export{z as default};
+
+                # Protection
+
+                Afin de se pr\xE9venir de potentiels abus, l'ent\xEAte suivant sera ajout\xE9 dans les emails que vous enverrez via SecretSanta.fr : X-Originating-IP:
+            `,-1);function g(t,h,L,b,q,S){const o=s("i18n-t"),a=s("NavPageLink"),i=s("Layout");return d(),p(i,null,{"navbar-right":e(()=>[n(a,{href:t.route("form.index")},{default:e(()=>[n(o,{keypath:"common.nav.go"})]),_:1},8,["href"]),n(a,{href:t.route("dashboard")},{default:e(()=>[n(o,{keypath:"common.nav.dashboard"})]),_:1},8,["href"])]),content:e(()=>[f]),_:1})}var x=c(v,[["render",g]]);export{x as default};

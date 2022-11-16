@@ -1,10 +1,10 @@
 <script>
-    import FetcherLayout from './FetcherLayout.vue';
+    import FetcherLayout from '@/Layouts/Fetcher.vue';
 
-    import NavPageLink from '../Components/NavPageLink.vue';
-    import OrganizerForm from '../Components/OrganizerForm.vue';
+    import NavPageLink from '@/Components/NavPageLink.vue';
+    import OrganizerForm from '@/Components/OrganizerForm.vue';
 
-    import { deepMerge } from '../helpers.js';
+    import { deepMerge } from '@/helpers.js';
 
     export default {
         components: {

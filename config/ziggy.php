@@ -7,5 +7,5 @@ return [
         'legal',
         'form.index',
         'form.process',
-    ]
+    ],
 ];

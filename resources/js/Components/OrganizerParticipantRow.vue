@@ -1,33 +1,12 @@
 <script>
-    import { useVuelidate } from '@vuelidate/core';
-    import { required, email, maxLength } from '@vuelidate/validators';
-
-    import InputEdit from './InputEdit.vue';
-    import EmailStatus from './EmailStatus.vue';
+    import InputEdit from '@/Components/InputEdit.vue';
+    import EmailStatus from '@/Components/EmailStatus.vue';
 
     export default {
         components: {
             InputEdit,
             EmailStatus
         },
-        setup: () => ({ v$: useVuelidate() }),
-        validations: () => ({
-            name: {
-                required,
-                maxLength: maxLength(55),
-                unique(value) {
-                    // standalone validator ideally should not assume a field is required
-                    if (value === '') return true;
-
-                    return (Object.values(this.participants).filter(participant => (participant.name === value)).length === 1);
-                }
-            },
-            email: {
-                required,
-                maxLength: maxLength(320),
-                format: email
-            }
-        }),
         props: {
             name: {
                 type: String,
@@ -57,6 +36,10 @@
                 type: Boolean,
                 required: true
             },
+            validate: {
+                type: Function,
+                required: true
+            },
             updateEmail: {
                 type: Function,
                 required: true
@@ -74,28 +57,18 @@
         <td>
             <InputEdit
                 :modelValue="name"
-                :validation="v$.name"
                 :submit="updateName"
+                :validate="(value) => validate(`name`, value)"
                 :disabled="finished"
-            >
-                <template #errors>
-                    <div v-if="!v$.name.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.required') }}</div>
-                    <div v-else-if="!v$.name.unique" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.distinct') }}</div>
-                </template>
-            </InputEdit>
+            />
         </td>
         <td>
             <InputEdit
                 :modelValue="email"
-                :validation="v$.email"
                 :submit="updateEmail"
+                :validate="(value) => validate(`email`, value)"
                 :disabled="finished"
-            >
-                <template #errors>
-                    <div v-if="!v$.email.required" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.required') }}</div>
-                    <div v-else-if="!v$.email.format" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.format') }}</div>
-                </template>
-            </InputEdit>
+            />
         </td>
         <td v-if="finished">
             {{ target }}

@@ -1,25 +1,14 @@
 <script>
-    import { useVuelidate } from '@vuelidate/core';
-    import { required } from '@vuelidate/validators';
+    import fetch from '@/Modules/fetch.js';
+    import Echo from '@/Modules/echo.js';
+    import { deepMerge } from '@/helpers.js';
 
-    import fetch from '../Modules/fetch.js';
-    import Echo from '../Modules/echo.js';
-    import { deepMerge } from '../helpers.js';
-
-    import EmailStatus from './EmailStatus.vue';
-    import Tooltip from './Tooltip.vue';
-    import AjaxForm from './AjaxForm.vue';
+    import EmailStatus from '@/Components/EmailStatus.vue';
+    import Tooltip from '@/Components/Tooltip.vue';
+    import AjaxForm from '@/Components/AjaxForm.vue';
 
     export default {
         components: { EmailStatus, Tooltip, AjaxForm },
-        setup: () => ({ v$: useVuelidate() }),
-        validations() {
-            return {
-                content: {
-                    required
-                }
-            };
-        },
         props: {
             draw: {
                 type: Object,
@@ -131,24 +120,25 @@
         <div v-if="finished" class="alert alert-warning" role="alert">
             {{ $t('dearsanta.finished', {finished_at: endDateLong}) }}
         </div>
-        <AjaxForm :action="routes.contactUrl" :v$="v$" @success="success" @reset="reset" :autoReset="true">
-            <fieldset>
-                <div class="form-group">
-                    <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
-                    <div class="input-group">
-                        <textarea
-                            id="mailContent"
-                            v-model="content"
-                            name="content"
-                            :placeholder="$t('dearsanta.content.placeholder')"
-                            :class="{ 'form-control': true, 'is-invalid': v$.content.$error }"
-                            :aria-invalid="v$.content.$error"
-                            @blur="v$.content.$touch()"
-                        />
-                        <div v-if="!v$.content.required" class="invalid-tooltip">{{ $t('validation.custom.dearSanta.content.required') }}</div>
+        <AjaxForm :action="routes.contactUrl" @success="success" @reset="reset" :autoReset="true">
+            <template #default="{ fieldError }">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
+                        <div class="input-group">
+                            <textarea
+                                id="mailContent"
+                                v-model="content"
+                                name="content"
+                                :placeholder="$t('dearsanta.content.placeholder')"
+                                :class="{ 'form-control': true, 'is-invalid': fieldError(`content`) }"
+                                :aria-invalid="fieldError(`content`)"
+                            />
+                            <div v-if="fieldError(`content`)" class="invalid-tooltip">{{ fieldError(`content`) }}</div>
+                        </div>
                     </div>
-                </div>
-            </fieldset>
+                </fieldset>
+            </template>
         </AjaxForm>
         <table class="table table-hover">
             <caption>{{ $t('dearsanta.list.caption') }}</caption>

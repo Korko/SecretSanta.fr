@@ -1,5 +1,5 @@
 <script>
-    import fetch from '../Modules/fetch.js';
+    import fetch from '@/Modules/fetch.js';
 
     export default {
         props: {

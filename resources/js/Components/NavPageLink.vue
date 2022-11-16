@@ -1,6 +1,6 @@
 <script>
     import { Link } from '@inertiajs/inertia-vue3'
-    import NavElement from './NavElement.vue';
+    import NavElement from '@/Components/NavElement.vue';
 
     export default {
         components: {

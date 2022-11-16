@@ -1,13 +1,13 @@
 <script>
-    import { download, deepMerge } from '../helpers.js';
+    import { download, deepMerge } from '@/helpers.js';
 
     import Moment from 'moment';
 
-    import fetch from '../Modules/fetch.js';
-    import Echo from '../Modules/echo.js';
+    import { fetch, precog } from '@/Modules/fetch.js';
+    import Echo from '@/Modules/echo.js';
 
-    import Tooltip from './Tooltip.vue';
-    import ParticipantRow from './OrganizerParticipantRow.vue';
+    import Tooltip from '@/Components/Tooltip.vue';
+    import ParticipantRow from '@/Components/OrganizerParticipantRow.vue';
 
     export default {
         components: {
@@ -111,6 +111,17 @@
                             .alert(data.message)
                             .then(() => window.location.pathname = '/');
                     });
+            },
+            precog(field, value) {
+                if(field === 'email') {
+                    return fetch(this.participants[k].changeEmailUrl, 'POST', {
+                        email: value
+                    }).catch(data => Promise.reject(data.errors.email[0]));
+                } else if(field === 'name') {
+                    return fetch(this.participants[k].changeNameUrl, 'POST', {
+                        name: value
+                    }).catch(data => Promise.reject(data.errors.name[0]));
+                }
             },
             resendTarget(k) {
                 this.participants[k].mail.delivery_status = 'created';

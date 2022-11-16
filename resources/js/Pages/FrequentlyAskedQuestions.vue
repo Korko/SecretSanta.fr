@@ -1,8 +1,8 @@
 <script>
-    import Layout from './Layout.vue';
+    import Layout from '@/Layouts/Main.vue';
 
-    import NavLink from '../Components/NavLink.vue';
-    import NavPageLink from '../Components/NavPageLink.vue';
+    import NavLink from '@/Components/NavLink.vue';
+    import NavPageLink from '@/Components/NavPageLink.vue';
 
     export default {
         components: {

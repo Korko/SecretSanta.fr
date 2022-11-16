@@ -1,6 +1,6 @@
 <script>
-    import fetch from '../Modules/fetch.js';
-    import Echo from '../Modules/echo.js';
+    import fetch from '@/Modules/fetch.js';
+    import Echo from '@/Modules/echo.js';
 
     export default {
         props: {
