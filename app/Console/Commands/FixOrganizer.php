@@ -4,10 +4,13 @@ namespace App\Console\Commands;
 
 use App\Actions\ChangeOrganizerEmail;
 use App\Actions\SendPanelToOrganizer;
-use URLParser;
+use App\Traits\ParsesUrl;
+use Illuminate\Console\Command;
 
 class FixOrganizer extends Command
 {
+    use ParsesUrl;
+
     /**
      * The name and signature of the console command.
      *
@@ -29,9 +32,8 @@ class FixOrganizer extends Command
      */
     public function handle()
     {
-        $this->setCryptIVFromUrl($this->argument('url'));
+        $draw = $this->getDrawFromURL($this->argument('url'));
 
-        $draw = URLParser::parseByName('dearSanta', $this->argument('url'))->participant->draw;
 
         if ($this->argument('email')) {
             app(ChangeOrganizerEmail::class)->change($draw, $this->argument('email'));

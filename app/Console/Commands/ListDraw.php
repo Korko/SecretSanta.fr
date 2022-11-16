@@ -2,10 +2,15 @@
 
 namespace App\Console\Commands;
 
-use URLParser;
+use App\Models\Draw;
+use App\Traits\ParsesUrl;
+use Arr;
+use Illuminate\Console\Command;
 
 class ListDraw extends Command
 {
+    use ParsesUrl;
+
     /**
      * The name and signature of the console command.
      *
@@ -27,21 +32,22 @@ class ListDraw extends Command
      */
     public function handle()
     {
-        $this->setCryptIVFromUrl($this->argument('url'));
+        $draw = $this->getDrawFromURL($this->argument('url'));
+        $this->displayDraw($draw);
+    }
 
-        $participant = URLParser::parseByName('santa.index', $this->argument('url'))->participant;
-        if ($participant) {
-            $draw = $participant->draw;
-        } else {
-            $draw = URLParser::parseByName('organizer.index', $this->argument('url'))->draw;
-        }
-
+    public function displayDraw(Draw $draw): void
+    {
         $this->table(
             ['ID', 'Name', 'Email', 'Status'],
             $draw->participants()
-                ->with(['mail'])
+                ->with('mail')
                 ->get()
-                ->map(fn ($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')])
+                ->map(function ($col) {
+                    return
+                        Arr::only($col->toArray(), ['id', 'name', 'email']) +
+                        ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')];
+                })
                 ->toArray()
         );
     }

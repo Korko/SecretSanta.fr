@@ -4,10 +4,13 @@ namespace App\Console\Commands;
 
 use App\Actions\ChangeParticipantEmail;
 use App\Actions\SendTargetToParticipant;
-use URLParser;
+use App\Traits\ParsesUrl;
+use Illuminate\Console\Command;
 
 class FixParticipant extends Command
 {
+    use ParsesUrl;
+
     /**
      * The name and signature of the console command.
      *
@@ -29,9 +32,8 @@ class FixParticipant extends Command
      */
     public function handle()
     {
-        $this->setCryptIVFromUrl($this->argument('url'));
+        $draw = $this->getDrawFromURL($this->argument('url'));
 
-        $draw = URLParser::parseByName('dearSanta', $this->argument('url'))->participant->draw;
 
         $participant = $draw->participants->find($this->argument('id'));
 
