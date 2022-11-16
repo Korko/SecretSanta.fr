@@ -35,8 +35,8 @@ services:
             - sail
     mariadb:
         image: 'mariadb:10'
-        ports:
-            - '${FORWARD_DB_PORT:-3306}:3306'
+        # ports:
+        #     - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
             MARIADB_ROOT_PASSWORD: '${DB_PASSWORD}'
             MARIADB_ROOT_HOST: "%"
