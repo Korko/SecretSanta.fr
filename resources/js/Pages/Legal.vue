@@ -35,6 +35,9 @@
                 Alors organisateur d'évènement, vous reconnaissez avoir eu le consentement des autres participants pour partager leurs données personnelles dans cet outil.
                 Ces données ne sont utilisées que pour la gestion de cet évènement organisé et ne sont partagées avec aucun partenaire.
 
+                Vous vous engagez à ne pas utiliser SecretSanta.fr pour diffuser du contenu commercial non solicité (spam), des messages harcelants ou à caractères abusifs, diffamatoires, obsène ou tout autre contenu illégal.
+                Vous vous engagez également à ne pas utiliser SecretSanta.fr en vous faisant passer pour une autre personne, pour procéder à du hameçonnage (phishing), ou autre escroquerie.
+
                 Le développeur se réserve le droit de supprimer à tout moment un évènement ainsi que toutes les données associées, notamment en cas d'abus évident de l'outil.
 
                 # Engagement pour la sécurité
@@ -85,6 +88,10 @@
 
                 Un « cookie » est un fichier de petite taille qui enregistre des informations relatives à la navigation d’un utilisateur sur un site.
                 Le site SecretSanta.fr n'utilise aucun cookie et se passe donc de demande d'autorisation pour ceux-ci.
+
+                # Protection
+
+                Afin de se prévenir de potentiels abus, l'entête suivant sera ajouté dans les emails que vous enverrez via SecretSanta.fr : X-Originating-IP:
             </pre>
         </template>
     </Layout>
