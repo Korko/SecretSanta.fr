@@ -53,6 +53,9 @@ class Draw extends Model
 {
     use HasFactory, HasHash, MassPrunable;
 
+    // Consider a draw cannot expire before at least N months
+    public const MIN_MONTHS_BEFORE_EXPIRATION = 6;
+
     // Consider a draw expired N months after the last mail sent
     public const MONTHS_BEFORE_EXPIRATION = 3;
 
@@ -113,7 +116,7 @@ class Draw extends Model
 
     public function getExpiresAtAttribute()
     {
-        return $this->updated_at->addMonths(self::MONTHS_BEFORE_EXPIRATION);
+        return max($this->created_at->addMonths(self::MIN_MONTHS_BEFORE_EXPIRATION), $this->updated_at->addMonths(self::MONTHS_BEFORE_EXPIRATION));
     }
 
     public function getIsFinishedAttribute()
