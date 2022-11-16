@@ -68,7 +68,9 @@ Route::controller(DearSantaController::class)
     ->name('santa.')
     ->group(function () {
         Route::get('/', 'index')->name('index')
-            ->missing([ErrorController::class, 'drawNotFound']);
+            ->missing(function () {
+                return ErrorController::drawNotFound();
+            });
 
         Route::middleware('decrypt.iv:participant,name')
             ->group(function () {
@@ -87,7 +89,9 @@ Route::controller(OrganizerController::class)
     ->name('organizer.')
     ->group(function () {
         Route::get('/', 'index')->name('index')
-            ->missing([ErrorController::class, 'drawNotFound']);
+            ->missing(function () {
+                return ErrorController::drawNotFound();
+            });
 
         Route::middleware('decrypt.iv:draw,mail_title')->group(function () {
             Route::get('/fetch', 'fetch')->name('fetch');
