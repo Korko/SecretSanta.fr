@@ -6,6 +6,7 @@ use App\Exceptions\SolverException;
 use App\Solvers\GraphSolver;
 use App\Solvers\HatSolver;
 use App\Solvers\Solver;
+use Arr;
 use Tests\TestCase;
 
 class SolverTest extends TestCase
@@ -178,8 +179,46 @@ class SolverTest extends TestCase
 
         try {
             $solver->one($participants);
-        } catch (SolverException $e) {
+        } catch (SolverException) {
             $this->fail('No exception expected');
         }
+    }
+
+    /**
+     * Test if the system is random enough
+     *
+     * @dataProvider solverProvider
+     */
+    public function testRandom(Solver $solver): void
+    {
+        // 26 characters from 'A' to 'Z'
+        $participants = range('A', 'Z');
+
+        // Let's run the algo N times
+        $solutions = [];
+        for($i = 0; $i < 10000; $i++) {
+            try {
+                $solution = $solver->one($participants);
+                ksort($solution, SORT_NUMERIC);
+                $solutions[] = json_encode($solution);
+            } catch (SolverException) {
+                $this->fail('No exception expected');
+            }
+        }
+
+        // And now count how many times we had each solution
+        $solutionsAndCount = [];
+        foreach($solutions as $solution) {
+            if(!isset($solutionsAndCount[$solution])) {
+                $solutionsAndCount[$solution] = 0;
+                foreach($solutions as $solution2) {
+                    if($solution === $solution2) {
+                        $solutionsAndCount[$solution]++;
+                    }
+                }
+            }
+        }
+
+        $this->assertTrue(count($solutionsAndCount) === count($solutions)); // We accept 1 redudency in solutions
     }
 }

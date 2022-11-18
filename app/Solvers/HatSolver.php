@@ -12,7 +12,7 @@ class HatSolver extends Solver
         return $this->solveWithExclusions(participantIdx: (int) $participantsIdx->first(), exclusions: $exclusions, hat: $participantsIdx->shuffle());
     }
 
-    private function solveWithExclusions(int $participantIdx, array $combination, Collection $exclusions, Collection $hat): Generator
+    private function solveWithExclusions(int $participantIdx, Collection $exclusions, Collection $hat, array $combination = []): Generator
     {
         // End of a loop, we've found a possible combination
         if ($hat->isEmpty()) {
@@ -20,7 +20,12 @@ class HatSolver extends Solver
         }
 
         if (isset($combination[$participantIdx])) {
-            yield from $this->solveWithExclusions($participantIdx + 1, $combination, $exclusions, $hat);
+            yield from $this->solveWithExclusions(
+                participantIdx: $participantIdx + 1,
+                exclusions: $exclusions,
+                hat: $hat,
+                combination: $combination,
+            );
         }
 
         // Get the exclusions requested for that participant
@@ -41,9 +46,9 @@ class HatSolver extends Solver
             // Further check if this solution is possible
             yield from $this->solveWithExclusions(
                 participantIdx: $participantIdx + 1,
-                combination: $newCombination,
                 exclusions: $exclusions,
-                hat: $newHat
+                hat: $newHat,
+                combination: $newCombination,
             );
         }
     }
