@@ -50,7 +50,7 @@
         },
         computed: {
             canWithdraw() {
-                return Object.keys(this.participants).length > 3;
+                return false;
             },
             checkUpdates() {
                 return !!Object.values(this.participants).find(
