@@ -19,6 +19,7 @@
         "laravel/dusk": "^6.11",
         "laravel/framework": "^8.18",
         "laravel/tinker": "^2.5",
+        "predis/predis": "^2.0",
         "pusher/pusher-php-server": "^4.1",
         "spatie/laravel-blade-javascript": "^2.5",
         "stechstudio/laravel-metrics": "^1.3",
