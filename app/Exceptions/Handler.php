@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Validation\ValidationException;
+use Request;
 
 class Handler extends ExceptionHandler
 {
@@ -47,4 +48,18 @@ class Handler extends ExceptionHandler
             ], 500);
         });
     }
+
+    /**
+     * Get the default context variables for logging.
+     *
+     * @return array
+     */
+    protected function context()
+    {
+        return array_merge(parent::context(), [
+            'url' => Request::url(),
+            'input' => Request::all()
+        ]);
+    }
+
 }
