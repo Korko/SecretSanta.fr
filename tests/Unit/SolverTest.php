@@ -87,9 +87,6 @@ class SolverTest extends TestCase
         })());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testMass(): void
     {
         // 702 characters from 'A' to 'ZZ'
@@ -99,7 +96,7 @@ class SolverTest extends TestCase
         }
 
         try {
-            Solver::one($participants);
+            $this->assertNotEquals(null, Solver::one($participants));
         } catch (SolverException $e) {
             $this->fail('No exception expected');
         }
@@ -139,5 +136,18 @@ class SolverTest extends TestCase
         }
 
         $this->assertTrue(count($solutionsAndCount) === count($solutions)); // We accept 1 redudency in solutions
+    }
+
+    /**
+     * Test if a lot of exclusions is correctly handled
+     */
+    public function testSeveralExclusions(): void
+    {
+        $participants = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
+        try {
+            $this->assertNotEquals(null, Solver::one($participants, [0 => [7,10,4,13], 1 => [10], 6 => [11, 10], 7 => [0], 8 => [9,10,7], 10 => [0,6], 11 => [6], 14 => [0,1,2,4,5,6,8,6,9,10,11,12,13]]));
+        } catch (SolverException) {
+            $this->fail('No exception expected');
+        }
     }
 }

@@ -27,15 +27,28 @@ class HatSolver implements SolverInterface
         $hat = array_keys($participants);
         shuffle($hat);
 
-        return $this->solve(array_keys($participants)[0], [], $exclusions, $hat);
+        uksort($participants, function($participantIdx1, $participantIdx2) use ($exclusions) {
+            $count1 = count(Arr::get($exclusions, $participantIdx1, []));
+            $count2 = count(Arr::get($exclusions, $participantIdx2, []));
+
+            return $count1 > $count2 ? -1 : (
+                $count1 === $count2 ? 0 : 1
+            );
+        });
+
+        return $this->solve(array_keys($participants), 0, [], $exclusions, $hat);
     }
 
-    private function solve(int $participantIdx, array $combination, array $allExclusions, array $currentHat) : Generator
+    private function solve(array $participantIds, int $idx, array $combination, array $allExclusions, array $currentHat) : Generator
     {
         // End of a loop, we've found a possible combination
         if ($currentHat === []) {
+            ksort($combination);
             yield $combination;
+            return;
         }
+
+        $participantIdx = $participantIds[$idx];
 
         // Get the exclusions requested for that participant
         // And remove them from the hat (+ the current participant)
@@ -50,7 +63,7 @@ class HatSolver implements SolverInterface
             $newHat = array_diff($currentHat, [$drawnParticipant]);
 
             // Further check if this solution is possible
-            yield from $this->solve($participantIdx + 1, $newCombination, $allExclusions, $newHat);
+            yield from $this->solve($participantIds, $idx + 1, $newCombination, $allExclusions, $newHat);
         }
     }
 }
