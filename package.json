@@ -13,6 +13,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@sect/modernizr-loader": "^1.0.3",
         "core-js": "^3.11.1",
         "cross-env": "^7.0.3",
         "css-loader": "^6.2.0",
