@@ -98,7 +98,7 @@
             content: {
                 required,
                 contains(value) {
-                   return value.indexOf('{TARGET}') >= 0;
+                    return value.indexOf('{TARGET}') >= 0;
                 }
             },
             expiration: {
