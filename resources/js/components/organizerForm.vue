@@ -45,13 +45,11 @@
                         required,
                         format: email
                     }
-                }
+                },
+                canWithdraw: false
             };
         },
         computed: {
-            canWithdraw() {
-                return false;
-            },
             checkUpdates() {
                 return !!Object.values(this.participants).find(
                     participant => participant.mail.delivery_status !== 'error'
