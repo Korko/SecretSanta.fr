@@ -28,13 +28,13 @@ class Kernel extends ConsoleKernel
         $schedule
             ->command('model:prune')
             ->daily()
-            ->environments('prod');
+            ->environments(['prod']);
 
         $schedule
             ->command('secretsanta:parse-bounces')
             ->everyMinute()
             ->withoutOverlapping()
-            ->environments('prod');
+            ->environments(['prod']);
     }
 
     /**
