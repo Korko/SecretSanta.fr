@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Models\Mail as MailModel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Arr;
+use Webklex\PHPIMAP\Message as EmailMessage;
 
 class MailTracker
 {
@@ -19,26 +22,60 @@ class MailTracker
         return str_replace('*', self::CONFIRM.'-'.$mail->notification, config('mail.return_path'));
     }
 
-    public function handle($returnPath)
+    public function handle(EmailMessage $unseenMail)
     {
-        $params = $this->parseReturnPath($returnPath);
+        $mail = $this->getMailFromEmail($unseenMail);
 
-        if (!empty($params[0])) {
-            $mail = MailModel::where('notification', stristr($params[1], '@', true) ?: $params[1])->first();
-
-            if ($mail) {
-                switch($params[0]) {
-                    case self::BOUNCE:
-                        // TODO: Determine depending on the bounce error, if the failure is temporary (4xx) or final (5xx)
-                        // Auto-retry or not
-                        $mail->markAsError();
-                        break;
-                    case self::CONFIRM:
-                        $mail->markAsReceived();
-                        break;
-                }
-            }
+        if ($this->isEmailReceived($unseenMail)) {
+            $mail->markAsReceived();
+        } else {
+            $mail->markAsBounced();
         }
+    }
+
+    protected function getMailFromEmail(EmailMessage $unseenMail)
+    {
+        $notificationId = $this->getNotificationId($unseenMail);
+
+        if (empty($notificationId)) {
+            throw new ModelNotFoundException();
+        }
+
+        return MailModel::where('notification', $notificationId)->first();
+    }
+
+    protected function isEmailReceived(EmailMessage $message)
+    {
+        return (
+            $this->getNotificationType($message) === self::CONFIRM ||
+            $message->getHeader()->get('X-Autoreply') ||
+            $message->getHeader()->get('X-Autorespond') ||
+            $message->getHeader()->get('Auto-Submitted') === 'auto-replied'
+        );
+    }
+
+    protected function getNotificationType(EmailMessage $message): string|null
+    {
+        return Arr::get($this->parseRecipient($message), 0);
+    }
+
+    protected function getNotificationId(EmailMessage $message): string|null
+    {
+        return Arr::get($this->parseRecipient($message), 1);
+    }
+
+    protected function parseRecipient(EmailMessage $message): array
+    {
+        return $this->parseReturnPath(
+            $this->getFirstRecipientAddress($message)
+        );
+    }
+
+    protected function getFirstRecipientAddress(EmailMessage $message): string
+    {
+        $recipient = $message->getTo()[0];
+
+        return is_object($recipient) ? stristr($recipient->mailbox, '@', true) : '';
     }
 
     protected function parseReturnPath($returnPath)
@@ -47,5 +84,19 @@ class MailTracker
             $returnPath,
             str_replace('*', '%[a-z]-%s', config('mail.return_path'))
         );
+    }
+
+    protected function markMail(MailModel $mail, $type, EmailMessage $unseenMail)
+    {
+        if (
+            $type === self::CONFIRM ||
+            $unseenMail->getHeader()->get('X-Autoreply') ||
+            $unseenMail->getHeader()->get('X-Autorespond') ||
+            $unseenMail->getHeader()->get('Auto-Submitted') === 'auto-replied'
+        ) {
+            $mail->markAsReceived();
+        } else {
+            $mail->markAsError();
+        }
     }
 }

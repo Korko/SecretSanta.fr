@@ -2,17 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Mail\TrackedMailable;
-use App\Models\Mail as MailModel;
 use App\Services\EmailClient;
 use App\Services\MailTracker;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
-use Webklex\PHPIMAP\Message as EmailMessage;
 
 class ParseBounces implements ShouldQueue
 {
@@ -20,31 +17,16 @@ class ParseBounces implements ShouldQueue
 
     public function handle(EmailClient $emailClient, MailTracker $tracker)
     {
-        $recipients = $this->getRecipients($emailClient);
-
-        foreach($recipients as $recipient) {
-            $tracker->handle($recipient);
-        }
-    }
-
-    protected function getRecipients(EmailClient $emailClient)
-    {
         $unseenMails = $emailClient->getUnseenMails();
-        foreach ($unseenMails as $unseenMail) {
-            yield $this->getFirstRecipientAddress($unseenMail);
 
+        foreach ($unseenMails as $unseenMail) {
             try {
-                $unseenMail->move(config('imap.folders.trash'));
-            } catch(MessageHeaderFetchingException $e) {
+                $tracker->handle($unseenMail);
+
+                $unseenMail->delete();
+            } catch(Exception) {
                 // Ignore that error
             }
         }
-    }
-
-    protected function getFirstRecipientAddress(EmailMessage $message): string
-    {
-        $recipient = $message->getTo()[0];
-
-        return is_object($recipient) ? $recipient->mailbox : '';
     }
 }

@@ -14,11 +14,14 @@ class EmailClient
         $this->delegate->connect();
     }
 
-    public function getUnseenMails(): Iterable
+    public function getUnseenMails(int $limit = 0): Iterable
     {
         $oFolder = $this->delegate->getFolder(config('imap.folders.inbox'));
 
-        return $oFolder->query()->whereUnseen()->get();
+        return $oFolder->query()
+            ->whereUnseen()
+            ->limit($limit)
+            ->get();
     }
 
     /**
