@@ -32,7 +32,12 @@ class FixOrganizer extends Command
     {
         $this->setCryptIVFromUrl($this->argument('url'));
 
-        $draw = URLParser::parseByName('dearSanta', $this->argument('url'))->participant->draw;
+        $participant = URLParser::parseByName('dearSanta', $this->argument('url'))->participant;
+        if($participant) {
+            $draw = $participant->draw;
+        } else {
+            $draw = URLParser::parseByName('organizerPanel', $this->argument('url'))->draw;
+        }
 
         $participantOrganizer = false;
         if ($draw->organizer->email === $draw->organizer_email) {
