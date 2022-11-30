@@ -3,8 +3,9 @@
 namespace App\Console\Commands;
 
 use Arr;
-use Illuminate\Console\Command;
 use DrawCrypt;
+use Illuminate\Console\Command;
+use URL;
 use URLParser;
 
 class ListDraw extends Command
@@ -14,7 +15,7 @@ class ListDraw extends Command
      *
      * @var string
      */
-    protected $signature = 'secretsanta:list-draw {url : The URL received by one of the participants to write to their santa or the link to the organizer panel}';
+    protected $signature = 'secretsanta:list-draw {url : The URL received by one of the participants to write to their santa or the link to the organizer panel} {--targets}';
 
     /**
      * The console command description.
@@ -39,12 +40,22 @@ class ListDraw extends Command
             $draw = URLParser::parseByName('organizerPanel', $this->argument('url'))->draw;
         }
 
+        if(!$draw) {
+            $this->error('Draw not found');
+            return;
+        }
+
+        $this->info('Draw #'.$draw->id.' - '.$draw->mail_title);
+        $this->info('Organizer: '.$draw->organizer_name.' <'.$draw->organizer_email.'>');
+        $this->comment(URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV()));
+        $this->newLine();
+
         $this->table(
-            ['ID', 'Name', 'Email', 'Status'],
+            array_merge(['ID', 'Name', 'Email', 'Status'], $this->option('targets') ? ['Target'] : []),
             $draw->participants()
-                ->with(['mail'])
+                ->with(['mail', 'target'])
                 ->get()
-                ->map(fn($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')])
+                ->map(fn($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')] + ($this->option('targets') ? ['target' => $col->target_id.' ('.$col->target->name.')'] : []))
                 ->toArray()
         );
     }
