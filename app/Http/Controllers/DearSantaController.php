@@ -40,7 +40,7 @@ class DearSantaController extends Controller
         // The hash was validated in middleware so we can validate that the email was received
         $participant->mail->markAsReceived();
 
-        $participant->load(
+        $participant->loadMissing(
             'target', 'target.dearSantas', 'target.dearSantas.mail', 'dearSantas', 'dearSantas.mail',
             'santa', 'santa.dearTargets', 'santa.dearTargets.mail', 'dearTargets', 'dearTargets.mail'
         );
@@ -78,6 +78,8 @@ class DearSantaController extends Controller
     {
         abort_unless($dearSanta->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
+        $dearSanta->setRelation('sender', $participant);
+
         return response()->jsonTry(
             function () use ($dearSanta) {
                 app(SendMessageToSanta::class)->resend($dearSanta);
@@ -96,6 +98,8 @@ class DearSantaController extends Controller
     public function resendDearTarget(Participant $participant, DearTarget $dearTarget)
     {
         abort_unless($dearTarget->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
+
+        $dearTarget->setRelation('sender', $participant);
 
         return response()->jsonTry(
             function () use ($dearTarget) {

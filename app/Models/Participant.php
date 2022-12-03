@@ -151,6 +151,7 @@ class Participant extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         $participant = $this->baseResolver($value, $field);
+        $participant->load(['mail', 'draw', 'santa', 'target']);
 
         throw_if($participant->draw->isFinished, ModelExpiredException::class);
 

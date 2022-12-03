@@ -13,8 +13,9 @@ class DrawHandler
     public static function solve(Draw $draw, ?ParticipantsCollection $participants = null)
     {
         $participants = ($participants ?: $draw->participants)
-            ->mapWithKeys(function ($participant) {
-                return [$participant->id => $participant];
+            ->loadMissing(['exclusions'])
+            ->mapWithKeys(function ($participant) use ($draw) {
+                return [$participant->id => $participant->setRelation('draw', $draw)];
             });
 
         $hat = self::getHat($participants);

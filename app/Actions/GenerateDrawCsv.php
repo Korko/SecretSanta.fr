@@ -23,11 +23,11 @@ class GenerateDrawCsv
 
     public function generateInitial(Draw $draw): string
     {
-        return $this->generateCsv($draw->participants);
+        return $this->generateCsv($draw->participants->loadMissing('exclusions'));
     }
 
     public function generateFinal(Draw $draw): string
     {
-        return $this->generateCsv($draw->participants->appendTargetToExclusions());
+        return $this->generateCsv($draw->participants->loadMissing('exclusions')->appendTargetToExclusions());
     }
 }

@@ -16,7 +16,7 @@ class ParticipantsCollection extends BaseCollection
 
     public function appendTargetToExclusions(): self
     {
-        return (clone $this)->each(function (Participant $participant) {
+        return (clone $this)->loadMissing('target')->each(function (Participant $participant) {
             $participant->exclusions->add($participant->target);
         });
     }
