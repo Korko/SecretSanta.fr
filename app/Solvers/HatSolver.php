@@ -31,13 +31,13 @@ class HatSolver extends Solver
         // Get the exclusions requested for that participant
         // And remove them from the hat (+ the current participant)
         $participantExclusions = $exclusions->get($participantIdx, []);
-        $hat = $hat
+        $potentialParticipants = clone $hat
             ->diff($participantExclusions)
             ->diff([$participantIdx]);
 
         // If nothing available in the hat for that participant
         // Then nothing will happen and the combination will be lost
-        foreach ($hat as $drawnParticipant) {
+        foreach ($potentialParticipants as $drawnParticipant) {
             // Create a new possible solution with the participant drawn
             $newCombination = $combination + [$participantIdx => $drawnParticipant];
 
