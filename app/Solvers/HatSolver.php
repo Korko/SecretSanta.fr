@@ -3,25 +3,39 @@
 namespace App\Solvers;
 
 use Generator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class HatSolver extends Solver
 {
     protected function solve(Collection $participantsIdx, Collection $exclusions): Generator
     {
-        return $this->solveWithExclusions(participantIdx: (int) $participantsIdx->first(), exclusions: $exclusions, hat: $participantsIdx->shuffle());
+        $participantsIdx->sortKeysUsing(function ($participantIdx1, $participantIdx2) use ($exclusions) {
+            // Reverse sort by number of exclusions (nothing like !<=> atm)
+            $count1 = count(Arr::get($exclusions, $participantIdx1, []));
+            $count2 = count(Arr::get($exclusions, $participantIdx2, []));
+
+            return $count1 > $count2 ? -1 : (
+                $count1 === $count2 ? 0 : 1
+            );
+        });
+        return $this->solveWithExclusions(participantsIdx: $participantsIdx, currentIdx: (int) $participantsIdx->first(), exclusions: $exclusions, hat: $participantsIdx->shuffle());
     }
 
-    private function solveWithExclusions(int $participantIdx, Collection $exclusions, Collection $hat, array $combination = []): Generator
+    private function solveWithExclusions(Collection $participantsIdx, int $currentIdx, Collection $exclusions, Collection $hat, array $combination = []): Generator
     {
         // End of a loop, we've found a possible combination
         if ($hat->isEmpty()) {
-            yield $combination;
+            ksort($combination);
+            return yield $combination;
         }
+
+        $participantIdx = $participantsIdx[$currentIdx];
 
         if (isset($combination[$participantIdx])) {
             yield from $this->solveWithExclusions(
-                participantIdx: $participantIdx + 1,
+                participantsIdx: $participantsIdx,
+                currentIdx: $currentIdx + 1,
                 exclusions: $exclusions,
                 hat: $hat,
                 combination: $combination,
@@ -45,7 +59,8 @@ class HatSolver extends Solver
 
             // Further check if this solution is possible
             yield from $this->solveWithExclusions(
-                participantIdx: $participantIdx + 1,
+                participantsIdx: $participantsIdx,
+                currentIdx: $currentIdx + 1,
                 exclusions: $exclusions,
                 hat: $newHat,
                 combination: $newCombination,
