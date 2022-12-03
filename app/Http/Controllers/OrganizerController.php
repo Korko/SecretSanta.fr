@@ -8,6 +8,7 @@ use App\Actions\GenerateDrawCsv;
 use App\Actions\WithdrawParticipant;
 use App\Models\Draw;
 use App\Models\Participant;
+use App\Notifications\OrganizerFinalRecap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
@@ -154,6 +155,8 @@ class OrganizerController extends Controller
         abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
 
         $draw->createMetric('csv_final_download');
+
+        $draw->organizer->notify(new OrganizerFinalRecap($draw));
 
         return response(
             content: app(GenerateDrawCsv::class)->generateFinal($draw),

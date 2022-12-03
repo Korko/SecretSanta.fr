@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App;
+use App\Actions\GenerateDrawCsv;
 use App\Models\Draw;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\URL;
@@ -38,6 +39,11 @@ class OrganizerRecap extends Mailable
                 'deletionDate' => $this->draw->deletes_at->locale(App::getLocale())->isoFormat('LL'),
                 'nextSolvable' => $this->draw->next_solvable,
                 'panelLink' => URL::hashedSignedRoute('organizer.index', ['draw' => $this->draw->hash]),
-            ]);
+            ])
+            ->attachData(
+                data: app(GenerateDrawCsv::class)->generateInitial($this->draw),
+                name: 'secretsanta_' . $this->draw->expires_at->isoFormat('YYYY-MM-DD') . '_init.csv',
+                options: ['mime' => 'text/csv'],
+            );
     }
 }

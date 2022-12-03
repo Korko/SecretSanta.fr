@@ -84,6 +84,34 @@ it('sends to the organizer the link to their panel', function ($participants) {
     });
 })->with('participants list');
 
+it('sends to the organizer their initial recap by mail', function ($participants) {
+    Notification::fake();
+
+    $pendingDraw = createPendingDraw($participants);
+
+    ajaxGet(URL::signedRoute('pending.process', ['pending' => $pendingDraw->id]))
+        ->assertSuccessful();
+
+    $draw = $pendingDraw->fresh()->draw;
+
+    // Ensure Organizer receives his recap
+    Notification::assertSentTo($draw->organizer, OrganizerRecap::class, function ($notification, $channels, $notifiable) use ($draw) {
+        $attachments = $notification->toMail($notifiable)->build()->rawAttachments;
+
+        assertCount(1, $attachments);
+        assertEquals('text/csv', $attachments[0]['options']['mime']);
+
+        // CSV have a BOM at start, remove it to parse, then check the amount of lines not starting with '#' (comments in CSV)
+        $attachments[0]['data'] = str_replace("\xEF\xBB\xBF", '', $attachments[0]['data']);
+        assertCount($draw->participants()->count(), collect(explode("\n", $attachments[0]['data']))
+            ->map(fn($line) => str_getcsv($line))
+            ->filter(fn($data) => $data[0][0] !== '#')
+        );
+
+        return TRUE;
+    });
+})->with('participants list');
+
 it('can deal with thousands of participants', function ($participants) {
     Notification::fake();
 
