@@ -55,17 +55,19 @@ class DrawFormHandler
             $participant->draw()->associate($draw);
             $participant->name = $santa['name'];
             $participant->email = Arr::get($santa, 'email');
-            $participant->save();
+            $participant->setTransientAttribute('exclusions', Arr::get($santa, 'exclusions', []));
 
-            $participants[$idx]['model'] = $participant;
-            $draw->participants()->save($participant);
+            $participants[$idx] = $participant;
         }
 
-        foreach ($participants as $idx => $participant) {
-            $participant['model']->exclusions()->attach(
+        $draw->participants()->saveMany($participants);
+
+        // Don't use $draw->participants or you'll love the transient attributes
+        foreach($participants as $participant) {
+            $participant->exclusions()->attach(
                 array_map(function ($participantId) use ($participants) {
-                    return $participants[intval($participantId)]['model']->id;
-                }, Arr::get($participant, 'exclusions', []))
+                    return $participants[intval($participantId)]->id;
+                }, $participant->getTransientAttribute('exclusions', []))
             );
         }
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Facades\DrawCrypt;
 use Illuminate\Database\Eloquent\Model as BaseModel;
+use Illuminate\Support\Arr;
 
 /**
  * App\Models\Model
@@ -16,6 +17,16 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
 class Model extends BaseModel
 {
     public $iv;
+
+    private $transientAttributes = [];
+
+    public function getTransientAttribute($name, $default = null) {
+        return Arr::get($this->transientAttributes, $name, $default);
+    }
+
+    public function setTransientAttribute($name, $value) {
+        $this->transientAttributes[$name] = $value;
+    }
 
     public function __serialize()
     {
