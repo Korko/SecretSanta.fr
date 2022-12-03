@@ -4,6 +4,7 @@ use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SingleController;
 use App\Http\Controllers\StartController;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -82,6 +83,13 @@ Route::controller(DearSantaController::class)
                 Route::get('/{dearTarget}/resend', 'resendDearTarget')->name('resendDearTarget');
                 Route::get('/resendTarget', 'resendTarget')->name('resendTarget');
             });
+    });
+
+Route::controller(ReportController::class)
+    ->prefix('/report/{participant}')
+    ->group(function () {
+        Route::get('/', 'view')->name('report');
+        Route::post('/', 'handle')->middleware('decrypt.iv:participant,name')->name('report.handle');
     });
 
 Route::controller(OrganizerController::class)

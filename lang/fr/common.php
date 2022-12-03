@@ -16,6 +16,7 @@ return [
         'sending' => 'Envoi en cours',
         'sent' => 'Envoyé',
         'reset' => 'Commencer un nouveau tirage',
+        'report' => 'Signaler',
     ],
 
     'modal' => [
