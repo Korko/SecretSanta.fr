@@ -16037,6 +16037,22 @@
         {
                         \Illuminate\Routing\UrlGenerator::flushMacros();
         }
+                    /**
+         * Create a signed route URL for a named route appended with the IV.
+         *
+         * @param string $name
+         * @param mixed $parameters
+         * @param \DateTimeInterface|\DateInterval|int|null $expiration
+         * @param bool $absolute
+         * @return string 
+         * @throws \InvalidArgumentException
+         * @see \App\Providers\RouteServiceProvider::boot()
+         * @static 
+         */ 
+        public static function hashedSignedRoute($name, $parameters = [], $expiration = null, $absolute = true)
+        {
+                        return \Illuminate\Routing\UrlGenerator::hashedSignedRoute($name, $parameters, $expiration, $absolute);
+        }
          
     }
             /**
@@ -19046,6 +19062,29 @@
         public static function inertia($page, $parameters = [])
         {
                         return \Illuminate\Routing\ResponseFactory::inertia($page, $parameters);
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class UrlGenerator {
+                    /**
+         * Create a signed route URL for a named route appended with the IV.
+         *
+         * @param string $name
+         * @param mixed $parameters
+         * @param \DateTimeInterface|\DateInterval|int|null $expiration
+         * @param bool $absolute
+         * @return string 
+         * @throws \InvalidArgumentException
+         * @see \App\Providers\RouteServiceProvider::boot()
+         * @static 
+         */ 
+        public static function hashedSignedRoute($name, $parameters = [], $expiration = null, $absolute = true)
+        {
+                        return \Illuminate\Routing\UrlGenerator::hashedSignedRoute($name, $parameters, $expiration, $absolute);
         }
          
     }
