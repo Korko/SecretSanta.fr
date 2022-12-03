@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use App;
-use App\Facades\DrawCrypt;
 use App\Models\Draw;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\URL;
@@ -38,7 +37,7 @@ class OrganizerRecap extends Mailable
                 'draw' => $this->draw->id,
                 'deletionDate' => $this->draw->deletes_at->locale(App::getLocale())->isoFormat('LL'),
                 'nextSolvable' => $this->draw->next_solvable,
-                'panelLink' => URL::signedRoute('organizer.index', ['draw' => $this->draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
+                'panelLink' => URL::hashedSignedRoute('organizer.index', ['draw' => $this->draw->hash]),
             ]);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Facades\DrawCrypt;
 use App\Models\PendingDraw as PendingDrawModel;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\URL;
@@ -34,7 +33,7 @@ class PendingDraw extends Mailable
             ->subject(Lang::get('SecretSanta - Attente de validation', ['draw' => $this->draw->id]))
             ->markdown('emails.pending_draw', [
                 'name' => $this->draw->organizer_name,
-                'validationLink' => URL::signedRoute('pending.view', ['pending' => $this->draw->id]).'#'.base64_encode(DrawCrypt::getIV()),
+                'validationLink' => URL::hashedSignedRoute('pending.view', ['pending' => $this->draw->id]),
             ]);
     }
 }

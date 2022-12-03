@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Facades\DrawCrypt;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
 use Illuminate\Support\Facades\URL;
@@ -39,8 +38,6 @@ class DearSanta extends TrackedMailable
      */
     public function build()
     {
-        $url = URL::signedRoute('santa.index', ['participant' => $this->santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
-
         return $this
             ->subject(Lang::get('SecretSanta #:draw - Message du bénéficiaire de votre cadeau', ['draw' => $this->santa->draw->id]))
             ->markdown('emails.dearsanta', [
@@ -48,7 +45,7 @@ class DearSanta extends TrackedMailable
                 'draw' => $this->santa->draw->id,
                 'content' => $this->dearSanta->mail_body,
                 'targetName' => $this->dearSanta->sender->name,
-                'dearSantaLink' => $url,
+                'dearSantaLink' => URL::hashedSignedRoute('santa.index', ['participant' => $this->santa->hash]),
             ]);
     }
 }

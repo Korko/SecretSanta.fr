@@ -41,14 +41,12 @@ class TargetDrawn extends TrackedMailable
 
         $content = $this->parseKeywords($this->santa->draw->mail_body, $this->santa);
 
-        $url = URL::signedRoute('santa.index', ['participant' => $this->santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
-
         return $this
             ->subject($title)
             ->markdown('emails.target_drawn', [
                 'name' => $this->santa->name,
                 'content' => $content,
-                'dearSantaLink' => $url,
+                'dearSantaLink' => URL::hashedSignedRoute('santa.index', ['participant' => $this->santa->hash]),
             ]);
     }
 
