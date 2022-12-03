@@ -109,10 +109,9 @@
                     encoding,
                     error: function() {
                         this.importing = false;
-                        this.$dialog
-                            .alert(this.$t('form.csv.importError'));
+                        this.$dialog.alert(this.$t('form.csv.importError'));
                     },
-                    complete: function(file) {
+                    complete: file => {
                         this.participants = [];
 
                         // Set participants
@@ -133,7 +132,7 @@
                         this.importing = false;
 
                         Toastify.success(this.$t('form.csv.importSuccess'));
-                    }.bind(this)
+                    }
                 });
             },
 
