@@ -38,7 +38,10 @@ class MailTracker
                         break;
                 }
             }
+            return true;
         }
+
+        return false;
     }
 
     protected function parseReturnPath($returnPath)

@@ -60,7 +60,14 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
      */
     public function toMail($organizer)
     {
-        return (new MailMessage)
+        $mail = new MailMessage();
+        $recipient = $organizer->routeNotificationFor('mail');
+        $email = is_array($recipient) ? key($recipient) : $recipient;
+        if(in_array(strstr($email, '@'), config('mail.blacklisted_domains'))) {
+            $mail->mailer('smtp');
+        }
+
+        return $mail
             ->subject(__('emails.organizer_recap_title', ['draw' => $this->draw->id]))
             ->view(['emails.organizer_recap', 'emails.organizer_recap_plain'], [
                 'organizerName' => $this->draw->organizer_name,

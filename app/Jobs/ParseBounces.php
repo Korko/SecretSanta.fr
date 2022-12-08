@@ -20,23 +20,26 @@ class ParseBounces implements ShouldQueue
 
     public function handle(EmailClient $emailClient, MailTracker $tracker)
     {
-        $recipients = $this->getRecipients($emailClient);
+        $recipients = $this->getRecipients($emailClient, 500);
 
         foreach($recipients as $recipient) {
-            $tracker->handle($recipient);
+            $recipients->send($tracker->handle($recipient));
         }
     }
 
-    protected function getRecipients(EmailClient $emailClient)
+    protected function getRecipients(EmailClient $emailClient, $limit = 100)
     {
-        $unseenMails = $emailClient->getUnseenMails();
+        $unseenMails = $emailClient->getUnseenMails($limit);
         foreach ($unseenMails as $unseenMail) {
-            yield $this->getFirstRecipientAddress($unseenMail);
+            $success = (yield $this->getFirstRecipientAddress($unseenMail)) ?? true;
 
-            try {
-                $unseenMail->move(config('imap.folders.trash'));
-            } catch(MessageHeaderFetchingException $e) {
-                // Ignore that error
+            if($success) {
+                try {
+                    $unseenMail->delete();
+                } catch(MessageHeaderFetchingException $e) {
+                    // Ignore that error
+                    debug($e);
+                }
             }
         }
     }

@@ -51,7 +51,12 @@ class DearSanta extends Notification implements ShouldQueue, ShouldBeEncrypted
     {
         $url = URL::signedRoute('dearSanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
 
-        return (new MailMessage)
+        $mail = new MailMessage();
+        if(in_array(strstr($santa->email, '@'), config('mail.blacklisted_domains'))) {
+            $mail->mailer('smtp');
+        }
+
+        return $mail
             ->subject(__('emails.dear_santa.title', ['draw' => $santa->draw->id]))
             ->view(['emails.dearsanta', 'emails.dearsanta_plain'], [
                 'content' => $this->dearSanta->mail_body,

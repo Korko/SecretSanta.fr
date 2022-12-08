@@ -33,7 +33,9 @@ class SendMailCommand extends Command
         $subject = $this->argument('subject');
         $body = $this->argument('text');
 
-        Mail::send([], [], function (Message $message) use ($recipient, $subject, $body) {
+        Mail::mailer('sendmail')->send([], [], function (Message $message) use ($recipient, $subject, $body) {
+            $message->getHeaders()->addPathHeader('Return-Path', 'noreply-bounce-'.uniqid().'@secretsanta.fr');
+
             $message->to($recipient)
                 ->subject($subject)
                 ->setBody($body, 'text/html');

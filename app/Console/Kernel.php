@@ -25,16 +25,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule
-            ->command('model:prune')
-            ->daily()
-            ->environments('prod');
+//        $schedule
+//            ->command('model:prune')
+//            ->daily()
+//            ->environments('prod');
 
         $schedule
             ->command('secretsanta:parse-bounces')
             ->everyMinute()
             ->withoutOverlapping()
-            ->environments('prod');
+            ->environments(['prod']);
     }
 
     /**

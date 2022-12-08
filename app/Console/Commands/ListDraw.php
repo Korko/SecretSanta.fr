@@ -40,11 +40,11 @@ class ListDraw extends Command
         }
 
         $this->table(
-            ['ID', 'Name', 'Email', 'Status'],
+            ['ID', 'Name', 'Email', 'Status', 'Target'],
             $draw->participants()
-                ->with(['mail'])
+                ->with(['mail', 'target'])
                 ->get()
-                ->map(fn($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')])
+                ->map(fn($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')] + ['target' => $col->target->id])
                 ->toArray()
         );
     }

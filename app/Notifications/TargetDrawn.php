@@ -64,7 +64,12 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
 
         $url = URL::signedRoute('dearSanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
 
-        return (new MailMessage)
+        $mail = new MailMessage();
+        if(in_array(strstr($santa->email, '@'), config('mail.blacklisted_domains'))) {
+            $mail->mailer('smtp');
+        }
+
+        return $mail
             ->subject($title)
             ->view(['emails.target_drawn', 'emails.target_drawn_plain'], [
                 'content' => $content,

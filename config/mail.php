@@ -78,6 +78,22 @@ return [
         'array' => [
             'transport' => 'array',
         ],
+
+        'sendinblue' => [
+            'transport' => 'smtp',
+            'host' => 'smtp-relay.sendinblue.com',
+            'port' => 587,
+            'username' => env('SIB_USERNAME'),
+            'password' => env('SIB_PASSWORD'),
+        ],
+
+        'failover' => [
+            'transport' => 'failover',
+            'mailers' => [
+                'smtp',
+                'sendmail',
+            ],
+        ],
     ],
 
     /*
@@ -144,5 +160,12 @@ return [
     'dkim_algo' => env('MAIL_DKIM_ALGO', 'rsa-sha256'), // sign algorithm (defaults to rsa-sha256)
     'dkim_passphrase' => env('MAIL_DKIM_PASSPHRASE'), // private key passphrase (optional)
 
-    'resend_delay' => 5 * 60 // 5m delay
+    'resend_delay' => 5 * 60, // 5m delay
+
+    'blacklisted_domains' => [
+//        '@gmail.com',
+//        '@gmx.fr',
+//        '@gmx.net',
+//        '@gmx.com',
+    ],
 ];

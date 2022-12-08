@@ -31,7 +31,12 @@ class SuggestRedraw extends Notification
      */
     public function toMail(Participant $participant)
     {
-        return (new MailMessage)
+        $mail = new MailMessage();
+        if(in_array(strstr($participant->email, '@'), config('mail.blacklisted_domains'))) {
+            $mail->mailer('smtp');
+        }
+
+        return $mail
             ->subject(__('emails.suggest_redraw_title', ['participant' => $participant->id]))
             ->view('emails.suggest_redraw', [
                 'participantName' => $participant->name,
