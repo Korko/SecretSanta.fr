@@ -75,7 +75,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->bootInertia();
 
-        Model::shouldBeStrict(! $this->app->isProduction());
+        //Model::shouldBeStrict(! $this->app->isProduction());
     }
 
     /**
