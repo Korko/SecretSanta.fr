@@ -2,11 +2,11 @@
 
 namespace App\Casts;
 
+use App\Facades\DrawCrypt;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Support\Facades\Crypt;
 
-class EncryptedString implements Castable
+class DrawEncryptedString implements Castable
 {
     /**
      * Get the caster class to use when casting from / to this cast target.
@@ -28,7 +28,7 @@ class EncryptedString implements Castable
              */
             public function get($model, $key, $value, $attributes)
             {
-                return Crypt::decryptString($value);
+                return DrawCrypt::decrypt($value);
             }
 
             /**
@@ -42,7 +42,7 @@ class EncryptedString implements Castable
              */
             public function set($model, $key, $value, $attributes)
             {
-                return Crypt::encryptString($value);
+                return DrawCrypt::encrypt($value);
             }
         };
     }

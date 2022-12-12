@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Casts\EncryptedString;
+use App\Casts\DrawEncryptedString;
 use App\Collections\ParticipantsCollection;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -71,8 +71,8 @@ class Participant extends Model
      * @var array
      */
     protected $casts = [
-        'name' => EncryptedString::class,
-        'email' => EncryptedString::class,
+        'name' => DrawEncryptedString::class,
+        'email' => DrawEncryptedString::class,
     ];
 
     /**

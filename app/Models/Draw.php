@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Casts\EncryptedString;
+use App\Casts\DrawEncryptedString;
 use App\Services\DrawHandler;
 use DateInterval;
 use DateTime;
@@ -78,11 +78,11 @@ class Draw extends Model
      * @var array
      */
     protected $casts = [
-        'mail_title' => EncryptedString::class,
-        'mail_body' => EncryptedString::class,
+        'mail_title' => DrawEncryptedString::class,
+        'mail_body' => DrawEncryptedString::class,
         'next_solvable' => 'boolean',
-        'organizer_name' => EncryptedString::class,
-        'organizer_email' => EncryptedString::class,
+        'organizer_name' => DrawEncryptedString::class,
+        'organizer_email' => DrawEncryptedString::class,
     ];
 
     /**

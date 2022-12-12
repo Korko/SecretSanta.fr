@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Casts\EncryptedString;
+use App\Casts\DrawEncryptedString;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -55,7 +55,7 @@ class DearSanta extends Model
      * @var array
      */
     protected $casts = [
-        'mail_body' => EncryptedString::class,
+        'mail_body' => DrawEncryptedString::class,
     ];
 
     /**
