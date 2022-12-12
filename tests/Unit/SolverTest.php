@@ -187,6 +187,7 @@ class SolverTest extends TestCase
      * Test if the system is random enough
      *
      * @dataProvider solverProvider
+     * @large
      */
     public function testRandom(Solver $solver): void
     {
@@ -225,6 +226,7 @@ class SolverTest extends TestCase
      * Test if a lot of exclusions is correctly handled
      *
      * @dataProvider solverProvider
+     * @large
      */
     public function testSeveralExclusions(Solver $solver): void
     {
