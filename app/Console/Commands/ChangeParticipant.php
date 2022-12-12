@@ -2,14 +2,17 @@
 
 namespace App\Console\Commands;
 
+use App\Notifications\ConfirmWithdrawal;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
+use App\Traits\ParsesUrl;
 use Illuminate\Console\Command;
-use URLParser;
 
 class ChangeParticipant extends Command
 {
+    use ParsesUrl;
+
     /**
      * The name and signature of the console command.
      *
@@ -31,14 +34,7 @@ class ChangeParticipant extends Command
      */
     public function handle()
     {
-        $this->setCryptIVFromUrl($this->argument('url'));
-
-        $participant = URLParser::parseByName('dearSanta', $this->argument('url'))->participant;
-        if($participant) {
-            $draw = $participant->draw;
-        } else {
-            $draw = URLParser::parseByName('organizerPanel', $this->argument('url'))->draw;
-        }
+        $draw = $this->getDrawFromURL($this->argument('url'));
 
         $participant = $draw->participants->find($this->argument('id'));
 
@@ -49,8 +45,9 @@ class ChangeParticipant extends Command
         $participant->email = $this->argument('email');
         $participant->save();
 
-        $participant->notifyNow(new TargetDrawn);
-        $this->info('Participant mail sent');
+        $oldParticipant->notify(new ConfirmWithdrawal);
+        $participant->notify(new TargetDrawn);
+        $this->info('Participants mails sent');
 
         $participant->target->dearSantas->each(function ($dearSanta) use ($participant) {
             $participant->notify(new DearSanta($dearSanta));
