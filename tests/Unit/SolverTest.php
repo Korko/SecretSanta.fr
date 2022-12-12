@@ -166,7 +166,6 @@ class SolverTest extends TestCase
     /**
      * Test if the system can handle a large amount of participants in a single call
      *
-     * @doesNotPerformAssertions
      * @dataProvider solverProvider
      */
     public function testMass(Solver $solver): void
