@@ -11,4 +11,9 @@ return [
     'withdraw'   => 'Vous ne pouvez pas avoir moins de 3 participants.',
     'expired'    => 'Cet évènement n\'est pas encore terminé',
     'solvable'   => 'Cet évènement ne permet pas cette génération',
+    'fixOrganizer' => [
+        'drawNotFoundOrExpired' => 'Le tirage au sort associé à cette adresse n\'existe pas ou est terminé.',
+        'distanceEmailTooBig' => 'L\'adresse email entrée est trop différente de celle d\'origine, contactez le développeur du site.',
+        'resendDelayTooShort' => 'Vous avez déjà modifié cette adresse email il y a peu de temps. Merci de patienter un peu.'
+    ]
 ];

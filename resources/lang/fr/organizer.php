@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'url' => 'Lien reçu par un participant par email',
+    'fix' => 'Corriger',
     'list' => [
         'name'     => 'Nom',
         'email'    => 'Adresse Email',

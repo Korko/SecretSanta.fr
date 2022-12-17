@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DearSantaController;
+use App\Http\Controllers\FixOrganizerController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
 use Illuminate\Support\Facades\RateLimiter;
@@ -98,3 +99,6 @@ Route::middleware('signed')->group(function() {
             ->name('organizerPanel.withdraw');
     });
 });
+
+Route::get('/fix', [FixOrganizerController::class, 'view'])->name('fixOrganizer');
+Route::post('/fix', [FixOrganizerController::class, 'handle'])->name('fixOrganizer.handle');

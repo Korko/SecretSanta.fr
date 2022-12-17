@@ -146,6 +146,16 @@ return [
                 'format'   => 'Le format de l\'adresse n\'est pas valide.',
             ],
         ],
+        'fixOrganizer' => [
+            'url' => [
+                'required' => 'L\'URL est requise.',
+                'format' => 'L\'URL n\'est pas valide.',
+            ],
+            'email' => [
+                'required' => 'L\'adresse email est requise.',
+                'format'   => 'Le format de l\'adresse n\'est pas valide.',
+            ],
+        ],
     ],
 
     /*

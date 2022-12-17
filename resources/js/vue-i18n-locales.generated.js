@@ -1,6 +1,8 @@
 export default {
     "fr": {
         "organizer": {
+            "url": "Lien reçu par un participant par email",
+            "fix": "Corriger",
             "list": {
                 "name": "Nom",
                 "email": "Adresse Email",
@@ -233,6 +235,16 @@ export default {
                         "required": "La nouvelle adresse est requise.",
                         "format": "Le format de l'adresse n'est pas valide."
                     }
+                },
+                "fixOrganizer": {
+                    "url": {
+                        "required": "L'URL est requise.",
+                        "format": "L'URL n'est pas valide."
+                    },
+                    "email": {
+                        "required": "L'adresse email est requise.",
+                        "format": "Le format de l'adresse n'est pas valide."
+                    }
                 }
             },
             "attributes": {
@@ -290,14 +302,14 @@ export default {
                     "title": "Comment faire ?",
                     "subtitle": "Vous allez voir, c'est très simple !",
                     "heading1": "Première étape : lister les participant(e)s",
-                    "content1": "Grâce aux boutons \"Ajouter un(e) participant(e)\" et \"Enlever un(e) participant(e)\", il est possible d'ajuster le nombre de personnes.\nPour chaque personne, indiquez un nom/prénom ou un pseudonyme, et une adresse email. Deux participant(e)s ne peuvent avoir le même nom, sinon il est impossible de les différencier.\nA noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se piocher elle-même.",
+                    "content1": "Grâce aux boutons \"Ajouter un(e) participant(e)\" et \"Enlever un(e) participant(e)\", il est possible d'ajuster le nombre de personnes.\nPour chaque personne, indiquez un nom/prénom ou un pseudonyme, et une adresse email.\nDeux participant(e)s ne peuvent avoir le même nom, sinon il est impossible de les différencier.\nA noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse pas se piocher elle-même.",
                     "heading2": "Deuxième étape : préciser les exclusions",
                     "content2": "Ajoutez des exclusions. Si vous ne voulez pas que deux participant(e)s puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
                     "heading3": "Troisième étape : préparer l'e-mail",
                     "content3": "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participant(e)s recevront.\nLe mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".\n(Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
                     "notice": "secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.\nCelles-ci sont chiffrées pour être inutilisables sans action de votre part.\nAucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.\nLe code source est disponible sur {link}",
                     "heading4": "Et après ?",
-                    "content4": "Jusqu'au jour de l'évènement spécifiée à la fin, les participant(e)s peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email. Mais celui-ci ne peut pas répondre, au risque de dévoiler son identité.\nL'organisateur/organisatrice dispose aussi d'une interface dédiée pour retrouver le récapitulatif des participant(e)s et des exclusions."
+                    "content4": "Jusqu'au jour de l'évènement spécifiée à la fin, les participant(e)s peuvent écrire un mot à leur Santa depuis un lien qu'ils reçoivent par email.\nCelui-ci ne peut, en revanche, pas répondre, au risque de dévoiler son identité.\nL'organisateur/organisatrice dispose aussi d'une interface dédiée pour retrouver le récapitulatif des participant(e)s et des exclusions."
                 },
                 "go": {
                     "title": "À vous de jouer !",
