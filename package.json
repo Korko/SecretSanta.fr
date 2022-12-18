@@ -4,7 +4,7 @@
         "defaults"
     ],
     "scripts": {
-        "dev": "vite",
+        "dev": "vite build --mode dev",
         "build": "vite build"
     },
     "devDependencies": {
