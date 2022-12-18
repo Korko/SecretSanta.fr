@@ -57,14 +57,17 @@
             changeEmail(value) {
                 this.$emit('input:email', value);
             },
-            changeExclusions(value) {
+            changeExclusions(value) {console.debug(this.idx, 'changeExclusions', value);
                 this.$emit('input:exclusions', value);
             },
-            addExclusion(e, participant) {
+            addExclusion(e, participant) {console.debug(this.idx, 'addExclusion', participant);
                 this.$emit('addExclusion', participant);
             },
-            removeExclusion(e, participant) {
+            removeExclusion(e, participant) {console.debug(this.idx, 'removeExclusion', participant);
                 this.$emit('removeExclusion', participant);
+            },
+            removeExclusions() {console.debug(this.idx, 'removeExclusions');
+                this.$emit('removeExclusions');
             }
         }
     };
@@ -111,7 +114,7 @@
             <multiselect
                 :options="otherParticipants"
                 label="name"
-                trackBy="idx"
+                trackBy="name"
                 valueProp="idx"
                 :value="exclusions"
                 :placeholder="$t('form.participant.exclusions.placeholder')"
@@ -120,11 +123,12 @@
                 :searchable="true"
                 :strict="false"
                 mode="tags"
-                :closeOnSelect="false"
+                :closeOnSelect="true"
                 :noOptionsText="$t('form.participant.exclusions.noOptions')"
                 :noResultsText="$t('form.participant.exclusions.noResult')"
                 @select="addExclusion"
                 @deselect="removeExclusion"
+                @clear="removeExclusions"
             />
             <select style="display:none" :name="'participants[' + idx + '][exclusions][]'" multiple>
                 <option

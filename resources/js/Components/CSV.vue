@@ -71,6 +71,13 @@
                 </tbody>
             </table>
 
+            <div class="download-button">
+                <a href="example.csv" download="example.csv" class="btn btn-secondary">
+                    <span class="fas fa-download" />
+                    {{ $t('form.csv.download') }}
+                </a>
+            </div>
+
             <div class="alert alert-danger" role="alert">
                 {{ $t('form.csv.warning') }}
             </div>
@@ -100,3 +107,12 @@
         </template>
     </modal>
 </template>
+
+<style scoped>
+    .hidden {
+        display: none;
+    }
+    .download-button {
+        margin-bottom: 1rem;
+    }
+</style>

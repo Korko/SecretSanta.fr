@@ -1,6 +1,7 @@
 <script>
     import Toastify from '@/Modules/toastify.js';
     import scrollTo from '@/Modules/scrollTo.js';
+    import Echo from '@/Modules/echo.js';
 
     import Moment from 'moment';
     import 'moment/locale/fr';
@@ -45,7 +46,9 @@
             content: '',
             now: window.now,
             showModal: false,
-            importing: false
+            importing: false,
+            draw: null,
+            draw_status: 'pending',
         }),
 
         watch: {
@@ -60,6 +63,12 @@
                 // If there's new errors, scroll to them
                 if (newVal.length) {
                     scrollTo('#form .row', 800, { offset: -120 });
+                }
+            },
+
+            draw(newDraw) {
+                if(newDraw) {
+                    this.listen(newDraw);
                 }
             }
         },
@@ -84,23 +93,26 @@
                 var n = this.participants.push({
                     name: name ? name.trim() : undefined,
                     email: email ? email.trim() : undefined,
-                    id: 'id' + this.participants.length + new Date().getTime()
+                    id: 'id' + this.participants.length + new Date().getTime(),
+                    exclusions: []
                 });
 
                 // Delay to wait for the names of all other participants to be set
-                setTimeout(
-                    () => {
-                        this.participants[n - 1].exclusions = (exclusions || '')
-                            .split(',')
-                            .map(s => s.trim())
-                            .map(exclusion => {
-                                var idx = this.participants.findIndex(participant => (participant.name === exclusion));
-                                return idx !== -1 ? this.participants[idx] : undefined;
-                            })
-                            .filter(p => !!p);
-                    },
-                    0
-                );
+                if(exclusions) {
+                    setTimeout(
+                        () => {
+                            this.participants[n - 1].exclusions = (exclusions || '')
+                                .split(',')
+                                .map(s => s.trim())
+                                .map(exclusion => {
+                                    var idx = this.participants.findIndex(participant => (participant.name === exclusion));
+                                    return idx !== -1 ? idx : undefined;
+                                })
+                                .filter(p => p !== undefined);
+                        },
+                        0
+                    );
+                }
             },
 
             importParticipants(file, encoding) {
@@ -140,10 +152,23 @@
                 this.participants = [];
                 this.title = '';
                 this.content = '';
+                this.draw = null;
+                this.draw_status = 'created';
 
                 this.addParticipant();
                 this.addParticipant();
                 this.addParticipant();
+            },
+
+            success(data) {
+                this.draw = data.draw;
+            },
+
+            listen(draw) {
+                Echo.channel('pending_draw.'+draw)
+                    .listen('.status.update', data => {
+                        this.draw_status = data.status;
+                    });
             }
         }
     };
@@ -152,10 +177,19 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <AjaxForm id="randomForm" :action="this.action" :button-send="$t('form.submit')" @reset="reset" send-icon="dice">
+            <AjaxForm id="randomForm" :action="this.action" :button-send="$t('form.submit')" @reset="reset" @success="success" send-icon="dice">
                 <template #default="{ sent, fieldError }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ $t('form.success') }}
+                        <div v-if="draw_status === 'created'">
+                            Le tirage au sort est en attente
+                        </div>
+                        <div v-else-if="draw_status === 'drawing'">
+                            Le tirage au sort est en cours
+                        </div>
+                        <div v-else-if="draw_status === 'drawn'">
+                            Le tirage au sort a bien été effectué
+                        </div>
                     </div>
 
                     <toggle
@@ -255,6 +289,7 @@
                                         @input:email="participant.email = $event"
                                         @input:exclusions="participant.exclusions = $event"
                                         @removeExclusion="participant.exclusions.remove($event.idx)"
+                                        @removeExclusions="participant.exclusions = []"
                                         @addExclusion="participant.exclusions.push($event.idx)"
                                         @delete="participants.splice(idx, 1)"
                                     />

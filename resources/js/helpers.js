@@ -64,19 +64,19 @@ export const isBoolean = arg => {
 };
 
 export const has = (object, key) => {
-  return isObject(object) && object.hasOwnProperty(key);
+    return isObject(object) && object.hasOwnProperty(key);
 };
 
 export const get = (object, key, defaultValue) => {
-  return has(object, key) ? object[key] : defaultValue;
+    return has(object, key) ? object[key] : defaultValue;
 };
 
 export const px = value => {
-  return `${value}px`;
+    return `${value}px`;
 };
 
 export const translate = (x, y) => {
-  return `translate(${x}, ${y})`;
+    return `translate(${x}, ${y})`;
 };
 
 import _ from 'lodash';

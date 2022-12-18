@@ -1,0 +1,1 @@
+import{f as e}from"./fetch.dcbaaa5f.js";import{_ as a}from"./plugin-vue_export-helper.f2aa9cb4.js";import{f as o,n as s,h as n}from"./app.5fe4871d.js";const p={props:{route:{type:String,required:!0}},async setup(r){return{data:await e(r.route)}}};function c(r,f,i,t,u,d){return o(r.$slots,"default",s(n(t.data)))}var l=a(p,[["render",c]]);export{l as F};

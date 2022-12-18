@@ -95,7 +95,7 @@ Le code source est disponible sur {sources}',
 
     'csv' => [
         'title' => 'Importer une liste de participant(e)s depuis un fichier CSV',
-        'help' => 'Comment créer un fichier CSV avec :excel Microsoft Office Excel :elink ou :calc Libre Office Calc :elink',
+        'help' => 'Comment créer un fichier CSV avec {excel} Microsoft Office Excel {elink} ou {calc} Libre Office Calc {elink}',
         'format' => 'Afin que votre fichier CSV fonctionne, voici le format attendu :',
         'column1' => 'Nom du/de la participant(e)',
         'column2' => 'Adresse e-mail',
@@ -106,6 +106,7 @@ Le code source est disponible sur {sources}',
         'importError' => "Une erreur est survenue lors de l'import.",
         'importSuccess' => "L'import a été effectué avec succès.",
         'analyzing' => 'Chargement en cours...',
+        'download' => 'Télécharger un exemple',
     ],
 
     'mail' => [
