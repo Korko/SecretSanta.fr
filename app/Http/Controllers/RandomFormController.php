@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RandomFormRequest;
+use App\Jobs\ProcessPendingDraw;
 use App\Models\PendingDraw;
 use App\Notifications\PendingDraw as PendingDrawNotification;
 use Arr;
@@ -34,10 +35,12 @@ class RandomFormController extends Controller
         $draw->data = $safe->toArray();
         $draw->save();
 
-        Notification::route('mail', [$organizer])->notify(new PendingDrawNotification($draw));
+        $draw->markAsReady();
+        dispatch(new ProcessPendingDraw($draw));
 
         return response()->json([
             'message' => trans('message.pending'),
+            'draw' => $draw->id
         ]);
     }
 }

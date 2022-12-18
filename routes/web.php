@@ -6,7 +6,6 @@ use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SingleController;
-use App\Http\Controllers\StartController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\RateLimiter;
@@ -48,20 +47,6 @@ Route::controller(RandomFormController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/process', 'handle')->name('process')->middleware([HandlePrecognitiveRequests::class]);
-    });
-
-Route::controller(StartController::class)
-    ->middleware('signed')
-    ->prefix('/pending/{pending}')
-    ->name('pending.')
-    ->group(function () {
-        Route::get('/', 'index')->name('view');
-
-        Route::middleware('decrypt.iv:pending,organizer_email')
-            ->group(function () {
-                Route::get('/fetch', 'fetch')->name('fetch');
-                Route::get('/process', 'process')->name('process');
-            });
     });
 
 Route::controller(DearSantaController::class)
