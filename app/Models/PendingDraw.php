@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Casts\EncryptedString;
+use App\Casts\DrawEncryptedString;
 use App\Events\PendingDrawStatusUpdated;
 use DateInterval;
 use DateTime;
@@ -62,9 +62,9 @@ class PendingDraw extends Model
      * @var array
      */
     protected $casts = [
-        'data' => EncryptedString::class,
-        'organizer_name' => EncryptedString::class,
-        'organizer_email' => EncryptedString::class,
+        'data' => DrawEncryptedString::class,
+        'organizer_name' => DrawEncryptedString::class,
+        'organizer_email' => DrawEncryptedString::class,
     ];
 
     /**
