@@ -123,4 +123,4 @@ it('can deal with thousands of participants', function ($participants) {
     $draw = $pendingDraw->fresh()->draw;
 
     assertEquals(count($participants), $draw->participants()->count());
-})->with('huge participants list')->group('massive');
+})->with('huge participants list')->group('medium');

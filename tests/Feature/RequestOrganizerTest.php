@@ -188,7 +188,7 @@ it('updates the draw update date when sending an email', function (Draw $draw) {
     $updated_at = $draw->updated_at;
     $participant = $draw->participants->first();
 
-    sleep(2);
+    sleep(1);
 
     ajaxPost(URL::signedRoute('organizer.changeEmail', [
         'draw' => $draw,
@@ -199,4 +199,4 @@ it('updates the draw update date when sending an email', function (Draw $draw) {
 
     Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
     test()->assertNotEquals($updated_at->timestamp, $draw->fresh()->updated_at->timestamp);
-})->with('basic draw');
+})->with('basic draw')->group('large');
