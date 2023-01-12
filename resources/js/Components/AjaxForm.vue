@@ -41,10 +41,22 @@
             sending: false,
             sent: false
         }),
+        computed: {
+            formData() {
+                return new URLSearchParams(new FormData(this.$el)).toString();
+            }
+        },
         watch: {
             sending() {
                 this.$emit('change', this.sending);
             }
+        },
+        provide() {
+            return {
+                fieldError: this.fieldError,
+                validate: this.validate,
+                validateForm: this.validateForm
+            };
         },
         methods: {
             fieldError(field) {
@@ -126,9 +138,12 @@
             validate(field, value) {
                 return this.precog(this.action, {[field]: value});
             },
+            validateForm(postData) {
+                return this.precog(this.action, postData || this.formData);
+            },
             submit(postData, options) {
                 this.$emit('beforeSubmit');
-                postData = postData || new URLSearchParams(new FormData(this.$el)).toString();
+                postData = postData || this.formData;
                 var ajax = this.call(this.action, Object.assign({ data: postData }, options));
                 this.$emit('afterSubmit');
                 return ajax;
@@ -140,7 +155,7 @@
 <template>
     <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit" @reset.prevent="onReset">
         <fieldset :disabled="sending || sent">
-            <slot v-bind="{ sending, sent, submit, onSubmit, onReset, fieldError }" />
+            <slot v-bind="{ sending, sent, submit, onSubmit, onReset, fieldError, validate, validateForm }" />
         </fieldset>
         <fieldset v-if="button">
             <button type="submit" class="btn btn-primary btn-lg" :disabled="sent || sending">

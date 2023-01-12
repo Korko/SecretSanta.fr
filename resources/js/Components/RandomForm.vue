@@ -13,6 +13,7 @@
     import AutoTextarea from '@/Components/AutoTextarea.vue';
     import Csv from '@/Components/CSV.vue';
     import ParticipantRow from '@/Components/RandomParticipantRow.vue';
+    import PrecogInput from '@/Components/PrecogInput.vue';
     import Tooltip from '@/Components/Tooltip.vue';
     import Toggle from '@/Components/Toggle.vue';
 
@@ -24,6 +25,7 @@
             AutoTextarea,
             Csv,
             ParticipantRow,
+            PrecogInput,
             Tooltip,
             Toggle
         },
@@ -178,7 +180,7 @@
     <div>
         <div v-cloak class="row text-center form">
             <AjaxForm id="randomForm" :action="this.action" :button-send="$t('form.submit')" @reset="reset" @success="success" send-icon="dice">
-                <template #default="{ sent, fieldError }">
+                <template #default="{ sent, fieldError, validate, validateForm }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ $t('form.success') }}
                         <div v-if="draw_status === 'created'">
@@ -213,18 +215,13 @@
                                             {{ $t('form.organizer.name') }}
                                         </th>
                                         <td>
-                                            <div class="input-group">
-                                                <input
-                                                    type="text"
-                                                    name="organizer[name]"
-                                                    :placeholder="$t('form.participant.name.placeholder')"
-                                                    v-model="organizer.name"
-                                                    class="form-control participant-name"
-                                                    :class="{ 'is-invalid': fieldError(`organizer.name`)}"
-                                                    :aria-invalid="fieldError(`organizer.name`)"
-                                                />
-                                                <div v-if="fieldError(`organizer.name`)" class="invalid-tooltip">{{ fieldError(`organizer.name`) }}</div>
-                                            </div>
+                                            <precog-input
+                                                type="text"
+                                                name="organizer[name]"
+                                                :placeholder="$t('form.participant.name.placeholder')"
+                                                v-model="organizer.name"
+                                                class="participant-name"
+                                            />
                                         </td>
                                     </tr>
                                     <tr>
@@ -232,18 +229,13 @@
                                             {{ $t('form.organizer.email') }}
                                         </th>
                                         <td>
-                                            <div class="input-group">
-                                                <input
-                                                    type="email"
-                                                    name="organizer[email]"
-                                                    :placeholder="$t('form.participant.email.placeholder')"
-                                                    v-model="organizer.email"
-                                                    class="form-control participant-email"
-                                                    :class="{ 'is-invalid': fieldError(`organizer.email`)}"
-                                                    :aria-invalid="fieldError(`organizer.email`)"
+                                            <precog-input
+                                                type="email"
+                                                name="organizer[email]"
+                                                :placeholder="$t('form.participant.email.placeholder')"
+                                                v-model="organizer.email"
+                                                class="participant-email"
                                                 />
-                                                <div v-if="fieldError(`organizer.email`)" class="invalid-tooltip">{{ fieldError(`organizer.email`) }}</div>
-                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
