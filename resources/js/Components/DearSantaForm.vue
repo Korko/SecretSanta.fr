@@ -161,7 +161,7 @@
                     <td><p v-html="nl2br(e(email.mail_body))"></p></td>
                     <td><EmailStatus :delivery_status="email.mail.delivery_status" :last_update="email.mail.updated_at" @redo="resend(email.id)"/></td>
                 </tr>
-                <tr v-if="emails.length === 0" class="no-email">
+                <tr v-if="dearSantasByDate.length === 0" class="no-email">
                     <td colspan="3">
                         {{ $t('dearsanta.list.empty') }}
                     </td>
