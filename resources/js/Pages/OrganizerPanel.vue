@@ -24,7 +24,7 @@
 </script>
 
 <template>
-    <FetcherLayout :route="routes.fetch">
+    <FetcherLayout :src="routes.fetch">
         <template #navbar-right>
             <NavPageLink :href="route('form.index')">
                 <i18n-t keypath="common.nav.go" />

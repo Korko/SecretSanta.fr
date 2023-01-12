@@ -3,14 +3,14 @@
 
     export default {
         props: {
-            route: {
+            src: {
                 type: String,
                 required: true
             }
         },
         async setup(props) {
             return {
-                data: await fetch(props.route)
+                data: await fetch(props.src)
             };
         }
     }

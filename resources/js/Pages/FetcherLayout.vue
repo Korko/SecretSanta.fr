@@ -12,7 +12,7 @@
             Fetcher
         },
         props: {
-            route: {
+            src: {
                 type: String,
                 required: true
             }
@@ -31,7 +31,7 @@
         <template #content>
             <Suspense>
                 <template #default>
-                    <Fetcher :route="route">
+                    <Fetcher :src="src">
                         <template #default="data">
                             <slot name="default" v-bind="data" />
                         </template>
