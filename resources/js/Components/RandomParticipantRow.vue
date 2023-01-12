@@ -133,10 +133,9 @@
             <select style="display:none" :name="'participants[' + idx + '][exclusions][]'" multiple>
                 <option
                     v-for="exclusion in exclusions"
-                    :key="exclusion.idx"
-                    :value="exclusion.idx"
+                    :key="exclusion"
                     selected
-                >{{ exclusion.idx }}</option>
+                >{{ exclusion }}</option>
             </select>
         </td>
         <td class="participant-remove-wrapper align-middle">
