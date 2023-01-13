@@ -42,7 +42,7 @@ class OrganizerRecap extends Mailable
             ])
             ->attachData(
                 data: app(GenerateDrawCsv::class)->generateInitial($this->draw),
-                name: 'secretsanta_' . $this->draw->expires_at->isoFormat('YYYY-MM-DD') . '_init.csv',
+                name: 'secretsanta_'.$this->draw->expires_at->isoFormat('YYYY-MM-DD').'_init.csv',
                 options: ['mime' => 'text/csv'],
             );
     }

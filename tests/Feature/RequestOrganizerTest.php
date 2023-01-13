@@ -199,4 +199,4 @@ it('updates the draw update date when sending an email', function (Draw $draw) {
 
     Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
     test()->assertNotEquals($updated_at->timestamp, $draw->fresh()->updated_at->timestamp);
-})->with('basic draw')->group('large');
+})->with('basic draw');

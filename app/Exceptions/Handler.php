@@ -58,8 +58,7 @@ class Handler extends ExceptionHandler
     {
         return array_merge(parent::context(), [
             'url' => Request::url(),
-            'input' => Request::all()
+            'input' => Request::all(),
         ]);
     }
-
 }

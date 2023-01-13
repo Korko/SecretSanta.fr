@@ -55,7 +55,7 @@ class AppServiceProvider extends ServiceProvider
             return $this->setData($originalData + $newData);
         });
 
-        ResponseFactory::macro('jsonTry', function (Closure $closure, $onSuccess, $onFailure): JsonResponse {
+        ResponseFactory::macro('jsonTry', function (Closure $closure, $onSuccess, $onFailure, $exceptionClass = \Exception::class, $errorCode = 422): JsonResponse {
             /** @var ResponseFactory $this */
             try {
                 $data = $closure() ?: [];
@@ -65,11 +65,15 @@ class AppServiceProvider extends ServiceProvider
                         'message' => $onSuccess,
                     ])
                     ->addData($data);
-            } catch(Exception) {
-                return $this
-                    ->json([
-                        'message' => $onFailure,
-                    ], 401);
+            } catch(Exception $e) {
+                if (is_a($e, $exceptionClass)) {
+                    return $this
+                        ->json([
+                            'message' => $onFailure,
+                        ], $errorCode);
+                }
+
+                throw $e;
             }
         });
 

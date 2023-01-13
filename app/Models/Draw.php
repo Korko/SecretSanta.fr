@@ -114,8 +114,8 @@ class Draw extends Model
     {
         return $this->organizer_participant ?
             $this->participants->first() : new AnonymousNotifiable([
-            $this->organizer_email => $this->organizer_name,
-        ]);
+                $this->organizer_email => $this->organizer_name,
+            ]);
     }
 
     public function getExpiresAtAttribute()

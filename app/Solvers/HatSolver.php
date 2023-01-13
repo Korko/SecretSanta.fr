@@ -19,6 +19,7 @@ class HatSolver extends Solver
                 $count1 === $count2 ? 0 : 1
             );
         });
+
         return $this->solveWithExclusions(participantsIdx: $participantsIdx, currentIdx: (int) $participantsIdx->first(), exclusions: $exclusions, hat: $participantsIdx->shuffle());
     }
 
@@ -27,6 +28,7 @@ class HatSolver extends Solver
         // End of a loop, we've found a possible combination
         if ($hat->isEmpty()) {
             ksort($combination);
+
             return yield $combination;
         }
 

@@ -16,7 +16,8 @@ class DrawEncryptedString implements Castable
      */
     public static function castUsing(array $arguments)
     {
-        return new class implements CastsAttributes {
+        return new class implements CastsAttributes
+        {
             /**
              * Cast the given value.
              *

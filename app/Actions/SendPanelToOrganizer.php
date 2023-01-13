@@ -4,7 +4,6 @@ namespace App\Actions;
 
 use App\Models\Draw;
 use App\Notifications\OrganizerRecap;
-use Illuminate\Support\Facades\Notification;
 
 class SendPanelToOrganizer
 {

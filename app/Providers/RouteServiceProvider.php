@@ -28,7 +28,7 @@ class RouteServiceProvider extends ServiceProvider
          * @throws \InvalidArgumentException
          */
         URL::macro('hashedSignedRoute', function ($name, $parameters = [], $expiration = null, $absolute = true) {
-            return $this->signedRoute($name, $parameters, $expiration, $absolute) . '#' . base64_encode(DrawCrypt::getIV());
+            return $this->signedRoute($name, $parameters, $expiration, $absolute).'#'.base64_encode(DrawCrypt::getIV());
         });
 
         $this->routes(function () {

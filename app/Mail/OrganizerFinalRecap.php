@@ -2,10 +2,8 @@
 
 namespace App\Mail;
 
-use App;
 use App\Models\Draw;
 use Illuminate\Mail\Mailable;
-use Illuminate\Support\Facades\URL;
 use Lang;
 
 class OrganizerFinalRecap extends Mailable
@@ -38,7 +36,7 @@ class OrganizerFinalRecap extends Mailable
             ])
             ->attachData(
                 data: app(GenerateDrawCsv::class)->generateFinal($this->draw),
-                name: 'secretsanta_' . $this->draw->expires_at->isoFormat('YYYY-MM-DD') . '_final.csv',
+                name: 'secretsanta_'.$this->draw->expires_at->isoFormat('YYYY-MM-DD').'_final.csv',
                 options: ['mime' => 'text/csv'],
             );
     }

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
 use App\Jobs\ProcessPendingDraw;
 use App\Models\PendingDraw;
-use App\Notifications\PendingDraw as PendingDrawNotification;
 use Arr;
-use Notification;
 
 class RandomFormController extends Controller
 {
@@ -29,18 +28,25 @@ class RandomFormController extends Controller
             unset($organizer['exclusions']);
         }
 
-        $draw = new PendingDraw;
-        $draw->organizer_name = $organizer['name'];
-        $draw->organizer_email = $organizer['email'];
-        $draw->data = $safe->toArray();
-        $draw->save();
+        $pending = new PendingDraw;
+        $pending->organizer_name = $organizer['name'];
+        $pending->organizer_email = $organizer['email'];
+        $pending->data = $safe->toArray();
+        $pending->save();
 
-        $draw->markAsReady();
-        dispatch(new ProcessPendingDraw($draw));
+        $pending->markAsReady();
 
-        return response()->json([
-            'message' => trans('message.pending'),
-            'draw' => $draw->id
-        ]);
+        return response()->jsonTry(
+            closure: function () use ($pending) {
+                ProcessPendingDraw::dispatchSync($pending);
+
+                return [
+                    'draw' => $pending->fresh()->draw->id,
+                ];
+            },
+            onSuccess: trans('error.solution'),
+            onFailure: trans('message.sent'),
+            exceptionClass: SolverException::class
+        );
     }
 }

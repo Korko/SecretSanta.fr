@@ -11,7 +11,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Notification;
 use Throwable;
 
 class ProcessPendingDraw implements ShouldQueue
@@ -78,8 +77,12 @@ class ProcessPendingDraw implements ShouldQueue
                 ->addExtra('participants', count($draw->participants));
 
             $this->pending->markAsStarted($draw);
-        } catch(SolverException $e) {
+        } catch (SolverException $e) {
             $this->pending->markAsUnsolvable();
+
+            $this->fail($e);
+
+            throw $e;
         }
     }
 

@@ -123,19 +123,6 @@ function createDraw($participants, $params = [])
         ->assertJsonStructure(['message']);
 }
 
-function createPendingDraw($participants, $params = [])
-{
-    return PendingDraw::factory()
-        ->state(function (array $attributes) use ($participants, $params) {
-            return [
-                'data' => $params + [
-                    'participants' => $participants,
-                ] + $attributes['data'],
-            ];
-        })
-        ->create();
-}
-
 function createServiceDraw($participants, $data = []): Draw
 {
     $pendingDraw = PendingDraw::factory()

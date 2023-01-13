@@ -24,7 +24,6 @@ class DrawFormHandler
             $organizer = $pending->data['organizer'];
         } else {
             $organizer = null;
-
         }
 
         return DB::transaction(function () use ($organizer, $pending): Draw {
@@ -43,10 +42,11 @@ class DrawFormHandler
 
     /**
      * If organizer is null, then it's the first participant. If defined, it's not a participant.
-     * @param array|null $organizer
-     * @param array $participants
-     * @param string $title
-     * @param string $body
+     *
+     * @param  array|null  $organizer
+     * @param  array  $participants
+     * @param  string  $title
+     * @param  string  $body
      * @return Draw
      */
     protected function createDraw(array $organizer = null, array $participants, string $title, string $body): Draw
@@ -72,7 +72,7 @@ class DrawFormHandler
         $draw->participants()->saveMany($participants);
 
         // Don't use $draw->participants or you'll love the transient attributes
-        foreach($participants as $participant) {
+        foreach ($participants as $participant) {
             $participant->exclusions()->attach(
                 array_map(function ($participantId) use ($participants) {
                     return $participants[intval($participantId)]->id;

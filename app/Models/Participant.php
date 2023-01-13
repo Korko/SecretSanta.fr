@@ -6,7 +6,6 @@ use App\Casts\DrawEncryptedString;
 use App\Collections\ParticipantsCollection;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Notifications\Notifiable;
 use Metrics;
 

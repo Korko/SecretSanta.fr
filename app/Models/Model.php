@@ -20,11 +20,13 @@ class Model extends BaseModel
 
     private $transientAttributes = [];
 
-    public function getTransientAttribute($name, $default = null) {
+    public function getTransientAttribute($name, $default = null)
+    {
         return Arr::get($this->transientAttributes, $name, $default);
     }
 
-    public function setTransientAttribute($name, $value) {
+    public function setTransientAttribute($name, $value)
+    {
         $this->transientAttributes[$name] = $value;
     }
 

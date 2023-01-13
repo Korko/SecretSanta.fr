@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Facades\DrawCrypt;
 use App\Models\Participant;
 use Illuminate\Support\Facades\URL;
 use Lang;
