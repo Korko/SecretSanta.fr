@@ -7,7 +7,6 @@ use App\Http\Controllers\RandomFormController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SingleController;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +45,7 @@ Route::controller(RandomFormController::class)
     ->name('form.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::post('/process', 'handle')->name('process')->middleware([HandlePrecognitiveRequests::class]);
+        Route::post('/process', 'handle')->name('process');
     });
 
 Route::controller(DearSantaController::class)
@@ -96,8 +95,8 @@ Route::controller(OrganizerController::class)
 
         Route::middleware('decrypt.iv:participant,name')->group(function () {
             Route::get('/{participant}/resend', 'resendTarget')->name('resendTarget');
-            Route::post('/{participant}/changeEmail', 'changeEmail')->name('changeEmail')->middleware([HandlePrecognitiveRequests::class]);
-            Route::post('/{participant}/changeName', 'changeName')->name('changeName')->middleware([HandlePrecognitiveRequests::class]);
+            Route::post('/{participant}/changeEmail', 'changeEmail')->name('changeEmail');
+            Route::post('/{participant}/changeName', 'changeName')->name('changeName');
             Route::get('/{participant}/withdraw', 'withdraw')->name('withdraw');
         });
     });

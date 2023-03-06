@@ -1,5 +1,5 @@
 <script>
-    import { post, precog } from '@/Modules/fetch.js';
+    import { post } from '@/Modules/fetch.js';
 
     export default {
         props: {
@@ -34,15 +34,21 @@
             autoReset: {
                 type: Boolean,
                 default: false
+            },
+            isInvalid: {
+                type: Boolean,
+                default: false
             }
         },
         data: () => ({
-            fieldErrors: [],
             sending: false,
             sent: false
         }),
         computed: {
             formData() {
+                if(!this.$el) {
+                    return '';
+                }
                 return new URLSearchParams(new FormData(this.$el)).toString();
             }
         },
@@ -51,41 +57,13 @@
                 this.$emit('change', this.sending);
             }
         },
-        provide() {
-            return {
-                fieldError: this.fieldError,
-                validate: this.validate,
-                validateForm: this.validateForm
-            };
-        },
         methods: {
-            fieldError(field) {
-                return this.fieldErrors[field] ? this.fieldErrors[field][0] : null;
-            },
-            precog(url, data) {
-                return precog(url, data)
-                    .then(() => {
-                        // Remove data keys from fieldErrors as they were validated
-                        this.fieldErrors = Object.keys(this.fieldErrors)
-                            .filter((key) => data[key])
-                            .reduce((obj, key) => {
-                                return Object.assign(obj, {
-                                    [key]: this.fieldErrors[key]
-                                });
-                            }, {});
-                    })
-                    .catch(response => {
-                        if (response && response.errors)
-                            this.fieldErrors = Object.assign(this.fieldErrors, response.errors);
-                    });
-            },
             call(url, options) {
-                if (!this.sending && !this.sent) {
+                if (!this.sending && !this.sent && !this.isInvalid) {
                     this.sending = true;
 
                     return post(url, options.data)
                         .then(response => {
-                            this.fieldErrors = {};
                             this.sending = false;
 
                             if(!this.autoReset) {
@@ -102,9 +80,6 @@
                             }
                         })
                         .catch(response => {
-                            if (response && response.errors)
-                                this.fieldErrors = response.errors;
-
                             this.sending = false;
 
                             var callback;
@@ -117,12 +92,12 @@
                                 callback2();
                             }
 
-                            if(!callback && !callback2 && this.fieldErrors.length > 0) {
+                            if(!callback && !callback2 && response?.errors.length > 0) {
                                 this.$dialog
                                     .alert(this.$t('form.internalError'));
                             }
 
-                            this.$emit('error');
+                            this.$emit('error', response?.errors);
                         });
                 }
             },
@@ -131,15 +106,8 @@
             },
             onReset() {
                 this.$emit('reset');
-                this.fieldErrors = {};
                 this.sending = false;
                 this.sent = false;
-            },
-            validate(field, value) {
-                return this.precog(this.action, {[field]: value});
-            },
-            validateForm(postData) {
-                return this.precog(this.action, postData || this.formData);
             },
             submit(postData, options) {
                 this.$emit('beforeSubmit');
@@ -155,7 +123,7 @@
 <template>
     <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit" @reset.prevent="onReset">
         <fieldset :disabled="sending || sent">
-            <slot v-bind="{ sending, sent, submit, onSubmit, onReset, fieldError, validate, validateForm }" />
+            <slot v-bind="{ sending, sent, submit, onSubmit, onReset }" />
         </fieldset>
         <fieldset v-if="button">
             <button type="submit" class="btn btn-primary btn-lg" :disabled="sent || sending">

@@ -115,6 +115,7 @@ return [
                 'name' => [
                     'required' => 'Ce/Cette participant(e) est requis (au moins 3 personnes).',
                     'distinct' => "Ce/Cette participant(e) n'a pas un nom unique.",
+                    'unique' => "Ce/Cette participant(e) est déjà dans la liste des participants.",
                 ],
                 'email' => [
                     'required' => 'Cette adresse email est requise.',

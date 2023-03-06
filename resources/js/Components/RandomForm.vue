@@ -9,11 +9,16 @@
 
     import Papa from 'papaparse';
 
+    import { useVuelidate } from '@vuelidate/core';
+    import { helpers, required, minLength, maxLength , email, requiredIf } from '@vuelidate/validators';
+
+    import useErrors from '@/Composables/useErrors.js';
+
     import AjaxForm from '@/Components/AjaxForm.vue';
     import AutoTextarea from '@/Components/AutoTextarea.vue';
     import Csv from '@/Components/CSV.vue';
     import ParticipantRow from '@/Components/RandomParticipantRow.vue';
-    import PrecogInput from '@/Components/PrecogInput.vue';
+    import MyInput from '@/Components/MyInput.vue';
     import Tooltip from '@/Components/Tooltip.vue';
     import Toggle from '@/Components/Toggle.vue';
 
@@ -25,7 +30,7 @@
             AutoTextarea,
             Csv,
             ParticipantRow,
-            PrecogInput,
+            MyInput,
             Tooltip,
             Toggle
         },
@@ -51,6 +56,45 @@
             importing: false,
             draw: null,
             draw_status: 'pending',
+            fieldErrors: {}
+        }),
+
+        computed: {
+            isInvalid() {
+                return this.v$.$invalid;
+            }
+        },
+
+        setup: () => ({ v$: useVuelidate() }),
+
+        validations: () => ({
+            organizer: {
+                name: {
+                    required: requiredIf(function() {
+                        return !this.participantOrganizer;
+                    }),
+                    maxLength: maxLength(55)
+                },
+                email: {
+                    required: requiredIf(function() {
+                        return !this.participantOrganizer;
+                    }),
+                    maxLength: maxLength(320),
+                    format: email
+                }
+            },
+            participants: {
+                required,
+                minLength: minLength(3)
+            },
+            title: {
+                required,
+                maxLength: maxLength(36773)
+            },
+            content: {
+                required,
+                maxLength: maxLength(36773)
+            }
         }),
 
         watch: {
@@ -82,6 +126,10 @@
         },
 
         methods: {
+            fieldError(field) {
+                return useErrors(key => this.$t('validation.custom.randomform.'+key), this.v$)(field);
+            },
+
             // Just because I couldn't handle too much depth with quotes
             anchor(method) {
                 return `<a class="link" @click.prevent='${method}'>`;
@@ -151,6 +199,8 @@
             },
 
             reset() {
+                this.v$.$reset();
+
                 this.participants = [];
                 this.title = '';
                 this.content = '';
@@ -171,7 +221,9 @@
                     .listen('.status.update', data => {
                         this.draw_status = data.status;
                     });
-            }
+            },
+
+
         }
     };
 </script>
@@ -179,8 +231,8 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <AjaxForm id="randomForm" :action="this.action" :button-send="$t('form.submit')" @reset="reset" @success="success" send-icon="dice">
-                <template #default="{ sent, fieldError, validate, validateForm }">
+            <AjaxForm id="randomForm" :action="this.action" :button-send="$t('form.submit')" @error="fieldErrors = $event" @reset="reset" @success="success" send-icon="dice" :isInvalid="isInvalid">
+                <template #default="{ sent }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ $t('form.success') }}
                         <div v-if="draw_status === 'created'">
@@ -215,12 +267,14 @@
                                             {{ $t('form.organizer.name') }}
                                         </th>
                                         <td>
-                                            <precog-input
+                                            <my-input
                                                 type="text"
                                                 name="organizer[name]"
                                                 :placeholder="$t('form.participant.name.placeholder')"
                                                 v-model="organizer.name"
                                                 class="participant-name"
+                                                :errors="fieldError('organizer.name')"
+                                                @blur="v$.organizer.name.$touch()"
                                             />
                                         </td>
                                     </tr>
@@ -229,12 +283,14 @@
                                             {{ $t('form.organizer.email') }}
                                         </th>
                                         <td>
-                                            <precog-input
+                                            <my-input
                                                 type="email"
                                                 name="organizer[email]"
                                                 :placeholder="$t('form.participant.email.placeholder')"
                                                 v-model="organizer.email"
                                                 class="participant-email"
+                                                :errors="fieldError('organizer.email')"
+                                                @blur="v$.organizer.email.$touch()"
                                                 />
                                         </td>
                                     </tr>
@@ -275,14 +331,14 @@
                                         :exclusions="participant.exclusions"
                                         :all="participants"
                                         :required="idx < 3 && participants.length <= 3"
-                                        :field-error="fieldError"
                                         :participantOrganizer="participantOrganizer"
-                                        @input:name="participant.name = $event"
-                                        @input:email="participant.email = $event"
-                                        @input:exclusions="participant.exclusions = $event"
-                                        @removeExclusion="participant.exclusions.remove($event.idx)"
-                                        @removeExclusions="participant.exclusions = []"
-                                        @addExclusion="participant.exclusions.push($event.idx)"
+                                        @update:name="participants[idx].name = $event"
+                                        @blur:name="v$.participants[idx].name.$touch()"
+                                        @update:email="participants[idx].email = $event"
+                                        @blur:email="v$.participants[idx].email.$touch()"
+                                        @removeExclusion="v$.participant.exclusions.$model.remove($event.idx)"
+                                        @removeExclusions="v$.participant.exclusions.$model = []"
+                                        @addExclusion="v$.participant.exclusions.$model.push($event.idx)"
                                         @delete="participants.splice(idx, 1)"
                                     />
                                 </tbody>
@@ -314,19 +370,15 @@
                             <fieldset id="form-mail-group">
                                 <div class="form-group">
                                     <label for="mailTitle">{{ $t('form.mail.title.label') }}</label>
-                                    <div class="input-group">
-                                        <input
-                                            id="mailTitle"
-                                            type="text"
-                                            name="title"
-                                            v-model="title"
-                                            :placeholder="$t('form.mail.title.placeholder')"
-                                            class="form-control"
-                                            :class="{ 'is-invalid': fieldError('title') }"
-                                            :aria-invalid="fieldError('title')"
-                                        />
-                                        <div class="invalid-tooltip">{{ $t('validation.custom.randomform.title.required') }}</div>
-                                    </div>
+                                    <my-input
+                                        id="mailTitle"
+                                        type="text"
+                                        name="title"
+                                        v-model="title"
+                                        :placeholder="$t('form.mail.title.placeholder')"
+                                        :errors="fieldError('title')"
+                                        @blur="v$.title.$touch()"
+                                    />
                                 </div>
                                 <div class="form-group">
                                     <label for="mailContent">{{ $t('form.mail.content.label') }}</label>
@@ -338,11 +390,18 @@
                                             :placeholder="$t('form.mail.content.placeholder')"
                                             rows="3"
                                             class="form-control"
-                                            :class="{ 'is-invalid': fieldError('content') }"
-                                            :aria-invalid="fieldError('content')"
+                                            :class="{ 'is-invalid': fieldError('content').length > 0 }"
+                                            :aria-invalid="fieldError('content').length > 0"
                                             style="width: 100%;"
+                                            @blur="v$.content.$touch()"
                                         />
-                                        <div v-if="fieldError('content')" class="invalid-tooltip">{{ fieldError('content') }}</div>
+                                        <div v-if="fieldError('content').length > 0" class="invalid-feedback">
+                                            <ul>
+                                                <li v-for="error in fieldError('content')" :key="error">
+                                                    {{ error }}
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                     <textarea
                                         id="mailPost"

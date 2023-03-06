@@ -1,9 +1,7 @@
 <script>
     import { download, deepMerge } from '@/helpers.js';
 
-    import Moment from 'moment';
-
-    import { fetch, precog } from '@/Modules/fetch.js';
+    import { fetch } from '@/Modules/fetch.js';
     import Echo from '@/Modules/echo.js';
 
     import Tooltip from '@/Components/Tooltip.vue';
@@ -111,17 +109,6 @@
                             .alert(data.message)
                             .then(() => window.location.pathname = '/');
                     });
-            },
-            precog(field, value) {
-                if(field === 'email') {
-                    return fetch(this.participants[k].changeEmailUrl, 'POST', {
-                        email: value
-                    }).catch(data => Promise.reject(data.errors.email[0]));
-                } else if(field === 'name') {
-                    return fetch(this.participants[k].changeNameUrl, 'POST', {
-                        name: value
-                    }).catch(data => Promise.reject(data.errors.name[0]));
-                }
             },
             resendTarget(k) {
                 this.participants[k].mail.delivery_status = 'created';

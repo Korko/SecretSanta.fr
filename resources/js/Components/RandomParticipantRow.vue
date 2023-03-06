@@ -1,10 +1,34 @@
 <script>
-    import Multiselect from '@vueform/multiselect'
+    import Multiselect from '@vueform/multiselect';
+    import MyInput from '@/Components/MyInput.vue';
+
+    import { useVuelidate } from '@vuelidate/core';
+    import { required, maxLength , email } from '@vuelidate/validators';
+
+    import useErrors from '@/Composables/useErrors.js';
 
     export default {
         components: {
-            Multiselect
+            Multiselect,
+            MyInput
         },
+        setup: () => ({ v$: useVuelidate() }),
+        validations: () => ({
+            name: {
+                required,
+                maxLength: maxLength(55),
+                unique(value) {
+                    // standalone validator ideally should not assume a field is required
+                    if (value === '') return true;
+                    return (this.participants.filter(participant => (participant.name === value)).length === 1);
+                }
+            },
+            email: {
+                required,
+                maxLength: maxLength(320),
+                format: email
+            }
+        }),
         props: {
             idx: {
                 type: Number,
@@ -34,10 +58,6 @@
                 type: Boolean,
                 required: true
             },
-            fieldError: {
-                type: Function,
-                required: true
-            },
             participantOrganizer: {
                 type: Boolean,
                 default: true
@@ -51,22 +71,16 @@
             }
         },
         methods: {
-            changeName(value) {
-                this.$emit('input:name', value);
+            fieldError(field) {
+                return useErrors(key => this.$t('validation.custom.randomform.participant.'+key), this.v$)(field);
             },
-            changeEmail(value) {
-                this.$emit('input:email', value);
-            },
-            changeExclusions(value) {console.debug(this.idx, 'changeExclusions', value);
-                this.$emit('input:exclusions', value);
-            },
-            addExclusion(e, participant) {console.debug(this.idx, 'addExclusion', participant);
+            addExclusion(e, participant) {
                 this.$emit('addExclusion', participant);
             },
-            removeExclusion(e, participant) {console.debug(this.idx, 'removeExclusion', participant);
+            removeExclusion(e, participant) {
                 this.$emit('removeExclusion', participant);
             },
-            removeExclusions() {console.debug(this.idx, 'removeExclusions');
+            removeExclusions() {
                 this.$emit('removeExclusions');
             }
         }
@@ -76,39 +90,34 @@
 <template>
     <tr class="participant" :dusk="'participant'+idx">
         <td class="align-middle">
-            <div class="input-group">
+            <my-input
+                type="text"
+                :name="'participants[' + idx + '][name]'"
+                :placeholder="$t('form.participant.name.placeholder')"
+                :modelValue="name"
+                class="participant-name"
+                :errors="fieldError('name')"
+                @update:modelValue="$emit('update:name', $event)"
+                @blur="v$.name.$touch()"
+            >
                 <span class="input-group-prepend counter">
                     <span class="input-group-text"
                         >{{ idx + 1 }}<template v-if="idx === 0 && participantOrganizer"> - {{ $t('form.participant.organizer') }}</template></span
                     >
                 </span>
-                <input
-                    type="text"
-                    :name="'participants[' + idx + '][name]'"
-                    :placeholder="$t('form.participant.name.placeholder')"
-                    :value="name"
-                    class="form-control participant-name"
-                    :class="{ 'is-invalid': fieldError(`participants.${idx}.name`) }"
-                    :aria-invalid="fieldError(`participants.${idx}.name`)"
-                    @input="changeName($event.target.value)"
-                />
-                <div v-if="fieldError(`participants.${idx}.name`)" class="invalid-tooltip">{{ fieldError(`participants.${idx}.name`) }}</div>
-            </div>
+            </my-input>
         </td>
         <td class="border-left align-middle">
-            <div class="input-group">
-                <input
-                    type="email"
-                    :name="'participants[' + idx + '][email]'"
-                    :placeholder="$t('form.participant.email.placeholder')"
-                    :value="email"
-                    class="form-control participant-email"
-                    :class="{ 'is-invalid': fieldError(`participants.${idx}.email`)}"
-                    :aria-invalid="fieldError(`participants.${idx}.email`)"
-                    @input="changeEmail($event.target.value)"
-                />
-                <div v-if="fieldError(`participants.${idx}.email`)" class="invalid-tooltip">{{ fieldError(`participants.${idx}.email`) }}</div>
-            </div>
+            <my-input
+                type="email"
+                :name="'participants[' + idx + '][email]'"
+                :placeholder="$t('form.participant.email.placeholder')"
+                :modelValue="email"
+                class="participant-email"
+                :errors="fieldError('email')"
+                @update:modelValue="$emit('update:email', $event)"
+                @blur="v$.email.$touch()"
+            />
         </td>
         <td class="border-right text-left participant-exclusions-wrapper align-middle">
             <multiselect
