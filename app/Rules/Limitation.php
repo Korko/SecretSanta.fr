@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use Illuminate\Validation\Validator;
 use App\Enums\AppMode;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
@@ -56,7 +57,7 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
      * @param  array  $data
      * @return $this
      */
-    public function setData($data)
+    public function setData(array $data)
     {
         $this->data = $data;
 
@@ -69,7 +70,7 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
      * @param  \Illuminate\Validation\Validator  $validator
      * @return $this
      */
-    public function setValidator($validator)
+    public function setValidator(Validator $validator)
     {
         $this->validator = $validator;
 
