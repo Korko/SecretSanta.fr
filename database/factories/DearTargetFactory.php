@@ -29,8 +29,6 @@ class DearTargetFactory extends Factory
 
     /**
      * Indicate that the dearTarget is resendable.
-     *
-     * @return static
      */
     public function resendable(): static
     {

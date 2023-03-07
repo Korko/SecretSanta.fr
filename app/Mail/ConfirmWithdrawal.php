@@ -13,7 +13,6 @@ class ConfirmWithdrawal extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param  \App\Models\Participant  $santa
      * @return void
      */
     public function __construct(Participant $santa)
@@ -23,8 +22,6 @@ class ConfirmWithdrawal extends Mailable
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
     public function build(): static
     {

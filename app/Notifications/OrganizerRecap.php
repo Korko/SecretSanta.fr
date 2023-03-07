@@ -20,7 +20,6 @@ class OrganizerRecap extends Notification
      * Get the notification's delivery channels.
      *
      * @param  \Illuminate\Notifications\AnonymousNotifiable|\App\Models\Participant  $organizer
-     * @return array
      */
     public function via($organizer): array
     {
@@ -31,7 +30,6 @@ class OrganizerRecap extends Notification
      * Get the mail representation of the notification.
      *
      * @param  \Illuminate\Notifications\AnonymousNotifiable|\App\Models\Participant  $organizer
-     * @return \Illuminate\Mail\Mailable
      */
     public function toMail($organizer): Mailable
     {

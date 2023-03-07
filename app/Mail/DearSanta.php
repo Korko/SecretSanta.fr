@@ -17,8 +17,6 @@ class DearSanta extends TrackedMailable
     /**
      * Create a new message instance.
      *
-     * @param  \App\Models\Participant  $santa
-     * @param  \App\Models\DearSanta  $dearSanta
      * @return void
      */
     public function __construct(Participant $santa, DearSantaModel $dearSanta)
@@ -34,8 +32,6 @@ class DearSanta extends TrackedMailable
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
     public function build(): static
     {

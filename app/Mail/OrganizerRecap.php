@@ -16,7 +16,6 @@ class OrganizerRecap extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param  \App\Models\Draw  $draw
      * @return void
      */
     public function __construct(Draw $draw)
@@ -26,8 +25,6 @@ class OrganizerRecap extends Mailable
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
     public function build(): static
     {

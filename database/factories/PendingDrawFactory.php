@@ -31,8 +31,6 @@ class PendingDrawFactory extends Factory
 
     /**
      * Indicate that the pending draw has been validated and is ready to be processed.
-     *
-     * @return static
      */
     public function ready(): static
     {

@@ -9,8 +9,6 @@ class Arr extends BaseArr
     /**
      * Return the first key in an array passing a given truth test.
      *
-     * @param  iterable  $array
-     * @param  callable|null  $callback
      * @param  mixed  $default
      * @return mixed
      */

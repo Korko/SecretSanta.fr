@@ -15,7 +15,6 @@ class PendingDraw extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param  \App\Models\PendingDraw  $draw
      * @return void
      */
     public function __construct(PendingDrawModel $draw)
@@ -25,8 +24,6 @@ class PendingDraw extends Mailable
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
     public function build(): static
     {

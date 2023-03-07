@@ -11,8 +11,6 @@ class MailServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -22,8 +20,6 @@ class MailServiceProvider extends ServiceProvider
 
     /**
      * Replace the built-in mailer to allow for DKIM signed mails
-     *
-     * @return void
      */
     protected function replaceMailer(): void
     {
@@ -34,8 +30,6 @@ class MailServiceProvider extends ServiceProvider
 
     /**
      * Register the mailbox instance.
-     *
-     * @return void
      */
     protected function registerMailbox(): void
     {
@@ -50,8 +44,6 @@ class MailServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
     public function provides(): array
     {

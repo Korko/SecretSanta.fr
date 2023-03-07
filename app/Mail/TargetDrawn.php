@@ -14,7 +14,6 @@ class TargetDrawn extends TrackedMailable
     /**
      * Create a new message instance.
      *
-     * @param  \App\Models\Participant  $santa
      * @return void
      */
     public function __construct(Participant $santa)
@@ -29,8 +28,6 @@ class TargetDrawn extends TrackedMailable
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
     public function build(): static
     {
@@ -54,10 +51,6 @@ class TargetDrawn extends TrackedMailable
 
     /**
      * Replace special keywords with participants names
-     *
-     * @param  string  $str
-     * @param  \App\Models\Participant  $santa
-     * @return string
      */
     protected function parseKeywords(string $str, Participant $santa): string
     {

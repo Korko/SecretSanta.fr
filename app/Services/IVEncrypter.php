@@ -45,8 +45,6 @@ class IVEncrypter extends BaseEncrypter
     /**
      * Create a new encrypter instance.
      *
-     * @param  string  $key
-     * @param  string  $cipher
      * @return void
      *
      * @throws \RuntimeException
@@ -60,9 +58,6 @@ class IVEncrypter extends BaseEncrypter
 
     /**
      * Override the initialization vector.
-     *
-     * @param  string  $iv
-     * @return void
      */
     public function setIV(string $iv): void
     {
@@ -75,8 +70,6 @@ class IVEncrypter extends BaseEncrypter
 
     /**
      * Get the initialization vector.
-     *
-     * @return string
      */
     public function getIV(): string
     {
@@ -85,10 +78,6 @@ class IVEncrypter extends BaseEncrypter
 
     /**
      * Determine if the given iv and cipher combination is valid.
-     *
-     * @param  string  $iv
-     * @param  string  $cipher
-     * @return bool
      */
     public static function supportedIV(string $iv, string $cipher): bool
     {
@@ -99,8 +88,6 @@ class IVEncrypter extends BaseEncrypter
      * Encrypt the given value.
      *
      * @param  mixed  $value
-     * @param  bool  $serialize
-     * @return string
      *
      * @throws \Illuminate\Contracts\Encryption\EncryptException
      */
@@ -139,8 +126,6 @@ class IVEncrypter extends BaseEncrypter
     /**
      * Decrypt the given value.
      *
-     * @param  string  $payload
-     * @param  bool  $unserialize
      * @return mixed
      *
      * @throws \Illuminate\Contracts\Encryption\DecryptException
@@ -168,8 +153,6 @@ class IVEncrypter extends BaseEncrypter
     /**
      * Get the JSON array from the given payload.
      *
-     * @param  string  $payload
-     * @return array
      *
      * @throws \Illuminate\Contracts\Encryption\DecryptException
      */

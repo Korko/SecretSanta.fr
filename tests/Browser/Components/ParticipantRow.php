@@ -16,8 +16,6 @@ class ParticipantRow extends BaseComponent
 
     /**
      * Get the root selector for the component.
-     *
-     * @return string
      */
     public function selector(): string
     {
@@ -26,9 +24,6 @@ class ParticipantRow extends BaseComponent
 
     /**
      * Assert that the browser page contains the component.
-     *
-     * @param  Browser  $browser
-     * @return void
      */
     public function assert(Browser $browser): void
     {
@@ -37,8 +32,6 @@ class ParticipantRow extends BaseComponent
 
     /**
      * Get the element shortcuts for the component.
-     *
-     * @return array
      */
     public function elements(): array
     {
@@ -50,10 +43,6 @@ class ParticipantRow extends BaseComponent
 
     /**
      * Select the given exclusion.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $name
-     * @return void
      */
     public function selectParticipant(Browser $browser, string $name): void
     {

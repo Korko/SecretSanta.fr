@@ -15,8 +15,6 @@ class TargetNameChanged extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param  \App\Models\Participant  $santa
-     * @param  \App\Models\Participant  $target
      * @return void
      */
     public function __construct(Participant $santa, Participant $target)
@@ -27,8 +25,6 @@ class TargetNameChanged extends Mailable
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
     public function build(): static
     {

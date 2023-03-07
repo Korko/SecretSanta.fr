@@ -17,9 +17,6 @@ class TargetWithdrawn extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param  \App\Models\Participant  $santa
-     * @param  \App\Models\Participant  $oldTarget
-     * @param  \App\Models\Participant  $newTarget
      * @return void
      */
     public function __construct(Participant $santa, Participant $oldTarget, Participant $newTarget)
@@ -31,8 +28,6 @@ class TargetWithdrawn extends Mailable
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
     public function build(): static
     {
