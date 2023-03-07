@@ -26,10 +26,10 @@ class DrawFactory extends Factory
     public function definition()
     {
         return [
-            'mail_title' => $this->faker->sentence,
-            'mail_body' => $this->faker->text,
-            'organizer_name' => $this->faker->name,
-            'organizer_email' => $this->faker->email,
+            'mail_title' => $this->faker->sentence(),
+            'mail_body' => $this->faker->text(),
+            'organizer_name' => $this->faker->name(),
+            'organizer_email' => $this->faker->email(),
         ];
     }
 

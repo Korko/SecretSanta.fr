@@ -25,13 +25,13 @@ class PendingDrawFactory extends Factory
     public function definition()
     {
         return [
-            'organizer_name' => $this->faker->name,
-            'organizer_email' => $this->faker->email,
+            'organizer_name' => $this->faker->name(),
+            'organizer_email' => $this->faker->email(),
             'data' => [
                 'participant-organizer' => '1',
                 'participants' => [],
-                'title' => $this->faker->sentence,
-                'content' => $this->faker->text,
+                'title' => $this->faker->sentence(),
+                'content' => $this->faker->text(),
             ],
         ];
     }
