@@ -29,7 +29,7 @@ return [
     | mailers below. You are free to add additional mailers as required.
     |
     | Supported: "smtp", "sendmail", "mailgun", "ses",
-    |            "postmark", "log", "array"
+    |            "postmark", "log", "array", "failover"
     |
     */
 
@@ -59,6 +59,7 @@ return [
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
         'ses' => [
@@ -67,10 +68,16 @@ return [
 
         'mailgun' => [
             'transport' => 'mailgun',
+            // 'client' => [
+            //     'timeout' => 5,
+            // ],
         ],
 
         'postmark' => [
             'transport' => 'postmark',
+            // 'client' => [
+            //     'timeout' => 5,
+            // ],
         ],
 
         'sendmail' => [
@@ -114,17 +121,6 @@ return [
 
     'return_path' => env('MAIL_RETURN_PATH'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | SMTP Server Username
-    |--------------------------------------------------------------------------
-    |
-    | If your SMTP server requires a username for authentication, you should
-    | set it here. This will get used to authenticate with your server on
-    | connection. You may also set the "password" value below this one.
-    |
-    */
-
     'username' => env('MAIL_USERNAME'),
 
     'password' => env('MAIL_PASSWORD'),
@@ -148,15 +144,14 @@ return [
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | DKIM Settings
-    |--------------------------------------------------------------------------
-    */
-    'dkim_selector' => env('MAIL_DKIM_SELECTOR'), // selector, required
-    'dkim_domain' => env('MAIL_DKIM_DOMAIN'), // domain, required
-    'dkim_private_key' => env('MAIL_DKIM_PRIVATE_KEY'), // path to private key, required
-    'dkim_passphrase' => env('MAIL_DKIM_PASSPHRASE', ''), // private key passphrase (optional)
+    'dkim_selector' => env('MAIL_DKIM_SELECTOR'), // selector, required,
 
-    'resend_delay' => 5 * 60, // 5m delay
+    'dkim_domain' => env('MAIL_DKIM_DOMAIN'), // domain, required,
+
+    'dkim_private_key' => env('MAIL_DKIM_PRIVATE_KEY'), // path to private key, required,
+
+    'dkim_passphrase' => env('MAIL_DKIM_PASSPHRASE', ''), // private key passphrase (optional),
+
+    'resend_delay' => 5 * 60, // 5m delay,
+
 ];
