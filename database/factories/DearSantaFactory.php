@@ -28,8 +28,6 @@ class DearSantaFactory extends Factory
 
     /**
      * Indicate that the dearSanta is resendable.
-     *
-     * @return static
      */
     public function resendable(): static
     {

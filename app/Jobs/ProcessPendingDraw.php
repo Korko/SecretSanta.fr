@@ -33,8 +33,6 @@ class ProcessPendingDraw implements ShouldQueue
 
     /**
      * Calculate the number of seconds to wait before retrying the job.
-     *
-     * @return array
      */
     public function backoff(): array
     {
@@ -45,7 +43,6 @@ class ProcessPendingDraw implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  \App\Models\PendingDraw  $pending
      * @return void
      */
     public function __construct(PendingDraw $pending)
@@ -55,9 +52,6 @@ class ProcessPendingDraw implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @param  \App\Services\DrawFormHandler  $handler
-     * @return void
      */
     public function handle(DrawFormHandler $handler): void
     {
@@ -88,9 +82,6 @@ class ProcessPendingDraw implements ShouldQueue
 
     /**
      * Handle a job failure.
-     *
-     * @param  \Throwable  $exception
-     * @return void
      */
     public function failed(Throwable $exception): void
     {

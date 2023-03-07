@@ -19,9 +19,6 @@ class PendingDraw extends Notification
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param  \Illuminate\Notifications\AnonymousNotifiable  $organizer
-     * @return array
      */
     public function via(AnonymousNotifiable $organizer): array
     {
@@ -30,9 +27,6 @@ class PendingDraw extends Notification
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  \Illuminate\Notifications\AnonymousNotifiable  $organizer
-     * @return \Illuminate\Mail\Mailable
      */
     public function toMail(AnonymousNotifiable $organizer): Mailable
     {

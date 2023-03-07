@@ -29,8 +29,6 @@ class ParticipantFactory extends Factory
 
     /**
      * Indicate that the participant exclusions will
-     *
-     * @return static
      */
     // TODO: check
     public function bijective(): static

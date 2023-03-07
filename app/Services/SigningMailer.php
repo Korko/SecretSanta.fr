@@ -20,9 +20,6 @@ class SigningMailer
 
     /**
      * Send a Symfony Email instance.
-     *
-     * @param  \Symfony\Component\Mime\Email  $message
-     * @return \Symfony\Component\Mailer\SentMessage|null
      */
     protected function sendSymfonyMessage(Email $message): ?SentMessage
     {
@@ -33,9 +30,6 @@ class SigningMailer
 
     /**
      * Sign a Symfony Email instance with DKIM.
-     *
-     * @param  \Symfony\Component\Mime\Email  $message
-     * @return void
      */
     protected function sign(Email $message): void
     {
@@ -60,8 +54,6 @@ class SigningMailer
     /**
      * Handle dynamic method calls into the original mailer.
      *
-     * @param  string  $method
-     * @param  array  $parameters
      * @return mixed
      */
     public function __call(string $method, array $parameters)

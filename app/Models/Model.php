@@ -49,7 +49,6 @@ class Model extends BaseModel
      * Get a subset of the model's attributes.
      *
      * @param  array|mixed  $attributes
-     * @return array
      */
     public function only($attributes): array
     {

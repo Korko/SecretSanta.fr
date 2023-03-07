@@ -19,9 +19,6 @@ class DearTarget extends Notification
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param  \App\Models\Participant  $target
-     * @return array
      */
     public function via(Participant $target): array
     {
@@ -30,9 +27,6 @@ class DearTarget extends Notification
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  \App\Models\Participant  $target
-     * @return \Illuminate\Mail\Mailable
      */
     public function toMail(Participant $target): Mailable
     {

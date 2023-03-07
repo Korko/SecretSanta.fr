@@ -22,8 +22,6 @@ class PendingDrawStatusUpdated implements ShouldBroadcast
 
     /**
      * Get the data to broadcast.
-     *
-     * @return array
      */
     public function broadcastWith(): array
     {
@@ -36,8 +34,6 @@ class PendingDrawStatusUpdated implements ShouldBroadcast
 
     /**
      * The event's broadcast name.
-     *
-     * @return string
      */
     public function broadcastAs(): string
     {

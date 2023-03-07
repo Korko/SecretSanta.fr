@@ -28,8 +28,6 @@ class DrawFactory extends Factory
 
     /**
      * Indicate that the draw has just ended.
-     *
-     * @return static
      */
     public function isFinished(): static
     {
@@ -42,8 +40,6 @@ class DrawFactory extends Factory
 
     /**
      * Indicate that the draw is ready for pruning.
-     *
-     * @return static
      */
     public function isExpired(): static
     {

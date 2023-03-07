@@ -21,9 +21,6 @@ class HandleInertiaRequests extends Middleware
      * Determines the current asset version.
      *
      * @see https://inertiajs.com/asset-versioning
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|null
      */
     public function version(Request $request): ?string
     {
@@ -34,9 +31,6 @@ class HandleInertiaRequests extends Middleware
      * Defines the props that are shared by default.
      *
      * @see https://inertiajs.com/shared-data
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
     public function share(Request $request): array
     {
@@ -52,9 +46,6 @@ class HandleInertiaRequests extends Middleware
     /**
      * Resolves and prepares validation errors in such
      * a way that they are easier to use client-side.
-     *
-     * @param  Request  $request
-     * @return object
      */
     public function resolveValidationErrors(Request $request): object
     {

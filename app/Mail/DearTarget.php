@@ -16,8 +16,6 @@ class DearTarget extends TrackedMailable
     /**
      * Create a new message instance.
      *
-     * @param  \App\Models\Participant  $target
-     * @param  \App\Models\DearTarget  $dearTarget
      * @return void
      */
     public function __construct(Participant $target, DearTargetModel $dearTarget)
@@ -33,8 +31,6 @@ class DearTarget extends TrackedMailable
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
     public function build(): static
     {
