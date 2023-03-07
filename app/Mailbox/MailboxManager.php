@@ -2,11 +2,9 @@
 
 namespace App\Mailbox;
 
-use Illuminate\Contracts\Foundation\Application;
 use App\Contracts\Mailbox;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Mail\Mailbox;
-use App\Mailbox\ImapTransport;
-use App\Mailbox\ArrayTransport;
 use InvalidArgumentException;
 use Webklex\PHPIMAP\ClientManager as ImapClientManager;
 

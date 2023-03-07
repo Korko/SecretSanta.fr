@@ -2,10 +2,10 @@
 
 namespace App\Notifications;
 
-use Illuminate\Mail\Mailable;
 use App\Mail\DearSanta as DearSantaMailable;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 
 class DearSanta extends Notification

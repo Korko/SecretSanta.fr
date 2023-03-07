@@ -2,9 +2,9 @@
 
 namespace App\Notifications;
 
-use Illuminate\Mail\Mailable;
 use App\Mail\ConfirmWithdrawal as ConfirmWithdrawalMailable;
 use App\Models\Participant;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 
 // Should NOT be Queued! Notifiable is no more in database.

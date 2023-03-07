@@ -2,10 +2,10 @@
 
 namespace App\Notifications;
 
-use Illuminate\Notifications\AnonymousNotifiable;
-use Illuminate\Mail\Mailable;
 use App\Mail\PendingDraw as PendingDrawMailable;
 use App\Models\PendingDraw as PendingDrawModel;
+use Illuminate\Mail\Mailable;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Notification;
 
 class PendingDraw extends Notification

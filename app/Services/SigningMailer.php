@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use Symfony\Component\Mailer\SentMessage;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mime\Email;
 
 class SigningMailer

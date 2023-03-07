@@ -7,6 +7,7 @@ use App\Events\PendingDrawStatusUpdated;
 use DateInterval;
 use DateTime;
 use Illuminate\Broadcasting\BroadcastException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;

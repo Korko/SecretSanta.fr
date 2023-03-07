@@ -2,9 +2,9 @@
 
 namespace App\Notifications;
 
-use Illuminate\Mail\Mailable;
 use App\Mail\OrganizerRecap as OrganizerRecapMailable;
 use App\Models\Draw;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 
 class OrganizerRecap extends Notification
