@@ -121,6 +121,17 @@ return [
 
     'return_path' => env('MAIL_RETURN_PATH'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | SMTP Server Username
+    |--------------------------------------------------------------------------
+    |
+    | If your SMTP server requires a username for authentication, you should
+    | set it here. This will get used to authenticate with your server on
+    | connection. You may also set the "password" value below this one.
+    |
+    */
+
     'username' => env('MAIL_USERNAME'),
 
     'password' => env('MAIL_PASSWORD'),
@@ -144,6 +155,12 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | DKIM Settings
+    |--------------------------------------------------------------------------
+    */
+
     'dkim_selector' => env('MAIL_DKIM_SELECTOR'), // selector, required,
 
     'dkim_domain' => env('MAIL_DKIM_DOMAIN'), // domain, required,
@@ -151,6 +168,12 @@ return [
     'dkim_private_key' => env('MAIL_DKIM_PRIVATE_KEY'), // path to private key, required,
 
     'dkim_passphrase' => env('MAIL_DKIM_PASSPHRASE', ''), // private key passphrase (optional),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mail Interactions Settings
+    |--------------------------------------------------------------------------
+    */
 
     'resend_delay' => 5 * 60, // 5m delay,
 
