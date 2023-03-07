@@ -7,7 +7,6 @@ use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Validator;
 
 class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
@@ -44,7 +43,6 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
      * Create a new rule instance.
      *
      * @param  array<\App\Enums\AppMode, string>  $rules List of validation rules depending on the AppMode of the request
-     * @return void
      */
     public function __construct(array $rules)
     {
@@ -53,11 +51,8 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
 
     /**
      * Set the data under validation.
-     *
-     * @param  array  $data
-     * @return $this
      */
-    public function setData(array $data)
+    public function setData(array $data): self
     {
         $this->data = $data;
 
@@ -66,11 +61,8 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
 
     /**
      * Set the main current validator.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return $this
      */
-    public function setValidator(Validator $validator)
+    public function setValidator(Validator $validator): self
     {
         $this->validator = $validator;
 
@@ -82,9 +74,8 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
      *
      * @param  string  $attribute
      * @param  mixed  $value
-     * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes($attribute, $value): bool
     {
         $mode = Arr::get($this->data, 'mode', (AppMode::FREE)->value);
 
@@ -107,7 +98,6 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
      * Replace the place-holder in main validator custom messages
      *
      * @param  int  $mode Choosen AppMode key
-     * @return array
      */
     protected function getCustomMessages($mode): array
     {
@@ -122,10 +112,8 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
 
     /**
      * Get the validation error message.
-     *
-     * @return string|array
      */
-    public function message()
+    public function message(): string|array
     {
         if (! is_null($this->customValidator)) {
             return $this->customValidator->errors()->all();
