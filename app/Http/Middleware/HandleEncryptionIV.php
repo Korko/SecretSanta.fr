@@ -2,11 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Http\Request;
 use App\Facades\DrawCrypt;
 use Closure;
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class HandleEncryptionIV
 {

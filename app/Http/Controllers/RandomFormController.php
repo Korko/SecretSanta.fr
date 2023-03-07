@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Requests\RandomFormRequest;
 use App\Models\PendingDraw;
 use App\Notifications\PendingDraw as PendingDrawNotification;
 use Arr;
+use Illuminate\Http\JsonResponse;
 use Notification;
 use URL;
 

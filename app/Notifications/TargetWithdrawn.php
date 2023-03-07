@@ -2,9 +2,9 @@
 
 namespace App\Notifications;
 
-use Illuminate\Mail\Mailable;
 use App\Mail\TargetWithdrawn as TargetWithdrawnMailable;
 use App\Models\Participant;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 
 class TargetWithdrawn extends Notification
