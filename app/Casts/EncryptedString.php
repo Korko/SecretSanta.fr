@@ -18,7 +18,7 @@ class EncryptedString implements Castable
     {
         return new class implements CastsAttributes
         {
-            public function get(Model $model, string $key, mixed $value, array $attributes): string
+            public function get(Model $model, string $key, mixed $value, array $attributes): mixed
             {
                 return Crypt::decryptString($value);
             }
