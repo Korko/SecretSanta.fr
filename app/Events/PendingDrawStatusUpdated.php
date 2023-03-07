@@ -30,7 +30,7 @@ class PendingDrawStatusUpdated implements ShouldBroadcast
         return [
             'id' => $this->draw->id,
             'status' => $this->draw->status,
-            'updated_at' => $this->draw->updated_at
+            'updated_at' => $this->draw->updated_at,
         ];
     }
 

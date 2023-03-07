@@ -7,6 +7,7 @@ use App\Models\Mail as MailModel;
 class MailTracker
 {
     protected const BOUNCE = 'bounce';
+
     protected const CONFIRM = 'confirm';
 
     public function getBounceReturnPath($mail)
@@ -23,11 +24,11 @@ class MailTracker
     {
         $params = $this->parseReturnPath($returnPath);
 
-        if (!empty($params[0])) {
+        if (! empty($params[0])) {
             $mail = MailModel::where('notification', stristr($params[1], '@', true) ?: $params[1])->first();
 
             if ($mail) {
-                switch($params[0]) {
+                switch ($params[0]) {
                     case self::BOUNCE:
                         // TODO: Determine depending on the bounce error, if the failure is temporary (4xx) or final (5xx)
                         // Auto-retry or not

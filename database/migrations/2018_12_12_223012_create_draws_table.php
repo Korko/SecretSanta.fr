@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('draws', function (Blueprint $table) {
             $table->id();
-            $table->string('organizer_name');// Should be better with tinyBinary but not yet implemented
+            $table->string('organizer_name'); // Should be better with tinyBinary but not yet implemented
             $table->binary('organizer_email');
             $table->binary('mail_title');
             $table->binary('mail_body');

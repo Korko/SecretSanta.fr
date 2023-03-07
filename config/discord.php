@@ -7,10 +7,10 @@ return [
     | Discord Webhook URL
     |--------------------------------------------------------------------------
     |
-    | 
+    |
     |
     */
 
-    'webhook' => env('DISCORD_WEBHOOK')
+    'webhook' => env('DISCORD_WEBHOOK'),
 
 ];

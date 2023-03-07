@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notification;
 class TargetWithdrawn extends Notification
 {
     protected $oldTarget;
+
     protected $newTarget;
 
     public function __construct(Participant $oldTarget, Participant $newTarget)

@@ -3,20 +3,19 @@
 namespace App\Solvers;
 
 use Generator;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class GraphSolver extends Solver
 {
     //TODO: seed shuffle?
-    protected function solve(Collection $participantsIdx, Collection $allExclusions) : Generator
+    protected function solve(Collection $participantsIdx, Collection $allExclusions): Generator
     {
         return $this->findPaths($participantsIdx->shuffle(), $allExclusions);
     }
 
     /**
-     * @param Collection<int> $nodesLeft
-     * @param Collection<array<int>> $allExclusions
+     * @param  Collection<int>  $nodesLeft
+     * @param  Collection<array<int>>  $allExclusions
      */
     protected function findPaths(Collection $nodesLeft, Collection $allExclusions)
     {
@@ -60,10 +59,10 @@ class GraphSolver extends Solver
             if (! isset($list[$nextNode])) {
                 // We need to go deeper
                 yield from $this->findPathsFrom($nextNode, $nodesLeft, $allExclusions, $list);
-            } else if ($nodesLeft->count() >= 2) {
+            } elseif ($nodesLeft->count() >= 2) {
                 // Another partial graph is possible
                 yield from $this->findPathsFrom($nodesLeft->firstKey(), $nodesLeft, $allExclusions, $list);
-            } else if ($nodesLeft->count() === 0) {
+            } elseif ($nodesLeft->count() === 0) {
                 // Solution found
                 yield $list;
             }

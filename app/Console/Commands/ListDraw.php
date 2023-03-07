@@ -30,7 +30,7 @@ class ListDraw extends Command
         $this->setCryptIVFromUrl($this->argument('url'));
 
         $participant = URLParser::parseByName('santa.index', $this->argument('url'))->participant;
-        if($participant) {
+        if ($participant) {
             $draw = $participant->draw;
         } else {
             $draw = URLParser::parseByName('organizer.index', $this->argument('url'))->draw;

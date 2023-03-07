@@ -2,7 +2,6 @@
 
 namespace Tests\Browser;
 
-use Faker\Factory as FakerFactory;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\ExclusionPicker;

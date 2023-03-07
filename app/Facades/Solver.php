@@ -18,5 +18,8 @@ class Solver extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return SolverInterface::class; }
+    protected static function getFacadeAccessor()
+    {
+        return SolverInterface::class;
+    }
 }

@@ -28,8 +28,11 @@ class IVEncrypter extends BaseEncrypter
      * Final: 4 * ceil((4 * ceil(ceil((7 + length + log10(length + 1))/16) * 16/3) + 64 + 21) / 3)
      */
     const TINYTEXT_MAXLENGTH = 55;
+
     const TEXT_MAXLENGTH = 36773;
+
     const MEDIUMTEXT_MAXLENGTH = 9437091;
+
     const LONGTEXT_MAXLENGTH = 2415919007;
 
     /**
@@ -89,7 +92,7 @@ class IVEncrypter extends BaseEncrypter
      */
     public static function supportedIV($iv, $cipher)
     {
-        return (mb_strlen($iv, '8bit') === openssl_cipher_iv_length($cipher));
+        return mb_strlen($iv, '8bit') === openssl_cipher_iv_length($cipher);
     }
 
     /**

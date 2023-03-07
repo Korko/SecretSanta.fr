@@ -5,8 +5,11 @@ namespace App\Services;
 class CsvGenerator
 {
     public $data;
+
     public $delimiter;
+
     public $enclosure;
+
     public $escapeChar;
 
     public function __construct(array $data, $delimiter = ',', $enclosure = '"', $escapeChar = '\\')

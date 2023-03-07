@@ -27,7 +27,7 @@ class MailServiceProvider extends ServiceProvider
      */
     protected function replaceMailer()
     {
-        $this->app->bind('mailer', function() {
+        $this->app->bind('mailer', function () {
             return $this->app->make(SigningMailer::class);
         });
     }
@@ -57,7 +57,7 @@ class MailServiceProvider extends ServiceProvider
     {
         return [
             'mailbox.manager',
-            Mailbox::class
+            Mailbox::class,
         ];
     }
 }

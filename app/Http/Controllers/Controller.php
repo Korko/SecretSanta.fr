@@ -20,7 +20,7 @@ class Controller extends BaseController
     protected static function getLayoutParameters()
     {
         return [
-            'version' => exec('git describe --tags --always --abbrev=0')
+            'version' => exec('git describe --tags --always --abbrev=0'),
         ];
     }
 }

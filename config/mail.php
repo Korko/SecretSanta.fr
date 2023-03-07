@@ -158,5 +158,5 @@ return [
     'dkim_private_key' => env('MAIL_DKIM_PRIVATE_KEY'), // path to private key, required
     'dkim_passphrase' => env('MAIL_DKIM_PASSPHRASE', ''), // private key passphrase (optional)
 
-    'resend_delay' => 5 * 60 // 5m delay
+    'resend_delay' => 5 * 60, // 5m delay
 ];

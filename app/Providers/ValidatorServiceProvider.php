@@ -40,7 +40,7 @@ class ValidatorServiceProvider extends ServiceProvider
             }
 
             // Either there's nothing requiring or there's the required data
-            return ($data === [] || ! empty($rawData[$attribute]));
+            return $data === [] || ! empty($rawData[$attribute]);
         });
     }
 }

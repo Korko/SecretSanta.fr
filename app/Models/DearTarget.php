@@ -45,7 +45,7 @@ class DearTarget extends Model
     {
         parent::boot();
 
-        static::created(function($dearTarget) {
+        static::created(function ($dearTarget) {
             $mail = new Mail();
             $mail->draw()->associate($dearTarget->draw);
             $dearTarget->mail()->save($mail);

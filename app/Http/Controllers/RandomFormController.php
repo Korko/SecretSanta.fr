@@ -17,7 +17,7 @@ class RandomFormController extends Controller
             'routes' => [
                 'dashboard' => URL::route('dashboard'),
                 'faq' => URL::route('faq'),
-                'process' => URL::route('form.process')
+                'process' => URL::route('form.process'),
             ],
             'bmc' => config('app.bmc'),
         ]);
@@ -27,7 +27,7 @@ class RandomFormController extends Controller
     {
         $safe = $request->safe();
 
-        if(!Arr::get($safe, 'participant-organizer', false)) {
+        if (! Arr::get($safe, 'participant-organizer', false)) {
             $organizer = $safe['organizer'];
         } else {
             $organizer = current($safe['participants']);
@@ -43,7 +43,7 @@ class RandomFormController extends Controller
         Notification::route('mail', [$organizer])->notify(new PendingDrawNotification($draw));
 
         return response()->json([
-            'message' => trans('message.pending')
+            'message' => trans('message.pending'),
         ]);
     }
 }

@@ -34,7 +34,7 @@ class ExpiredDrawSeeder extends Seeder
         DrawHandler::solve($draw, $draw->participants);
 
         // Fake some communications
-        for($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $target = $draw->participants->random();
             DearSanta::factory()
                 ->for($draw, 'draw')

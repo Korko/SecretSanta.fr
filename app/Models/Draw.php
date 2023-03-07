@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Casts\EncryptedString;
-use App\Events\DrawDeleted;
 use App\Services\DrawHandler;
 use DateInterval;
 use DateTime;
@@ -18,6 +17,7 @@ class Draw extends Model
 
     // Consider a draw expired N months after the last mail sent
     public const MONTHS_BEFORE_EXPIRATION = 3;
+
     // Remove everything N days after the finished_at date
     public const DAYS_BEFORE_DELETION = 7;
 
@@ -40,7 +40,7 @@ class Draw extends Model
         'mail_body' => EncryptedString::class,
         'next_solvable' => 'boolean',
         'organizer_name' => EncryptedString::class,
-        'organizer_email' => EncryptedString::class
+        'organizer_email' => EncryptedString::class,
     ];
 
     /**
@@ -102,7 +102,7 @@ class Draw extends Model
     {
         return Metrics::create($name)
             ->setTags([
-                'draw' => $this->metricId
+                'draw' => $this->metricId,
             ]);
     }
 }

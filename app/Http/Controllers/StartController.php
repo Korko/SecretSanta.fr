@@ -16,7 +16,7 @@ class StartController extends Controller
                 'form' => URL::route('form.index'),
                 'dashboard' => URL::route('dashboard'),
                 'fetch' => URL::signedRoute('pending.fetch', ['pending' => $pending]),
-                'process' => URL::signedRoute('pending.process', ['pending' => $pending])
+                'process' => URL::signedRoute('pending.process', ['pending' => $pending]),
             ],
             'pending' => $pending->only(['id', 'status', 'updated_at', 'organizer_name']),
         ]);
@@ -28,7 +28,7 @@ class StartController extends Controller
     public function fetch(PendingDraw $pending)
     {
         return response()->json([
-            'pending' => $pending->only(['data'])
+            'pending' => $pending->only(['data']),
         ]);
     }
 

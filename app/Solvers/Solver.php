@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 
 abstract class Solver implements SolverInterface
 {
-    public function one(Collection|array $participants, Collection|array|null $exclusions = null) : array
+    public function one(Collection|array $participants, Collection|array|null $exclusions = null): array
     {
         $generator = $this->all($participants, $exclusions);
         if (! $generator->valid()) {
@@ -18,12 +18,12 @@ abstract class Solver implements SolverInterface
         return $generator->current();
     }
 
-    public function all(Collection|array $participants, Collection|array|null $exclusions = null) : Generator
+    public function all(Collection|array $participants, Collection|array|null $exclusions = null): Generator
     {
         $participants = is_array($participants) ? collect($participants) : $participants;
         $exclusions = is_null($exclusions) ? collect() : (is_array($exclusions) ? collect($exclusions) : $exclusions);
 
-        if(count($participants) < 2) {
+        if (count($participants) < 2) {
             throw new SolverException('Not enough participants');
         }
 
@@ -31,5 +31,5 @@ abstract class Solver implements SolverInterface
         return $this->solve($participants->keys(), $exclusions);
     }
 
-    abstract protected function solve(Collection $participantsIdx, Collection $exclusions) : Generator;
+    abstract protected function solve(Collection $participantsIdx, Collection $exclusions): Generator;
 }

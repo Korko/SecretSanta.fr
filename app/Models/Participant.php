@@ -53,7 +53,7 @@ class Participant extends Model
     {
         parent::boot();
 
-        static::created(function($participant) {
+        static::created(function ($participant) {
             $mail = new Mail;
             $mail->draw()->associate($participant->draw);
 
@@ -138,7 +138,7 @@ class Participant extends Model
         return Metrics::create($name, $value)
             ->setTags([
                 'draw' => $this->draw->metricId,
-                'participant' => $this->metricId
+                'participant' => $this->metricId,
             ]);
     }
 
@@ -164,6 +164,7 @@ class Participant extends Model
     {
         // To prevent infinite loop with recursive references, we unset the relations list (exclusions, target)
         $this->unsetRelations();
+
         return parent::getQueueableRelations();
     }
 }

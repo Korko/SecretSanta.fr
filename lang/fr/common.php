@@ -2,20 +2,20 @@
 
 return [
     'internal' => 'Une erreur est survenue',
-    'success'  => 'Succès',
+    'success' => 'Succès',
 
     'copied' => 'Copié dans le presse papier',
 
     'fetcher' => [
-        'load'    => 'Charger',
+        'load' => 'Charger',
         'loading' => 'Chargement en cours...',
     ],
 
     'form' => [
-        'send'    => 'Envoyer',
+        'send' => 'Envoyer',
         'sending' => 'Envoi en cours',
-        'sent'    => 'Envoyé',
-        'reset'   => 'Commencer un nouveau tirage'
+        'sent' => 'Envoyé',
+        'reset' => 'Commencer un nouveau tirage',
     ],
 
     'modal' => [
@@ -25,18 +25,18 @@ return [
     'email' => [
         'redo' => 'Ré-envoyer',
         'status' => [
-            'created'  => "En attente d'envoi",
-            'sending'  => 'Envoi en cours',
-            'sent'     => 'Envoyé',
-            'error'    => 'Erreur',
+            'created' => "En attente d'envoi",
+            'sending' => 'Envoi en cours',
+            'sent' => 'Envoyé',
+            'error' => 'Erreur',
             'received' => 'Reçu',
         ],
         'recent' => 'Vous ne pouvez pas relancer un même email trop rapidement',
     ],
 
     'nav' => [
-        'go'        => 'Organiser un tirage',
+        'go' => 'Organiser un tirage',
         'dashboard' => 'Tableau de bord',
-        'faq'       => 'Foire Aux Questions',
+        'faq' => 'Foire Aux Questions',
     ],
 ];

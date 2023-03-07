@@ -55,7 +55,7 @@ class PendingDraw extends Model
     public function prunable()
     {
         return static::where(function ($query) {
-            foreach($this->retentionPerStatus as $status => $retention) {
+            foreach ($this->retentionPerStatus as $status => $retention) {
                 $query->orWhere(function ($query) use ($status, $retention) {
                     $query
                         ->where('status', '=', $status)
@@ -95,18 +95,21 @@ class PendingDraw extends Model
         self::STATE_READY,
         self::STATE_DRAWING,
         self::STATE_STARTED,
-        self::STATE_ERROR
+        self::STATE_ERROR,
     ];
 
-    public function markAsReady() : void {
+    public function markAsReady(): void
+    {
         $this->updateStatus(self::STATE_READY);
     }
 
-    public function markAsDrawing() : void {
+    public function markAsDrawing(): void
+    {
         $this->updateStatus(self::STATE_DRAWING);
     }
 
-    public function markAsStarted(Draw $draw) : void {
+    public function markAsStarted(Draw $draw): void
+    {
         $this->data = null; // Dont keep data, the draw is already started
         $this->save();
 
@@ -115,15 +118,18 @@ class PendingDraw extends Model
         $this->updateStatus(self::STATE_STARTED);
     }
 
-    public function markAsUnsolvable() : void {
+    public function markAsUnsolvable(): void
+    {
         $this->updateStatus(self::STATE_ERROR);
     }
 
-    public function isWaiting() : bool {
+    public function isWaiting(): bool
+    {
         return $this->status === self::STATE_CREATED;
     }
 
-    public function isReady() : bool {
+    public function isReady(): bool
+    {
         return $this->status === self::STATE_READY;
     }
 
@@ -134,7 +140,7 @@ class PendingDraw extends Model
 
         try {
             PendingDrawStatusUpdated::dispatch($this);
-        } catch(BroadcastException $e) {
+        } catch (BroadcastException $e) {
             // Ignore exception
         }
     }

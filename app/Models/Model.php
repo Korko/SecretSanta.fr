@@ -12,6 +12,7 @@ class Model extends BaseModel
     public function __serialize()
     {
         $this->iv = base64_encode(DrawCrypt::getIV());
+
         return parent::__serialize();
     }
 
@@ -19,6 +20,7 @@ class Model extends BaseModel
     {
         $values = parent::__unserialize($data);
         DrawCrypt::setKey(base64_decode($this->iv));
+
         return $values;
     }
 

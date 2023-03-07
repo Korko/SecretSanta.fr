@@ -8,7 +8,6 @@ use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Concerns\FormatsMessages;
 
 class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
 {
@@ -43,7 +42,7 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
     /**
      * Create a new rule instance.
      *
-     * @param array<\App\Enums\AppMode, string>  $rules List of validation rules depending on the AppMode of the request
+     * @param  array<\App\Enums\AppMode, string>  $rules List of validation rules depending on the AppMode of the request
      * @return void
      */
     public function __construct(array $rules)
@@ -109,7 +108,7 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
      * @param  int  $mode Choosen AppMode key
      * @return array
      */
-    protected function getCustomMessages($mode) : array
+    protected function getCustomMessages($mode): array
     {
         $messages = $this->validator->customMessages;
 
@@ -130,6 +129,7 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
         if (! is_null($this->customValidator)) {
             return $this->customValidator->errors()->all();
         }
+
         return '';
     }
 }

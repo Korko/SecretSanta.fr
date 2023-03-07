@@ -27,9 +27,9 @@ class DearSantaFactory extends Factory
     public function definition()
     {
         return [
-            'draw_id'     => Draw::factory(),
-            'sender_id'   => Participant::factory(),
-            'mail_body'   => $this->faker->text,
+            'draw_id' => Draw::factory(),
+            'sender_id' => Participant::factory(),
+            'mail_body' => $this->faker->text,
         ];
     }
 

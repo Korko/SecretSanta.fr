@@ -30,7 +30,7 @@ class MailStatusUpdated implements ShouldBroadcast
         return [
             'id' => $this->mail->id,
             'delivery_status' => $this->mail->delivery_status,
-            'updated_at' => $this->mail->updated_at
+            'updated_at' => $this->mail->updated_at,
         ];
     }
 

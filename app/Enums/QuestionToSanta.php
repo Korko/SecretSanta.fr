@@ -2,12 +2,13 @@
 
 namespace App\Enums;
 
-enum QuestionToSanta : string
+enum QuestionToSanta: string
 {
     case PRESENTATION = 'presentation';
     case IDEAS = 'ideas';
 
-    public function body(): string {
+    public function body(): string
+    {
         return trans('app.santa')[$this->value];
     }
 }

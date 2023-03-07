@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\PendingDraw;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,10 +29,10 @@ class PendingDrawFactory extends Factory
             'organizer_email' => $this->faker->email,
             'data' => [
                 'participant-organizer' => '1',
-                'participants'          => [],
-                'title'                 => $this->faker->sentence,
-                'content'               => $this->faker->text,
-            ]
+                'participants' => [],
+                'title' => $this->faker->sentence,
+                'content' => $this->faker->text,
+            ],
         ];
     }
 
@@ -46,7 +45,7 @@ class PendingDrawFactory extends Factory
     {
         return $this->state(function () {
             return [
-                'status' => PendingDraw::STATE_READY
+                'status' => PendingDraw::STATE_READY,
             ];
         });
     }

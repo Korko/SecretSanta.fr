@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App;
 use App\Facades\DrawCrypt;
 use App\Models\PendingDraw as PendingDrawModel;
 use Illuminate\Mail\Mailable;
@@ -39,4 +38,3 @@ class PendingDraw extends Mailable
             ]);
     }
 }
-

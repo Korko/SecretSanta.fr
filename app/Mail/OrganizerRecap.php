@@ -42,4 +42,3 @@ class OrganizerRecap extends Mailable
             ]);
     }
 }
-

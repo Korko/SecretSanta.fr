@@ -38,18 +38,18 @@ it('sends notifications in case of success', function ($participants) {
 
     // Ensure Participants receive their own recap
     Notification::assertTimesSent(count($draw->participants), TargetDrawn::class);
-    foreach($draw->participants as $participant) {
+    foreach ($draw->participants as $participant) {
         Notification::assertSentTo($participant, TargetDrawn::class);
     }
-})->with('participants list');;
+})->with('participants list');
 
 it('can create draws with a non participant organizer', function ($participants) {
     Notification::fake();
 
     $pendingDraw = createPendingDraw($participants, [
-            'participant-organizer' => '0',
-            'organizer' => ['name' => 'foo', 'email' => 'foo@foobar.com'],
-        ]);
+        'participant-organizer' => '0',
+        'organizer' => ['name' => 'foo', 'email' => 'foo@foobar.com'],
+    ]);
 
     ajaxGet(URL::signedRoute('pending.process', ['pending' => $pendingDraw->id]))
         ->assertSuccessful();
@@ -71,7 +71,7 @@ it('can create draws with a non participant organizer', function ($participants)
 
     // Ensure Participants receive their own recap
     Notification::assertTimesSent(count($draw->participants), TargetDrawn::class);
-    foreach($draw->participants as $participant) {
+    foreach ($draw->participants as $participant) {
         assertNotEquals($participant->email, $draw->organizer_email);
         Notification::assertSentTo($participant, TargetDrawn::class);
     }
@@ -96,7 +96,7 @@ it('sends to the organizer the link to their panel', function ($participants) {
                 $notifiable->routes['mail'] === [['name' => $draw->organizer_name, 'email' => $draw->organizer_email]] &&
                 $notification->toMail($notifiable)->assertSeeInHtml(
                     URL::signedRoute('organizer.index', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV())
-            );
+                );
         }
     );
 })->with('participants list');

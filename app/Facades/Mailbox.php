@@ -17,5 +17,8 @@ class Mailbox extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return MailboxContract::class; }
+    protected static function getFacadeAccessor()
+    {
+        return MailboxContract::class;
+    }
 }

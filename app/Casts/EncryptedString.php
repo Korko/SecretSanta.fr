@@ -3,7 +3,6 @@
 namespace App\Casts;
 
 use App\Facades\DrawCrypt;
-use InvalidArgumentException;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class EncryptedString implements CastsAttributes

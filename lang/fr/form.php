@@ -2,19 +2,19 @@
 
 return [
     'nav' => [
-        'what'      => "Qu'est-ce que c'est ?",
-        'how'       => 'Comment faire ?',
-        'go'        => "Allez, c'est parti !",
+        'what' => "Qu'est-ce que c'est ?",
+        'how' => 'Comment faire ?',
+        'go' => "Allez, c'est parti !",
     ],
 
-    'title'    => 'Secret Santa .fr',
+    'title' => 'Secret Santa .fr',
     'subtitle' => 'Offrez-vous des cadeaux... secrètement !',
 
     'fyi' => 'Pour votre information',
 
     'section' => [
         'what' => [
-            'title'    => "Qu'est-ce que c'est ?",
+            'title' => "Qu'est-ce que c'est ?",
             'subtitle' => 'Description du Secret Santa',
             'heading1' => 'Le principe',
             'content1' => "Secret Santa est un moyen drôle et original de s'offrir anonymement des cadeaux entre amis, collègues...
@@ -26,7 +26,7 @@ Tout est payé par le développeur lui-même.
 Si cet outil vous plait, pensez à faire un don.',
         ],
         'how' => [
-            'title'    => 'Comment faire ?',
+            'title' => 'Comment faire ?',
             'subtitle' => "Vous allez voir, c'est très simple !",
             'heading1' => 'Première étape : lister les participant(e)s',
             'content1' => "Grâce aux boutons \"Ajouter un(e) participant(e)\" et \"Enlever un(e) participant(e)\", il est possible d'ajuster le nombre de personnes.
@@ -48,7 +48,7 @@ Aucune de ces données ne seront partagées et vous avez le contrôle total sur 
 Le code source est disponible sur {sources}',
         ],
         'go' => [
-            'title'    => 'À vous de jouer !',
+            'title' => 'À vous de jouer !',
             'subtitle' => "Remplissez, cliquez et c'est parti !",
         ],
     ],
@@ -62,59 +62,59 @@ Le code source est disponible sur {sources}',
 
     'organizer' => [
         'title' => "Détails de l'organisateur/organisatrice",
-        'name'  => "Nom ou pseudonyme de l'organisateur/organisatrice",
+        'name' => "Nom ou pseudonyme de l'organisateur/organisatrice",
         'email' => "Adresse e-mail de l'organisateur/organisatrice",
     ],
 
     'participants' => [
-        'title'     => 'Détails des participant(e)s',
-        'import'    => 'Importer depuis un fichier',
+        'title' => 'Détails des participant(e)s',
+        'import' => 'Importer depuis un fichier',
         'importing' => 'Import en cours',
-        'caption'   => 'Liste des participats',
+        'caption' => 'Liste des participats',
     ],
 
     'participant' => [
-        'organizer'  => 'Organisateur·rice',
-        'name'       => [
-            'label'       => 'Nom ou pseudonyme',
+        'organizer' => 'Organisateur·rice',
+        'name' => [
+            'label' => 'Nom ou pseudonyme',
             'placeholder' => 'exemple : Paul ou Korko',
         ],
-        'email'      => [
-            'label'       => 'Adresse e-mail',
+        'email' => [
+            'label' => 'Adresse e-mail',
             'placeholder' => "exemple : michel{'@'}aol.com",
         ],
         'exclusions' => [
-            'label'       => 'Exclusions',
+            'label' => 'Exclusions',
             'placeholder' => 'Aucune exclusion',
-            'noOptions'   => 'Liste vide',
-            'noResult'    => 'Aucun résultat',
+            'noOptions' => 'Liste vide',
+            'noResult' => 'Aucun résultat',
         ],
-        'remove'     => 'Enlever',
-        'add'        => 'Ajouter un(e) participant(e)',
+        'remove' => 'Enlever',
+        'add' => 'Ajouter un(e) participant(e)',
     ],
 
     'csv' => [
-        'title'         => 'Importer une liste de participant(e)s depuis un fichier CSV',
-        'help'          => 'Comment créer un fichier CSV avec :excel Microsoft Office Excel :elink ou :calc Libre Office Calc :elink',
-        'format'        => 'Afin que votre fichier CSV fonctionne, voici le format attendu :',
-        'column1'       => 'Nom du/de la participant(e)',
-        'column2'       => 'Adresse e-mail',
-        'column3'       => 'Exclusions (noms séparés par une virgule)',
-        'warning'       => "Attention, l'import de ces données supprimera les participant(e)s déjà renseignés.",
-        'cancel'        => 'Annuler',
-        'import'        => 'Importer',
-        'importError'   => "Une erreur est survenue lors de l'import.",
+        'title' => 'Importer une liste de participant(e)s depuis un fichier CSV',
+        'help' => 'Comment créer un fichier CSV avec :excel Microsoft Office Excel :elink ou :calc Libre Office Calc :elink',
+        'format' => 'Afin que votre fichier CSV fonctionne, voici le format attendu :',
+        'column1' => 'Nom du/de la participant(e)',
+        'column2' => 'Adresse e-mail',
+        'column3' => 'Exclusions (noms séparés par une virgule)',
+        'warning' => "Attention, l'import de ces données supprimera les participant(e)s déjà renseignés.",
+        'cancel' => 'Annuler',
+        'import' => 'Importer',
+        'importError' => "Une erreur est survenue lors de l'import.",
         'importSuccess' => "L'import a été effectué avec succès.",
-        'analyzing'     => 'Chargement en cours...',
+        'analyzing' => 'Chargement en cours...',
     ],
 
     'mail' => [
         'title' => [
-            'label'       => 'Titre du mail',
+            'label' => 'Titre du mail',
             'placeholder' => 'ex : Soirée secretsanta du 23 décembre chez Martin, {SANTA} ta cible est...',
         ],
         'content' => [
-            'label'       => 'Contenu du mail',
+            'label' => 'Contenu du mail',
             'placeholder' => "ex : Salut {SANTA}, pour la soirée secret santa, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !",
             'tip1' => 'Utilisez {santa} pour le nom de celui qui recevra le mail et {target} pour le nom de sa cible.',
             'tip2' => 'Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau.',
@@ -131,7 +131,7 @@ via SecretSanta.fr',
         'deletion' => 'Toutes les données stockées seront supprimées une semaine après.',
     ],
 
-    'submit'  => "Lancez l'aléatoire !",
+    'submit' => "Lancez l'aléatoire !",
 
     'paypal' => [
         'alt' => 'PayPal, le réflexe sécurité pour payer en ligne',

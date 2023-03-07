@@ -10,7 +10,7 @@ dataset('invalid participants list', function () {
             ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => [2]],
             ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => [0, 2]],
             ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => [1]],
-        ]
+        ],
     ];
 });
 
@@ -29,7 +29,7 @@ dataset('unique participants list', function () {
             ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => [0]],
             ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => [1]],
         ],
-        [1, 2, 0]
+        [1, 2, 0],
     ];
 });
 
@@ -46,5 +46,5 @@ dataset('validated participants list', function () {
         return ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => []];
     })->toArray();
 
-    yield [$participants, fn() => createServiceDraw($participants)];
+    yield [$participants, fn () => createServiceDraw($participants)];
 });

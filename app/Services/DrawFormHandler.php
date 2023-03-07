@@ -12,8 +12,11 @@ use Throwable;
 class DrawFormHandler
 {
     protected $title;
+
     protected $body;
+
     protected $organizer;
+
     protected $participants;
 
     public function __construct()
@@ -24,9 +27,9 @@ class DrawFormHandler
         $this->participants = [];
     }
 
-    public function handle(PendingDraw $pending) : Draw
+    public function handle(PendingDraw $pending): Draw
     {
-        if(!Arr::get($pending->data, 'participant-organizer', false)) {
+        if (! Arr::get($pending->data, 'participant-organizer', false)) {
             $this->withOrganizer($pending->data['organizer']);
         }
 
@@ -37,17 +40,17 @@ class DrawFormHandler
             ->save();
     }
 
-    protected function withOrganizer(array $organizer) : self
+    protected function withOrganizer(array $organizer): self
     {
         $this->organizer = $organizer;
 
         return $this;
     }
 
-    protected function withParticipants(array $participants) : self
+    protected function withParticipants(array $participants): self
     {
         $this->participants = $participants;
-        if(!isset($this->organizer)) {
+        if (! isset($this->organizer)) {
             $this->organizer = current($participants);
             unset($this->organizer['exclusions']);
         }
@@ -55,21 +58,21 @@ class DrawFormHandler
         return $this;
     }
 
-    protected function withTitle($title) : self
+    protected function withTitle($title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    protected function withBody($body) : self
+    protected function withBody($body): self
     {
         $this->body = $body;
 
         return $this;
     }
 
-    protected function save() : Draw
+    protected function save(): Draw
     {
         DB::beginTransaction();
 
@@ -83,14 +86,14 @@ class DrawFormHandler
             DB::commit();
 
             return $draw;
-        } catch(Throwable $e) {
+        } catch (Throwable $e) {
             DB::rollBack();
 
             throw $e;
         }
     }
 
-    protected function createDraw() : Draw
+    protected function createDraw(): Draw
     {
         $draw = new Draw();
         $draw->mail_title = $this->title;
@@ -113,7 +116,7 @@ class DrawFormHandler
         return $draw;
     }
 
-    protected function solveExclusions(Draw $draw) : void
+    protected function solveExclusions(Draw $draw): void
     {
         $participants = $this->participants;
         for ($i = 0; $i < count($participants); $i++) {

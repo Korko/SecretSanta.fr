@@ -14,14 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::table('draws', function (Blueprint $table) {
-            $table->string('organizer_name')->change();// Should be better with tinyBinary but not yet implemented
+            $table->string('organizer_name')->change(); // Should be better with tinyBinary but not yet implemented
             $table->binary('organizer_email')->change();
             $table->binary('mail_title')->change();
             $table->binary('mail_body')->change();
         });
 
         Schema::table('participants', function (Blueprint $table) {
-            $table->string('name')->change();// Should be better with tinyBinary but not yet implemented
+            $table->string('name')->change(); // Should be better with tinyBinary but not yet implemented
             $table->binary('email')->change();
         });
 

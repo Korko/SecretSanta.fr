@@ -9,6 +9,7 @@ use Lang;
 class TargetNameChanged extends Mailable
 {
     protected $santa;
+
     protected $target;
 
     /**
@@ -33,7 +34,7 @@ class TargetNameChanged extends Mailable
     {
         return $this
             ->subject(Lang::get('SecretSanta #:draw - Votre cible a changé de nom', [
-                'draw' => $this->santa->draw->id
+                'draw' => $this->santa->draw->id,
             ]))
             ->markdown('emails.name_changed', [
                 'name' => $this->santa->name,

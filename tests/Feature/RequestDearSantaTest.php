@@ -11,8 +11,8 @@ it('lets each participant write to their santa', function (Draw $draw) {
 
     foreach ($draw->participants as $participant) {
         ajaxPost(URL::signedRoute('santa.contactSanta', ['participant' => $participant]), [
-                'content' => 'test dearSanta mail content',
-            ])
+            'content' => 'test dearSanta mail content',
+        ])
             ->assertSuccessful()
             ->assertJsonStructure(['message']);
 
@@ -50,8 +50,8 @@ test('it updates the draw update date when writing to a santa', function (Draw $
     sleep(2);
 
     ajaxPost(URL::signedRoute('santa.contactSanta', ['participant' => $participant]), [
-            'content' => 'test dearSanta mail content',
-        ])
+        'content' => 'test dearSanta mail content',
+    ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 

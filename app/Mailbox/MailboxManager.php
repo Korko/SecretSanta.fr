@@ -105,7 +105,6 @@ class MailboxManager
         }
 
         return $this->{$method}($config);
-
     }
 
     /**
