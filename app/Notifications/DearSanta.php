@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Illuminate\Mail\Mailable;
 use App\Mail\DearSanta as DearSantaMailable;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Participant;
@@ -22,7 +23,7 @@ class DearSanta extends Notification
      * @param  \App\Models\Participant  $santa
      * @return array
      */
-    public function via(Participant $santa)
+    public function via(Participant $santa): array
     {
         return ['mail'];
     }
@@ -33,7 +34,7 @@ class DearSanta extends Notification
      * @param  \App\Models\Participant  $santa
      * @return \Illuminate\Mail\Mailable
      */
-    public function toMail(Participant $santa)
+    public function toMail(Participant $santa): Mailable
     {
         return (new DearSantaMailable($santa, $this->dearSanta))
             ->to($santa->routeNotificationFor('mail'));

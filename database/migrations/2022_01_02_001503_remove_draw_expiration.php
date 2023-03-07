@@ -12,7 +12,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('draws', function (Blueprint $table) {
             $table->timestamp('finished_at')->nullable();
@@ -38,7 +38,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('draws', function (Blueprint $table) {
             $table->timestamp('expires_at')->nullable();

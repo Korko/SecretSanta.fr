@@ -86,17 +86,7 @@ class Draw extends Model
         'organizer_email' => DrawEncryptedString::class,
     ];
 
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var string[]
-     */
-    /**
-     * Get the prunable model query.
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function prunable()
+    public function prunable(): Builder
     {
         return static::where('finished_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.self::DAYS_BEFORE_DELETION.'D')))
             ->orWhere('updated_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.self::MONTHS_BEFORE_EXPIRATION.'M')));

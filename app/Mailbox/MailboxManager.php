@@ -2,6 +2,11 @@
 
 namespace App\Mailbox;
 
+use Illuminate\Contracts\Foundation\Application;
+use App\Contracts\Mailbox;
+use Illuminate\Mail\Mailbox;
+use App\Mailbox\ImapTransport;
+use App\Mailbox\ArrayTransport;
 use InvalidArgumentException;
 use Webklex\PHPIMAP\ClientManager as ImapClientManager;
 
@@ -27,7 +32,7 @@ class MailboxManager
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
-    public function __construct($app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
@@ -38,7 +43,7 @@ class MailboxManager
      * @param  string|null  $name
      * @return \App\Contracts\Mailbox
      */
-    public function mailbox($name = null)
+    public function mailbox(?string $name = null): Mailbox
     {
         $name = $name ?: $this->getDefaultDriver();
 
@@ -51,7 +56,7 @@ class MailboxManager
      * @param  string  $name
      * @return \Illuminate\Mail\Mailbox
      */
-    protected function get($name)
+    protected function get(string $name): Mailbox
     {
         return $this->mailers[$name] ?? $this->resolve($name);
     }
@@ -64,7 +69,7 @@ class MailboxManager
      *
      * @throws \InvalidArgumentException
      */
-    protected function resolve($name)
+    protected function resolve(string $name): Mailbox
     {
         $config = $this->getConfig($name);
 
@@ -81,7 +86,7 @@ class MailboxManager
      * @param  string  $name
      * @return array
      */
-    protected function getConfig(string $name)
+    protected function getConfig(string $name): array
     {
         return $this->app['config']["mailbox.mailboxes.{$name}"];
     }
@@ -91,7 +96,7 @@ class MailboxManager
      *
      * @return string
      */
-    public function getDefaultDriver()
+    public function getDefaultDriver(): string
     {
         return $this->app['config']['mailbox.default'];
     }
@@ -113,7 +118,7 @@ class MailboxManager
      * @param  array  $config
      * @return App\Mailbox\ImapTransport
      */
-    protected function createImapTransport(array $config)
+    protected function createImapTransport(array $config): ImapTransport
     {
         $manager = $this->app->make(ImapClientManager::class);
 
@@ -131,7 +136,7 @@ class MailboxManager
      *
      * @return App\Mailbox\ArrayTransport
      */
-    protected function createArrayTransport()
+    protected function createArrayTransport(): ArrayTransport
     {
         return new ArrayTransport;
     }

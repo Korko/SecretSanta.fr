@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Illuminate\Mail\Mailable;
 use App\Mail\OrganizerRecap as OrganizerRecapMailable;
 use App\Models\Draw;
 use Illuminate\Notifications\Notification;
@@ -21,7 +22,7 @@ class OrganizerRecap extends Notification
      * @param  \Illuminate\Notifications\AnonymousNotifiable|\App\Models\Participant  $organizer
      * @return array
      */
-    public function via($organizer)
+    public function via($organizer): array
     {
         return ['mail'];
     }
@@ -32,7 +33,7 @@ class OrganizerRecap extends Notification
      * @param  \Illuminate\Notifications\AnonymousNotifiable|\App\Models\Participant  $organizer
      * @return \Illuminate\Mail\Mailable
      */
-    public function toMail($organizer)
+    public function toMail($organizer): Mailable
     {
         return (new OrganizerRecapMailable($this->draw))
             ->to($organizer);

@@ -15,7 +15,7 @@ class PendingDrawFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'organizer_name' => $this->faker->name(),
@@ -34,7 +34,7 @@ class PendingDrawFactory extends Factory
      *
      * @return static
      */
-    public function ready()
+    public function ready(): static
     {
         return $this->state(function () {
             return [

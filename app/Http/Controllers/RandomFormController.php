@@ -10,14 +10,14 @@ use Arr;
 
 class RandomFormController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
         return response()->inertia('RandomForm', [
             'bmc' => config('app.bmc'),
         ]);
     }
 
-    public function handle(RandomFormRequest $request)
+    public function handle(RandomFormRequest $request): JsonResponse
     {
         $safe = $request->safe();
 

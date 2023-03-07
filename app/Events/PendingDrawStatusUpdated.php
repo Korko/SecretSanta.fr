@@ -25,7 +25,7 @@ class PendingDrawStatusUpdated implements ShouldBroadcast
      *
      * @return array
      */
-    public function broadcastWith()
+    public function broadcastWith(): array
     {
         return [
             'id' => $this->draw->id,
@@ -39,7 +39,7 @@ class PendingDrawStatusUpdated implements ShouldBroadcast
      *
      * @return string
      */
-    public function broadcastAs()
+    public function broadcastAs(): string
     {
         return 'status.update';
     }
@@ -49,7 +49,7 @@ class PendingDrawStatusUpdated implements ShouldBroadcast
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
         return new Channel('pending_draw.'.$this->draw->id);
     }

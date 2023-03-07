@@ -13,7 +13,7 @@ class DearTargetRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -23,7 +23,7 @@ class DearTargetRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return parent::rules() + [
             'type' => ['required', 'string', new Enum(QuestionToSanta::class)],
@@ -35,7 +35,7 @@ class DearTargetRequest extends Request
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'type.required' => Lang::get('validation.custom.dearTarget.type.required'),

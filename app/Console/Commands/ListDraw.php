@@ -29,7 +29,7 @@ class ListDraw extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $draw = $this->getDrawFromURL($this->argument('url'));
         $this->displayDraw($draw);

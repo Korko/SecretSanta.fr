@@ -31,7 +31,7 @@ class TargetDrawn extends TrackedMailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): static
     {
         $title = $this->parseKeywords(Lang::get('SecretSanta #:draw - :subject', [
             'draw' => $this->santa->draw->id,
@@ -57,7 +57,7 @@ class TargetDrawn extends TrackedMailable
      * @param  \App\Models\Participant  $santa
      * @return string
      */
-    protected function parseKeywords($str, Participant $santa)
+    protected function parseKeywords(string $str, Participant $santa): string
     {
         return str_replace(['{SANTA}', '{TARGET}'], [$santa->name, $santa->target->name], $str);
     }

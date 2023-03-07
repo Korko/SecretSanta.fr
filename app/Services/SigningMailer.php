@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Symfony\Component\Mailer\SentMessage;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Symfony\Component\Mime\Email;
@@ -23,7 +24,7 @@ class SigningMailer
      * @param  \Symfony\Component\Mime\Email  $message
      * @return \Symfony\Component\Mailer\SentMessage|null
      */
-    protected function sendSymfonyMessage(Email $message)
+    protected function sendSymfonyMessage(Email $message): ?SentMessage
     {
         $this->sign($message);
 
@@ -36,7 +37,7 @@ class SigningMailer
      * @param  \Symfony\Component\Mime\Email  $message
      * @return void
      */
-    protected function sign(Email $message)
+    protected function sign(Email $message): void
     {
         if (
             config('mail.dkim_private_key') &&
@@ -63,7 +64,7 @@ class SigningMailer
      * @param  array  $parameters
      * @return mixed
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, array $parameters)
     {
         return $this->forwardCallTo($this->mailer, $method, $parameters);
     }

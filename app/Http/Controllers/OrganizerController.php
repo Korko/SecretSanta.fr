@@ -6,17 +6,17 @@ use App\Actions\ChangeParticipantEmail;
 use App\Actions\ChangeParticipantName;
 use App\Actions\GenerateDrawCsv;
 use App\Actions\WithdrawParticipant;
-use App\Models\Draw;
-use App\Models\Participant;
 use App\Notifications\OrganizerFinalRecap;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Lang;
 
 class OrganizerController extends Controller
 {
-    public function index(Draw $draw)
+    public function index(Draw $draw): Response
     {
         return response()->inertia('OrganizerPanel', [
             'routes' => [
@@ -31,7 +31,7 @@ class OrganizerController extends Controller
     /**
      * Return encrypted data
      */
-    public function fetch(Draw $draw)
+    public function fetch(Draw $draw): JsonResponse
     {
         $drawFields = ['hash', 'mail_title', 'created_at', 'finished_at', 'deletes_at', 'next_solvable', 'organizer_name'];
         $participantFields = ['hash', 'name', 'email', 'mail' => ['id', 'updated_at', 'delivery_status']];
@@ -63,7 +63,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function resendTarget(Draw $draw, Participant $participant)
+    public function resendTarget(Draw $draw, Participant $participant): JsonResponse
     {
         return response()->jsonTry(
             function () use ($participant) {
@@ -80,7 +80,7 @@ class OrganizerController extends Controller
         );
     }
 
-    public function changeEmail(Request $request, Draw $draw, Participant $participant)
+    public function changeEmail(Request $request, Draw $draw, Participant $participant): JsonResponse
     {
         $request->validate([
             'email' => ['required', 'email', 'max:320'],
@@ -104,7 +104,7 @@ class OrganizerController extends Controller
         );
     }
 
-    public function changeName(Request $request, Draw $draw, Participant $participant)
+    public function changeName(Request $request, Draw $draw, Participant $participant): JsonResponse
     {
         $request->validate([
             'name' => ['required', 'max:55', Rule::notIn($draw->participants->pluck('name'))],
@@ -128,7 +128,7 @@ class OrganizerController extends Controller
         );
     }
 
-    public function withdraw(Draw $draw, Participant $participant)
+    public function withdraw(Draw $draw, Participant $participant): JsonResponse
     {
         abort_unless($draw->participants->count() > 3, 403, Lang::get('error.withdraw'));
 
@@ -139,7 +139,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function csvInit(Draw $draw)
+    public function csvInit(Draw $draw): Response
     {
         $draw->createMetric('csv_initial_download');
 
@@ -149,7 +149,7 @@ class OrganizerController extends Controller
         );
     }
 
-    public function csvFinal(Draw $draw)
+    public function csvFinal(Draw $draw): Response
     {
         abort_unless($draw->isFinished, 403, Lang::get('error.finished'));
         abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
@@ -164,7 +164,7 @@ class OrganizerController extends Controller
         );
     }
 
-    public function delete(Draw $draw)
+    public function delete(Draw $draw): JsonResponse
     {
         $draw->delete();
 

@@ -17,7 +17,7 @@ class ParticipantFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'draw_id' => Draw::factory(),
@@ -33,7 +33,7 @@ class ParticipantFactory extends Factory
      * @return static
      */
     // TODO: check
-    public function bijective()
+    public function bijective(): static
     {
         return $this->afterCreating(function (Participant $participant, Draw $draw) {
             if ($draw->participants->count() % 2 !== 0) {

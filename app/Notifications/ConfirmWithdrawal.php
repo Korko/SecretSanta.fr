@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Illuminate\Mail\Mailable;
 use App\Mail\ConfirmWithdrawal as ConfirmWithdrawalMailable;
 use App\Models\Participant;
 use Illuminate\Notifications\Notification;
@@ -15,7 +16,7 @@ class ConfirmWithdrawal extends Notification
      * @param  \App\Models\Participant  $santa
      * @return array
      */
-    public function via(Participant $santa)
+    public function via(Participant $santa): array
     {
         return ['mail'];
     }
@@ -26,7 +27,7 @@ class ConfirmWithdrawal extends Notification
      * @param  \App\Models\Participant  $santa
      * @return \Illuminate\Mail\Mailable
      */
-    public function toMail(Participant $santa)
+    public function toMail(Participant $santa): Mailable
     {
         return (new ConfirmWithdrawalMailable($santa))
             ->to($santa->routeNotificationFor('mail'));

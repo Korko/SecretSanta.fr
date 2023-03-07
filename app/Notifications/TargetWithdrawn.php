@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Illuminate\Mail\Mailable;
 use App\Mail\TargetWithdrawn as TargetWithdrawnMailable;
 use App\Models\Participant;
 use Illuminate\Notifications\Notification;
@@ -24,7 +25,7 @@ class TargetWithdrawn extends Notification
      * @param  \App\Models\Participant  $santa
      * @return array
      */
-    public function via(Participant $santa)
+    public function via(Participant $santa): array
     {
         return ['mail'];
     }
@@ -35,7 +36,7 @@ class TargetWithdrawn extends Notification
      * @param  \App\Models\Participant  $santa
      * @return \Illuminate\Mail\Mailable
      */
-    public function toMail(Participant $santa)
+    public function toMail(Participant $santa): Mailable
     {
         return (new TargetWithdrawnMailable($santa, $this->oldTarget, $this->newTarget))
             ->to($santa->routeNotificationFor('mail'));

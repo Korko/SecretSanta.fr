@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Request;
 use App\Facades\DrawCrypt;
 use Closure;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -15,7 +17,7 @@ class HandleEncryptionIV
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $parameterToCheck, $fieldToCheck)
+    public function handle(Request $request, Closure $next, $parameterToCheck, $fieldToCheck): Response
     {
         $iv = base64_decode($request->input('iv') ?: $request->header('X-HASH-IV'));
         if (! empty($iv)) {

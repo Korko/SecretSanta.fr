@@ -142,12 +142,8 @@ class Participant extends Model
 
     /**
      * Retrieve the model for a bound value.
-     *
-     * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding(mixed $value, ?string $field = null): ?Model
     {
         $participant = $this->baseResolver($value, $field);
         $participant->load(['mail', 'draw', 'santa', 'target']);
@@ -159,11 +155,8 @@ class Participant extends Model
 
     /**
      * Create a new Eloquent Collection instance.
-     *
-     * @param  array  $models
-     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function newCollection(array $models = [])
+    public function newCollection(array $models = []): Collection
     {
         return new ParticipantsCollection($models);
     }
@@ -184,11 +177,8 @@ class Participant extends Model
 
     /**
      * Route notifications for the mail channel.
-     *
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @return array|string
      */
-    public function routeNotificationForMail($notification)
+    public function routeNotificationForMail(Notification $notification): array|string
     {
         return [
             ['name' => $this->name, 'email' => $this->email],
@@ -197,10 +187,8 @@ class Participant extends Model
 
     /**
      * Get the queueable relationships for the entity.
-     *
-     * @return array
      */
-    public function getQueueableRelations()
+    public function getQueueableRelations(): array
     {
         // To prevent infinite loop with recursive references, we unset the relations list (exclusions, target)
         $this->unsetRelations();

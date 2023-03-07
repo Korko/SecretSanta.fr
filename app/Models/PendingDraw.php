@@ -81,7 +81,7 @@ class PendingDraw extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function prunable()
+    public function prunable(): Builder
     {
         return static::where(function ($query) {
             foreach ($this->retentionPerStatus as $status => $retention) {

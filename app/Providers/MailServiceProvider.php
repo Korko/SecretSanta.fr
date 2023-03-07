@@ -14,7 +14,7 @@ class MailServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->replaceMailer();
         $this->registerMailbox();
@@ -25,7 +25,7 @@ class MailServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function replaceMailer()
+    protected function replaceMailer(): void
     {
         $this->app->bind('mailer', function () {
             return $this->app->make(SigningMailer::class);
@@ -37,7 +37,7 @@ class MailServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerMailbox()
+    protected function registerMailbox(): void
     {
         $this->app->singleton('mailbox.manager', function ($app) {
             return new MailboxManager($app);
@@ -53,7 +53,7 @@ class MailServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [
             'mailbox.manager',

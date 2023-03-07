@@ -14,7 +14,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         /**
          * Create a signed route URL for a named route appended with the IV.

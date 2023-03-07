@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Illuminate\Mail\Mailable;
 use App\Mail\TargetNameChanged as TargetNameChangedMailable;
 use App\Models\Participant;
 use Illuminate\Notifications\Notification;
@@ -21,7 +22,7 @@ class TargetNameChanged extends Notification
      * @param  \App\Models\Participant  $santa
      * @return array
      */
-    public function via(Participant $santa)
+    public function via(Participant $santa): array
     {
         return ['mail'];
     }
@@ -32,7 +33,7 @@ class TargetNameChanged extends Notification
      * @param  \App\Models\Participant  $santa
      * @return \Illuminate\Mail\Mailable
      */
-    public function toMail(Participant $santa)
+    public function toMail(Participant $santa): Mailable
     {
         return (new TargetNameChangedMailable($santa, $target))
             ->to($santa->routeNotificationFor('mail'));
