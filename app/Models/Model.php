@@ -30,7 +30,7 @@ class Model extends BaseModel
      * @param  array|mixed  $attributes
      * @return array
      */
-    public function only($attributes)
+    public function only($attributes): array
     {
         $results = [];
 

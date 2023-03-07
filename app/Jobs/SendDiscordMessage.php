@@ -39,7 +39,7 @@ class SendDiscordMessage implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         if (! empty(config('discord.webhook'))) {
             Http::post(config('discord.webhook'), [

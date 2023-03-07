@@ -28,7 +28,7 @@ class PendingDraw extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): static
     {
         return $this
             ->subject(Lang::get('SecretSanta - Attente de validation', ['draw' => $this->draw->id]))

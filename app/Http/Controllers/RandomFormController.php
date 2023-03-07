@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\RandomFormRequest;
 use App\Models\PendingDraw;
 use App\Notifications\PendingDraw as PendingDrawNotification;
@@ -23,7 +24,7 @@ class RandomFormController extends Controller
         ]);
     }
 
-    public function handle(RandomFormRequest $request)
+    public function handle(RandomFormRequest $request): JsonResponse
     {
         $safe = $request->safe();
 

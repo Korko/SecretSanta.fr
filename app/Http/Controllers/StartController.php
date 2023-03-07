@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use App\Jobs\ProcessPendingDraw;
 use App\Models\PendingDraw;
 use Lang;
@@ -25,7 +26,7 @@ class StartController extends Controller
     /**
      * Return encrypted data
      */
-    public function fetch(PendingDraw $pending)
+    public function fetch(PendingDraw $pending): JsonResponse
     {
         return response()->json([
             'pending' => $pending->only(['data']),

@@ -16,7 +16,7 @@ class DrawFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'mail_title' => $this->faker->sentence(),
@@ -31,7 +31,7 @@ class DrawFactory extends Factory
      *
      * @return static
      */
-    public function isFinished()
+    public function isFinished(): static
     {
         return $this->state(function () {
             return [
@@ -45,7 +45,7 @@ class DrawFactory extends Factory
      *
      * @return static
      */
-    public function isExpired()
+    public function isExpired(): static
     {
         return $this->state(function () {
             return [

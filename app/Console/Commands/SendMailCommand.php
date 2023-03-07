@@ -25,7 +25,7 @@ class SendMailCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $this->line('Sending eMail to: '.$this->argument('to'));
 

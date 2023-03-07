@@ -14,7 +14,7 @@ class QueueServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Queue::createPayloadUsing(function ($connection, $queue, $payload) {
             return [

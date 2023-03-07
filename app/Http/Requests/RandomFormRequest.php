@@ -14,7 +14,7 @@ class RandomFormRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,7 +24,7 @@ class RandomFormRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return parent::rules() + [
             'participant-organizer' => ['sometimes', 'boolean'],
@@ -57,7 +57,7 @@ class RandomFormRequest extends Request
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'participant-organizer.required' => Lang::get('validation.custom.randomform.participant-organizer.required'),

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Hashids;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -38,7 +39,7 @@ trait HashId
      * @param  string|null  $field
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, ?string $field = null): ?Model
     {
         $field = $field ?: $this->getRouteKeyName();
         $model = $field === 'hash' ?
@@ -55,7 +56,7 @@ trait HashId
      *
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'hash';
     }

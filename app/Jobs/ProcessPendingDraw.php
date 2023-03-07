@@ -37,7 +37,7 @@ class ProcessPendingDraw implements ShouldQueue
      *
      * @return array
      */
-    public function backoff()
+    public function backoff(): array
     {
         // 30s, 5min, 30min
         return [30, 5 * 60, 30 * 60];
@@ -60,7 +60,7 @@ class ProcessPendingDraw implements ShouldQueue
      * @param  \App\Services\DrawFormHandler  $handler
      * @return void
      */
-    public function handle(DrawFormHandler $handler)
+    public function handle(DrawFormHandler $handler): void
     {
         // Ensure the pending draw status is ready before processing it
         if (! $this->pending->isReady()) {
@@ -91,7 +91,7 @@ class ProcessPendingDraw implements ShouldQueue
      * @param  \Throwable  $exception
      * @return void
      */
-    public function failed(Throwable $exception)
+    public function failed(Throwable $exception): void
     {
         $this->pending->markAsReady();
     }

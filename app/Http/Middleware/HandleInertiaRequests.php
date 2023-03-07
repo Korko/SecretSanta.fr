@@ -51,7 +51,7 @@ class HandleInertiaRequests extends Middleware
      * @param  Request  $request
      * @return object
      */
-    public function resolveValidationErrors(Request $request)
+    public function resolveValidationErrors(Request $request): object
     {
         // No session, no validation errors in session
         return (object) [];

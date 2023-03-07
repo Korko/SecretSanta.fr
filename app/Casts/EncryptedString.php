@@ -31,7 +31,7 @@ class EncryptedString implements CastsAttributes
      * @param  array  $attributes
      * @return string
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes)
+    public function set(Model $model, string $key, mixed $value, array $attributes): string
     {
         return DrawCrypt::encrypt($value);
     }

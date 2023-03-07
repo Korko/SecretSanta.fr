@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Illuminate\Mail\Mailable;
 use App\Mail\TargetDrawn as TargetDrawnMailable;
 use App\Models\Participant;
 use Illuminate\Notifications\Notification;
@@ -14,7 +15,7 @@ class TargetDrawn extends Notification
      * @param  \App\Models\Participant  $santa
      * @return array
      */
-    public function via(Participant $santa)
+    public function via(Participant $santa): array
     {
         return ['mail'];
     }
@@ -25,7 +26,7 @@ class TargetDrawn extends Notification
      * @param  \App\Models\Participant  $santa
      * @return \Illuminate\Mail\Mailable
      */
-    public function toMail(Participant $santa)
+    public function toMail(Participant $santa): Mailable
     {
         return (new TargetDrawnMailable($santa))
             ->to($santa->routeNotificationFor('mail'));

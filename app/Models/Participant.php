@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Notifications\Notification;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use exussum12\xxhash\V32 as xxHash;
@@ -108,7 +111,7 @@ class Participant extends Model
      * @param  string|null  $field
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, ?string $field = null): ?Model
     {
         $participant = $this->baseResolver($value, $field);
 
@@ -123,7 +126,7 @@ class Participant extends Model
      * @param  array  $models
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function newCollection(array $models = [])
+    public function newCollection(array $models = []): Collection
     {
         return new ParticipantsCollection($models);
     }
@@ -148,7 +151,7 @@ class Participant extends Model
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return array|string
      */
-    public function routeNotificationForMail($notification)
+    public function routeNotificationForMail(Notification $notification)
     {
         return [
             ['name' => $this->name, 'email' => $this->email],
@@ -160,7 +163,7 @@ class Participant extends Model
      *
      * @return array
      */
-    public function getQueueableRelations()
+    public function getQueueableRelations(): array
     {
         // To prevent infinite loop with recursive references, we unset the relations list (exclusions, target)
         $this->unsetRelations();

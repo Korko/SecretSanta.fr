@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\ConfirmWithdrawal;
@@ -63,7 +65,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function changeEmail(Request $request, Draw $draw, Participant $participant)
+    public function changeEmail(Request $request, Draw $draw, Participant $participant): JsonResponse
     {
         $validated = $request->validate([
             'email' => ['required', 'email', 'max:320'],
@@ -104,7 +106,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function changeName(Request $request, Draw $draw, Participant $participant)
+    public function changeName(Request $request, Draw $draw, Participant $participant): JsonResponse
     {
         $validated = $request->validate([
             'name' => ['required', 'max:55', Rule::notIn($draw->participants->pluck('name'))],
@@ -135,7 +137,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function withdraw(Draw $draw, Participant $participant)
+    public function withdraw(Draw $draw, Participant $participant): JsonResponse
     {
         abort_unless($draw->participants->count() > 3, 403, Lang::get('error.withdraw'));
 
@@ -164,7 +166,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function csvInit(Draw $draw)
+    public function csvInit(Draw $draw): Response
     {
         $draw->createMetric('csv_initial_download');
 
@@ -179,7 +181,7 @@ class OrganizerController extends Controller
             200, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
-    public function csvFinal(Draw $draw)
+    public function csvFinal(Draw $draw): Response
     {
         abort_unless($draw->isFinished, 403, Lang::get('error.finished'));
         abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
@@ -198,7 +200,7 @@ class OrganizerController extends Controller
             200, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
-    public function delete(Request $request, Draw $draw)
+    public function delete(Request $request, Draw $draw): JsonResponse
     {
         $draw->delete();
 

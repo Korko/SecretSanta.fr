@@ -30,7 +30,7 @@ class TargetNameChanged extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): static
     {
         return $this
             ->subject(Lang::get('SecretSanta #:draw - Votre cible a changé de nom', [

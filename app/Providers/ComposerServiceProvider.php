@@ -12,7 +12,7 @@ class ComposerServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         View::composer('templates/layout', function ($view) {
             $view->with('version', exec('git describe --tags --always --abbrev=0'))

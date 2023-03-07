@@ -17,7 +17,7 @@ class DearSantaFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'draw_id' => Draw::factory(),
@@ -31,7 +31,7 @@ class DearSantaFactory extends Factory
      *
      * @return static
      */
-    public function resendable()
+    public function resendable(): static
     {
         return $this->afterCreating(function (DearSanta $dearSanta) {
             $dearSanta->mail->updated_at = $dearSanta->mail->updated_at->subSeconds(config('mail.resend_delay'));

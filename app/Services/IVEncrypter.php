@@ -51,7 +51,7 @@ class IVEncrypter extends BaseEncrypter
      *
      * @throws \RuntimeException
      */
-    public function __construct($key, $cipher = 'AES-128-CBC')
+    public function __construct(string $key, string $cipher = 'AES-128-CBC')
     {
         parent::__construct($key, $cipher);
 
@@ -78,7 +78,7 @@ class IVEncrypter extends BaseEncrypter
      *
      * @return string
      */
-    public function getIV()
+    public function getIV(): string
     {
         return $this->iv;
     }
@@ -90,7 +90,7 @@ class IVEncrypter extends BaseEncrypter
      * @param  string  $cipher
      * @return bool
      */
-    public static function supportedIV($iv, $cipher)
+    public static function supportedIV(string $iv, string $cipher): bool
     {
         return mb_strlen($iv, '8bit') === openssl_cipher_iv_length($cipher);
     }
@@ -104,7 +104,7 @@ class IVEncrypter extends BaseEncrypter
      *
      * @throws \Illuminate\Contracts\Encryption\EncryptException
      */
-    public function encrypt($value, $serialize = true)
+    public function encrypt($value, bool $serialize = true): string
     {
         // First we will encrypt the value using OpenSSL. After this is encrypted we
         // will proceed to calculating a MAC for the encrypted value so that this
@@ -145,7 +145,7 @@ class IVEncrypter extends BaseEncrypter
      *
      * @throws \Illuminate\Contracts\Encryption\DecryptException
      */
-    public function decrypt($payload, $unserialize = true)
+    public function decrypt(string $payload, bool $unserialize = true)
     {
         $payload = $this->getJsonPayload($payload);
 
@@ -173,7 +173,7 @@ class IVEncrypter extends BaseEncrypter
      *
      * @throws \Illuminate\Contracts\Encryption\DecryptException
      */
-    protected function getJsonPayload($payload)
+    protected function getJsonPayload(string $payload): array
     {
         $payload = json_decode(base64_decode($payload), true);
 

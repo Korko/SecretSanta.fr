@@ -15,7 +15,7 @@ class SolverTest extends TestCase
      *
      * @return \App\Solvers\Solver[][]
      */
-    public function solverProvider()
+    public function solverProvider(): array
     {
         return [
             HatSolver::class => [new HatSolver],

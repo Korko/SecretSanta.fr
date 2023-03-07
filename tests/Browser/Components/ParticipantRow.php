@@ -19,7 +19,7 @@ class ParticipantRow extends BaseComponent
      *
      * @return string
      */
-    public function selector()
+    public function selector(): string
     {
         return 'tr[dusk=participant'.$this->idx.']';
     }
@@ -30,7 +30,7 @@ class ParticipantRow extends BaseComponent
      * @param  Browser  $browser
      * @return void
      */
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser->assertVisible($this->selector());
     }
@@ -40,7 +40,7 @@ class ParticipantRow extends BaseComponent
      *
      * @return array
      */
-    public function elements()
+    public function elements(): array
     {
         return [
             '@select-button' => '.multiselect__select',
@@ -55,7 +55,7 @@ class ParticipantRow extends BaseComponent
      * @param  string  $name
      * @return void
      */
-    public function selectParticipant($browser, $name)
+    public function selectParticipant(Browser $browser, string $name): void
     {
         $browser->click('@select-button')
                 ->clickLink($name, '@participant-field')

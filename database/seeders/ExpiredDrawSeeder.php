@@ -14,7 +14,7 @@ use Notification;
 
 class ExpiredDrawSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         Notification::fake();
 

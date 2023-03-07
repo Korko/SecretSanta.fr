@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use App\Casts\EncryptedString;
 use App\Events\PendingDrawStatusUpdated;
 use DateInterval;
@@ -52,7 +53,7 @@ class PendingDraw extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function prunable()
+    public function prunable(): Builder
     {
         return static::where(function ($query) {
             foreach ($this->retentionPerStatus as $status => $retention) {

@@ -37,7 +37,7 @@ class DearSanta extends TrackedMailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): static
     {
         $url = URL::signedRoute('santa.index', ['participant' => $this->santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
 

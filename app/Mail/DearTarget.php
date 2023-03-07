@@ -37,7 +37,7 @@ class DearTarget extends TrackedMailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): static
     {
         $url = URL::signedRoute('target.index', ['participant' => $this->target->hash]).'#'.base64_encode(DrawCrypt::getIV());
 
