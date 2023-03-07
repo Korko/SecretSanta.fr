@@ -4,7 +4,6 @@ namespace App\Mailbox;
 
 use App\Contracts\Mailbox;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Mail\Mailbox;
 use InvalidArgumentException;
 use Webklex\PHPIMAP\ClientManager as ImapClientManager;
 
@@ -26,9 +25,6 @@ class MailboxManager
 
     /**
      * Create a new Mailbox manager instance.
-     *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @return void
      */
     public function __construct(Application $app)
     {
@@ -37,9 +33,6 @@ class MailboxManager
 
     /**
      * Get a mailbox instance by name.
-     *
-     * @param  string|null  $name
-     * @return \App\Contracts\Mailbox
      */
     public function mailbox(?string $name = null): Mailbox
     {
@@ -50,9 +43,6 @@ class MailboxManager
 
     /**
      * Attempt to get the mailer from the local cache.
-     *
-     * @param  string  $name
-     * @return \Illuminate\Mail\Mailbox
      */
     protected function get(string $name): Mailbox
     {
@@ -61,9 +51,6 @@ class MailboxManager
 
     /**
      * Resolve the given mailer.
-     *
-     * @param  string  $name
-     * @return \Illuminate\Mail\Mailbox
      *
      * @throws \InvalidArgumentException
      */
@@ -80,9 +67,6 @@ class MailboxManager
 
     /**
      * Get the mailbox connection configuration.
-     *
-     * @param  string  $name
-     * @return array
      */
     protected function getConfig(string $name): array
     {
@@ -91,8 +75,6 @@ class MailboxManager
 
     /**
      * Get the default mailbox driver name.
-     *
-     * @return string
      */
     public function getDefaultDriver(): string
     {
@@ -112,9 +94,6 @@ class MailboxManager
 
     /**
      * Create an instance of the Webklex IMAP driver.
-     *
-     * @param  array  $config
-     * @return App\Mailbox\ImapTransport
      */
     protected function createImapTransport(array $config): ImapTransport
     {
@@ -131,8 +110,6 @@ class MailboxManager
 
     /**
      * Create an instance of the Array Transport Driver.
-     *
-     * @return App\Mailbox\ArrayTransport
      */
     protected function createArrayTransport(): ArrayTransport
     {
