@@ -3,6 +3,7 @@
 namespace App\Solvers;
 
 use Generator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class HatSolver extends Solver
