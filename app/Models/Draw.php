@@ -78,6 +78,7 @@ class Draw extends Model
      * @var array
      */
     protected $casts = [
+        'finished_at' => 'datetime',
         'mail_title' => DrawEncryptedString::class,
         'mail_body' => DrawEncryptedString::class,
         'next_solvable' => 'boolean',
@@ -90,10 +91,6 @@ class Draw extends Model
      *
      * @var string[]
      */
-    protected $dates = [
-        'finished_at',
-    ];
-
     /**
      * Get the prunable model query.
      *
