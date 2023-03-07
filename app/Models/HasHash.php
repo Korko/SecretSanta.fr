@@ -36,8 +36,9 @@ trait HasHash
      * Retrieve the model for a bound value.
      *
      * @param  mixed  $value
+     * @param  string|null  $field
      */
-    public function resolveRouteBinding($value, ?string $field = null): ?Model
+    public function resolveRouteBinding($value, $field = null): ?Model
     {
         $field = $field ?: $this->getRouteKeyName();
         $model = $field === 'hash' ?

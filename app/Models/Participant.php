@@ -144,8 +144,11 @@ class Participant extends Model
 
     /**
      * Retrieve the model for a bound value.
+     *
+     * @param mixed $value
+     * @param string|null $field
      */
-    public function resolveRouteBinding(mixed $value, ?string $field = null): ?Model
+    public function resolveRouteBinding($value, $field = null): ?Model
     {
         $participant = $this->baseResolver($value, $field);
         $participant->load(['mail', 'draw', 'santa', 'target']);
@@ -180,7 +183,7 @@ class Participant extends Model
     /**
      * Route notifications for the mail channel.
      */
-    public function routeNotificationForMail(Notification $notification): array|string
+    public function routeNotificationForMail(?Notification $notification): array|string
     {
         return [
             ['name' => $this->name, 'email' => $this->email],

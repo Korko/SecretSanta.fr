@@ -88,10 +88,11 @@ class IVEncrypter extends BaseEncrypter
      * Encrypt the given value.
      *
      * @param  mixed  $value
+     * @param  bool  $serialize
      *
      * @throws \Illuminate\Contracts\Encryption\EncryptException
      */
-    public function encrypt($value, bool $serialize = true): string
+    public function encrypt($value, $serialize = true): string
     {
         // First we will encrypt the value using OpenSSL. After this is encrypted we
         // will proceed to calculating a MAC for the encrypted value so that this
@@ -126,11 +127,13 @@ class IVEncrypter extends BaseEncrypter
     /**
      * Decrypt the given value.
      *
+     * @param  string  $payload
+     * @param  bool  $unserialize
      * @return mixed
      *
      * @throws \Illuminate\Contracts\Encryption\DecryptException
      */
-    public function decrypt(string $payload, bool $unserialize = true)
+    public function decrypt($payload, $unserialize = true)
     {
         $payload = $this->getJsonPayload($payload);
 
@@ -153,10 +156,11 @@ class IVEncrypter extends BaseEncrypter
     /**
      * Get the JSON array from the given payload.
      *
+     * @param  string  $payload
      *
      * @throws \Illuminate\Contracts\Encryption\DecryptException
      */
-    protected function getJsonPayload(string $payload): array
+    protected function getJsonPayload($payload): array
     {
         $payload = json_decode(base64_decode($payload), true);
 
