@@ -127,7 +127,7 @@ class Mail extends Model
 
         try {
             MailStatusUpdated::dispatch($this);
-        } catch(BroadcastException $e) {
+        } catch (BroadcastException $e) {
             // Ignore exception
         }
     }

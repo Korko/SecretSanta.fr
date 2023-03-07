@@ -169,7 +169,7 @@ class PendingDraw extends Model
 
         try {
             PendingDrawStatusUpdated::dispatch($this);
-        } catch(BroadcastException $e) {
+        } catch (BroadcastException $e) {
             // Ignore exception
         }
     }

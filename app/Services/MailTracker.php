@@ -28,7 +28,7 @@ class MailTracker
             $mail = MailModel::where('notification', stristr($params[1], '@', true) ?: $params[1])->first();
 
             if ($mail) {
-                switch($params[0]) {
+                switch ($params[0]) {
                     case self::BOUNCE:
                         // TODO: Determine depending on the bounce error, if the failure is temporary (4xx) or final (5xx)
                         // Auto-retry or not

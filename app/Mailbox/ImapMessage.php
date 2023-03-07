@@ -28,7 +28,7 @@ class ImapMessage implements EmailMessage
     {
         try {
             $this->message->move(config('imap.folders.trash'));
-        } catch(MessageHeaderFetchingException $e) {
+        } catch (MessageHeaderFetchingException $e) {
             // Ignore that error
         }
     }
