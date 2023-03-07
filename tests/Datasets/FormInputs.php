@@ -37,7 +37,7 @@ dataset('unique participants list', function () {
 dataset('huge participants list', function () {
     $faker = faker(); // Keep a single Faker instance to use the "unique" modifier correctly
     yield 'huge list' => [Collection::times(3000, function () use ($faker) {
-        return ['name' => $faker->unique()->name, 'email' => $faker->safeEmail, 'exclusions' => []];
+        return ['name' => $faker->unique()->name(), 'email' => $faker->safeEmail(), 'exclusions' => []];
     })->toArray()];
 });
 

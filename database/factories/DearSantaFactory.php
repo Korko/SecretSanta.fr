@@ -29,7 +29,7 @@ class DearSantaFactory extends Factory
         return [
             'draw_id' => Draw::factory(),
             'sender_id' => Participant::factory(),
-            'mail_body' => $this->faker->text,
+            'mail_body' => $this->faker->text(),
         ];
     }
 

@@ -15,7 +15,7 @@ class RandomFormTest extends DuskTestCase
     public function testDuplicateName()
     {
         $this->browse(function (Browser $browser) {
-            $name = $this->faker->name;
+            $name = $this->faker->name();
 
             $browser->visit(new RandomFormPage)
                     ->type('participants[0][name]', $name)
@@ -30,17 +30,17 @@ class RandomFormTest extends DuskTestCase
     public function testNoResult()
     {
         $this->browse(function (Browser $browser) {
-            $name1 = $this->faker->name;
-            $name2 = $this->faker->name;
-            $name3 = $this->faker->name;
+            $name1 = $this->faker->name();
+            $name2 = $this->faker->name();
+            $name3 = $this->faker->name();
 
             $browser->visit(new RandomFormPage)
                     ->type('participants[0][name]', $name1)
                     ->type('participants[1][name]', $name2)
                     ->type('participants[2][name]', $name3)
-                    ->type('participants[0][email]', $this->faker->email)
-                    ->type('participants[1][email]', $this->faker->email)
-                    ->type('participants[2][email]', $this->faker->email)
+                    ->type('participants[0][email]', $this->faker->email())
+                    ->type('participants[1][email]', $this->faker->email())
+                    ->type('participants[2][email]', $this->faker->email())
                     ->within(new ExclusionPicker('tr[dusk=participant0]'), function ($browser) use ($name2, $name3) {
                         $browser->selectParticipant($name2)
                                 ->selectParticipant($name3);
@@ -48,8 +48,8 @@ class RandomFormTest extends DuskTestCase
                     ->within(new ExclusionPicker('tr[dusk=participant2]'), function ($browser) use ($name1) {
                         $browser->selectParticipant($name1);
                     })
-                    ->type('title', $this->faker->sentence)
-                    ->type('content', $this->faker->paragraph)
+                    ->type('title', $this->faker->sentence())
+                    ->type('content', $this->faker->paragraph())
                     ->append('content', '{TARGET}')
                     ->scrollIntoView('#randomForm button[type=submit]')
                     ->click('#randomForm button[type=submit]')
