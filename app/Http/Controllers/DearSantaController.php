@@ -11,6 +11,8 @@ use App\Models\DearSanta;
 use App\Models\DearTarget;
 use App\Models\Participant;
 use Carbon\Carbon;
+use Illuminate\Contracts\Support\Responsable as Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\URL;
 use Lang;
 
@@ -20,7 +22,7 @@ class DearSantaController extends Controller
 
     protected $dearTargetPublicFields = ['id', 'mail_type', 'mail_body', 'mail', 'created_at', 'updated_at'];
 
-    public function index(Participant $participant)
+    public function index(Participant $participant): Response
     {
         return response()->inertia('DearSanta', [
             'routes' => [
@@ -35,7 +37,7 @@ class DearSantaController extends Controller
     /**
      * Return encrypted data
      */
-    public function fetch(Participant $participant)
+    public function fetch(Participant $participant): JsonResponse
     {
         // The hash was validated in middleware so we can validate that the email was received
         $participant->mail->markAsReceived();
@@ -74,7 +76,7 @@ class DearSantaController extends Controller
         ]);
     }
 
-    public function resendDearSanta(Participant $participant, DearSanta $dearSanta)
+    public function resendDearSanta(Participant $participant, DearSanta $dearSanta): JsonResponse
     {
         abort_unless($dearSanta->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
@@ -95,7 +97,7 @@ class DearSantaController extends Controller
         );
     }
 
-    public function resendDearTarget(Participant $participant, DearTarget $dearTarget)
+    public function resendDearTarget(Participant $participant, DearTarget $dearTarget): JsonResponse
     {
         abort_unless($dearTarget->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
@@ -116,7 +118,7 @@ class DearSantaController extends Controller
         );
     }
 
-    public function resendTarget(Participant $participant)
+    public function resendTarget(Participant $participant): JsonResponse
     {
         abort_unless($participant->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
@@ -131,7 +133,7 @@ class DearSantaController extends Controller
         );
     }
 
-    public function handleSanta(Participant $participant, DearSantaRequest $request)
+    public function handleSanta(Participant $participant, DearSantaRequest $request): JsonResponse
     {
         return response()->jsonTry(
             function () use ($participant, $request) {
@@ -148,7 +150,7 @@ class DearSantaController extends Controller
         );
     }
 
-    public function handleTarget(Participant $participant, DearTargetRequest $request)
+    public function handleTarget(Participant $participant, DearTargetRequest $request): JsonResponse
     {
         return response()->jsonTry(
             function () use ($participant, $request) {

@@ -8,20 +8,22 @@ use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use Arr;
 use Carbon\Carbon;
+use Illuminate\Contracts\Support\Responsable as Response;
+use Illuminate\Http\JsonResponse;
 use Notification;
 use URL;
 use URLParser;
 
 class FixOrganizerController extends Controller
 {
-    public function view()
+    public function view(): Response
     {
         return response()->view('fixOrganizer', [
             'fixUrl' => URL::route('fixOrganizer.handle'),
         ]);
     }
 
-    public function handle(FixOrganizerRequest $request)
+    public function handle(FixOrganizerRequest $request): JsonResponse
     {
         $hash = Arr::get(explode('#', $request->input('url'), 2), 1);
         $key = base64_decode($hash);

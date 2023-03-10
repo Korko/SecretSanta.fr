@@ -7,6 +7,7 @@ use App\Http\Requests\RandomFormRequest;
 use App\Jobs\ProcessPendingDraw;
 use App\Models\PendingDraw;
 use Arr;
+use Illuminate\Contracts\Support\Responsable as Response;
 
 class RandomFormController extends Controller
 {

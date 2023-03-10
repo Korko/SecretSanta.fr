@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Support\Responsable as Response;
 use Lang;
 
 class SingleController extends Controller
 {
-    public function faq()
+    public function faq(): Response
     {
         return response()->inertia('FrequentlyAskedQuestions', [
             'app_email' => config('app.email'),
@@ -14,12 +15,12 @@ class SingleController extends Controller
         ]);
     }
 
-    public function dashboard()
+    public function dashboard(): Response
     {
         return response()->inertia('Dashboard');
     }
 
-    public function legal()
+    public function legal(): Response
     {
         return response()->inertia('Legal');
     }

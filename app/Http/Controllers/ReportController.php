@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Participant;
+use Illuminate\Contracts\Support\Responsable as Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\URL;
 
 class ReportController extends Controller
 {
-    public function view(Participant $participant)
+    public function view(Participant $participant): Response
     {
         return response()->inertia('ReportForm', [
             'participant' => $participant->hash,
@@ -17,7 +19,7 @@ class ReportController extends Controller
         ]);
     }
 
-    public function handle(Participant $participant, \Illuminate\Http\Request $request)
+    public function handle(Participant $participant, \Illuminate\Http\Request $request): JsonResponse
     {
         //if($request->)
 
