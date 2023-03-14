@@ -7,6 +7,7 @@ use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator as ValidatorFacade;
 use Illuminate\Validation\Validator;
 
 class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
@@ -80,7 +81,7 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
         $mode = Arr::get($this->data, 'mode', (AppMode::FREE)->value);
 
         if (isset($this->rules[$mode])) {
-            $this->customValidator = Validator::make(
+            $this->customValidator = ValidatorFacade::make(
                 $this->data,
                 [$attribute => $this->rules[$mode]],
                 $this->getCustomMessages($mode)
