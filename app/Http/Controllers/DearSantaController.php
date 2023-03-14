@@ -11,10 +11,10 @@ use App\Models\DearSanta;
 use App\Models\DearTarget;
 use App\Models\Participant;
 use Carbon\Carbon;
-use Illuminate\Contracts\Support\Responsable as Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\URL;
 use Lang;
+use Symfony\Component\HttpFoundation\Response;
 
 class DearSantaController extends Controller
 {

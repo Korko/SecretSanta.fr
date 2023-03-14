@@ -7,7 +7,8 @@ use App\Http\Requests\RandomFormRequest;
 use App\Jobs\ProcessPendingDraw;
 use App\Models\PendingDraw;
 use Arr;
-use Illuminate\Contracts\Support\Responsable as Response;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class RandomFormController extends Controller
 {
@@ -47,7 +48,8 @@ class RandomFormController extends Controller
             },
             onSuccess: trans('error.solution'),
             onFailure: trans('message.sent'),
-            exceptionClass: SolverException::class
+            exceptionClass: SolverException::class,
+            errorCode: 422
         );
     }
 }

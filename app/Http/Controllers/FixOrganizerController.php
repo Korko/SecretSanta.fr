@@ -8,9 +8,9 @@ use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use Arr;
 use Carbon\Carbon;
-use Illuminate\Contracts\Support\Responsable as Response;
 use Illuminate\Http\JsonResponse;
 use Notification;
+use Symfony\Component\HttpFoundation\Response;
 use URL;
 use URLParser;
 

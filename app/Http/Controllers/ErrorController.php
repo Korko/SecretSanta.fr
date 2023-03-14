@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Support\Responsable as Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class ErrorController extends Controller
 {

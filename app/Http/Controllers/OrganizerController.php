@@ -6,13 +6,15 @@ use App\Actions\ChangeParticipantEmail;
 use App\Actions\ChangeParticipantName;
 use App\Actions\GenerateDrawCsv;
 use App\Actions\WithdrawParticipant;
+use App\Models\Draw;
+use App\Models\Participant;
 use App\Notifications\OrganizerFinalRecap;
-use Illuminate\Contracts\Support\Responsable as Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Lang;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrganizerController extends Controller
 {

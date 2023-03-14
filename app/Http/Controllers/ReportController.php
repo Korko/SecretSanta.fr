@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Participant;
-use Illuminate\Contracts\Support\Responsable as Response;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReportController extends Controller
 {
@@ -19,7 +20,7 @@ class ReportController extends Controller
         ]);
     }
 
-    public function handle(Participant $participant, \Illuminate\Http\Request $request): JsonResponse
+    public function handle(Participant $participant, Request $request): JsonResponse
     {
         //if($request->)
 

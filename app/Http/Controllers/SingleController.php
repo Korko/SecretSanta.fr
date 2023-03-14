@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Support\Responsable as Response;
 use Lang;
+use Symfony\Component\HttpFoundation\Response;
 
 class SingleController extends Controller
 {
