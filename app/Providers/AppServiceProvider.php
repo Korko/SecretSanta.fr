@@ -61,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
                         'message' => $onSuccess,
                     ])
                     ->addData($data);
-            } catch(Exception $e) {dd($e);
+            } catch(Exception $e) {
                 if (is_a($e, $exceptionClass)) {
                     return $this
                         ->json([
