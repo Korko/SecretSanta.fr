@@ -22,9 +22,12 @@ class HandleEncryptionIV
 
         try {
             // Accessing the attribute is enough
+            if(!is_object($request->route()->parameters()[$parameterToCheck])) {
+                throw new \Exception('Parameter is not an object (substitution gone wrong?)');
+            }
+
             $request->route()->parameters()[$parameterToCheck]->$fieldToCheck;
         } catch (DecryptException $e) {
-            dd($e);
             abort(500, 'Invalid encryption iv: '.$e->getMessage());
         } catch (\Exception $e) {
             dd($e);
