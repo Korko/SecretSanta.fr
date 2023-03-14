@@ -74,6 +74,7 @@ class DrawFormHandler
         // Don't use $draw->participants or you'll love the transient attributes
         foreach ($participants as $participant) {
             $participant->exclusions()->attach(
+                // exclusions is 0 based request form indexed, we need 1 based sql table index instead
                 array_map(function ($participantId) use ($participants) {
                     return $participants[intval($participantId)]->id;
                 }, $participant->getTransientAttribute('exclusions', []))

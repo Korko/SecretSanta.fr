@@ -10,7 +10,7 @@ class GraphSolver extends Solver
     //TODO: seed shuffle?
     protected function solve(Collection $participantsIdx, Collection $exclusions): Generator
     {
-        return $this->findPaths($participantsIdx->shuffle(), $exclusions);
+        return $this->findPaths($participantsIdx, $exclusions);
     }
 
     /**
@@ -21,10 +21,12 @@ class GraphSolver extends Solver
     {
         // Preformat nodes to weight them by the amount of exclusions for each one
         $nodesLeft = $nodesLeft
+            ->shuffle() // Remove keys so to do BEFORE the mapWithKeys
             ->mapWithKeys(function ($nodeIdx) use ($exclusions) {
                 // The more the nodeIdx have exclusions, the more we should pick it (min weight should be 1)
                 return [$nodeIdx => 1 + count($exclusions->get($nodeIdx, []))];
-            });
+            })
+            ->sortDesc(); // We both shuffle and sort to handle very picky participants first
 
         // Preformat the exclusions to have the same format as participants [node => [exclusion1 => 0, exclusion2 => 0, ...]]
         foreach ($exclusions as $idx => $participantExclusions) {
@@ -34,12 +36,14 @@ class GraphSolver extends Solver
         return $this->findPathsFrom(
             startNode: $nodesLeft->firstKey(),
             nodesLeft: $nodesLeft,
-            exclusions: $exclusions
+            exclusions: $exclusions,
+            list: []
         );
     }
 
     private function findPathsFrom($startNode, Collection $nodesLeft, Collection $exclusions, $list = [])
     {
+        // nodesLeft is 1 based sql table indexed
         $availableNodes = $nodesLeft
             ->diffKeys([$startNode => 0])
             ->diffKeys($exclusions->get($startNode, []));
@@ -62,10 +66,10 @@ class GraphSolver extends Solver
 
             if (! isset($list[$nextNode])) {
                 // We need to go deeper
-                yield from $this->findPathsFrom($nextNode, $nodesLeft, $exclusions, $list);
+                yield from $this->findPathsFrom(startNode: $nextNode, nodesLeft: $nodesLeft, exclusions: $exclusions, list: $list);
             } elseif ($nodesLeft->count() >= 2) {
                 // Another partial graph is possible
-                yield from $this->findPathsFrom($nodesLeft->firstKey(), $nodesLeft, $exclusions, $list);
+                yield from $this->findPathsFrom(startNode: $nodesLeft->firstKey(), nodesLeft: $nodesLeft, exclusions: $exclusions, list: $list);
             } elseif ($nodesLeft->count() === 0) {
                 // Solution found
                 yield $list;

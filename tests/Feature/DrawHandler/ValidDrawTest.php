@@ -5,9 +5,7 @@ use App\Models\Participant;
 use App\Notifications\TargetDrawn as TargetDrawnNotification;
 
 it('records new entries in case of success', function ($participants, Draw $draw) {
-    $exclusions = array_reduce($participants, function ($sum, $participant) {
-        return $sum + count($participant['exclusions']);
-    });
+    Notification::fake();
 
     assertModelExists($draw);
     assertModelCount(Participant::class, count($participants));
@@ -21,6 +19,8 @@ it('records new entries in case of success', function ($participants, Draw $draw
 })->with('validated participants list');
 
 it('saves the correct target', function ($participants, $targets) {
+    Notification::fake();
+
     $draw = createServiceDraw($participants);
 
     foreach ($participants as $idx => $participant) {
@@ -44,8 +44,10 @@ it('send to each participant a link to write to their santa', function ($partici
 })->with('participants list');
 
 it('can handle several exclusions', function () {
+    Notification::fake();
+
     $participants = [
-        ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => [11, 22, 16, 18, 8, 9, 5, 4, 2, 1, 3, 7, 12, 23, 21, 20, 19, 14]],
+        ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => [11, 22, 16, 18, 8, 9, 5, 4, 2, 1, 0, 3, 7, 12, 23, 21, 20, 19, 14]],
         ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => []],
         ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => []],
         ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => []],
@@ -66,10 +68,11 @@ it('can handle several exclusions', function () {
         ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => []],
         ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => []],
         ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => []],
-        ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => [1, 2, 3, 4, 5, 6, 7, 8, 23, 20, 19, 18, 16, 15, 14, 13, 12, 11, 10, 17, 9, 22]],
+        ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => [1, 2, 3, 4, 5, 6, 7, 8, 23, 20, 19, 18, 16, 15, 14, 13, 12, 11, 10, 17, 9, 22]], // Left 0
         ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => []],
         ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => []],
     ];
 
     $this->assertNotEquals(null, createServiceDraw($participants));
 });
+
