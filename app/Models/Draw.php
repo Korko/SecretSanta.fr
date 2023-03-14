@@ -7,6 +7,7 @@ use App\Services\DrawHandler;
 use DateInterval;
 use DateTime;
 use exussum12\xxhash\V32 as xxHash;
+use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
@@ -51,7 +52,7 @@ use Metrics;
  * @method static \Illuminate\Database\Eloquent\Builder|Draw whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Draw extends Model
+class Draw extends Model implements UrlRoutable
 {
     use HasFactory, HasHash, MassPrunable;
 

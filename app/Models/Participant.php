@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\DrawEncryptedString;
 use App\Collections\ParticipantsCollection;
 use exussum12\xxhash\V32 as xxHash;
+use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
@@ -51,7 +52,7 @@ use Metrics;
  * @method static \Illuminate\Database\Eloquent\Builder|Participant whereTargetId($value)
  * @mixin \Eloquent
  */
-class Participant extends Model
+class Participant extends Model implements UrlRoutable
 {
     use HasFactory, Notifiable, HasHash {
         resolveRouteBinding as public baseResolver;
