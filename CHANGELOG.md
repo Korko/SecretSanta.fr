@@ -1,4 +1,4 @@
-# Christmas 2022
+# Christmas 2023
 ## 1.9
 * Add a limitation system on participants list length
 * Improve processing speed with new draw system
