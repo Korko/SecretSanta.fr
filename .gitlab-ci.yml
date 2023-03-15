@@ -1,4 +1,4 @@
-image: php:8.1-cli
+image: php:8.2-cli
 
 variables:
   APP_ENV: "local"
@@ -27,7 +27,7 @@ before_script:
   - curl -sL https://deb.nodesource.com/setup_current.x | bash -
   - apt-get install -y nodejs build-essential yarn libzip-dev zip git wget libbz2-dev
   - apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-  - docker-php-ext-install bcmath zip bz2
+  - docker-php-ext-install bcmath zip bz2 sqlite
   - curl --show-error --silent https://getcomposer.org/installer | php
   - php composer.phar install
 
