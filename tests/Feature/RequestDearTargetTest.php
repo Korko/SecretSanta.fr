@@ -7,7 +7,6 @@ use App\Notifications\DearTarget as DearTargetNotification;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
-/*
 it('lets each santa write to their target', function (Draw $draw) {
     Notification::fake();
 
@@ -60,4 +59,3 @@ test('it updates the draw update date when writing to a target', function (Draw 
     Notification::assertSentTo($participant->target, DearTargetNotification::class);
     assertNotEquals($updated_at->timestamp, $draw->fresh()->updated_at->timestamp);
 })->with('basic draw');
-*/

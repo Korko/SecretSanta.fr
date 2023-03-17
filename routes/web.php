@@ -63,9 +63,9 @@ Route::controller(DearSantaController::class)
                 Route::get('/fetch', 'fetch')->name('fetch');
                 Route::post('/sendSanta', 'handleSanta')->name('contactSanta');
                 Route::post('/sendTarget', 'handleTarget')->name('contactTarget');
-                Route::get('/{dearSanta}/resend', 'resendDearSanta')->name('resendDearSanta');
-                Route::get('/{dearTarget}/resend', 'resendDearTarget')->name('resendDearTarget');
-                Route::get('/resendTarget', 'resendTarget')->name('resendTarget');
+                Route::get('/resendSanta/{dearSanta}', 'resendDearSanta')->name('resendDearSanta');
+                Route::get('/resendTarget/{dearTarget}', 'resendDearTarget')->name('resendDearTarget');
+                Route::get('/target', 'resendTarget')->name('resendTarget');
             });
     });
 

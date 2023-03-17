@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\SendMessageToSanta;
+use App\Actions\SendMessageToTarget;
 use App\Actions\SendTargetToParticipant;
 use App\Enums\QuestionToSanta;
 use App\Http\Requests\DearSantaRequest;

@@ -66,6 +66,7 @@ class AppServiceProvider extends ServiceProvider
                     return $this
                         ->json([
                             'message' => $onFailure,
+                            'error' => config('app.debug') ? $e->getMessage() : null,
                         ], $errorCode);
                 }
 
