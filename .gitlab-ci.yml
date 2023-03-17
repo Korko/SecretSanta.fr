@@ -40,6 +40,7 @@ variables:
   MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
 
 tests:
+  stage: tests
   script:
     - php artisan test --coverage
   artifacts:
