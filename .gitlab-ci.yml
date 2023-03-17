@@ -1,17 +1,10 @@
 image: php:8.2-cli
 
-variables:
-  APP_ENV: "local"
-  APP_KEY: "base64:GiV6POMQ3sJ98JfJjUrLp82zEGrzO7afosXaYG7n+Vo="
-  APP_DEBUG: "true"
-  DB_DATABASE: "laravel"
-  DB_USERNAME: "root"
-  DB_PASSWORD: ""
-  GITHUB_SHA: $CI_COMMIT_SHA
-  GITHUB_REF: $CI_COMMIT_REF_NAME
-
 cache:
   key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+  paths:
+    - vendor/
+    - .env
 
 stages:
   - install
@@ -27,28 +20,28 @@ before_script:
   - curl -sL https://deb.nodesource.com/setup_current.x | bash -
   - apt-get install -y nodejs build-essential yarn libzip-dev zip git wget libbz2-dev
   - apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-  - docker-php-ext-install bcmath zip bz2 sqlite
+  - docker-php-ext-install bcmath zip bz2
   - curl --show-error --silent https://getcomposer.org/installer | php
-  - php composer.phar install
+  - php composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
 
-composer:
-  stage: build
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}-composer
-    paths:
-      - vendor/
-  script:
-    - php composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
-  artifacts:
-    expire_in: 1 month
-    paths:
-      - vendor/
-      - .env
+services:
+  - mysql:latest
 
-phpunit:
-  stage: tests
+variables:
+  APP_ENV: "local"
+  APP_KEY: "base64:GiV6POMQ3sJ98JfJjUrLp82zEGrzO7afosXaYG7n+Vo="
+  APP_DEBUG: "true"
+  DB_DATABASE: "laravel"
+  DB_USERNAME: "root"
+  DB_PASSWORD: ""
+  GITHUB_SHA: $CI_COMMIT_SHA
+  GITHUB_REF: $CI_COMMIT_REF_NAME
+  MYSQL_DATABASE: $MYSQL_DATABASE
+  MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+
+tests:
   script:
-    - php vendor/bin/pest --coverage-text --colors=never
+    - php artisan test --coverage
   artifacts:
     paths:
       - ./storage/logs # for debugging
