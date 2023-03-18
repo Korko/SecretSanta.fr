@@ -20,7 +20,7 @@ before_script:
   - curl -sL https://deb.nodesource.com/setup_current.x | bash -
   - apt-get install -y nodejs build-essential yarn libzip-dev zip git wget libbz2-dev
   - apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-  - docker-php-ext-install bcmath zip bz2 pdo_mysql
+  - docker-php-ext-install bcmath zip bz2 pdo pdo_mysql
   - pecl install xdebug && docker-php-ext-enable xdebug
   - curl --show-error --silent https://getcomposer.org/installer | php
   - php composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
@@ -44,7 +44,7 @@ variables:
 tests:
   stage: tests
   script:
-    - php artisan test --coverage --without-tty
+    - php artisan test --coverage
   artifacts:
     paths:
       - ./storage/logs # for debugging
