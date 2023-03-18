@@ -40,6 +40,7 @@
         "pestphp/pest-plugin-global-assertions": "^1.0",
         "pestphp/pest-plugin-laravel": "^1.4",
         "pestphp/pest-plugin-parallel": "^1.0",
+        "phpunit/php-code-coverage": "^9.2",
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^2.0"
     },

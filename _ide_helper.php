@@ -13260,7 +13260,7 @@
          * @return \Illuminate\Http\JsonResponse 
          * @static 
          */ 
-        public static function jsonTry($closure, $onSuccess, $onFailure, $exceptionClass = 'Exception', $errorCode = 422)
+        public static function jsonTry($closure, $onSuccess, $onFailure, $exceptionClass = 'Exception', $errorCode = 500)
         {
                         return \Illuminate\Routing\ResponseFactory::jsonTry($closure, $onSuccess, $onFailure, $exceptionClass, $errorCode);
         }
@@ -19847,7 +19847,7 @@
          * @return \Illuminate\Http\JsonResponse 
          * @static 
          */ 
-        public static function jsonTry($closure, $onSuccess, $onFailure, $exceptionClass = 'Exception', $errorCode = 422)
+        public static function jsonTry($closure, $onSuccess, $onFailure, $exceptionClass = 'Exception', $errorCode = 500)
         {
                         return \Illuminate\Routing\ResponseFactory::jsonTry($closure, $onSuccess, $onFailure, $exceptionClass, $errorCode);
         }
