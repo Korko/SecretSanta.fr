@@ -34,6 +34,46 @@ Route::pattern('dearTarget', '[0-9a-zA-Z]{'.config('hashids.connections.dearTarg
 
 Route::fallback([ErrorController::class, 'pageNotFound'])->name('404');
 
+// GET faq
+// GET legal
+
+// GET signup
+// POST signup
+// GET login #nojs
+// POST login
+
+// GET me (dashboard)
+
+// GET new (nouveau tirage au sort)
+// POST new (nouveau tirage au sort /!\ en cas de non ajax, peut retourner view pour page 2 et 3)
+
+// GET join (rejoindre un tirage au sort)
+// GET join/{token} (rejoindre un tirage au sort)
+// PUT join/{token} (rejoindre un tirage au sort /!\ en cas de non ajax, peut retourner view pour page 2 et 3)
+
+// GET draw/{draw} (page de tirage au sort)
+// HEAD draw/{draw} (récupération des données du tirage au sort)
+// PATCH draw/{draw} (édition du tirage au sort / fermeture / réouverture / lancer le tirage au sort)
+
+// GET draw/{draw}/edit (page d'édition du tirage au sort)
+
+// GET draw/{draw}/import (importer des participants) #nojs
+// POST draw/{draw}/import (importer des participants)
+
+// GET draw/{draw}/download (télécharger la liste des participants)
+
+// GET draw/{draw}/delete (supprimer le tirage au sort) #nojs
+// DELETE draw/{draw} (supprimer le tirage au sort)
+
+// GET draw/{draw}/{participant} (supprimer un participant) #nojs
+// DELETE draw/{draw}/{participant} (supprimer un participant)
+
+// GET draw/{draw}/inbox
+// POST draw/{draw}/inbox (envoi d'un message)
+
+// GET draw/{draw}/report
+// POST draw/{draw}/report (signaler un tirage au sort)
+
 Route::controller(SingleController::class)
     ->group(function () {
         Route::get('/faq', 'faq')->name('faq');

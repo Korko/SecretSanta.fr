@@ -1,325 +1,341 @@
 {
+  "resources/css/hero.css": {
+    "file": "assets/hero-e3b0c442.css",
+    "isEntry": true,
+    "src": "resources/css/hero.css"
+  },
+  "resources/css/layout.css": {
+    "file": "assets/layout-d2a9a7af.css",
+    "isEntry": true,
+    "src": "resources/css/layout.css"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-Black.otf": {
+    "file": "assets/Aileron-Black-d1ca93a2.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-Black.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-BlackItalic.otf": {
+    "file": "assets/Aileron-BlackItalic-969e2673.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-BlackItalic.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-Bold.otf": {
+    "file": "assets/Aileron-Bold-750ed54a.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-Bold.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-BoldItalic.otf": {
+    "file": "assets/Aileron-BoldItalic-620f43b1.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-BoldItalic.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-Heavy.otf": {
+    "file": "assets/Aileron-Heavy-a6ae98e4.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-Heavy.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-HeavyItalic.otf": {
+    "file": "assets/Aileron-HeavyItalic-9729b885.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-HeavyItalic.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-Italic.otf": {
+    "file": "assets/Aileron-Italic-b017e7cf.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-Italic.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-Light.otf": {
+    "file": "assets/Aileron-Light-93134346.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-Light.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-LightItalic.otf": {
+    "file": "assets/Aileron-LightItalic-3440ec4b.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-LightItalic.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-Regular.otf": {
+    "file": "assets/Aileron-Regular-2762f4fc.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-Regular.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-SemiBold.otf": {
+    "file": "assets/Aileron-SemiBold-6abbac55.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-SemiBold.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-SemiBoldItalic.otf": {
+    "file": "assets/Aileron-SemiBoldItalic-ddbd4107.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-SemiBoldItalic.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-Thin.otf": {
+    "file": "assets/Aileron-Thin-20d6b7a2.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-Thin.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-ThinItalic.otf": {
+    "file": "assets/Aileron-ThinItalic-646049ab.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-ThinItalic.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-UltraLight.otf": {
+    "file": "assets/Aileron-UltraLight-6ec58752.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-UltraLight.otf"
+  },
+  "resources/fonts/aileron-cufonfonts/Aileron-UltraLightItalic.otf": {
+    "file": "assets/Aileron-UltraLightItalic-f8beef63.otf",
+    "src": "resources/fonts/aileron-cufonfonts/Aileron-UltraLightItalic.otf"
+  },
+  "resources/fonts/happy_kids/HappyKids.ttf": {
+    "file": "assets/HappyKids-1ddf7a3f.ttf",
+    "src": "resources/fonts/happy_kids/HappyKids.ttf"
+  },
+  "resources/fonts/happy_kids/HappyKidsItalic.ttf": {
+    "file": "assets/HappyKidsItalic-b61c09b4.ttf",
+    "src": "resources/fonts/happy_kids/HappyKidsItalic.ttf"
+  },
+  "resources/images/18_christmas.jpg": {
+    "file": "assets/18_christmas-c4fc0ecb.jpg",
+    "src": "resources/images/18_christmas.jpg"
+  },
+  "resources/images/404-1.avif": {
+    "file": "assets/404-1-e2f125e3.avif",
+    "src": "resources/images/404-1.avif"
+  },
+  "resources/images/404-1.jpg": {
+    "file": "assets/404-1-52cc870d.jpg",
+    "src": "resources/images/404-1.jpg"
+  },
+  "resources/images/404-1.webp": {
+    "file": "assets/404-1-74f4fb3a.webp",
+    "src": "resources/images/404-1.webp"
+  },
+  "resources/images/BMC Logo - Black.png": {
+    "file": "assets/BMC Logo - Black-23959f2f.png",
+    "src": "resources/images/BMC Logo - Black.png"
+  },
+  "resources/images/BMC Logo - Black.webp": {
+    "file": "assets/BMC Logo - Black-24e240e8.webp",
+    "src": "resources/images/BMC Logo - Black.webp"
+  },
+  "resources/images/SECRET SANTA ALT FD BLEU.png": {
+    "file": "assets/SECRET SANTA ALT FD BLEU-cea29711.png",
+    "src": "resources/images/SECRET SANTA ALT FD BLEU.png"
+  },
+  "resources/images/calendar-icon.avif": {
+    "file": "assets/calendar-icon-07fbb5cc.avif",
+    "src": "resources/images/calendar-icon.avif"
+  },
+  "resources/images/calendar-icon.png": {
+    "file": "assets/calendar-icon-165ac5b6.png",
+    "src": "resources/images/calendar-icon.png"
+  },
+  "resources/images/calendar-icon.webp": {
+    "file": "assets/calendar-icon-0f10b9ea.webp",
+    "src": "resources/images/calendar-icon.webp"
+  },
+  "resources/images/clock-icon.avif": {
+    "file": "assets/clock-icon-29215005.avif",
+    "src": "resources/images/clock-icon.avif"
+  },
+  "resources/images/clock-icon.png": {
+    "file": "assets/clock-icon-5ce94773.png",
+    "src": "resources/images/clock-icon.png"
+  },
+  "resources/images/clock-icon.webp": {
+    "file": "assets/clock-icon-8b77ec2f.webp",
+    "src": "resources/images/clock-icon.webp"
+  },
+  "resources/images/email_bg1.png": {
+    "file": "assets/email_bg1-b5b51cb3.png",
+    "src": "resources/images/email_bg1.png"
+  },
+  "resources/images/gifts-1-2.avif": {
+    "file": "assets/gifts-1-2-9a9f26c2.avif",
+    "src": "resources/images/gifts-1-2.avif"
+  },
+  "resources/images/gifts-1-2.jpg": {
+    "file": "assets/gifts-1-2-80b026a6.jpg",
+    "src": "resources/images/gifts-1-2.jpg"
+  },
+  "resources/images/gifts-1-2.webp": {
+    "file": "assets/gifts-1-2-06d71532.webp",
+    "src": "resources/images/gifts-1-2.webp"
+  },
+  "resources/images/gifts-1.avif": {
+    "file": "assets/gifts-1-77fdb94c.avif",
+    "src": "resources/images/gifts-1.avif"
+  },
+  "resources/images/gifts-1.jpg": {
+    "file": "assets/gifts-1-0490eb93.jpg",
+    "src": "resources/images/gifts-1.jpg"
+  },
+  "resources/images/gifts-1.webp": {
+    "file": "assets/gifts-1-381e0b8d.webp",
+    "src": "resources/images/gifts-1.webp"
+  },
+  "resources/images/gifts-1x2.jpg": {
+    "file": "assets/gifts-1x2-64a2dd45.jpg",
+    "src": "resources/images/gifts-1x2.jpg"
+  },
+  "resources/images/gifts-1x3.jpg": {
+    "file": "assets/gifts-1x3-7425eeea.jpg",
+    "src": "resources/images/gifts-1x3.jpg"
+  },
+  "resources/images/gifts-1x4.jpg": {
+    "file": "assets/gifts-1x4-14dfe742.jpg",
+    "src": "resources/images/gifts-1x4.jpg"
+  },
+  "resources/images/gifts-2.avif": {
+    "file": "assets/gifts-2-b7f35d23.avif",
+    "src": "resources/images/gifts-2.avif"
+  },
+  "resources/images/gifts-2.jpg": {
+    "file": "assets/gifts-2-a070b17f.jpg",
+    "src": "resources/images/gifts-2.jpg"
+  },
+  "resources/images/gifts-2.webp": {
+    "file": "assets/gifts-2-cbf1693b.webp",
+    "src": "resources/images/gifts-2.webp"
+  },
+  "resources/images/gifts-3.avif": {
+    "file": "assets/gifts-3-6f4db41e.avif",
+    "src": "resources/images/gifts-3.avif"
+  },
+  "resources/images/gifts-3.jpg": {
+    "file": "assets/gifts-3-5998772d.jpg",
+    "src": "resources/images/gifts-3.jpg"
+  },
+  "resources/images/gifts-3.webp": {
+    "file": "assets/gifts-3-96e5b51e.webp",
+    "src": "resources/images/gifts-3.webp"
+  },
+  "resources/images/hero-full.svg": {
+    "file": "assets/hero-full-a3a3b619.svg",
+    "src": "resources/images/hero-full.svg"
+  },
+  "resources/images/hero.svg": {
+    "file": "assets/hero-1120bfba.svg",
+    "src": "resources/images/hero.svg"
+  },
+  "resources/images/languages.avif": {
+    "file": "assets/languages-0dfb5bb4.avif",
+    "src": "resources/images/languages.avif"
+  },
+  "resources/images/languages.png": {
+    "file": "assets/languages-feea2193.png",
+    "src": "resources/images/languages.png"
+  },
+  "resources/images/languages.webp": {
+    "file": "assets/languages-575e45eb.webp",
+    "src": "resources/images/languages.webp"
+  },
+  "resources/images/logo.svg": {
+    "file": "assets/logo-b7660bd4.svg",
+    "src": "resources/images/logo.svg"
+  },
+  "resources/images/lynda-hinton-QyDLHeUerd4-unsplash.avif": {
+    "file": "assets/lynda-hinton-QyDLHeUerd4-unsplash-9b9c28b0.avif",
+    "src": "resources/images/lynda-hinton-QyDLHeUerd4-unsplash.avif"
+  },
+  "resources/images/lynda-hinton-QyDLHeUerd4-unsplash.jpg": {
+    "file": "assets/lynda-hinton-QyDLHeUerd4-unsplash-5f3e2c02.jpg",
+    "src": "resources/images/lynda-hinton-QyDLHeUerd4-unsplash.jpg"
+  },
+  "resources/images/lynda-hinton-QyDLHeUerd4-unsplash.webp": {
+    "file": "assets/lynda-hinton-QyDLHeUerd4-unsplash-4ee30b51.webp",
+    "src": "resources/images/lynda-hinton-QyDLHeUerd4-unsplash.webp"
+  },
+  "resources/images/mail-bottom-bg.avif": {
+    "file": "assets/mail-bottom-bg-501a3957.avif",
+    "src": "resources/images/mail-bottom-bg.avif"
+  },
+  "resources/images/mail-bottom-bg.png": {
+    "file": "assets/mail-bottom-bg-ec1da113.png",
+    "src": "resources/images/mail-bottom-bg.png"
+  },
+  "resources/images/mail-bottom-bg.webp": {
+    "file": "assets/mail-bottom-bg-7156a566.webp",
+    "src": "resources/images/mail-bottom-bg.webp"
+  },
+  "resources/images/mail-icon.avif": {
+    "file": "assets/mail-icon-b0b32e6b.avif",
+    "src": "resources/images/mail-icon.avif"
+  },
+  "resources/images/mail-icon.png": {
+    "file": "assets/mail-icon-c79239d4.png",
+    "src": "resources/images/mail-icon.png"
+  },
+  "resources/images/mail-icon.webp": {
+    "file": "assets/mail-icon-f2759567.webp",
+    "src": "resources/images/mail-icon.webp"
+  },
+  "resources/images/mike-arney-9r-_2gzP37k-unsplash.avif": {
+    "file": "assets/mike-arney-9r-_2gzP37k-unsplash-080a6716.avif",
+    "src": "resources/images/mike-arney-9r-_2gzP37k-unsplash.avif"
+  },
+  "resources/images/mike-arney-9r-_2gzP37k-unsplash.jpg": {
+    "file": "assets/mike-arney-9r-_2gzP37k-unsplash-6dd52eac.jpg",
+    "src": "resources/images/mike-arney-9r-_2gzP37k-unsplash.jpg"
+  },
+  "resources/images/mike-arney-9r-_2gzP37k-unsplash.webp": {
+    "file": "assets/mike-arney-9r-_2gzP37k-unsplash-eca00fd8.webp",
+    "src": "resources/images/mike-arney-9r-_2gzP37k-unsplash.webp"
+  },
+  "resources/images/opengraph_banner_16_9.png": {
+    "file": "assets/opengraph_banner_16_9-aac6cd29.png",
+    "src": "resources/images/opengraph_banner_16_9.png"
+  },
+  "resources/images/opengraph_banner_19.1_1.png": {
+    "file": "assets/opengraph_banner_19.1_1-6c8f3986.png",
+    "src": "resources/images/opengraph_banner_19.1_1.png"
+  },
+  "resources/images/paper-icon.avif": {
+    "file": "assets/paper-icon-b16dff6d.avif",
+    "src": "resources/images/paper-icon.avif"
+  },
+  "resources/images/paper-icon.png": {
+    "file": "assets/paper-icon-c44431ef.png",
+    "src": "resources/images/paper-icon.png"
+  },
+  "resources/images/paper-icon.webp": {
+    "file": "assets/paper-icon-043f6882.webp",
+    "src": "resources/images/paper-icon.webp"
+  },
+  "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.avif": {
+    "file": "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-3341c429.avif",
+    "src": "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.avif"
+  },
+  "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg": {
+    "file": "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-fec52c3e.jpg",
+    "src": "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg"
+  },
+  "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp": {
+    "file": "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-135a646a.webp",
+    "src": "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp"
+  },
+  "resources/images/santaclaus.png": {
+    "file": "assets/santaclaus-f2b1d154.png",
+    "src": "resources/images/santaclaus.png"
+  },
+  "resources/images/santaclaus.svg": {
+    "file": "assets/santaclaus-c14867fa.svg",
+    "src": "resources/images/santaclaus.svg"
+  },
+  "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.avif": {
+    "file": "assets/srikanta-h-u-TrGVhbsUf40-unsplash-be9b6bde.avif",
+    "src": "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.avif"
+  },
+  "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg": {
+    "file": "assets/srikanta-h-u-TrGVhbsUf40-unsplash-6816af8d.jpg",
+    "src": "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg"
+  },
+  "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.webp": {
+    "file": "assets/srikanta-h-u-TrGVhbsUf40-unsplash-4471f4b6.webp",
+    "src": "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.webp"
+  },
+  "resources/images/user-icon.avif": {
+    "file": "assets/user-icon-32e9dff8.avif",
+    "src": "resources/images/user-icon.avif"
+  },
+  "resources/images/user-icon.png": {
+    "file": "assets/user-icon-2df3e5bd.png",
+    "src": "resources/images/user-icon.png"
+  },
+  "resources/images/user-icon.webp": {
+    "file": "assets/user-icon-85fe1274.webp",
+    "src": "resources/images/user-icon.webp"
+  },
   "resources/js/app.js": {
-    "file": "assets/app.cffad64e.js",
-    "src": "resources/js/app.js",
+    "file": "assets/app-8973bc09.js",
     "isEntry": true,
-    "dynamicImports": [
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/Pages/Dashboard.vue",
-      "resources/js/Pages/DearSanta.vue",
-      "resources/js/Pages/DrawNotFound.vue",
-      "resources/js/Pages/FetcherLayout.vue",
-      "resources/js/Pages/FrequentlyAskedQuestions.vue",
-      "resources/js/Pages/Layout.vue",
-      "resources/js/Pages/Legal.vue",
-      "resources/js/Pages/OrganizerPanel.vue",
-      "resources/js/Pages/PageNotFound.vue",
-      "resources/js/Pages/RandomForm.vue",
-      "resources/js/Pages/Report.vue"
-    ],
-    "integrity": "sha384-Wifxwhrm6dD9EBjM8U/pCENgY5zRFlQniiOGPdmbjP0+2JuPvqzHbLuZhgqpmibx"
-  },
-  "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.149df3f0.js",
-    "src": "resources/js/Pages/Dashboard.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_NavPageLink.08891621.js",
-      "_NavLink.02b3b93e.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/app.js"
-    ],
-    "integrity": "sha384-t1VEwCug8jJa7Wo5bWwSXTOqlnANhTyQ4PB+0sSqs0cKedhoDwVjohJkqI0knWyt"
-  },
-  "_NavPageLink.08891621.js": {
-    "file": "assets/NavPageLink.08891621.js",
-    "imports": [
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "css": [
-      "assets/NavPageLink.ec82ac00.css"
-    ],
-    "integrity": "sha384-zVK58yNjWCruJ5Y5uu288ejOGOmB39/Ksul4vQC3bAqgQTTrZ9caCZsvCbgKcJc0"
-  },
-  "_NavLink.02b3b93e.js": {
-    "file": "assets/NavLink.02b3b93e.js",
-    "imports": [
-      "_NavPageLink.08891621.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/app.js"
-    ],
-    "css": [
-      "assets/NavLink.32070446.css"
-    ],
-    "integrity": "sha384-EkYzf0zgC/A9myLbM+FX2/2YCmuaHYx6s/lNhIA0tTUI29Ro5xUZ1/Yi1bLpPy2u"
-  },
-  "_plugin-vue_export-helper.f2aa9cb4.js": {
-    "file": "assets/plugin-vue_export-helper.f2aa9cb4.js",
-    "assets": [
-      "assets/logo.f71398f5.avif"
-    ],
-    "integrity": "sha384-yai1L2cbrFMcu0wXX6bGTNoFMdR2JDrfxd42Aaa5U9A1iPYHKJc08hCKzmRZ/p8t"
-  },
-  "resources/js/Pages/DearSanta.vue": {
-    "file": "assets/DearSanta.73e29745.js",
-    "src": "resources/js/Pages/DearSanta.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_Fetcher.49b4f8f3.js",
-      "_NavPageLink.08891621.js",
-      "_fetch.5d571f9b.js",
-      "_Tooltip.9bcba4ce.js",
-      "_EmailStatus.590ea878.js",
-      "_AjaxForm.00d8ea09.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "_Fetcher.b9beb86d.js"
-    ],
-    "css": [
-      "assets/DearSanta.ca4395c0.css"
-    ],
-    "integrity": "sha384-j0W3J6gnrXHMQCFdwUtBrR2qvKVSuHq77OQCMZdyiLSrD6unnXdKhtRlvFLuP1Lh"
-  },
-  "_Fetcher.49b4f8f3.js": {
-    "file": "assets/Fetcher.49b4f8f3.js",
-    "imports": [
-      "_NavPageLink.08891621.js",
-      "_Fetcher.b9beb86d.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/app.js"
-    ],
-    "integrity": "sha384-7lcMtt3puvpM2fhSjWr9ua3pXS/FODdRCyIKX5RRjtOEsc3Auf/fxfYqn3KbmIpO"
-  },
-  "_fetch.5d571f9b.js": {
-    "file": "assets/fetch.5d571f9b.js",
-    "imports": [
-      "resources/js/app.js"
-    ],
-    "integrity": "sha384-0RLBLyJVsSeqLhN8flFh9j5XWT9GyB7OxoZyTReZ4rBqse+HaXZrwT92utXr4QKF"
-  },
-  "_Fetcher.b9beb86d.js": {
-    "file": "assets/Fetcher.b9beb86d.js",
-    "imports": [
-      "_fetch.5d571f9b.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/app.js"
-    ],
-    "integrity": "sha384-qCA9pZIO83Z8PN1NeJSLQ5Umc0UGDzzEzkYvv3jvaH1NnC1V00LjCxA68rBAgRJ/"
-  },
-  "_Tooltip.9bcba4ce.js": {
-    "file": "assets/Tooltip.9bcba4ce.js",
-    "imports": [
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "css": [
-      "assets/Tooltip.3eb165a8.css"
-    ],
-    "integrity": "sha384-3s8I3/U9XoCZtnyzCV5xO8u45UDbWO2vgY10Vs8yg0ziaWjqyznu/R7tmWxvu9l/"
-  },
-  "_EmailStatus.590ea878.js": {
-    "file": "assets/EmailStatus.590ea878.js",
-    "imports": [
-      "_Tooltip.9bcba4ce.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/app.js"
-    ],
-    "css": [
-      "assets/EmailStatus.71e715ed.css"
-    ],
-    "integrity": "sha384-crSzXiBxxQ/fhMusyxHnkRkyDl6myeX9SEZfBdLAjy36x0cmpDLMi4rUBcWe7VCW"
-  },
-  "_AjaxForm.00d8ea09.js": {
-    "file": "assets/AjaxForm.00d8ea09.js",
-    "imports": [
-      "_fetch.5d571f9b.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "integrity": "sha384-ZA7fifLOaSCI+5M4NzV51aCItFh2M93mAYtvDHUBgj9908jgN8x7ojAsiTNWbdOM"
-  },
-  "resources/js/Pages/DrawNotFound.vue": {
-    "file": "assets/DrawNotFound.71d4c556.js",
-    "src": "resources/js/Pages/DrawNotFound.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/Pages/PageNotFound.vue",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/app.js",
-      "_NavPageLink.08891621.js"
-    ],
-    "integrity": "sha384-eiAVeJUfArsQTZX57w2smCCbTURO26I6aNRodzjVxFRn2ryl5+Swoi8dtfybftvz"
-  },
-  "resources/js/Pages/PageNotFound.vue": {
-    "file": "assets/PageNotFound.0acb01bc.js",
-    "src": "resources/js/Pages/PageNotFound.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_NavPageLink.08891621.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/app.js"
-    ],
-    "integrity": "sha384-IYXn1oRuFMOzGDyJc86c1jUTLjNUwz65oI5FyiObKc4mLuqLgtLKjxgbKtSszuYz"
-  },
-  "resources/js/Pages/FetcherLayout.vue": {
-    "file": "assets/FetcherLayout.d134de61.js",
-    "src": "resources/js/Pages/FetcherLayout.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/Pages/Layout.vue",
-      "_Fetcher.b9beb86d.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/app.js",
-      "_fetch.5d571f9b.js"
-    ],
-    "integrity": "sha384-nywYjFJ+7wL+2bDJwRVXU0djAg6Scwel/Dd7lKZ5BF+93FV1zqo+mKss92rsN0zm"
-  },
-  "resources/js/Pages/Layout.vue": {
-    "file": "assets/Layout.576359a3.js",
-    "src": "resources/js/Pages/Layout.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "css": [
-      "assets/Layout.662f91f3.css"
-    ],
-    "integrity": "sha384-ptK67/yiVFGWMMCeDVfDpIvcagRvLL+PhRFlze/pCPlqF54/82oiSsrIAad80nOy"
-  },
-  "resources/js/Pages/FrequentlyAskedQuestions.vue": {
-    "file": "assets/FrequentlyAskedQuestions.9ceb169c.js",
-    "src": "resources/js/Pages/FrequentlyAskedQuestions.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_NavPageLink.08891621.js",
-      "_NavLink.02b3b93e.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "css": [
-      "assets/FrequentlyAskedQuestions.8bde3b28.css"
-    ],
-    "integrity": "sha384-mrGuPGNptuMZtaM2oXA+fhvKM1/U2DZmGlRgk0ng8swZcO+qW6IFEpSJwqIdPuKQ"
-  },
-  "resources/js/Pages/Legal.vue": {
-    "file": "assets/Legal.48b95097.js",
-    "src": "resources/js/Pages/Legal.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_NavPageLink.08891621.js",
-      "_NavLink.02b3b93e.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/app.js"
-    ],
-    "integrity": "sha384-ERa5ITlFMbvmslzGzcdPLJMUu38muMyUmjxFzCF0Q/FJ6cxwVztcMfW8pM5Lscdy"
-  },
-  "resources/js/Pages/OrganizerPanel.vue": {
-    "file": "assets/OrganizerPanel.cbbe8729.js",
-    "src": "resources/js/Pages/OrganizerPanel.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_Fetcher.49b4f8f3.js",
-      "_NavPageLink.08891621.js",
-      "_fetch.5d571f9b.js",
-      "_Tooltip.9bcba4ce.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "_EmailStatus.590ea878.js",
-      "_Fetcher.b9beb86d.js"
-    ],
-    "css": [
-      "assets/OrganizerPanel.eed197b8.css"
-    ],
-    "assets": [
-      "assets/srikanta-h-u-TrGVhbsUf40-unsplash.be9b6bde.avif",
-      "assets/srikanta-h-u-TrGVhbsUf40-unsplash.4471f4b6.webp",
-      "assets/srikanta-h-u-TrGVhbsUf40-unsplash.6816af8d.jpg",
-      "assets/lynda-hinton-QyDLHeUerd4-unsplash.9b9c28b0.avif",
-      "assets/lynda-hinton-QyDLHeUerd4-unsplash.4ee30b51.webp",
-      "assets/lynda-hinton-QyDLHeUerd4-unsplash.5f3e2c02.jpg",
-      "assets/rune-haugseng-UCzjZPCGV1Y-unsplash.3341c429.avif",
-      "assets/rune-haugseng-UCzjZPCGV1Y-unsplash.135a646a.webp",
-      "assets/rune-haugseng-UCzjZPCGV1Y-unsplash.fec52c3e.jpg",
-      "assets/mike-arney-9r-_2gzP37k-unsplash.080a6716.avif",
-      "assets/mike-arney-9r-_2gzP37k-unsplash.eca00fd8.webp",
-      "assets/mike-arney-9r-_2gzP37k-unsplash.6dd52eac.jpg"
-    ],
-    "integrity": "sha384-u7Z9JhFWKq4cPAACdfaGFTwm1K/+LexxMm9dPPZYZQgRCALrWIWABFWtUGwY4F06"
-  },
-  "resources/js/Pages/RandomForm.vue": {
-    "file": "assets/RandomForm.9c0f7689.js",
-    "src": "resources/js/Pages/RandomForm.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_NavPageLink.08891621.js",
-      "_NavLink.02b3b93e.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/app.js",
-      "_Tooltip.9bcba4ce.js",
-      "_AjaxForm.00d8ea09.js",
-      "_fetch.5d571f9b.js"
-    ],
-    "css": [
-      "assets/RandomForm.e2232efc.css"
-    ],
-    "assets": [
-      "assets/cookie-latin-400-normal.4e8b3c17.woff2",
-      "assets/cookie-all-400-normal.3f439754.woff",
-      "assets/BMC Logo - Black.23959f2f.png",
-      "assets/gifts-1.0490eb93.jpg",
-      "assets/gifts-1.77fdb94c.avif",
-      "assets/gifts-1.381e0b8d.webp",
-      "assets/gifts-1x2.64a2dd45.jpg",
-      "assets/gifts-1x3.7425eeea.jpg",
-      "assets/gifts-1x4.14dfe742.jpg",
-      "assets/gifts-2.a070b17f.jpg",
-      "assets/gifts-2.b7f35d23.avif",
-      "assets/gifts-2.cbf1693b.webp",
-      "assets/gifts-3.5998772d.jpg",
-      "assets/gifts-3.6f4db41e.avif",
-      "assets/gifts-3.96e5b51e.webp",
-      "assets/calendar-icon.165ac5b6.png",
-      "assets/calendar-icon.07fbb5cc.avif",
-      "assets/calendar-icon.0f10b9ea.webp",
-      "assets/user-icon.2df3e5bd.png",
-      "assets/user-icon.32e9dff8.avif",
-      "assets/user-icon.85fe1274.webp",
-      "assets/paper-icon.c44431ef.png",
-      "assets/mail-icon.c79239d4.png",
-      "assets/mail-icon.b0b32e6b.avif",
-      "assets/clock-icon.5ce94773.png",
-      "assets/clock-icon.29215005.avif",
-      "assets/clock-icon.8b77ec2f.webp"
-    ],
-    "integrity": "sha384-ez6jq707XcqJv2HaNmRFaNnzfMVmpfVhXUcateBAoQ9erI9ccu7ijt0XCVgt/zV3"
-  },
-  "resources/js/Pages/Report.vue": {
-    "file": "assets/Report.4559bfe8.js",
-    "src": "resources/js/Pages/Report.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_Fetcher.49b4f8f3.js",
-      "_NavPageLink.08891621.js",
-      "_AjaxForm.00d8ea09.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "_fetch.5d571f9b.js",
-      "_Fetcher.b9beb86d.js"
-    ],
-    "integrity": "sha384-FDSzuat70rooSigXG/D4LktIfZNy4sFup/6zZPDDUDFWvbzAmvuRo9J4Clv6p/nq"
-  },
-  "resources/sass/webfonts.scss": {
-    "file": "assets/webfonts.9dc88678.css",
-    "src": "resources/sass/webfonts.scss",
-    "isEntry": true,
-    "integrity": "sha384-RB1P7AIMQRgBN2zo+5J+oLVmzcwY+hX0aXDmbePrYYDDM04aiOCz4H9STSuCtiLV"
-  },
-  "resources/sass/app.scss": {
-    "file": "assets/app.71e5ee76.css",
-    "src": "resources/sass/app.scss",
-    "isEntry": true,
-    "integrity": "sha384-DC90dxNARIyjuU/KBsALJpsd/2vF57ew3W1QwLQjb9KSQO1f4PRLxXgFymjEeOzX"
+    "src": "resources/js/app.js"
   }
 }

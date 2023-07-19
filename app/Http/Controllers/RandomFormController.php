@@ -7,19 +7,15 @@ use App\Http\Requests\RandomFormRequest;
 use App\Jobs\ProcessPendingDraw;
 use App\Models\PendingDraw;
 use Arr;
-use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class RandomFormController extends Controller
 {
-    public function index(): Response
+    public function index()
     {
-        return response()->inertia('RandomForm', [
-            'bmc' => config('app.bmc'),
-        ]);
+        return view('index');
     }
 
-    public function handle(RandomFormRequest $request): JsonResponse
+    public function handle(RandomFormRequest $request)
     {
         $safe = $request->safe();
 
