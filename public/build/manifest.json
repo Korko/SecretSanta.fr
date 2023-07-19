@@ -5,7 +5,7 @@
     "src": "resources/css/hero.css"
   },
   "resources/css/layout.css": {
-    "file": "assets/layout-d2a9a7af.css",
+    "file": "assets/layout-55cc98d8.css",
     "isEntry": true,
     "src": "resources/css/layout.css"
   },
@@ -197,12 +197,28 @@
     "file": "assets/gifts-3-96e5b51e.webp",
     "src": "resources/images/gifts-3.webp"
   },
+  "resources/images/hero-full-flip.svg": {
+    "file": "assets/hero-full-flip-24e0a50c.svg",
+    "src": "resources/images/hero-full-flip.svg"
+  },
   "resources/images/hero-full.svg": {
-    "file": "assets/hero-full-a3a3b619.svg",
+    "file": "assets/hero-full-7bd8f99d.svg",
     "src": "resources/images/hero-full.svg"
   },
+  "resources/images/hero-right.png": {
+    "file": "assets/hero-right-1b610349.png",
+    "src": "resources/images/hero-right.png"
+  },
+  "resources/images/hero-sleight.png": {
+    "file": "assets/hero-sleight-4074a447.png",
+    "src": "resources/images/hero-sleight.png"
+  },
+  "resources/images/hero.png": {
+    "file": "assets/hero-d2b97b76.png",
+    "src": "resources/images/hero.png"
+  },
   "resources/images/hero.svg": {
-    "file": "assets/hero-1120bfba.svg",
+    "file": "assets/hero-973e88c4.svg",
     "src": "resources/images/hero.svg"
   },
   "resources/images/languages.avif": {

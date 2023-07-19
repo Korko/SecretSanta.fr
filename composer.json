@@ -18,7 +18,6 @@
         "korko/validator": "dev-master",
         "laravel/dusk": "^7.4",
         "laravel/framework": "^10.10",
-        "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "lexo/defer-vite": "^1.0",
         "predis/predis": "^2.0",
