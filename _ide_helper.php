@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.3.0.
+ * Generated for Laravel 10.19.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1302,7 +1302,7 @@
          * Call the given Closure / class@method and inject its dependencies.
          *
          * @param callable|string $callback
-         * @param \Illuminate\Container\array<string,  mixed>  $parameters
+         * @param array<string, mixed> $parameters
          * @param string|null $defaultMethod
          * @return mixed 
          * @throws \InvalidArgumentException
@@ -1601,6 +1601,18 @@
      */ 
         class Artisan {
                     /**
+         * Re-route the Symfony command events to their Laravel counterparts.
+         *
+         * @internal 
+         * @return \App\Console\Kernel 
+         * @static 
+         */ 
+        public static function rerouteSymfonyCommandEvents()
+        {            //Method inherited from \Illuminate\Foundation\Console\Kernel         
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->rerouteSymfonyCommandEvents();
+        }
+                    /**
          * Run the console application.
          *
          * @param \Symfony\Component\Console\Input\InputInterface $input
@@ -1750,7 +1762,7 @@
                     /**
          * Set the Artisan application instance.
          *
-         * @param \Illuminate\Console\Application $artisan
+         * @param \Illuminate\Console\Application|null $artisan
          * @return void 
          * @static 
          */ 
@@ -2281,13 +2293,13 @@
          * Set the current user.
          *
          * @param \Illuminate\Contracts\Auth\Authenticatable $user
-         * @return void 
+         * @return \Illuminate\Auth\SessionGuard 
          * @static 
          */ 
         public static function setUser($user)
         {
                         /** @var \Illuminate\Auth\SessionGuard $instance */
-                        $instance->setUser($user);
+                        return $instance->setUser($user);
         }
                     /**
          * Get the current request instance.
@@ -2761,6 +2773,18 @@
         {
                         /** @var \Illuminate\View\Compilers\BladeCompiler $instance */
                         return $instance->getCustomDirectives();
+        }
+                    /**
+         * Indicate that the following callable should be used to prepare strings for compilation.
+         *
+         * @param callable $callback
+         * @return \Illuminate\View\Compilers\BladeCompiler 
+         * @static 
+         */ 
+        public static function prepareStringsForCompilationUsing($callback)
+        {
+                        /** @var \Illuminate\View\Compilers\BladeCompiler $instance */
+                        return $instance->prepareStringsForCompilationUsing($callback);
         }
                     /**
          * Register a new precompiler.
@@ -3321,13 +3345,13 @@
          * Specify the jobs that should be dispatched instead of faked.
          *
          * @param array|string $jobsToDispatch
-         * @return void 
+         * @return \Illuminate\Support\Testing\Fakes\BusFake 
          * @static 
          */ 
         public static function except($jobsToDispatch)
         {
                         /** @var \Illuminate\Support\Testing\Fakes\BusFake $instance */
-                        $instance->except($jobsToDispatch);
+                        return $instance->except($jobsToDispatch);
         }
                     /**
          * Assert if a job was dispatched based on a truth-test callback.
@@ -3756,6 +3780,18 @@
         {
                         /** @var \Illuminate\Cache\CacheManager $instance */
                         return $instance->extend($driver, $callback);
+        }
+                    /**
+         * Set the application instance used by the manager.
+         *
+         * @param \Illuminate\Contracts\Foundation\Application $app
+         * @return \Illuminate\Cache\CacheManager 
+         * @static 
+         */ 
+        public static function setApplication($app)
+        {
+                        /** @var \Illuminate\Cache\CacheManager $instance */
+                        return $instance->setApplication($app);
         }
                     /**
          * Determine if an item exists in the cache.
@@ -5260,7 +5296,7 @@
                     /**
          * Begin a fluent query against a database table.
          *
-         * @param \Closure|\Illuminate\Database\Query\Builder|string $table
+         * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Contracts\Database\Query\Expression|string $table
          * @param string|null $as
          * @return \Illuminate\Database\Query\Builder 
          * @static 
@@ -5336,6 +5372,20 @@
         {            //Method inherited from \Illuminate\Database\Connection         
                         /** @var \Illuminate\Database\MySqlConnection $instance */
                         return $instance->select($query, $bindings, $useReadPdo);
+        }
+                    /**
+         * Run a select statement against the database and returns all of the result sets.
+         *
+         * @param string $query
+         * @param array $bindings
+         * @param bool $useReadPdo
+         * @return array 
+         * @static 
+         */ 
+        public static function selectResultSets($query, $bindings = [], $useReadPdo = true)
+        {            //Method inherited from \Illuminate\Database\Connection         
+                        /** @var \Illuminate\Database\MySqlConnection $instance */
+                        return $instance->selectResultSets($query, $bindings, $useReadPdo);
         }
                     /**
          * Run a select statement against the database and returns a generator.
@@ -5571,6 +5621,19 @@
         {            //Method inherited from \Illuminate\Database\Connection         
                         /** @var \Illuminate\Database\MySqlConnection $instance */
                         return $instance->raw($value);
+        }
+                    /**
+         * Escape a value for safe SQL embedding.
+         *
+         * @param string|float|int|bool|null $value
+         * @param bool $binary
+         * @return string 
+         * @static 
+         */ 
+        public static function escape($value, $binary = false)
+        {            //Method inherited from \Illuminate\Database\Connection         
+                        /** @var \Illuminate\Database\MySqlConnection $instance */
+                        return $instance->escape($value, $binary);
         }
                     /**
          * Determine if the database connection has modified any database records.
@@ -5949,6 +6012,17 @@
                         return $instance->getQueryLog();
         }
                     /**
+         * Get the connection query log with embedded bindings.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getRawQueryLog()
+        {            //Method inherited from \Illuminate\Database\Connection         
+                        /** @var \Illuminate\Database\MySqlConnection $instance */
+                        return $instance->getRawQueryLog();
+        }
+                    /**
          * Clear the query log.
          *
          * @return void 
@@ -6248,7 +6322,7 @@
          *
          * @param string|object $event
          * @param mixed $payload
-         * @return array|null 
+         * @return mixed 
          * @static 
          */ 
         public static function until($event, $payload = [])
@@ -6545,6 +6619,21 @@
         {
                         /** @var \Illuminate\Filesystem\Filesystem $instance */
                         return $instance->get($path, $lock);
+        }
+                    /**
+         * Get the contents of a file as decoded JSON.
+         *
+         * @param string $path
+         * @param int $flags
+         * @param bool $lock
+         * @return array 
+         * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+         * @static 
+         */ 
+        public static function json($path, $flags = 0, $lock = false)
+        {
+                        /** @var \Illuminate\Filesystem\Filesystem $instance */
+                        return $instance->json($path, $flags, $lock);
         }
                     /**
          * Get contents of a file with shared access.
@@ -7459,6 +7548,18 @@
                         return $instance->policies();
         }
                     /**
+         * Set the default denial response for gates and policies.
+         *
+         * @param \Illuminate\Auth\Access\Response $response
+         * @return \Illuminate\Auth\Access\Gate 
+         * @static 
+         */ 
+        public static function defaultDenialResponse($response)
+        {
+                        /** @var \Illuminate\Auth\Access\Gate $instance */
+                        return $instance->defaultDenialResponse($response);
+        }
+                    /**
          * Set the container instance used by the gate.
          *
          * @param \Illuminate\Contracts\Container\Container $container
@@ -7592,6 +7693,18 @@
                         return $instance->needsRehash($hashedValue, $options);
         }
                     /**
+         * Determine if a given string is already hashed.
+         *
+         * @param string $value
+         * @return bool 
+         * @static 
+         */ 
+        public static function isHashed($value)
+        {
+                        /** @var \Illuminate\Hashing\HashManager $instance */
+                        return $instance->isHashed($value);
+        }
+                    /**
          * Get the default driver name.
          *
          * @return string 
@@ -7685,10 +7798,13 @@
      * @method static \Illuminate\Http\Client\PendingRequest attach(string|array $name, string|resource $contents = '', string|null $filename = null, array $headers = [])
      * @method static \Illuminate\Http\Client\PendingRequest asMultipart()
      * @method static \Illuminate\Http\Client\PendingRequest bodyFormat(string $format)
+     * @method static \Illuminate\Http\Client\PendingRequest withQueryParameters(array $parameters)
      * @method static \Illuminate\Http\Client\PendingRequest contentType(string $contentType)
      * @method static \Illuminate\Http\Client\PendingRequest acceptJson()
      * @method static \Illuminate\Http\Client\PendingRequest accept(string $contentType)
      * @method static \Illuminate\Http\Client\PendingRequest withHeaders(array $headers)
+     * @method static \Illuminate\Http\Client\PendingRequest withHeader(string $name, mixed $value)
+     * @method static \Illuminate\Http\Client\PendingRequest replaceHeaders(array $headers)
      * @method static \Illuminate\Http\Client\PendingRequest withBasicAuth(string $username, string $password)
      * @method static \Illuminate\Http\Client\PendingRequest withDigestAuth(string $username, string $password)
      * @method static \Illuminate\Http\Client\PendingRequest withToken(string $token, string $type = 'Bearer')
@@ -7701,9 +7817,11 @@
      * @method static \Illuminate\Http\Client\PendingRequest sink(string|resource $to)
      * @method static \Illuminate\Http\Client\PendingRequest timeout(int $seconds)
      * @method static \Illuminate\Http\Client\PendingRequest connectTimeout(int $seconds)
-     * @method static \Illuminate\Http\Client\PendingRequest retry(int $times, int $sleepMilliseconds = 0, callable|null $when = null, bool $throw = true)
+     * @method static \Illuminate\Http\Client\PendingRequest retry(int $times, \Closure|int $sleepMilliseconds = 0, callable|null $when = null, bool $throw = true)
      * @method static \Illuminate\Http\Client\PendingRequest withOptions(array $options)
      * @method static \Illuminate\Http\Client\PendingRequest withMiddleware(callable $middleware)
+     * @method static \Illuminate\Http\Client\PendingRequest withRequestMiddleware(callable $middleware)
+     * @method static \Illuminate\Http\Client\PendingRequest withResponseMiddleware(callable $middleware)
      * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
      * @method static \Illuminate\Http\Client\PendingRequest throw(callable|null $callback = null)
      * @method static \Illuminate\Http\Client\PendingRequest throwIf(callable|bool $condition, callable|null $throwCallback = null)
@@ -7738,6 +7856,42 @@
      * @see \Illuminate\Http\Client\Factory
      */ 
         class Http {
+                    /**
+         * Add middleware to apply to every request.
+         *
+         * @param callable $middleware
+         * @return \Illuminate\Http\Client\Factory 
+         * @static 
+         */ 
+        public static function globalMiddleware($middleware)
+        {
+                        /** @var \Illuminate\Http\Client\Factory $instance */
+                        return $instance->globalMiddleware($middleware);
+        }
+                    /**
+         * Add request middleware to apply to every request.
+         *
+         * @param callable $middleware
+         * @return \Illuminate\Http\Client\Factory 
+         * @static 
+         */ 
+        public static function globalRequestMiddleware($middleware)
+        {
+                        /** @var \Illuminate\Http\Client\Factory $instance */
+                        return $instance->globalRequestMiddleware($middleware);
+        }
+                    /**
+         * Add response middleware to apply to every request.
+         *
+         * @param callable $middleware
+         * @return \Illuminate\Http\Client\Factory 
+         * @static 
+         */ 
+        public static function globalResponseMiddleware($middleware)
+        {
+                        /** @var \Illuminate\Http\Client\Factory $instance */
+                        return $instance->globalResponseMiddleware($middleware);
+        }
                     /**
          * Create a new response instance for use during stubbing.
          *
@@ -8851,6 +9005,42 @@
                         $instance->assertNothingQueued();
         }
                     /**
+         * Assert the total number of mailables that were sent.
+         *
+         * @param int $count
+         * @return void 
+         * @static 
+         */ 
+        public static function assertSentCount($count)
+        {
+                        /** @var \Illuminate\Support\Testing\Fakes\MailFake $instance */
+                        $instance->assertSentCount($count);
+        }
+                    /**
+         * Assert the total number of mailables that were queued.
+         *
+         * @param int $count
+         * @return void 
+         * @static 
+         */ 
+        public static function assertQueuedCount($count)
+        {
+                        /** @var \Illuminate\Support\Testing\Fakes\MailFake $instance */
+                        $instance->assertQueuedCount($count);
+        }
+                    /**
+         * Assert the total number of mailables that were sent or queued.
+         *
+         * @param int $count
+         * @return void 
+         * @static 
+         */ 
+        public static function assertOutgoingCount($count)
+        {
+                        /** @var \Illuminate\Support\Testing\Fakes\MailFake $instance */
+                        $instance->assertOutgoingCount($count);
+        }
+                    /**
          * Get all of the mailables matching a truth-test callback.
          *
          * @param string|\Closure $mailable
@@ -9428,6 +9618,8 @@
      * @method static \Illuminate\Contracts\Process\ProcessResult run(array|string|null $command = null, callable|null $output = null)
      * @method static \Illuminate\Process\InvokedProcess start(array|string|null $command = null, callable $output = null)
      * @method static \Illuminate\Process\PendingProcess withFakeHandlers(array $fakeHandlers)
+     * @method static \Illuminate\Process\PendingProcess|mixed when(\Closure|mixed|null $value = null, callable|null $callback = null, callable|null $default = null)
+     * @method static \Illuminate\Process\PendingProcess|mixed unless(\Closure|mixed|null $value = null, callable|null $callback = null, callable|null $default = null)
      * @see \Illuminate\Process\PendingProcess
      * @see \Illuminate\Process\Factory
      */ 
@@ -9612,6 +9804,18 @@
         {
                         /** @var \Illuminate\Process\Factory $instance */
                         return $instance->pool($callback);
+        }
+                    /**
+         * Start defining a series of piped processes.
+         *
+         * @param callable|array $callback
+         * @return \Illuminate\Contracts\Process\ProcessResult 
+         * @static 
+         */ 
+        public static function pipe($callback, $output = null)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->pipe($callback, $output);
         }
                     /**
          * Run a pool of processes and wait for them to finish executing.
@@ -10342,7 +10546,7 @@
          * Get the given named rate limiter.
          *
          * @param string $name
-         * @return \Closure 
+         * @return \Closure|null 
          * @static 
          */ 
         public static function limiter($name)
@@ -11373,12 +11577,13 @@
          * @param array $files The FILES parameters
          * @param array $server The SERVER parameters
          * @param string|resource|null $content The raw body data
+         * @return void 
          * @static 
          */ 
         public static function initialize($query = [], $request = [], $attributes = [], $cookies = [], $files = [], $server = [], $content = null)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
+                        $instance->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
         }
                     /**
          * Creates a new request with values from PHP's super globals.
@@ -11415,11 +11620,12 @@
          * to keep BC with an existing system. It should not be used for any
          * other purpose.
          *
+         * @return void 
          * @static 
          */ 
         public static function setFactory($callable)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
-                        return \Illuminate\Http\Request::setFactory($callable);
+                        \Illuminate\Http\Request::setFactory($callable);
         }
                     /**
          * Overrides the PHP global variables according to this request instance.
@@ -11427,12 +11633,13 @@
          * It overrides $_GET, $_POST, $_REQUEST, $_SERVER, $_COOKIE.
          * $_FILES is never overridden, see rfc1867
          *
+         * @return void 
          * @static 
          */ 
         public static function overrideGlobals()
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->overrideGlobals();
+                        $instance->overrideGlobals();
         }
                     /**
          * Sets a list of trusted proxies.
@@ -11441,11 +11648,12 @@
          *
          * @param array $proxies A list of trusted proxies, the string 'REMOTE_ADDR' will be replaced with $_SERVER['REMOTE_ADDR']
          * @param int $trustedHeaderSet A bit field of Request::HEADER_*, to set which headers to trust from your proxies
+         * @return void 
          * @static 
          */ 
         public static function setTrustedProxies($proxies, $trustedHeaderSet)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
-                        return \Illuminate\Http\Request::setTrustedProxies($proxies, $trustedHeaderSet);
+                        \Illuminate\Http\Request::setTrustedProxies($proxies, $trustedHeaderSet);
         }
                     /**
          * Gets the list of trusted proxies.
@@ -11473,11 +11681,12 @@
          * You should only list the hosts you manage using regexs.
          *
          * @param array $hostPatterns A list of trusted host patterns
+         * @return void 
          * @static 
          */ 
         public static function setTrustedHosts($hostPatterns)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
-                        return \Illuminate\Http\Request::setTrustedHosts($hostPatterns);
+                        \Illuminate\Http\Request::setTrustedHosts($hostPatterns);
         }
                     /**
          * Gets the list of trusted host patterns.
@@ -11512,11 +11721,12 @@
          * 
          * The HTTP method can only be overridden when the real HTTP method is POST.
          *
+         * @return void 
          * @static 
          */ 
         public static function enableHttpMethodParameterOverride()
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
-                        return \Illuminate\Http\Request::enableHttpMethodParameterOverride();
+                        \Illuminate\Http\Request::enableHttpMethodParameterOverride();
         }
                     /**
          * Checks whether support for the _method request parameter is enabled.
@@ -11541,12 +11751,13 @@
                     /**
          * 
          *
+         * @return void 
          * @static 
          */ 
         public static function setSession($session)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setSession($session);
+                        $instance->setSession($session);
         }
                     /**
          * 
@@ -11847,12 +12058,13 @@
                     /**
          * Sets the request method.
          *
+         * @return void 
          * @static 
          */ 
         public static function setMethod($method)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setMethod($method);
+                        $instance->setMethod($method);
         }
                     /**
          * Gets the request "intended" method.
@@ -11918,12 +12130,13 @@
          * Associates a format with mime types.
          *
          * @param string|string[] $mimeTypes The associated mime types (the preferred one must be the first as it will be used as the content type)
+         * @return void 
          * @static 
          */ 
         public static function setFormat($format, $mimeTypes)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setFormat($format, $mimeTypes);
+                        $instance->setFormat($format, $mimeTypes);
         }
                     /**
          * Gets the request format.
@@ -11945,12 +12158,13 @@
                     /**
          * Sets the request format.
          *
+         * @return void 
          * @static 
          */ 
         public static function setRequestFormat($format)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setRequestFormat($format);
+                        $instance->setRequestFormat($format);
         }
                     /**
          * Gets the usual name of the format associated with the request's media type (provided in the Content-Type header).
@@ -11977,12 +12191,13 @@
                     /**
          * Sets the default locale.
          *
+         * @return void 
          * @static 
          */ 
         public static function setDefaultLocale($locale)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setDefaultLocale($locale);
+                        $instance->setDefaultLocale($locale);
         }
                     /**
          * Get the default locale.
@@ -11997,12 +12212,13 @@
                     /**
          * Sets the locale.
          *
+         * @return void 
          * @static 
          */ 
         public static function setLocale($locale)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setLocale($locale);
+                        $instance->setLocale($locale);
         }
                     /**
          * Get the locale.
@@ -12085,6 +12301,17 @@
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
                         return $instance->getContent($asResource);
+        }
+                    /**
+         * Gets the decoded form or json request body.
+         *
+         * @throws JsonException When the body cannot be decoded to an array
+         * @static 
+         */ 
+        public static function getPayload()
+        {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->getPayload();
         }
                     /**
          * Gets the Etags.
@@ -13394,7 +13621,7 @@
                         return $instance->any($uri, $action);
         }
                     /**
-         * Register a new Fallback route with the router.
+         * Register a new fallback route with the router.
          *
          * @param array|string|callable|null $action
          * @return \Illuminate\Routing\Route 
@@ -15402,7 +15629,7 @@
                     /**
          * Get a default cloud filesystem instance.
          *
-         * @return \Illuminate\Filesystem\FilesystemAdapter 
+         * @return \Illuminate\Contracts\Filesystem\Cloud 
          * @static 
          */ 
         public static function cloud()
@@ -15698,6 +15925,19 @@
         {
                         /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
                         return $instance->get($path);
+        }
+                    /**
+         * Get the contents of a file as decoded JSON.
+         *
+         * @param string $path
+         * @param int $flags
+         * @return array|null 
+         * @static 
+         */ 
+        public static function json($path, $flags = 0)
+        {
+                        /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
+                        return $instance->json($path, $flags);
         }
                     /**
          * Create a streamed response for a given file.
@@ -16666,6 +16906,18 @@
         {
                         /** @var \Illuminate\Routing\UrlGenerator $instance */
                         return $instance->withKeyResolver($keyResolver);
+        }
+                    /**
+         * Set the callback that should be used to attempt to resolve missing named routes.
+         *
+         * @param callable $missingNamedRouteResolver
+         * @return \Illuminate\Routing\UrlGenerator 
+         * @static 
+         */ 
+        public static function resolveMissingNamedRoutesUsing($missingNamedRouteResolver)
+        {
+                        /** @var \Illuminate\Routing\UrlGenerator $instance */
+                        return $instance->resolveMissingNamedRoutesUsing($missingNamedRouteResolver);
         }
                     /**
          * Get the root controller namespace.
@@ -18055,6 +18307,20 @@
                         return $instance->asset($asset, $buildDirectory);
         }
                     /**
+         * Get the content of a given asset.
+         *
+         * @param string $asset
+         * @param string|null $buildDirectory
+         * @return string 
+         * @throws \Exception
+         * @static 
+         */ 
+        public static function content($asset, $buildDirectory = null)
+        {            //Method inherited from \Illuminate\Foundation\Vite         
+                        /** @var \LEXO\DeferVite\Services\DeferViteService $instance */
+                        return $instance->content($asset, $buildDirectory);
+        }
+                    /**
          * Get a unique hash representing the current manifest, or null if there is no manifest.
          *
          * @param string|null $buildDirectory
@@ -18169,7 +18435,7 @@
      * 
      *
      * @template TKey of array-key
-     * @template TValue
+     * @template-covariant TValue
      * @implements \ArrayAccess<TKey, TValue>
      * @implements \Illuminate\Support\Enumerable<TKey, TValue>
      */ 
@@ -19214,6 +19480,27 @@
                     /**
          * 
          *
+         * @param array<class-string<ArgumentReducer>|ArgumentReducer>|\Spatie\Backtrace\Arguments\ArgumentReducers|null $argumentReducers
+         * @static 
+         */ 
+        public static function argumentReducers($argumentReducers)
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->argumentReducers($argumentReducers);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function withStackFrameArguments($withStackFrameArguments = true)
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->withStackFrameArguments($withStackFrameArguments);
+        }
+                    /**
+         * 
+         *
          * @static 
          */ 
         public static function version()
@@ -19285,7 +19572,7 @@
                     /**
          * 
          *
-         * @param \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware> $middleware
+         * @param \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware>|callable $middleware
          * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
@@ -19310,7 +19597,7 @@
          *
          * @param string $name
          * @param string $messageLevel
-         * @param \Spatie\FlareClient\array<int,  mixed> $metaData
+         * @param array<int, mixed> $metaData
          * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
@@ -19403,7 +19690,7 @@
                     /**
          * 
          *
-         * @param \Spatie\FlareClient\array<int,  string> $fieldNames
+         * @param array<int, string> $fieldNames
          * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
@@ -19479,7 +19766,7 @@
          * 
          *
          * @param string $groupName
-         * @param \Spatie\FlareClient\array<string,  mixed> $properties
+         * @param array<string, mixed> $properties
          * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
@@ -19532,6 +19819,17 @@
         {
                         /** @var \STS\Metrics\MetricsManager $instance */
                         return $instance->createCloudwatchDriver();
+        }
+                    /**
+         * 
+         *
+         * @return \STS\Metrics\Drivers\LogDriver 
+         * @static 
+         */ 
+        public static function createLogDriver()
+        {
+                        /** @var \STS\Metrics\MetricsManager $instance */
+                        return $instance->createLogDriver();
         }
                     /**
          * 
@@ -20471,10 +20769,10 @@ namespace  {
              * @throws \InvalidArgumentException
              * @static 
              */ 
-            public static function paginate($perPage = null, $columns = [], $pageName = 'page', $page = null, $total = null)
+            public static function paginate($perPage = null, $columns = [], $pageName = 'page', $page = null)
             {
                                 /** @var \Illuminate\Database\Eloquent\Builder $instance */
-                                return $instance->paginate($perPage, $columns, $pageName, $page, $total);
+                                return $instance->paginate($perPage, $columns, $pageName, $page);
             }
              
                 /**
@@ -20533,6 +20831,19 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Eloquent\Builder $instance */
                                 return $instance->forceCreate($attributes);
+            }
+             
+                /**
+             * Save a new model instance with mass assignment without raising model events.
+             *
+             * @param array $attributes
+             * @return \Illuminate\Database\Eloquent\Model|$this 
+             * @static 
+             */ 
+            public static function forceCreateQuietly($attributes = [])
+            {
+                                /** @var \Illuminate\Database\Eloquent\Builder $instance */
+                                return $instance->forceCreateQuietly($attributes);
             }
              
                 /**
@@ -21347,7 +21658,7 @@ namespace  {
              * Add a morph-to relationship condition to the query.
              *
              * @param \Illuminate\Database\Eloquent\Relations\MorphTo|string $relation
-             * @param \Illuminate\Database\Eloquent\Model|string $model
+             * @param \Illuminate\Database\Eloquent\Model|string|null $model
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
              */ 
@@ -21375,7 +21686,7 @@ namespace  {
              * Add a morph-to relationship condition to the query with an "or where" clause.
              *
              * @param \Illuminate\Database\Eloquent\Relations\MorphTo|string $relation
-             * @param \Illuminate\Database\Eloquent\Model|string $model
+             * @param \Illuminate\Database\Eloquent\Model|string|null $model
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
              */ 
@@ -22769,7 +23080,7 @@ namespace  {
                 /**
              * Add a "having" clause to the query.
              *
-             * @param \Closure|string $column
+             * @param \Illuminate\Contracts\Database\Query\Expression|\Closure|string $column
              * @param string|int|float|null $operator
              * @param string|int|float|null $value
              * @param string $boolean
@@ -22785,7 +23096,7 @@ namespace  {
                 /**
              * Add an "or having" clause to the query.
              *
-             * @param \Closure|string $column
+             * @param \Illuminate\Contracts\Database\Query\Expression|\Closure|string $column
              * @param string|int|float|null $operator
              * @param string|int|float|null $value
              * @return \Illuminate\Database\Query\Builder 
@@ -23192,6 +23503,18 @@ namespace  {
             }
              
                 /**
+             * Get the raw SQL representation of the query with embedded bindings.
+             *
+             * @return string 
+             * @static 
+             */ 
+            public static function toRawSql()
+            {
+                                /** @var \Illuminate\Database\Query\Builder $instance */
+                                return $instance->toRawSql();
+            }
+             
+                /**
              * Get a single expression value from the first result of a query.
              *
              * @param string $expression
@@ -23472,8 +23795,8 @@ namespace  {
                 /**
              * Increment the given column's values by the given amounts.
              *
-             * @param \Illuminate\Database\Query\array<string,  float|int|numeric-string>  $columns
-             * @param \Illuminate\Database\Query\array<string,  mixed>  $extra
+             * @param array<string, float|int|numeric-string> $columns
+             * @param array<string, mixed> $extra
              * @return int 
              * @throws \InvalidArgumentException
              * @static 
@@ -23487,8 +23810,8 @@ namespace  {
                 /**
              * Decrement the given column's values by the given amounts.
              *
-             * @param \Illuminate\Database\Query\array<string,  float|int|numeric-string>  $columns
-             * @param \Illuminate\Database\Query\array<string,  mixed>  $extra
+             * @param array<string, float|int|numeric-string> $columns
+             * @param array<string, mixed> $extra
              * @return int 
              * @throws \InvalidArgumentException
              * @static 
@@ -23704,6 +24027,18 @@ namespace  {
             }
              
                 /**
+             * Dump the raw current SQL with embedded bindings.
+             *
+             * @return \Illuminate\Database\Query\Builder 
+             * @static 
+             */ 
+            public static function dumpRawSql()
+            {
+                                /** @var \Illuminate\Database\Query\Builder $instance */
+                                return $instance->dumpRawSql();
+            }
+             
+                /**
              * Die and dump the current SQL and bindings.
              *
              * @return \Illuminate\Database\Query\never 
@@ -23713,6 +24048,18 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Query\Builder $instance */
                                 return $instance->dd();
+            }
+             
+                /**
+             * Die and dump the current SQL with embedded bindings.
+             *
+             * @return \Illuminate\Database\Query\never 
+             * @static 
+             */ 
+            public static function ddRawSql()
+            {
+                                /** @var \Illuminate\Database\Query\Builder $instance */
+                                return $instance->ddRawSql();
             }
              
                 /**
