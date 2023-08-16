@@ -1,4 +1,4 @@
-import{L as r,N as u}from"./NavPageLink.08891621.js";import{N as l}from"./NavLink.02b3b93e.js";import{_ as c}from"./plugin-vue_export-helper.f2aa9cb4.js";import{r as s,o as d,c as p,w as e,a as n,e as m}from"./app.cffad64e.js";const v={components:{Layout:r,NavLink:l,NavPageLink:u}},f=m("pre",null,`                # Usage
+import{L as r,N as u}from"./NavPageLink.a3a2b258.js";import{N as l}from"./NavLink.8fd4b87d.js";import{_ as c}from"./plugin-vue_export-helper.f2aa9cb4.js";import{r as s,o as d,c as p,w as e,a as n,e as m}from"./app.91289146.js";const v={components:{Layout:r,NavLink:l,NavPageLink:u}},f=m("pre",null,`                # Usage
 
                 Votre utilisation du site Web indique que vous avez lu et accept\xE9 nos pratiques de confidentialit\xE9, telles qu'\xE9nonc\xE9es dans cette politique.
                 Si vous n'acceptez pas les modalit\xE9s d'utilisation de cette politique, veuillez, s'il-vous-pla\xEEt, ne pas utiliser ce site Web.
