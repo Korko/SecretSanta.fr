@@ -40,7 +40,7 @@ class SolverTest extends TestCase
         sort($actual);
         sort($expected);
 
-        $this->assertEquals(serialize($expected), serialize($actual));
+        expect(serialize($actual))->toBe(serialize($expected));
     }
 
     /**

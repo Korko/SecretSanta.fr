@@ -19,6 +19,6 @@ it('can handle bounced emails', function (Draw $draw) {
 
     app()->call([$job, 'handle']);
 
-    assertEquals(MailModel::STATE_ERROR, $bouncedParticipant->fresh()->mail->delivery_status);
-    assertEquals(MailModel::STATE_RECEIVED, $confirmedParticipant->fresh()->mail->delivery_status);
+    expect($bouncedParticipant->fresh()->mail->delivery_status)->toBe(MailModel::STATE_ERROR);
+    expect($confirmedParticipant->fresh()->mail->delivery_status)->toBe(MailModel::STATE_RECEIVED);
 })->with('basic draw');

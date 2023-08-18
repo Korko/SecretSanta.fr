@@ -5,6 +5,7 @@ use App\Models\PendingDraw;
 use App\Services\DrawFormHandler;
 use function Pest\Laravel\assertDatabaseCount;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Testing\TestResponse;
 use Tests\DuskTestCase;
@@ -46,32 +47,13 @@ uses(TestCase::class)->in('Feature');
  * @param  int  $count
  * @return void
  */
-function assertModelCount($class, int $count)
-{
-    assertDatabaseCount(
-        test()->getTable($class),
-        $count
-    );
-}
+expect()->intercept('toHaveCount', fn (mixed $value) => is_string($value) && is_subclass_of($value, Model::class), function (int $count) {
+    return test()->assertDatabaseCount($this->value, $count);
+});
 
-/**
- * Assert the count of model entries differing.
- *
- * @param  string  $class
- * @param  int  $count
- * @return void
- */
-function assertModelCountDiffer($class, int $count)
-{
-    $database = App::make('db');
-    $database = $database->connection($database->getDefaultConnection());
-
-    $table = test()->getTable($class);
-
-    test()->assertNotEquals(
-        $count, $database->table($table)->count()
-    );
-}
+expect()->extend('toExists', function () {
+    return test()->assertModelExists($this->value);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -154,20 +136,4 @@ function artisan($command, $parameters = [])
 function seed($class = 'Database\\Seeders\\DatabaseSeeder')
 {
     return test()->seed(...func_get_args());
-}
-
-/**
- * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
- */
-function assertModelExists($model)
-{
-    return test()->assertModelExists(...func_get_args());
-}
-
-/**
- * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
- */
-function assertModelMissing($model)
-{
-    return test()->assertModelMissing(...func_get_args());
 }

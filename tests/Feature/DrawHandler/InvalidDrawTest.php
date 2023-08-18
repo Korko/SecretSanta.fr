@@ -9,14 +9,14 @@ it('throws an exception when there\'s no solution', function ($participants) {
 })->with('invalid participants list')->throws(SolverException::class);
 
 it('does not record anything in case of error', function ($participants) {
-    assertModelCount(Draw::class, 0);
-    assertModelCount(Participant::class, 0);
+    expect(Draw::class)->toHaveCount(0);
+    expect(Participant::class)->toHaveCount(0);
 
     try {
         createServiceDraw($participants);
     } catch (Exception $e) {
     }
 
-    assertModelCount(Draw::class, 0);
-    assertModelCount(Participant::class, 0);
+    expect(Draw::class)->toHaveCount(0);
+    expect(Participant::class)->toHaveCount(0);
 })->with('invalid participants list');

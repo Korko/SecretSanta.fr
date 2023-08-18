@@ -15,5 +15,5 @@ it('stores database crypted entries', function () {
     DrawCrypt::shouldReceive('decrypt')
         ->andReturnArg(0);
 
-    assertNotEquals($participant->name, $decrypted);
+    $this->assertNotEquals($participant->name, $decrypted);
 });

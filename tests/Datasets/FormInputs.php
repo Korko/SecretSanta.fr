@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Support\Collection;
-use function Pest\Faker\faker;
+use function Pest\Faker\fake;
 
 // Invalid list when there's no solution
 dataset('invalid participants list', function () {
     yield [
         [
-            ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => [2]],
-            ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => [0, 2]],
-            ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => [1]],
+            ['name' => fake()->unique()->name, 'email' => fake()->safeEmail, 'exclusions' => [2]],
+            ['name' => fake()->unique()->name, 'email' => fake()->safeEmail, 'exclusions' => [0, 2]],
+            ['name' => fake()->unique()->name, 'email' => fake()->safeEmail, 'exclusions' => [1]],
         ],
     ];
 });
@@ -17,7 +17,7 @@ dataset('invalid participants list', function () {
 // Valid list where a solution is possible
 dataset('participants list', function () {
     yield [Collection::times(5, function () {
-        return ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => []];
+        return ['name' => fake()->unique()->name, 'email' => fake()->safeEmail, 'exclusions' => []];
     })->toArray()];
 });
 
@@ -25,9 +25,9 @@ dataset('participants list', function () {
 dataset('unique participants list', function () {
     yield [
         [
-            ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => [2]],
-            ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => [0]],
-            ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => [1]],
+            ['name' => fake()->unique()->name, 'email' => fake()->safeEmail, 'exclusions' => [2]],
+            ['name' => fake()->unique()->name, 'email' => fake()->safeEmail, 'exclusions' => [0]],
+            ['name' => fake()->unique()->name, 'email' => fake()->safeEmail, 'exclusions' => [1]],
         ],
         [1, 2, 0],
     ];
@@ -43,7 +43,7 @@ dataset('huge participants list', function () {
 
 dataset('validated participants list', function () {
     $participants = Collection::times(3, function () {
-        return ['name' => faker()->unique()->name, 'email' => faker()->safeEmail, 'exclusions' => []];
+        return ['name' => fake()->unique()->name, 'email' => fake()->safeEmail, 'exclusions' => []];
     })->toArray();
 
     yield [$participants, fn () => createServiceDraw($participants)];

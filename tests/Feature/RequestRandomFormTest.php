@@ -48,8 +48,8 @@ it('can create draws with a non participant organizer', function ($participants)
 
     $draw = Draw::find($draw_id);
 
-    assertEquals('foo', $draw->organizer_name);
-    assertEquals('foo@foobar.com', $draw->organizer_email);
+    expect($draw->organizer_name)->toBe('foo');
+    expect($draw->organizer_email)->toBe('foo@foobar.com');
 
     // Ensure Organizer receives his recap
     Notification::assertSentTimes(OrganizerRecap::class, 1);
@@ -58,7 +58,7 @@ it('can create draws with a non participant organizer', function ($participants)
     // Ensure Participants receive their own recap
     Notification::assertSentTimes(TargetDrawn::class, count($draw->participants));
     foreach ($draw->participants as $participant) {
-        assertNotEquals($participant->email, $draw->organizer_email);
+        $this->assertNotEquals($participant->email, $draw->organizer_email);
         Notification::assertSentTo($participant, TargetDrawn::class);
     }
 })->with('participants list');
@@ -94,12 +94,12 @@ it('sends to the organizer their initial recap by mail', function ($participants
     Notification::assertSentTo($draw->organizer, OrganizerRecap::class, function ($notification, $channels, $notifiable) use ($draw) {
         $attachments = $notification->toMail($notifiable)->build()->rawAttachments;
 
-        assertCount(1, $attachments);
-        assertEquals('text/csv', $attachments[0]['options']['mime']);
+        $this->assertCount(1, $attachments);
+        expect($attachments[0]['options']['mime'])->toBe('text/csv');
 
         // CSV have a BOM at start, remove it to parse, then check the amount of lines not starting with '#' (comments in CSV)
         $attachments[0]['data'] = str_replace("\xEF\xBB\xBF", '', $attachments[0]['data']);
-        assertCount($draw->participants()->count(), collect(explode("\n", $attachments[0]['data']))
+        $this->assertCount($draw->participants()->count(), collect(explode("\n", $attachments[0]['data']))
             ->map(fn ($line) => str_getcsv($line))
             ->filter(fn ($data) => $data[0][0] !== '#')
         );
@@ -146,6 +146,6 @@ class RequestRandomFormTest extends TestCase
 
         $draw = Draw::find($draw_id);
 
-        assertEquals(count($participants), $draw->participants()->count());
+        expect($draw->participants()->count())->toBe(count($participants));
     }
 }

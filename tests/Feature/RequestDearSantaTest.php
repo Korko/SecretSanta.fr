@@ -56,5 +56,5 @@ test('it updates the draw update date when writing to a santa', function (Draw $
         ->assertJsonStructure(['message']);
 
     Notification::assertSentTo($participant->santa, DearSantaNotification::class);
-    assertNotEquals($updated_at->timestamp, $draw->fresh()->updated_at->timestamp);
+    $this->assertNotEquals($updated_at->timestamp, $draw->fresh()->updated_at->timestamp);
 })->with('basic draw');

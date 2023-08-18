@@ -7,14 +7,14 @@ use App\Notifications\TargetDrawn as TargetDrawnNotification;
 it('records new entries in case of success', function ($participants, Draw $draw) {
     Notification::fake();
 
-    assertModelExists($draw);
-    assertModelCount(Participant::class, count($participants));
+    expect($draw)->toExists();
+    expect(Participant::class)->toHaveCount(count($participants));
 
     $indb = Participant::all();
 
     foreach ($participants as $idx => $participant) {
-        assertEquals($participant['name'], $indb[$idx]->name);
-        assertEquals($participant['email'], $indb[$idx]->email);
+        expect($participant['name'])->toBe($indb[$idx]->name);
+        expect($participant['email'])->toBe($indb[$idx]->email);
     }
 })->with('validated participants list');
 
@@ -24,8 +24,8 @@ it('saves the correct target', function ($participants, $targets) {
     $draw = createServiceDraw($participants);
 
     foreach ($participants as $idx => $participant) {
-        assertEquals($participants[$targets[$idx]]['name'], $draw->participants[$idx]->target->name);
-        assertEquals($participant['name'], $draw->participants[$idx]->target->santa->name);
+        expect($draw->participants[$idx]->target->name)->toBe($participants[$targets[$idx]]['name']);
+        expect($draw->participants[$idx]->target->santa->name)->toBe($participant['name']);
     }
 })->with('unique participants list');
 

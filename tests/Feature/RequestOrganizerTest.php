@@ -43,8 +43,8 @@ test('the organizer can change a participant\'s email', function (Draw $draw) {
     $participant = $participant->fresh();
     $after = $participant->email;
 
-    assertNotEquals($before, $after);
-    assertEquals('test@test2.com', $after);
+    $this->assertNotEquals($before, $after);
+    expect($after)->toBe('test@test2.com');
 
     Notification::assertSentTo($participant, TargetDrawn::class);
 })->with('basic draw');
@@ -68,8 +68,8 @@ test('the organizer can change a participant\'s name', function (Draw $draw) {
     $participant = $participant->fresh();
     $after = $participant->name;
 
-    assertNotEquals($before, $after);
-    assertEquals('foobar', $after);
+    $this->assertNotEquals($before, $after);
+    expect($after)->toBe('foobar');
 
     Notification::assertSentTo($participant->santa, TargetNameChanged::class);
 })->with('basic draw');
@@ -93,7 +93,7 @@ test('the organizer cannot give twice the same name', function (Draw $draw) {
     $participant = $participant->fresh();
     $after = $participant->name;
 
-    assertEquals($before, $after);
+    expect($after)->toBe($before);
 
     Notification::assertNothingSent();
 })->with('basic draw');
@@ -125,9 +125,9 @@ test('the organizer can withdraw a participant', function (Draw $draw) {
     Notification::assertSentTo($santa, DearSanta::class);
     Notification::assertSentTo($participant, ConfirmWithdrawal::class);
 
-    assertEquals($santa->fresh()->target->id, $target->id);
-    assertEquals($target->fresh()->santa->id, $santa->id);
-    assertEquals($participant->fresh(), null);
+    expect($santa->fresh()->target->id)->toBe($target->id);
+    expect($target->fresh()->santa->id)->toBe($santa->id);
+    expect($participant->fresh())->toBe(null);
 })->with('large draw');
 
 test('the organizer can download initial data', function (Draw $draw) {
@@ -167,7 +167,7 @@ test('the organizer can delete all data before the event', function (Draw $draw)
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    assertNull($draw->fresh());
+    $this->assertNull($draw->fresh());
 })->with('basic draw');
 
 test('the organizer can delete all data after the event', function (Draw $draw) {
@@ -179,7 +179,7 @@ test('the organizer can delete all data after the event', function (Draw $draw) 
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    assertNull($draw->fresh());
+    $this->assertNull($draw->fresh());
 })->with('finished draw');
 
 it('updates the draw update date when sending an email', function (Draw $draw) {
