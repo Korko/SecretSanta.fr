@@ -8,11 +8,9 @@ use Webklex\PHPIMAP\Message;
 
 class ImapMessage implements EmailMessage
 {
-    protected $message;
-
-    public function __construct(Message $message)
-    {
-        $this->message = $message;
+    public function __construct(
+        protected readonly Message $message
+    ) {
     }
 
     public function getTo(): array

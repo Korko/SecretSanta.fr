@@ -10,13 +10,6 @@ use Webklex\PHPIMAP\ClientManager as ImapClientManager;
 class MailboxManager
 {
     /**
-     * The application instance.
-     *
-     * @var \Illuminate\Contracts\Foundation\Application
-     */
-    protected $app;
-
-    /**
      * The array of resolved mailboxes.
      *
      * @var array
@@ -26,9 +19,9 @@ class MailboxManager
     /**
      * Create a new Mailbox manager instance.
      */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
+    public function __construct(
+        protected readonly Application $app
+    ) {
     }
 
     /**

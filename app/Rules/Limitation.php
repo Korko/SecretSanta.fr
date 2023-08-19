@@ -34,20 +34,13 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
     protected $customValidator = null;
 
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-    protected $rules = [];
-
-    /**
      * Create a new rule instance.
      *
      * @param  array<\App\Enums\AppMode, string>  $rules List of validation rules depending on the AppMode of the request
      */
-    public function __construct(array $rules)
-    {
-        $this->rules = $rules;
+    public function __construct(
+        protected array $rules = []
+    ) {
     }
 
     /**

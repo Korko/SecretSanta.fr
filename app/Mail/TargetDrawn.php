@@ -8,16 +8,14 @@ use Lang;
 
 class TargetDrawn extends TrackedMailable
 {
-    protected $santa;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Participant $santa)
-    {
-        $this->santa = $santa;
+    public function __construct(
+        protected readonly Participant $santa
+    ) {
     }
 
     protected function getMailable()

@@ -13,11 +13,9 @@ class PendingDrawStatusUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $draw;
-
-    public function __construct(PendingDraw $draw)
-    {
-        $this->draw = $draw;
+    public function __construct(
+        protected readonly PendingDraw $draw
+    ) {
     }
 
     /**

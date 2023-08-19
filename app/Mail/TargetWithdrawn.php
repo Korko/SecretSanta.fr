@@ -8,22 +8,16 @@ use Lang;
 
 class TargetWithdrawn extends Mailable
 {
-    protected $santa;
-
-    protected $oldTarget;
-
-    protected $newTarget;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Participant $santa, Participant $oldTarget, Participant $newTarget)
-    {
-        $this->santa = $santa;
-        $this->oldTarget = $oldTarget;
-        $this->newTarget = $newTarget;
+    public function __construct(
+        protected readonly Participant $santa,
+        protected readonly Participant $oldTarget,
+        protected readonly Participant $newTarget
+    ) {
     }
 
     /**

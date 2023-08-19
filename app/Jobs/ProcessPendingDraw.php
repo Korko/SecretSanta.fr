@@ -13,16 +13,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Throwable;
 
+#[WithoutRelations]
 class ProcessPendingDraw implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /**
-     * The pending draw instance.
-     *
-     * @var \App\Models\PendingDraw
-     */
-    protected $pending;
 
     /**
      * Delete the job if its models no longer exist.
@@ -45,9 +39,10 @@ class ProcessPendingDraw implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(PendingDraw $pending)
-    {
-        $this->pending = $pending;
+    public function __construct(
+        protected readonly PendingDraw $pending
+    ) {
+
     }
 
     /**

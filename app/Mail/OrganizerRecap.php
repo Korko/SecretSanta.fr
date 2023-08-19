@@ -11,16 +11,14 @@ use Lang;
 
 class OrganizerRecap extends Mailable
 {
-    protected $draw;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Draw $draw)
-    {
-        $this->draw = $draw;
+    public function __construct(
+        protected readonly Draw $draw
+    ) {
     }
 
     /**

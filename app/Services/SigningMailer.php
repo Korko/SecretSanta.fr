@@ -11,11 +11,9 @@ class SigningMailer
 {
     use ForwardsCalls;
 
-    protected $mailer;
-
-    public function __construct(Mailer $mailer)
-    {
-        $this->mailer = $mailer;
+    public function __construct(
+        protected readonly Mailer $mailer
+    ) {
     }
 
     /**

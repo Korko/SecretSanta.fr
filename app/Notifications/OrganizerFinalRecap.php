@@ -11,11 +11,9 @@ use Illuminate\Notifications\Notification;
 
 class OrganizerFinalRecap extends Notification
 {
-    protected $draw;
-
-    public function __construct(Draw $draw)
-    {
-        $this->draw = $draw;
+    public function __construct(
+        protected readonly Draw $draw
+    ) {
     }
 
     /**

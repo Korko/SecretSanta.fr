@@ -9,11 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Language
 {
-    private $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
+    public function __construct(
+        protected readonly Application $app
+    ) {
     }
 
     /**

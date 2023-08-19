@@ -8,9 +8,9 @@ use Webklex\IMAP\Facades\Client as WebklexClient;
 
 class ImapTransport implements MailboxContract
 {
-    public function __construct(WebklexClient $delegate)
-    {
-        $this->delegate = $delegate;
+    public function __construct(
+        protected readonly WebklexClient $delegate
+    ) {
     }
 
     /**

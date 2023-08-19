@@ -9,11 +9,9 @@ use Illuminate\Notifications\Notification;
 
 class TargetNameChanged extends Notification
 {
-    protected $target;
-
-    public function __construct(Participant $target)
-    {
-        $this->target = $target;
+    public function __construct(
+        protected readonly Participant $target
+    ) {
     }
 
     /**

@@ -9,16 +9,14 @@ use Lang;
 
 class PendingDraw extends Mailable
 {
-    protected $draw;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(PendingDrawModel $draw)
-    {
-        $this->draw = $draw;
+    public function __construct(
+        protected readonly PendingDrawModel $draw
+    ) {
     }
 
     /**

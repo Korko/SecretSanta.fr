@@ -8,19 +8,15 @@ use Lang;
 
 class TargetNameChanged extends Mailable
 {
-    protected $santa;
-
-    protected $target;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Participant $santa, Participant $target)
-    {
-        $this->santa = $santa;
-        $this->target = $target;
+    public function __construct(
+        protected readonly Participant $santa,
+        protected readonly Participant $target
+    ) {
     }
 
     /**

@@ -10,11 +10,9 @@ use Illuminate\Notifications\Notification;
 
 class DearTarget extends Notification
 {
-    protected $dearTarget;
-
-    public function __construct(DearTargetModel $dearTarget)
-    {
-        $this->dearTarget = $dearTarget;
+    public function __construct(
+        protected readonly DearTargetModel $dearTarget
+    ) {
     }
 
     /**

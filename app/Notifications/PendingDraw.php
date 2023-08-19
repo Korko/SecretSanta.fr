@@ -10,11 +10,9 @@ use Illuminate\Notifications\Notification;
 
 class PendingDraw extends Notification
 {
-    protected $draw;
-
-    public function __construct(PendingDrawModel $draw)
-    {
-        $this->draw = $draw;
+    public function __construct(
+        protected readonly PendingDrawModel $draw
+    ) {
     }
 
     /**

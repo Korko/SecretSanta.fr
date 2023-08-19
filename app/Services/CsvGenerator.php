@@ -4,20 +4,12 @@ namespace App\Services;
 
 class CsvGenerator
 {
-    public $data;
-
-    public $delimiter;
-
-    public $enclosure;
-
-    public $escapeChar;
-
-    public function __construct(array $data, $delimiter = ',', $enclosure = '"', $escapeChar = '\\')
-    {
-        $this->data = $data;
-        $this->delimiter = $delimiter;
-        $this->enclosure = $enclosure;
-        $this->escapeChar = $escapeChar;
+    public function __construct(
+        public array $data,
+        public string $delimiter = ',',
+        public string $enclosure = '"',
+        public string $escapeChar = '\\'
+    ) {
     }
 
     public function prepend(array $data)

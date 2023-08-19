@@ -7,11 +7,9 @@ use Laravel\Dusk\Component as BaseComponent;
 
 class ParticipantRow extends BaseComponent
 {
-    protected $idx;
-
-    public function __construct($idx)
-    {
-        $this->idx = $idx;
+    public function __construct(
+        protected readonly int $idx
+    ) {
     }
 
     /**

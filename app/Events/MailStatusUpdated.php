@@ -9,15 +9,14 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
+#[WithoutRelations]
 class MailStatusUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $mail;
-
-    public function __construct(MailModel $mail)
-    {
-        $this->mail = $mail;
+    public function __construct(
+        protected readonly MailModel $mail
+    ) {
     }
 
     /**

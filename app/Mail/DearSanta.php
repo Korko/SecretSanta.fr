@@ -9,19 +9,15 @@ use Lang;
 
 class DearSanta extends TrackedMailable
 {
-    protected $santa;
-
-    protected $dearSanta;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Participant $santa, DearSantaModel $dearSanta)
-    {
-        $this->santa = $santa;
-        $this->dearSanta = $dearSanta;
+    public function __construct(
+        protected readonly Participant $santa,
+        protected readonly DearSantaModel $dearSanta
+    ) {
     }
 
     protected function getMailable()

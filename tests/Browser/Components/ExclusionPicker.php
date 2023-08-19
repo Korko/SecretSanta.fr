@@ -7,11 +7,9 @@ use Laravel\Dusk\Component as BaseComponent;
 
 class ExclusionPicker extends BaseComponent
 {
-    protected $root;
-
-    public function __construct($root = '')
-    {
-        $this->root = $root;
+    public function __construct(
+        protected readonly string $root = ''
+    ) {
     }
 
     /**

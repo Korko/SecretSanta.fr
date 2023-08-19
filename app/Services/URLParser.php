@@ -7,14 +7,10 @@ use Illuminate\Routing\Router;
 
 class URLParser
 {
-    protected $router;
-
-    protected $request;
-
-    public function __construct(Router $router, Request $request)
-    {
-        $this->router = $router;
-        $this->request = $request;
+    public function __construct(
+        protected readonly Router $router,
+        protected readonly Request $request
+    ) {
     }
 
     public function parseByName($routeName, $url)
