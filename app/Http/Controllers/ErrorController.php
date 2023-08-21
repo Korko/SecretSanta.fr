@@ -8,11 +8,15 @@ class ErrorController extends Controller
 {
     public static function pageNotFound(): Response
     {
-        return response()->inertia('PageNotFound');
+        return response()
+            ->inertia('PageNotFound')
+            ->setStatusCode(404);
     }
 
     public static function drawNotFound(): Response
     {
-        return response()->inertia('DrawNotFound');
+        return response()
+            ->inertia('DrawNotFound')
+            ->setStatusCode(404);
     }
 }

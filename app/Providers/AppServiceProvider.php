@@ -107,7 +107,8 @@ class AppServiceProvider extends ServiceProvider
             return Inertia::render($page, $parameters)
                 ->withViewData([
                     'version' => exec('git describe --tags --always --abbrev=0'),
-                ]);
+                ])
+                ->toResponse(request());
         });
     }
 }
