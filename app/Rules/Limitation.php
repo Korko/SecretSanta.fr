@@ -64,12 +64,11 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
     }
 
     /**
-     * Determine if the validation rule passes.
+     * Run the validation rule.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
-    public function passes($attribute, $value): bool
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $mode = Arr::get($this->data, 'mode', (AppMode::FREE)->value);
 
@@ -80,18 +79,18 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
                 $this->getCustomMessages($mode)
             );
 
-            return $this->customValidator->passes();
+            if(! $this->customValidator->passes()) {
+                $fail();
+            }
         }
 
         unset($this->customValidator);
-
-        return true;
     }
 
     /**
      * Replace the place-holder in main validator custom messages
      *
-     * @param  int  $mode Choosen AppMode key
+     * @param  int  $mode Chosen AppMode key
      */
     protected function getCustomMessages($mode): array
     {
