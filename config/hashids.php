@@ -24,7 +24,7 @@ return [
     |
     */
 
-    'default' => 'santa',
+    'default' => 'draw',
 
     /*
     |--------------------------------------------------------------------------
@@ -38,13 +38,14 @@ return [
     */
 
     'connections' => [
-        'santa' => [
-            'salt' => env('HASHIDS_SALT_SANTA', 'secretsanta-santa'),
-            'length' => 5,
-        ],
 
         'draw' => [
             'salt' => env('HASHIDS_SALT_DRAW', 'secretsanta-draw'),
+            'length' => 5,
+        ],
+
+        'participant' => [
+            'salt' => env('HASHIDS_SALT_SANTA', 'secretsanta-santa'),
             'length' => 5,
         ],
 

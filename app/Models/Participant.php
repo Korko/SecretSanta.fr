@@ -58,7 +58,7 @@ class Participant extends Model implements UrlRoutable
         resolveRouteBinding as public baseResolver;
     }
 
-    protected $hashConnection = 'santa';
+    protected $hashConnection = 'participant';
 
     /**
      * The attributes that are mass assignable.
