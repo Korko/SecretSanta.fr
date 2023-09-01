@@ -15,6 +15,21 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         /**
+         * Create a route URL for a named route appended with the IV.
+         *
+         * @param  string  $name
+         * @param  mixed  $parameters
+         * @param  \DateTimeInterface|\DateInterval|int|null  $expiration
+         * @param  bool  $absolute
+         * @return string
+         *
+         * @throws \InvalidArgumentException
+         */
+        URL::macro('hashedRoute', function ($name, $parameters = [], $expiration = null, $absolute = true) {
+            return $this->route($name, $parameters, $expiration, $absolute).'#'.base64_encode(DrawCrypt::getIV());
+        });
+
+        /**
          * Create a signed route URL for a named route appended with the IV.
          *
          * @param  string  $name
