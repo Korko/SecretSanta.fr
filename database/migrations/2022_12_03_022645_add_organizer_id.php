@@ -13,11 +13,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('draws', function (Blueprint $table) {
-            $table->boolean('organizer_participant')->default(true);
+            $table->foreignId('organizer_id')->nullable()->constrained('participants')->nullOnDelete();
         });
 
-        // Set organizer_participant to false for draws where organizer_email is different from the email of the participant with the lowest id (organizer)
-        DB::update('UPDATE draws SET organizer_participant = 0 WHERE organizer_email != (SELECT email FROM participants WHERE draw_id = draws.id ORDER BY id ASC LIMIT 1)');
+        DB::update('UPDATE draws
+            LEFT JOIN
+                (SELECT id, draw_id, email FROM participants WHERE id IN (SELECT MIN(id) FROM participants GROUP BY draw_id)) AS organizer
+                ON organizer.draw_id = draws.id AND organizer.email = draws.organizer_email
+            SET organizer_id = organizer.id');
     }
 
     /**
@@ -26,7 +29,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('draws', function (Blueprint $table) {
-            $table->dropColumn('organizer_participant');
+            $table->dropColumn('organizer_id');
         });
     }
 };

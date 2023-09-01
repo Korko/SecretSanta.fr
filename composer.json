@@ -22,6 +22,7 @@
         "lexo/defer-vite": "^1.0",
         "predis/predis": "^2.0",
         "pusher/pusher-php-server": "^7.0",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-blade-javascript": "^2.7",
         "stechstudio/laravel-metrics": "^1.5",
         "tightenco/ziggy": "^1.5",

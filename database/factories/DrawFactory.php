@@ -27,6 +27,18 @@ class DrawFactory extends Factory
     }
 
     /**
+     * Indicate that the organizer is also a participant
+     */
+    public function withParticipantOrganizer(): static
+    {
+        return $this->state(function () {
+            return [
+                'organizer_id' => Participant::factory(),
+            ];
+        });
+    }
+
+    /**
      * Indicate that the draw has just ended.
      */
     public function isFinished(): static

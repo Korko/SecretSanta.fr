@@ -56,7 +56,8 @@ class ProcessPendingDraw implements ShouldQueue
         }
 
         try {
-            $this->pending->markAsDrawing();
+            $this->pending->status = PendingDrawStatus::DRAWING;
+            $this->pending->save();
 
             $draw = $handler->handle($this->pending);
 
@@ -65,9 +66,12 @@ class ProcessPendingDraw implements ShouldQueue
             $draw->createMetric('new_draw')
                 ->addExtra('participants', count($draw->participants));
 
-            $this->pending->markAsStarted($draw);
+            $this->pending->status = PendingDrawStatus::STARTED;
+            $this->pending->draw()->associate($draw);
+            $this->pending->save();
         } catch (SolverException $e) {
-            $this->pending->markAsUnsolvable();
+            $this->pending->status = PendingDrawStatus::ERROR;
+            $this->pending->save();
 
             $this->fail($e);
 
@@ -80,6 +84,7 @@ class ProcessPendingDraw implements ShouldQueue
      */
     public function failed(Throwable $exception): void
     {
-        $this->pending->markAsReady();
+        $this->pending->status = PendingDrawStatus::READY;
+        $this->pending->save();
     }
 }

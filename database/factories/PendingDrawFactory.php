@@ -2,8 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Enums\EmailAddressStatus;
 use App\Models\PendingDraw;
+use App\Models\PendingParticipant;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PendingDraw>
@@ -18,21 +21,47 @@ class PendingDrawFactory extends Factory
     public function definition(): array
     {
         return [
+            'title' => $this->faker->sentence(),
             'organizer_name' => $this->faker->name(),
             'organizer_email' => $this->faker->email(),
-            'data' => [
-                'participant-organizer' => '1',
-                'participants' => [],
-                'title' => $this->faker->sentence(),
-                'content' => $this->faker->text(),
-            ],
         ];
+    }
+
+    /**
+     * Indicate that the organizer is also a participant
+     */
+    public function withParticipantOrganizer(): static
+    {
+        return $this->state(function () {
+            return [
+                'organizer_id' => PendingParticipant::factory(),
+            ];
+        });
+    }
+
+    public function withEmailConfirmed(): static
+    {
+        return $this->state(function () {
+            return [
+                'email_status' => EmailAddressStatus::CONFIRMED,
+            ];
+        });
+    }
+
+    public function withParticipants(...$names): static
+    {
+        return $this->has(
+            PendingParticipant::factory()
+                ->count(count($names))
+                ->sequence(fn (Sequence $sequence) => ['name' => $names[$sequence->index]]),
+            'participants'
+        );
     }
 
     /**
      * Indicate that the pending draw has been validated and is ready to be processed.
      */
-    public function ready(): static
+    public function isReady(): static
     {
         return $this->state(function () {
             return [

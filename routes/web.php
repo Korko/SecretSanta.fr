@@ -3,9 +3,11 @@
 use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\OrganizerController;
+use App\Http\Controllers\PendingController;
 use App\Http\Controllers\RandomFormController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SingleController;
+use App\Models\PendingDraw;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
@@ -28,11 +30,13 @@ RateLimiter::for('global', function (Request $request) {
 });
 
 Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
-Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
+Route::pattern('pendingDraw', '[0-9a-zA-Z]{'.config('hashids.connections.pendingDraw.length').',}');
+Route::pattern('pendingParticipant', '[0-9a-zA-Z]{'.config('hashids.connections.pendingParticipant.length').',}');
+Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.participant.length').',}');
 Route::pattern('dearSanta', '[0-9a-zA-Z]{'.config('hashids.connections.dearSanta.length').',}');
 Route::pattern('dearTarget', '[0-9a-zA-Z]{'.config('hashids.connections.dearTarget.length').',}');
 
-Route::fallback([ErrorController::class, 'pageNotFound'])->name('404');
+//Route::fallback([ErrorController::class, 'pageNotFound'])->name('404');
 
 Route::controller(SingleController::class)
     ->group(function () {
@@ -46,6 +50,51 @@ Route::controller(RandomFormController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/process', 'handle')->name('process');
+    });
+
+Route::model('pendingDraw', PendingDraw::class);
+Route::get('/join/{pendingDraw}', [PendingController::class, 'join'])
+    ->name('pending.join')
+    ->missing(function () {
+        return ErrorController::drawNotFound();
+    });
+
+Route::controller(PendingController::class)
+    ->name('pending.')
+    ->prefix('/pending/{pendingDraw}')
+    ->group(function () {
+        Route::get('/', 'index')->name('index')
+            ->missing(function () {
+                return ErrorController::drawNotFound();
+            });
+
+        // TODO: split into get/post with signed middleware?
+        Route::get('/confirm', 'confirmOrganizerEmail')->middleware('signed')->name('confirmOrganizerEmail');
+
+        Route::middleware('decrypt.iv:pendingDraw,title')
+            ->group(function () {
+                Route::post('/title', 'changeTitle')->name('changeTitle');
+
+                Route::post('/name', 'changeOrganizerName')->name('changeOrganizerName');
+                Route::post('/email', 'changeOrganizerEmail')->name('changeOrganizerEmail');
+
+                Route::post('/participants', 'addParticipantName')->name('addParticipantName');
+
+                Route::post('/process', 'handle')->name('process');
+
+                Route::post('/cancel', 'cancel')->middleware('signed')->name('cancel');
+            });
+
+        Route::scopeBindings()
+            ->name('participant.')
+            ->prefix('/participants/{pendingParticipant}')
+            ->middleware('decrypt.iv:pendingParticipant,name')
+            ->group(function () {
+                Route::post('/name', 'changeParticipantName')->name('updateName');
+                Route::post('/email', 'changeParticipantEmail')->name('changeEmail');
+
+                Route::delete('/', 'removeParticipant')->name('remove');
+            });
     });
 
 Route::controller(DearSantaController::class)
