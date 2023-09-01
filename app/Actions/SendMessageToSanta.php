@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\DearSanta;
+use App\Models\Mail;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
 
@@ -23,7 +24,8 @@ class SendMessageToSanta
 
     public function resend(DearSanta $dearSanta)
     {
-        $dearSanta->mail->markAsCreated();
+        $dearSanta->mail->delivery_status = Mail::STATE_CREATED;
+        $dearSanta->mail->save();
 
         $dearSanta->target->notify(new DearSantaNotification($dearSanta));
     }

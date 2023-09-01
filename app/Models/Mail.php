@@ -90,46 +90,19 @@ class Mail extends Model
     {
         parent::boot();
 
-        static::creating(function ($mail) {
+        static::creating(function (Mail $mail) {
             $mail->notification = Str::uuid();
         });
-    }
 
-    public function markAsCreated()
-    {
-        $this->updateDeliveryStatus(self::STATE_CREATED);
-    }
-
-    public function markAsSending()
-    {
-        $this->updateDeliveryStatus(self::STATE_SENDING);
-    }
-
-    public function markAsSent()
-    {
-        $this->updateDeliveryStatus(self::STATE_SENT);
-    }
-
-    public function markAsError()
-    {
-        $this->updateDeliveryStatus(self::STATE_ERROR);
-    }
-
-    public function markAsReceived()
-    {
-        $this->updateDeliveryStatus(self::STATE_RECEIVED);
-    }
-
-    public function updateDeliveryStatus($status)
-    {
-        $this->delivery_status = $status;
-        $this->save();
-
-        try {
-            MailStatusUpdated::dispatch($this);
-        } catch (BroadcastException $e) {
-            // Ignore exception
-        }
+        static::updated(function (Mail $mail) {
+            if ($mail->wasChanged('delivery_status')) {
+                try {
+                    MailStatusUpdated::dispatch($mail);
+                } catch (BroadcastException $e) {
+                    // Ignore exception
+                }
+            }
+        });
     }
 
     /**

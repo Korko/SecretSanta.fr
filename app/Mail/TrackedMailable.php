@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Mail;
 use Facades\App\Services\MailTracker;
 use Illuminate\Mail\Mailable;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -32,13 +33,16 @@ abstract class TrackedMailable extends Mailable
         });
 
         try {
-            $this->mailable->mail->markAsSending();
+            $this->mailable->mail->delivery_status = Mail::STATE_SENDING;
+            $this->mailable->mail->save();
 
             parent::send($mailer);
 
-            $this->mailable->mail->markAsSent();
+            $this->mailable->mail->delivery_status = Mail::STATE_SENT;
+            $this->mailable->mail->save();
         } catch (TransportExceptionInterface $exception) {
-            $this->mailable->mail->markAsError();
+            $this->mailable->mail->delivery_status = Mail::STATE_ERROR;
+            $this->mailable->mail->save();
         }
     }
 

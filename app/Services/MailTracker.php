@@ -32,10 +32,12 @@ class MailTracker
                     case self::BOUNCE:
                         // TODO: Determine depending on the bounce error, if the failure is temporary (4xx) or final (5xx)
                         // Auto-retry or not
-                        $mail->markAsError();
+                        $mail->delivery_status = Mail::STATE_ERROR;
+                        $mail->save();
                         break;
                     case self::CONFIRM:
-                        $mail->markAsReceived();
+                        $mail->delivery_status = Mail::STATE_RECEIVED;
+                        $mail->save();
                         break;
                 }
             }

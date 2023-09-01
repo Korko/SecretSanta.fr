@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\DearTarget;
+use App\Models\Mail;
 use App\Models\Participant;
 use App\Notifications\DearTarget as DearTargetNotification;
 
@@ -23,7 +24,8 @@ class SendMessageToTarget
 
     public function resend(DearTarget $dearTarget)
     {
-        $dearTarget->mail->markAsCreated();
+        $dearTarget->mail->delivery_status = Mail::STATE_CREATED;
+        $dearTarget->mail->save();
 
         $dearTarget->target->notify(new DearTargetNotification($dearTarget));
     }
