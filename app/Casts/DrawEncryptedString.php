@@ -3,30 +3,29 @@
 namespace App\Casts;
 
 use App\Facades\DrawCrypt;
-use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class DrawEncryptedString implements Castable
+class DrawEncryptedString implements CastsAttributes
 {
     /**
-     * Get the caster class to use when casting from / to this cast target.
+     * Cast the given value.
      *
-     * @param  array<string, mixed>  $arguments
+     * @param  array<string, mixed>  $attributes
      */
-    public static function castUsing(array $arguments): CastsAttributes
+    public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        return new class implements CastsAttributes
-        {
-            public function get(Model $model, string $key, mixed $value, array $attributes): mixed
-            {
-                return DrawCrypt::decrypt($value);
-            }
+        return DrawCrypt::decrypt($value);
+    }
 
-            public function set(Model $model, string $key, mixed $value, array $attributes): string
-            {
-                return DrawCrypt::encrypt($value);
-            }
-        };
+    /**
+     * Prepare the given value for storage.
+     *
+     * @param  array<string, mixed>  $attributes
+     * @return array<string, string>
+     */
+    public function set(Model $model, string $key, mixed $value, array $attributes): string
+    {
+        return DrawCrypt::encrypt($value);
     }
 }
