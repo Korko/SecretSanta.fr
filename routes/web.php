@@ -23,19 +23,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-RateLimiter::for('global', function (Request $request) {
-    return Limit::perMinute(100)->by($request->ip())->response(function () {
-        return abort(429);
-    });
-});
-
-Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
-Route::pattern('pendingDraw', '[0-9a-zA-Z]{'.config('hashids.connections.pendingDraw.length').',}');
-Route::pattern('pendingParticipant', '[0-9a-zA-Z]{'.config('hashids.connections.pendingParticipant.length').',}');
-Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.participant.length').',}');
-Route::pattern('dearSanta', '[0-9a-zA-Z]{'.config('hashids.connections.dearSanta.length').',}');
-Route::pattern('dearTarget', '[0-9a-zA-Z]{'.config('hashids.connections.dearTarget.length').',}');
-
 //Route::fallback([ErrorController::class, 'pageNotFound'])->name('404');
 
 Route::controller(SingleController::class)
