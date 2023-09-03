@@ -4,36 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Enums\EmailAddressStatus;
 use App\Enums\PendingDrawStatus;
-use App\Http\Requests\JoinDrawRequest;
 use App\Models\PendingDraw;
 use App\Models\PendingParticipant;
 use Closure;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
-class PendingController extends Controller
+class PendingDrawDashboardController extends Controller
 {
-    public function join(PendingDraw $pending): Response
-    {
-        // TODO
-        return response('test');
-    }
-
     public function index(PendingDraw $pending): Response
     {
         // TODO
         return response('test');
-    }
-
-    public function handle(PendingDraw $pending, JoinDrawRequest $request): JsonResponse
-    {
-        // TODO
-        return response()->json([
-            'message' => 'foobar'
-        ]);
     }
 
     public function cancel(PendingDraw $pending): Response
@@ -53,12 +36,6 @@ class PendingController extends Controller
         ]);
     }
 
-    /*
-                    Rule::unique(PendingParticipant::class, 'name')
-                    ->where(fn (Builder $query) => $query
-                        ->where('pending_draw_id', $pending)
-                        ->where('id', '<>', $pending->organizer_id)
-                    )*/
     public function changeOrganizerName(PendingDraw $pending, Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -193,6 +170,20 @@ class PendingController extends Controller
 
         $pendingParticipant->name = $validated['name'];
         $pendingParticipant->save();
+
+        // TODO
+        return response()->json([
+            'message' => 'foobar'
+        ]);
+    }
+
+    public function removeParticipantName(PendingParticipant $pendingParticipant, Request $request): JsonResponse
+    {
+        $request->validate([
+
+        ]);
+
+        $pendingParticipant->delete();
 
         // TODO
         return response()->json([

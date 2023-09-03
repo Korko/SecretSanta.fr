@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\ErrorController;
+use App\Http\Controllers\JoinPendingDrawController;
 use App\Http\Controllers\OrganizerController;
-use App\Http\Controllers\PendingController;
+use App\Http\Controllers\PendingDrawDashboardController;
 use App\Http\Controllers\RandomFormController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SingleController;
@@ -40,13 +41,19 @@ Route::controller(RandomFormController::class)
     });
 
 Route::model('pendingDraw', PendingDraw::class);
-Route::get('/join/{pendingDraw}', [PendingController::class, 'join'])
-    ->name('pending.join')
-    ->missing(function () {
-        return ErrorController::drawNotFound();
+Route::controller(JoinPendingDrawController::class)
+    ->group(function () {
+        Route::get('/join/{pendingDraw}', 'join')
+            ->name('pending.join')
+            ->missing(function () {
+                return ErrorController::drawNotFound();
+            });
+
+        Route::post('/join/{pendingDraw}', 'handleJoin')
+            ->name('pending.handleJoin');
     });
 
-Route::controller(PendingController::class)
+Route::controller(PendingDrawDashboardController::class)
     ->name('pending.')
     ->prefix('/pending/{pendingDraw}')
     ->group(function () {
