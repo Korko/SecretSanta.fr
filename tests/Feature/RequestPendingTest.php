@@ -322,6 +322,12 @@ test('a draw expires after a certain amount of time', function () {
     $pending = PendingDraw::factory()
         ->createOne();
 
+    $this->artisan('model:prune', ['--model' => [PendingDraw::class]])->assertSuccessful();
+
+    expect($pending->fresh())
+        ->not()
+        ->toBeNull();
+
     $this->travel(2)->months();
 
     $this->artisan('model:prune', ['--model' => [PendingDraw::class]])->assertSuccessful();
@@ -349,11 +355,28 @@ test('an organizer can cancel a draw', function () {
 });
 
 test('an organizer can participate to a pending draw', function () {
+    // Organizer is not participant
+    // TODO
 
+    // Asks to be participant
+    // TODO
+
+    // Check organizer_id filled, name and email same as organizer in pending_draw
+    // TODO
 })->todo();
 
 test('a participant organizer can withdraw from participants', function () {
+    // Organizer is participant
+    // TODO
 
+    // Asks to withdraw
+    // TODO
+
+    // Check organizer_id empty and participant removed
+    // TODO
+
+    // Ensure organizer name and email still filled in pending_draw
+    // TODO
 })->todo();
 
 test('an organizer can prefill some participant names', function () {
@@ -366,22 +389,76 @@ test('an organizer can prefill some participant names', function () {
         'name' => fake()->name()
     ])
         ->assertSuccessful();
-})->todo();
+});
 
 test('an organizer can remove some prefilled participant names', function () {
+    Notification::fake();
 
+    $participantNames = [
+        fake()->name(),
+        fake()->name(),
+        fake()->name(),
+        fake()->name(),
+    ];
+
+    $pending = PendingDraw::factory()
+        ->withParticipants($participantNames)
+        ->createOne();
+
+    // Pick a random name from the list
+    $name = array_rand($participantNames);
+
+    expect($pending->participants()->pluck('name'))
+        ->toContain($name);
+
+    // Ask to remove one name
+    // TODO
+
+    expect($pending->participants()->pluck('name'))
+        ->not()
+        ->toContain($name);
 })->todo();
 
 test('a visitor can join a pending draw', function () {
+    // Check the url from the organizer confirmation is valid
+    // TODO
 
+    // Check a visitor can register with a new name
+    // TODO
+
+    // Check that participant is now registered and status changed
+    // TODO
+
+    // Check that participant received a mail after choosing their name
+    // TODO
 })->todo();
 
 test('a visitor can join a pending draw by selecting an already filled name', function () {
+    // Create a draw with names defined
+    // TODO
 
+    // Check a visitor can pick a name defined by the organizer
+    // TODO
+
+    // Check that participant is now registered and status changed
+    // TODO
+
+    // Check that participant received a mail after choosing their name
+    // TODO
 })->todo();
 
 test('once a visitor confirm their participation, the organizer is notified', function () {
+    // Create a draw
+    // TODO
 
+    // A visitor can pick a name defined by the organizer
+    // TODO
+
+    // Check organizer notification
+    // TODO
+
+    // Same as before but with participant organizer
+    // TODO
 })->todo();
 
 test('a visitor cannot join an already started draw', function () {
@@ -396,24 +473,79 @@ test('a visitor cannot join a cancelled draw', function () {
 
 })->todo();
 
-test('a visitor can change their name any time before the pending draw is processed', function () {
+test('a visitor have to confirm their email to validate their participation to the draw', function () {
+    // Check the visitor can confirm their email
+    // TODO
 
+    // Check the participant status has changed and is now locked
+    // TODO
+
+    // Check a visitor received a link to their panel once email was validated
+    // TODO
+})->todo();
+
+test('a participant name is freed after some time if the visitor didn\'t confirm their email', function () {
+    // Create participant with email not validated
+    // TODO
+
+    // Time advance
+    // TODO
+
+    // Cron job
+    // TODO
+
+    // Check participant email is removed, status reset
+    // TODO
+})->todo();
+
+test('a participant can change their name any time before the pending draw is processed', function () {
+    // Create participant with email validated
+    // TODO
+
+    // Check participant can update their name
+    // TODO
+
+    // Check name was changed
+    // TODO
 })->todo();
 
 test('the organizer is notified when a visitor changes their name before the pending draw is processed', function () {
+    // Create participant with email validated
+    // TODO
 
+    // Check participant can update their name
+    // TODO
+
+    // Check the organizer received a notification
+    // TODO
 })->todo();
 
-test('a visitor have to confirm their email to validate their participation to the draw', function () {
+test('a participant can change their email any time before the pending draw is processed', function () {
+    // Create participant with email validated
+    // TODO
 
+    // Check participant can update their email
+    // TODO
+
+    // Check the email is changed
+    // TODO
 })->todo();
 
-test('a visitor can change their email any time before the pending draw is processed', function () {
+test('if a participant confirm their email address and then changes it again, it invalidates the new email address', function () {
+    // Create participant with email validated
+    // TODO
 
-})->todo();
+    // Check participant can update their email
+    // TODO
 
-test('if a visitor confirm their email address and then changes it again, it invalidates the new email address', function () {
+    // Check the email status is invalidated
+    // TODO
 
+    // Validate the new email
+    // TODO
+
+    // Check the email is validated
+    // TODO
 })->todo();
 
 ///// Organizer actions
