@@ -22,7 +22,7 @@ class PendingParticipant extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'email'];
+    protected $fillable = ['name', 'email', 'email_status'];
 
     /**
      * The attributes that should be cast.
