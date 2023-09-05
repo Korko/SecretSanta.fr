@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DrawStatus;
+use App\Exceptions\DrawStartedException;
 use App\Http\Requests\JoinDrawRequest;
 use App\Models\Draw;
 use Illuminate\Http\JsonResponse;
@@ -27,27 +28,40 @@ class JoinDrawController extends Controller
 
     public function handleJoin(Draw $draw, JoinDrawRequest $request): JsonResponse
     {
-        // TODO: If a visitor is trying to join but in the mean time, the draw was started, maybe fail gracefully?
-        throw_unless($draw->status === DrawStatus::CREATED, ModelNotFoundException::class);
+        if($draw->status !== DrawStatus::CREATED) {
+            return response()->json([
+                'message' => trans("Le tirage au sort a déjà été lancé, vous ne pouvez plus le rejoindre."),
+            ], 422);
+        }
 
-        // TODO: Check chosen name is not already locked
+        if(
+            $draw
+            ->participants()
+            ->where('name', $request->name)
+            ->where('email', '<>', null)
+            ->exists()
+        ) {
+            return response()->json([
+                'message' => trans("Le nom choisi a déjà été réservé par quelqu'un d'autre."),
+            ], 422);
+        }
 
-        $pendingParticipant = $draw
+        $participant = $draw
             ->participants()
             ->firstOrCreate([
                 'name' => $request->name,
             ]);
 
-        $pendingParticipant
+        $participant
             ->update([
                 'email' => $request->email,
                 'email_verified_at' => null,
             ]);
 
-        $pendingParticipant->notify(new VerifyPendingEmail);
+        $participant->notify(new VerifyPendingEmail);
 
         return response()->json([
-            'message' => 'foobar'
+            'message' => trans("Un email de confirmation vous a été envoyé pour terminer votre inscription à ce tirage au sort.")
         ]);
     }
 }
