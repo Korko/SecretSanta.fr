@@ -37,11 +37,11 @@ class DearTarget extends Model
     protected $hashConnection = 'dearTarget';
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that aren't mass assignable.
      *
-     * @var string[]
+     * @var array<string>|bool
      */
-    protected $fillable = ['draw_id', 'mail_type', 'sender_id'];
+    protected $guarded = [];
 
     /**
      * Indicates if the model should be timestamped.

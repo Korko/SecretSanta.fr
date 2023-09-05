@@ -38,16 +38,6 @@ return [
     */
 
     'connections' => [
-        'pendingDraw' => [
-            'salt' => env('HASHIDS_SALT_PENDING', 'secretsanta-pendingDraw'),
-            'length' => 5,
-        ],
-
-        'pendingParticipant' => [
-            'salt' => env('HASHIDS_SALT_PENDING_PARTICIPANT', 'secretsanta-pendingParticipant'),
-            'length' => 5,
-        ],
-
         'draw' => [
             'salt' => env('HASHIDS_SALT_DRAW', 'secretsanta-draw'),
             'length' => 5,

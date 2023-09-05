@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Draw;
 use App\Models\Participant;
-use App\Models\PendingDraw;
 use DB;
 use Illuminate\Support\Arr;
 
@@ -18,21 +17,13 @@ class DrawFormHandler
 
     protected $participants;
 
-    public function handle(PendingDraw $pending): Draw
+    public function handle(Draw $draw): Draw
     {
-        if (! Arr::get($pending->data, 'participant-organizer', false)) {
-            $organizer = $pending->data['organizer'];
-        } else {
-            $organizer = null;
-        }
-
-        return DB::transaction(function () use ($organizer, $pending): Draw {
-            $draw = $this->createDraw(
-                organizer: $organizer,
-                participants: $pending->data['participants'],
-                title: $pending->data['title'],
-                body: $pending->data['content']
-            );
+        return DB::transaction(function () use ($draw): Draw {
+            /*$draw = $this->createDraw(
+                organizer: $draw->organizer(),
+                participants: $draw->participants(),
+            );*/
 
             DrawHandler::solve($draw);
 
@@ -45,40 +36,24 @@ class DrawFormHandler
      *
      * @param  array|null  $organizer
      * @param  array  $participants
-     * @param  string  $title
-     * @param  string  $body
      * @return Draw
      */
-    protected function createDraw(array $organizer = null, array $participants, string $title, string $body): Draw
+    protected function createDraw(array $organizer = null, array $participants): Draw
     {
-        $draw = new Draw();
-        $draw->mail_title = $title;
-        $draw->mail_body = $body;
-        $draw->organizer_participant = is_null($organizer);
-        $draw->organizer_name = $organizer['name'] ?? current($participants)['name'];
-        $draw->organizer_email = $organizer['email'] ?? current($participants)['email'];
-        $draw->save();
-
-        foreach ($participants as $idx => $santa) {
-            $participant = new Participant();
-            $participant->draw()->associate($draw);
-            $participant->name = $santa['name'];
-            $participant->email = Arr::get($santa, 'email');
-            $participant->setTransientAttribute('exclusions', Arr::get($santa, 'exclusions', []));
-
-            $participants[$idx] = $participant;
+        foreach ($participants as $participant) {
+            // TODO
+            // $participant->setTransientAttribute('exclusions', Arr::get($santa, 'exclusions', []));
         }
-
-        $draw->participants()->saveMany($participants);
 
         // Don't use $draw->participants or you'll love the transient attributes
         foreach ($participants as $participant) {
-            $participant->exclusions()->attach(
+            // TODO
+            // $participant->exclusions()->attach(
                 // exclusions is 0 based request form indexed, we need 1 based sql table index instead
-                array_map(function ($participantId) use ($participants) {
-                    return $participants[intval($participantId)]->id;
-                }, $participant->getTransientAttribute('exclusions', []))
-            );
+            //     array_map(function ($participantId) use ($participants) {
+            //         return $participants[intval($participantId)]->id;
+            //     }, $participant->getTransientAttribute('exclusions', []))
+            // );
         }
 
         return $draw;

@@ -2,38 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\EmailAddressStatus;
-use App\Enums\PendingDrawStatus;
+use App\Enums\DrawStatus;
 use App\Http\Requests\JoinDrawRequest;
-use App\Models\PendingDraw;
+use App\Models\Draw;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use VerifyPendingEmail;
 
-class JoinPendingDrawController extends Controller
+class JoinDrawController extends Controller
 {
     // Hashed route
-    public function join(PendingDraw $pending): Response
+    public function join(Draw $draw): Response
     {
-        if($pending->status !== PendingDrawStatus::CREATED) {
+        if($draw->status !== DrawStatus::CREATED) {
             return view('pending.locked', [
-                'pending' => $pending,
+                'pending' => $draw,
             ]);
         }
 
         return view('pending.join', [
-            'pending' => $pending,
+            'pending' => $draw,
         ]);
     }
 
-    public function handleJoin(PendingDraw $pending, JoinDrawRequest $request): JsonResponse
+    public function handleJoin(Draw $draw, JoinDrawRequest $request): JsonResponse
     {
         // TODO: If a visitor is trying to join but in the mean time, the draw was started, maybe fail gracefully?
-        throw_unless($pending->status === PendingDrawStatus::CREATED, ModelNotFoundException::class);
+        throw_unless($draw->status === DrawStatus::CREATED, ModelNotFoundException::class);
 
         // TODO: Check chosen name is not already locked
 
-        $pendingParticipant = $pending
+        $pendingParticipant = $draw
             ->participants()
             ->firstOrCreate([
                 'name' => $request->name,
@@ -42,7 +41,7 @@ class JoinPendingDrawController extends Controller
         $pendingParticipant
             ->update([
                 'email' => $request->email,
-                'email_status' => EmailAddressStatus::CREATED,
+                'email_verified_at' => null,
             ]);
 
         $pendingParticipant->notify(new VerifyPendingEmail);

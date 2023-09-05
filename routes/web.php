@@ -1,16 +1,13 @@
 <?php
 
 use App\Http\Controllers\DearSantaController;
+use App\Http\Controllers\DrawDashboardController;
 use App\Http\Controllers\ErrorController;
-use App\Http\Controllers\JoinPendingDrawController;
+use App\Http\Controllers\JoinDrawController;
 use App\Http\Controllers\OrganizerController;
-use App\Http\Controllers\PendingDrawDashboardController;
 use App\Http\Controllers\RandomFormController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SingleController;
-use App\Models\PendingDraw;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,32 +37,30 @@ Route::controller(RandomFormController::class)
         Route::post('/process', 'handle')->name('process');
     });
 
-Route::model('pendingDraw', PendingDraw::class);
-Route::controller(JoinPendingDrawController::class)
+Route::controller(JoinDrawController::class)
     ->group(function () {
-        Route::get('/join/{pendingDraw}', 'join')
+        Route::get('/join/{pending_draw}', 'join')
             ->name('pending.join')
             ->missing(function () {
                 return ErrorController::drawNotFound();
             });
 
-        Route::post('/join/{pendingDraw}', 'handleJoin')
+        Route::post('/join/{pending_draw}', 'handleJoin')
             ->name('pending.handleJoin');
     });
 
-Route::controller(PendingDrawDashboardController::class)
-    ->name('pending.')
-    ->prefix('/pending/{pendingDraw}')
+Route::controller(DrawDashboardController::class)
+    ->name('draw.')
+    ->prefix('/draw/{draw}')
     ->group(function () {
         Route::get('/', 'index')->name('index')
             ->missing(function () {
                 return ErrorController::drawNotFound();
             });
 
-        // TODO: split into get/post with signed middleware?
         Route::get('/confirm', 'confirmOrganizerEmail')->middleware('signed')->name('confirmOrganizerEmail');
 
-        Route::middleware('decrypt.iv:pendingDraw,title')
+        Route::middleware('decrypt.iv:draw,title')
             ->group(function () {
                 Route::post('/title', 'changeTitle')->name('changeTitle');
 
@@ -81,8 +76,8 @@ Route::controller(PendingDrawDashboardController::class)
 
         Route::scopeBindings()
             ->name('participant.')
-            ->prefix('/participants/{pendingParticipant}')
-            ->middleware('decrypt.iv:pendingParticipant,name')
+            ->prefix('/participants/{participant}')
+            ->middleware('decrypt.iv:participant,name')
             ->group(function () {
                 Route::post('/name', 'changeParticipantName')->name('updateName');
                 Route::post('/email', 'changeParticipantEmail')->name('changeEmail');
@@ -90,7 +85,7 @@ Route::controller(PendingDrawDashboardController::class)
                 Route::delete('/', 'removeParticipant')->name('remove');
             });
     });
-
+/*
 Route::controller(DearSantaController::class)
     ->middleware('signed')
     ->prefix('/santa/{participant}')
@@ -143,3 +138,4 @@ Route::controller(OrganizerController::class)
             Route::get('/{participant}/withdraw', 'withdraw')->name('withdraw');
         });
     });
+*/

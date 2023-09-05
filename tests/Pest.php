@@ -1,12 +1,9 @@
 <?php
 
 use App\Models\Draw;
-use App\Models\PendingDraw;
 use App\Services\DrawFormHandler;
-use function Pest\Laravel\assertDatabaseCount;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\App;
 use Illuminate\Testing\TestResponse;
 use Tests\DuskTestCase;
 use Tests\TestCase;
@@ -102,7 +99,7 @@ function createDraw($participants, $params = [])
     ])
         ->assertJsonStructure(['message']);
 }
-
+/*
 function createServiceDraw($participants, $data = []): Draw
 {
     $pendingDraw = PendingDraw::factory()
@@ -117,7 +114,7 @@ function createServiceDraw($participants, $data = []): Draw
 
     return (new DrawFormHandler())->handle($pendingDraw);
 }
-
+*/
 /**
  * Laravel TestCase aliases
  */

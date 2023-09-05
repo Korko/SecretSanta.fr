@@ -1,8 +1,7 @@
 <?php
 
 use App\Enums\AppMode;
-use App\Enums\EmailAddressStatus;
-use App\Enums\PendingDrawStatus;
+use App\Enums\DrawStatus;
 use App\Enums\QuestionToSanta;
 
 return [
@@ -18,16 +17,13 @@ return [
         (AppMode::OPEN)->value => 'Mécène',
         (AppMode::UNLIMITED)->value => 'Professionnelle',
     ],
-    'pendingDrawStatus' => [
-        (PendingDrawStatus::CREATED)->value => '',
-        (PendingDrawStatus::READY)->value => '',
-        (PendingDrawStatus::DRAWING)->value => '',
-        (PendingDrawStatus::STARTED)->value => '',
-        (PendingDrawStatus::ERROR)->value => '',
+    'drawStatus' => [
+        (DrawStatus::CREATED)->value => '',
+        (DrawStatus::READY)->value => '',
+        (DrawStatus::DRAWING)->value => '',
+        (DrawStatus::STARTED)->value => '',
+        (DrawStatus::FINISHED)->value => '',
+        (DrawStatus::ERROR)->value => '',
+        (DrawStatus::CANCELED)->value => '',
     ],
-    'emailAddressStatus' => [
-        (EmailAddressStatus::CREATED)->value => 'Créée',
-        (EmailAddressStatus::CONFIRMED)->value => 'Confirmée',
-        (EmailAddressStatus::ERROR)->value => 'Erreur',
-    ]
 ];

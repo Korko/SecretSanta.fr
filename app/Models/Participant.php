@@ -61,11 +61,11 @@ class Participant extends Model implements UrlRoutable
     protected $hashConnection = 'participant';
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that aren't mass assignable.
      *
-     * @var string[]
+     * @var array<string>|bool
      */
-    protected $fillable = ['name', 'email'];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast.
@@ -75,6 +75,7 @@ class Participant extends Model implements UrlRoutable
     protected $casts = [
         'name' => DrawEncryptedString::class,
         'email' => DrawEncryptedString::class,
+        'email_verified_at' => 'timestamp',
     ];
 
     /**
@@ -152,9 +153,7 @@ class Participant extends Model implements UrlRoutable
     public function resolveRouteBinding($value, $field = null): ?Model
     {
         $participant = $this->baseResolver($value, $field);
-        $participant->load(['mail', 'draw', 'santa', 'target']);
-
-        throw_if($participant->draw->isFinished, ModelExpiredException::class);
+        $participant->load(['mail', 'draw', 'santa', 'target']);// TODO: Move from here
 
         return $participant;
     }

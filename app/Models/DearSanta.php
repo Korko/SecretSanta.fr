@@ -36,11 +36,11 @@ class DearSanta extends Model
     protected $hashConnection = 'dearSanta';
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that aren't mass assignable.
      *
-     * @var string[]
+     * @var array<string>|bool
      */
-    protected $fillable = ['mail_body', 'draw_id', 'sender_id'];
+    protected $guarded = [];
 
     /**
      * Indicates if the model should be timestamped.

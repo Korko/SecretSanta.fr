@@ -2,19 +2,19 @@
 
 namespace App\Events;
 
-use App\Models\PendingDraw;
+use App\Models\Draw;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PendingDrawStatusUpdated implements ShouldBroadcast
+class DrawStatusUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public function __construct(
-        protected readonly PendingDraw $draw
+        protected readonly Draw $draw
     ) {
     }
 
@@ -43,6 +43,6 @@ class PendingDrawStatusUpdated implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
-        return new Channel('pending_draw.'.$this->draw->id);
+        return new Channel('draw.'.$this->draw->id);
     }
 }

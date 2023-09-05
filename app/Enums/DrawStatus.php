@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use App\Traits\EnumToArray;
 
-enum PendingDrawStatus: string
+enum DrawStatus: string
 {
     use EnumToArray;
 
@@ -29,6 +29,11 @@ enum PendingDrawStatus: string
     case STARTED = 'started';
 
     /**
+     * The draw is finished
+     */
+    case FINISHED = 'finished';
+
+    /**
      * The draw is unsolvable and thus, cannot be processed
      */
     case ERROR = 'error';
@@ -40,6 +45,6 @@ enum PendingDrawStatus: string
 
     public function name(): string
     {
-        return trans('app.pendingDrawStatus')[$this->value];
+        return trans('app.drawStatus')[$this->value];
     }
 }

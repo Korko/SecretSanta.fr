@@ -3,15 +3,16 @@
 namespace App\Models;
 
 use App\Casts\DrawEncryptedString;
-use App\Services\DrawHandler;
-use DateInterval;
-use DateTime;
+use App\Enums\DrawStatus;
+use App\Events\DrawStatusUpdated;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Notifications\AnonymousNotifiable;
+use Illuminate\Support\Carbon;
 use Metrics;
 
 /**
@@ -56,10 +57,10 @@ class Draw extends Model implements UrlRoutable
 {
     use HasFactory, HasHash, MassPrunable;
 
-    // Consider a draw cannot expire before at least N months
+    // Keep a draw at least this amount of months after the creation, update or not
     public const MIN_MONTHS_BEFORE_EXPIRATION = 6;
 
-    // Consider a draw expired N months after the last mail sent
+    // Keep a draw at max this amount of months after the last update
     public const MONTHS_BEFORE_EXPIRATION = 3;
 
     // Remove everything N days after the finished_at date
@@ -68,11 +69,11 @@ class Draw extends Model implements UrlRoutable
     protected $hashConnection = 'draw';
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that aren't mass assignable.
      *
-     * @var string[]
+     * @var array<string>|bool
      */
-    protected $fillable = ['mail_title', 'mail_body', 'next_solvable', 'organizer_name', 'organizer_email', 'created_at', 'updated_at', 'finished_at'];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast.
@@ -80,18 +81,68 @@ class Draw extends Model implements UrlRoutable
      * @var array
      */
     protected $casts = [
+        'status' => DrawStatus::class,
+        'ready_at' => 'datetime',
+        'drawn_at' => 'datetime',
         'finished_at' => 'datetime',
-        'mail_title' => DrawEncryptedString::class,
-        'mail_body' => DrawEncryptedString::class,
-        'next_solvable' => 'boolean',
+        'title' => DrawEncryptedString::class,
+        'description' => DrawEncryptedString::class,
         'organizer_name' => DrawEncryptedString::class,
         'organizer_email' => DrawEncryptedString::class,
+        'organizer_email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'status' => DrawStatus::CREATED,
+        'description' => null,
+        'ready_at' => null,
+        'drawn_at' => null,
+        'finished_at' => null,
+        'organizer_id' => null,
+        'organizer_email_verified_at' => null,
+    ];
+
+    protected static function booted(): void
+    {
+        static::updated(function (Draw $draw) {
+            if ($draw->wasChanged('status')) {
+                try {
+                    DrawStatusUpdated::dispatch($draw);
+                } catch (BroadcastException $e) {
+                    // Ignore exception
+                }
+            }
+        });
+    }
 
     public function prunable(): Builder
     {
-        return static::where('finished_at', '<=', Carbon::now()->subDays(self::DAYS_BEFORE_DELETION))
-            ->orWhere('updated_at', '<=', Carbon::now()->subMonths(self::MONTHS_BEFORE_EXPIRATION));
+        return static::where(function(Builder $query) {
+                $query->where('status', DrawStatus::CREATED)
+                    ->where('created_at', '<=', Carbon::now()->subDays(30));
+            })
+            ->orWhere(function(Builder $query) {
+                $query->where('status', DrawStatus::CANCELED)
+                    ->where('created_at', '<=', Carbon::now()->subDays(7));
+            })
+            ->orWhere(function(Builder $query) {
+                $query->where('status', DrawStatus::ERROR)
+                    ->where('created_at', '<=', Carbon::now()->subMonths(3));
+            })
+            ->orWhere(function(Builder $query) {
+                $query->where('status', DrawStatus::STARTED)
+                    ->where('created_at', '>=', Carbon::now()->subMonths(self::MIN_MONTHS_BEFORE_EXPIRATION))
+                    ->where('updated_at', '<=', Carbon::now()->subMonths(self::MONTHS_BEFORE_EXPIRATION));
+            })
+            ->orWhere(function(Builder $query) {
+                $query->where('status', DrawStatus::FINISHED)
+                    ->where('finished_at', '<=', Carbon::now()->subDays(self::DAYS_BEFORE_DELETION));
+            });
     }
 
     public function participants()
@@ -99,37 +150,59 @@ class Draw extends Model implements UrlRoutable
         return $this->hasMany(Participant::class);
     }
 
-    public function getOrganizerAttribute()
+    public function organizer()
     {
-        return $this->organizer_participant ?
-            $this->participants->first() : new AnonymousNotifiable([
-                $this->organizer_email => $this->organizer_name,
-            ]);
+        return $this->belongsTo(Participant::class)
+            ->withDefault(function ($instance) {
+                return new AnonymousNotifiable([
+                    $instance->organizer_email => $instance->organizer_name,
+                ]);
+            });
     }
 
-    public function getExpiresAtAttribute()
+    protected function participantOrganizer(): Attribute
     {
-        return max($this->created_at->addMonths(self::MIN_MONTHS_BEFORE_EXPIRATION), $this->updated_at->addMonths(self::MONTHS_BEFORE_EXPIRATION));
+        return Attribute::make(
+            get: fn () => $this->organizer instanceof Participant
+        );
     }
 
-    public function getIsFinishedAttribute()
+    protected function expiresAt(): Attribute
     {
-        return $this->finished_at ? $this->finished_at->isPast() : false;
+        return Attribute::make(
+            get: fn () => $this->status === DrawStatus::STARTED ? max(
+                $this->created_at->addMonths(self::MIN_MONTHS_BEFORE_EXPIRATION),
+                $this->updated_at->addMonths(self::MONTHS_BEFORE_EXPIRATION)
+            ) : null
+        );
     }
 
-    public function getDeletesAtAttribute()
+    protected function deletesAt(): Attribute
     {
-        return max($this->expires_at, $this->finished_at ? $this->finished_at->addMonths(self::DAYS_BEFORE_DELETION) : null);
+        return Attribute::make(
+            get: fn () => max($this->expires_at, $this->finished_at?->addDays(self::DAYS_BEFORE_DELETION))
+        );
     }
 
-    public function getMetricIdAttribute()
+    protected function isExpired(): Attribute
     {
-        return (new xxHash($this->id))->hash($this->created_at);
+        return Attribute::make(
+            get: fn () => $this->expired_at?->isPast() ?: false
+        );
     }
 
-    public function getCanRedrawAttribute()
+    protected function isFinished(): Attribute
     {
-        return DrawHandler::canRedraw($this->participants->redrawables());
+        return Attribute::make(
+            get: fn () => $this->finished_at?->isPast() ?: false
+        );
+    }
+
+    protected function metricId(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => (new xxHash($this->id))->hash($this->created_at)
+        );
     }
 
     public function createMetric($name)

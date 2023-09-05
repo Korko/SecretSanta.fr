@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\PendingDraw as PendingDrawModel;
+use App\Models\Draw;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,7 +17,7 @@ class PendingDrawConfirm extends Mailable
      * @return void
      */
     public function __construct(
-        protected readonly PendingDrawModel $pendingDraw
+        protected readonly Draw $draw
     ) {
     }
 
@@ -27,7 +27,7 @@ class PendingDrawConfirm extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: Lang::get('SecretSanta - Attente de validation', ['draw' => $this->pendingDraw->hash]),
+            subject: Lang::get('SecretSanta - Attente de validation', ['draw' => $this->draw->hash]),
         );
     }
 
@@ -39,8 +39,8 @@ class PendingDrawConfirm extends Mailable
         return new Content(
             markdown: 'emails.pending_draw',
             with: [
-                'name' => $this->pendingDraw->organizer_name,
-                'validationLink' => URL::hashedSignedRoute('pending.confirmOrganizerEmail', ['pendingDraw' => $this->pendingDraw->hash]),
+                'name' => $this->draw->organizer_name,
+                'validationLink' => URL::hashedSignedRoute('draw.confirmOrganizerEmail', ['draw' => $this->draw->hash]),
             ]
         );
     }

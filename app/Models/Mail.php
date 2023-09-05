@@ -73,11 +73,11 @@ class Mail extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that aren't mass assignable.
      *
-     * @var string[]
+     * @var array<string>|bool
      */
-    protected $fillable = ['draw_id', 'notification', 'delivery_status'];
+    protected $guarded = [];
 
     /**
      * All of the relationships to be touched.

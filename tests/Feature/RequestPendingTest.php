@@ -1,15 +1,14 @@
 <?php
 
-use App\Enums\EmailAddressStatus;
-use App\Enums\PendingDrawStatus;
-use App\Models\PendingDraw;
-use App\Models\PendingParticipant;
+use App\Enums\DrawStatus;
+use App\Models\Draw;
+use App\Models\Participant;
 use App\Notifications\PendingDrawConfirm;
 
 test('a visitor can create a new pending draw', function () {
     Notification::fake();
 
-    expect(PendingDraw::class)->toHaveCount(0);
+    expect(Draw::class)->toHaveCount(0);
 
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
@@ -17,14 +16,14 @@ test('a visitor can create a new pending draw', function () {
         'organizer-email' => fake()->email(),
     ])->assertJsonStructure(['message', 'link', 'qrcode']);
 
-    expect(PendingDraw::class)->toHaveCount(1);
+    expect(Draw::class)->toHaveCount(1);
 });
 
 test('an organizer can specify a list of participant names', function () {
     Notification::fake();
 
-    expect(PendingDraw::class)->toHaveCount(0);
-    expect(PendingParticipant::class)->toHaveCount(0);
+    expect(Draw::class)->toHaveCount(0);
+    expect(Participant::class)->toHaveCount(0);
 
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
@@ -37,15 +36,15 @@ test('an organizer can specify a list of participant names', function () {
         ],
     ])->assertSuccessful();
 
-    expect(PendingDraw::class)->toHaveCount(1);
-    expect(PendingParticipant::class)->toHaveCount(3);
+    expect(Draw::class)->toHaveCount(1);
+    expect(Participant::class)->toHaveCount(3);
 });
 
 test('an organizer cannot specify a list of participant names containing their own name', function () {
     Notification::fake();
 
-    expect(PendingDraw::class)->toHaveCount(0);
-    expect(PendingParticipant::class)->toHaveCount(0);
+    expect(Draw::class)->toHaveCount(0);
+    expect(Participant::class)->toHaveCount(0);
 
     $organizer = fake()->name();
 
@@ -62,14 +61,15 @@ test('an organizer cannot specify a list of participant names containing their o
         ->assertUnprocessable()
         ->assertInvalid('participants.1');
 
-    expect(PendingDraw::class)->toHaveCount(0);;
+    expect(Draw::class)->toHaveCount(0);
+    expect(Participant::class)->toHaveCount(0);
 });
 
 test('an organizer cannot specify a list of participant names with duplicates', function () {
     Notification::fake();
 
-    expect(PendingDraw::class)->toHaveCount(0);
-    expect(PendingParticipant::class)->toHaveCount(0);
+    expect(Draw::class)->toHaveCount(0);
+    expect(Participant::class)->toHaveCount(0);
 
     $participantName = fake()->name();
 
@@ -87,14 +87,15 @@ test('an organizer cannot specify a list of participant names with duplicates', 
         ->assertInvalid('participants.0')
         ->assertInvalid('participants.1');
 
-    expect(PendingDraw::class)->toHaveCount(0);;
+    expect(Draw::class)->toHaveCount(0);
+    expect(Participant::class)->toHaveCount(0);
 });
 
 test('an organizer can also be a participant', function () {
     Notification::fake();
 
-    expect(PendingDraw::class)->toHaveCount(0);
-    expect(PendingParticipant::class)->toHaveCount(0);
+    expect(Draw::class)->toHaveCount(0);
+    expect(Participant::class)->toHaveCount(0);
 
     ajaxPost(URL::route('form.process'), [
         'participant-organizer' => true,
@@ -108,8 +109,8 @@ test('an organizer can also be a participant', function () {
         ],
     ])->assertSuccessful();
 
-    expect(PendingDraw::class)->toHaveCount(1);
-    expect(PendingParticipant::class)->toHaveCount(4);
+    expect(Draw::class)->toHaveCount(1);
+    expect(Participant::class)->toHaveCount(4);
 });
 
 test('an organizer is informed they must confirm their email address to process a pending draw', function () {
@@ -121,7 +122,7 @@ test('an organizer is informed they must confirm their email address to process 
         'organizer-email' => fake()->email(),
     ])->assertSuccessful();
 
-    Notification::assertSentTo(PendingDraw::first()->organizer, PendingDrawConfirm::class);
+    Notification::assertSentTo(Draw::first()->organizer, PendingDrawConfirm::class);
 });
 
 test('an organizer receives in the original notification the link to confirm their email address', function () {
@@ -133,10 +134,10 @@ test('an organizer receives in the original notification the link to confirm the
         'organizer-email' => fake()->email(),
     ])->assertSuccessful();
 
-    Notification::assertSentTo(PendingDraw::first()->organizer, PendingDrawConfirm::class, function ($notification, $channels, $notifiable) {
+    Notification::assertSentTo(Draw::first()->organizer, PendingDrawConfirm::class, function ($notification, $channels, $notifiable) {
         return
             $notification->toMail($notifiable)->assertSeeInHtml(
-                URL::hashedSignedRoute('pending.confirmOrganizerEmail', ['pendingDraw' => PendingDraw::first()])
+                URL::hashedSignedRoute('draw.confirmOrganizerEmail', ['draw' => Draw::first()])
             );
     });
 });
@@ -144,33 +145,36 @@ test('an organizer receives in the original notification the link to confirm the
 test('an organizer can confirm their email address', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->createOne();
 
-    expect($pending->email_status)->toBe(EmailAddressStatus::CREATED);
+    expect($draw->organizer_email_verified_at)
+        ->toBeNull();
 
-    test()->get(URL::hashedSignedRoute('pending.confirmOrganizerEmail', ['pendingDraw' => $pending]))
+    test()->get(URL::hashedSignedRoute('draw.confirmOrganizerEmail', ['draw' => $draw]))
         ->assertSuccessful();
 
-    expect($pending->fresh()->email_status)
-        ->toBe(EmailAddressStatus::CONFIRMED);
+    expect($draw->fresh()->organizer_email_verified_at)
+        ->not()
+        ->toBeNull();
 });
 
 test('if a participant organizer confirm their email address, it also confirm the according participant email', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->withParticipantOrganizer()
         ->createOne();
 
-    expect($pending->organizer->email_status)
-        ->toBe(EmailAddressStatus::CREATED);
+    expect($draw->organizer->email_verified_at)
+        ->toBeNull();
 
-    test()->get(URL::hashedSignedRoute('pending.confirmOrganizerEmail', ['pendingDraw' => $pending]))
+    test()->get(URL::hashedSignedRoute('draw.confirmOrganizerEmail', ['draw' => $draw]))
         ->assertSuccessful();
 
-    expect($pending->organizer->fresh()->email_status)
-        ->toBe(EmailAddressStatus::CONFIRMED);
+    expect($draw->organizer->fresh()->email_verified_at)
+        ->not()
+        ->toBeNull();
 });
 
 // TODO: Add tests about changing title
@@ -178,105 +182,105 @@ test('if a participant organizer confirm their email address, it also confirm th
 test('an organizer can change their email any time before the pending draw is processed', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->createOne();
 
     $newValue = fake()->email();
 
-    ajaxPost(URL::signedRoute('pending.changeOrganizerEmail', ['pendingDraw' => $pending]), [
+    ajaxPost(URL::signedRoute('draw.changeOrganizerEmail', ['draw' => $draw]), [
         'email' => $newValue
     ])
         ->assertSuccessful();
 
-    expect($pending->fresh()->organizer_email)
+    expect($draw->fresh()->organizer_email)
         ->toBe($newValue);
 });
 
 test('if a participant organizer changes their email, it also change the according participant email', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->withParticipantOrganizer()
         ->createOne();
 
     $newValue = fake()->email();
 
-    ajaxPost(URL::signedRoute('pending.changeOrganizerEmail', ['pendingDraw' => $pending]), [
+    ajaxPost(URL::signedRoute('draw.changeOrganizerEmail', ['draw' => $draw]), [
         'email' => $newValue
     ])
         ->assertSuccessful();
 
-    expect($pending->organizer->fresh()->email)
+    expect($draw->organizer->fresh()->email)
         ->toBe($newValue);
 });
 
 test('if an organizer confirm their email address and then changes it again, it invalidates the new email address', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
-        ->withEmailConfirmed()
+    $draw = Draw::factory()
+        ->withOrganizerEmailVerified()
         ->createOne();
 
-    ajaxPost(URL::signedRoute('pending.changeOrganizerEmail', ['pendingDraw' => $pending]), [
+    ajaxPost(URL::signedRoute('draw.changeOrganizerEmail', ['draw' => $draw]), [
         'email' => fake()->email()
     ])
         ->assertSuccessful();
 
-    expect($pending->fresh()->email_status)
-        ->toBe(EmailAddressStatus::CREATED);
+    expect($draw->fresh()->organizer_email_verified_at)
+        ->toBeNull();
 });
 
 test('if a participant organizer confirm their email address and then changes it again, it also invalidates the according participant email', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->withParticipantOrganizer()
-        ->withEmailConfirmed()
+        ->withOrganizerEmailVerified()
         ->createOne();
 
     $newValue = fake()->email();
 
-    ajaxPost(URL::signedRoute('pending.changeOrganizerEmail', ['pendingDraw' => $pending]), [
+    ajaxPost(URL::signedRoute('draw.changeOrganizerEmail', ['draw' => $draw]), [
         'email' => $newValue
     ])
         ->assertSuccessful();
 
-    expect($pending->fresh()->organizer_email)
+    expect($draw->fresh()->organizer_email)
         ->toBe($newValue);
 });
 
 test('an organizer can change their name any time before the pending draw is processed', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->createOne();
 
     $newValue = fake()->name();
 
-    ajaxPost(URL::signedRoute('pending.changeOrganizerName', ['pendingDraw' => $pending]), [
+    ajaxPost(URL::signedRoute('draw.changeOrganizerName', ['draw' => $draw]), [
         'name' => $newValue
     ])
         ->assertSuccessful();
 
-    expect($pending->fresh()->organizer_name)
+    expect($draw->fresh()->organizer_name)
         ->toBe($newValue);
 });
 
 test('if a participant organizer changes their name, it also change the according participant name', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->withParticipantOrganizer()
         ->createOne();
 
     $newValue = fake()->name();
 
-    ajaxPost(URL::signedRoute('pending.changeOrganizerName', ['pendingDraw' => $pending]), [
+    ajaxPost(URL::signedRoute('draw.changeOrganizerName', ['draw' => $draw]), [
         'name' => $newValue
     ])
         ->assertSuccessful();
 
-    expect($pending->organizer->fresh()->name)
+    expect($draw->organizer->fresh()->name)
         ->toBe($newValue);
 });
 
@@ -286,72 +290,73 @@ test('an organizer cannot take the name of an already registered participant', f
 
     $participantName = fake()->name();
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->withParticipants($participantName)
         ->createOne();
 
-    ajaxPost(URL::signedRoute('pending.changeOrganizerName', ['pendingDraw' => $pending]), [
+    ajaxPost(URL::signedRoute('draw.changeOrganizerName', ['draw' => $draw]), [
         'name' => $participantName
     ])
         ->assertUnprocessable()
         ->assertInvalid('name');
 
-    expect($pending->organizer_name)
-        ->toBe($pending->fresh()->organizer_name);
+    expect($draw->organizer_name)
+        ->toBe($draw->fresh()->organizer_name);
 });
 
 test('changing the organizer name doesn\'t invalidate their email', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
-        ->withEmailConfirmed()
+    $draw = Draw::factory()
+        ->withOrganizerEmailVerified()
         ->createOne();
 
-    ajaxPost(URL::signedRoute('pending.changeOrganizerName', ['pendingDraw' => $pending]), [
+    ajaxPost(URL::signedRoute('draw.changeOrganizerName', ['draw' => $draw]), [
         'name' => fake()->name()
     ])
         ->assertSuccessful();
 
-    expect($pending->fresh()->email_status)
-        ->toBe(EmailAddressStatus::CONFIRMED);
+    expect($draw->fresh()->organizer_email_verified_at)
+        ->not()
+        ->toBeNull();
 });
 
 test('a draw expires after a certain amount of time', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->createOne();
 
-    $this->artisan('model:prune', ['--model' => [PendingDraw::class]])->assertSuccessful();
+    $this->artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
 
-    expect($pending->fresh())
+    expect($draw->fresh())
         ->not()
         ->toBeNull();
 
     $this->travel(2)->months();
 
-    $this->artisan('model:prune', ['--model' => [PendingDraw::class]])->assertSuccessful();
+    $this->artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
 
-    expect($pending->fresh())
+    expect($draw->fresh())
         ->toBeNull();
 });
 
 test('an organizer can cancel a draw', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->createOne();
 
-    expect($pending->fresh()->status)
-        ->toBe(PendingDrawStatus::CREATED);
+    expect($draw->fresh()->status)
+        ->toBe(DrawStatus::CREATED);
 
-    ajaxPost(URL::signedRoute('pending.cancel', ['pendingDraw' => $pending]), [
+    ajaxPost(URL::signedRoute('draw.cancel', ['draw' => $draw]), [
         'name' => fake()->name()
     ])
         ->assertSuccessful();
 
-    expect($pending->fresh()->status)
-        ->toBe(PendingDrawStatus::CANCELED);
+    expect($draw->fresh()->status)
+        ->toBe(DrawStatus::CANCELED);
 });
 
 test('an organizer can participate to a pending draw', function () {
@@ -382,10 +387,10 @@ test('a participant organizer can withdraw from participants', function () {
 test('an organizer can prefill some participant names', function () {
     Notification::fake();
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->createOne();
 
-    ajaxPost(URL::signedRoute('pending.addParticipantName', ['pendingDraw' => $pending]), [
+    ajaxPost(URL::signedRoute('draw.addParticipantName', ['draw' => $draw]), [
         'name' => fake()->name()
     ])
         ->assertSuccessful();
@@ -401,20 +406,20 @@ test('an organizer can remove some prefilled participant names', function () {
         fake()->name(),
     ];
 
-    $pending = PendingDraw::factory()
+    $draw = Draw::factory()
         ->withParticipants($participantNames)
         ->createOne();
 
     // Pick a random name from the list
     $name = array_rand($participantNames);
 
-    expect($pending->participants()->pluck('name'))
+    expect($draw->participants()->pluck('name'))
         ->toContain($name);
 
     // Ask to remove one name
     // TODO
 
-    expect($pending->participants()->pluck('name'))
+    expect($draw->participants()->pluck('name'))
         ->not()
         ->toContain($name);
 })->todo();

@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Exceptions\SolverException;
-use App\Models\PendingDraw;
+use App\Models\Draw;
 use App\Notifications\OrganizerRecap;
 use App\Services\DrawFormHandler;
 use Illuminate\Bus\Queueable;
@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Carbon;
 use Throwable;
 
 #[WithoutRelations]
@@ -40,7 +41,7 @@ class ProcessPendingDraw implements ShouldQueue
      * @return void
      */
     public function __construct(
-        protected readonly PendingDraw $pending
+        protected readonly Draw $draw
     ) {
 
     }
@@ -51,27 +52,27 @@ class ProcessPendingDraw implements ShouldQueue
     public function handle(DrawFormHandler $handler): void
     {
         // Ensure the pending draw status is ready before processing it
-        if (! $this->pending->isReady()) {
+        if (! $this->draw->isReady()) {
             return;
         }
 
         try {
-            $this->pending->status = PendingDrawStatus::DRAWING;
-            $this->pending->save();
+            $this->draw->status = DrawStatus::DRAWING;
+            $this->draw->save();
 
-            $draw = $handler->handle($this->pending);
+            $handler->handle($this->draw);
 
-            $draw->organizer->notify(new OrganizerRecap($draw));
+            $this->draw->organizer->notify(new OrganizerRecap($this->draw));
 
-            $draw->createMetric('new_draw')
-                ->addExtra('participants', count($draw->participants));
+            $this->draw->createMetric('new_draw')
+                ->addExtra('participants', count($this->draw->participants));
 
-            $this->pending->status = PendingDrawStatus::STARTED;
-            $this->pending->draw()->associate($draw);
-            $this->pending->save();
+            $this->draw->drawn_at = Carbon::now();
+            $this->draw->status = DrawStatus::STARTED;
+            $this->draw->save();
         } catch (SolverException $e) {
-            $this->pending->status = PendingDrawStatus::ERROR;
-            $this->pending->save();
+            $this->draw->status = DrawStatus::ERROR;
+            $this->draw->save();
 
             $this->fail($e);
 
@@ -84,7 +85,7 @@ class ProcessPendingDraw implements ShouldQueue
      */
     public function failed(Throwable $exception): void
     {
-        $this->pending->status = PendingDrawStatus::READY;
-        $this->pending->save();
+        $this->draw->status = DrawStatus::READY;
+        $this->draw->save();
     }
 }

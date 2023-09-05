@@ -2,14 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\PendingParticipantStatus;
-use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
-use App\Jobs\ProcessPendingDraw;
-use App\Models\PendingDraw;
-use App\Models\PendingParticipant;
+use App\Models\Draw;
 use App\Notifications\PendingDrawConfirm;
-use Arr;
 use Illuminate\Http\JsonResponse;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,31 +22,31 @@ class RandomFormController extends Controller
     {
         $safe = $request->safe();
 
-        $pending = new PendingDraw;
-        $pending->title = $safe['title'];
-        $pending->organizer_name = $safe['organizer-name'];
-        $pending->organizer_email = $safe['organizer-email'];
-        $pending->save();
+        $draw = new Draw;
+        $draw->title = $safe['title'];
+        $draw->organizer_name = $safe['organizer-name'];
+        $draw->organizer_email = $safe['organizer-email'];
+        $draw->save();
 
         if($safe['participant-organizer'] ?? false) {
-            $organizer = $pending->participants()->create([
-                // Don't use $pending->organizer_* here, as they are encrypted
+            $organizer = $draw->participants()->create([
+                // Don't use $draw->organizer_* here, as they are encrypted
                 'name' => $safe['organizer-name'],
                 'email' => $safe['organizer-email'],
             ]);
 
-            $pending->organizer()->associate($organizer);
+            $draw->organizer()->associate($organizer);
         }
 
         foreach(($safe->participants ?? []) as $participant) {
-            $pending->participants()->create([
+            $draw->participants()->create([
                 'name' => $participant,
             ]);
         }
 
-        $pending->organizer->notify(new PendingDrawConfirm($pending));
+        $draw->organizer->notify(new PendingDrawConfirm($draw));
 
-        $link = route('pending.join', ['pendingDraw' => $pending->hash]);
+        $link = route('pending.join', ['pending_draw' => $draw->hash]);
         return response()->json([
             'link' => $link,
             'qrcode' => QrCode::format('png')
