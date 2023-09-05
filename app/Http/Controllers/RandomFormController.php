@@ -46,7 +46,7 @@ class RandomFormController extends Controller
 
         $draw->organizer->notify(new PendingDrawConfirm($draw));
 
-        $link = route('pending.join', ['pending_draw' => $draw->hash]);
+        $link = route('pending.join', ['draw' => $draw]);
         return response()->json([
             'link' => $link,
             'qrcode' => QrCode::format('png')

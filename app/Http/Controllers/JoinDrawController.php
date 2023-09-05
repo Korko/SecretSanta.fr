@@ -16,12 +16,12 @@ class JoinDrawController extends Controller
     {
         if($draw->status !== DrawStatus::CREATED) {
             return view('pending.locked', [
-                'pending' => $draw,
+                'draw' => $draw,
             ]);
         }
 
         return view('pending.join', [
-            'pending' => $draw,
+            'draw' => $draw,
         ]);
     }
 

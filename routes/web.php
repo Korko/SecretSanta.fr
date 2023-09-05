@@ -39,13 +39,13 @@ Route::controller(RandomFormController::class)
 
 Route::controller(JoinDrawController::class)
     ->group(function () {
-        Route::get('/join/{pending_draw}', 'join')
+        Route::get('/join/{draw}', 'join')
             ->name('pending.join')
             ->missing(function () {
                 return ErrorController::drawNotFound();
             });
 
-        Route::post('/join/{pending_draw}', 'handleJoin')
+        Route::post('/join/{draw}', 'handleJoin')
             ->name('pending.handleJoin');
     });
 
