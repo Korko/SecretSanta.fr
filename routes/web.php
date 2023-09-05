@@ -62,6 +62,9 @@ Route::controller(DrawDashboardController::class)
 
         Route::middleware('decrypt.iv:draw,title')
             ->group(function () {
+                Route::post('/participate', 'participate')->name('participate');
+                Route::post('/withdraw', 'withdraw')->name('withdraw');
+
                 Route::post('/title', 'changeTitle')->name('changeTitle');
 
                 Route::post('/name', 'changeOrganizerName')->name('changeOrganizerName');

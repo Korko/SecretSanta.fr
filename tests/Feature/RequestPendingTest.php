@@ -360,29 +360,45 @@ test('an organizer can cancel a draw', function () {
 });
 
 test('an organizer can participate to a pending draw', function () {
-    // Organizer is not participant
-    // TODO
+    Notification::fake();
 
-    // Asks to be participant
-    // TODO
+    $draw = Draw::factory()
+        ->createOne();
 
-    // Check organizer_id filled, name and email same as organizer in pending_draw
-    // TODO
-})->todo();
+    expect($draw->participantOrganizer)
+        ->toBeFalse();
+
+    ajaxPost(URL::signedRoute('draw.participate', ['draw' => $draw]))
+        ->assertSuccessful();
+
+    $draw = $draw->fresh();
+    expect($draw->participantOrganizer)
+        ->toBeTrue();
+    expect($draw->organizer->name)
+        ->toBe($draw->organizer_name);
+    expect($draw->organizer->email)
+        ->toBe($draw->organizer_email);
+    expect($draw->organizer->email_verified_at)
+        ->toBe($draw->organizer_email_verified_at);
+});
 
 test('a participant organizer can withdraw from participants', function () {
-    // Organizer is participant
-    // TODO
+    Notification::fake();
 
-    // Asks to withdraw
-    // TODO
+    $draw = Draw::factory()
+        ->withParticipantOrganizer()
+        ->createOne();
 
-    // Check organizer_id empty and participant removed
-    // TODO
+    expect($draw->participantOrganizer)
+        ->toBeTrue();
 
-    // Ensure organizer name and email still filled in pending_draw
-    // TODO
-})->todo();
+    ajaxPost(URL::signedRoute('draw.withdraw', ['draw' => $draw]))
+        ->assertSuccessful();
+
+    $draw = $draw->fresh();
+    expect($draw->participantOrganizer)
+        ->toBeFalse();
+});
 
 test('an organizer can prefill some participant names', function () {
     Notification::fake();

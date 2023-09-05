@@ -6,6 +6,7 @@ use App\Enums\DrawStatus;
 use App\Models\Draw;
 use App\Models\Participant;
 use Closure;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -106,6 +107,46 @@ class DrawDashboardController extends Controller
 
         // TODO
         return response('test');
+    }
+
+    public function participate(Draw $draw): JsonResponse
+    {
+        throw_if($draw->participantOrganizer, new Exception('Organizer is already a participant'));
+
+        $organizer = $draw->participants()->create([
+            'name' => $draw->organizer_name,
+            'email' => $draw->organizer_email,
+            'email_verified_at' => $draw->organizer_email_verified_at,
+        ]);
+
+        $draw
+            ->organizer()
+            ->associate($organizer)
+            ->save();
+
+        // TODO
+        return response()->json([
+            'message' => 'foobar'
+        ]);
+    }
+
+    public function withdraw(Draw $draw): JsonResponse
+    {
+        throw_unless($draw->participantOrganizer, new Exception('Organizer is not a participant'));
+
+        $draw
+            ->organizer
+            ->delete();
+
+        $draw
+            ->organizer()
+            ->dissociate()
+            ->save();
+
+        // TODO
+        return response()->json([
+            'message' => 'foobar'
+        ]);
     }
 
     public function addParticipantName(Draw $draw, Request $request): JsonResponse
