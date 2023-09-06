@@ -46,7 +46,7 @@ class OrganizerController extends Controller
             'draw' => $draw->only($drawFields),
             'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) use ($draw, $participantFields) {
                 return [
-                    $participant->id => $participant->only($participantFields) + [
+                    $participant->ulid => $participant->only($participantFields) + [
                         'resendTargetUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.resendTarget', [
                             'draw' => $draw, 'participant' => $participant,
                         ]),

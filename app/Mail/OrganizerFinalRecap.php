@@ -27,10 +27,10 @@ class OrganizerFinalRecap extends Mailable
     public function build()
     {
         return $this
-            ->subject(Lang::get('SecretSanta #:draw - Récapitulatif final organisateur/organisatrice', ['draw' => $this->draw->id]))
+            ->subject(Lang::get('SecretSanta #:draw - Récapitulatif final organisateur/organisatrice', ['draw' => $this->draw->ulid]))
             ->markdown('emails.organizer_final_recap', [
                 'name' => $this->draw->organizer_name,
-                'draw' => $this->draw->id,
+                'draw' => $this->draw->ulid,
             ])
             ->attachData(
                 data: app(GenerateDrawCsv::class)->generateFinal($this->draw),

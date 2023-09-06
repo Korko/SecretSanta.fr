@@ -15,7 +15,7 @@ class DrawHandler
         $participants = ($participants ?: $draw->participants)
             ->loadMissing(['exclusions'])
             ->mapWithKeys(function ($participant) use ($draw) {
-                return [$participant->id => $participant->setRelation('draw', $draw)];
+                return [$participant->ulid => $participant->setRelation('draw', $draw)];
             });
 
         $hat = self::getHat($participants);

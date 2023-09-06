@@ -27,13 +27,13 @@ class OrganizerRecap extends Mailable
     public function build(): static
     {
         return $this
-            ->subject(Lang::get('SecretSanta #:draw - Récapitulatif organisateur/organisatrice', ['draw' => $this->draw->id]))
+            ->subject(Lang::get('SecretSanta #:draw - Récapitulatif organisateur/organisatrice', ['draw' => $this->draw->ulid]))
             ->markdown('emails.organizer_recap', [
                 'name' => $this->draw->organizer_name,
-                'draw' => $this->draw->id,
+                'draw' => $this->draw->ulid,
                 'deletionDate' => $this->draw->deletes_at->locale(App::getLocale())->isoFormat('LL'),
                 'nextSolvable' => $this->draw->next_solvable,
-                'panelLink' => URL::hashedSignedRoute('organizer.index', ['draw' => $this->draw->id]),
+                'panelLink' => URL::hashedSignedRoute('organizer.index', ['draw' => $this->draw]),
             ])
             ->attachData(
                 data: app(GenerateDrawCsv::class)->generateInitial($this->draw),

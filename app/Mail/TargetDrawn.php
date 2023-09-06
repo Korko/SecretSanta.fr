@@ -29,7 +29,7 @@ class TargetDrawn extends TrackedMailable
     public function build(): static
     {
         $title = $this->parseKeywords(Lang::get('SecretSanta #:draw - :subject', [
-            'draw' => $this->santa->draw->id,
+            'draw' => $this->santa->draw->ulid,
             'subject' => $this->santa->draw->mail_title,
         ]), $this->santa);
 
@@ -40,8 +40,8 @@ class TargetDrawn extends TrackedMailable
             ->markdown('emails.target_drawn', [
                 'name' => $this->santa->name,
                 'content' => $content,
-                'dearSantaLink' => URL::hashedSignedRoute('santa.index', ['participant' => $this->santa->id]),
-                'reportLink' => URL::hashedSignedRoute('report', ['participant' => $this->santa->id]),
+                'dearSantaLink' => URL::hashedSignedRoute('santa.index', ['participant' => $this->santa]),
+                'reportLink' => URL::hashedSignedRoute('report', ['participant' => $this->santa]),
             ]);
     }
 

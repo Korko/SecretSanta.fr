@@ -58,7 +58,7 @@ class DearSantaController extends Controller
             'santaDearTargetLastUpdate' => $participant->santa->dearTargets->max('mail.updated_at') ?: Carbon::now(),
             'dearSantas' => $participant->dearSantas->mapWithKeys(function ($email) use ($participant) {
                 return [
-                    $email->mail->id => $email->only($this->dearSantaPublicFields) + [
+                    $email->mail->ulid => $email->only($this->dearSantaPublicFields) + [
                         'resendUrl' => URL::signedRoute('santa.resendDearSanta', [
                             'participant' => $participant, 'dearSanta' => $email,
                         ]),
@@ -67,7 +67,7 @@ class DearSantaController extends Controller
             }),
             'dearTargets' => $participant->dearTargets->mapWithKeys(function ($email) use ($participant) {
                 return [
-                    $email->mail->id => $email->only($this->dearTargetPublicFields) + [
+                    $email->mail->ulid => $email->only($this->dearTargetPublicFields) + [
                         'resendUrl' => URL::signedRoute('santa.resendDearTarget', [
                             'participant' => $participant, 'dearTarget' => $email,
                         ]),

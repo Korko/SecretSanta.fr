@@ -27,11 +27,11 @@ class TargetWithdrawn extends Mailable
     {
         return $this
             ->subject(Lang::get('SecretSanta #:draw - Desistement du bénéficiaire de votre cadeau', [
-                'draw' => $this->santa->draw->id,
+                'draw' => $this->santa->draw->ulid,
             ]))
             ->markdown('emails.target_withdrawn', [
                 'name' => $this->santa->name,
-                'draw' => $this->santa->draw->id,
+                'draw' => $this->santa->draw->ulid,
                 'oldTargetName' => $this->oldTarget->name,
                 'newTargetName' => $this->newTarget->name,
             ]);

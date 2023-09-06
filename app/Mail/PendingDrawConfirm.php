@@ -27,7 +27,7 @@ class PendingDrawConfirm extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: Lang::get('SecretSanta - Attente de validation', ['draw' => $this->draw->id]),
+            subject: Lang::get('SecretSanta - Attente de validation', ['draw' => $this->draw->ulid]),
         );
     }
 

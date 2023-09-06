@@ -51,7 +51,7 @@ class DrawFormHandler
             // $participant->exclusions()->attach(
                 // exclusions is 0 based request form indexed, we need 1 based sql table index instead
             //     array_map(function ($participantId) use ($participants) {
-            //         return $participants[intval($participantId)]->id;
+            //         return $participants[intval($participantId)]->ulid;
             //     }, $participant->getTransientAttribute('exclusions', []))
             // );
         }

@@ -31,14 +31,14 @@ class DearSanta extends TrackedMailable
     public function build(): static
     {
         return $this
-            ->subject(Lang::get('SecretSanta #:draw - Message du bénéficiaire de votre cadeau', ['draw' => $this->santa->draw->id]))
+            ->subject(Lang::get('SecretSanta #:draw - Message du bénéficiaire de votre cadeau', ['draw' => $this->santa->draw->ulid]))
             ->markdown('emails.dearsanta', [
                 'name' => $this->santa->name,
-                'draw' => $this->santa->draw->id,
+                'draw' => $this->santa->draw->ulid,
                 'content' => $this->dearSanta->mail_body,
                 'targetName' => $this->dearSanta->sender->name,
-                'dearSantaLink' => URL::hashedSignedRoute('santa.index', ['participant' => $this->santa->id]),
-                'reportLink' => URL::hashedSignedRoute('report', ['participant' => $this->santa->id]),
+                'dearSantaLink' => URL::hashedSignedRoute('santa.index', ['participant' => $this->santa]),
+                'reportLink' => URL::hashedSignedRoute('report', ['participant' => $this->santa]),
             ]);
     }
 }

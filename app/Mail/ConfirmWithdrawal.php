@@ -25,11 +25,11 @@ class ConfirmWithdrawal extends Mailable
     {
         return $this
             ->subject(Lang::get('SecretSanta #:draw - Confirmation de désistement', [
-                'draw' => $this->santa->draw->id,
+                'draw' => $this->santa->draw->ulid,
             ]))
             ->markdown('emails.confirm_withdrawal', [
                 'name' => $this->santa->name,
-                'draw' => $this->santa->draw->id,
+                'draw' => $this->santa->draw->ulid,
                 'organizerName' => $this->santa->draw->organizer_name,
             ]);
     }

@@ -26,11 +26,11 @@ class TargetNameChanged extends Mailable
     {
         return $this
             ->subject(Lang::get('SecretSanta #:draw - Votre cible a changé de nom', [
-                'draw' => $this->santa->draw->id,
+                'draw' => $this->santa->draw->ulid,
             ]))
             ->markdown('emails.name_changed', [
                 'name' => $this->santa->name,
-                'draw' => $this->santa->draw->id,
+                'draw' => $this->santa->draw->ulid,
                 'targetName' => $this->target->name,
             ]);
     }
