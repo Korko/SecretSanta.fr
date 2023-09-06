@@ -9,7 +9,7 @@ use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Notifications\AnonymousNotifiable;
@@ -56,7 +56,7 @@ use Metrics;
  */
 class Draw extends Model implements UrlRoutable
 {
-    use HasFactory, MassPrunable, HasUuids;
+    use HasFactory, MassPrunable, HasUlids;
 
     // Keep a draw at least this amount of months after the creation, update or not
     public const MIN_MONTHS_BEFORE_EXPIRATION = 6;

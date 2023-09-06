@@ -4,10 +4,9 @@ namespace App\Models;
 
 use App\Casts\DrawEncryptedString;
 use App\Collections\ParticipantsCollection;
-use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
@@ -55,7 +54,7 @@ use Metrics;
  */
 class Participant extends Model implements UrlRoutable
 {
-    use HasFactory, Notifiable, HasUuids;
+    use HasFactory, Notifiable, HasUlids;
 
     /**
      * The attributes that aren't mass assignable.

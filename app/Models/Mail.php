@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Events\MailStatusUpdated;
 use Illuminate\Broadcasting\BroadcastException;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Str;
 
@@ -37,7 +37,7 @@ use Str;
  */
 class Mail extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUlids;
 
     /**
      * Indicates if the model's ID is auto-incrementing.
@@ -92,7 +92,7 @@ class Mail extends Model
         parent::boot();
 
         static::creating(function (Mail $mail) {
-            $mail->notification = Str::uuid();
+            $mail->notification = Str::ulid();
         });
 
         static::updated(function (Mail $mail) {

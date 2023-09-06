@@ -8,10 +8,10 @@ DROP TABLE IF EXISTS `dear_santas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dear_santas` (
-  `id` char(36) NOT NULL,
-  `sender_id` char(36) NOT NULL,
+  `id` char(26) NOT NULL,
+  `sender_id` char(26) NOT NULL,
   `mail_body` blob NOT NULL,
-  `draw_id` char(36) NOT NULL,
+  `draw_id` char(26) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `dear_santas_sender_id_foreign` (`sender_id`),
   KEY `dear_santas_draw_id_foreign` (`draw_id`),
@@ -23,9 +23,9 @@ DROP TABLE IF EXISTS `dear_targets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dear_targets` (
-  `id` char(36) NOT NULL,
-  `draw_id` char(36) NOT NULL,
-  `sender_id` char(36) NOT NULL,
+  `id` char(26) NOT NULL,
+  `draw_id` char(26) NOT NULL,
+  `sender_id` char(26) NOT NULL,
   `mail_type` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `dear_targets_draw_id_foreign` (`draw_id`),
@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS `draws`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `draws` (
-  `id` char(36) NOT NULL,
+  `id` char(26) NOT NULL,
   `organizer_name` tinyblob NOT NULL,
   `organizer_email` blob NOT NULL,
   `title` blob NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE `draws` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `finished_at` timestamp NULL DEFAULT NULL,
   `status` enum('created','ready','drawing','started','finished','error','canceled') NOT NULL,
-  `organizer_id` char(36) DEFAULT NULL,
+  `organizer_id` char(26) DEFAULT NULL,
   `organizer_email_verified_at` timestamp NULL DEFAULT NULL,
   `ready_at` timestamp NULL DEFAULT NULL,
   `drawn_at` timestamp NULL DEFAULT NULL,
@@ -60,8 +60,8 @@ DROP TABLE IF EXISTS `exclusions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `exclusions` (
-  `participant_id` char(36) NOT NULL,
-  `exclusion_id` char(36) NOT NULL,
+  `participant_id` char(26) NOT NULL,
+  `exclusion_id` char(26) NOT NULL,
   KEY `exclusions_participant_id_foreign` (`participant_id`),
   KEY `exclusions_exclusion_id_foreign` (`exclusion_id`),
   CONSTRAINT `exclusions_exclusion_id_foreign` FOREIGN KEY (`exclusion_id`) REFERENCES `participants` (`id`) ON DELETE CASCADE,
@@ -102,14 +102,14 @@ DROP TABLE IF EXISTS `mails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mails` (
-  `id` char(36) NOT NULL,
-  `notification` char(36) NOT NULL,
+  `id` char(26) NOT NULL,
+  `notification` char(26) NOT NULL,
   `mailable_type` varchar(255) NOT NULL,
-  `mailable_id` char(36) NOT NULL,
+  `mailable_id` char(26) NOT NULL,
   `delivery_status` enum('created','sending','sent','error','received') NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `draw_id` char(36) NOT NULL,
+  `draw_id` char(26) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `mails_notification_unique` (`notification`),
   KEY `mails_mailable_type_mailable_id_index` (`mailable_type`,`mailable_id`),
@@ -131,11 +131,11 @@ DROP TABLE IF EXISTS `participants`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `participants` (
-  `id` char(36) NOT NULL,
-  `draw_id` char(36) NOT NULL,
+  `id` char(26) NOT NULL,
+  `draw_id` char(26) NOT NULL,
   `name` tinyblob NOT NULL,
   `email` blob DEFAULT NULL,
-  `target_id` char(36) DEFAULT NULL,
+  `target_id` char(26) DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `participants_draw_id_foreign` (`draw_id`),
