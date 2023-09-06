@@ -66,10 +66,10 @@ class RouteServiceProvider extends ServiceProvider
             });
         });
 
-        Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
-        Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.participant.length').',}');
-        Route::pattern('dearSanta', '[0-9a-zA-Z]{'.config('hashids.connections.dearSanta.length').',}');
-        Route::pattern('dearTarget', '[0-9a-zA-Z]{'.config('hashids.connections.dearTarget.length').',}');
+        //Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
+        //Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.participant.length').',}');
+        //Route::pattern('dearSanta', '[0-9a-zA-Z]{'.config('hashids.connections.dearSanta.length').',}');
+        //Route::pattern('dearTarget', '[0-9a-zA-Z]{'.config('hashids.connections.dearTarget.length').',}');
 
         Route::bind('pending_draw', function (string $value) {
             $draw = (new Draw)->resolveRouteBinding($value);

@@ -7,6 +7,7 @@ use App\Collections\ParticipantsCollection;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
@@ -54,11 +55,7 @@ use Metrics;
  */
 class Participant extends Model implements UrlRoutable
 {
-    use HasFactory, Notifiable, HasHash {
-        resolveRouteBinding as public baseResolver;
-    }
-
-    protected $hashConnection = 'participant';
+    use HasFactory, Notifiable, HasUuids;
 
     /**
      * The attributes that aren't mass assignable.
@@ -145,30 +142,11 @@ class Participant extends Model implements UrlRoutable
     }
 
     /**
-     * Retrieve the model for a bound value.
-     *
-     * @param mixed $value
-     * @param string|null $field
-     */
-    public function resolveRouteBinding($value, $field = null): ?Model
-    {
-        $participant = $this->baseResolver($value, $field);
-        $participant->load(['mail', 'draw', 'santa', 'target']);// TODO: Move from here
-
-        return $participant;
-    }
-
-    /**
      * Create a new Eloquent Collection instance.
      */
     public function newCollection(array $models = []): Collection
     {
         return new ParticipantsCollection($models);
-    }
-
-    public function getMetricIdAttribute()
-    {
-        return (new xxHash($this->draw->id))->hash((string) $this->id);
     }
 
     public function createMetric($name, $value = 1)

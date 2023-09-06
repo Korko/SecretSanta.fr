@@ -76,7 +76,7 @@ it('sends to the organizer the link to their panel', function ($participants) {
     Notification::assertSentTo($draw->organizer, OrganizerRecap::class, function ($notification, $channels, $notifiable) use ($draw) {
         return
             $notification->toMail($notifiable)->assertSeeInHtml(
-                URL::hashedSignedRoute('organizer.index', ['draw' => $draw->hash])
+                URL::hashedSignedRoute('organizer.index', ['draw' => $draw])
             );
     });
 })->with('participants list');

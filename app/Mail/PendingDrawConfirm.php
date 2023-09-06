@@ -27,7 +27,7 @@ class PendingDrawConfirm extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: Lang::get('SecretSanta - Attente de validation', ['draw' => $this->draw->hash]),
+            subject: Lang::get('SecretSanta - Attente de validation', ['draw' => $this->draw->id]),
         );
     }
 
@@ -40,7 +40,7 @@ class PendingDrawConfirm extends Mailable
             markdown: 'emails.pending_draw',
             with: [
                 'name' => $this->draw->organizer_name,
-                'validationLink' => URL::hashedSignedRoute('draw.confirmOrganizerEmail', ['draw' => $this->draw->hash]),
+                'validationLink' => URL::hashedSignedRoute('draw.confirmOrganizerEmail', ['draw' => $this->draw]),
             ]
         );
     }

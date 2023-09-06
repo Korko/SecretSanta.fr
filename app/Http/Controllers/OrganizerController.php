@@ -35,18 +35,18 @@ class OrganizerController extends Controller
      */
     public function fetch(Draw $draw): JsonResponse
     {
-        $drawFields = ['hash', 'mail_title', 'created_at', 'finished_at', 'deletes_at', 'next_solvable', 'organizer_name'];
-        $participantFields = ['hash', 'name', 'email', 'mail' => ['id', 'updated_at', 'delivery_status']];
+        $drawFields = ['id', 'mail_title', 'created_at', 'finished_at', 'deletes_at', 'next_solvable', 'organizer_name'];
+        $participantFields = ['id', 'name', 'email', 'mail' => ['id', 'updated_at', 'delivery_status']];
 
         if ($draw->isFinished) {
-            $participantFields[] = ['target' => ['hash', 'name']];
+            $participantFields[] = ['target' => ['id', 'name']];
         }
 
         return response()->json([
             'draw' => $draw->only($drawFields),
             'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) use ($draw, $participantFields) {
                 return [
-                    $participant->hash => $participant->only($participantFields) + [
+                    $participant->id => $participant->only($participantFields) + [
                         'resendTargetUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.resendTarget', [
                             'draw' => $draw, 'participant' => $participant,
                         ]),
@@ -74,7 +74,7 @@ class OrganizerController extends Controller
                 $participant->createMetric('resend_target_email');
 
                 return [
-                    'participant' => $participant->only(['hash', 'mail']),
+                    'participant' => $participant->only(['id', 'mail']),
                 ];
             },
             trans('Email réenvoyé avec succès !'),

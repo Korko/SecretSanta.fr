@@ -37,8 +37,8 @@ class DearTarget extends TrackedMailable
                 'draw' => $this->target->draw->id,
                 'content' => $this->dearTarget->mail_body,
                 'santaName' => $this->target->santa->name,
-                'dearSantaLink' => URL::hashedSignedRoute('santa.index', ['participant' => $this->target->hash]),
-                'reportLink' => URL::hashedSignedRoute('report', ['participant' => $this->target->hash]),
+                'dearSantaLink' => URL::hashedSignedRoute('santa.index', ['participant' => $this->target->id]),
+                'reportLink' => URL::hashedSignedRoute('report', ['participant' => $this->target->id]),
             ]);
     }
 }

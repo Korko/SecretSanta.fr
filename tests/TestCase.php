@@ -8,14 +8,15 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, RefreshDatabase {
-        migrateFreshUsing as migrateFreshUsingBase;
+        migrateFreshUsing as private migrateFreshUsingBase;
     }
 
     protected function migrateFreshUsing()
     {
         return array_merge(
             [
-                '--schema-path' => 'database/schema/mysql-schema.dump'
+                // Specify the schema path as it's the same for mysql and testing connections
+                '--schema-path' => 'database/schema/mysql-schema.sql'
             ],
             $this->migrateFreshUsingBase()
         );

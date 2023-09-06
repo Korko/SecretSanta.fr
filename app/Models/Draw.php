@@ -9,6 +9,7 @@ use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Notifications\AnonymousNotifiable;
@@ -55,7 +56,7 @@ use Metrics;
  */
 class Draw extends Model implements UrlRoutable
 {
-    use HasFactory, HasHash, MassPrunable;
+    use HasFactory, MassPrunable, HasUuids;
 
     // Keep a draw at least this amount of months after the creation, update or not
     public const MIN_MONTHS_BEFORE_EXPIRATION = 6;
@@ -65,8 +66,6 @@ class Draw extends Model implements UrlRoutable
 
     // Remove everything N days after the finished_at date
     public const DAYS_BEFORE_DELETION = 7;
-
-    protected $hashConnection = 'draw';
 
     /**
      * The attributes that aren't mass assignable.
@@ -195,13 +194,6 @@ class Draw extends Model implements UrlRoutable
     {
         return Attribute::make(
             get: fn () => $this->finished_at?->isPast() ?: false
-        );
-    }
-
-    protected function metricId(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => (new xxHash($this->id))->hash($this->created_at)
         );
     }
 

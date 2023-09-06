@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\QuestionToSanta;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -32,9 +33,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class DearTarget extends Model
 {
-    use HasFactory, HasHash;
-
-    protected $hashConnection = 'dearTarget';
+    use HasFactory, HasUuids;
 
     /**
      * The attributes that aren't mass assignable.

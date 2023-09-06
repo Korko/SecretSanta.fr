@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\MailStatusUpdated;
 use Illuminate\Broadcasting\BroadcastException;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Str;
 
@@ -36,7 +37,7 @@ use Str;
  */
 class Mail extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
     /**
      * Indicates if the model's ID is auto-incrementing.
