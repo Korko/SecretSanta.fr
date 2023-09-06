@@ -16989,6 +16989,22 @@
                         \Illuminate\Routing\UrlGenerator::flushMacros();
         }
                     /**
+         * Create a route URL for a named route appended with the IV.
+         *
+         * @param string $name
+         * @param mixed $parameters
+         * @param \DateTimeInterface|\DateInterval|int|null $expiration
+         * @param bool $absolute
+         * @return string 
+         * @throws \InvalidArgumentException
+         * @see \App\Providers\RouteServiceProvider::addUrlMacros()
+         * @static 
+         */ 
+        public static function hashedRoute($name, $parameters = [], $expiration = null, $absolute = true)
+        {
+                        return \Illuminate\Routing\UrlGenerator::hashedRoute($name, $parameters, $expiration, $absolute);
+        }
+                    /**
          * Create a signed route URL for a named route appended with the IV.
          *
          * @param string $name
@@ -16997,7 +17013,7 @@
          * @param bool $absolute
          * @return string 
          * @throws \InvalidArgumentException
-         * @see \App\Providers\RouteServiceProvider::boot()
+         * @see \App\Providers\RouteServiceProvider::addUrlMacros()
          * @static 
          */ 
         public static function hashedSignedRoute($name, $parameters = [], $expiration = null, $absolute = true)
@@ -20474,6 +20490,22 @@
      */ 
         class UrlGenerator {
                     /**
+         * Create a route URL for a named route appended with the IV.
+         *
+         * @param string $name
+         * @param mixed $parameters
+         * @param \DateTimeInterface|\DateInterval|int|null $expiration
+         * @param bool $absolute
+         * @return string 
+         * @throws \InvalidArgumentException
+         * @see \App\Providers\RouteServiceProvider::addUrlMacros()
+         * @static 
+         */ 
+        public static function hashedRoute($name, $parameters = [], $expiration = null, $absolute = true)
+        {
+                        return \Illuminate\Routing\UrlGenerator::hashedRoute($name, $parameters, $expiration, $absolute);
+        }
+                    /**
          * Create a signed route URL for a named route appended with the IV.
          *
          * @param string $name
@@ -20482,7 +20514,7 @@
          * @param bool $absolute
          * @return string 
          * @throws \InvalidArgumentException
-         * @see \App\Providers\RouteServiceProvider::boot()
+         * @see \App\Providers\RouteServiceProvider::addUrlMacros()
          * @static 
          */ 
         public static function hashedSignedRoute($name, $parameters = [], $expiration = null, $absolute = true)

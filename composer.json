@@ -12,7 +12,6 @@
         "beyondcode/laravel-websockets": "^1.14",
         "doctrine/dbal": "^3.5",
         "elhebert/laravel-sri": "dev-master",
-        "exussum12/xxhash": "^1.3",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6",
         "korko/validator": "dev-master",
