@@ -8,10 +8,10 @@ DROP TABLE IF EXISTS `dear_santas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dear_santas` (
-  `id` char(26) NOT NULL,
-  `sender_id` char(26) NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `sender_id` bigint(20) unsigned NOT NULL,
   `mail_body` blob NOT NULL,
-  `draw_id` char(26) NOT NULL,
+  `draw_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `dear_santas_sender_id_foreign` (`sender_id`),
   KEY `dear_santas_draw_id_foreign` (`draw_id`),
@@ -23,9 +23,9 @@ DROP TABLE IF EXISTS `dear_targets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dear_targets` (
-  `id` char(26) NOT NULL,
-  `draw_id` char(26) NOT NULL,
-  `sender_id` char(26) NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `draw_id` bigint(20) unsigned NOT NULL,
+  `sender_id` bigint(20) unsigned NOT NULL,
   `mail_type` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `dear_targets_draw_id_foreign` (`draw_id`),
@@ -38,7 +38,8 @@ DROP TABLE IF EXISTS `draws`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `draws` (
-  `id` char(26) NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ulid` char(26) NOT NULL,
   `organizer_name` tinyblob NOT NULL,
   `organizer_email` blob NOT NULL,
   `title` blob NOT NULL,
@@ -47,11 +48,12 @@ CREATE TABLE `draws` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `finished_at` timestamp NULL DEFAULT NULL,
   `status` enum('created','ready','drawing','started','finished','error','canceled') NOT NULL,
-  `organizer_id` char(26) DEFAULT NULL,
+  `organizer_id` bigint(20) unsigned DEFAULT NULL,
   `organizer_email_verified_at` timestamp NULL DEFAULT NULL,
   `ready_at` timestamp NULL DEFAULT NULL,
   `drawn_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `draws_ulid_unique` (`ulid`),
   KEY `draws_organizer_id_foreign` (`organizer_id`),
   CONSTRAINT `draws_organizer_id_foreign` FOREIGN KEY (`organizer_id`) REFERENCES `participants` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -60,8 +62,8 @@ DROP TABLE IF EXISTS `exclusions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `exclusions` (
-  `participant_id` char(26) NOT NULL,
-  `exclusion_id` char(26) NOT NULL,
+  `participant_id` bigint(20) unsigned NOT NULL,
+  `exclusion_id` bigint(20) unsigned NOT NULL,
   KEY `exclusions_participant_id_foreign` (`participant_id`),
   KEY `exclusions_exclusion_id_foreign` (`exclusion_id`),
   CONSTRAINT `exclusions_exclusion_id_foreign` FOREIGN KEY (`exclusion_id`) REFERENCES `participants` (`id`) ON DELETE CASCADE,
@@ -73,7 +75,7 @@ DROP TABLE IF EXISTS `failed_jobs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `failed_jobs` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) NOT NULL,
+  `uuid` char(26) NOT NULL,
   `connection` text NOT NULL,
   `queue` text NOT NULL,
   `payload` longtext NOT NULL,
@@ -102,16 +104,16 @@ DROP TABLE IF EXISTS `mails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mails` (
-  `id` char(26) NOT NULL,
-  `notification` char(26) NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ulid` char(26) NOT NULL,
   `mailable_type` varchar(255) NOT NULL,
-  `mailable_id` char(26) NOT NULL,
+  `mailable_id` bigint(20) unsigned NOT NULL,
   `delivery_status` enum('created','sending','sent','error','received') NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `draw_id` char(26) NOT NULL,
+  `draw_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `mails_notification_unique` (`notification`),
+  UNIQUE KEY `mails_ulid_unique` (`ulid`),
   KEY `mails_mailable_type_mailable_id_index` (`mailable_type`,`mailable_id`),
   KEY `mails_draw_id_foreign` (`draw_id`),
   CONSTRAINT `mails_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE
@@ -131,13 +133,15 @@ DROP TABLE IF EXISTS `participants`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `participants` (
-  `id` char(26) NOT NULL,
-  `draw_id` char(26) NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ulid` char(26) NOT NULL,
+  `draw_id` bigint(20) unsigned NOT NULL,
   `name` tinyblob NOT NULL,
   `email` blob DEFAULT NULL,
-  `target_id` char(26) DEFAULT NULL,
+  `target_id` bigint(20) unsigned DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `participants_ulid_unique` (`ulid`),
   KEY `participants_draw_id_foreign` (`draw_id`),
   KEY `participants_target_id_foreign` (`target_id`),
   CONSTRAINT `participants_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE,

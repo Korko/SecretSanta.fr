@@ -12,12 +12,12 @@ class MailTracker
 
     public function getBounceReturnPath($mail)
     {
-        return str_replace('*', self::BOUNCE.'-'.$mail->notification, config('mail.return_path'));
+        return str_replace('*', self::BOUNCE.'-'.$mail->ulid, config('mail.return_path'));
     }
 
     public function getConfirmReturnPath($mail)
     {
-        return str_replace('*', self::CONFIRM.'-'.$mail->notification, config('mail.return_path'));
+        return str_replace('*', self::CONFIRM.'-'.$mail->ulid, config('mail.return_path'));
     }
 
     public function handle($returnPath)
@@ -25,7 +25,7 @@ class MailTracker
         $params = $this->parseReturnPath($returnPath);
 
         if (! empty($params[0])) {
-            $mail = MailModel::where('notification', stristr($params[1], '@', true) ?: $params[1])->first();
+            $mail = MailModel::where('ulid', stristr($params[1], '@', true) ?: $params[1])->first();
 
             if ($mail) {
                 switch ($params[0]) {

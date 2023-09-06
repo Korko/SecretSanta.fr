@@ -7,6 +7,7 @@ use App\Models\Participant;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Draw>
@@ -21,6 +22,7 @@ class DrawFactory extends Factory
     public function definition(): array
     {
         return [
+            'ulid' => Str::ulid(),
             'title' => $this->faker->sentence(),
             'description' => $this->faker->text(),
             'organizer_name' => $this->faker->name(),

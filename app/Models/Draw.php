@@ -5,15 +5,14 @@ namespace App\Models;
 use App\Casts\DrawEncryptedString;
 use App\Enums\DrawStatus;
 use App\Events\DrawStatusUpdated;
-use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Metrics;
 
 /**
@@ -56,7 +55,7 @@ use Metrics;
  */
 class Draw extends Model implements UrlRoutable
 {
-    use HasFactory, MassPrunable, HasUlids;
+    use HasFactory, MassPrunable;
 
     // Keep a draw at least this amount of months after the creation, update or not
     public const MIN_MONTHS_BEFORE_EXPIRATION = 6;
@@ -73,6 +72,15 @@ class Draw extends Model implements UrlRoutable
      * @var array<string>|bool
      */
     protected $guarded = [];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'id'
+    ];
 
     /**
      * The attributes that should be cast.
@@ -108,6 +116,10 @@ class Draw extends Model implements UrlRoutable
 
     protected static function booted(): void
     {
+        static::creating(function (Draw $draw) {
+            $draw->ulid = (string) Str::ulid();
+        });
+
         static::updated(function (Draw $draw) {
             if ($draw->wasChanged('status')) {
                 try {
@@ -197,11 +209,8 @@ class Draw extends Model implements UrlRoutable
         );
     }
 
-    public function createMetric($name)
+    public function getRouteKeyName()
     {
-        return Metrics::create($name)
-            ->setTags([
-                'draw' => $this->metricId,
-            ]);
+        return 'ulid';
     }
 }

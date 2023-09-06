@@ -6,6 +6,7 @@ use App\Models\Draw;
 use App\Models\Participant;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Participant>
@@ -20,6 +21,7 @@ class ParticipantFactory extends Factory
     public function definition(): array
     {
         return [
+            'ulid' => Str::ulid(),
             'draw_id' => Draw::factory(),
             'name' => $this->faker->name(),
             'email' => $this->faker->email(),

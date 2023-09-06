@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Str;
 use Metrics;
 
 /**
@@ -54,7 +55,7 @@ use Metrics;
  */
 class Participant extends Model implements UrlRoutable
 {
-    use HasFactory, Notifiable, HasUlids;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that aren't mass assignable.
@@ -62,6 +63,15 @@ class Participant extends Model implements UrlRoutable
      * @var array<string>|bool
      */
     protected $guarded = [];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'id'
+    ];
 
     /**
      * The attributes that should be cast.
@@ -96,6 +106,7 @@ class Participant extends Model implements UrlRoutable
             $mail = new Mail;
             $mail->draw()->associate($participant->draw);
 
+            $participant->ulid = (string) Str::ulid();
             $participant->mail()->save($mail);
         });
     }
@@ -148,15 +159,6 @@ class Participant extends Model implements UrlRoutable
         return new ParticipantsCollection($models);
     }
 
-    public function createMetric($name, $value = 1)
-    {
-        return Metrics::create($name, $value)
-            ->setTags([
-                'draw' => $this->draw->metricId,
-                'participant' => $this->metricId,
-            ]);
-    }
-
     /**
      * Route notifications for the mail channel.
      */
@@ -176,5 +178,15 @@ class Participant extends Model implements UrlRoutable
         $this->unsetRelations();
 
         return parent::getQueueableRelations();
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'ulid';
     }
 }

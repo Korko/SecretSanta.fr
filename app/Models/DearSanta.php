@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Casts\DrawEncryptedString;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -32,7 +31,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class DearSanta extends Model
 {
-    use HasFactory, HasUlids;
+    use HasFactory;
 
     /**
      * The attributes that aren't mass assignable.

@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class DrawDashboardController extends Controller
@@ -114,6 +115,7 @@ class DrawDashboardController extends Controller
         throw_if($draw->participantOrganizer, new Exception('Organizer is already a participant'));
 
         $organizer = $draw->participants()->create([
+            'ulid' => Str::ulid(),
             'name' => $draw->organizer_name,
             'email' => $draw->organizer_email,
             'email_verified_at' => $draw->organizer_email_verified_at,
@@ -176,6 +178,7 @@ class DrawDashboardController extends Controller
         ]);
 
         $draw->participants()->create([
+            'ulid' => Str::ulid(),
             // Don't use $draw->organizer_* here, as they are raw (encrypted)
             'name' => $validated['name'],
             //'email' => $validated['email'],
