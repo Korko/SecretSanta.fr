@@ -38,7 +38,7 @@ class DrawFormHandler
      * @param  array  $participants
      * @return Draw
      */
-    protected function createDraw(array $organizer = null, array $participants): Draw
+    protected function createDraw(?array $organizer = null, array $participants): Draw
     {
         foreach ($participants as $participant) {
             // TODO

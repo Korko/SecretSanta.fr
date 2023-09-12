@@ -7,6 +7,7 @@ use App\Models\Participant;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 /**
@@ -51,12 +52,32 @@ class DrawFactory extends Factory
         });
     }
 
-    public function withParticipants(...$names): static
+    public function withParticipants(string|array $names): static
     {
         return $this->has(
             Participant::factory()
-                ->count(count($names))
-                ->sequence(fn (Sequence $sequence) => ['name' => $names[$sequence->index]]),
+                ->forEachSequence(...array_map(function ($name) {
+                    return [
+                        'name' => $name
+                    ];
+                }, (array) $names)),
+            'participants'
+        );
+    }
+
+    public function withVerifiedParticipants(array $participants): static
+    {
+        $names = array_keys($participants);
+
+        return $this->has(
+            Participant::factory()
+            ->forEachSequence(...array_map(function ($name, $email) {
+                return [
+                    'name' => $name,
+                    'email' => $email,
+                    'email_verified_at' => Carbon::now(),
+                ];
+            }, $names, $participants)),
             'participants'
         );
     }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\DrawStatus;
 use App\Models\Draw;
 use App\Models\Participant;
+use App\Notifications\DrawTitleChanged;
+use App\Notifications\OrganizerNameChanged;
 use Closure;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -32,6 +34,17 @@ class DrawDashboardController extends Controller
 
     public function changeTitle(Draw $draw, Request $request): JsonResponse
     {
+        $validated = $request->validate([
+            'title' => 'required|string|max:36773',
+        ]);
+
+        $draw->title = $validated['title'];
+        $draw->save();
+
+        $draw->participantsNonOrganizer->each(function (Participant $participant) use ($draw) {
+            $participant->notify(new DrawTitleChanged($draw));
+        });
+
         // TODO
         return response()->json([
             'message' => 'foobar'
@@ -67,6 +80,10 @@ class DrawDashboardController extends Controller
             $draw->organizer->name = $validated['name'];
             $draw->organizer->save();
         }
+
+        $draw->participantsNonOrganizer->each(function (Participant $participant) use ($draw) {
+            $participant->notify(new OrganizerNameChanged($draw));
+        });
 
         // TODO
         return response()->json([
@@ -190,7 +207,8 @@ class DrawDashboardController extends Controller
         ]);
     }
 
-    public function changeParticipantName(Participant $participant, Request $request): JsonResponse
+    // We don't need $draw but it's required as it's in the url /draw/{draw}/participants/{participant}
+    public function changeParticipantName(Draw $draw, Participant $participant, Request $request): JsonResponse
     {
         $validated = $request->validate([
             'name' => [
@@ -221,11 +239,9 @@ class DrawDashboardController extends Controller
         ]);
     }
 
-    public function removeParticipantName(Participant $participant, Request $request): JsonResponse
+    public function removeParticipantName(Draw $draw, Participant $participant, Request $request): JsonResponse
     {
-        $request->validate([
-
-        ]);
+        throw_if($participant->is($draw->organizer), new Exception('Cannot remove organizer'));
 
         $participant->delete();
 
@@ -235,7 +251,7 @@ class DrawDashboardController extends Controller
         ]);
     }
 
-    public function changeParticipantEmail(Participant $participant, Request $request): JsonResponse
+    public function changeParticipantEmail(Draw $draw, Participant $participant, Request $request): JsonResponse
     {
         $validated = $request->validate([
             'email' => 'required|email|max:320',
@@ -251,16 +267,6 @@ class DrawDashboardController extends Controller
             $draw->organizer_email_verified_at = null;
             $draw->save();
         }
-
-        // TODO
-        return response()->json([
-            'message' => 'foobar'
-        ]);
-    }
-
-    public function removeParticipant(Participant $participant, Request $request): JsonResponse
-    {
-        $participant->delete();
 
         // TODO
         return response()->json([

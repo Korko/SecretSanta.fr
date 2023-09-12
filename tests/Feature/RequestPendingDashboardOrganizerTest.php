@@ -2,6 +2,8 @@
 
 use App\Enums\DrawStatus;
 use App\Models\Draw;
+use App\Models\Participant;
+use App\Notifications\DrawTitleChanged;
 
 test('an organizer can confirm their email address', function () {
     Notification::fake();
@@ -38,7 +40,33 @@ test('if a participant organizer confirm their email address, it also confirm th
         ->toBeNull();
 });
 
-// TODO: Add tests about changing title
+test('an organizer can change the title of the draw', function () {
+    Notification::fake();
+
+    $draw = Draw::factory()
+        ->withParticipantOrganizer()
+        ->withOrganizerEmailVerified()
+        ->withVerifiedParticipants([
+            fake()->name() => fake()->email(),
+            fake()->name() => fake()->email(),
+            fake()->name() => fake()->email(),
+        ])
+        ->createOne();
+
+    $newValue = fake()->sentence();
+
+    ajaxPost(URL::signedRoute('draw.changeTitle', ['draw' => $draw]), [
+        'title' => $newValue
+    ])
+        ->assertSuccessful();
+
+    expect($draw->fresh()->title)
+        ->toBe($newValue);
+
+    $draw->participantsNonOrganizer->each(function (Participant $participant) {
+        Notification::assertSentTo($participant, DrawTitleChanged::class);
+    });
+});
 
 test('an organizer can change their email any time before the pending draw is processed', function () {
     Notification::fake();
@@ -247,36 +275,34 @@ test('an organizer can prefill some participant names', function () {
     $draw = Draw::factory()
         ->createOne();
 
-    ajaxPost(URL::signedRoute('draw.addParticipantName', ['draw' => $draw]), [
+    expect(Participant::class)->toHaveCount(0);
+
+    ajaxPost(URL::signedRoute('draw.participant.add', ['draw' => $draw]), [
         'name' => fake()->name()
     ])
         ->assertSuccessful();
+
+    expect(Participant::class)->toHaveCount(1);
 });
 
 test('an organizer can remove some prefilled participant names', function () {
     Notification::fake();
 
-    $participantNames = [
-        fake()->name(),
-        fake()->name(),
-        fake()->name(),
-        fake()->name(),
-    ];
-
     $draw = Draw::factory()
-        ->withParticipants($participantNames)
+        ->withParticipants([
+            fake()->name(),
+            fake()->name(),
+            fake()->name(),
+            fake()->name(),
+        ])
         ->createOne();
 
-    // Pick a random name from the list
-    $name = array_rand($participantNames);
-
-    expect($draw->participants()->pluck('name'))
-        ->toContain($name);
+    $participant = $draw->participants->random();
 
     // Ask to remove one name
-    // TODO
+    ajaxDelete(URL::signedRoute('draw.participant.remove', ['draw' => $draw, 'participant' => $participant]))
+        ->assertSuccessful();
 
-    expect($draw->participants()->pluck('name'))
-        ->not()
-        ->toContain($name);
-})->todo();
+    expect($participant->fresh())
+        ->toBeNull();
+});

@@ -178,6 +178,15 @@ class Draw extends Model implements UrlRoutable
         );
     }
 
+    protected function participantsNonOrganizer(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->participantOrganizer ?
+                $this->participants->diff([$this->organizer]) :
+                $this->participants
+        );
+    }
+
     protected function expiresAt(): Attribute
     {
         return Attribute::make(

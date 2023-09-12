@@ -12,7 +12,7 @@ class Arr extends BaseArr
      * @param  mixed  $default
      * @return mixed
      */
-    public static function firstKey(iterable $array, callable $callback = null, $default = null)
+    public static function firstKey(iterable $array, ?callable $callback = null, $default = null)
     {
         if (is_null($callback)) {
             if (empty($array)) {

@@ -37,7 +37,7 @@ class CollectionMacroServiceProvider extends ServiceProvider
          * @param  mixed  $default
          * @return mixed
          */
-        Collection::macro('firstKey', function (callable $callback = null, $default = null) {
+        Collection::macro('firstKey', function (?callable $callback = null, $default = null) {
             return Arr::firstKey($this->items, $callback, $default);
         });
     }

@@ -136,7 +136,7 @@ CREATE TABLE `participants` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `ulid` char(26) NOT NULL,
   `draw_id` bigint(20) unsigned NOT NULL,
-  `name` tinyblob NOT NULL,
+  `name` blob NOT NULL,
   `email` blob DEFAULT NULL,
   `target_id` bigint(20) unsigned DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,

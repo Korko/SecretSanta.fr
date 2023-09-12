@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::fallback([ErrorController::class, 'pageNotFound'])->name('404');
+Route::fallback([ErrorController::class, 'pageNotFound'])->name('404');
 
 Route::controller(SingleController::class)
     ->group(function () {
@@ -39,19 +39,19 @@ Route::controller(RandomFormController::class)
 
 Route::controller(JoinDrawController::class)
     ->group(function () {
-        Route::get('/join/{draw}', 'join')
+        Route::get('/join/{draw:ulid}', 'join')
             ->name('pending.join')
             ->missing(function () {
                 return ErrorController::drawNotFound();
             });
 
-        Route::post('/join/{draw}', 'handleJoin')
+        Route::post('/join/{draw:ulid}', 'handleJoin')
             ->name('pending.handleJoin');
     });
 
 Route::controller(DrawDashboardController::class)
     ->name('draw.')
-    ->prefix('/draw/{draw}')
+    ->prefix('/draw/{draw:ulid}')
     ->group(function () {
         Route::get('/', 'index')->name('index')
             ->missing(function () {
@@ -70,7 +70,7 @@ Route::controller(DrawDashboardController::class)
                 Route::post('/name', 'changeOrganizerName')->name('changeOrganizerName');
                 Route::post('/email', 'changeOrganizerEmail')->name('changeOrganizerEmail');
 
-                Route::post('/participants', 'addParticipantName')->name('addParticipantName');
+                Route::post('/participants', 'addParticipantName')->name('participant.add');
 
                 Route::post('/process', 'handle')->name('process');
 
@@ -79,13 +79,13 @@ Route::controller(DrawDashboardController::class)
 
         Route::scopeBindings()
             ->name('participant.')
-            ->prefix('/participants/{participant}')
+            ->prefix('/participants/{participant:ulid}')
             ->middleware('decrypt.iv:participant,name')
             ->group(function () {
                 Route::post('/name', 'changeParticipantName')->name('updateName');
                 Route::post('/email', 'changeParticipantEmail')->name('changeEmail');
 
-                Route::delete('/', 'removeParticipant')->name('remove');
+                Route::delete('/', 'removeParticipantName')->name('remove');
             });
     });
 /*
