@@ -5,13 +5,16 @@ namespace App\Models;
 use App\Casts\DrawEncryptedString;
 use App\Enums\DrawStatus;
 use App\Events\DrawStatusUpdated;
+use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Metrics;
 
@@ -165,7 +168,7 @@ class Draw extends Model implements UrlRoutable
     {
         return $this->belongsTo(Participant::class)
             ->withDefault(function ($instance) {
-                return new AnonymousNotifiable([
+                return Notification::route('mail', [
                     $instance->organizer_email => $instance->organizer_name,
                 ]);
             });

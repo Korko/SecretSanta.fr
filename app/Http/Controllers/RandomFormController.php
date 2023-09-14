@@ -25,6 +25,9 @@ class RandomFormController extends Controller
 
         $draw = new Draw;
         $draw->title = $safe['title'];
+        $draw->description = $safe['description'];
+        $draw->budget = $safe['budget'];
+        $draw->event_date = $safe['event-date'];
         $draw->organizer_name = $safe['organizer-name'];
         $draw->organizer_email = $safe['organizer-email'];
         $draw->save();

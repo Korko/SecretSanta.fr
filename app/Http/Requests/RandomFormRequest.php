@@ -25,6 +25,10 @@ class RandomFormRequest extends Request
             'participant-organizer' => ['sometimes', 'boolean'],
 
             'title' => ['required', 'string', 'max:36773'],
+            'description' => ['required', 'string', 'max:36773'],
+
+            'budget' => ['required', 'string', 'max:55'],
+            'event-date' => ['sometimes', 'date'],
 
             'organizer-name' => ['required', 'string', 'max:55'],
             'organizer-email' => ['required', 'email', 'max:320'],

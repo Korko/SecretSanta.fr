@@ -9,6 +9,7 @@ use App\Notifications\TargetDrawn;
 use Arr;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Notification;
 use Symfony\Component\HttpFoundation\Response;
 use URL;
@@ -23,7 +24,7 @@ class FixOrganizerController extends Controller
         ]);
     }
 
-    public function handle(FixOrganizerRequest $request): JsonResponse
+    public function handle(Request $request): JsonResponse
     {
         $hash = Arr::get(explode('#', $request->input('url'), 2), 1);
         $key = base64_decode($hash);

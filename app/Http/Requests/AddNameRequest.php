@@ -2,8 +2,16 @@
 
 namespace App\Http\Requests;
 
-class JoinDrawRequest extends AddNameRequest
+class AddNameRequest extends Request
 {
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      */
@@ -11,10 +19,10 @@ class JoinDrawRequest extends AddNameRequest
     {
         return $this->combineRules(
             parent::rules(), [
-                'email' => [
+                'name' => [
                     'required',
-                    'email',
-                    'max:320'
+                    'string',
+                    'max:55',
                 ],
             ]
         );

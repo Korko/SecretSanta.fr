@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DrawStatus;
-use App\Exceptions\DrawStartedException;
 use App\Http\Requests\JoinDrawRequest;
 use App\Models\Draw;
+use App\Notifications\VerifyPendingEmail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use VerifyPendingEmail;
+use Illuminate\Support\Str;
 
 class JoinDrawController extends Controller
 {
@@ -37,7 +37,7 @@ class JoinDrawController extends Controller
         if(
             $draw
             ->participants()
-            ->where('name', $request->name)
+            ->where('name', $request->safe()->name)
             ->where('email', '<>', null)
             ->exists()
         ) {
@@ -49,12 +49,13 @@ class JoinDrawController extends Controller
         $participant = $draw
             ->participants()
             ->firstOrCreate([
-                'name' => $request->name,
+                'ulid' => Str::ulid(),
+                'name' => $request->safe()->name,
             ]);
 
         $participant
             ->update([
-                'email' => $request->email,
+                'email' => $request->safe()->email,
                 'email_verified_at' => null,
             ]);
 

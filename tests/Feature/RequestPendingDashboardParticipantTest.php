@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\DrawStatus;
 use App\Models\Draw;
 
 test('a visitor can join a pending draw', function () {
@@ -23,25 +22,72 @@ test('a visitor can join a pending draw', function () {
         ->assertSuccessful();
 
     // Check that participant is now registered and status changed
-    // TODO
+    $participant = $draw
+        ->participants()
+        ->first();
+
+    // Cannot make a where condition on name or email as they are crypted on database
+    // So get the first participant and check them once decrypted.
+    expect($participant)
+        ->not()
+        ->toBeNull();
+    expect($participant->name)
+        ->toBe($name);
+    expect($participant->email)
+        ->toBe($email);
+    expect($participant->email_verified_at)
+        ->toBeNull();
 
     // Check that participant received a mail after choosing their name
-    // TODO
-})->todo();
+    // TODO Notification::assertSentTo($participant, )
+});
 
 test('a visitor can join a pending draw by selecting an already filled name', function () {
     // Create a draw with names defined
-    // TODO
+    Notification::fake();
+
+    $names = [
+        fake()->name(),
+        fake()->name(),
+        fake()->name()
+    ];
+
+    $draw = Draw::factory()
+        ->withParticipants($names)
+        ->createOne();
 
     // Check a visitor can pick a name defined by the organizer
-    // TODO
+    $name = $names[array_rand($names, 1)];
+    $email = fake()->email();
+
+    $participant = $draw
+        ->participants
+        ->where(fn($participant) => $participant->name === $name)
+        ->first();
+
+    expect($participant)
+        ->not()
+        ->toBeNull();
+
+    expect($participant->email)
+        ->toBeNull();
+
+    // Check a visitor can register with a new name
+    ajaxPost(URL::signedRoute('pending.handleJoin', ['draw' => $draw]), [
+        'name' => $name,
+        'email' => $email
+    ])
+        ->assertSuccessful();
 
     // Check that participant is now registered and status changed
-    // TODO
+    expect($participant->email)
+        ->toBe($email);
+    expect($participant->email_verified_at)
+        ->toBeNull();
 
     // Check that participant received a mail after choosing their name
     // TODO
-})->todo();
+});
 
 test('once a visitor confirm their participation, the organizer is notified', function () {
     // Create a draw
@@ -77,6 +123,9 @@ test('a visitor have to confirm their email to validate their participation to t
     // TODO
 
     // Check a visitor received a link to their panel once email was validated
+    // TODO
+
+    // Check a new User is created with a new UserEmail after validation
     // TODO
 })->todo();
 

@@ -6,7 +6,6 @@ use App\Casts\DrawEncryptedString;
 use App\Collections\ParticipantsCollection;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
@@ -109,6 +108,11 @@ class Participant extends Model implements UrlRoutable
             $participant->ulid = (string) Str::ulid();
             $participant->mail()->save($mail);
         });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function draw()

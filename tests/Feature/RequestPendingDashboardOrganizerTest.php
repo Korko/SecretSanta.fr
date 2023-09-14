@@ -285,6 +285,27 @@ test('an organizer can prefill some participant names', function () {
     expect(Participant::class)->toHaveCount(1);
 });
 
+test('when an organizer prefill some participant names, it updates the draw update date', function () {
+    Notification::fake();
+
+    $draw = Draw::factory()
+        ->createOne();
+
+    expect($draw->updated_at)
+        ->toEqual($draw->created_at);
+
+    $this->travel(1)->hour();
+
+    ajaxPost(URL::signedRoute('draw.participant.add', ['draw' => $draw]), [
+        'name' => fake()->name()
+    ])
+        ->assertSuccessful();
+
+    expect($draw->fresh()->updated_at)
+        ->not()
+        ->toEqual($draw->created_at);
+});
+
 test('an organizer can remove some prefilled participant names', function () {
     Notification::fake();
 
@@ -305,4 +326,28 @@ test('an organizer can remove some prefilled participant names', function () {
 
     expect($participant->fresh())
         ->toBeNull();
+});
+
+test('when an organizer removes some participant names, it updates the draw update date', function () {
+    Notification::fake();
+
+    $draw = Draw::factory()
+        ->withParticipants([
+            fake()->name(),
+        ])
+        ->createOne();
+
+    expect($draw->updated_at)
+        ->toEqual($draw->created_at);
+
+    $participant = $draw->participants->first();
+
+    $this->travel(1)->hour();
+
+    ajaxDelete(URL::signedRoute('draw.participant.remove', ['draw' => $draw, 'participant' => $participant]))
+        ->assertSuccessful();
+
+    expect($draw->fresh()->updated_at)
+        ->not()
+        ->toEqual($draw->created_at);
 });
