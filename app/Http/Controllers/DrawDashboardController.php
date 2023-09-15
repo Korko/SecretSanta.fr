@@ -95,7 +95,7 @@ class DrawDashboardController extends Controller
     public function changeOrganizerEmail(Draw $draw, Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'email' => 'required|email|max:320',
+            'email' => 'required|email|max:255',
         ]);
 
         $draw->organizer_email = $validated['email'];
@@ -227,7 +227,7 @@ class DrawDashboardController extends Controller
     public function changeParticipantEmail(Draw $draw, Participant $participant, Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'email' => 'required|email|max:320',
+            'email' => 'required|email|max:255',
         ]);
 
         $participant->email = $validated['email'];

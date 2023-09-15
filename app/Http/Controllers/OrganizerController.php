@@ -85,7 +85,7 @@ class OrganizerController extends Controller
     public function changeEmail(Request $request, Draw $draw, Participant $participant): JsonResponse
     {
         $request->validate([
-            'email' => ['required', 'email', 'max:320'],
+            'email' => ['required', 'email', 'max:255'],
         ], [
             'email.required' => Lang::get('validation.custom.organizer.email.required'),
             'email.email' => Lang::get('validation.custom.organizer.email.format'),

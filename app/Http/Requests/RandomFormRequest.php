@@ -31,11 +31,11 @@ class RandomFormRequest extends Request
             'event-date' => ['sometimes', 'date'],
 
             'organizer-name' => ['required', 'string', 'max:55'],
-            'organizer-email' => ['required', 'email', 'max:320'],
+            'organizer-email' => ['required', 'email', 'max:255'],
 
             'participants' => ['sometimes', 'array'],
             'participants.*.name' => ['required', 'string', 'max:55', 'distinct:ignore_case', 'different:organizer-name'],
-            'participants.*.email' => ['sometimes', 'string', 'max:320'],
+            'participants.*.email' => ['sometimes', 'string', 'max:255'],
 
             'mode' => ['sometimes', new Enum(AppMode::class)],
         ];
