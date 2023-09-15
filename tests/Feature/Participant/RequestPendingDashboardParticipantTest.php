@@ -80,6 +80,7 @@ test('a visitor can join a pending draw by selecting an already filled name', fu
         ->assertSuccessful();
 
     // Check that participant is now registered and status changed
+    $participant = $participant->fresh();
     expect($participant->email)
         ->toBe($email);
     expect($participant->email_verified_at)

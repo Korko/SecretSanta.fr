@@ -25,9 +25,9 @@ class RandomFormController extends Controller
 
         $draw = new Draw;
         $draw->title = $safe['title'];
-        $draw->description = $safe['description'];
+        $draw->description = $safe['description'] ?? null;
         $draw->budget = $safe['budget'];
-        $draw->event_date = $safe['event-date'];
+        $draw->event_date = $safe['event-date'] ?? null;
         $draw->organizer_name = $safe['organizer-name'];
         $draw->organizer_email = $safe['organizer-email'];
         $draw->save();
@@ -46,7 +46,8 @@ class RandomFormController extends Controller
         foreach(($safe->participants ?? []) as $participant) {
             $draw->participants()->create([
                 'ulid' => Str::ulid(),
-                'name' => $participant,
+                'name' => $participant['name'],
+                'email' => $participant['email'] ?? null,
             ]);
         }
 

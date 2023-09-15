@@ -13,7 +13,7 @@ test('a visitor can create a new pending draw', function () {
     // Try to create a new draw
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
-        'description' => fake()->sentence(),
+        'budget' => fake()->bothify(),
         'organizer-name' => fake()->name(),
         'organizer-email' => fake()->email(),
     ])->assertJsonStructure(['message', 'link', 'qrcode']);
@@ -32,13 +32,13 @@ test('an organizer can specify a list of participant names', function () {
     // Try to create a new draw
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
-        'description' => fake()->sentence(),
+        'budget' => fake()->bothify(),
         'organizer-name' => fake()->name(),
         'organizer-email' => fake()->email(),
         'participants' => [
-            fake()->name(),
-            fake()->name(),
-            fake()->name(),
+            ['name' => fake()->name()],
+            ['name' => fake()->name()],
+            ['name' => fake()->name()],
         ],
     ])->assertSuccessful();
 
@@ -59,17 +59,17 @@ test('an organizer cannot specify a list of participant names containing their o
     // Try to create a new draw, ensure it fails
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
-        'description' => fake()->sentence(),
+        'budget' => fake()->bothify(),
         'organizer-name' => $organizer,
         'organizer-email' => fake()->email(),
         'participants' => [
-            fake()->name(),
-            $organizer,
-            fake()->name(),
+            ['name' => fake()->name()],
+            ['name' => $organizer],
+            ['name' => fake()->name()],
         ],
     ])
         ->assertUnprocessable()
-        ->assertInvalid('participants.1');
+        ->assertInvalid('participants.1.name');
 
     // Ensure we still have no draws nor participants in database
     expect(Draw::class)->toHaveCount(0);
@@ -88,18 +88,18 @@ test('an organizer cannot specify a list of participant names with duplicates', 
     // Try to create a new draw, ensure it fails
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
-        'description' => fake()->sentence(),
+        'budget' => fake()->bothify(),
         'organizer-name' => fake()->name(),
         'organizer-email' => fake()->email(),
         'participants' => [
-            $participantName,
-            $participantName,
-            fake()->name(),
+            ['name' => $participantName],
+            ['name' => $participantName],
+            ['name' => fake()->name()],
         ],
     ])
         ->assertUnprocessable()
-        ->assertInvalid('participants.0')
-        ->assertInvalid('participants.1');
+        ->assertInvalid('participants.0.name')
+        ->assertInvalid('participants.1.name');
 
     // Ensure we still have no draws nor participants in database
     expect(Draw::class)->toHaveCount(0);
@@ -116,13 +116,13 @@ test('an organizer can also be a participant', function () {
     ajaxPost(URL::route('form.process'), [
         'participant-organizer' => true,
         'title' => fake()->sentence(),
-        'description' => fake()->sentence(),
+        'budget' => fake()->bothify(),
         'organizer-name' => fake()->name(),
         'organizer-email' => fake()->email(),
         'participants' => [
-            fake()->name(),
-            fake()->name(),
-            fake()->name(),
+            ['name' => fake()->name()],
+            ['name' => fake()->name()],
+            ['name' => fake()->name()],
         ],
     ])->assertSuccessful();
 
@@ -136,7 +136,7 @@ test('an organizer is informed they must confirm their email address to process 
     // Try to create a new draw
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
-        'description' => fake()->sentence(),
+        'budget' => fake()->bothify(),
         'organizer-name' => fake()->name(),
         'organizer-email' => fake()->email(),
     ])->assertSuccessful();
@@ -150,7 +150,7 @@ test('an organizer receives in the original notification the link to confirm the
     // Try to create a new draw
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
-        'description' => fake()->sentence(),
+        'budget' => fake()->bothify(),
         'organizer-name' => fake()->name(),
         'organizer-email' => fake()->email(),
     ])->assertSuccessful();

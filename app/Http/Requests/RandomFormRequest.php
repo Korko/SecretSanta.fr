@@ -25,7 +25,7 @@ class RandomFormRequest extends Request
             'participant-organizer' => ['sometimes', 'boolean'],
 
             'title' => ['required', 'string', 'max:36773'],
-            'description' => ['required', 'string', 'max:36773'],
+            'description' => ['sometimes', 'string', 'max:36773'],
 
             'budget' => ['required', 'string', 'max:55'],
             'event-date' => ['sometimes', 'date'],
@@ -34,7 +34,8 @@ class RandomFormRequest extends Request
             'organizer-email' => ['required', 'email', 'max:320'],
 
             'participants' => ['sometimes', 'array'],
-            'participants.*' => ['required', 'string', 'max:55', 'distinct:ignore_case', 'different:organizer-name'],
+            'participants.*.name' => ['required', 'string', 'max:55', 'distinct:ignore_case', 'different:organizer-name'],
+            'participants.*.email' => ['sometimes', 'string', 'max:320'],
 
             'mode' => ['sometimes', new Enum(AppMode::class)],
         ];
