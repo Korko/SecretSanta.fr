@@ -167,9 +167,9 @@ class Draw extends Model implements UrlRoutable
     public function organizer()
     {
         return $this->belongsTo(Participant::class)
-            ->withDefault(function ($instance) {
+            ->withDefault(function () {
                 return Notification::route('mail', [
-                    $instance->organizer_email => $instance->organizer_name,
+                    $this->organizer_email => $this->organizer_name,
                 ]);
             });
     }
