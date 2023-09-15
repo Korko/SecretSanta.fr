@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class AddNameRequest extends Request
+class AddParticipantRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,11 @@ class AddNameRequest extends Request
                     'string',
                     'max:55',
                 ],
+                'email' => [
+                    'sometimes',
+                    'email',
+                    'max:255',
+                ]
             ]
         );
     }

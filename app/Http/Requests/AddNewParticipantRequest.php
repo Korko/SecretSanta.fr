@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Closure;
 
-class AddNewNameRequest extends AddNameRequest
+class AddNewParticipantRequest extends AddParticipantRequest
 {
     /**
      * Get the validation rules that apply to the request.

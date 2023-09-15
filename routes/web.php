@@ -70,7 +70,7 @@ Route::controller(DrawDashboardController::class)
                 Route::post('/name', 'changeOrganizerName')->name('changeOrganizerName');
                 Route::post('/email', 'changeOrganizerEmail')->name('changeOrganizerEmail');
 
-                Route::post('/participants', 'addParticipantName')->name('participant.add');
+                Route::post('/participants', 'addParticipant')->name('participant.add');
 
                 Route::post('/process', 'handle')->name('process');
 
@@ -85,7 +85,7 @@ Route::controller(DrawDashboardController::class)
                 Route::post('/name', 'changeParticipantName')->name('updateName');
                 Route::post('/email', 'changeParticipantEmail')->name('changeEmail');
 
-                Route::delete('/', 'removeParticipantName')->name('remove');
+                Route::delete('/', 'removeParticipant')->name('remove');
             });
     });
 /*

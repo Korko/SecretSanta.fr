@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DrawStatus;
-use App\Http\Requests\AddNameRequest;
+use App\Http\Requests\AddNewParticipantRequest;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\DrawTitleChanged;
@@ -169,11 +169,12 @@ class DrawDashboardController extends Controller
         ]);
     }
 
-    public function addParticipantName(Draw $draw, AddNameRequest $request): JsonResponse
+    public function addParticipant(Draw $draw, AddNewParticipantRequest $request): JsonResponse
     {
         $draw->participants()->create([
             'ulid' => Str::ulid(),
             'name' => $request->safe()->name,
+            'email' => $request->safe()->email ?? null,
         ]);
 
         // TODO
@@ -212,7 +213,7 @@ class DrawDashboardController extends Controller
         ]);
     }
 
-    public function removeParticipantName(Draw $draw, Participant $participant, Request $request): JsonResponse
+    public function removeParticipant(Draw $draw, Participant $participant): JsonResponse
     {
         throw_if($participant->is($draw->organizer), new Exception('Cannot remove organizer'));
 

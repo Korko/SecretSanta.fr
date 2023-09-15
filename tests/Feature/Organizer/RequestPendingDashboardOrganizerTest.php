@@ -351,3 +351,23 @@ test('when an organizer removes some participant names, it updates the draw upda
         ->not()
         ->toEqual($draw->created_at);
 });
+
+test('an organizer can prefill some participant names and emails', function () {
+    Notification::fake();
+
+    $draw = Draw::factory()
+        ->createOne();
+
+    expect(Participant::class)->toHaveCount(0);
+
+    ajaxPost(URL::signedRoute('draw.participant.add', ['draw' => $draw]), [
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+    ])
+        ->assertSuccessful();
+
+    expect(Participant::class)->toHaveCount(1);
+    expect($draw->participants->first()->email)
+        ->not()
+        ->toBeNull();
+});
