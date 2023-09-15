@@ -34,24 +34,25 @@ class JoinDrawController extends Controller
             ], 422);
         }
 
-        if(
-            $draw
-            ->participants()
+        $participant = $draw
+            ->participants
             ->where('name', $request->safe()->name)
-            ->where('email', '<>', null)
-            ->exists()
-        ) {
+            ->first();
+
+        if($participant !== null && $participant->email !== null) {
             return response()->json([
                 'message' => trans("Le nom choisi a déjà été réservé par quelqu'un d'autre."),
             ], 422);
         }
 
-        $participant = $draw
-            ->participants()
-            ->firstOrCreate([
-                'ulid' => Str::ulid(),
-                'name' => $request->safe()->name,
-            ]);
+        if($participant === null) {
+            $participant = $draw
+                ->participants()
+                ->create([
+                    'ulid' => Str::ulid(),
+                    'name' => $request->safe()->name,
+                ]);
+        }
 
         $participant
             ->update([
