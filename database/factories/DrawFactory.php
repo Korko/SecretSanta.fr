@@ -58,7 +58,8 @@ class DrawFactory extends Factory
             Participant::factory()
                 ->forEachSequence(...array_map(function ($name) {
                     return [
-                        'name' => $name
+                        'name' => $name,
+                        'email' => null,
                     ];
                 }, (array) $names)),
             'participants'
