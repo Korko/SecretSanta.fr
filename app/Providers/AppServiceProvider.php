@@ -32,11 +32,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Blueprint::macro('tinyBlob', function ($column) {
             /** @var Blueprint $this */
-            return $this->addColumn('blob', $column, ['length' => IVEncrypter::TINYBLOB_MAXLENGTH])->charset('')->collation('');
+            return $this->addColumn('binary', $column, ['length' => IVEncrypter::TINYBLOB_MAXLENGTH]);
         });
         Blueprint::macro('blob', function ($column) {
             /** @var Blueprint $this */
-            return $this->addColumn('blob', $column, ['length' => IVEncrypter::BLOB_MAXLENGTH])->charset('')->collation('');
+            return $this->addColumn('binary', $column, ['length' => IVEncrypter::BLOB_MAXLENGTH])   ;
         });
 
         /**

@@ -1,0 +1,44 @@
+<?php
+
+use App\Enums\DrawStatus;
+use App\Models\Participant;
+use App\Models\User;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('draws', function (Blueprint $table) {
+            $table->id();
+            $table->ulid()->unique();
+            $table->foreignIdFor(Participant::class, 'organizer_id')->nullable()->constrained('participants')->nullOnDelete();
+            $table->tinyBlob('organizer_name');
+            $table->blob('organizer_email');
+            $table->timestamp('organizer_email_verified_at')->nullable();
+            $table->foreignIdFor(User::class, 'organizer_user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->blob('title');
+            $table->blob('description')->nullable();
+            $table->string('budget', 55)->nullable();
+            $table->date('event_date')->nullable();
+            $table->timestamps();
+            $table->timestamp('ready_at')->nullable();
+            $table->timestamp('drawn_at')->nullable();
+            $table->timestamp('finished_at')->nullable();
+            $table->enum('status', DrawStatus::values());
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('draws');
+    }
+};

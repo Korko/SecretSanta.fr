@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\MigrationSubscriber;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -13,6 +14,15 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         //
+    ];
+
+    /**
+     * The subscriber classes to register.
+     *
+     * @var array
+     */
+    protected $subscribe = [
+        MigrationSubscriber::class,
     ];
 
     /**
