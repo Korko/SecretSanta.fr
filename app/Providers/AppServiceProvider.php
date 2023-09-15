@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // TODO: This does not work anymore. Fix this or revert to using pure blob columns.
         Blueprint::macro('tinyBlob', function ($column) {
             /** @var Blueprint $this */
             return $this->addColumn('binary', $column, ['length' => IVEncrypter::TINYBLOB_MAXLENGTH]);
