@@ -1,4 +1,4 @@
-image: php:8.2-cli
+image: jakzal/phpqa:php8.2
 
 cache:
   key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
@@ -13,17 +13,13 @@ stages:
   - metrics
 
 before_script:
-  - apt-get update -yqq
-  - apt-get install -y gpg
-  - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add
-  - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-  - curl -sL https://deb.nodesource.com/setup_current.x | bash -
-  - apt-get install -y nodejs build-essential yarn libzip-dev zip git wget libbz2-dev
+  - apt-get update -yqq && apt-get install -y gpg
   - apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
   - docker-php-ext-install bcmath zip bz2 pdo pdo_mysql
   - pecl install xdebug && docker-php-ext-enable xdebug
   - curl --show-error --silent https://getcomposer.org/installer | php
-  - php composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+  - mv composer.phar /usr/local/bin/composer
+  - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
 
 services:
   - mysql:latest
@@ -66,7 +62,6 @@ tests:
 #php-metrics:
 #  stage: metrics
 #  script:
-#    - php composer.phar global require --dev phpmetrics/phpmetrics
 #    - phpmetrics --report-html=var/php-metrics app tests
 #  artifacts:
 #    paths:
@@ -76,9 +71,8 @@ tests:
 #php-mess-detector:
 #  stage: metrics
 #  script:
-#    - wget -c https://phpmd.org/static/latest/phpmd.phar
 #    - wget -c https://gist.githubusercontent.com/slayerfat/2b3cc4faf94d2863b505/raw/5229a520c69010c6c13fd9a66d14309c214c241a/phpmd-ruleset.xml
-#    - php phpmd.phar app,tests text phpmd-ruleset.xml
+#    - phpmd app,tests text phpmd-ruleset.xml
 #  artifacts:
 #    paths:
 #      - var/phpmd.html
@@ -87,63 +81,48 @@ tests:
 #php-assumptions:
 #  stage: metrics
 #  script:
-#    - php composer.phar global require --dev rskuipers/php-assumptions
 #    - phpa app tests
 #  allow_failure: true
 #
 #composer-unused:
 #  stage: metrics
 #  script:
-#    - wget https://github.com/icanhazstring/composer-unused/releases/latest/download/composer-unused.phar
-#    - php composer-unused.phar --no-progress --excludePackage=spatie/laravel-blade-javascript
+#    - composer-unused --no-progress --excludePackage=spatie/laravel-blade-javascript
 #  allow_failure: true
 #
 #php-copypaste-detector:
 #  stage: metrics
 #  script:
-#    - wget https://phar.phpunit.de/phpcpd.phar
-#    - php phpcpd.phar --fuzzy app tests
-#  allow_failure: true
-#
-#php-security-checker:
-#  stage: metrics
-#  script:
-#    - wget https://get.sensiolabs.org/security-checker.phar
-#    - php security-checker.phar security:check composer.lock
+#    - phpcpd --fuzzy app tests
 #  allow_failure: true
 #
 #php-churn:
 #  stage: metrics
 #  script:
-#    - php composer.phar global require --dev bmitch/churn-php
 #    - churn run app tests
 #  allow_failure: true
 #
 #php-code-analyzer:
 #  stage: metrics
 #  script:
-#    - wget https://github.com/wapmorgan/PhpCodeAnalyzer/releases/download/1.0.6/phpca.phar
-#    - php phpca.phar app
+#    - phpca app
 #  allow_failure: true
 #
 #php-code-fixer:
 #  stage: metrics
 #  script:
-#    - wget https://github.com/wapmorgan/PhpCodeFixer/releases/download/2.0.23/phpcf-2.0.23.phar
-#    - php phpcf-2.0.23.phar app tests
+#    - php-cs-fixer app tests
 #  allow_failure: true
 #
 #php-insights:
 #  stage: metrics
 #  script:
-#    - php composer.phar global require --dev nunomaduro/phpinsights
 #    - phpinsights
 #  allow_failure: true
 #
 #phpstan:
 #  stage: metrics
 #  script:
-#    - php composer.phar global require --dev nunomaduro/larastan
 #    - wget https://gist.githubusercontent.com/Korko/19ad2705a8a8632819aa8370fcb631b8/raw/d79f918004273b8823a5530e57141119eba69ac6/phpstan.neon
 #    - phpstan analyse -c phpstan.neon
 #  allow_failure: true
