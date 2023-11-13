@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RandomFormController extends Controller
 {
-    public function index(): Response
+    public function display(): Response
     {
         return response()->inertia('RandomForm', [
             'bmc' => config('app.bmc'),

@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 class JoinDrawController extends Controller
 {
     // Hashed route
-    public function join(Draw $draw): Response
+    public function display(Draw $draw): Response
     {
         if($draw->status !== DrawStatus::CREATED) {
             return view('pending.locked', [
@@ -26,7 +26,7 @@ class JoinDrawController extends Controller
         ]);
     }
 
-    public function handleJoin(Draw $draw, JoinDrawRequest $request): JsonResponse
+    public function handle(Draw $draw, JoinDrawRequest $request): JsonResponse
     {
         if($draw->status !== DrawStatus::CREATED) {
             return response()->json([

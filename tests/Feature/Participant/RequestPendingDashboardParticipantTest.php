@@ -15,7 +15,7 @@ test('a visitor can join a pending draw', function () {
     $email = fake()->email();
 
     // Check a visitor can register with a new name
-    ajaxPost(URL::signedRoute('pending.handleJoin', ['draw' => $draw]), [
+    ajaxPost(URL::signedRoute('pending.join.handle', ['draw' => $draw]), [
         'name' => $name,
         'email' => $email
     ])
@@ -73,7 +73,7 @@ test('a visitor can join a pending draw by selecting an already filled name', fu
         ->toBeNull();
 
     // Check a visitor can register with a new name
-    ajaxPost(URL::signedRoute('pending.handleJoin', ['draw' => $draw]), [
+    ajaxPost(URL::signedRoute('pending.join.handle', ['draw' => $draw]), [
         'name' => $name,
         'email' => $email
     ])

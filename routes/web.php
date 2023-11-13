@@ -21,124 +21,82 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::fallback([ErrorController::class, 'pageNotFound'])->name('404');
+Route::get('/', [RandomFormController::class, 'display'])->name('form.index');
+Route::post('/process', [RandomFormController::class, 'handle'])->name('form.process');
 
-Route::controller(SingleController::class)
+Route::get('/signup', [SignUpController::class, 'display'])->name('signup');
+Route::post('/signup', [SignUpController::class, 'handle'])->name('signup.handle');
+Route::get('/login', [AuthController::class, 'display'])->name('login');
+Route::post('/login', [AuthController::class, 'handleIn'])->name('login.handle');
+Route::post('/logout', [AuthController::class, 'handleOut'])->name('logout.handle');
+
+Route::get('/faq', [SingleController::class, 'faq'])->name('faq');
+Route::get('/dashboard', [SingleController::class, 'dashboard'])->name('dashboard');
+Route::get('/legal', [SingleController::class, 'legal'])->name('legal');
+
+Route::get('/join/{draw:ulid}', [JoinDrawController::class, 'display'])->name('pending.join');
+Route::post('/join/{draw:ulid}', [JoinDrawController::class, 'handle'])->name('pending.join.handle');
+
+Route::get('/draw/{draw:ulid}', [DrawDashboardController::class, 'index'])->name('draw.index');
+Route::get('/draw/{draw:ulid}/confirm', [DrawDashboardController::class, 'confirmOrganizerEmail'])->middleware('signed')->name('draw.confirmOrganizerEmail');
+Route::middleware('decrypt.iv:draw,title')
     ->group(function () {
-        Route::get('/faq', 'faq')->name('faq');
-        Route::get('/dashboard', 'dashboard')->name('dashboard');
-        Route::get('/legal', 'legal')->name('legal');
-    });
+        Route::post('/draw/{draw:ulid}/participate', [DrawDashboardController::class, 'participate'])->name('draw.participate');
+        Route::post('/draw/{draw:ulid}/withdraw', [DrawDashboardController::class, 'withdraw'])->name('draw.withdraw');
 
-Route::controller(RandomFormController::class)
-    ->name('form.')
-    ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('/process', 'handle')->name('process');
-    });
+        Route::post('/draw/{draw:ulid}/title', [DrawDashboardController::class, 'changeTitle'])->name('draw.changeTitle');
 
-Route::controller(JoinDrawController::class)
-    ->group(function () {
-        Route::get('/join/{draw:ulid}', 'join')
-            ->name('pending.join')
-            ->missing(function () {
-                return ErrorController::drawNotFound();
-            });
+        Route::post('/draw/{draw:ulid}/name', [DrawDashboardController::class, 'changeOrganizerName'])->name('draw.changeOrganizerName');
+        Route::post('/draw/{draw:ulid}/email', [DrawDashboardController::class, 'changeOrganizerEmail'])->name('draw.changeOrganizerEmail');
 
-        Route::post('/join/{draw:ulid}', 'handleJoin')
-            ->name('pending.handleJoin');
-    });
+        Route::post('/draw/{draw:ulid}/participants', [DrawDashboardController::class, 'addParticipant'])->name('draw.participant.add');
 
-Route::controller(DrawDashboardController::class)
-    ->name('draw.')
-    ->prefix('/draw/{draw:ulid}')
-    ->group(function () {
-        Route::get('/', 'index')->name('index')
-            ->missing(function () {
-                return ErrorController::drawNotFound();
-            });
+        Route::post('/draw/{draw:ulid}/process', [DrawDashboardController::class, 'handle'])->name('draw.process');
 
-        Route::get('/confirm', 'confirmOrganizerEmail')->middleware('signed')->name('confirmOrganizerEmail');
-
-        Route::middleware('decrypt.iv:draw,title')
-            ->group(function () {
-                Route::post('/participate', 'participate')->name('participate');
-                Route::post('/withdraw', 'withdraw')->name('withdraw');
-
-                Route::post('/title', 'changeTitle')->name('changeTitle');
-
-                Route::post('/name', 'changeOrganizerName')->name('changeOrganizerName');
-                Route::post('/email', 'changeOrganizerEmail')->name('changeOrganizerEmail');
-
-                Route::post('/participants', 'addParticipant')->name('participant.add');
-
-                Route::post('/process', 'handle')->name('process');
-
-                Route::post('/cancel', 'cancel')->middleware('signed')->name('cancel');
-            });
+        Route::post('/draw/{draw:ulid}/cancel', [DrawDashboardController::class, 'cancel'])->middleware('signed')->name('draw.cancel');
 
         Route::scopeBindings()
-            ->name('participant.')
-            ->prefix('/participants/{participant:ulid}')
-            ->middleware('decrypt.iv:participant,name')
             ->group(function () {
-                Route::post('/name', 'changeParticipantName')->name('updateName');
-                Route::post('/email', 'changeParticipantEmail')->name('changeEmail');
+                Route::post('/draw/{draw:ulid}/participants/{participant:ulid}/name', 'changeParticipantName')->name('draw.participant.updateName');
+                Route::post('/draw/{draw:ulid}/participants/{participant:ulid}/email', 'changeParticipantEmail')->name('draw.participant.changeEmail');
 
-                Route::delete('/', 'removeParticipant')->name('remove');
+                Route::delete('/draw/{draw:ulid}/participants/{participant:ulid}', 'removeParticipant')->name('draw.participant.remove');
             });
     });
+
 /*
-Route::controller(DearSantaController::class)
-    ->middleware('signed')
-    ->prefix('/santa/{participant}')
-    ->name('santa.')
+Route::middleware('signed')
     ->group(function () {
-        Route::get('/', 'index')->name('index')
-            ->missing(function () {
-                return ErrorController::drawNotFound();
-            });
+        Route::get('/santa/{participant:ulid}', [DearSantaController::class, 'index'])->name('santa.index');
 
         Route::middleware('decrypt.iv:participant,name')
             ->group(function () {
-                Route::get('/fetch', 'fetch')->name('fetch');
-                Route::post('/sendSanta', 'handleSanta')->name('contactSanta');
-                Route::post('/sendTarget', 'handleTarget')->name('contactTarget');
-                Route::get('/resendSanta/{dearSanta}', 'resendDearSanta')->name('resendDearSanta');
-                Route::get('/resendTarget/{dearTarget}', 'resendDearTarget')->name('resendDearTarget');
-                Route::get('/target', 'resendTarget')->name('resendTarget');
+                Route::get('/santa/{participant:ulid}/fetch', [DearSantaController::class, 'fetch'])->name('santa.fetch');
+                Route::post('/santa/{participant:ulid}/sendSanta', [DearSantaController::class, 'handleSanta'])->name('santa.contactSanta');
+                Route::post('/santa/{participant:ulid}/sendTarget', [DearSantaController::class, 'handleTarget'])->name('santa.contactTarget');
+                Route::get('/santa/{participant:ulid}/resendSanta/{dearSanta}', [DearSantaController::class, 'resendDearSanta'])->name('santa.resendDearSanta');
+                Route::get('/santa/{participant:ulid}/resendTarget/{dearTarget}', [DearSantaController::class, 'resendDearTarget'])->name('santa.resendDearTarget');
+                Route::get('/santa/{participant:ulid}/target', [DearSantaController::class, 'resendTarget'])->name('santa.resendTarget');
             });
     });
 
-Route::controller(ReportController::class)
-    ->prefix('/report/{participant}')
-    ->group(function () {
-        Route::get('/', 'view')->name('report');
-        Route::post('/', 'handle')->middleware('decrypt.iv:participant,name')->name('report.handle');
-    });
+Route::get('/report/{participant:ulid}', [ReportController::class, 'view'])->name('report');
+Route::post('/report/{participant:ulid}', [ReportController::class, 'handle'])->middleware('decrypt.iv:participant,name')->name('report.handle');
 
-Route::controller(OrganizerController::class)
-    ->middleware('signed')
-    ->prefix('/org/{draw}')
-    ->name('organizer.')
+Route::middleware('signed')
     ->group(function () {
-        Route::get('/', 'index')->name('index')
-            ->missing(function () {
-                return ErrorController::drawNotFound();
-            });
+        Route::get('/org/{draw:ulid}', [OrganizerController::class, 'index'])->name('organizer.index');
 
         Route::middleware('decrypt.iv:draw,mail_title')->group(function () {
-            Route::get('/fetch', 'fetch')->name('fetch');
-            Route::delete('/', 'delete')->name('delete');
-            Route::get('/csvInit', 'csvInit')->name('csvInit');
-            Route::get('/csvFinal', 'csvFinal')->name('csvFinal');
-        });
+            Route::get('/org/{draw:ulid}/fetch', [OrganizerController::class, 'fetch'])->name('organizer.fetch');
+            Route::delete('/org/{draw:ulid}', [OrganizerController::class, 'delete'])->name('organizer.delete');
+            Route::get('/org/{draw:ulid}/csvInit', [OrganizerController::class, 'csvInit'])->name('organizer.csvInit');
+            Route::get('/org/{draw:ulid}/csvFinal', [OrganizerController::class, 'csvFinal'])->name('organizer.csvFinal');
 
-        Route::middleware('decrypt.iv:participant,name')->group(function () {
-            Route::get('/{participant}/resend', 'resendTarget')->name('resendTarget');
-            Route::post('/{participant}/changeEmail', 'changeEmail')->name('changeEmail');
-            Route::post('/{participant}/changeName', 'changeName')->name('changeName');
-            Route::get('/{participant}/withdraw', 'withdraw')->name('withdraw');
+            Route::get('/org/{draw:ulid}/{participant:ulid}/resend', [OrganizerController::class, 'resendTarget'])->name('organizer.resendTarget');
+            Route::post('/org/{draw:ulid}/{participant:ulid}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizer.changeEmail');
+            Route::post('/org/{draw:ulid}/{participant:ulid}/changeName', [OrganizerController::class, 'changeName'])->name('organizer.changeName');
+            Route::get('/org/{draw:ulid}/{participant:ulid}/withdraw', [OrganizerController::class, 'withdraw'])->name('organizer.withdraw');
         });
     });
 */
