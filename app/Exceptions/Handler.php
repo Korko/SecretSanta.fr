@@ -2,10 +2,13 @@
 
 namespace App\Exceptions;
 
+use App\Http\Controllers\ErrorController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Validation\ValidationException;
 use Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -42,17 +45,20 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->renderable(function (ValidationException $e, $request) {
-            return response()->json([
-                'message' => trans('error.validation'),
-                'errors' => $e->errors(),
-            ], 422);
+        $this->renderable(function (ValidationException $e, Request $request) {
+            return ErrorController::validationError($e);
         });
 
-        $this->renderable(function (InvalidSignatureException $e, $request) {
-            return response()->json([
-                'message' => trans('error.signature'),
-            ], 500);
+        $this->renderable(function (InvalidSignatureException $e, Request $request) {
+            return ErrorController::invalidSignature();
+        });
+
+        $this->renderable(function (NotFoundHttpException $e, Request $request) {
+            return ErrorController::pageNotFound();
+        });
+
+        $this->renderable(function (ModelNotFoundException $e, Request $request) {
+            return ErrorController::drawNotFound();
         });
     }
 
