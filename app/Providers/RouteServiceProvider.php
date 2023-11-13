@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Enums\DrawStatus;
 use App\Facades\DrawCrypt;
+use App\Models\Draw;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
