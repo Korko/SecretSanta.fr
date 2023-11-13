@@ -173,6 +173,11 @@ class Participant extends Model implements UrlRoutable
         ];
     }
 
+    public function notifications()
+    {
+        return $this->user->notifications();
+    }
+
     /**
      * Get the queueable relationships for the entity.
      */
