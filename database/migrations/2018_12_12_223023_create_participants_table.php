@@ -22,7 +22,6 @@ return new class extends Migration
             $table->blob('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->foreignIdFor(Participant::class, 'target_id')->nullable()->constrained('participants')->nullOnDelete();
-            $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete();
         });
     }
 

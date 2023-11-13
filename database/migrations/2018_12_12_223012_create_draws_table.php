@@ -21,7 +21,6 @@ return new class extends Migration
             $table->tinyBlob('organizer_name');
             $table->blob('organizer_email');
             $table->timestamp('organizer_email_verified_at')->nullable();
-            $table->foreignIdFor(User::class, 'organizer_user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->blob('title');
             $table->blob('description')->nullable();
             $table->string('budget', 55)->nullable();

@@ -44,7 +44,6 @@ CREATE TABLE `draws` (
   `organizer_name` blob NOT NULL,
   `organizer_email` blob NOT NULL,
   `organizer_email_verified_at` timestamp NULL DEFAULT NULL,
-  `organizer_user_id` bigint(20) unsigned DEFAULT NULL,
   `title` blob NOT NULL,
   `description` blob DEFAULT NULL,
   `budget` varchar(55) DEFAULT NULL,
@@ -58,9 +57,7 @@ CREATE TABLE `draws` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `draws_ulid_unique` (`ulid`),
   KEY `draws_organizer_id_foreign` (`organizer_id`),
-  KEY `draws_organizer_user_id_foreign` (`organizer_user_id`),
-  CONSTRAINT `draws_organizer_id_foreign` FOREIGN KEY (`organizer_id`) REFERENCES `participants` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `draws_organizer_user_id_foreign` FOREIGN KEY (`organizer_user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+  CONSTRAINT `draws_organizer_id_foreign` FOREIGN KEY (`organizer_id`) REFERENCES `participants` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `exclusions`;
@@ -161,60 +158,12 @@ CREATE TABLE `participants` (
   `email` blob DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `target_id` bigint(20) unsigned DEFAULT NULL,
-  `user_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `participants_ulid_unique` (`ulid`),
   KEY `participants_draw_id_foreign` (`draw_id`),
   KEY `participants_target_id_foreign` (`target_id`),
-  KEY `participants_user_id_foreign` (`user_id`),
   CONSTRAINT `participants_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `participants_target_id_foreign` FOREIGN KEY (`target_id`) REFERENCES `participants` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `participants_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `personal_access_tokens`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `personal_access_tokens` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `tokenable_type` varchar(255) NOT NULL,
-  `tokenable_id` bigint(20) unsigned NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `abilities` text DEFAULT NULL,
-  `last_used_at` timestamp NULL DEFAULT NULL,
-  `expires_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
-  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `user_emails`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_emails` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_emails_email_unique` (`email`),
-  KEY `user_emails_user_id_foreign` (`user_id`),
-  CONSTRAINT `user_emails_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `remember_token` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  CONSTRAINT `participants_target_id_foreign` FOREIGN KEY (`target_id`) REFERENCES `participants` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `websockets_statistics_entries`;
@@ -239,15 +188,12 @@ CREATE TABLE `websockets_statistics_entries` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (1,'0000_00_00_000000_create_websockets_statistics_entries_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (2,'2014_10_12_000000_create_users_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (3,'2018_12_12_223012_create_draws_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (4,'2018_12_12_223015_create_mails_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (5,'2018_12_12_223023_create_participants_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (6,'2019_12_06_003707_create_jobs_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (7,'2019_12_11_232036_create_failed_jobs_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (8,'2019_12_14_000001_create_personal_access_tokens_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (9,'2020_02_19_140057_create_dear_santas_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (10,'2020_11_15_235209_create_exclusions_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (11,'2022_04_17_211703_create_dear_targets_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (12,'2023_09_12_223526_create_user_emails_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (13,'2023_09_16_010213_create_notifications_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (2,'2018_12_12_223012_create_draws_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (3,'2018_12_12_223015_create_mails_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (4,'2018_12_12_223023_create_participants_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (5,'2019_12_06_003707_create_jobs_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (6,'2019_12_11_232036_create_failed_jobs_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (7,'2020_02_19_140057_create_dear_santas_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (8,'2020_11_15_235209_create_exclusions_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (9,'2022_04_17_211703_create_dear_targets_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (10,'2023_09_16_010213_create_notifications_table',1);

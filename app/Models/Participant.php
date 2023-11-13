@@ -110,11 +110,6 @@ class Participant extends Model implements UrlRoutable
         });
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function draw()
     {
         return $this->belongsTo(Draw::class);
@@ -171,11 +166,6 @@ class Participant extends Model implements UrlRoutable
         return [
             ['name' => $this->name, 'email' => $this->email],
         ];
-    }
-
-    public function notifications()
-    {
-        return $this->user->notifications();
     }
 
     /**

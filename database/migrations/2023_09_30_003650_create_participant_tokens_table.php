@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('participant_tokens', function (Blueprint $table) {
             $table->id();
-            $table->rememberToken();
+            $table->foreignIdFor(Participant::class)->constrained()->cascadeOnDelete();
+            $table->string('token', 64)->unique();
+            $table->timestamp('last_used_at')->nullable();
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('participant_tokens');
     }
 };
