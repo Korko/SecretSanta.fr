@@ -26,19 +26,19 @@ class DrawFactory extends Factory
             'ulid' => Str::ulid(),
             'title' => $this->faker->sentence(),
             'description' => $this->faker->text(),
-            'organizer_name' => $this->faker->name(),
-            'organizer_email' => $this->faker->email(),
+            'organizer_id' => Participant::factory(),
+            'participant_organizer' => true,
         ];
     }
 
     /**
      * Indicate that the organizer is also a participant
      */
-    public function withParticipantOrganizer(): static
+    public function withNonParticipantOrganizer(): static
     {
         return $this->state(function () {
             return [
-                'organizer_id' => Participant::factory(),
+                'participant_organizer' => false,
             ];
         });
     }

@@ -45,7 +45,7 @@ class FixOrganizerController extends Controller
             $draw = $participant->draw;
 
             // Access the email in a try/catch to handle invalid decrypt key
-            $organizerEmail = $draw->organizer_email;
+            $organizerEmail = $draw->organizer->email;
         } catch (\Exception $e) {
             return response()->json([
                 'errors' => [
@@ -76,24 +76,11 @@ class FixOrganizerController extends Controller
             ], 422);
         }
 
-        $participantOrganizer = false;
-        if ($draw->organizer->email === $draw->organizer_email) {
-            $participantOrganizer = true;
-        }
+        $draw->organizer->email = $request->input('email');
+        $draw->organizer->save();
 
-        $draw->organizer_email = $request->input('email');
-        $draw->save();
-
-        Notification::route('mail', [
-            $draw->organizer_email => $draw->organizer_name,
-        ])->notify(new OrganizerRecap($draw));
-
-        if ($participantOrganizer) {
-            if ($this->argument('email')) {
-                $draw->organizer->email = $this->argument('email');
-                $draw->organizer->save();
-            }
-
+        $draw->organizer->notify(new OrganizerRecap($draw));
+        if($draw->participant_organizer) {
             $draw->organizer->notifyNow(new TargetDrawn);
         }
 

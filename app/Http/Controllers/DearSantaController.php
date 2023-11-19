@@ -53,7 +53,7 @@ class DearSantaController extends Controller
             'target' => $participant->target->only(['name']) + [
                 'contactUrl' => URL::signedRoute('santa.contactTarget', ['participant' => $participant, 'target' => $participant->target]),
             ],
-            'draw' => $participant->draw->only(['hash', 'mail_title', 'created_at', 'finished_at', 'organizer_name']),
+            'draw' => $participant->draw->only(['hash', 'mail_title', 'created_at', 'finished_at', 'organizer' => ['name']]),
             'targetDearSantaLastUpdate' => $participant->target->dearSantas->max('mail.updated_at') ?: Carbon::now(),
             'santaDearTargetLastUpdate' => $participant->santa->dearTargets->max('mail.updated_at') ?: Carbon::now(),
             'dearSantas' => $participant->dearSantas->mapWithKeys(function ($email) use ($participant) {

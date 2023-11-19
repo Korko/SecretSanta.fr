@@ -8,8 +8,8 @@ class ChangeOrganizerEmail
 {
     public function change(Draw $draw, string $email)
     {
-        $draw->organizer_email = $email;
-        $draw->save();
+        $draw->organizer->email = $email;
+        $draw->organizer->save();
 
         app(SendPanelToOrganizer::class)->send($draw);
     }

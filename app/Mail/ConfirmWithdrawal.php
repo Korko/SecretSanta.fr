@@ -30,7 +30,7 @@ class ConfirmWithdrawal extends Mailable
             ->markdown('emails.confirm_withdrawal', [
                 'name' => $this->santa->name,
                 'draw' => $this->santa->draw->ulid,
-                'organizerName' => $this->santa->draw->organizer_name,
+                'organizerName' => $this->santa->draw->organizer->name,
             ]);
     }
 }

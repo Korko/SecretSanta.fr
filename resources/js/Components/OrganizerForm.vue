@@ -65,7 +65,7 @@
                             title: this.draw.mail_title,
                             creation: this.draw.created_at,
                             deletion: this.draw.deletes_at,
-                            organizerName: this.draw.organizer_name,
+                            organizerName: this.draw.organizer.name,
                             links: {
                                 org: {link: window.location.href}
                             }

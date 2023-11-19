@@ -42,7 +42,7 @@ class FixOrganizer extends Command
 
         $this->info('Organizer Recap sent');
 
-        if ($draw->organizer_participant) {
+        if ($draw->participant_organizer) {
             if ($this->argument('email')) {
                 app(ChangeParticipantEmail::class)->change($draw->organizer, $this->argument('email'));
             } else {

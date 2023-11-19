@@ -11,10 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Metrics;
 
@@ -22,8 +19,6 @@ use Metrics;
  * App\Models\Draw
  *
  * @property int $id
- * @property mixed $organizer_name
- * @property mixed $organizer_email
  * @property mixed $mail_title
  * @property mixed $mail_body
  * @property bool $next_solvable
@@ -97,9 +92,6 @@ class Draw extends Model implements UrlRoutable
         'finished_at' => 'datetime',
         'title' => DrawEncryptedString::class,
         'description' => DrawEncryptedString::class,
-        'organizer_name' => DrawEncryptedString::class,
-        'organizer_email' => DrawEncryptedString::class,
-        'organizer_email_verified_at' => 'datetime',
     ];
 
     /**
@@ -114,7 +106,7 @@ class Draw extends Model implements UrlRoutable
         'drawn_at' => null,
         'finished_at' => null,
         'organizer_id' => null,
-        'organizer_email_verified_at' => null,
+        'participant_organizer' => true,
     ];
 
     protected static function booted(): void
@@ -159,34 +151,41 @@ class Draw extends Model implements UrlRoutable
             });
     }
 
-    public function participants()
+    /**
+     * Get all users, including organizer (participating or not)
+     */
+    public function users()
     {
         return $this->hasMany(Participant::class);
     }
 
-    public function organizer()
-    {
-        return $this->belongsTo(Participant::class)
-            ->withDefault(function () {
-                return Notification::route('mail', [
-                    $this->organizer_email => $this->organizer_name,
-                ]);
-            });
-    }
-
-    protected function participantOrganizer(): Attribute
+    /**
+     * Get all participants (including organizer if participating)
+     */
+    public function participants()
     {
         return Attribute::make(
-            get: fn () => $this->organizer instanceof Participant
-        );
+            get: fn () => $this->participant_organizer ?
+                $this->users->diff([$this->organizer]) :
+                $this->users
+            );
     }
 
+    /**
+     * Get organizer
+     */
+    public function organizer()
+    {
+        return $this->belongsTo(Participant::class);
+    }
+
+    /**
+     * Get all participants but the organizer, even if participating
+     */
     protected function participantsNonOrganizer(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->participantOrganizer ?
-                $this->participants->diff([$this->organizer]) :
-                $this->participants
+            get: fn () => $this->users->diff([$this->organizer])
         );
     }
 

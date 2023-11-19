@@ -6,7 +6,6 @@ use App\Mail\OrganizerFinalRecap as OrganizerFinalRecapMailable;
 use App\Models\Draw;
 use App\Models\Participant;
 use Illuminate\Mail\Mailable;
-use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Notification;
 
 class OrganizerFinalRecap extends Notification
@@ -19,7 +18,7 @@ class OrganizerFinalRecap extends Notification
     /**
      * Get the notification's delivery channels.
      */
-    public function via(AnonymousNotifiable|Participant $organizer): array
+    public function via(Participant $organizer): array
     {
         return ['mail'];
     }
@@ -27,7 +26,7 @@ class OrganizerFinalRecap extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(AnonymousNotifiable|Participant $organizer): Mailable
+    public function toMail(Participant $organizer): Mailable
     {
         return (new OrganizerFinalRecapMailable($this->draw))
             ->to($organizer);

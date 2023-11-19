@@ -74,7 +74,7 @@
                         title: this.draw.mail_title,
                         creation: this.draw.created_at,
                         expiration: this.draw.expires_at,
-                        organizerName: this.draw.organizer_name,
+                        organizerName: this.draw.organizer.name,
                         links: {
                             [this.participant.hash]: {name: this.participant.name, link: window.location.href}
                         }

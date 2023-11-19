@@ -63,8 +63,7 @@ class DrawDashboardController extends Controller
                 // apart from themselves if they submit the same name
                 function (string $attribute, mixed $value, Closure $fail) use ($draw) {
                     $otherNames = $draw
-                        ->participants
-                        ->except($draw->organizer_id)
+                        ->participantsNonOrganizer
                         ->pluck('name');
 
                     if($otherNames->contains($value)) {
@@ -74,13 +73,8 @@ class DrawDashboardController extends Controller
             ]
         ]);
 
-        $draw->organizer_name = $validated['name'];
-        $draw->save();
-
-        if ($draw->participantOrganizer) {
-            $draw->organizer->name = $validated['name'];
-            $draw->organizer->save();
-        }
+        $draw->organizer->name = $validated['name'];
+        $draw->organizer->save();
 
         $draw->participantsNonOrganizer->each(function (Participant $participant) use ($draw) {
             $participant->notify(new OrganizerNameChanged($draw));
@@ -98,15 +92,9 @@ class DrawDashboardController extends Controller
             'email' => 'required|email|max:255',
         ]);
 
-        $draw->organizer_email = $validated['email'];
-        $draw->organizer_email_verified_at = null;
-        $draw->save();
-
-        if ($draw->participantOrganizer) {
-            $draw->organizer->email = $validated['email'];
-            $draw->organizer->email_verified_at = null;
-            $draw->organizer->save();
-        }
+        $draw->organizer->email = $validated['email'];
+        $draw->organizer->email_verified_at = null;
+        $draw->organizer->save();
 
         // TODO
         return response()->json([
@@ -116,13 +104,8 @@ class DrawDashboardController extends Controller
 
     public function confirmOrganizerEmail(Draw $draw): Response
     {
-        $draw->organizer_email_verified_at = Carbon::now();
-        $draw->save();
-
-        if ($draw->participantOrganizer) {
-            $draw->organizer->email_verified_at = Carbon::now();
-            $draw->organizer->save();
-        }
+        $draw->organizer->email_verified_at = Carbon::now();
+        $draw->organizer->save();
 
         // TODO
         return response('test');
@@ -130,19 +113,10 @@ class DrawDashboardController extends Controller
 
     public function participate(Draw $draw): JsonResponse
     {
-        throw_if($draw->participantOrganizer, new Exception('Organizer is already a participant'));
+        throw_if($draw->participant_organizer, new Exception('Organizer is already a participant'));
 
-        $organizer = $draw->participants()->create([
-            'ulid' => Str::ulid(),
-            'name' => $draw->organizer_name,
-            'email' => $draw->organizer_email,
-            'email_verified_at' => $draw->organizer_email_verified_at,
-        ]);
-
-        $draw
-            ->organizer()
-            ->associate($organizer)
-            ->save();
+        $draw->participant_organizer = true;
+        $draw->save();
 
         // TODO
         return response()->json([
@@ -152,7 +126,7 @@ class DrawDashboardController extends Controller
 
     public function withdraw(Draw $draw): JsonResponse
     {
-        throw_unless($draw->participantOrganizer, new Exception('Organizer is not a participant'));
+        throw_unless($draw->participant_organizer, new Exception('Organizer is not a participant'));
 
         $draw
             ->organizer
@@ -234,12 +208,6 @@ class DrawDashboardController extends Controller
         $participant->email = $validated['email'];
         $participant->email_verified_at = null;
         $participant->save();
-
-        if ($participant->is($draw->organizer)) {
-            $draw->organizer_email = $validated['email'];
-            $draw->organizer_email_verified_at = null;
-            $draw->save();
-        }
 
         // TODO
         return response()->json([

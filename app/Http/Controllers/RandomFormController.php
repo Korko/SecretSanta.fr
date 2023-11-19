@@ -28,20 +28,16 @@ class RandomFormController extends Controller
         $draw->description = $safe['description'] ?? null;
         $draw->budget = $safe['budget'];
         $draw->event_date = $safe['event-date'] ?? null;
-        $draw->organizer_name = $safe['organizer-name'];
-        $draw->organizer_email = $safe['organizer-email'];
+        $draw->participant_organizer = $safe['participant-organizer'] ?? false;
         $draw->save();
 
-        if($safe['participant-organizer'] ?? false) {
-            $organizer = $draw->participants()->create([
-                'ulid' => Str::ulid(),
-                // Don't use $draw->organizer_* here, as they are encrypted
-                'name' => $safe['organizer-name'],
-                'email' => $safe['organizer-email'],
-            ]);
+        $organizer = $draw->participants()->create([
+            'ulid' => Str::ulid(),
+            'name' => $safe['organizer-name'],
+            'email' => $safe['organizer-email'],
+        ]);
 
-            $draw->organizer()->associate($organizer);
-        }
+        $draw->organizer()->associate($organizer);
 
         foreach(($safe->participants ?? []) as $participant) {
             $draw->participants()->create([

@@ -29,7 +29,7 @@ class OrganizerRecap extends Mailable
         return $this
             ->subject(Lang::get('SecretSanta #:draw - Récapitulatif organisateur/organisatrice', ['draw' => $this->draw->ulid]))
             ->markdown('emails.organizer_recap', [
-                'name' => $this->draw->organizer_name,
+                'name' => $this->draw->organizer->name,
                 'draw' => $this->draw->ulid,
                 'deletionDate' => $this->draw->deletes_at->locale(App::getLocale())->isoFormat('LL'),
                 'nextSolvable' => $this->draw->next_solvable,

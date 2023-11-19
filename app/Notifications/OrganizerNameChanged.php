@@ -27,8 +27,8 @@ class OrganizerNameChanged extends Notification
     public function toArray(Participant $participant): array
     {
         return [
-            'old_name' => $this->draw->getOriginal('organizer_name'),
-            'name' => $this->draw->organizer_name,
+            'old_name' => $this->draw->organizer->getOriginal('name'),
+            'name' => $this->draw->organizer->name,
         ];
     }
 }

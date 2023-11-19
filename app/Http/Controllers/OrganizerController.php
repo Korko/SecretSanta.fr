@@ -35,7 +35,7 @@ class OrganizerController extends Controller
      */
     public function fetch(Draw $draw): JsonResponse
     {
-        $drawFields = ['id', 'mail_title', 'created_at', 'finished_at', 'deletes_at', 'next_solvable', 'organizer_name'];
+        $drawFields = ['id', 'mail_title', 'created_at', 'finished_at', 'deletes_at', 'organizer' => ['name']];
         $participantFields = ['id', 'name', 'email', 'mail' => ['id', 'updated_at', 'delivery_status']];
 
         if ($draw->isFinished) {

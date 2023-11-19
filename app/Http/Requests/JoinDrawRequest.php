@@ -16,7 +16,7 @@ class JoinDrawRequest extends AddParticipantRequest
                 'name' => [
                     // New participant name should not be the same as the organizer name
                     function (string $attribute, mixed $value, Closure $fail) {
-                        if($this->draw->organizer_name === $value) {
+                        if($this->draw->organizer->name === $value) {
                             $fail('validation.custom.participant.name.same-as-organizer');
                         }
                     },

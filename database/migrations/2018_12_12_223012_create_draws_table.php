@@ -2,7 +2,6 @@
 
 use App\Enums\DrawStatus;
 use App\Models\Participant;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,10 +16,8 @@ return new class extends Migration
         Schema::create('draws', function (Blueprint $table) {
             $table->id();
             $table->ulid()->unique();
-            $table->foreignIdFor(Participant::class, 'organizer_id')->nullable()->constrained('participants')->nullOnDelete();
-            $table->tinyBlob('organizer_name');
-            $table->blob('organizer_email');
-            $table->timestamp('organizer_email_verified_at')->nullable();
+            $table->foreignIdFor(Participant::class, 'organizer_id')->nullable()->constrained('draw_users');
+            $table->boolean('participant_organizer');
             $table->blob('title');
             $table->blob('description')->nullable();
             $table->string('budget', 55)->nullable();
