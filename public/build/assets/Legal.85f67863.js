@@ -1,4 +1,4 @@
-import{L as r,N as u}from"./NavPageLink.a3a2b258.js";import{N as l}from"./NavLink.8fd4b87d.js";import{_ as c}from"./plugin-vue_export-helper.f2aa9cb4.js";import{r as s,o as d,c as p,w as e,a as n,e as m}from"./app.91289146.js";const v={components:{Layout:r,NavLink:l,NavPageLink:u}},f=m("pre",null,`                # Usage
+import{L as r,N as u}from"./NavPageLink.725ffc96.js";import{N as l}from"./NavLink.966b8259.js";import{r as s,o as c,c as d,w as e,a as n,e as p}from"./app.a0a62965.js";import{_ as m}from"./plugin-vue_export-helper.f2aa9cb4.js";const v={components:{Layout:r,NavLink:l,NavPageLink:u}},f=p("pre",null,`                # Usage
 
                 Votre utilisation du site Web indique que vous avez lu et accept\xE9 nos pratiques de confidentialit\xE9, telles qu'\xE9nonc\xE9es dans cette politique.
                 Si vous n'acceptez pas les modalit\xE9s d'utilisation de cette politique, veuillez, s'il-vous-pla\xEEt, ne pas utiliser ce site Web.
@@ -65,4 +65,4 @@ import{L as r,N as u}from"./NavPageLink.a3a2b258.js";import{N as l}from"./NavLin
                 # Protection
 
                 Afin de se pr\xE9venir de potentiels abus, l'ent\xEAte suivant sera ajout\xE9 dans les emails que vous enverrez via SecretSanta.fr : X-Originating-IP:
-            `,-1);function g(t,h,L,b,q,S){const o=s("i18n-t"),a=s("NavPageLink"),i=s("Layout");return d(),p(i,null,{"navbar-right":e(()=>[n(a,{href:t.route("form.index")},{default:e(()=>[n(o,{keypath:"common.nav.go"})]),_:1},8,["href"]),n(a,{href:t.route("dashboard")},{default:e(()=>[n(o,{keypath:"common.nav.dashboard"})]),_:1},8,["href"])]),content:e(()=>[f]),_:1})}var x=c(v,[["render",g]]);export{x as default};
+            `,-1);function g(t,h,L,b,q,S){const o=s("i18n-t"),a=s("NavPageLink"),i=s("Layout");return c(),d(i,null,{"navbar-right":e(()=>[n(a,{href:t.route("form.index")},{default:e(()=>[n(o,{keypath:"common.nav.go"})]),_:1},8,["href"]),n(a,{href:t.route("dashboard")},{default:e(()=>[n(o,{keypath:"common.nav.dashboard"})]),_:1},8,["href"])]),content:e(()=>[f]),_:1})}var x=m(v,[["render",g],["__file","/var/www/html/resources/js/Pages/Legal.vue"]]);export{x as default};
