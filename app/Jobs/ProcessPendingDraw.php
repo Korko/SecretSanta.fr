@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\DrawStatus;
 use App\Exceptions\SolverException;
 use App\Models\Draw;
 use App\Notifications\OrganizerRecap;
