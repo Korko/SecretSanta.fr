@@ -17,7 +17,7 @@ trait ParsesUrl
         if ($participant) {
             $draw = $participant->draw;
         } else {
-            $draw = URLParser::parseByName('organizer.index', $url)->draw;
+            $draw = URLParser::parseByName('organizer.index', $url)->draw;// TODO
         }
 
         return $draw;

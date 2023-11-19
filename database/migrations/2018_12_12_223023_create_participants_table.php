@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->ulid()->unique();
             $table->foreignIdFor(Draw::class)->constrained()->cascadeOnDelete();
-            $table->tinyBlob('name');
+            $table->tinyBlob('name'); // Cannot make a UNIQUE index as the encryption makes it already unique
             $table->blob('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->foreignIdFor(Participant::class, 'target_id')->nullable()->constrained('participants')->nullOnDelete();
