@@ -24,12 +24,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [RandomFormController::class, 'display'])->name('form.index');
 Route::post('/process', [RandomFormController::class, 'handle'])->name('form.process');
 
-Route::get('/signup', [SignUpController::class, 'display'])->name('signup');
-Route::post('/signup', [SignUpController::class, 'handle'])->name('signup.handle');
-Route::get('/login', [AuthController::class, 'display'])->name('login');
-Route::post('/login', [AuthController::class, 'handleIn'])->name('login.handle');
-Route::post('/logout', [AuthController::class, 'handleOut'])->name('logout.handle');
-
 Route::get('/faq', [SingleController::class, 'faq'])->name('faq');
 Route::get('/dashboard', [SingleController::class, 'dashboard'])->name('dashboard');
 Route::get('/legal', [SingleController::class, 'legal'])->name('legal');
