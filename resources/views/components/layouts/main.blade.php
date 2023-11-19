@@ -40,14 +40,20 @@
         <!-- facebook image -->
         <link rel="image_src" href="{{ url('/images/opengraph_banner_19.1_1.png') }}" />
 
-        <title>{{ $title }}</title>
-
         @routes
 
         @vite('resources/sass/app.scss')
     </head>
     <body>
-        {{ $slot }}
+        <div id="content">
+            <div>
+                {{ $slot }}
+            </div>
+        </div>
+
+        <noscript>
+            {{ trans('app.nojs') }}
+        </noscript>
 
         @vite('resources/js/app.js')
 
