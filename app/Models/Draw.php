@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Metrics;
 
 /**
  * App\Models\Draw
@@ -21,7 +20,6 @@ use Metrics;
  * @property int $id
  * @property mixed $mail_title
  * @property mixed $mail_body
- * @property bool $next_solvable
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $finished_at
