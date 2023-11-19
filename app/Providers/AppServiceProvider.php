@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\ResponseFactory;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 
@@ -76,6 +77,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->bootInertia();
+
+        View::share('version', exec('git describe --tags --always --abbrev=0'));
 
         //Model::shouldBeStrict(! $this->app->isProduction());
     }
