@@ -154,7 +154,7 @@ class OrganizerController extends Controller
     public function csvFinal(Draw $draw): Response
     {
         abort_unless($draw->isFinished, 403, Lang::get('error.finished'));
-        abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
+        //abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
 
         $draw->createMetric('csv_final_download');
 

@@ -32,7 +32,6 @@ class OrganizerRecap extends Mailable
                 'name' => $this->draw->organizer->name,
                 'draw' => $this->draw->ulid,
                 'deletionDate' => $this->draw->deletes_at->locale(App::getLocale())->isoFormat('LL'),
-                'nextSolvable' => $this->draw->next_solvable,
                 'panelLink' => URL::hashedSignedRoute('organizer.index', ['draw' => $this->draw]),
             ])
             ->attachData(

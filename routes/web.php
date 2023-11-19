@@ -57,10 +57,10 @@ Route::middleware('decrypt.iv:draw,title')
 
         Route::scopeBindings()
             ->group(function () {
-                Route::post('/draw/{draw:ulid}/participants/{participant:ulid}/name', 'changeParticipantName')->name('draw.participant.updateName');
-                Route::post('/draw/{draw:ulid}/participants/{participant:ulid}/email', 'changeParticipantEmail')->name('draw.participant.changeEmail');
+                Route::post('/draw/{draw:ulid}/participants/{participant:ulid}/name', [DrawDashboardController::class, 'changeParticipantName'])->name('draw.participant.updateName');
+                Route::post('/draw/{draw:ulid}/participants/{participant:ulid}/email', [DrawDashboardController::class, 'changeParticipantEmail'])->name('draw.participant.changeEmail');
 
-                Route::delete('/draw/{draw:ulid}/participants/{participant:ulid}', 'removeParticipant')->name('draw.participant.remove');
+                Route::delete('/draw/{draw:ulid}/participants/{participant:ulid}', [DrawDashboardController::class, 'removeParticipant'])->name('draw.participant.remove');
             });
     });
 
