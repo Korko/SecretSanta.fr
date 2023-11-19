@@ -25,7 +25,6 @@ class DrawHandler
             $participants[$santaIdx]->save();
         }
 
-        $draw->next_solvable = self::canRedraw($participants);
         $draw->save();
 
         $participants->each(function ($participant) {
@@ -36,9 +35,9 @@ class DrawHandler
     public static function getHat(ParticipantsCollection $participants): array
     {
         return Solver::one(
-            $participants->pluck('id', 'id'),
+            $participants->pluck('ulid', 'ulid'),
             $participants
-                ->pluck('exclusions.*.id', 'id')
+                ->pluck('exclusions.*.ulid', 'ulid')
                 // Remove empty exclusions lists (or lists with only empty values)
                 ->map(fn ($exclusion) => array_filter((array) $exclusion))
                 ->filter(fn ($exclusion) => ! empty($exclusion))
