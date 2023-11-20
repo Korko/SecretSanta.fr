@@ -106,6 +106,8 @@
 
                             if(!callback && !callback2 && this.fieldErrors.length > 0) {
                                 alertify.errorAlert(this.$t('form.internalError'));
+                            } else if(response.message) {
+                                alertify.errorAlert(response.message);
                             }
 
                             this.$emit('error');
