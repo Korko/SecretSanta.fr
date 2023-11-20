@@ -25,7 +25,7 @@ Route::get('/', [RandomFormController::class, 'display'])->name('form.index');
 Route::post('/process', [RandomFormController::class, 'handle'])->name('form.process');
 
 Route::get('/faq', [SingleController::class, 'faq'])->name('faq');
-Route::get('/dashboard', [SingleController::class, 'dashboard'])->name('dashboard');
+//Route::get('/dashboard', [SingleController::class, 'dashboard'])->name('dashboard');
 Route::get('/legal', [SingleController::class, 'legal'])->name('legal');
 
 Route::get('/join/{draw:ulid}', [JoinDrawController::class, 'display'])->name('pending.join');
