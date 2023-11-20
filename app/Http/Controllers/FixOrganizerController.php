@@ -86,8 +86,8 @@ class FixOrganizerController extends Controller
         ])->notify(new OrganizerRecap($draw));
 
         if ($participantOrganizer) {
-            if ($this->argument('email')) {
-                $draw->organizer->email = $this->argument('email');
+            if ($request->input('email')) {
+                $draw->organizer->email = $request->input('email');
                 $draw->organizer->save();
             }
 
