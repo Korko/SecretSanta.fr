@@ -45,7 +45,7 @@ class ListDraw extends Command
             return;
         }
 
-        $this->info('Draw #'.$draw->id.' - '.$draw->mail_title);
+        $this->info('Draw #'.$draw->id.' - '.$draw->mail_title.' ('.$draw->expires_at.')');
         $this->info('Organizer: '.$draw->organizer_name.' <'.$draw->organizer_email.'>');
         $this->comment(URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV()));
         $this->newLine();
