@@ -27,11 +27,7 @@ class FixOrganizerController extends Controller
         $key = base64_decode($hash);
         DrawCrypt::setIV($key);
 
-        try {
-            $participant = URLParser::parseByName('dearSanta', $request->input('url'))->participant;
-        } catch (\Exception $e) {
-        }
-
+        $participant = URLParser::parseByName('dearSanta', $request->input('url'))->participant;
         if (!isset($participant)) {
             return response()->json([
                 'errors' => [
@@ -42,9 +38,22 @@ class FixOrganizerController extends Controller
             ], 422);
         }
 
-        $draw = $participant->draw;
+        try {
+            $draw = $participant->draw;
 
-        if (levenshtein($request->input('email'), $draw->organizer_email) > 3) {
+            // Access the email in a try/catch to handle invalid decrypt key
+            $organizerEmail = $draw->organizer_email;
+        } catch (\Exception $e) {
+            return response()->json([
+                'errors' => [
+                    'url' => [
+                        trans('error.fixOrganizer.drawNotFoundOrExpired'),
+                    ],
+                ],
+            ], 422);
+        }
+
+        if (levenshtein($request->input('email'), $organizerEmail) > 3) {
             return response()->json([
                 'errors' => [
                     'email' => [
