@@ -31,8 +31,8 @@ Route::get('/legal', [SingleController::class, 'legal'])->name('legal');
 Route::get('/join/{draw:ulid}', [JoinDrawController::class, 'display'])->name('pending.join');
 Route::post('/join/{draw:ulid}', [JoinDrawController::class, 'handle'])->name('pending.join.handle');
 
-Route::get('/draw/{draw:ulid}', [DrawDashboardController::class, 'index'])->name('draw.index');
-Route::get('/draw/{draw:ulid}/confirm', [DrawDashboardController::class, 'confirmOrganizerEmail'])->middleware('signed')->name('draw.confirmOrganizerEmail');
+Route::get('/me/{participant:ulid}', [DrawDashboardController::class, 'index'])->name('draw.index');
+Route::get('/me/{participant:ulid}/confirm', [DrawDashboardController::class, 'confirmOrganizerEmail'])->middleware('signed')->name('draw.confirmOrganizerEmail');
 Route::middleware('decrypt.iv:draw,title')
     ->group(function () {
         Route::post('/draw/{draw:ulid}/participate', [DrawDashboardController::class, 'participate'])->name('draw.participate');
