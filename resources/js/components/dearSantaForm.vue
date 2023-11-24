@@ -167,7 +167,7 @@
                     </button>
                 </template>
             </tooltip>
-            <button v-else class="btn btn-info btn-lg" @click="resend_target">
+            <button v-else-if="targetDearSantaLastUpdate !== null" class="btn btn-info btn-lg" @click="resend_target">
                 <i class="fas fa-redo" />
                 {{ $t('dearsanta.resend.button') }}
             </button>

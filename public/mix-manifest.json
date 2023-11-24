@@ -1,14 +1,14 @@
 {
-    "/js/common.js": "/js/common.js",
-    "/js/randomForm.js": "/js/randomForm.js",
-    "/js/dearSanta.js": "/js/dearSanta.js",
-    "/js/organizer.js": "/js/organizer.js",
-    "/js/faq.js": "/js/faq.js",
-    "/js/fixOrganizer.js": "/js/fixOrganizer.js",
-    "/js/manifest.js": "/js/manifest.js",
-    "/css/vendor.css": "/css/vendor.css",
-    "/css/404.css": "/css/404.css",
-    "/css/app.css": "/css/app.css",
-    "/js/vendor.js": "/js/vendor.js",
-    "/images/logo_black.png": "/images/logo_black.png"
+    "/js/common.js": "/js/common.js?id=574d69ceadacf8afc3fae2cd529c5a40",
+    "/js/randomForm.js": "/js/randomForm.js?id=9d9d0c5d8ab6607df0a85ac813575ba8",
+    "/js/dearSanta.js": "/js/dearSanta.js?id=5e5839e93e5e9c7e4cfd856edaa4c8f7",
+    "/js/organizer.js": "/js/organizer.js?id=0e586e106f67a4180bc4454daea76cbc",
+    "/js/faq.js": "/js/faq.js?id=cab2189fb917e3397eef592cb74df1db",
+    "/js/fixOrganizer.js": "/js/fixOrganizer.js?id=ccc2ba2a8f73429dd0c8980b00a92111",
+    "/js/manifest.js": "/js/manifest.js?id=b458fea25b1ed10dcb3fb6a5b99f14b0",
+    "/css/vendor.css": "/css/vendor.css?id=5ac24ae378d7e01882cb022f8219222b",
+    "/css/404.css": "/css/404.css?id=382e99b45d780f43ef43af5a99eded5b",
+    "/css/app.css": "/css/app.css?id=1017bccc94068ad7c0acc372db1bdedd",
+    "/js/vendor.js": "/js/vendor.js?id=72057677cc75c5acc1261b05633afabd",
+    "/images/logo_black.png": "/images/logo_black.png?id=4dec9fed0079d7b8140c9448c9f98bf0"
 }
