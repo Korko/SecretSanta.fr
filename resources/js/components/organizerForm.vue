@@ -56,7 +56,7 @@
                 );
             },
             expired() {
-                return Moment(this.expires_at).isBefore(Moment(), 'day');
+                return Moment(this.expires_at).isBefore(Moment());
             },
             expirationDateShort() {
                 return Moment(this.expires_at).format('YYYY-MM-DD');

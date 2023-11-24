@@ -3,10 +3,8 @@
 namespace App\Models;
 
 use App\Casts\EncryptedString;
-use App\Events\DrawDeleted;
 use App\Services\DrawHandler;
-use DateInterval;
-use DateTime;
+use Carbon\Carbon;
 use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
@@ -60,7 +58,7 @@ class Draw extends Model
 
     public function save(array $options = [])
     {
-        $this->expires_at = $this->expires_at ?: (new DateTime('now'))->add(new DateInterval('P7D'));
+        $this->expires_at = $this->expires_at ?: Carbon::now()->startOfDay()->addDays(7);
 
         return parent::save($options);
     }
@@ -72,7 +70,7 @@ class Draw extends Model
      */
     public function prunable()
     {
-        return static::where('expires_at', '<=', (new DateTime('now'))->sub(new DateInterval('P'.(self::WEEKS_BEFORE_DELETION * 7).'D')));
+        return static::where('expires_at', '<=', Carbon::now()->subWeeks(self::WEEKS_BEFORE_DELETION));
     }
 
     public function participants()

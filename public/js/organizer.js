@@ -517,7 +517,7 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use((vuejs_dialog__WEBPACK_IMPORTED_
       return !!Object.values(this.participants).find(participant => participant.mail.delivery_status !== 'error');
     },
     expired() {
-      return moment__WEBPACK_IMPORTED_MODULE_3___default()(this.expires_at).isBefore(moment__WEBPACK_IMPORTED_MODULE_3___default()(), 'day');
+      return moment__WEBPACK_IMPORTED_MODULE_3___default()(this.expires_at).isBefore(moment__WEBPACK_IMPORTED_MODULE_3___default()());
     },
     expirationDateShort() {
       return moment__WEBPACK_IMPORTED_MODULE_3___default()(this.expires_at).format('YYYY-MM-DD');
