@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Encryption\DecryptException;
 use DrawCrypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class HandleEncryptionIV
 {
