@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
-use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
 use Carbon\Carbon;
