@@ -106,6 +106,9 @@
         <ajax-form :action="routes.contactUrl" :$v="$v" @success="success" @reset="reset" :autoReset="true">
             <fieldset>
                 <div class="form-group">
+                    <div class="alert alert-info" role="alert">
+                        {{  $t('dearsanta.reminder') }}
+                    </div>
                     <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
                     <div class="input-group">
                         <textarea
@@ -122,7 +125,7 @@
                 </div>
             </fieldset>
         </ajax-form>
-        <table class="table table-hover">
+        <table class="table table-hover" style="margin-top: 20px">
             <caption>{{ $t('dearsanta.list.caption') }}</caption>
             <thead>
                 <tr class="table-active">

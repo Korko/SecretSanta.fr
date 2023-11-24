@@ -1,14 +1,14 @@
 {
-    "/js/common.js": "/js/common.js?id=78f3c55859f062b34de0a138e63f038c",
-    "/js/randomForm.js": "/js/randomForm.js?id=0a6732b626b4861ae21948deb5cc6e14",
-    "/js/dearSanta.js": "/js/dearSanta.js?id=d9533f4dd72a6f1dc0e310959c7ee521",
-    "/js/organizer.js": "/js/organizer.js?id=95fda5d87eb68c5893c69803b5f6e646",
-    "/js/faq.js": "/js/faq.js?id=43752542596da51f7deed5c5f347ed96",
-    "/js/fixOrganizer.js": "/js/fixOrganizer.js?id=88442860f65c42ae4935d88ac5c82ede",
-    "/js/manifest.js": "/js/manifest.js?id=b458fea25b1ed10dcb3fb6a5b99f14b0",
-    "/css/vendor.css": "/css/vendor.css?id=52963887a814642819b113cbe8f39236",
-    "/css/404.css": "/css/404.css?id=382e99b45d780f43ef43af5a99eded5b",
-    "/css/app.css": "/css/app.css?id=1017bccc94068ad7c0acc372db1bdedd",
-    "/js/vendor.js": "/js/vendor.js?id=72057677cc75c5acc1261b05633afabd",
-    "/images/logo_black.png": "/images/logo_black.png?id=4dec9fed0079d7b8140c9448c9f98bf0"
+    "/js/common.js": "/js/common.js",
+    "/js/randomForm.js": "/js/randomForm.js",
+    "/js/dearSanta.js": "/js/dearSanta.js",
+    "/js/organizer.js": "/js/organizer.js",
+    "/js/faq.js": "/js/faq.js",
+    "/js/fixOrganizer.js": "/js/fixOrganizer.js",
+    "/js/manifest.js": "/js/manifest.js",
+    "/css/vendor.css": "/css/vendor.css",
+    "/css/404.css": "/css/404.css",
+    "/css/app.css": "/css/app.css",
+    "/js/vendor.js": "/js/vendor.js",
+    "/images/logo_black.png": "/images/logo_black.png"
 }

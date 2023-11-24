@@ -390,6 +390,7 @@ export default {
             "internalError": "Erreur interne"
         },
         "dearsanta": {
+            "reminder": "Rappelez vous que votre Père/Mère Noël secrêt ne pourra pas vous répondre ! Pensez bien à lui donner le maximum d'informations possibles.",
             "list": {
                 "date": "Date d'envoi",
                 "body": "Corps du message",
