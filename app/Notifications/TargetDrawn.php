@@ -74,6 +74,6 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
 
     protected function parseKeywords($str, Participant $santa)
     {
-        return str_replace(['{SANTA}', '{TARGET}'], [$santa->name, $santa->target->name], $str);
+        return str_ireplace(['{SANTA}', '{TARGET}'], [$santa->name, $santa->target->name], $str);
     }
 }
