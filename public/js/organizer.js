@@ -368,7 +368,8 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuelidate__WEBPACK_IMPORTED_MODU
         }
       }),
       state: 'view',
-      newValue: this.value
+      newValue: this.value,
+      lastError: null
     };
   },
   computed: {
@@ -428,7 +429,8 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuelidate__WEBPACK_IMPORTED_MODU
     stateViewUpdating() {
       this.submit().then(() => {
         this.send('success');
-      }).catch(() => {
+      }).catch(data => {
+        this.lastError = data.message;
         this.send('error');
       });
     },
@@ -1361,6 +1363,15 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     "form": {
+      "inputEdit": {
+        "update": "Modifier",
+        "updating": "Sauvegarde en cours",
+        "updated": "Changement effectué",
+        "submit": "Valider",
+        "cancel": "Annuler",
+        "error": "Erreur : {error}",
+        "redo": "Tenter à nouveau"
+      },
       "nav": {
         "what": "Qu'est-ce que c'est ?",
         "how": "Comment faire ?",
@@ -2720,25 +2731,48 @@ var render = function() {
           },
           [
             _vm.updating
-              ? _c("div", { staticClass: "input-group-prepend" }, [
-                  _c("i", {
-                    staticClass: "input-group-text fas fa-spinner fa-spin"
-                  })
-                ])
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "input-group-prepend",
+                    attrs: { title: _vm.$t("form.inputEdit.updating") }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "input-group-text fas fa-spinner fa-spin"
+                    })
+                  ]
+                )
               : _vm._e(),
             _vm._v(" "),
             _vm.state === "viewUpdated"
-              ? _c("div", { staticClass: "input-group-prepend" }, [
-                  _c("i", { staticClass: "input-group-text fas fa-check" })
-                ])
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "input-group-prepend",
+                    attrs: { title: _vm.$t("form.inputEdit.updated") }
+                  },
+                  [_c("i", { staticClass: "input-group-text fas fa-check" })]
+                )
               : _vm._e(),
             _vm._v(" "),
             _vm.state === "viewError"
-              ? _c("div", { staticClass: "input-group-prepend" }, [
-                  _c("i", {
-                    staticClass: "input-group-text fas fa-exclamation-circle"
-                  })
-                ])
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "input-group-prepend",
+                    attrs: {
+                      title: _vm.$t("form.inputEdit.error", {
+                        error: _vm.lastError
+                      })
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "input-group-text fas fa-exclamation-circle"
+                    })
+                  ]
+                )
               : _vm._e(),
             _vm._v(" "),
             _vm.$attrs.type === "checkbox"
@@ -2885,7 +2919,11 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-outline-primary",
-                      attrs: { type: "button", disabled: _vm.disabled },
+                      attrs: {
+                        type: "button",
+                        title: _vm.$t("form.inputEdit.redo"),
+                        disabled: _vm.disabled
+                      },
                       on: { click: _vm.onResend }
                     },
                     [_c("i", { staticClass: "fas fa-sync" })]
@@ -2897,7 +2935,11 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-outline-primary",
-                      attrs: { type: "button", disabled: _vm.disabled },
+                      attrs: {
+                        type: "button",
+                        title: _vm.$t("form.inputEdit.update"),
+                        disabled: _vm.disabled
+                      },
                       on: {
                         click: function($event) {
                           return _vm.send("edit")
@@ -2915,6 +2957,7 @@ var render = function() {
                       staticClass: "btn btn-outline-success",
                       attrs: {
                         type: "button",
+                        title: _vm.$t("form.inputEdit.submit"),
                         disabled:
                           _vm.isSame ||
                           !_vm.state.endsWith("Valid") ||
@@ -2931,7 +2974,10 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-outline-danger",
-                      attrs: { type: "button" },
+                      attrs: {
+                        type: "button",
+                        title: _vm.$t("form.inputEdit.cancel")
+                      },
                       on: { click: _vm.onCancel }
                     },
                     [_c("i", { staticClass: "fas fa-times-circle" })]

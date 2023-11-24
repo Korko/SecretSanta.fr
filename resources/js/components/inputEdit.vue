@@ -75,7 +75,8 @@
                     }
                 }),
                 state: 'view',
-                newValue: this.value
+                newValue: this.value,
+                lastError: null
             };
         },
         computed: {
@@ -137,7 +138,8 @@
                     .then(() => {
                         this.send('success');
                     })
-                    .catch(() => {
+                    .catch((data) => {
+                        this.lastError = data.message;
                         this.send('error');
                     });
             },
@@ -154,13 +156,13 @@
     <form method="post" autocomplete="off" @submit.prevent="onSubmit">
         <fieldset :disabled="updating || disabled">
             <div class="input-group" :data-state="state" :data-previous-state="previousState">
-                <div v-if="updating" class="input-group-prepend">
+                <div v-if="updating" class="input-group-prepend" :title="$t('form.inputEdit.updating')">
                     <i class="input-group-text fas fa-spinner fa-spin" />
                 </div>
-                <div v-if="state === 'viewUpdated'" class="input-group-prepend">
+                <div v-if="state === 'viewUpdated'" class="input-group-prepend" :title="$t('form.inputEdit.updated')">
                     <i class="input-group-text fas fa-check" />
                 </div>
-                <div v-if="state === 'viewError'" class="input-group-prepend">
+                <div v-if="state === 'viewError'" class="input-group-prepend" :title="$t('form.inputEdit.error', { error: lastError })">
                     <i class="input-group-text fas fa-exclamation-circle" />
                 </div>
                 <input
@@ -178,6 +180,7 @@
                     <button
                         v-if="state === 'viewError'"
                         type="button"
+                        :title="$t('form.inputEdit.redo')"
                         class="btn btn-outline-primary"
                         :disabled="disabled"
                         @click="onResend"
@@ -187,6 +190,7 @@
                     <button
                         v-if="state.startsWith('view')"
                         type="button"
+                        :title="$t('form.inputEdit.update')"
                         class="btn btn-outline-primary"
                         :disabled="disabled"
                         @click="send('edit')"
@@ -196,6 +200,7 @@
                     <button
                         v-if="state.startsWith('edit')"
                         type="button"
+                        :title="$t('form.inputEdit.submit')"
                         class="btn btn-outline-success"
                         :disabled="isSame || !state.endsWith('Valid') || disabled"
                         @click="onSubmit"
@@ -205,6 +210,7 @@
                     <button
                         v-if="state.startsWith('edit')"
                         type="button"
+                        :title="$t('form.inputEdit.cancel')"
                         class="btn btn-outline-danger"
                         @click="onCancel"
                     >

@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'inputEdit' => [
+        'update' => 'Modifier',
+        'updating' => 'Sauvegarde en cours',
+        'updated' => 'Changement effectué',
+        'submit' => 'Valider',
+        'cancel' => 'Annuler',
+        'error' => 'Erreur : :error',
+        'redo' => 'Tenter à nouveau',
+    ],
+
     'nav' => [
         'what' => 'Qu\'est-ce que c\'est ?',
         'how'  => 'Comment faire ?',
