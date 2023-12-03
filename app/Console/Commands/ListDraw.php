@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Facades\DrawCrypt;
 use App\Traits\Console\ListsDraw;
 use App\Traits\ParsesUrl;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\URL;
 
 class ListDraw extends Command
 {
@@ -30,6 +32,12 @@ class ListDraw extends Command
     public function handle(): void
     {
         $draw = $this->getDrawFromURL($this->argument('url'));
+
+        $this->info('Draw #'.$draw->id.' ('.$draw->expires_at.')');
+        $this->info('Organizer: '.$draw->organizer_name.' <'.$draw->organizer_email.'>');
+        $this->comment(URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV()));
+        $this->newLine();
+
         $this->displayDraw($draw);
     }
 }
