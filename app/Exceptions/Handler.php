@@ -5,9 +5,9 @@ namespace App\Exceptions;
 use App\Http\Controllers\ErrorController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Validation\ValidationException;
-use Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
@@ -70,8 +70,8 @@ class Handler extends ExceptionHandler
     protected function context()
     {
         return array_merge(parent::context(), [
-            'url' => Request::url(),
-            'input' => Request::all(),
+            'url' => request()->url(),
+            'input' => request()->all(),
         ]);
     }
 }
