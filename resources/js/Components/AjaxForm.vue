@@ -95,6 +95,9 @@
                             if(!callback && !callback2 && response?.errors.length > 0) {
                                 this.$dialog
                                     .alert(this.$t('form.internalError'));
+                            } else if(response.message) {
+                                this.$dialog
+                                    .alert(response.message);
                             }
 
                             this.$emit('error', response?.errors);
