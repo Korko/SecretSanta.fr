@@ -14,9 +14,7 @@ class RandomFormController extends Controller
 {
     public function display(): Response
     {
-        return response()->inertia('RandomForm', [
-            'bmc' => config('app.bmc'),
-        ]);
+        return response()->view('pages/random-form');
     }
 
     public function handle(RandomFormRequest $request): JsonResponse
@@ -36,7 +34,6 @@ class RandomFormController extends Controller
             'name' => $safe['organizer-name'],
             'email' => $safe['organizer-email'],
         ]);
-
         $draw->organizer()->associate($organizer);
 
         foreach(($safe->participants ?? []) as $participant) {

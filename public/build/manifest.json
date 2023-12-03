@@ -1,325 +1,35 @@
 {
-  "resources/js/app.js": {
-    "file": "assets/app.4974e8a0.js",
-    "src": "resources/js/app.js",
+  "resources/js/randomForm.js": {
+    "file": "assets/randomForm.dbd50036.js",
+    "src": "resources/js/randomForm.js",
     "isEntry": true,
-    "dynamicImports": [
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "resources/js/Pages/Dashboard.vue",
-      "resources/js/Pages/DearSanta.vue",
-      "resources/js/Pages/DrawNotFound.vue",
-      "resources/js/Pages/FetcherLayout.vue",
-      "resources/js/Pages/FrequentlyAskedQuestions.vue",
-      "resources/js/Pages/Layout.vue",
-      "resources/js/Pages/Legal.vue",
-      "resources/js/Pages/OrganizerPanel.vue",
-      "resources/js/Pages/PageNotFound.vue",
-      "resources/js/Pages/RandomForm.vue",
-      "resources/js/Pages/Report.vue"
-    ],
-    "integrity": "sha384-p18gaDWR+IyMrLfbaDRHOJaMnFqNiA/VAmVYAsnUZrOoSumY/sNnhCKdIpDt4Qd9"
-  },
-  "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.123f4f65.js",
-    "src": "resources/js/Pages/Dashboard.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_NavPageLink.0f4360eb.js",
-      "_NavLink.5852b4b1.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "integrity": "sha384-OEExPCz9TzIZYZVf/2nYV61nYBz0MbS3ckj9qzUC3Ze6GhuJzwBQIk1HAoiudBnc"
-  },
-  "_NavPageLink.0f4360eb.js": {
-    "file": "assets/NavPageLink.0f4360eb.js",
-    "imports": [
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
     "css": [
-      "assets/NavPageLink.22665f6e.css"
+      "assets/randomForm.852b4d6d.css"
     ],
-    "integrity": "sha384-obdCGIr7/c/ScoKE05XufmGkUU8h4gpiJswKpW9G47whJXrEO25Qv+CbEtmRhny8"
+    "integrity": "sha384-mzrQwnaPb0inDdD2SocUnND1XSiGXE+UiPmrSqgh8H0/Syk+nYFGbcG+YkJrJhgI"
   },
-  "_NavLink.5852b4b1.js": {
-    "file": "assets/NavLink.5852b4b1.js",
-    "imports": [
-      "_NavPageLink.0f4360eb.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "css": [
-      "assets/NavLink.914aab24.css"
-    ],
-    "integrity": "sha384-uN8QUqtR0TzumcjT9MFyonTMF7pO5o6JCnpv5HcS7qy27o/aY2UyX4hn3RA5NtM1"
-  },
-  "_plugin-vue_export-helper.f2aa9cb4.js": {
-    "file": "assets/plugin-vue_export-helper.f2aa9cb4.js",
-    "assets": [
-      "assets/logo.f71398f5.avif"
-    ],
-    "integrity": "sha384-yai1L2cbrFMcu0wXX6bGTNoFMdR2JDrfxd42Aaa5U9A1iPYHKJc08hCKzmRZ/p8t"
-  },
-  "resources/js/Pages/DearSanta.vue": {
-    "file": "assets/DearSanta.618da223.js",
-    "src": "resources/js/Pages/DearSanta.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_Fetcher.d9ce79c1.js",
-      "_NavPageLink.0f4360eb.js",
-      "_fetch.c0ba397d.js",
-      "_Tooltip.8ea7c3b7.js",
-      "_EmailStatus.1feea139.js",
-      "_AjaxForm.b1a1fe92.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "_Fetcher.f493122c.js"
-    ],
-    "css": [
-      "assets/DearSanta.44e1086d.css"
-    ],
-    "integrity": "sha384-9AoS05n/FHUCvM00NkF+AAhTgWt6a30L2+lZKf6KDjl+az1a6VJibcYZqmPfr9Qv"
-  },
-  "_Fetcher.d9ce79c1.js": {
-    "file": "assets/Fetcher.d9ce79c1.js",
-    "imports": [
-      "_NavPageLink.0f4360eb.js",
-      "_Fetcher.f493122c.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "integrity": "sha384-Y69+zvo7/gbIpvdrFhvNXI98stkpr/XOCmZWPatzoFdfN5xLMRudHXmz0meh0wQ+"
-  },
-  "_fetch.c0ba397d.js": {
-    "file": "assets/fetch.c0ba397d.js",
-    "imports": [
-      "resources/js/app.js"
-    ],
-    "integrity": "sha384-lngPnkMECSub+8IMv9XYw1W4OlZnfB7TytNoA0qb0NGFCpe7gpa5XefOdpYAHb1j"
-  },
-  "_Fetcher.f493122c.js": {
-    "file": "assets/Fetcher.f493122c.js",
-    "imports": [
-      "_fetch.c0ba397d.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "integrity": "sha384-5V/uMKW+njhmnzZ6LeuhshFe4UPq/6K+uFCy/PZs1itRHDftvq0OVKpbAy2SkqND"
-  },
-  "_Tooltip.8ea7c3b7.js": {
-    "file": "assets/Tooltip.8ea7c3b7.js",
-    "imports": [
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "css": [
-      "assets/Tooltip.30f6658d.css"
-    ],
-    "integrity": "sha384-PSNzZiBccNGVs0WegSd0Mpiz259k4NQAUOB/2vvA5y+7Hmvn57bIuYvgztJITfkn"
-  },
-  "_EmailStatus.1feea139.js": {
-    "file": "assets/EmailStatus.1feea139.js",
-    "imports": [
-      "_Tooltip.8ea7c3b7.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "css": [
-      "assets/EmailStatus.42ce6918.css"
-    ],
-    "integrity": "sha384-GvBzmwzLhoMF5EuzZsNJgX3jjaXAzMREyZ7cxpKTWp8sw6klNilF4KFN0/gaTy7v"
-  },
-  "_AjaxForm.b1a1fe92.js": {
-    "file": "assets/AjaxForm.b1a1fe92.js",
-    "imports": [
-      "_fetch.c0ba397d.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "integrity": "sha384-0Qd0onOE3QtmOSheugBJDHR3fSUdMITIFFE41l0wrLOs/8JIen4F7VqN7iVsKMG7"
-  },
-  "resources/js/Pages/DrawNotFound.vue": {
-    "file": "assets/DrawNotFound.1fdeaf3e.js",
-    "src": "resources/js/Pages/DrawNotFound.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/Pages/PageNotFound.vue",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "_NavPageLink.0f4360eb.js"
-    ],
-    "integrity": "sha384-CNvw7cFG36Gc1Ez/3WuDehaDkL3b6MjfYhZGkmphb0AHrQP31gG8PjlJ5UWtNs6G"
-  },
-  "resources/js/Pages/PageNotFound.vue": {
-    "file": "assets/PageNotFound.b78191ae.js",
-    "src": "resources/js/Pages/PageNotFound.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_NavPageLink.0f4360eb.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "integrity": "sha384-yWVQp3bGbPRGCjorXptCPRVw1EUjxsSOsBLs2n3tEkhGtekIsUuaZCISdwALpXqw"
-  },
-  "resources/js/Pages/FetcherLayout.vue": {
-    "file": "assets/FetcherLayout.b599744b.js",
-    "src": "resources/js/Pages/FetcherLayout.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/Pages/Layout.vue",
-      "_Fetcher.f493122c.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "_fetch.c0ba397d.js"
-    ],
-    "integrity": "sha384-4opoVWbaPWApY8xWTDvqLLM058bOCitkZBgR+ispffCO202SNDp7kyc1xSC7fb42"
-  },
-  "resources/js/Pages/Layout.vue": {
-    "file": "assets/Layout.93f5afd6.js",
-    "src": "resources/js/Pages/Layout.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "css": [
-      "assets/Layout.d707bbdd.css"
-    ],
-    "integrity": "sha384-qKVT88QKkKi3+5JuKtTSA2N2gGvkcp50kCz24bfhjX93pXz/YosS+VGBgeIQl+du"
-  },
-  "resources/js/Pages/FrequentlyAskedQuestions.vue": {
-    "file": "assets/FrequentlyAskedQuestions.d4835ac2.js",
-    "src": "resources/js/Pages/FrequentlyAskedQuestions.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_NavPageLink.0f4360eb.js",
-      "_NavLink.5852b4b1.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "css": [
-      "assets/FrequentlyAskedQuestions.c3dbf5b6.css"
-    ],
-    "integrity": "sha384-Xf//Qkcs8kHlMzdKz6/D9TypscKgqv7NqNhuws2RrS6fWEBsMN5yD9J9tQQYkA5q"
-  },
-  "resources/js/Pages/Legal.vue": {
-    "file": "assets/Legal.e535c29a.js",
-    "src": "resources/js/Pages/Legal.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_NavPageLink.0f4360eb.js",
-      "_NavLink.5852b4b1.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js"
-    ],
-    "integrity": "sha384-C9B/yBMkQCphZ+7fF45Zy5V+ng0BtIG4qoqP6zCxq65LjogQfRkYhbtC5fpAoWmn"
-  },
-  "resources/js/Pages/OrganizerPanel.vue": {
-    "file": "assets/OrganizerPanel.83a08e50.js",
-    "src": "resources/js/Pages/OrganizerPanel.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_Fetcher.d9ce79c1.js",
-      "_NavPageLink.0f4360eb.js",
-      "_fetch.c0ba397d.js",
-      "_Tooltip.8ea7c3b7.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "_EmailStatus.1feea139.js",
-      "_Fetcher.f493122c.js"
-    ],
-    "css": [
-      "assets/OrganizerPanel.1f77f6a1.css"
-    ],
-    "assets": [
-      "assets/srikanta-h-u-TrGVhbsUf40-unsplash.be9b6bde.avif",
-      "assets/srikanta-h-u-TrGVhbsUf40-unsplash.4471f4b6.webp",
-      "assets/srikanta-h-u-TrGVhbsUf40-unsplash.6816af8d.jpg",
-      "assets/lynda-hinton-QyDLHeUerd4-unsplash.9b9c28b0.avif",
-      "assets/lynda-hinton-QyDLHeUerd4-unsplash.4ee30b51.webp",
-      "assets/lynda-hinton-QyDLHeUerd4-unsplash.5f3e2c02.jpg",
-      "assets/rune-haugseng-UCzjZPCGV1Y-unsplash.3341c429.avif",
-      "assets/rune-haugseng-UCzjZPCGV1Y-unsplash.135a646a.webp",
-      "assets/rune-haugseng-UCzjZPCGV1Y-unsplash.fec52c3e.jpg",
-      "assets/mike-arney-9r-_2gzP37k-unsplash.080a6716.avif",
-      "assets/mike-arney-9r-_2gzP37k-unsplash.eca00fd8.webp",
-      "assets/mike-arney-9r-_2gzP37k-unsplash.6dd52eac.jpg"
-    ],
-    "integrity": "sha384-0Xl03P23YmOXMQAwibX2OuwLbOP+VcPuQSCHwdWnbgN7Khcwigf1df107NXt2xGZ"
-  },
-  "resources/js/Pages/RandomForm.vue": {
-    "file": "assets/RandomForm.0c4d0631.js",
-    "src": "resources/js/Pages/RandomForm.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_NavPageLink.0f4360eb.js",
-      "_NavLink.5852b4b1.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "_Tooltip.8ea7c3b7.js",
-      "_AjaxForm.b1a1fe92.js",
-      "_fetch.c0ba397d.js"
-    ],
-    "css": [
-      "assets/RandomForm.0907623d.css"
-    ],
-    "assets": [
-      "assets/cookie-latin-400-normal.4e8b3c17.woff2",
-      "assets/cookie-all-400-normal.3f439754.woff",
-      "assets/BMC Logo - Black.23959f2f.png",
-      "assets/gifts-1.0490eb93.jpg",
-      "assets/gifts-1.77fdb94c.avif",
-      "assets/gifts-1.381e0b8d.webp",
-      "assets/gifts-1x2.64a2dd45.jpg",
-      "assets/gifts-1x3.7425eeea.jpg",
-      "assets/gifts-1x4.14dfe742.jpg",
-      "assets/gifts-2.a070b17f.jpg",
-      "assets/gifts-2.b7f35d23.avif",
-      "assets/gifts-2.cbf1693b.webp",
-      "assets/gifts-3.5998772d.jpg",
-      "assets/gifts-3.6f4db41e.avif",
-      "assets/gifts-3.96e5b51e.webp",
-      "assets/calendar-icon.165ac5b6.png",
-      "assets/calendar-icon.07fbb5cc.avif",
-      "assets/calendar-icon.0f10b9ea.webp",
-      "assets/user-icon.2df3e5bd.png",
-      "assets/user-icon.32e9dff8.avif",
-      "assets/user-icon.85fe1274.webp",
-      "assets/paper-icon.c44431ef.png",
-      "assets/mail-icon.c79239d4.png",
-      "assets/mail-icon.b0b32e6b.avif",
-      "assets/clock-icon.5ce94773.png",
-      "assets/clock-icon.29215005.avif",
-      "assets/clock-icon.8b77ec2f.webp"
-    ],
-    "integrity": "sha384-an9LPfVf3aAjBcRXE75TADyh+QzYnDSlBN+ggxXvXGjlnlbf9BR74TQmGS7qBorZ"
-  },
-  "resources/js/Pages/Report.vue": {
-    "file": "assets/Report.1c4c5db2.js",
-    "src": "resources/js/Pages/Report.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_Fetcher.d9ce79c1.js",
-      "_NavPageLink.0f4360eb.js",
-      "_AjaxForm.b1a1fe92.js",
-      "resources/js/app.js",
-      "_plugin-vue_export-helper.f2aa9cb4.js",
-      "_fetch.c0ba397d.js",
-      "_Fetcher.f493122c.js"
-    ],
-    "integrity": "sha384-koH4sFTfbgJ+j4RG7JqcDqulc5MF0TWCObBRiuZTHivFN/rJQQAd1Gww2JkRFDEm"
-  },
-  "resources/sass/app.scss": {
-    "file": "assets/app.71e5ee76.css",
-    "src": "resources/sass/app.scss",
+  "resources/sass/randomForm.scss": {
+    "file": "assets/randomForm.84012478.css",
+    "src": "resources/sass/randomForm.scss",
     "isEntry": true,
-    "integrity": "sha384-DC90dxNARIyjuU/KBsALJpsd/2vF57ew3W1QwLQjb9KSQO1f4PRLxXgFymjEeOzX"
+    "integrity": "sha384-he1r5AM/8UrESlAX360K2XVBXcZfCgJALMNJ/sknOEH2E3wr+A22MNQBir1+OVwt"
+  },
+  "resources/sass/buy-me-coffee.scss": {
+    "file": "assets/buy-me-coffee.d38d74c9.css",
+    "src": "resources/sass/buy-me-coffee.scss",
+    "isEntry": true,
+    "integrity": "sha384-yb56G0dYGKNethMOEZhPI3I384F2Z5x9IhGf+YU7ckhvdQLfrQoVR2MSC9x8ux1m"
   },
   "resources/sass/webfonts.scss": {
     "file": "assets/webfonts.9dc88678.css",
     "src": "resources/sass/webfonts.scss",
     "isEntry": true,
     "integrity": "sha384-RB1P7AIMQRgBN2zo+5J+oLVmzcwY+hX0aXDmbePrYYDDM04aiOCz4H9STSuCtiLV"
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app.fc298277.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true,
+    "integrity": "sha384-WOHtHqf6zdx6o4RIhrWNjDo4vjK/dMFduXuSrt/4NpbHha9u2SjXBwtydldvnPHX"
   }
 }

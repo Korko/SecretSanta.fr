@@ -1,11 +1,5 @@
 <script>
-    import { useVuelidate } from '@vuelidate/core';
-
     export default {
-        setup: () => ({ v$: useVuelidate() }),
-        validations() {
-            return this.rules;
-        },
         props: {
             name: {
                 type: String,

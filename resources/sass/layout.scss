@@ -215,7 +215,7 @@ footer .row {
         width: 105px;
         overflow: visible;
         height: 135px;
-        z-index: 9999;
+        z-index: 10000001;
     }
 
     #ribbon a {
@@ -268,7 +268,7 @@ footer .row {
 ========================================================================== */
 .modal-mask {
     position: fixed;
-    z-index: 9998;
+    z-index: 10000000;
     top: 0;
     left: 0;
     width: 100%;

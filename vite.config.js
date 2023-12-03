@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import manifestSRI from 'vite-plugin-manifest-sri';
@@ -11,14 +11,22 @@ export default defineConfig(({ command, mode }) => {
 
     return {
         server: {
-            host: 'secretsanta.localhost',
+            hmr: {
+                host: 'dev.secretsanta.fr',
+            },
         },
         plugins: [
             laravel({
                 input: [
-                    'resources/js/app.js', // main js
                     'resources/sass/app.scss', // main sass
                     'resources/sass/webfonts.scss', // mails layout
+
+                    // pages
+                    'resources/js/randomForm.js',
+                    'resources/sass/randomForm.scss',
+
+                    // components
+                    'resources/sass/buy-me-coffee.scss',
                 ],
                 refresh: true,
             }),

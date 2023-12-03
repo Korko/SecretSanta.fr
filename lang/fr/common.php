@@ -13,6 +13,8 @@ return [
 
     'form' => [
         'send' => 'Envoyer',
+        'hasErrors' => 'Le formulaire contient des erreurs',
+        'validating' => 'Vérifications en cours',
         'sending' => 'Envoi en cours',
         'sent' => 'Envoyé',
         'reset' => 'Commencer un nouveau tirage',

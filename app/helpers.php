@@ -39,7 +39,7 @@ if (! function_exists('translations')) {
         ]);
 
         /*
-           ['en' => ['validation' => ['accepted' => '...']]]
+         * ['en' => ['validation' => ['accepted' => '...']]]
         */
         return collect($storage->allFiles($locale))
             ->map(fn ($file) => [

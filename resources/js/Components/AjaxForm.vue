@@ -1,11 +1,17 @@
 <script>
     import { post } from '@/Modules/fetch.js';
 
+    import { useForm } from 'laravel-precognition-vue';
+
     export default {
         props: {
             action: {
                 type: String,
                 default: ''
+            },
+            method: {
+                type: String,
+                default: 'post'
             },
             button: {
                 type: Boolean,
@@ -38,21 +44,21 @@
             isInvalid: {
                 type: Boolean,
                 default: false
+            },
+            formData: {
+                type: Object,
+                default: () => ({})
             }
         },
         data: () => ({
+            form: useForm(this.method || 'post', this.action, this.formData || {}),
             sending: false,
             sent: false
         }),
-        computed: {
-            formData() {
-                if(!this.$el) {
-                    return '';
-                }
-                return new URLSearchParams(new FormData(this.$el)).toString();
-            }
-        },
         watch: {
+            formData() {
+                this.form.setData(this.formData);
+            },
             sending() {
                 this.$emit('change', this.sending);
             }
@@ -114,8 +120,8 @@
             },
             submit(postData, options) {
                 this.$emit('beforeSubmit');
-                postData = postData || this.formData;
-                var ajax = this.call(this.action, Object.assign({ data: postData }, options));
+
+                //var ajax = this.call(this.action, Object.assign({ data: postData }, options));
                 this.$emit('afterSubmit');
                 return ajax;
             }
@@ -126,7 +132,7 @@
 <template>
     <form :action="action" method="post" autocomplete="off" @submit.prevent="onSubmit" @reset.prevent="onReset">
         <fieldset :disabled="sending || sent">
-            <slot v-bind="{ sending, sent, submit, onSubmit, onReset }" />
+            <slot v-bind="{ form, sending, sent, submit, onSubmit, onReset }" />
         </fieldset>
         <fieldset v-if="button">
             <button type="submit" class="btn btn-primary btn-lg" :disabled="sent || sending">

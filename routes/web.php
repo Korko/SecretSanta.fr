@@ -8,6 +8,7 @@ use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SingleController;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [RandomFormController::class, 'display'])->name('form.index');
-Route::post('/process', [RandomFormController::class, 'handle'])->name('form.process');
+Route::post('/process', [RandomFormController::class, 'handle'])->middleware([HandlePrecognitiveRequests::class])->name('form.process');
 
 Route::get('/faq', [SingleController::class, 'faq'])->name('faq');
 //Route::get('/dashboard', [SingleController::class, 'dashboard'])->name('dashboard');

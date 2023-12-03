@@ -43,26 +43,30 @@
         @routes
 
         @vite('resources/sass/app.scss')
-    </head>
-    <body>
-        <div id="content">
-            <div>
-                {{ $slot }}
-            </div>
-        </div>
-
-        <noscript>
-            {{ trans('app.nojs') }}
-        </noscript>
-
-        @vite('resources/js/app.js')
 
         @javascript([
             'pusher' => [
                 'key' => Arr::get(config('websockets.apps'), '0.key'),
                 'host' => Arr::get(config('websockets.apps'), '0.host'),
                 'port' => intval(Arr::get(config('websockets.apps'), '0.port', 443)),
-            ]
+            ],
+            'locale' => App::getLocale(),
+            'translations' => translations(),
         ])
+
+        @stack('head')
+    </head>
+    <body>
+        <noscript>
+            <div class="alert alert-danger" role="alert">
+                {{ trans('app.nojs') }}
+            </div>
+        </noscript>
+
+        <div id="content">
+            <div>
+                {{ $slot }}
+            </div>
+        </div>
     </body>
 </html>

@@ -45,7 +45,7 @@ L'organisateur/organisatrice dispose aussi d'une interface dédiée pour retrouv
             'notice' => 'secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.
 Celles-ci sont chiffrées pour être inutilisables sans action de votre part.
 Aucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.
-Le code source est disponible sur {sources}',
+Le code source est disponible sur :sources',
         ],
         'go' => [
             'title' => 'À vous de jouer !',
@@ -81,7 +81,7 @@ Le code source est disponible sur {sources}',
         ],
         'email' => [
             'label' => 'Adresse e-mail',
-            'placeholder' => "exemple : michel{'@'}aol.com",
+            'placeholder' => "exemple : michel@aol.com",
         ],
         'exclusions' => [
             'label' => 'Exclusions',

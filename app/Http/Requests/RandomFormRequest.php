@@ -30,8 +30,8 @@ class RandomFormRequest extends Request
             'budget' => ['required', 'string', 'max:55'],
             'event-date' => ['sometimes', 'date'],
 
-            'organizer-name' => ['required', 'string', 'max:55'],
-            'organizer-email' => ['required', 'email', 'max:255'],
+            'organizer.name' => ['required', 'string', 'max:55'],
+            'organizer.email' => ['required', 'email', 'max:255'],
 
             'participants' => ['sometimes', 'array'],
             'participants.*.name' => ['required', 'string', 'max:55', 'distinct:ignore_case', 'different:organizer-name'],
@@ -51,8 +51,8 @@ class RandomFormRequest extends Request
             'organizer-name.required' => Lang::get('validation.custom.randomform.organizer.name.required'),
             'organizer-email.required' => Lang::get('validation.custom.randomform.organizer.email.required'),
             'organizer-email.email' => Lang::get('validation.custom.randomform.organizer.email.email'),
-            'participants.*.required' => Lang::get('validation.custom.randomform.participant.name.required'),
-            'participants.*.distinct' => Lang::get('validation.custom.randomform.participant.name.distinct'),
+            'participants.*.name.required' => Lang::get('validation.custom.randomform.participant.name.required'),
+            'participants.*.name.distinct' => Lang::get('validation.custom.randomform.participant.name.distinct'),
         ];
     }
 }

@@ -45,8 +45,8 @@
     <span>
         <input type="checkbox" class="toggle" :id="id" :name="name" :checked="modelValue" value="1" @change="emit" />
         <label :for="id" :style="{'--backgroundNo': backgroundNo, '--backgroundYes': backgroundYes}">
-          <span class="on">{{ labelYes }}</span>
-          <span class="off">{{ labelNo }}</span>
+            <span class="on">{{ labelYes }}</span>
+            <span class="off">{{ labelNo }}</span>
         </label>
     </span>
 </template>
@@ -130,6 +130,6 @@
       }
       font-size: 16px;
       color: #717171;
-      margin:0; 
+      margin:0;
     }
 </style>
