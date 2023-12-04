@@ -152,18 +152,18 @@
             <div class="row text-center form">
                 <form method="post" action="{{ route('form.process') }}" autocomplete="off" v-on:submit.prevent="submit">
                     <fieldset>
-                        {{-- <div v-show="sent" id="success-wrapper" class="alert alert-success">
+                        <div v-cloak v-show="sent" id="success-wrapper" class="alert alert-success">
                             @lang('form.success')
                             <div v-if="draw_status === 'created'">
-                                Le tirage au sort est en attente
+                                @lang('form.status.created')
                             </div>
                             <div v-else-if="draw_status === 'drawing'">
-                                Le tirage au sort est en cours
+                                @lang('form.status.drawing')
                             </div>
                             <div v-else-if="draw_status === 'drawn'">
-                                Le tirage au sort a bien été effectué
+                                @lang('form.status.drawn')
                             </div>
-                        </div> --}}
+                        </div>
 
                         <toggle
                             class="organizerToggle"
@@ -383,11 +383,7 @@
                                             style="width: 100%;"
                                         ></auto-textarea>
                                         <div v-if="form.errors.content" class="invalid-feedback">
-                                            <ul>
-                                                <li v-for="error in [].concat(form.errors.content)" :key="error">
-                                                    @{{ error }}
-                                                </li>
-                                            </ul>
+                                            @{{ form.errors.content }}
                                         </div>
                                     </div>
                                     <auto-textarea
@@ -404,11 +400,11 @@
                     </fieldset>
 
                     <fieldset>
-                        <button type="submit" class="btn btn-primary btn-lg" :disabled="sent || sending || form.validating || form.hasErrors">
-                            <span v-if="sent"><i class="fas fa-check-circle"></i> @lang('common.form.sent')</span>
-                            <span v-else-if="sending"><i class="fas fa-spinner"></i> @lang('common.form.sending')</span>
-                            <span v-else-if="form.validating"><i class="fas fa-spinner"></i> @lang('common.form.validating')</span>
-                            <span v-else-if="form.hasErrors"><i class="fas fa-lock"></i> @lang('common.form.hasErrors')</span>
+                        <button type="submit" class="btn btn-primary btn-lg" v-bind:disabled="sent || sending || form.validating || form.hasErrors">
+                            <span v-cloak v-if="sent"><i class="fas fa-check-circle"></i> @lang('common.form.sent')</span>
+                            <span v-cloak v-else-if="sending"><i class="fas fa-spinner"></i> @lang('common.form.sending')</span>
+                            <span v-cloak v-else-if="form.validating"><i class="fas fa-spinner"></i> @lang('common.form.validating')</span>
+                            <span v-cloak v-else-if="form.hasErrors"><i class="fas fa-lock"></i> @lang('common.form.hasErrors')</span>
                             <span v-else><i class="fas fa-dice"></i> @lang('form.submit')</span>
                         </button>
                         {{-- <button v-if="sent" type="reset" class="btn btn-primary btn-lg">
@@ -416,7 +412,7 @@
                         </button> --}}
                     </fieldset>
                 </form>
-                <csv v-if="showModal" v-on:import="importParticipants" v-on:close="showModal = false"></csv>
+                <csv v-cloak v-if="showModal" v-on:import="importParticipants" v-on:close="showModal = false"></csv>
             </div>
         </div>
         </div>

@@ -139,4 +139,10 @@ via SecretSanta.fr',
     ],
 
     'internalError' => 'Erreur interne',
+
+    'status' => [
+        'created' => 'Le tirage au sort est en attente',
+        'drawing' => 'Le tirage au sort est en cours',
+        'drawn' => 'Le tirage au sort a bien été effectué',
+    ],
 ];
