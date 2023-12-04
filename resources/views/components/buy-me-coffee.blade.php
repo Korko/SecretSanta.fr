@@ -1,4 +1,4 @@
-@pushOnce('styles')
+@pushOnce('head')
     @vite('resources/sass/buy-me-coffee.scss')
 @endPushOnce
 
