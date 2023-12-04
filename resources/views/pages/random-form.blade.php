@@ -388,14 +388,10 @@
                                             @{{ form.errors.content }}
                                         </div>
                                     </div>
-                                    <textarea
+                                    <pre
                                         id="mailPost"
-                                        class="form-control extended"
-                                        read-only
-                                        disabled
-                                        value="@lang('form.mail.post')"
-                                        rows="{{ count(explode(PHP_EOL, __('form.mail.post'))) }}"
-                                    ></textarea>
+                                        class="textarea disabled"
+                                    >@lang('form.mail.post')</pre>
                                 </div>
                             </fieldset>
                         </div>

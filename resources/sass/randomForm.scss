@@ -274,8 +274,21 @@ table caption {
     display: none;
 }
 
-#mailPost {
-    resize: none;
+pre.textarea {
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    color: #6c757d;
+    text-align: left !important;
+    padding: .375rem .75rem;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+pre.textarea.disabled {
+    background-color: #e9ecef;
 }
 
 @import '@vueform/multiselect/themes/default.css';

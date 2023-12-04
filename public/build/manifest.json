@@ -8,23 +8,23 @@
     ],
     "integrity": "sha384-VOYJoDyRoQ2apvCX2wo4MqXyF+6HOdrvTiampwPbglssTYyQeyxoyGVfYFbYRXQI"
   },
-  "resources/sass/buy-me-coffee.scss": {
-    "file": "assets/buy-me-coffee.d38d74c9.css",
-    "src": "resources/sass/buy-me-coffee.scss",
-    "isEntry": true,
-    "integrity": "sha384-yb56G0dYGKNethMOEZhPI3I384F2Z5x9IhGf+YU7ckhvdQLfrQoVR2MSC9x8ux1m"
-  },
   "resources/sass/randomForm.scss": {
-    "file": "assets/randomForm.84012478.css",
+    "file": "assets/randomForm.089d8e95.css",
     "src": "resources/sass/randomForm.scss",
     "isEntry": true,
-    "integrity": "sha384-he1r5AM/8UrESlAX360K2XVBXcZfCgJALMNJ/sknOEH2E3wr+A22MNQBir1+OVwt"
+    "integrity": "sha384-JtXipRud+/8rYkwQpoWzAKy3u8wdvq2U+8fdJ6WfLT5eFu55XZfVm0puaJa56jbh"
   },
   "resources/sass/webfonts.scss": {
     "file": "assets/webfonts.9dc88678.css",
     "src": "resources/sass/webfonts.scss",
     "isEntry": true,
     "integrity": "sha384-RB1P7AIMQRgBN2zo+5J+oLVmzcwY+hX0aXDmbePrYYDDM04aiOCz4H9STSuCtiLV"
+  },
+  "resources/sass/buy-me-coffee.scss": {
+    "file": "assets/buy-me-coffee.d38d74c9.css",
+    "src": "resources/sass/buy-me-coffee.scss",
+    "isEntry": true,
+    "integrity": "sha384-yb56G0dYGKNethMOEZhPI3I384F2Z5x9IhGf+YU7ckhvdQLfrQoVR2MSC9x8ux1m"
   },
   "resources/sass/app.scss": {
     "file": "assets/app.fc298277.css",
