@@ -1,24 +1,24 @@
 {
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm.dbd50036.js",
+    "file": "assets/randomForm.5dc57907.js",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
     "css": [
-      "assets/randomForm.852b4d6d.css"
+      "assets/randomForm.bc841656.css"
     ],
-    "integrity": "sha384-mzrQwnaPb0inDdD2SocUnND1XSiGXE+UiPmrSqgh8H0/Syk+nYFGbcG+YkJrJhgI"
-  },
-  "resources/sass/randomForm.scss": {
-    "file": "assets/randomForm.84012478.css",
-    "src": "resources/sass/randomForm.scss",
-    "isEntry": true,
-    "integrity": "sha384-he1r5AM/8UrESlAX360K2XVBXcZfCgJALMNJ/sknOEH2E3wr+A22MNQBir1+OVwt"
+    "integrity": "sha384-VOYJoDyRoQ2apvCX2wo4MqXyF+6HOdrvTiampwPbglssTYyQeyxoyGVfYFbYRXQI"
   },
   "resources/sass/buy-me-coffee.scss": {
     "file": "assets/buy-me-coffee.d38d74c9.css",
     "src": "resources/sass/buy-me-coffee.scss",
     "isEntry": true,
     "integrity": "sha384-yb56G0dYGKNethMOEZhPI3I384F2Z5x9IhGf+YU7ckhvdQLfrQoVR2MSC9x8ux1m"
+  },
+  "resources/sass/randomForm.scss": {
+    "file": "assets/randomForm.84012478.css",
+    "src": "resources/sass/randomForm.scss",
+    "isEntry": true,
+    "integrity": "sha384-he1r5AM/8UrESlAX360K2XVBXcZfCgJALMNJ/sknOEH2E3wr+A22MNQBir1+OVwt"
   },
   "resources/sass/webfonts.scss": {
     "file": "assets/webfonts.9dc88678.css",

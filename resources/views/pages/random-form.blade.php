@@ -371,29 +371,29 @@
                                 <div class="form-group">
                                     <label for="mailContent">@lang('form.mail.content.label')</label>
                                     <div class="input-group">
-                                        <auto-textarea
+                                        <textarea
                                             id="mailContent"
                                             name="content"
                                             v-model="form.content"
                                             placeholder="@lang('form.mail.content.placeholder')"
-                                            rows="3"
                                             class="form-control"
                                             v-bind:class="{ 'is-invalid': form.errors.content }"
                                             v-bind:aria-invalid="form.errors.content"
                                             style="width: 100%;"
-                                        ></auto-textarea>
+                                            v-bind:rows="form.content.split('\n').length + 1"
+                                        ></textarea>
                                         <div v-if="form.errors.content" class="invalid-feedback">
                                             @{{ form.errors.content }}
                                         </div>
                                     </div>
-                                    <auto-textarea
+                                    <textarea
                                         id="mailPost"
                                         class="form-control extended"
                                         read-only
                                         disabled
                                         value="@lang('form.mail.post')"
-                                        rows="5"
-                                    ></auto-textarea>
+                                        rows="{{ count(explode(PHP_EOL, __('form.mail.post'))) }}"
+                                    ></textarea>
                                 </div>
                             </fieldset>
                         </div>

@@ -14,7 +14,6 @@ import { createI18n } from 'vue-i18n';
 
 import { useForm } from 'laravel-precognition-vue';
 
-import AutoTextarea from '@/Components/AutoTextarea.vue';
 import Csv from '@/Components/CSV.vue';
 import Multiselect from '@vueform/multiselect';
 import MyInput from '@/Components/MyInput.vue';
@@ -29,7 +28,6 @@ const i18n = createI18n({
 
 window.app = createApp({
     components: {
-        AutoTextarea,
         Csv,
         Multiselect,
         MyInput,
