@@ -10,28 +10,10 @@ DROP TABLE IF EXISTS `dear_santas`;
 CREATE TABLE `dear_santas` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `sender_id` bigint(20) unsigned NOT NULL,
-  `mail_body` blob NOT NULL,
-  `draw_id` bigint(20) unsigned NOT NULL,
+  `mail_body` longtext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `dear_santas_sender_id_foreign` (`sender_id`),
-  KEY `dear_santas_draw_id_foreign` (`draw_id`),
-  CONSTRAINT `dear_santas_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE,
   CONSTRAINT `dear_santas_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `participants` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `dear_targets`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `dear_targets` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `sender_id` bigint(20) unsigned NOT NULL,
-  `mail_type` varchar(255) NOT NULL,
-  `draw_id` bigint(20) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `dear_targets_sender_id_foreign` (`sender_id`),
-  KEY `dear_targets_draw_id_foreign` (`draw_id`),
-  CONSTRAINT `dear_targets_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `dear_targets_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `participants` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `draws`;
@@ -39,23 +21,15 @@ DROP TABLE IF EXISTS `draws`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `draws` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `ulid` char(26) NOT NULL,
-  `organizer_id` bigint(20) unsigned DEFAULT NULL,
-  `participant_organizer` tinyint(1) unsigned NOT NULL,
-  `title` blob NOT NULL,
-  `description` blob DEFAULT NULL,
-  `budget` varchar(55) DEFAULT NULL,
-  `event_date` date DEFAULT NULL,
+  `mail_title` longtext NOT NULL,
+  `mail_body` longtext NOT NULL,
+  `expires_at` date NOT NULL,
+  `next_solvable` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `ready_at` timestamp NULL DEFAULT NULL,
-  `drawn_at` timestamp NULL DEFAULT NULL,
-  `finished_at` timestamp NULL DEFAULT NULL,
-  `status` enum('created','ready','drawing','started','finished','error','canceled') NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `draws_ulid_unique` (`ulid`),
-  KEY `draws_organizer_id_foreign` (`organizer_id`),
-  CONSTRAINT `draws_organizer_id_foreign` FOREIGN KEY (`organizer_id`) REFERENCES `participants` (`id`) ON DELETE SET NULL
+  `organizer_name` longtext NOT NULL,
+  `organizer_email` longtext NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `exclusions`;
@@ -75,7 +49,7 @@ DROP TABLE IF EXISTS `failed_jobs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `failed_jobs` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` char(36) NOT NULL,
+  `uuid` varchar(255) NOT NULL,
   `connection` text NOT NULL,
   `queue` text NOT NULL,
   `payload` longtext NOT NULL,
@@ -83,6 +57,23 @@ CREATE TABLE `failed_jobs` (
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `job_batches`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `job_batches` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `total_jobs` int(11) NOT NULL,
+  `pending_jobs` int(11) NOT NULL,
+  `failed_jobs` int(11) NOT NULL,
+  `failed_job_ids` text NOT NULL,
+  `options` mediumtext DEFAULT NULL,
+  `cancelled_at` int(11) DEFAULT NULL,
+  `created_at` int(11) NOT NULL,
+  `finished_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `jobs`;
@@ -105,18 +96,15 @@ DROP TABLE IF EXISTS `mails`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mails` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `ulid` char(26) NOT NULL,
+  `notification` char(36) NOT NULL,
   `mailable_type` varchar(255) NOT NULL,
   `mailable_id` bigint(20) unsigned NOT NULL,
   `delivery_status` enum('created','sending','sent','error','received') NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `draw_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `mails_ulid_unique` (`ulid`),
-  KEY `mails_mailable_type_mailable_id_index` (`mailable_type`,`mailable_id`),
-  KEY `mails_draw_id_foreign` (`draw_id`),
-  CONSTRAINT `mails_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE
+  UNIQUE KEY `mails_notification_unique` (`notification`),
+  KEY `mails_mailable_type_mailable_id_index` (`mailable_type`,`mailable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `migrations`;
@@ -129,35 +117,19 @@ CREATE TABLE `migrations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `notifications`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `notifications` (
-  `id` char(36) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `notifiable_type` varchar(255) NOT NULL,
-  `notifiable_id` bigint(20) unsigned NOT NULL,
-  `data` text NOT NULL,
-  `read_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `notifications_notifiable_type_notifiable_id_index` (`notifiable_type`,`notifiable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `participants`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `participants` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `ulid` char(26) NOT NULL,
   `draw_id` bigint(20) unsigned NOT NULL,
-  `name` blob NOT NULL,
-  `email` blob DEFAULT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `name` longtext NOT NULL,
+  `email` longtext NOT NULL,
   `target_id` bigint(20) unsigned DEFAULT NULL,
+  `redraw` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `participants_ulid_unique` (`ulid`),
   KEY `participants_draw_id_foreign` (`draw_id`),
   KEY `participants_target_id_foreign` (`target_id`),
   CONSTRAINT `participants_draw_id_foreign` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE,
@@ -193,5 +165,5 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (5,'2019_12_06_0037
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (6,'2019_12_11_232036_create_failed_jobs_table',1);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (7,'2020_02_19_140057_create_dear_santas_table',1);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (8,'2020_11_15_235209_create_exclusions_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (9,'2022_04_17_211703_create_dear_targets_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (10,'2023_09_16_010213_create_notifications_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (9,'2021_11_16_090827_create_job_batches_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (10,'2021_12_06_125715_organizer_in_draw',3);
