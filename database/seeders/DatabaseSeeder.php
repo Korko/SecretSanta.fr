@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Services\DrawHandler;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\URL;
 use Notification;
