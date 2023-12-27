@@ -19,6 +19,7 @@ class ExpiredDrawSeeder extends Seeder
 
         // Generate Draw
         $draw = Draw::factory()
+            ->isExpired()
             ->hasParticipants(10)
             ->create();
 
@@ -48,8 +49,6 @@ class ExpiredDrawSeeder extends Seeder
                 ->create();
         }
 
-        // Mark the draw as expired
-        $draw->finished_at = Carbon::now()->subDays(Draw::DAYS_BEFORE_DELETION);
         $draw->save();
     }
 }

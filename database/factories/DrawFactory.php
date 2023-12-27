@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\DrawStatus;
 use App\Models\Draw;
 use App\Models\Participant;
 use Carbon\Carbon;
@@ -108,6 +109,7 @@ class DrawFactory extends Factory
     {
         return $this->state(function () {
             return [
+                'status' => DrawStatus::READY,
                 'ready_at' => Carbon::now(),
             ];
         });
@@ -120,6 +122,7 @@ class DrawFactory extends Factory
     {
         return $this->state(function () {
             return [
+                'status' => DrawStatus::FINISHED,
                 'finished_at' => Carbon::now(),
             ];
         });
@@ -132,7 +135,8 @@ class DrawFactory extends Factory
     {
         return $this->state(function () {
             return [
-                'finished_at' => Carbon::now()->subDays(Draw::DAYS_BEFORE_DELETION),
+                'status' => DrawStatus::FINISHED,
+                'finished_at' => Carbon::now()->subDays(Draw::DAYS_BEFORE_DELETION_AFTER_FINISH),
             ];
         });
     }

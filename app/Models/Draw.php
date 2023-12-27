@@ -61,10 +61,19 @@ class Draw extends Model implements UrlRoutable
     public const MIN_MONTHS_BEFORE_EXPIRATION = 6;
 
     // Keep a draw at max this amount of months after the last update
-    public const MONTHS_BEFORE_EXPIRATION = 3;
+    public const MONTHS_BEFORE_EXPIRATION_AFTER_START = 3;
 
-    // Remove everything N days after the finished_at date
-    public const DAYS_BEFORE_DELETION = 7;
+    // Keep a draw at max this amount of days after the creation
+    public const DAYS_BEFORE_DELETION_BEFORE_START = 30;
+
+    // Keep a draw at max this amount of days after the creation in case of cleanup request
+    public const DAYS_BEFORE_QUICK_DELETION = 7;
+
+    // Keep a draw at max this amount of days after the creation in case of error
+    public const DAYS_BEFORE_DELETION_BEFORE_CLEANUP = 30;
+
+    // Remove everything N days after the expires_at or the finished_at date
+    public const DAYS_BEFORE_DELETION_AFTER_FINISH = 7;
 
     /**
      * The attributes that aren't mass assignable.
@@ -136,26 +145,27 @@ class Draw extends Model implements UrlRoutable
 
     public function prunable(): Builder
     {
+        // Copy of deletes_at and expires_at cases, don't know yet how to merge them
         return static::where(function(Builder $query) {
                 $query->where('status', DrawStatus::CREATED)
-                    ->where('created_at', '<=', Carbon::now()->subDays(30));
+                    ->where('created_at', '<=', Carbon::now()->subDays(self::DAYS_BEFORE_DELETION_BEFORE_START));
             })
             ->orWhere(function(Builder $query) {
                 $query->where('status', DrawStatus::CANCELED)
-                    ->where('created_at', '<=', Carbon::now()->subDays(7));
+                    ->where('created_at', '<=', Carbon::now()->subDays(self::DAYS_BEFORE_QUICK_DELETION));
             })
             ->orWhere(function(Builder $query) {
                 $query->where('status', DrawStatus::ERROR)
-                    ->where('created_at', '<=', Carbon::now()->subMonths(3));
+                    ->where('created_at', '<=', Carbon::now()->subDays(self::DAYS_BEFORE_DELETION_BEFORE_CLEANUP));
             })
             ->orWhere(function(Builder $query) {
                 $query->where('status', DrawStatus::STARTED)
                     ->where('created_at', '>=', Carbon::now()->subMonths(self::MIN_MONTHS_BEFORE_EXPIRATION))
-                    ->where('updated_at', '<=', Carbon::now()->subMonths(self::MONTHS_BEFORE_EXPIRATION));
+                    ->where('updated_at', '<=', Carbon::now()->subMonths(self::MONTHS_BEFORE_EXPIRATION_AFTER_START));
             })
             ->orWhere(function(Builder $query) {
                 $query->where('status', DrawStatus::FINISHED)
-                    ->where('finished_at', '<=', Carbon::now()->subDays(self::DAYS_BEFORE_DELETION));
+                    ->where('finished_at', '<=', Carbon::now()->subDays(self::DAYS_BEFORE_DELETION_AFTER_FINISH));
             });
     }
 
@@ -203,7 +213,7 @@ class Draw extends Model implements UrlRoutable
             get: fn (): ?Carbon => match ($this->status) {
                 DrawStatus::STARTED => max(
                     $this->created_at->addMonths(self::MIN_MONTHS_BEFORE_EXPIRATION),
-                    $this->updated_at->addMonths(self::MONTHS_BEFORE_EXPIRATION)
+                    $this->updated_at->addMonths(self::MONTHS_BEFORE_EXPIRATION_AFTER_START)
                 ),
                 default => null,
             }
@@ -213,7 +223,13 @@ class Draw extends Model implements UrlRoutable
     protected function deletesAt(): Attribute
     {
         return Attribute::make(
-            get: fn () => max($this->expires_at, $this->finished_at?->addDays(self::DAYS_BEFORE_DELETION))
+            get: fn (): Carbon => match ($this->status) {
+                DrawStatus::CREATED => $this->created_at->addDays(self::DAYS_BEFORE_DELETION_BEFORE_START),
+                DrawStatus::CANCELED => $this->created_at->addDays(self::DAYS_BEFORE_QUICK_DELETION),
+                DrawStatus::ERROR => $this->created_at->addDays(self::DAYS_BEFORE_DELETION_BEFORE_CLEANUP),
+                DrawStatus::STARTED => $this->expires_at->addDays(self::DAYS_BEFORE_DELETION_AFTER_FINISH),
+                DrawStatus::FINISHED => $this->finished_at->addDays(self::DAYS_BEFORE_DELETION_AFTER_FINISH),
+            }
         );
     }
 
