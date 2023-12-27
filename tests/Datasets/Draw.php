@@ -17,7 +17,7 @@ dataset('basic draw', function () {
             ->hasParticipants(3)
             ->create();
 
-        DrawHandler::solve($draw, $draw->participants);
+        DrawHandler::solve($draw);
 
         return $draw;
     };
@@ -31,7 +31,7 @@ dataset('large draw', function () {
             ->hasParticipants(10)
             ->create();
 
-        DrawHandler::solve($draw, $draw->participants);
+        DrawHandler::solve($draw);
 
         return $draw;
     };
@@ -46,7 +46,7 @@ dataset('finished draw', function () {
             ->hasParticipants(3)
             ->create();
 
-        DrawHandler::solve($draw, $draw->participants);
+        DrawHandler::solve($draw);
 
         return $draw;
     };
@@ -61,7 +61,7 @@ dataset('expired draw', function () {
             ->hasParticipants(3)
             ->create();
 
-        DrawHandler::solve($draw, $draw->participants);
+        DrawHandler::solve($draw);
 
         return $draw;
     };
@@ -75,7 +75,7 @@ dataset('dear santa', function () {
             ->hasParticipants(3)
             ->create();
 
-        DrawHandler::solve($draw, $draw->participants);
+        DrawHandler::solve($draw);
 
         return DearSanta::factory()
             ->for($draw->participants->random(), 'sender')
@@ -91,7 +91,7 @@ dataset('resendable dear santa', function () {
             ->hasParticipants(3)
             ->create();
 
-        DrawHandler::solve($draw, $draw->participants);
+        DrawHandler::solve($draw);
 
         return DearSanta::factory()
             ->resendable()
@@ -108,7 +108,7 @@ dataset('dear target', function () {
             ->hasParticipants(3)
             ->create();
 
-        DrawHandler::solve($draw, $draw->participants);
+        DrawHandler::solve($draw);
 
         return DearTarget::factory()
             ->for($draw->participants->random(), 'sender')
@@ -124,7 +124,7 @@ dataset('resendable dear target', function () {
             ->hasParticipants(3)
             ->create();
 
-        DrawHandler::solve($draw, $draw->participants);
+        DrawHandler::solve($draw);
 
         return DearTarget::factory()
             ->resendable()
