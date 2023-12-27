@@ -6,6 +6,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Create the table for the Dear Target Letters.
+ */
 return new class extends Migration
 {
     /**
@@ -15,9 +18,9 @@ return new class extends Migration
     {
         Schema::create('dear_targets', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Participant::class, 'sender_id')->constrained('participants')->cascadeOnDelete();
+            $table->foreignId('sender_id')->constrained('participants', 'id')->cascadeOnDelete();
             $table->string('mail_type');
-            $table->foreignIdFor(Draw::class)->constrained()->cascadeOnDelete();
+            $table->foreignId('draw_id')->constrained('draws', 'id')->cascadeOnDelete();
         });
     }
 

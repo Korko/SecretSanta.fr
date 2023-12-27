@@ -1,10 +1,12 @@
 <?php
 
-use App\Models\Participant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Create the table for the participants' exclusions.
+ */
 return new class extends Migration
 {
     /**
@@ -13,8 +15,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('exclusions', function (Blueprint $table) {
-            $table->foreignIdFor(Participant::class, 'participant_id')->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Participant::class, 'exclusion_id')->constrained('participants')->cascadeOnDelete();
+            $table->foreignId('participant_id')->constrained('participants', 'id')->cascadeOnDelete();
+            $table->foreignId('exclusion_id')->constrained('participants', 'id')->cascadeOnDelete();
         });
     }
 

@@ -1,11 +1,12 @@
 <?php
 
-use App\Models\Draw;
-use App\Models\Participant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Create the table for the Dear Santas Letters.
+ */
 return new class extends Migration
 {
     /**
@@ -15,9 +16,8 @@ return new class extends Migration
     {
         Schema::create('dear_santas', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Participant::class, 'sender_id')->constrained('participants')->cascadeOnDelete();
-            $table->blob('mail_body');
-            $table->foreignIdFor(Draw::class)->constrained()->cascadeOnDelete();
+            $table->foreignId('sender_id')->constrained('participants', 'id')->cascadeOnDelete();
+            $table->longText('mail_body');
         });
     }
 

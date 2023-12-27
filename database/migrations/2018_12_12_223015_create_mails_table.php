@@ -1,11 +1,13 @@
 <?php
 
-use App\Models\Draw;
 use App\Models\Mail;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Create the table for the tracked mails.
+ */
 return new class extends Migration
 {
     /**
@@ -15,11 +17,10 @@ return new class extends Migration
     {
         Schema::create('mails', function (Blueprint $table) {
             $table->id();
-            $table->ulid()->unique();
-            $table->morphs('mailable');
+            $table->uuid('notification')->unique();
+            $table->numericMorphs('mailable');
             $table->enum('delivery_status', Mail::$deliveryStatuses);
             $table->timestamps();
-            $table->foreignIdFor(Draw::class)->constrained()->cascadeOnDelete();
         });
     }
 

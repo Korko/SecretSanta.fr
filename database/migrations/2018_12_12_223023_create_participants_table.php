@@ -1,12 +1,12 @@
 <?php
 
-use App\Models\Draw;
-use App\Models\Participant;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Create the table for the participants.
+ */
 return new class extends Migration
 {
     /**
@@ -16,12 +16,12 @@ return new class extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
-            $table->ulid()->unique();
-            $table->foreignIdFor(Draw::class)->constrained()->cascadeOnDelete();
-            $table->tinyBlob('name'); // Cannot make a UNIQUE index as the encryption makes it already unique
-            $table->blob('email')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->foreignIdFor(Participant::class, 'target_id')->nullable()->constrained('participants')->nullOnDelete();
+            $table->foreignId('draw_id')->constrained('draws', 'id')->cascadeOnDelete();
+            $table->longText('name');
+            $table->longText('email');
+            $table->foreignId('target_id')->nullable()->constrained('participants', 'id')->nullOnDelete();
+            $table->boolean('redraw')->default(false);
+            $table->timestamps();
         });
     }
 
