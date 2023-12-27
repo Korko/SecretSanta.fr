@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\URL;
 it('lets each participant write to their santa', function (Draw $draw) {
     Notification::fake();
 
-    foreach ($draw->participants as $participant) {
-        ajaxPost(URL::signedRoute('santa.contactSanta', ['participant' => $participant]), [
+    foreach ($draw->santas as $santa) {
+        ajaxPost(URL::signedRoute('santa.contactSanta', ['participant' => $santa]), [
             'content' => 'test dearSanta mail content',
         ])
             ->assertSuccessful()
             ->assertJsonStructure(['message']);
 
-        Notification::assertSentTo($participant->santa, DearSantaNotification::class);
+        Notification::assertSentTo($santa->santa, DearSantaNotification::class);
     }
 })->with('basic draw');
 
@@ -45,7 +45,7 @@ test('it updates the draw update date when writing to a santa', function (Draw $
     Notification::fake();
 
     $updated_at = $draw->updated_at;
-    $participant = $draw->participants->first();
+    $participant = $draw->santas->first();
 
     sleep(2);
 

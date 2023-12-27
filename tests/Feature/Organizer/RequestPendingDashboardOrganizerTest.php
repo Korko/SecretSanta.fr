@@ -44,7 +44,7 @@ test('an organizer can change the title of the draw', function () {
     expect($draw->fresh()->title)
         ->toBe($newValue);
 
-    $draw->participantsNonOrganizer->each(function (Participant $participant) {
+    $draw->santasNonOrganizer->each(function (Participant $participant) {
         Notification::assertSentTo($participant, DrawTitleChanged::class);
     });
 });
@@ -237,7 +237,7 @@ test('an organizer can remove some prefilled participant names', function () {
         ])
         ->createOne();
 
-    $participant = $draw->participants->random();
+    $participant = $draw->santasNonOrganizer->random();
 
     // Ask to remove one name
     ajaxDelete(URL::signedRoute('draw.participant.remove', ['draw' => $draw, 'participant' => $participant]))
@@ -259,7 +259,7 @@ test('when an organizer removes some participant names, it updates the draw upda
     expect($draw->updated_at)
         ->toEqual($draw->created_at);
 
-    $participant = $draw->participants->first();
+    $participant = $draw->santasNonOrganizer->first();
 
     $this->travel(1)->hour();
 
@@ -286,7 +286,7 @@ test('an organizer can prefill some participant names and emails', function () {
         ->assertSuccessful();
 
     expect(Participant::class)->toHaveCount(1);
-    expect($draw->participants->first()->email)
+    expect($draw->santasNonOrganizer->first()->email)
         ->not()
         ->toBeNull();
 });

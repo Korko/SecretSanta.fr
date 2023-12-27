@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\URL;
 it('lets each santa write to their target', function (Draw $draw) {
     Notification::fake();
 
-    foreach ($draw->participants as $participant) {
+    foreach ($draw->santas as $participant) {
         ajaxPost(URL::signedRoute('santa.contactTarget', ['participant' => $participant]), [
                 'type' => QuestionToSanta::cases()[0]->value,
             ])
@@ -46,7 +46,7 @@ test('it updates the draw update date when writing to a target', function (Draw 
     Notification::fake();
 
     $updated_at = $draw->updated_at;
-    $participant = $draw->participants->first();
+    $participant = $draw->santas->first();
 
     sleep(2);
 

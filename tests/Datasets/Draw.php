@@ -79,7 +79,7 @@ dataset('dear santa', function () {
         DrawHandler::solve($draw);
 
         return DearSanta::factory()
-            ->for($draw->participants->random(), 'sender')
+            ->for($draw->santas->random(), 'sender')
             ->create();
     };
 });
@@ -96,7 +96,7 @@ dataset('resendable dear santa', function () {
 
         return DearSanta::factory()
             ->resendable()
-            ->for($draw->participants->random(), 'sender')
+            ->for($draw->santas->random(), 'sender')
             ->create();
     };
 });
@@ -112,7 +112,7 @@ dataset('dear target', function () {
         DrawHandler::solve($draw);
 
         return DearTarget::factory()
-            ->for($draw->participants->random(), 'sender')
+            ->for($draw->santas->random(), 'sender')
             ->create();
     };
 });
@@ -129,7 +129,7 @@ dataset('resendable dear target', function () {
 
         return DearTarget::factory()
             ->resendable()
-            ->for($draw->participants->random(), 'sender')
+            ->for($draw->santas->random(), 'sender')
             ->create();
     };
 });

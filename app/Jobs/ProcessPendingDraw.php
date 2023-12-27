@@ -66,7 +66,7 @@ class ProcessPendingDraw implements ShouldQueue
             $this->draw->organizer->notify(new OrganizerRecap($this->draw));
 
             $this->draw->createMetric('new_draw')
-                ->addExtra('participants', count($this->draw->participants));
+                ->addExtra('participants', count($this->draw->santas));
 
             $this->draw->drawn_at = Carbon::now();
             $this->draw->status = DrawStatus::STARTED;
