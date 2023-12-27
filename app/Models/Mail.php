@@ -108,6 +108,16 @@ class Mail extends Model
     }
 
     /**
+     * Get the columns that should receive a unique identifier.
+     *
+     * @return array<int, string>
+     */
+    public function uniqueIds(): array
+    {
+        return ['notification'];
+    }
+
+    /**
      * Get the parent mailable model (dearSanta or participant).
      */
     public function mailable()

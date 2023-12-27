@@ -30,6 +30,13 @@ class Exclusion extends Pivot
      */
     public $timestamps = false;
 
+    protected static function booted(): void
+    {
+        static::creating(function (Exclusion $exclusion) {
+            $exclusion->draw()->save($exclusion->participant->draw);
+        });
+    }
+
     public function participant()
     {
         return $this->belongsTo(self::class, 'participant_id');
