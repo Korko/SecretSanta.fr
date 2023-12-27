@@ -23,8 +23,12 @@ class ExpiredDrawSeeder extends Seeder
             ->create();
 
         // Attach a random exclusion for each participant (just to spice things up)
-        $draw->participants->each(function ($participant) use ($draw) {
-            $participant->exclusions()->attach($draw->participants->except($participant->id)->random());
+        $draw->participants->each(function (Participant $participant) use ($draw) {
+            $participant
+                ->exclusions()
+                ->attach($draw->participants->except($participant->id)->random(), [
+                    'draw_id' => $draw->id,
+                ]);
         });
 
         DrawHandler::solve($draw, $draw->participants);
