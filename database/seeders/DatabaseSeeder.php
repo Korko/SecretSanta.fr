@@ -21,10 +21,7 @@ class DatabaseSeeder extends Seeder
 
         // Generate Draw
         $draw = Draw::factory()
-            ->has(
-                Participant::factory()
-                    ->count(10)
-            )
+            ->hasParticipants(10)
             ->create();
 
         // Attach a random exclusion for each participant (just to spice things up)
