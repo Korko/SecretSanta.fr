@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\DrawEncryptedString;
+use App\Collections\ParticipantsCollection;
 use App\Enums\DrawStatus;
 use App\Events\DrawStatusUpdated;
 use Illuminate\Broadcasting\BroadcastException;
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
@@ -152,7 +155,7 @@ class Draw extends Model implements UrlRoutable
     /**
      * Get all users, including organizer (participating or not)
      */
-    public function users()
+    public function participants(): HasMany
     {
         return $this->hasMany(Participant::class);
     }
@@ -160,19 +163,19 @@ class Draw extends Model implements UrlRoutable
     /**
      * Get all participants (including organizer if participating)
      */
-    public function participants()
+    public function santas(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->participant_organizer ?
-                $this->users->diff([$this->organizer]) :
-                $this->users
+            get: fn (): ParticipantsCollection => $this->participant_organizer ?
+                $this->participants->diff([$this->organizer]) :
+                $this->participants
             );
     }
 
     /**
      * Get organizer
      */
-    public function organizer()
+    public function organizer(): BelongsTo
     {
         return $this->belongsTo(Participant::class);
     }
@@ -180,20 +183,23 @@ class Draw extends Model implements UrlRoutable
     /**
      * Get all participants but the organizer, even if participating
      */
-    protected function participantsNonOrganizer(): Attribute
+    protected function santasNonOrganizer(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->users->diff([$this->organizer])
+            get: fn (): ParticipantsCollection => $this->users->diff([$this->organizer])
         );
     }
 
     protected function expiresAt(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->status === DrawStatus::STARTED ? max(
-                $this->created_at->addMonths(self::MIN_MONTHS_BEFORE_EXPIRATION),
-                $this->updated_at->addMonths(self::MONTHS_BEFORE_EXPIRATION)
-            ) : null
+            get: fn (): ?Carbon => match ($this->status) {
+                DrawStatus::STARTED => max(
+                    $this->created_at->addMonths(self::MIN_MONTHS_BEFORE_EXPIRATION),
+                    $this->updated_at->addMonths(self::MONTHS_BEFORE_EXPIRATION)
+                ),
+                default => null,
+            }
         );
     }
 
@@ -207,18 +213,18 @@ class Draw extends Model implements UrlRoutable
     protected function isExpired(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->expired_at?->isPast() ?: false
+            get: fn (): bool => $this->expired_at?->isPast() ?: false
         );
     }
 
     protected function isFinished(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->finished_at?->isPast() ?: false
+            get: fn (): bool => $this->finished_at?->isPast() ?: false
         );
     }
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'ulid';
     }

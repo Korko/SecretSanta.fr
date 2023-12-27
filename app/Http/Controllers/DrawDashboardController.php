@@ -42,7 +42,7 @@ class DrawDashboardController extends Controller
         $draw->title = $validated['title'];
         $draw->save();
 
-        $draw->participantsNonOrganizer->each(function (Participant $participant) use ($draw) {
+        $draw->santasNonOrganizer->each(function (Participant $participant) use ($draw) {
             $participant->notify(new DrawTitleChanged($draw));
         });
 
@@ -63,7 +63,7 @@ class DrawDashboardController extends Controller
                 // apart from themselves if they submit the same name
                 function (string $attribute, mixed $value, Closure $fail) use ($draw) {
                     $otherNames = $draw
-                        ->participantsNonOrganizer
+                        ->santasNonOrganizer
                         ->pluck('name');
 
                     if($otherNames->contains($value)) {
@@ -76,7 +76,7 @@ class DrawDashboardController extends Controller
         $draw->organizer->name = $validated['name'];
         $draw->organizer->save();
 
-        $draw->participantsNonOrganizer->each(function (Participant $participant) use ($draw) {
+        $draw->santasNonOrganizer->each(function (Participant $participant) use ($draw) {
             $participant->notify(new OrganizerNameChanged($draw));
         });
 
@@ -167,9 +167,8 @@ class DrawDashboardController extends Controller
                 // TODO: Non participant organizer should not have the same name as an actual participant
                 function (string $attribute, mixed $value, Closure $fail) use ($draw, $participant) {
                     $otherNames = $draw
-                        ->participants
-                        ->pluck('name')
-                        ->except($participant->draw->organizer->name);
+                        ->santasNonOrganizer
+                        ->pluck('name');
 
                     if($otherNames->contains($value)) {
                         $fail('validation.custom.participant.name.not-unique');

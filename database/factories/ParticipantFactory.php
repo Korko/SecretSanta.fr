@@ -36,14 +36,14 @@ class ParticipantFactory extends Factory
     public function bijective(): static
     {
         return $this->afterCreating(function (Participant $participant, Draw $draw) {
-            if ($draw->participants->count() % 2 !== 0) {
+            if ($draw->santas->count() % 2 !== 0) {
                 throw new Exception('Cannot make bijective participants with odd number of them');
             }
 
             $participant->exclusions()->attach(
-                $draw->participants
+                $draw->santas
                     ->pluck('id')
-                    ->filter(function ($id) use ($participant) {
+                    ->filter(function (int $id) use ($participant) {
                         return floor(($id - 1) / 2) !== floor(($participant->id - 1) / 2);
                     })
             );

@@ -10,44 +10,44 @@ use Solver;
 
 class DrawHandler
 {
-    public static function solve(Draw $draw, ?ParticipantsCollection $participants = null)
+    public static function solve(Draw $draw, ?ParticipantsCollection $santas = null)
     {
-        $participants = ($participants ?: $draw->participants)
+        $santas = ($santas ?: $draw->santas)
             ->loadMissing(['exclusions'])
             ->mapWithKeys(function ($participant) use ($draw) {
                 return [$participant->ulid => $participant->setRelation('draw', $draw)];
             });
 
-        $hat = self::getHat($participants);
+        $hat = self::getHat($santas);
 
         foreach ($hat as $santaIdx => $targetIdx) {
-            $participants[$santaIdx]->target()->associate($participants[$targetIdx]);
-            $participants[$santaIdx]->save();
+            $santas[$santaIdx]->target()->associate($santas[$targetIdx]);
+            $santas[$santaIdx]->save();
         }
 
         $draw->save();
 
-        $participants->each(function ($participant) {
+        $santas->each(function ($participant) {
             $participant->notify(new TargetDrawn);
         });
     }
 
-    public static function getHat(ParticipantsCollection $participants): array
+    public static function getHat(ParticipantsCollection $santas): array
     {
         return Solver::one(
-            $participants->pluck('ulid', 'ulid'),
-            $participants
-                ->pluck('exclusions.*.ulid', 'ulid')
+            $santas->pluck('id', 'id'),
+            $santas
+                ->pluck('exclusions.*.id', 'id')
                 // Remove empty exclusions lists (or lists with only empty values)
                 ->map(fn ($exclusion) => array_filter((array) $exclusion))
                 ->filter(fn ($exclusion) => ! empty($exclusion))
         );
     }
 
-    public static function canRedraw(ParticipantsCollection $participants): bool
+    public static function canRedraw(ParticipantsCollection $santas): bool
     {
         try {
-            self::getHat($participants->appendTargetToExclusions());
+            self::getHat($santas->appendTargetToExclusions());
 
             return true;
         } catch (SolverException) {
