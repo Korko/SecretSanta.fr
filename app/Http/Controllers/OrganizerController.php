@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\ChangeParticipantEmail;
 use App\Actions\ChangeParticipantName;
 use App\Actions\GenerateDrawCsv;
+use App\Actions\SendTargetToParticipant;
 use App\Actions\WithdrawParticipant;
 use App\Models\Draw;
 use App\Models\Participant;

@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Facades\DrawCrypt;
-use App\Http\Requests\FixOrganizerRequest;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use Arr;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Notification;
 use Symfony\Component\HttpFoundation\Response;
 use URL;
 use URLParser;
