@@ -25,6 +25,7 @@ class ParticipantFactory extends Factory
             'draw_id' => Draw::factory(),
             'name' => $this->faker->name(),
             'email' => $this->faker->email(),
+            'email_verified_at' => null,
             'target_id' => null,
         ];
     }
