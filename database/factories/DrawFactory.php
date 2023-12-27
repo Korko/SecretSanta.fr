@@ -26,9 +26,27 @@ class DrawFactory extends Factory
             'ulid' => Str::ulid(),
             'title' => $this->faker->sentence(),
             'description' => $this->faker->text(),
-            'organizer_id' => Participant::factory(),
+            'organizer_id' => null,// Don't call ParticipantFactory here or it will loop
             'participant_organizer' => true,
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Draw $draw) {
+            if ($draw->participant_organizer && $draw->participants()->count() > 0) {
+                $draw->update([
+                    'organizer_id' => $draw->participants()->first()->id,
+                ]);
+            } else {
+                $draw->update([
+                    'organizer_id' => Participant::factory(),
+                ]);
+            }
+        });
     }
 
     /**
