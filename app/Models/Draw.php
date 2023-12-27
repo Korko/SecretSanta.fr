@@ -120,6 +120,18 @@ class Draw extends Model implements UrlRoutable
         'participant_organizer' => true,
     ];
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'expires_at',
+        'deletes_at',
+        'is_expired',
+        'is_finished',
+    ];
+
     protected static function booted(): void
     {
         static::updated(function (Draw $draw) {
