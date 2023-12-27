@@ -24,7 +24,6 @@ class DrawStatusUpdated implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'id' => $this->draw->ulid,
             'status' => $this->draw->status,
             'updated_at' => $this->draw->updated_at,
         ];

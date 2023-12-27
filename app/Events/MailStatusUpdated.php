@@ -25,7 +25,7 @@ class MailStatusUpdated implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'id' => $this->mail->ulid,
+            'ulid' => $this->mail->ulid,
             'delivery_status' => $this->mail->delivery_status,
             'updated_at' => $this->mail->updated_at,
         ];

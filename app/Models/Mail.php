@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\MailStatusUpdated;
 use Illuminate\Broadcasting\BroadcastException;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Str;
 
@@ -36,7 +37,7 @@ use Str;
  */
 class Mail extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUlids;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -91,10 +92,6 @@ class Mail extends Model
     public static function boot()
     {
         parent::boot();
-
-        static::creating(function (Mail $mail) {
-            $mail->ulid = Str::ulid();
-        });
 
         static::updated(function (Mail $mail) {
             if ($mail->wasChanged('delivery_status')) {

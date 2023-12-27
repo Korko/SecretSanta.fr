@@ -19,9 +19,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DearSantaController extends Controller
 {
-    protected $dearSantaPublicFields = ['id', 'mail_body', 'mail', 'created_at', 'updated_at'];
+    protected $dearSantaPublicFields = ['ulid', 'mail_body', 'mail', 'created_at', 'updated_at'];
 
-    protected $dearTargetPublicFields = ['id', 'mail_type', 'mail_body', 'mail', 'created_at', 'updated_at'];
+    protected $dearTargetPublicFields = ['ulid', 'mail_type', 'mail_body', 'mail', 'created_at', 'updated_at'];
 
     public function index(Participant $participant): Response
     {

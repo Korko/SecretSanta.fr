@@ -8,7 +8,6 @@ use App\Models\Draw;
 use App\Notifications\VerifyPendingEmail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Str;
 
 class JoinDrawController extends Controller
 {
@@ -49,7 +48,6 @@ class JoinDrawController extends Controller
             $participant = $draw
                 ->participants()
                 ->create([
-                    'ulid' => Str::ulid(),
                     'name' => $request->safe()->name,
                 ]);
         }

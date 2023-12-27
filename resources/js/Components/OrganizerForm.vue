@@ -49,7 +49,7 @@
         created() {
             Echo.channel('draw.'+this.draw.hash)
                 .listen('.mail.update', data => {
-                    var key = Object.keys(this.participants).find(key => this.participants[key].mail.id === data.id);
+                    var key = Object.keys(this.participants).find(key => this.participants[key].mail.ulid === data.ulid);
 
                     if(key) {
                         this.participants[key].mail.delivery_status = data.delivery_status;

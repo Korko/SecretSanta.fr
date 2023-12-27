@@ -4,9 +4,11 @@ namespace App\Console\Commands;
 
 use App\Actions\ChangeParticipantEmail;
 use App\Actions\SendTargetToParticipant;
+use App\Models\Participant;
 use App\Traits\Console\ListsDraw;
 use App\Traits\ParsesUrl;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 class FixParticipant extends Command
 {
@@ -17,7 +19,7 @@ class FixParticipant extends Command
      *
      * @var string
      */
-    protected $signature = 'secretsanta:fix-participant {url : The URL received by one of the participants to write to their santa} {id? : The participant id} {email? : The correct email of the participant}';
+    protected $signature = 'secretsanta:fix-participant {url : The URL received by one of the participants to write to their santa} {id? : The participant id/ulid} {email? : The correct email of the participant}';
 
     /**
      * The console command description.
@@ -33,8 +35,8 @@ class FixParticipant extends Command
     {
         $draw = $this->getDrawFromURL($this->argument('url'));
 
-        if ($this->argument('id')) {
-            $participant = $draw->participants->find($this->argument('id'));
+        if ($id = $this->argument('id')) {
+            $participant = $draw->participants()->where(Str::isUlid($id) ? 'ulid' : 'id', $id)->firstOrFail();
         } else {
             $this->displayDraw($draw);
 
@@ -44,7 +46,7 @@ class FixParticipant extends Command
 
         if ($this->argument('email')) {
             app(ChangeParticipantEmail::class)->change($participant, $this->argument('email'));
-        } else {
+        } else if ($participant->target instanceof Participant) {
             app(SendTargetToParticipant::class)->send($participant);
         }
 

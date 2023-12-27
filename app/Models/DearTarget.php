@@ -71,6 +71,7 @@ class DearTarget extends Model
         static::created(function ($dearTarget) {
             $mail = new Mail();
             $mail->draw()->associate($dearTarget->draw);
+
             $dearTarget->mail()->save($mail);
         });
     }

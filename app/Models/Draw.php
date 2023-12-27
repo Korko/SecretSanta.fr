@@ -10,6 +10,7 @@ use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -54,7 +55,7 @@ use Illuminate\Support\Str;
  */
 class Draw extends Model implements UrlRoutable
 {
-    use HasFactory, MassPrunable;
+    use HasFactory, MassPrunable, HasUlids;
 
     // Keep a draw at least this amount of months after the creation, update or not
     public const MIN_MONTHS_BEFORE_EXPIRATION = 6;
@@ -112,10 +113,6 @@ class Draw extends Model implements UrlRoutable
 
     protected static function booted(): void
     {
-        static::creating(function (Draw $draw) {
-            $draw->ulid = (string) Str::ulid();
-        });
-
         static::updated(function (Draw $draw) {
             if ($draw->wasChanged('status')) {
                 try {
@@ -125,6 +122,16 @@ class Draw extends Model implements UrlRoutable
                 }
             }
         });
+    }
+
+    /**
+     * Get the columns that should receive a unique identifier.
+     *
+     * @return array<int, string>
+     */
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
     }
 
     public function prunable(): Builder

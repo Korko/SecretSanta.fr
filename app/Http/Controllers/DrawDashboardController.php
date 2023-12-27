@@ -13,7 +13,6 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class DrawDashboardController extends Controller
@@ -146,7 +145,6 @@ class DrawDashboardController extends Controller
     public function addParticipant(Draw $draw, AddNewParticipantRequest $request): JsonResponse
     {
         $draw->participants()->create([
-            'ulid' => Str::ulid(),
             'name' => $request->safe()->name,
             'email' => $request->safe()->email ?? null,
         ]);

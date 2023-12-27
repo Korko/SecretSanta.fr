@@ -6,6 +6,7 @@ use App\Casts\DrawEncryptedString;
 use App\Collections\ParticipantsCollection;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
@@ -53,7 +54,7 @@ use Illuminate\Support\Str;
  */
 class Participant extends Model implements UrlRoutable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasUlids;
 
     /**
      * The attributes that aren't mass assignable.
@@ -67,6 +68,7 @@ class Participant extends Model implements UrlRoutable
      *
      * @var array
      */
+
     protected $hidden = [
         'id'
     ];
@@ -104,9 +106,18 @@ class Participant extends Model implements UrlRoutable
             $mail = new Mail;
             $mail->draw()->associate($participant->draw);
 
-            $participant->ulid = (string) Str::ulid();
             $participant->mail()->save($mail);
         });
+    }
+
+    /**
+     * Get the columns that should receive a unique identifier.
+     *
+     * @return array<int, string>
+     */
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
     }
 
     public function draw()

@@ -6,7 +6,6 @@ use App\Http\Requests\RandomFormRequest;
 use App\Models\Draw;
 use App\Notifications\PendingDrawConfirm;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -30,7 +29,6 @@ class RandomFormController extends Controller
         $draw->save();
 
         $organizer = $draw->participants()->create([
-            'ulid' => Str::ulid(),
             'name' => $safe['organizer-name'],
             'email' => $safe['organizer-email'],
         ]);
@@ -38,7 +36,6 @@ class RandomFormController extends Controller
 
         foreach(($safe->participants ?? []) as $participant) {
             $draw->participants()->create([
-                'ulid' => Str::ulid(),
                 'name' => $participant['name'],
                 'email' => $participant['email'] ?? null,
             ]);
@@ -53,6 +50,7 @@ class RandomFormController extends Controller
                 ->size(256)
                 ->generate($link),
             'message' => trans('message.pending'),
+            'draw' => $draw->uid
         ]);
     }
 }
