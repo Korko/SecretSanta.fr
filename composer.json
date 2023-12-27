@@ -10,7 +10,6 @@
     "require": {
         "php": "^8.1",
         "beyondcode/laravel-websockets": "^1.14",
-        "doctrine/dbal": "^3.5",
         "elhebert/laravel-sri": "dev-master",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6",
