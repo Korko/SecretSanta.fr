@@ -170,9 +170,11 @@ test('an organizer receives in the original notification the link to confirm the
     ])->assertSuccessful();
 
     Notification::assertSentTo(Draw::first()->organizer, PendingDrawConfirm::class, function ($notification, $channels, $notifiable) {
+        $draw = Draw::first();
+
         return
             $notification->toMail($notifiable)->assertSeeInHtml(
-                URL::hashedSignedRoute('draw.confirmOrganizerEmail', ['draw' => Draw::first()])
+                URL::hashedSignedRoute('draw.participant.confirmEmail', ['draw' => $draw, 'participant' => $draw->organizer])
             );
     });
 });

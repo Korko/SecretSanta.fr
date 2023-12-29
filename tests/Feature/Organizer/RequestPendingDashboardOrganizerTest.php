@@ -14,7 +14,7 @@ test('an organizer can confirm their email address', function () {
     expect($draw->organizer->email_verified_at)
         ->toBeNull();
 
-    test()->get(URL::hashedSignedRoute('draw.confirmOrganizerEmail', ['draw' => $draw]))
+    test()->get(URL::hashedSignedRoute('draw.participant.confirmEmail', ['draw' => $draw, 'participant' => $draw->organizer]))
         ->assertSuccessful();
 
     expect($draw->organizer->fresh()->email_verified_at)

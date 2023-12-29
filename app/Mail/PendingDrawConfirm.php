@@ -40,7 +40,7 @@ class PendingDrawConfirm extends Mailable
             markdown: 'emails.pending_draw',
             with: [
                 'name' => $this->draw->organizer->name,
-                'validationLink' => URL::hashedSignedRoute('draw.confirmOrganizerEmail', ['draw' => $this->draw]),
+                'validationLink' => URL::hashedSignedRoute('draw.participant.confirmEmail', ['draw' => $this->draw, 'participant' => $this->draw->organizer]),
             ]
         );
     }

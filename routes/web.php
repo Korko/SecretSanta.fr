@@ -33,7 +33,6 @@ Route::get('/join/{draw:ulid}', [JoinDrawController::class, 'display'])->name('p
 Route::post('/join/{draw:ulid}', [JoinDrawController::class, 'handle'])->name('pending.join.handle');
 
 Route::get('/me/{participant:ulid}', [DrawDashboardController::class, 'index'])->name('draw.index');
-Route::get('/me/{participant:ulid}/confirm', [DrawDashboardController::class, 'confirmOrganizerEmail'])->middleware('signed')->name('draw.confirmOrganizerEmail');
 Route::middleware('decrypt.iv:draw,title')
     ->group(function () {
         Route::post('/draw/{draw:ulid}/participate', [DrawDashboardController::class, 'participate'])->name('draw.participate');
@@ -54,6 +53,8 @@ Route::middleware('decrypt.iv:draw,title')
             ->group(function () {
                 Route::post('/draw/{draw:ulid}/participants/{participant:ulid}/name', [DrawDashboardController::class, 'changeParticipantName'])->name('draw.participant.updateName');
                 Route::post('/draw/{draw:ulid}/participants/{participant:ulid}/email', [DrawDashboardController::class, 'changeParticipantEmail'])->name('draw.participant.changeEmail');
+
+                Route::get('/draw/{draw:ulid}/participants/{participant:ulid}/confirm', [DrawDashboardController::class, 'confirmParticipantEmail'])->middleware('signed')->name('draw.participant.confirmEmail');
 
                 Route::delete('/draw/{draw:ulid}/participants/{participant:ulid}', [DrawDashboardController::class, 'removeParticipant'])->name('draw.participant.remove');
             });
