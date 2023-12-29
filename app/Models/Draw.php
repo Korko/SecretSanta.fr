@@ -103,6 +103,7 @@ class Draw extends Model implements UrlRoutable
         'finished_at' => 'datetime',
         'title' => DrawEncryptedString::class,
         'description' => DrawEncryptedString::class,
+        'participant_organizer' => 'boolean',
     ];
 
     /**
