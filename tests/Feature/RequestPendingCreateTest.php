@@ -48,7 +48,7 @@ test('an organizer can specify a list of participant names', function () {
 
     // Ensure we have a new draw in database with corresponding participants
     expect(Draw::class)->toHaveCount(1);
-    expect(Participant::class)->toHaveCount(3);
+    expect(Participant::class)->toHaveCount(4);
 });
 
 test('an organizer cannot specify a list of participant names containing their own name', function () {

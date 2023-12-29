@@ -194,14 +194,15 @@ test('an organizer can prefill some participant names', function () {
     $draw = Draw::factory()
         ->createOne();
 
-    expect(Participant::class)->toHaveCount(0);
+    // Only 1 participant yet: the organizer
+    expect(Participant::class)->toHaveCount(1);
 
     ajaxPost(URL::signedRoute('draw.participant.add', ['draw' => $draw]), [
         'name' => fake()->name()
     ])
         ->assertSuccessful();
 
-    expect(Participant::class)->toHaveCount(1);
+    expect(Participant::class)->toHaveCount(2);
 });
 
 test('when an organizer prefill some participant names, it updates the draw update date', function () {
@@ -255,6 +256,8 @@ test('when an organizer removes some participant names, it updates the draw upda
             fake()->name(),
         ])
         ->createOne();
+ 
+    expect(Participant::class)->toHaveCount(2);
 
     expect($draw->updated_at)
         ->toEqual($draw->created_at);
@@ -277,7 +280,8 @@ test('an organizer can prefill some participant names and emails', function () {
     $draw = Draw::factory()
         ->createOne();
 
-    expect(Participant::class)->toHaveCount(0);
+    // Only 1 participant yet: the organizer
+    expect(Participant::class)->toHaveCount(1);
 
     ajaxPost(URL::signedRoute('draw.participant.add', ['draw' => $draw]), [
         'name' => fake()->name(),
@@ -285,7 +289,7 @@ test('an organizer can prefill some participant names and emails', function () {
     ])
         ->assertSuccessful();
 
-    expect(Participant::class)->toHaveCount(1);
+    expect(Participant::class)->toHaveCount(2);
     expect($draw->santasNonOrganizer->first()->email)
         ->not()
         ->toBeNull();
