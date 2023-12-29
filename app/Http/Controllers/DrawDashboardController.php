@@ -127,14 +127,8 @@ class DrawDashboardController extends Controller
     {
         throw_unless($draw->participant_organizer, new Exception('Organizer is not a participant'));
 
-        $draw
-            ->organizer
-            ->delete();
-
-        $draw
-            ->organizer()
-            ->dissociate()
-            ->save();
+        $draw->participant_organizer = false;
+        $draw->save();
 
         // TODO
         return response()->json([
