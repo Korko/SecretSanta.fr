@@ -44,7 +44,7 @@ class DrawFactory extends Factory
                 ]);
             } else {
                 $draw->update([
-                    'organizer_id' => Participant::factory(),
+                    'organizer_id' => Participant::factory()->for($draw)->create()->id,
                 ]);
             }
         });
@@ -64,23 +64,24 @@ class DrawFactory extends Factory
 
     public function withOrganizerEmailVerified(): static
     {
-        return $this->state(function () {
-            return [
-                'organizer_email_verified_at' => Carbon::now(),
-            ];
+        return $this->afterCreating(function (Draw $draw) {
+            $draw->organizer->update([
+                'email_verified_at' => Carbon::now(),
+            ]);
         });
     }
 
-    public function withParticipants(string|array $names): static
+    public function withParticipants(string|array $participants): static
     {
         return $this->has(
             Participant::factory()
-                ->forEachSequence(...array_map(function ($name) {
+                ->forEachSequence(...array_map(function ($participant) {
                     return [
-                        'name' => $name,
-                        'email' => null,
+                        'name' => $participant['name'] ?? $participant,
+                        'email' => $participant['email'] ?? null,
+                        //'exceptions' => $participant['exclusions'] ?? [],
                     ];
-                }, (array) $names)),
+                }, (array) $participants)),
             'participants'
         );
     }
