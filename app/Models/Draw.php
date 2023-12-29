@@ -216,7 +216,7 @@ class Draw extends Model implements UrlRoutable
     protected function santasNonOrganizer(): Attribute
     {
         return Attribute::make(
-            get: fn (): ParticipantsCollection => $this->users->diff([$this->organizer])
+            get: fn (): ParticipantsCollection => $this->participants->diff([$this->organizer])
         );
     }
 

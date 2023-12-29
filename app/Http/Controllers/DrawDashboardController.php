@@ -211,16 +211,6 @@ class DrawDashboardController extends Controller
         $participant->email_verified_at = Carbon::now();
         $participant->save();
 
-        $user = $participant->user;
-        if ($user === null) {
-            $user = $participant->user()->create();
-        }
-
-        $user->emails()->firstOrCreate([
-            'email' => $participant->email,
-            'email_verified_at' => Carbon::now(),
-        ]);
-
         // TODO
         return response('test');
     }
