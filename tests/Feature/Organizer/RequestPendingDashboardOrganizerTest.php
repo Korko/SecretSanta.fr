@@ -158,6 +158,7 @@ test('an organizer can participate to a pending draw', function () {
     Notification::fake();
 
     $draw = Draw::factory()
+        ->withNonParticipantOrganizer()
         ->createOne();
 
     expect($draw->participant_organizer)
