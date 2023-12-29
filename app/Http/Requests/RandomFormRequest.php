@@ -34,7 +34,7 @@ class RandomFormRequest extends Request
             'organizer.email' => ['required', 'email', 'max:255'],
 
             'participants' => ['sometimes', 'array'],
-            'participants.*.name' => ['required', 'string', 'max:55', 'distinct:ignore_case', 'different:organizer-name'],
+            'participants.*.name' => ['required', 'string', 'max:55', 'distinct:ignore_case', 'different:organizer.name'],
             'participants.*.email' => ['sometimes', 'string', 'max:255'],
 
             'mode' => ['sometimes', new Enum(AppMode::class)],
@@ -48,9 +48,9 @@ class RandomFormRequest extends Request
     {
         return [
             'title.required' => Lang::get('validation.custom.randomform.title.required'),
-            'organizer-name.required' => Lang::get('validation.custom.randomform.organizer.name.required'),
-            'organizer-email.required' => Lang::get('validation.custom.randomform.organizer.email.required'),
-            'organizer-email.email' => Lang::get('validation.custom.randomform.organizer.email.email'),
+            'organizer.name.required' => Lang::get('validation.custom.randomform.organizer.name.required'),
+            'organizer.email.required' => Lang::get('validation.custom.randomform.organizer.email.required'),
+            'organizer.email.email' => Lang::get('validation.custom.randomform.organizer.email.email'),
             'participants.*.name.required' => Lang::get('validation.custom.randomform.participant.name.required'),
             'participants.*.name.distinct' => Lang::get('validation.custom.randomform.participant.name.distinct'),
         ];

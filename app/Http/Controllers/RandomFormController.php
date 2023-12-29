@@ -29,10 +29,11 @@ class RandomFormController extends Controller
         $draw->save();
 
         $organizer = $draw->participants()->create([
-            'name' => $safe['organizer-name'],
-            'email' => $safe['organizer-email'],
+            'name' => $safe['organizer']['name'],
+            'email' => $safe['organizer']['email'],
         ]);
         $draw->organizer()->associate($organizer);
+        $draw->save();
 
         foreach(($safe->participants ?? []) as $participant) {
             $draw->participants()->create([

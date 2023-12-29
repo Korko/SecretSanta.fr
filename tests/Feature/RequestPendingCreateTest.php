@@ -14,8 +14,10 @@ test('a visitor can create a new pending draw', function () {
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
         'budget' => fake()->bothify(),
-        'organizer-name' => fake()->name(),
-        'organizer-email' => fake()->email(),
+        'organizer' => [
+            'name' => fake()->name(),
+            'email' => fake()->email(),
+        ],
     ])->assertJsonStructure(['message', 'link', 'qrcode']);
 
     // Ensure we have a new draw in database
@@ -33,8 +35,10 @@ test('an organizer can specify a list of participant names', function () {
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
         'budget' => fake()->bothify(),
-        'organizer-name' => fake()->name(),
-        'organizer-email' => fake()->email(),
+        'organizer' => [
+            'name' => fake()->name(),
+            'email' => fake()->email(),
+        ],
         'participants' => [
             ['name' => fake()->name()],
             ['name' => fake()->name()],
@@ -60,8 +64,10 @@ test('an organizer cannot specify a list of participant names containing their o
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
         'budget' => fake()->bothify(),
-        'organizer-name' => $organizer,
-        'organizer-email' => fake()->email(),
+        'organizer' => [
+            'name' => $organizer,
+            'email' => fake()->email(),
+        ],
         'participants' => [
             ['name' => fake()->name()],
             ['name' => $organizer],
@@ -89,8 +95,10 @@ test('an organizer cannot specify a list of participant names with duplicates', 
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
         'budget' => fake()->bothify(),
-        'organizer-name' => fake()->name(),
-        'organizer-email' => fake()->email(),
+        'organizer' => [
+            'name' => fake()->name(),
+            'email' => fake()->email(),
+        ],
         'participants' => [
             ['name' => $participantName],
             ['name' => $participantName],
@@ -117,8 +125,10 @@ test('an organizer can also be a participant', function () {
         'participant-organizer' => true,
         'title' => fake()->sentence(),
         'budget' => fake()->bothify(),
-        'organizer-name' => fake()->name(),
-        'organizer-email' => fake()->email(),
+        'organizer' => [
+            'name' => fake()->name(),
+            'email' => fake()->email(),
+        ],
         'participants' => [
             ['name' => fake()->name()],
             ['name' => fake()->name()],
@@ -137,8 +147,10 @@ test('an organizer is informed they must confirm their email address to process 
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
         'budget' => fake()->bothify(),
-        'organizer-name' => fake()->name(),
-        'organizer-email' => fake()->email(),
+        'organizer' => [
+            'name' => fake()->name(),
+            'email' => fake()->email(),
+        ],
     ])->assertSuccessful();
 
     Notification::assertSentTo(Draw::first()->organizer, PendingDrawConfirm::class);
@@ -151,8 +163,10 @@ test('an organizer receives in the original notification the link to confirm the
     ajaxPost(URL::route('form.process'), [
         'title' => fake()->sentence(),
         'budget' => fake()->bothify(),
-        'organizer-name' => fake()->name(),
-        'organizer-email' => fake()->email(),
+        'organizer' => [
+            'name' => fake()->name(),
+            'email' => fake()->email(),
+        ],
     ])->assertSuccessful();
 
     Notification::assertSentTo(Draw::first()->organizer, PendingDrawConfirm::class, function ($notification, $channels, $notifiable) {
