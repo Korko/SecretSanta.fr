@@ -212,8 +212,7 @@ test('when an organizer prefill some participant names, it updates the draw upda
     $draw = Draw::factory()
         ->createOne();
 
-    expect($draw->updated_at)
-        ->toEqual($draw->created_at);
+    $updatedAtBefore = $draw->updated_at;
 
     $this->travel(1)->hour();
 
@@ -224,7 +223,7 @@ test('when an organizer prefill some participant names, it updates the draw upda
 
     expect($draw->fresh()->updated_at)
         ->not()
-        ->toEqual($draw->created_at);
+        ->toEqual($updatedAtBefore);
 });
 
 test('an organizer can remove some prefilled participant names', function () {
@@ -257,11 +256,10 @@ test('when an organizer removes some participant names, it updates the draw upda
             fake()->name(),
         ])
         ->createOne();
- 
+
     expect(Participant::class)->toHaveCount(2);
 
-    expect($draw->updated_at)
-        ->toEqual($draw->created_at);
+    $updatedAtBefore = $draw->updated_at;
 
     $participant = $draw->santasNonOrganizer->first();
 
@@ -272,7 +270,7 @@ test('when an organizer removes some participant names, it updates the draw upda
 
     expect($draw->fresh()->updated_at)
         ->not()
-        ->toEqual($draw->created_at);
+        ->toEqual($updatedAtBefore);
 });
 
 test('an organizer can prefill some participant names and emails', function () {
