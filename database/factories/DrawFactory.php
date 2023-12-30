@@ -7,8 +7,6 @@ use App\Models\Draw;
 use App\Models\Participant;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\Sequence;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 /**
@@ -38,14 +36,15 @@ class DrawFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (Draw $draw) {
-            if ($draw->participant_organizer && $draw->participants()->count() > 0) {
-                $draw->update([
-                    'organizer_id' => $draw->participants()->first()->id,
-                ]);
-            } else {
-                $draw->update([
-                    'organizer_id' => Participant::factory()->for($draw)->create()->id,
-                ]);
+            if(is_null($draw->organizer)) {
+                $draw
+                    ->organizer()
+                    ->associate(
+                        Participant::factory()
+                            ->for($draw)
+                            ->create()
+                    )
+                    ->save();
             }
         });
     }
@@ -69,6 +68,18 @@ class DrawFactory extends Factory
                 'email_verified_at' => Carbon::now(),
             ]);
         });
+    }
+
+    public function withOrganizer(string|array $name, ?string $email = null, ?array $exclusions = []): static
+    {
+        return $this->has(
+            Participant::factory([
+                'name' => $name['name'] ?? $name,
+                'email' => $name['email'] ?? $email,
+                //'exceptions' => $name['exclusions'] ?? $exclusions,
+            ]),
+            'organizer'
+        );
     }
 
     public function withParticipants(string|array $participants): static
