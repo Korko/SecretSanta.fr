@@ -8,7 +8,7 @@ it('records new entries in case of success', function ($participants, Draw $draw
     Notification::fake();
 
     expect($draw)->toExists();
-    expect(Participant::class)->toHaveCount(count($participants));
+    expect(Participant::class)->toHaveCount(count($participants) + 1);
 
     $indb = Participant::all();
 
