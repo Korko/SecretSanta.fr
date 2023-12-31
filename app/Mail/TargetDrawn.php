@@ -30,10 +30,10 @@ class TargetDrawn extends TrackedMailable
     {
         $title = $this->parseKeywords(Lang::get('SecretSanta #:draw - :subject', [
             'draw' => $this->santa->draw->ulid,
-            'subject' => $this->santa->draw->mail_title,
+            'subject' => $this->santa->draw->title,
         ]), $this->santa);
 
-        $content = $this->parseKeywords($this->santa->draw->mail_body, $this->santa);
+        $content = $this->parseKeywords($this->santa->draw->description, $this->santa);
 
         return $this
             ->subject($title)
