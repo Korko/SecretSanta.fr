@@ -24,25 +24,25 @@ class ExpiredDrawSeeder extends Seeder
             ->create();
 
         // Attach a random exclusion for each participant (just to spice things up)
-        $draw->participants->each(function (Participant $participant) use ($draw) {
+        $draw->santas->each(function (Participant $participant) use ($draw) {
             $participant
                 ->exclusions()
-                ->attach($draw->participants->except($participant->id)->random(), [
+                ->attach($draw->santas->except($participant->id)->random(), [
                     'draw_id' => $draw->id,
                 ]);
         });
 
-        DrawHandler::solve($draw, $draw->participants);
+        DrawHandler::solve($draw);
 
         // Fake some communications
         for ($i = 0; $i < 10; $i++) {
-            $target = $draw->participants->random();
+            $target = $draw->santas->random();
             DearSanta::factory()
                 ->for($draw, 'draw')
                 ->for($target, 'sender')
                 ->create();
 
-            $santa = $draw->participants->random();
+            $santa = $draw->santas->random();
             DearTarget::factory()
                 ->for($draw, 'draw')
                 ->for($santa, 'sender')

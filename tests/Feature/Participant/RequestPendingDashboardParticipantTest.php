@@ -23,7 +23,7 @@ test('a visitor can join a pending draw', function () {
 
     // Check that participant is now registered and status changed
     $participant = $draw
-        ->santas()
+        ->santas
         ->first();
 
     // Cannot make a where condition on name or email as they are crypted on database

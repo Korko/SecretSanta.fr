@@ -24,8 +24,8 @@ it('saves the correct target', function ($participants, $targets) {
     $draw = createServiceDraw($participants);
 
     foreach ($participants as $idx => $participant) {
-        expect($draw->participants[$idx]->target->name)->toBe($participants[$targets[$idx]]['name']);
-        expect($draw->participants[$idx]->target->santa->name)->toBe($participant['name']);
+        expect($draw->santas[$idx]->target->name)->toBe($participants[$targets[$idx]]['name']);
+        expect($draw->santas[$idx]->target->santa->name)->toBe($participant['name']);
     }
 })->with('unique participants list');
 
@@ -34,7 +34,7 @@ it('send to each participant a link to write to their santa', function ($partici
 
     $draw = createServiceDraw($participants);
 
-    foreach ($draw->participants as $participant) {
+    foreach ($draw->santas as $participant) {
         Notification::assertSentTo($participant, function (TargetDrawnNotification $notification) use ($participant) {
             return $notification->toMail($participant)->assertSeeInHtml(
                 URL::hashedRoute('participant.index', ['participant' => $participant])

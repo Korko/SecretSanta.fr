@@ -24,11 +24,11 @@ class DatabaseSeeder extends Seeder
             ->create();
 
         // Attach a random exclusion for each participant (just to spice things up)
-        $draw->participants->each(function ($participant) use ($draw) {
-            $participant->exclusions()->attach($draw->participants->except($participant->id)->random());
+        $draw->santas->each(function ($participant) use ($draw) {
+            $participant->exclusions()->attach($draw->santas->except($participant->id)->random());
         });
 
-        DrawHandler::solve($draw, $draw->participants);
+        DrawHandler::solve($draw);
 
         $this->command->line("Organizer panel: ".URL::hashedRoute('participant.index', ['participant' => $draw->organizer]));
     }
