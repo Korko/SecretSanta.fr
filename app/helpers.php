@@ -1,5 +1,19 @@
 <?php
 
+if (! function_exists('hashedRoute')) {
+    function hashedRoute(string $name, mixed $parameters = [], DateTimeInterface|DateInterval|int|null $expiration = null, bool $absolute = true): string
+    {
+        return app('url')->hashedRoute($name, $parameters, $expiration, $absolute);
+    }
+}
+
+if (! function_exists('signedRoute')) {
+    function signedRoute(string $name, mixed $parameters = [], DateTimeInterface|DateInterval|int|null $expiration = null, bool $absolute = true): string
+    {
+        return app('url')->signedRoute($name, $parameters, $expiration, $absolute);
+    }
+}
+
 if (! function_exists('base64url_encode')) {
     function base64url_encode($s)
     {
