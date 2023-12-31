@@ -18,18 +18,6 @@ class Model extends BaseModel
 {
     public $iv;
 
-    private $transientAttributes = [];
-
-    public function getTransientAttribute($name, $default = null)
-    {
-        return Arr::get($this->transientAttributes, $name, $default);
-    }
-
-    public function setTransientAttribute($name, $value)
-    {
-        $this->transientAttributes[$name] = $value;
-    }
-
     public function __serialize()
     {
         $this->iv = base64_encode(DrawCrypt::getIV());
