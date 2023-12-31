@@ -3,6 +3,7 @@
 use App\Models\Draw;
 use App\Services\DrawFormHandler;
 
+use App\Services\DrawHandler;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Testing\TestResponse;
 use Tests\DuskTestCase;
@@ -99,22 +100,18 @@ function createDraw($participants, $params = [])
     ])
         ->assertJsonStructure(['message']);
 }
-/*
+
 function createServiceDraw($participants, $data = []): Draw
 {
-    $pendingDraw = PendingDraw::factory()
-        ->state(function (array $attributes) use ($participants, $data) {
-            return [
-                'data' => [
-                    'participants' => $participants,
-                ] + $data + $attributes['data'],
-            ];
-        })
-        ->create();
+    $draw = Draw::factory()
+        ->withParticipants($participants)
+        ->create($data);
 
-    return (new DrawFormHandler())->handle($pendingDraw);
+    DrawHandler::solve($draw);
+
+    return $draw;
 }
-*/
+
 /**
  * Laravel TestCase aliases
  */
