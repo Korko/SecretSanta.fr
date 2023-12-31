@@ -49,14 +49,15 @@ class JoinDrawController extends Controller
                 ->participants()
                 ->create([
                     'name' => $request->safe()->name,
+                    'email' => $request->safe()->email
+                ]);
+        } else {
+            $participant
+                ->update([
+                    'email' => $request->safe()->email,
+                    'email_verified_at' => null,
                 ]);
         }
-
-        $participant
-            ->update([
-                'email' => $request->safe()->email,
-                'email_verified_at' => null,
-            ]);
 
         $participant->notify(new VerifyPendingEmail);
 
