@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Str;
+use Metrics;
 
 /**
  * App\Models\Participant
@@ -204,5 +204,14 @@ class Participant extends Model implements UrlRoutable
     public function getRouteKeyName()
     {
         return 'ulid';
+    }
+
+    public function createMetric($name, $value = 1)
+    {
+        return Metrics::create($name, $value)
+            ->setTags([
+                'draw' => $this->draw->ulid,
+                'participant' => $this->ulid
+            ]);
     }
 }
