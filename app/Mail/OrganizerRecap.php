@@ -32,7 +32,7 @@ class OrganizerRecap extends Mailable
                 'name' => $this->draw->organizer->name,
                 'draw' => $this->draw->ulid,
                 'deletionDate' => $this->draw->deletes_at->locale(App::getLocale())->isoFormat('LL'),
-                'panelLink' => URL::hashedSignedRoute('organizer.index', ['draw' => $this->draw]),
+                'panelLink' => URL::hashedRoute('participant.index', ['participant' => $this->draw->organizer]),
             ])
             ->attachData(
                 data: app(GenerateDrawCsv::class)->generateInitial($this->draw),

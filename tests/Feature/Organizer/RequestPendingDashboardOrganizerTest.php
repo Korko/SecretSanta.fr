@@ -14,7 +14,7 @@ test('an organizer can confirm their email address', function () {
     expect($draw->organizer->email_verified_at)
         ->toBeNull();
 
-    test()->get(URL::hashedSignedRoute('draw.participant.confirmEmail', ['draw' => $draw, 'participant' => $draw->organizer]))
+    test()->get(URL::hashedRoute('participant.confirmEmail', ['participant' => $draw->organizer]))
         ->assertSuccessful();
 
     expect($draw->organizer->fresh()->email_verified_at)
@@ -57,7 +57,7 @@ test('an organizer can change their email any time before the pending draw is pr
 
     $newValue = fake()->email();
 
-    ajaxPost(URL::signedRoute('draw.changeOrganizerEmail', ['draw' => $draw]), [
+    ajaxPost(URL::signedRoute('participant.changeEmail', ['participant' => $draw->organizer]), [
         'email' => $newValue
     ])
         ->assertSuccessful();
@@ -73,7 +73,7 @@ test('if an organizer confirm their email address and then changes it again, it 
         ->withOrganizerEmailVerified()
         ->createOne();
 
-    ajaxPost(URL::signedRoute('draw.changeOrganizerEmail', ['draw' => $draw]), [
+    ajaxPost(URL::signedRoute('participant.changeEmail', ['participant' => $draw->organizer]), [
         'email' => fake()->email()
     ])
         ->assertSuccessful();
@@ -90,7 +90,7 @@ test('an organizer can change their name any time before the pending draw is pro
 
     $newValue = fake()->name();
 
-    ajaxPost(URL::signedRoute('draw.changeOrganizerName', ['draw' => $draw]), [
+    ajaxPost(URL::signedRoute('participant.changeName', ['participant' => $draw->organizer]), [
         'name' => $newValue
     ])
         ->assertSuccessful();
@@ -109,7 +109,7 @@ test('an organizer cannot take the name of an already registered participant', f
         ->withParticipants($participantName)
         ->createOne();
 
-    ajaxPost(URL::signedRoute('draw.changeOrganizerName', ['draw' => $draw]), [
+    ajaxPost(URL::signedRoute('participant.changeName', ['participant' => $draw->organizer]), [
         'name' => $participantName
     ])
         ->assertUnprocessable()
@@ -126,7 +126,7 @@ test('changing the organizer name doesn\'t invalidate their email', function () 
         ->withOrganizerEmailVerified()
         ->createOne();
 
-    ajaxPost(URL::signedRoute('draw.changeOrganizerName', ['draw' => $draw]), [
+    ajaxPost(URL::signedRoute('participant.changeName', ['participant' => $draw->organizer]), [
         'name' => fake()->name()
     ])
         ->assertSuccessful();
@@ -145,7 +145,7 @@ test('an organizer can cancel a draw', function () {
     expect($draw->fresh()->status)
         ->toBe(DrawStatus::CREATED);
 
-    ajaxPost(URL::signedRoute('draw.cancel', ['draw' => $draw]), [
+    ajaxPost(URL::signedRoute('draw.cancelDraw', ['draw' => $draw]), [
         'name' => fake()->name()
     ])
         ->assertSuccessful();
@@ -198,7 +198,7 @@ test('an organizer can prefill some participant names', function () {
     // Only 1 participant yet: the organizer
     expect(Participant::class)->toHaveCount(1);
 
-    ajaxPost(URL::signedRoute('draw.participant.add', ['draw' => $draw]), [
+    ajaxPost(URL::signedRoute('draw.addParticipant', ['draw' => $draw]), [
         'name' => fake()->name()
     ])
         ->assertSuccessful();
@@ -216,7 +216,7 @@ test('when an organizer prefill some participant names, it updates the draw upda
 
     $this->travel(1)->hour();
 
-    ajaxPost(URL::signedRoute('draw.participant.add', ['draw' => $draw]), [
+    ajaxPost(URL::signedRoute('draw.addParticipant', ['draw' => $draw]), [
         'name' => fake()->name()
     ])
         ->assertSuccessful();
@@ -241,7 +241,7 @@ test('an organizer can remove some prefilled participant names', function () {
     $participant = $draw->santasNonOrganizer->random();
 
     // Ask to remove one name
-    ajaxDelete(URL::signedRoute('draw.participant.remove', ['draw' => $draw, 'participant' => $participant]))
+    ajaxDelete(URL::signedRoute('draw.removeParticipant', ['draw' => $draw, 'participant' => $participant]))
         ->assertSuccessful();
 
     expect($participant->fresh())
@@ -265,7 +265,7 @@ test('when an organizer removes some participant names, it updates the draw upda
 
     $this->travel(1)->hour();
 
-    ajaxDelete(URL::signedRoute('draw.participant.remove', ['draw' => $draw, 'participant' => $participant]))
+    ajaxDelete(URL::signedRoute('draw.removeParticipant', ['draw' => $draw, 'participant' => $participant]))
         ->assertSuccessful();
 
     expect($draw->fresh()->updated_at)
@@ -282,7 +282,7 @@ test('an organizer can prefill some participant names and emails', function () {
     // Only 1 participant yet: the organizer
     expect(Participant::class)->toHaveCount(1);
 
-    ajaxPost(URL::signedRoute('draw.participant.add', ['draw' => $draw]), [
+    ajaxPost(URL::signedRoute('draw.addParticipant', ['draw' => $draw]), [
         'name' => fake()->name(),
         'email' => fake()->email(),
     ])

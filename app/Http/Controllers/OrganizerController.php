@@ -21,14 +21,7 @@ class OrganizerController extends Controller
 {
     public function index(Draw $draw): Response
     {
-        return response()->inertia('OrganizerPanel', [
-            'routes' => [
-                'fetch' => URL::signedRoute('organizer.fetch', ['draw' => $draw]),
-                'csvInitUrl' => URL::signedRoute('organizer.csvInit', ['draw' => $draw]),
-                'csvFinalUrl' => URL::signedRoute('organizer.csvFinal', ['draw' => $draw]),
-                'deleteUrl' => URL::temporarySignedRoute('organizer.delete', 3600, ['draw' => $draw]),
-            ],
-        ]);
+        return response()->inertia('OrganizerPanel');
     }
 
     /**
@@ -48,17 +41,17 @@ class OrganizerController extends Controller
             'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) use ($draw, $participantFields) {
                 return [
                     $participant->ulid => $participant->only($participantFields) + [
-                        'resendTargetUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.resendTarget', [
-                            'draw' => $draw, 'participant' => $participant,
+                        'resendTargetUrl' => $draw->isFinished ? '' : URL::signedRoute('participant.resendTarget', [
+                            'participant' => $participant,
                         ]),
-                        'changeEmailUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.changeEmail', [
-                            'draw' => $draw, 'participant' => $participant,
+                        'changeEmailUrl' => $draw->isFinished ? '' : URL::signedRoute('participant.changeEmail', [
+                            'participant' => $participant,
                         ]),
-                        'changeNameUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.changeName', [
-                            'draw' => $draw, 'participant' => $participant,
+                        'changeNameUrl' => $draw->isFinished ? '' : URL::signedRoute('participant.changeName', [
+                            'participant' => $participant,
                         ]),
-                        'withdrawalUrl' => $draw->isFinished ? '' : URL::signedRoute('organizer.withdraw', [
-                            'draw' => $draw, 'participant' => $participant,
+                        'withdrawalUrl' => $draw->isFinished ? '' : URL::signedRoute('participant.withdraw', [
+                            'participant' => $participant,
                         ]),
                     ],
                 ];
@@ -66,7 +59,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function resendTarget(Draw $draw, Participant $participant): JsonResponse
+    public function resendTarget(Participant $participant): JsonResponse
     {
         return response()->jsonTry(
             function () use ($participant) {
@@ -83,7 +76,7 @@ class OrganizerController extends Controller
         );
     }
 
-    public function changeEmail(Request $request, Draw $draw, Participant $participant): JsonResponse
+    public function changeEmail(Request $request, Participant $participant): JsonResponse
     {
         $request->validate([
             'email' => ['required', 'email', 'max:255'],
@@ -107,10 +100,10 @@ class OrganizerController extends Controller
         );
     }
 
-    public function changeName(Request $request, Draw $draw, Participant $participant): JsonResponse
+    public function changeName(Request $request, Participant $participant): JsonResponse
     {
         $request->validate([
-            'name' => ['required', 'max:55', Rule::notIn($draw->participants->pluck('name'))],
+            'name' => ['required', 'max:55', Rule::notIn($participant->draw->participants->pluck('name'))],
         ], [
             'name.required' => Lang::get('validation.custom.organizer.name.required'),
             'name.not_in' => Lang::get('validation.custom.organizer.name.not_in'),
@@ -131,9 +124,9 @@ class OrganizerController extends Controller
         );
     }
 
-    public function withdraw(Draw $draw, Participant $participant): JsonResponse
+    public function withdraw(Participant $participant): JsonResponse
     {
-        abort_unless($draw->participants->count() > 3, 403, Lang::get('error.withdraw'));
+        abort_unless($participant->draw->santas->count() > 3, 403, Lang::get('error.withdraw'));
 
         app(WithdrawParticipant::class)->withdraw($participant);
 

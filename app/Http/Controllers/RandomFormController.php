@@ -6,6 +6,7 @@ use App\Http\Requests\RandomFormRequest;
 use App\Models\Draw;
 use App\Notifications\PendingDrawConfirm;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\URL;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,7 +45,9 @@ class RandomFormController extends Controller
 
         $draw->organizer->notify(new PendingDrawConfirm($draw));
 
-        $link = route('pending.join', ['draw' => $draw]);
+        $link = URL::signedRoute('pending.join', [
+            'draw' => $draw,
+        ]);
         return response()->json([
             'link' => $link,
             'qrcode' => QrCode::format('png')

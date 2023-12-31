@@ -37,8 +37,8 @@ class DearSanta extends TrackedMailable
                 'draw' => $this->santa->draw->ulid,
                 'content' => $this->dearSanta->mail_body,
                 'targetName' => $this->dearSanta->sender->name,
-                'dearSantaLink' => URL::hashedSignedRoute('santa.index', ['participant' => $this->santa]),
-                'reportLink' => URL::hashedSignedRoute('report', ['participant' => $this->santa]),
+                'dearSantaLink' => URL::hashedRoute('participant.index', ['participant' => $this->santa]),
+                'reportLink' => URL::hashedRoute('report.index', ['participant' => $this->santa]),
             ]);
     }
 }

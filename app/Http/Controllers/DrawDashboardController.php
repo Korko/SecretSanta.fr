@@ -13,14 +13,61 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\Response;
 
 class DrawDashboardController extends Controller
 {
+    protected $dearSantaPublicFields = ['ulid', 'mail_body', 'mail', 'created_at', 'updated_at'];
+
+    protected $dearTargetPublicFields = ['ulid', 'mail_type', 'mail_body', 'mail', 'created_at', 'updated_at'];
+
     public function index(Draw $draw): Response
     {
         // TODO
         return response('test');
+    }
+
+    /**
+     * Return encrypted data
+     */
+    public function fetch(Participant $participant): JsonResponse
+    {
+        // The hash was validated in middleware so we can validate that the email was received
+        $participant->mail->markAsReceived();
+
+        $participant->loadMissing(
+            'target', 'target.dearSantas', 'target.dearSantas.mail', 'dearSantas', 'dearSantas.mail',
+            'santa', 'santa.dearTargets', 'santa.dearTargets.mail', 'dearTargets', 'dearTargets.mail'
+        );
+
+        return response()->json([
+            'participant' => $participant->only(['hash', 'name']),
+            'target' => $participant->target->only(['name']) + [
+                'contactUrl' => URL::signedRoute('participant.contactTarget', ['participant' => $participant, 'target' => $participant->target]),
+            ],
+            'draw' => $participant->draw->only(['hash', 'mail_title', 'created_at', 'finished_at', 'organizer' => ['name']]),
+            'targetDearSantaLastUpdate' => $participant->target->dearSantas->max('mail.updated_at') ?: Carbon::now(),
+            'santaDearTargetLastUpdate' => $participant->santa->dearTargets->max('mail.updated_at') ?: Carbon::now(),
+            'dearSantas' => $participant->dearSantas->mapWithKeys(function ($email) use ($participant) {
+                return [
+                    $email->mail->ulid => $email->only($this->dearSantaPublicFields) + [
+                        'resendUrl' => URL::signedRoute('participant.resendDearSanta', [
+                            'participant' => $participant, 'dearSanta' => $email,
+                        ]),
+                    ],
+                ];
+            }),
+            'dearTargets' => $participant->dearTargets->mapWithKeys(function ($email) use ($participant) {
+                return [
+                    $email->mail->ulid => $email->only($this->dearTargetPublicFields) + [
+                        'resendUrl' => URL::signedRoute('participant.resendDearTarget', [
+                            'participant' => $participant, 'dearTarget' => $email,
+                        ]),
+                    ],
+                ];
+            }),
+        ]);
     }
 
     public function cancel(Draw $draw): Response
@@ -149,7 +196,7 @@ class DrawDashboardController extends Controller
         ]);
     }
 
-    public function changeParticipantName(Draw $draw, Participant $participant, Request $request): JsonResponse
+    public function changeParticipantName(Participant $participant, Request $request): JsonResponse
     {
         $validated = $request->validate([
             'name' => [
@@ -157,8 +204,9 @@ class DrawDashboardController extends Controller
                 'string',
                 'max:55',
                 // TODO: Non participant organizer should not have the same name as an actual participant
-                function (string $attribute, mixed $value, Closure $fail) use ($draw, $participant) {
-                    $otherNames = $draw
+                function (string $attribute, mixed $value, Closure $fail) use ($participant) {
+                    $otherNames = $participant
+                        ->draw
                         ->santasNonOrganizer
                         ->pluck('name');
 
@@ -190,7 +238,7 @@ class DrawDashboardController extends Controller
         ]);
     }
 
-    public function changeParticipantEmail(Draw $draw, Participant $participant, Request $request): JsonResponse
+    public function changeParticipantEmail(Participant $participant, Request $request): JsonResponse
     {
         $validated = $request->validate([
             'email' => 'required|email|max:255',
@@ -206,7 +254,7 @@ class DrawDashboardController extends Controller
         ]);
     }
 
-    public function confirmParticipantEmail(Draw $draw, Participant $participant): Response
+    public function confirmParticipantEmail(Participant $participant): Response
     {
         $participant->email_verified_at = Carbon::now();
         $participant->save();

@@ -34,8 +34,7 @@ class ListDraw extends Command
         $draw = $this->getDrawFromURL($this->argument('url'));
 
         $this->info('Draw #'.$draw->ulid.' ('.$draw->expires_at.')');
-        $this->info('Organizer: '.$draw->organizer_name.' <'.$draw->organizer_email.'>');
-        $this->comment(URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV()));
+        $this->info('Organizer: '.$draw->organizer->name.' <'.$draw->organizer->email.'>');
         $this->newLine();
 
         $this->displayDraw($draw);

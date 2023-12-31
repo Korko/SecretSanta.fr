@@ -27,53 +27,11 @@ class DearSantaController extends Controller
     {
         return response()->inertia('DearSanta', [
             'routes' => [
-                'contactSanta' => URL::signedRoute('santa.contactSanta', ['participant' => $participant]),
-                'fetch' => URL::signedRoute('santa.fetch', ['participant' => $participant]),
-                'resendTarget' => URL::signedRoute('santa.resendTarget', ['participant' => $participant]),
+                'contactSanta' => URL::signedRoute('participant.contactSanta', ['participant' => $participant]),
+                'fetch' => URL::signedRoute('participant.fetch', ['participant' => $participant]),
+                'resendTarget' => URL::signedRoute('participant.resendTarget', ['participant' => $participant]),
             ],
             'dearTargetTypes' => QuestionToSanta::cases(),
-        ]);
-    }
-
-    /**
-     * Return encrypted data
-     */
-    public function fetch(Participant $participant): JsonResponse
-    {
-        // The hash was validated in middleware so we can validate that the email was received
-        $participant->mail->markAsReceived();
-
-        $participant->loadMissing(
-            'target', 'target.dearSantas', 'target.dearSantas.mail', 'dearSantas', 'dearSantas.mail',
-            'santa', 'santa.dearTargets', 'santa.dearTargets.mail', 'dearTargets', 'dearTargets.mail'
-        );
-
-        return response()->json([
-            'participant' => $participant->only(['hash', 'name']),
-            'target' => $participant->target->only(['name']) + [
-                'contactUrl' => URL::signedRoute('santa.contactTarget', ['participant' => $participant, 'target' => $participant->target]),
-            ],
-            'draw' => $participant->draw->only(['hash', 'mail_title', 'created_at', 'finished_at', 'organizer' => ['name']]),
-            'targetDearSantaLastUpdate' => $participant->target->dearSantas->max('mail.updated_at') ?: Carbon::now(),
-            'santaDearTargetLastUpdate' => $participant->santa->dearTargets->max('mail.updated_at') ?: Carbon::now(),
-            'dearSantas' => $participant->dearSantas->mapWithKeys(function ($email) use ($participant) {
-                return [
-                    $email->mail->ulid => $email->only($this->dearSantaPublicFields) + [
-                        'resendUrl' => URL::signedRoute('santa.resendDearSanta', [
-                            'participant' => $participant, 'dearSanta' => $email,
-                        ]),
-                    ],
-                ];
-            }),
-            'dearTargets' => $participant->dearTargets->mapWithKeys(function ($email) use ($participant) {
-                return [
-                    $email->mail->ulid => $email->only($this->dearTargetPublicFields) + [
-                        'resendUrl' => URL::signedRoute('santa.resendDearTarget', [
-                            'participant' => $participant, 'dearTarget' => $email,
-                        ]),
-                    ],
-                ];
-            }),
         ]);
     }
 

@@ -174,7 +174,7 @@ test('an organizer receives in the original notification the link to confirm the
 
         return
             $notification->toMail($notifiable)->assertSeeInHtml(
-                URL::hashedSignedRoute('draw.participant.confirmEmail', ['draw' => $draw, 'participant' => $draw->organizer])
+                URL::hashedRoute('participant.confirmEmail', ['participant' => $draw->organizer])
             );
     });
 });

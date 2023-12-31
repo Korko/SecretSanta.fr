@@ -30,6 +30,6 @@ class DatabaseSeeder extends Seeder
 
         DrawHandler::solve($draw, $draw->participants);
 
-        $this->command->line("Organizer panel: ".URL::hashedRoute('draw.index', ['participant' => $draw->organizer]));
+        $this->command->line("Organizer panel: ".URL::hashedRoute('participant.index', ['participant' => $draw->organizer]));
     }
 }

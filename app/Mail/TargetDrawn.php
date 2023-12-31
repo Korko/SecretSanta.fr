@@ -40,8 +40,8 @@ class TargetDrawn extends TrackedMailable
             ->markdown('emails.target_drawn', [
                 'name' => $this->santa->name,
                 'content' => $content,
-                'dearSantaLink' => URL::hashedSignedRoute('santa.index', ['participant' => $this->santa]),
-                'reportLink' => URL::hashedSignedRoute('report', ['participant' => $this->santa]),
+                'dearSantaLink' => URL::hashedRoute('participant.index', ['participant' => $this->santa]),
+                'reportLink' => URL::hashedRoute('report.index', ['participant' => $this->santa]),
             ]);
     }
 
