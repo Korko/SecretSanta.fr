@@ -22,8 +22,8 @@ use Illuminate\Support\Str;
  * App\Models\Draw
  *
  * @property int $id
- * @property mixed $mail_title
- * @property mixed $mail_body
+ * @property mixed $title
+ * @property mixed $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $finished_at
@@ -36,7 +36,6 @@ use Illuminate\Support\Str;
  * @property-read mixed $organizer
  * @property-read \App\Collections\ParticipantsCollection|\App\Models\Participant[] $participants
  * @property-read int|null $participants_count
- *
  * @method static \Database\Factories\DrawFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Draw findByHashOrFail($hash)
  * @method static \Illuminate\Database\Eloquent\Builder|Draw newModelQuery()
@@ -51,6 +50,27 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Draw whereOrganizerEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Draw whereOrganizerName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Draw whereUpdatedAt($value)
+ * @property string $ulid
+ * @property bool $participant_organizer
+ * @property int|null $organizer_id
+ * @property string|null $budget
+ * @property string|null $event_date
+ * @property Carbon|null $ready_at
+ * @property Carbon|null $drawn_at
+ * @property DrawStatus $status
+ * @property string $secret
+ * @property-read ParticipantsCollection $santas
+ * @method static Builder|Draw whereBudget($value)
+ * @method static Builder|Draw whereDescription($value)
+ * @method static Builder|Draw whereDrawnAt($value)
+ * @method static Builder|Draw whereEventDate($value)
+ * @method static Builder|Draw whereOrganizerId($value)
+ * @method static Builder|Draw whereParticipantOrganizer($value)
+ * @method static Builder|Draw whereReadyAt($value)
+ * @method static Builder|Draw whereSecret($value)
+ * @method static Builder|Draw whereStatus($value)
+ * @method static Builder|Draw whereTitle($value)
+ * @method static Builder|Draw whereUlid($value)
  * @mixin \Eloquent
  */
 class Draw extends Model implements UrlRoutable

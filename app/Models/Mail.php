@@ -21,7 +21,6 @@ use Str;
  * @property int $draw_id
  * @property-read \App\Models\Draw $draw
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $mailable
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Mail newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Mail newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Mail query()

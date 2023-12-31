@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read mixed $target
  * @property-read \App\Models\Mail|null $mail
  * @property-read \App\Models\Participant $sender
- *
  * @method static \Database\Factories\DearSantaFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|DearSanta findByHashOrFail($hash)
  * @method static \Illuminate\Database\Eloquent\Builder|DearSanta newModelQuery()

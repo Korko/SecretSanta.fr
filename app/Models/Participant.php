@@ -36,7 +36,6 @@ use Illuminate\Support\Str;
  * @property-read int|null $notifications_count
  * @property-read Participant|null $santa
  * @property-read Participant|null $target
- *
  * @method static ParticipantsCollection|static[] all($columns = ['*'])
  * @method static \Database\Factories\ParticipantFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Participant findByHashOrFail($hash)
@@ -50,6 +49,14 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Participant whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Participant whereRedraw($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Participant whereTargetId($value)
+ * @property string $ulid
+ * @property string|null $created_at
+ * @property string|null $updated_at
+ * @property int|null $email_verified_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereUlid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Participant extends Model implements UrlRoutable
