@@ -36,9 +36,10 @@ it('send to each participant a link to write to their santa', function ($partici
 
     foreach ($draw->santas as $participant) {
         Notification::assertSentTo($participant, function (TargetDrawnNotification $notification) use ($participant) {
-            return $notification->toMail($participant)->assertSeeInHtml(
+            $notification->toMail($participant)->assertSeeInHtml(
                 URL::hashedRoute('participant.index', ['participant' => $participant])
             );
+            return true;
         });
     }
 })->with('participants list');
