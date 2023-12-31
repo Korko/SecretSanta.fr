@@ -82,19 +82,40 @@ class DrawFactory extends Factory
         );
     }
 
-    public function withParticipants(string|array $participants): static
+    public function withParticipants(string|array $participantsData): static
     {
+        $participantsData = array_map(
+            fn($participantData) => !empty($participantData['name']) ? $participantData : ['name' => $participantData],
+            (array) $participantsData
+        );
+
         return $this->has(
             Participant::factory()
                 ->forEachSequence(...array_map(function ($participant) {
                     return [
-                        'name' => $participant['name'] ?? $participant,
-                        'email' => $participant['email'] ?? null,
-                        //'exceptions' => $participant['exclusions'] ?? [],
+                        'name' => $participant['name'],
+                        'email' => $participant['email'] ?? null
                     ];
-                }, (array) $participants)),
+                }, $participantsData)),
             'participants'
-        );
+        )
+        ->afterCreating(function (Draw $draw) use ($participantsData) {
+            $draw->santas->each(function (Participant $participant) use ($draw, $participantsData) {
+                $participantData = collect($participantsData)->first(function ($participantData) use ($participant) {
+                    return $participant->name === $participantData['name'];
+                });
+
+                if(!empty($participantData['exclusions'])) {
+                    foreach($participantData['exclusions'] as $exclusion) {
+                        $participant->exclusions()->attach($draw->santas->first( function ($participant) use ($participantsData, $exclusion) {
+                            return $participantsData[$exclusion]['name'] === $participant->name;
+                        }), [
+                            'draw_id' => $draw->id,
+                        ]);
+                    }
+                }
+            });
+        });
     }
 
     public function withVerifiedParticipants(array $participants): static
