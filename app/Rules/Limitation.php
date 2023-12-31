@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use App\Enums\AppMode;
+use Exception;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
@@ -68,23 +69,23 @@ class Limitation implements Rule, DataAwareRule, ValidatorAwareRule
      *
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
-    public function validate(string $attribute, mixed $value, Closure $fail): void
+    public function passes($attribute, $value): bool
     {
         $mode = Arr::get($this->data, 'mode', (AppMode::FREE)->value);
 
-        if (isset($this->rules[$mode])) {
-            $this->customValidator = ValidatorFacade::make(
-                $this->data,
-                [$attribute => $this->rules[$mode]],
-                $this->getCustomMessages($mode)
-            );
-
-            if(! $this->customValidator->passes()) {
-                $fail();
-            }
+        if (!isset($this->rules[$mode])) {
+            throw new Exception('No validation rule found for mode ' . $mode . ' in ' . __CLASS__ . '::' . __FUNCTION__ . '()');
         }
 
+        $this->customValidator = ValidatorFacade::make(
+            $this->data,
+            [$attribute => $this->rules[$mode]],
+            $this->getCustomMessages($mode)
+        );
+
         unset($this->customValidator);
+
+        return $this->customValidator->passes();
     }
 
     /**
