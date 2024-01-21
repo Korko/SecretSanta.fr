@@ -47,10 +47,10 @@ return [
     'accounts' => [
 
         'default' => [// account identifier
-            'host'  => env('IMAP_HOST', 'localhost'),
-            'port'  => env('IMAP_PORT', 993),
-            'protocol'  => env('IMAP_PROTOCOL', 'imap'), //might also use imap, [pop3 or nntp (untested)]
-            'encryption'    => env('IMAP_ENCRYPTION', 'ssl'), // Supported: false, 'ssl', 'tls', 'notls', 'starttls'
+            'host' => env('IMAP_HOST', 'localhost'),
+            'port' => env('IMAP_PORT', 993),
+            'protocol' => env('IMAP_PROTOCOL', 'imap'), //might also use imap, [pop3 or nntp (untested)]
+            'encryption' => env('IMAP_ENCRYPTION', 'ssl'), // Supported: false, 'ssl', 'tls', 'notls', 'starttls'
             'validate_cert' => env('IMAP_VALIDATE_CERT', true),
             'username' => env('IMAP_USERNAME', 'root@example.com'),
             'password' => env('IMAP_PASSWORD', ''),
@@ -127,8 +127,8 @@ return [
         ],
         'decoder' => [
             'message' => 'utf-8', // mimeheader
-            'attachment' => 'utf-8' // mimeheader
-        ]
+            'attachment' => 'utf-8', // mimeheader
+        ],
     ],
 
     /*
@@ -138,19 +138,19 @@ return [
     |
     */
     'events' => [
-        "message" => [
+        'message' => [
             'new' => \Webklex\IMAP\Events\MessageNewEvent::class,
             'moved' => \Webklex\IMAP\Events\MessageMovedEvent::class,
             'copied' => \Webklex\IMAP\Events\MessageCopiedEvent::class,
             'deleted' => \Webklex\IMAP\Events\MessageDeletedEvent::class,
             'restored' => \Webklex\IMAP\Events\MessageRestoredEvent::class,
         ],
-        "folder" => [
+        'folder' => [
             'new' => \Webklex\IMAP\Events\FolderNewEvent::class,
             'moved' => \Webklex\IMAP\Events\FolderMovedEvent::class,
             'deleted' => \Webklex\IMAP\Events\FolderDeletedEvent::class,
         ],
-        "flag" => [
+        'flag' => [
             'new' => \Webklex\IMAP\Events\FlagNewEvent::class,
             'deleted' => \Webklex\IMAP\Events\FlagDeletedEvent::class,
         ],
@@ -171,7 +171,7 @@ return [
     */
     'masks' => [
         'message' => \Webklex\PHPIMAP\Support\Masks\MessageMask::class,
-        'attachment' => \Webklex\PHPIMAP\Support\Masks\AttachmentMask::class
+        'attachment' => \Webklex\PHPIMAP\Support\Masks\AttachmentMask::class,
     ],
 
     /*
@@ -188,5 +188,5 @@ return [
         'drafts' => 'Drafts',
         'sent' => 'Sent',
         'junk' => 'Junk',
-    ]
+    ],
 ];

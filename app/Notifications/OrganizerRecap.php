@@ -2,37 +2,33 @@
 
 namespace App\Notifications;
 
-use App\Channels\MailChannel;
 use App\Mail\OrganizerRecap as OrganizerRecapMailable;
+use App\Models\Draw;
 use App\Models\Participant;
-use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
-//Illuminate/Contracts/Queue/ShouldBeEncrypted
 
 class OrganizerRecap extends Notification
 {
-    use Queueable;
+    public function __construct(
+        protected readonly Draw $draw
+    ) {
+    }
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param  App\Models\Participant  $organizer
-     * @return array
      */
-    public function via(Participant $organizer)
+    public function via(Participant $organizer): array
     {
-        return [MailChannel::class];
+        return ['mail'];
     }
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  App\Models\Participant  $organizer
-     * @return \Illuminate\Mail\Mailable
      */
-    public function toMail(Participant $organizer)
+    public function toMail(Participant $organizer): Mailable
     {
-        return (new OrganizerRecapMailable($organizer->draw))
+        return (new OrganizerRecapMailable($this->draw))
             ->to($organizer);
     }
 }

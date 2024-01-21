@@ -4,25 +4,20 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Language
 {
-    private $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
+    public function __construct(
+        protected readonly Application $app
+    ) {
     }
 
     /**
      * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     *
-     * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $handledDomains = config('app.domains');
         $currentDomain = $request->getHost();

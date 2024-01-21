@@ -7,40 +7,31 @@ use Laravel\Dusk\Component as BaseComponent;
 
 class ExclusionPicker extends BaseComponent
 {
-    protected $root;
-
-    public function __construct($root = '')
-    {
-        $this->root = $root;
+    public function __construct(
+        protected readonly string $root = ''
+    ) {
     }
 
     /**
      * Get the root selector for the component.
-     *
-     * @return string
      */
-    public function selector()
+    public function selector(): string
     {
         return $this->root.' .multiselect';
     }
 
     /**
      * Assert that the browser page contains the component.
-     *
-     * @param  Browser  $browser
-     * @return void
      */
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser->assertVisible($this->selector());
     }
 
     /**
      * Get the element shortcuts for the component.
-     *
-     * @return array
      */
-    public function elements()
+    public function elements(): array
     {
         return [
             '@select-button' => '.multiselect__select',
@@ -50,12 +41,8 @@ class ExclusionPicker extends BaseComponent
 
     /**
      * Select the given exclusion.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $name
-     * @return void
      */
-    public function selectParticipant($browser, $name)
+    public function selectParticipant(Browser $browser, string $name): void
     {
         $browser->click('@select-button')
                 ->clickLink($name, '@participant-field')

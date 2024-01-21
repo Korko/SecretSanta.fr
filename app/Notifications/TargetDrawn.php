@@ -2,37 +2,27 @@
 
 namespace App\Notifications;
 
-use App\Channels\MailChannel;
 use App\Mail\TargetDrawn as TargetDrawnMailable;
 use App\Models\Participant;
-use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
-//Illuminate/Contracts/Queue/ShouldBeEncrypted
 
 class TargetDrawn extends Notification
 {
-    use Queueable;
-
     /**
      * Get the notification's delivery channels.
-     *
-     * @param  App\Models\Participant  $santa
-     * @return array
      */
-    public function via(Participant $santa)
+    public function via(Participant $santa): array
     {
-        return [MailChannel::class];
+        return ['mail'];
     }
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  App\Models\Participant  $santa
-     * @return \Illuminate\Mail\Mailable
      */
-    public function toMail(Participant $santa)
+    public function toMail(Participant $santa): Mailable
     {
         return (new TargetDrawnMailable($santa))
-            ->to($santa);
+            ->to($santa->routeNotificationFor('mail'));
     }
 }

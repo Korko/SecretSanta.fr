@@ -2,51 +2,71 @@
 
 namespace App\Solvers;
 
-use App\Exceptions\SolverException;
-use Arr;
 use Generator;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
-class HatSolver implements SolverInterface
+class HatSolver extends Solver
 {
-    public function one(array $participants, array $exclusions = []) : array
+    protected function solve(Collection $participantsIdx, Collection $exclusions): Generator
     {
-        $generator = $this->all($participants, $exclusions);
-        if (! $generator->valid()) {
-            throw new SolverException('Cannot solve');
-        }
+        $participantsIdx->sortKeysUsing(function ($participantIdx1, $participantIdx2) use ($exclusions) {
+            // Reverse sort by number of exclusions (nothing like !<=> atm)
+            $count1 = count(Arr::get($exclusions, $participantIdx1, []));
+            $count2 = count(Arr::get($exclusions, $participantIdx2, []));
 
-        return $generator->current();
+            return $count1 > $count2 ? -1 : (
+                $count1 === $count2 ? 0 : 1
+            );
+        });
+
+        return $this->solveWithExclusions(participantsIdx: $participantsIdx, currentIdx: (int) $participantsIdx->first(), exclusions: $exclusions, hat: $participantsIdx->shuffle());
     }
 
-    public function all(array $participants, array $exclusions = []) : Generator
-    {
-        $hat = array_keys($participants);
-        shuffle($hat);
-
-        return $this->solve(array_keys($participants)[0], [], $exclusions, $hat);
-    }
-
-    private function solve(int $participantIdx, array $combination, array $allExclusions, array $currentHat) : Generator
+    private function solveWithExclusions(Collection $participantsIdx, int $currentIdx, Collection $exclusions, Collection $hat, array $combination = []): Generator
     {
         // End of a loop, we've found a possible combination
-        if ($currentHat === []) {
-            yield $combination;
+        if ($hat->isEmpty()) {
+            ksort($combination);
+
+            return yield $combination;
+        }
+
+        $participantIdx = $participantsIdx[$currentIdx];
+
+        if (isset($combination[$participantIdx])) {
+            yield from $this->solveWithExclusions(
+                participantsIdx: $participantsIdx,
+                currentIdx: $currentIdx + 1,
+                exclusions: $exclusions,
+                hat: $hat,
+                combination: $combination,
+            );
         }
 
         // Get the exclusions requested for that participant
         // And remove them from the hat (+ the current participant)
-        $exclusions = Arr::get($allExclusions, $participantIdx, []);
-        $hat = array_diff($currentHat, $exclusions, [$participantIdx]);
+        $participantExclusions = $exclusions->get($participantIdx, []);
+        $potentialParticipants = clone $hat
+            ->diff($participantExclusions)
+            ->diff([$participantIdx]);
 
         // If nothing available in the hat for that participant
         // Then nothing will happen and the combination will be lost
-        foreach ($hat as $drawnParticipant) {
+        foreach ($potentialParticipants as $drawnParticipant) {
             // Create a new possible solution with the participant drawn
             $newCombination = $combination + [$participantIdx => $drawnParticipant];
-            $newHat = array_diff($currentHat, [$drawnParticipant]);
+
+            $newHat = $hat->diff([$drawnParticipant]);
 
             // Further check if this solution is possible
-            yield from $this->solve($participantIdx + 1, $newCombination, $allExclusions, $newHat);
+            yield from $this->solveWithExclusions(
+                participantsIdx: $participantsIdx,
+                currentIdx: $currentIdx + 1,
+                exclusions: $exclusions,
+                hat: $newHat,
+                combination: $newCombination,
+            );
         }
     }
 }

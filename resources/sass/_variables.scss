@@ -1,20 +1,21 @@
+html {
+    --main: #812122;
+    /*--main-hover:*/
+    /*--main-disabled:*/
+    --secondary: #B59331;
+    /*--secondary-hover:*/
+    --third: #1D4431;
+    /*--third-hover:*/
+    /*--secondary-disabled:*/
+    --white: #F3F4F6;
+    --light-grey: #A89FA8;
+    --dark-grey: #4B444B;
+    --warning: #383B43;
+    --danger: #383B43;
+}
 
-// Body
-$body-bg: #f8fafc;
-
-// Typography
-$font-family-sans-serif: "Nunito", sans-serif;
-$font-size-base: 0.9rem;
-$line-height-base: 1.6;
-
-// Colors
-$blue: #3490dc;
-$indigo: #6574cd;
-$purple: #9561e2;
-$pink: #f66d9b;
-$red: #e3342f;
-$orange: #f6993f;
-$yellow: #ffed4a;
-$green: #38c172;
-$teal: #4dc0b5;
-$cyan: #6cb2eb;
+$mainColor: #812122;
+$secondColor: #383B43;
+$thirdColor: #1D4431;
+$fourthColor: #B59331;
+$fifthColor: #F3F4F6;

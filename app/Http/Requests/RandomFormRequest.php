@@ -2,59 +2,57 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\AppMode;
+use Illuminate\Validation\Rules\Enum;
+use Lang;
+
 class RandomFormRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return parent::rules() + [
-            'participants'                => 'required|array|min:3',
+            'participant-organizer' => ['sometimes', 'boolean'],
 
-            'participants.*.name'         => 'required|distinct',
-            'participants.*.email'        => 'required|email',
-            'participants.*.exclusions'   => 'sometimes|array',
-            'participants.*.exclusions.*' => 'integer|in_keys:participants',
+            'title' => ['required', 'string', 'max:36773'],
+            'description' => ['sometimes', 'string', 'max:36773'],
 
-            'title'                       => 'required|string',
-            'content-email'               => 'required|string|contains:{TARGET}',
+            'budget' => ['required', 'string', 'max:55'],
+            'event-date' => ['sometimes', 'date'],
 
-            'data-expiration'             => 'required|date|after_or_equal:tomorrow|before:+6month',
+            'organizer.name' => ['required', 'string', 'max:55'],
+            'organizer.email' => ['required', 'email', 'max:255'],
+
+            'participants' => ['sometimes', 'array'],
+            'participants.*.name' => ['required', 'string', 'max:55', 'distinct:ignore_case', 'different:organizer.name'],
+            'participants.*.email' => ['sometimes', 'string', 'max:255'],
+
+            'mode' => ['sometimes', new Enum(AppMode::class)],
         ];
     }
 
     /**
      * Get the error messages for the defined validation rules.
-     *
-     * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
-            'participants.min'               => __('validation.custom.randomform.participants.length'),
-            'participants.*.name.required'   => __('validation.custom.randomform.participant.name.required'),
-            'participants.*.name.distinct'   => __('validation.custom.randomform.participant.name.distinct'),
-            'participants.*.email.required'  => __('validation.custom.randomform.participant.email.required'),
-            'participants.*.email.email'     => __('validation.custom.randomform.participant.email.format'),
-            'title.required'                 => __('validation.custom.randomform.title.required'),
-            'content-email.required'         => __('validation.custom.randomform.content.required'),
-            'content-email.contains'         => __('validation.custom.randomform.content.contains'),
-            'data-expiration.required'       => __('validation.custom.randomform.expiration.required'),
-            'data-expiration.after_or_equal' => __('validation.custom.randomform.expiration.min'),
-            'data-expiration.before'         => __('validation.custom.randomform.expiration.max'),
+            'title.required' => Lang::get('validation.custom.randomform.title.required'),
+            'organizer.name.required' => Lang::get('validation.custom.randomform.organizer.name.required'),
+            'organizer.email.required' => Lang::get('validation.custom.randomform.organizer.email.required'),
+            'organizer.email.email' => Lang::get('validation.custom.randomform.organizer.email.email'),
+            'participants.*.name.required' => Lang::get('validation.custom.randomform.participant.name.required'),
+            'participants.*.name.distinct' => Lang::get('validation.custom.randomform.participant.name.distinct'),
         ];
     }
 }

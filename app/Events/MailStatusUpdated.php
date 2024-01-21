@@ -6,52 +6,44 @@ use App\Models\Mail as MailModel;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
+#[WithoutRelations]
 class MailStatusUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $mail;
+    public function __construct(
+        protected readonly MailModel $mail
+    ) {
+    }
 
-    public function __construct(MailModel $mail)
+    /**
+     * Get the data to broadcast.
+     */
+    public function broadcastWith(): array
     {
-        $this->mail = $mail;
+        return [
+            'ulid' => $this->mail->ulid,
+            'delivery_status' => $this->mail->delivery_status,
+            'updated_at' => $this->mail->updated_at,
+        ];
     }
 
     /**
      * The event's broadcast name.
-     *
-     * @return string
      */
-    public function broadcastAs()
+    public function broadcastAs(): string
     {
         return 'mail.update';
     }
 
     /**
-     * Get the data to broadcast.
-     *
-     * @return array
-     */
-    public function broadcastWith()
-    {
-        return [
-            'id' => $this->mail->id,
-            'delivery_status' => $this->mail->delivery_status,
-            'updated_at' => $this->mail->updated_at
-        ];
-    }
-
-    /**
      * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn()
+    public function broadcastOn(): Channel
     {
-        return new Channel('draw.'.$this->mail->draw->hash);
+        return new Channel('draw.'.$this->mail->mailable->draw->ulid);
     }
 }

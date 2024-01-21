@@ -2,65 +2,52 @@
 
 namespace App\Mail;
 
-use App\Jobs\UpdateMailDelivery;
-use App\Models\Mail as MailModel;
-use App\Traits\UpdatesMailDelivery;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use URL;
+use App\Models\Mail;
+use Facades\App\Services\MailTracker;
+use Illuminate\Mail\Mailable;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mime\Email;
 
-class TrackedMailable extends Mailable
+abstract class TrackedMailable extends Mailable
 {
-    use DispatchesJobs, UpdatesMailDelivery;
-
-    const BOUNCE = 'bounce';
-    const CONFIRM = 'confirm';
-
-    public $bounceReturnPath;
-    public $confirmReturnPath;
-    public $trackedPixel;
-
-    protected function track(MailModel $mail)
-    {
-        $this->store($mail);
-
-        $this->bounceReturnPath = str_replace('*', self::BOUNCE.'-'.$mail->hash.'-'.$mail->version, config('mail.return_path'));
-        $this->confirmReturnPath = str_replace('*', self::CONFIRM.'-'.$mail->hash.'-'.$mail->version, config('mail.return_path'));
-        $this->trackedPixel = URL::signedRoute('pixel', [
-            'mail' => $mail->hash,
-            'version' => $mail->version,
-        ]);
-
-        return $this;
-    }
-
-    public function failed()
-    {
-        $this->delayedUpdateDelivery(MailModel::ERROR);
-    }
+    protected $mailable;
 
     /**
-     * Define the return-path in case of bounce
-     * and send the mail
+     * Send the message using the given mailer.
      *
      * @param  \Illuminate\Contracts\Mail\Factory|\Illuminate\Contracts\Mail\Mailer  $mailer
      * @return void
      */
-    public function send($mailer): void
+    public function send($mailer)
     {
-        $mail = $this->delayedUpdateDelivery(MailModel::SENDING);
+        $this->mailable = $this->getMailable();
 
-        dispatch((new UpdateMailDelivery($mail, MailModel::SENT))->delay(10));
-
-        $this->withSwiftMessage(function ($message) use ($mail) {
+        $this->withSymfonyMessage(function (Email $message) {
             // In case of Bounce
-            $message->getHeaders()->addPathHeader('Return-Path', $this->bounceReturnPath);
+            $message->getHeaders()->addPathHeader('Return-Path', MailTracker::getBounceReturnPath($this->mailable->mail));
 
             // To assert Reception
-            $message->getHeaders()->addPathHeader('X-Confirm-Reading-To', $this->confirmReturnPath);
-            $message->getHeaders()->addPathHeader('Return-Receipt-To', $this->confirmReturnPath);
-            $message->getHeaders()->addPathHeader('Disposition-Notification-To', $this->confirmReturnPath);
+            $message->getHeaders()->addPathHeader('X-Confirm-Reading-To', MailTracker::getConfirmReturnPath($this->mailable->mail));
+            $message->getHeaders()->addPathHeader('Return-Receipt-To', MailTracker::getConfirmReturnPath($this->mailable->mail));
+            $message->getHeaders()->addPathHeader('Disposition-Notification-To', MailTracker::getConfirmReturnPath($this->mailable->mail));
         });
 
-        parent::send($mailer);
+        try {
+            $this->mailable->mail->delivery_status = Mail::STATE_SENDING;
+            $this->mailable->mail->save();
+
+            parent::send($mailer);
+
+            $this->mailable->mail->delivery_status = Mail::STATE_SENT;
+            $this->mailable->mail->save();
+        } catch (TransportExceptionInterface $exception) {
+            $this->mailable->mail->delivery_status = Mail::STATE_ERROR;
+            $this->mailable->mail->save();
+        }
     }
+
+    /**
+     * Return a mailable (morpheable into \App\Models\Mail) instance
+     */
+    abstract protected function getMailable();
 }

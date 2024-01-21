@@ -2,115 +2,165 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\OrganizerChangeEmailRequest;
-use App\Http\Requests\OrganizerResendEmailRequest;
+use App\Actions\ChangeParticipantEmail;
+use App\Actions\ChangeParticipantName;
+use App\Actions\GenerateDrawCsv;
+use App\Actions\SendTargetToParticipant;
+use App\Actions\WithdrawParticipant;
 use App\Models\Draw;
-use App\Models\Mail as MailModel;
 use App\Models\Participant;
-use App\Notifications\TargetDrawn;
-use Csv;
+use App\Notifications\OrganizerFinalRecap;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Validation\Rule;
+use Lang;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrganizerController extends Controller
 {
-    public function view(Draw $draw)
+    public function index(Draw $draw): Response
     {
-        return view('organizer', [
-            'draw' => $draw->hash,
-        ]);
+        return response()->inertia('OrganizerPanel');
     }
 
-    public function fetch(Draw $draw)
+    /**
+     * Return encrypted data
+     */
+    public function fetch(Draw $draw): JsonResponse
     {
-        return response()->json([
-            'draw' => $draw->hash,
-            'expires_at' => $draw->expires_at,
-            'deleted_at' => $draw->deleted_at,
-            'participants' => $draw->participants->mapWithKeys(function ($participant) {
-                return [$participant->id => $participant->only([
-                    'id', 'name', 'email', 'mail',
-                ])];
-            }),
-            'changeEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
-                return [
-                    $participant->id => URL::signedRoute('organizerPanel.changeEmail', [
-                        'draw' => $participant->draw, 'participant' => $participant
-                    ])
-                ];
-            }),
-            'finalCsvAvailable' => $draw->next_solvable
-        ]);
-    }
+        $drawFields = ['ulid', 'mail_title', 'created_at', 'finished_at', 'deletes_at', 'organizer' => ['name']];
+        $participantFields = ['ulid', 'name', 'email', 'mail' => ['id', 'updated_at', 'delivery_status']];
 
-    public function fetchState(Draw $draw)
-    {
-        return response()->json([
-            'participants' => $draw->participants->mapWithKeys(function ($participant) {
-                return [$participant->id => $participant->only(['id', 'mail'])];
-            }),
-        ]);
-    }
-
-    public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
-    {
-        if ($participant->email === $request->input('email')) {
-            $message = trans('message.sent');
-
-            $participant->createMetric('resend_email');
-        } else {
-            $participant->email = $request->input('email');
-            $participant->save();
-
-            $participant->createMetric('change_email');
-
-            $message = trans('organizer.up_and_sent');
+        if ($draw->isFinished) {
+            $participantFields[] = ['target' => ['ulid', 'name']];
         }
 
-        $participant->mail->updateDeliveryStatus(MailModel::CREATED);
-
-        $participant->notify(new TargetDrawn);
-
         return response()->json([
-            'message' => $message, 'participant' => $participant->only(['id', 'mail']),
+            'draw' => $draw->only($drawFields),
+            'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) use ($draw, $participantFields) {
+                return [
+                    $participant->ulid => $participant->only($participantFields) + [
+                        'resendTargetUrl' => $draw->isFinished ? '' : URL::signedRoute('participant.resendTarget', [
+                            'participant' => $participant,
+                        ]),
+                        'changeEmailUrl' => $draw->isFinished ? '' : URL::signedRoute('participant.changeEmail', [
+                            'participant' => $participant,
+                        ]),
+                        'changeNameUrl' => $draw->isFinished ? '' : URL::signedRoute('participant.changeName', [
+                            'participant' => $participant,
+                        ]),
+                        'withdrawalUrl' => $draw->isFinished ? '' : URL::signedRoute('participant.withdraw', [
+                            'participant' => $participant,
+                        ]),
+                    ],
+                ];
+            }),
         ]);
     }
 
-    public function csvInit(Draw $draw)
+    public function resendTarget(Participant $participant): JsonResponse
+    {
+        return response()->jsonTry(
+            function () use ($participant) {
+                app(SendTargetToParticipant::class)->send($participant);
+
+                $participant->createMetric('resend_target_email');
+
+                return [
+                    'participant' => $participant->only(['ulid', 'mail']),
+                ];
+            },
+            trans('Email réenvoyé avec succès !'),
+            trans('Une erreur est survenue dans l\'envoi de l\'email. Veuillez réessayer plus tard.')
+        );
+    }
+
+    public function changeEmail(Request $request, Participant $participant): JsonResponse
+    {
+        $request->validate([
+            'email' => ['required', 'email', 'max:255'],
+        ], [
+            'email.required' => Lang::get('validation.custom.organizer.email.required'),
+            'email.email' => Lang::get('validation.custom.organizer.email.format'),
+        ]);
+
+        return response()->jsonTry(
+            function () use ($participant, $request) {
+                app(ChangeParticipantEmail::class)->change($participant, $request->input('email'));
+
+                $participant->createMetric('change_email');
+
+                return [
+                    'participant' => $participant->only(['hash', 'mail']),
+                ];
+            },
+            trans('Adresse email modifiée avec succès !'),
+            trans('Adresse modifiée avec succès mais une erreur est survenue à l\'envoi de l\'email.')
+        );
+    }
+
+    public function changeName(Request $request, Participant $participant): JsonResponse
+    {
+        $request->validate([
+            'name' => ['required', 'max:55', Rule::notIn($participant->draw->participants->pluck('name'))],
+        ], [
+            'name.required' => Lang::get('validation.custom.organizer.name.required'),
+            'name.not_in' => Lang::get('validation.custom.organizer.name.not_in'),
+        ]);
+
+        return response()->jsonTry(
+            function () use ($participant, $request) {
+                app(ChangeParticipantName::class)->change($participant, $request->input('name'));
+
+                $participant->createMetric('change_name');
+
+                return [
+                    'participant' => $participant->only(['hash', 'name']),
+                ];
+            },
+            trans('Nom modifié avec succès !'),
+            trans('Nom modifié avec succès mais le père noël secrêt de cette personne n\'a pas pu être prévenu du changement.')
+        );
+    }
+
+    public function withdraw(Participant $participant): JsonResponse
+    {
+        abort_unless($participant->draw->santas->count() > 3, 403, Lang::get('error.withdraw'));
+
+        app(WithdrawParticipant::class)->withdraw($participant);
+
+        return response()->json([
+            'message' => trans(':name ne participe plus à l\'évènement.', ['name' => $participant->name]),
+        ]);
+    }
+
+    public function csvInit(Draw $draw): Response
     {
         $draw->createMetric('csv_initial_download');
 
         return response(
-            "\xEF\xBB\xBF".// UTF-8 BOM
-            $draw->participants
-                ->toCsv(['name', 'email', 'exclusionsNames'])
-                ->prepend([
-                    ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
-                    ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
-                ])
+            content: app(GenerateDrawCsv::class)->generateInitial($draw),
+            headers: ['Content-Type' => 'text/csv; charset=UTF-8']
         );
     }
 
-    public function csvFinal(Draw $draw)
+    public function csvFinal(Draw $draw): Response
     {
-        abort_unless($draw->expired, 403, 'Cet évènement n\'est pas encore terminé');
-        abort_unless($draw->next_solvable, 404, 'Cet évènement ne permet pas cette génération');
+        abort_unless($draw->isFinished, 403, Lang::get('error.finished'));
+        //abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
 
         $draw->createMetric('csv_final_download');
 
+        $draw->organizer->notify(new OrganizerFinalRecap($draw));
+
         return response(
-            "\xEF\xBB\xBF".// UTF-8 BOM
-            $draw->participants
-                ->appendTargetToExclusions()
-                ->toCsv(['name', 'email', 'exclusionsNames'])
-                ->prepend([
-                    ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
-                    ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
-                ])
+            content: app(GenerateDrawCsv::class)->generateFinal($draw),
+            headers: ['Content-Type' => 'text/csv; charset=UTF-8']
         );
     }
 
-    public function delete(Request $request, Draw $draw)
+    public function delete(Draw $draw): JsonResponse
     {
         $draw->delete();
 

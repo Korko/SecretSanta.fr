@@ -1,13 +1,10 @@
 @component('mail::layout')
-    {{-- Header --}}
-    @slot('header')
-        @component('mail::header', ['url' => config('app.url')])
-            {{ config('app.name') }}
-        @endcomponent
-    @endslot
+    @component('mail::panel')
+        {{ __('Ceci est un message automatique, merci de ne pas y répondre.') }}
+    @endcomponent
 
     {{-- Body --}}
-    {{ $slot }}
+    {{ Illuminate\Mail\Markdown::parse($slot) }}
 
     {{-- Subcopy --}}
     @isset($subcopy)
@@ -21,7 +18,9 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            © {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+            {{ __('Secrètement votre,') }}
+
+            {{ config('app.name') }} - {{ config('app.url') }}
         @endcomponent
     @endslot
 @endcomponent

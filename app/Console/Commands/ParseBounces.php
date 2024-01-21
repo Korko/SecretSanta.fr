@@ -12,7 +12,7 @@ class ParseBounces extends Command
      *
      * @var string
      */
-    protected $signature = 'bounces:parse';
+    protected $signature = 'secretsanta:parse-bounces';
 
     /**
      * The console command description.
@@ -22,22 +22,10 @@ class ParseBounces extends Command
     protected $description = 'Check Email Inbox for bounces';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
-        Job::dispatchNow();
+        Job::dispatchSync();
     }
 }

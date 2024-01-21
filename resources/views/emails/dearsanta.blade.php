@@ -1,7 +1,9 @@
-@extends('emails/tracked_layout')
+@component('mail::message')
 
-@yield('title', "Message de {{ $targetName }}")
+# @lang('Bonjour :name,', ['name' => $name])
 
-@section('content')
-    <blockquote>{!! nl2br(htmlentities( $content )) !!}</blockquote>
-@endsection
+@lang('Voici un message de :target :', ['target' => $targetName])
+
+> {{ $content }}
+
+@endcomponent

@@ -2,20 +2,83 @@
 
 namespace App\Models;
 
-use App\Casts\EncryptedString;
+use App\Casts\DrawEncryptedString;
 use App\Collections\ParticipantsCollection;
-use exussum12\xxhash\V32 as xxHash;
+use Illuminate\Contracts\Routing\UrlRoutable;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Metrics;
 
-class Participant extends Model
+/**
+ * App\Models\Participant
+ *
+ * @property int $id
+ * @property int $draw_id
+ * @property mixed $name
+ * @property mixed $email
+ * @property int|null $target_id
+ * @property int $redraw
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\DearSanta[] $dearSantas
+ * @property-read int|null $dear_santas_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\DearTarget[] $dearTargets
+ * @property-read int|null $dear_targets_count
+ * @property-read \App\Models\Draw $draw
+ * @property-read ParticipantsCollection|Participant[] $exclusions
+ * @property-read int|null $exclusions_count
+ * @property-read mixed $exclusions_names
+ * @property-read mixed $hash
+ * @property-read mixed $metric_id
+ * @property-read \App\Models\Mail|null $mail
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read Participant|null $santa
+ * @property-read Participant|null $target
+ * @method static ParticipantsCollection|static[] all($columns = ['*'])
+ * @method static \Database\Factories\ParticipantFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant findByHashOrFail($hash)
+ * @method static ParticipantsCollection|static[] get($columns = ['*'])
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereDrawId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereRedraw($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereTargetId($value)
+ * @property string $ulid
+ * @property string|null $created_at
+ * @property string|null $updated_at
+ * @property int|null $email_verified_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereUlid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Participant whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+class Participant extends Model implements UrlRoutable
 {
-    use HasFactory, Notifiable, HashId {
-        resolveRouteBinding as public baseResolver;
-    }
+    use HasFactory, Notifiable, HasUlids;
 
-    protected $hashConnection = 'santa';
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array<string>|bool
+     */
+    protected $guarded = [];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+
+    protected $hidden = [
+        'id'
+    ];
 
     /**
      * The attributes that should be cast.
@@ -23,16 +86,46 @@ class Participant extends Model
      * @var array
      */
     protected $casts = [
-        'name' => EncryptedString::class,
-        'email' => EncryptedString::class,
+        'name' => DrawEncryptedString::class,
+        'email' => DrawEncryptedString::class,
+        'email_verified_at' => 'timestamp',
     ];
 
     /**
-     * The attributes that are mass assignable.
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * All of the relationships to be touched.
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'draw_id', 'target_id', 'mail_id'];
+    protected $touches = ['draw'];
+
+    protected static function booted()
+    {
+        parent::boot();
+
+        static::created(function ($participant) {
+            $mail = new Mail;
+            $mail->draw()->associate($participant->draw);
+
+            $participant->mail()->save($mail);
+        });
+    }
+
+    /**
+     * Get the columns that should receive a unique identifier.
+     *
+     * @return array<int, string>
+     */
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
 
     public function draw()
     {
@@ -41,22 +134,27 @@ class Participant extends Model
 
     public function target()
     {
-        return $this->hasOne(self::class, 'target_id');
+        return $this->belongsTo(self::class, 'target_id');
     }
 
     public function santa()
     {
-        return $this->belongsTo(self::class, 'target_id');
+        return $this->hasOne(self::class, 'target_id');
     }
 
-    public function dearSanta()
+    public function dearSantas()
     {
         return $this->hasMany(DearSanta::class, 'sender_id')->with('mail');
     }
 
+    public function dearTargets()
+    {
+        return $this->hasMany(DearTarget::class, 'sender_id')->with('mail');
+    }
+
     public function mail()
     {
-        return $this->belongsTo(Mail::class, 'mail_id');
+        return $this->morphOne(Mail::class, 'mailable');
     }
 
     public function exclusions()
@@ -70,44 +168,50 @@ class Participant extends Model
     }
 
     /**
-     * Retrieve the model for a bound value.
-     *
-     * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function resolveRouteBinding($value, $field = null)
-    {
-        $participant = $this->baseResolver($value, $field);
-
-        abort_if($participant->draw->expired, 404);
-
-        return $participant;
-    }
-
-    /**
      * Create a new Eloquent Collection instance.
-     *
-     * @param  array  $models
-     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function newCollection(array $models = [])
+    public function newCollection(array $models = []): Collection
     {
         return new ParticipantsCollection($models);
     }
 
-    public function getMetricIdAttribute()
+    /**
+     * Route notifications for the mail channel.
+     */
+    public function routeNotificationForMail(?Notification $notification): array|string
     {
-        return (new xxHash($this->draw->id))->hash($this->id);
+        return [
+            ['name' => $this->name, 'email' => $this->email],
+        ];
+    }
+
+    /**
+     * Get the queueable relationships for the entity.
+     */
+    public function getQueueableRelations(): array
+    {
+        // To prevent infinite loop with recursive references, we unset the relations list (exclusions, target)
+        $this->unsetRelations();
+
+        return parent::getQueueableRelations();
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'ulid';
     }
 
     public function createMetric($name, $value = 1)
     {
         return Metrics::create($name, $value)
             ->setTags([
-                'draw' => $this->draw->metricId,
-                'participant' => $this->metricId,
-                'is_organizer' => $this->is($this->draw->organizer)
+                'draw' => $this->draw->ulid,
+                'participant' => $this->ulid
             ]);
     }
 }

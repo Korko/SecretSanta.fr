@@ -2,27 +2,38 @@
 
 namespace App\Exceptions;
 
-use App\Exceptions\SolverException;
+use App\Http\Controllers\ErrorController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Validation\ValidationException;
-use Throwable;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
     /**
+     * A list of exceptions with their corresponding custom log levels.
+     *
+     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
+     */
+    protected $levels = [
+        //
+    ];
+
+    /**
      * A list of the exception types that are not reported.
      *
-     * @var array
+     * @var string[]
      */
     protected $dontReport = [
-        //
+        \Illuminate\Broadcasting\BroadcastException::class,
     ];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
      *
-     * @var array
+     * @var string[]
      */
     protected $dontFlash = [
         'password',
@@ -30,33 +41,37 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
-     * @return \Illuminate\Http\Response
+     * Register the exception handling callbacks for the application.
      */
-    public function render($request, Throwable $exception)
+    public function register(): void
     {
-        if ($exception instanceof ValidationException) {
-            return response()->json([
-                'message' => trans('error.validation'),
-                'errors' => $exception->errors(),
-            ], 422);
-        }
+        $this->renderable(function (ValidationException $e, Request $request) {
+            return ErrorController::validationError($e);
+        });
 
-        if ($exception instanceof SolverException) {
-            return response()->json([
-                'message' => trans('error.solution'),
-            ], 422);
-        }
+        $this->renderable(function (InvalidSignatureException $e, Request $request) {
+            return ErrorController::invalidSignature();
+        });
 
-        if ($exception instanceof InvalidSignatureException) {
-            return response()->json([
-                'message' => trans('error.signature'),
-            ], 500);
-        }
+        $this->renderable(function (NotFoundHttpException $e, Request $request) {
+            return ErrorController::pageNotFound();
+        });
 
-        return parent::render($request, $exception);
+        $this->renderable(function (ModelNotFoundException $e, Request $request) {
+            return ErrorController::drawNotFound();
+        });
+    }
+
+    /**
+     * Get the default context variables for logging.
+     *
+     * @return array
+     */
+    protected function context()
+    {
+        return array_merge(parent::context(), [
+            'url' => request()->url(),
+            'input' => request()->all(),
+        ]);
     }
 }

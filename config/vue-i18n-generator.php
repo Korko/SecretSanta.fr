@@ -24,12 +24,14 @@ return [
     */
 
     'langFiles' => [
+        'bmc',
         'common',
         'dearsanta',
         'faq',
         'form',
         'organizer',
         'validation',
+        '404',
     ],
 
     /*

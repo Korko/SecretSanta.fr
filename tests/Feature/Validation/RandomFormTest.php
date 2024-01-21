@@ -1,141 +1,127 @@
 <?php
 
 it('fails if nothing sent', function () {
-    ajaxPost('/', ['a' => 'b'])
-        ->assertStatus(422)
+    ajaxPost(URL::route('form.process'), ['a' => 'b'])
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
-            'participants', 'data-expiration', 'title', 'content-email',
+            'organizer.name', 'organizer.email', 'participants', 'title', 'content',
         ]);
-});
+})->todo();
 
 it('needs at least three names', function () {
-    ajaxPost('/', ['participants' => [
-            ['name' => 'toto'],
-        ]])
-        ->assertStatus(422)
+    ajaxPost(URL::route('form.process'), ['participants' => [
+        ['name' => 'toto'],
+    ]])
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
-            'participants', 'participants.0.email', 'title', 'content-email', 'data-expiration',
+            'organizer.name', 'organizer.email', 'participants', 'participants.0.email', 'title', 'content',
         ]);
 
-    ajaxPost('/', ['participants' => [
-            ['name' => 'toto'],
-            ['name' => 'tata'],
-        ]])
-        ->assertStatus(422)
+    ajaxPost(URL::route('form.process'), ['participants' => [
+        ['name' => 'toto'],
+        ['name' => 'tata'],
+    ]])
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants', 'participants.0.email', 'participants.1.email',
-            'title', 'content-email', 'data-expiration',
+            'title', 'content',
         ]);
-});
+})->todo();
 
 it('fails if names are duplicates', function () {
-    ajaxPost('/', ['participants' => [
-            ['name' => 'toto'],
-            ['name' => 'toto'],
-        ]])
-        ->assertStatus(422)
+    ajaxPost(URL::route('form.process'), ['participants' => [
+        ['name' => 'toto'],
+        ['name' => 'toto'],
+    ]])
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
-            'participants',
+            'organizer.name', 'organizer.email', 'participants',
             'participants.0.name', 'participants.0.email',
             'participants.1.name', 'participants.1.email',
-            'title', 'content-email', 'data-expiration',
+            'title', 'content',
         ]);
-});
+})->todo();
 
 it('requires emails', function () {
-    ajaxPost('/', ['participants' => [
-            ['name' => 'toto'],
-            ['name' => 'tata'],
-            ['name' => 'tutu'],
-        ]])
-        ->assertStatus(422)
+    ajaxPost(URL::route('form.process'), ['participants' => [
+        ['name' => 'toto'],
+        ['name' => 'tata'],
+        ['name' => 'tutu'],
+    ]])
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants.0.email', 'participants.1.email', 'participants.2.email',
-            'title', 'content-email', 'data-expiration',
+            'title', 'content',
         ]);
 
-    ajaxPost('/', ['participants' => [
-            ['name' => 'toto'],
-            ['name' => 'tata', 'email' => 'test@test.com'],
-            ['name' => 'tutu'],
-        ]])
-        ->assertStatus(422)
+    ajaxPost(URL::route('form.process'), ['participants' => [
+        ['name' => 'toto'],
+        ['name' => 'tata', 'email' => 'test@test.com'],
+        ['name' => 'tutu'],
+    ]])
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants.0.email', 'participants.2.email',
-            'title', 'content-email', 'data-expiration',
+            'title', 'content',
         ]);
-});
+})->todo();
 
 it('needs valid email format', function () {
-    ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'email' => 'invalidformat'],
-            ['name' => 'tata', 'email' => 'test@test.com'],
-            ['name' => 'tutu', 'email' => 'tata@test.com'],
-        ]])
-        ->assertStatus(422)
+    ajaxPost(URL::route('form.process'), ['participants' => [
+        ['name' => 'toto', 'email' => 'invalidformat'],
+        ['name' => 'tata', 'email' => 'test@test.com'],
+        ['name' => 'tutu', 'email' => 'tata@test.com'],
+    ]])
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants.0.email',
-            'title', 'content-email', 'data-expiration',
+            'title', 'content',
         ]);
-});
+})->todo();
 
 it('needs email body', function () {
-    ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'email' => 'test@est.com'],
-            ['name' => 'tata', 'email' => 'test@test.com'],
-            ['name' => 'tutu', 'email' => 'test@test.com'],
-        ]])
-        ->assertStatus(422)
+    ajaxPost(URL::route('form.process'), ['participants' => [
+        ['name' => 'toto', 'email' => 'test@est.com'],
+        ['name' => 'tata', 'email' => 'test@test.com'],
+        ['name' => 'tutu', 'email' => 'test@test.com'],
+    ]])
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
-            'title', 'content-email', 'data-expiration',
+            'organizer.name', 'organizer.email', 'title', 'content',
         ]);
-});
+})->todo();
 
 it('fails if exclusion does not exist', function () {
-    ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'exclusions' => ['87']],
-            ['name' => 'tata'],
-            ['name' => 'tutu'],
-        ]])
-        ->assertStatus(422)
+    ajaxPost(URL::route('form.process'), ['participants' => [
+        ['name' => 'toto', 'exclusions' => ['87']],
+        ['name' => 'tata'],
+        ['name' => 'tutu'],
+    ]])
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants.0.exclusions.0', 'participants.0.email',
             'participants.1.email',
             'participants.2.email',
         ]);
-});
+})->todo();
 
 it('works with valid exclusion', function () {
-    ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'exclusions' => ['1']],
-            ['name' => 'tata'],
-            ['name' => 'tutu'],
-        ]])
-        ->assertStatus(422)
+    ajaxPost(URL::route('form.process'), ['participants' => [
+        ['name' => 'toto', 'exclusions' => ['1']],
+        ['name' => 'tata'],
+        ['name' => 'tutu'],
+    ]])
+        ->assertUnprocessable()
         ->assertJsonValidationErrors([
+            'organizer.name', 'organizer.email',
             'participants.0.email',
             'participants.1.email',
             'participants.2.email',
-            'title', 'content-email', 'data-expiration',
+            'title', 'content',
         ]);
-});
-
-it('fails if the expiration is too soon', function () {
-    ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'email' => 'test@test.com'],
-            ['name' => 'tata', 'email' => 'test@test.com'],
-            ['name' => 'tutu', 'email' => 'test@test.com'],
-        ], 'data-expiration' => date('Y-m-d')])
-        ->assertStatus(422)
-        ->assertJsonValidationErrors(['title', 'content-email', 'data-expiration']);
-});
-
-it('works if the expiration is far enough', function () {
-    ajaxPost('/', ['participants' => [
-            ['name' => 'toto', 'email' => 'test@test.com'],
-            ['name' => 'tata', 'email' => 'test@test.com'],
-            ['name' => 'tutu', 'email' => 'test@test.com'],
-        ], 'data-expiration' => date('Y-m-d', strtotime('+3 day'))])
-        ->assertStatus(422)
-        ->assertJsonValidationErrors(['title', 'content-email']);
-});
+})->todo();

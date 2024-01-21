@@ -2,53 +2,54 @@
 
 namespace App\Console\Commands;
 
-use Arr;
-use DrawHandler;
+use App\Actions\ChangeOrganizerEmail;
+use App\Actions\ChangeParticipantEmail;
+use App\Actions\SendPanelToOrganizer;
+use App\Actions\SendTargetToParticipant;
+use App\Traits\ParsesUrl;
 use Illuminate\Console\Command;
-use DrawCrypt;
-use URLParser;
 
 class FixOrganizer extends Command
 {
+    use ParsesUrl;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'fix:organizer {url : The URL received by one of the participants to write to their santa} {email : The correct email of the organizer}';
+    protected $signature = 'secretsanta:fix-organizer {url : The URL received by one of the participants to write to their santa} {email? : The correct email of the organizer}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Fix an organizer email';
+    protected $description = 'Fix an organizer email and send them again the link to their panel';
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
-        $this->setCryptKeyFromUrl($this->argument('url'));
+        $draw = $this->getDrawFromURL($this->argument('url'));
 
-        $draw = URLParser::parseByName('dearsanta', $this->argument('url'))->participant->draw;
+        if ($this->argument('email')) {
+            app(ChangeOrganizerEmail::class)->change($draw, $this->argument('email'));
+        } else {
+            app(SendPanelToOrganizer::class)->send($draw);
+        }
 
-        $draw->organizer->email = $this->argument('email');
-        $draw->organizer->save();
-
-        DrawHandler::sendOrganizerEmail($draw);
         $this->info('Organizer Recap sent');
 
-        DrawHandler::sendParticipantEmail($draw->organizer);
-        $this->info('Organizer Participant mail sent');
-    }
+        if ($draw->participant_organizer) {
+            if ($this->argument('email')) {
+                app(ChangeParticipantEmail::class)->change($draw->organizer, $this->argument('email'));
+            } else {
+                app(SendTargetToParticipant::class)->send($draw->organizer);
+            }
 
-    protected function setCryptKeyFromUrl($url)
-    {
-        $hash = Arr::get(explode('#', $url, 2), 1);
-        $key = base64_decode($hash);
-        DrawCrypt::setKey($key);
+            $this->info('Participant mail sent');
+        }
     }
 }

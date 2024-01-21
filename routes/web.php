@@ -1,12 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\DearSantaController;
-use App\Http\Controllers\MailController;
+use App\Http\Controllers\DrawDashboardController;
+use App\Http\Controllers\ErrorController;
+use App\Http\Controllers\FixOrganizerController;
+use App\Http\Controllers\JoinDrawController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SingleController;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,34 +22,63 @@ use App\Http\Controllers\RandomFormController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/faq', [SingleController::class, 'faq'])->name('faq');
+Route::get('/legal', [SingleController::class, 'legal'])->name('legal');
 
-Route::get('/', [RandomFormController::class, 'view']);
-Route::post('/', [RandomFormController::class, 'handle']);
+// TODO one day... Route::get('/dashboard', [SingleController::class, 'dashboard'])->name('dashboard');
 
-Route::get('/faq', [RandomFormController::class, 'faq'])->name('faq');
+// Visitor actions
+Route::get('/', [RandomFormController::class, 'display'])->name('form.index');
+Route::post('/process', [RandomFormController::class, 'handle'])->middleware([HandlePrecognitiveRequests::class])->name('form.process');
 
-Route::pattern('draw:hash', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
-Route::pattern('participant:hash', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
-Route::pattern('email:hash', '[0-9a-zA-Z]{'.config('hashids.connections.bounce.length').',}');
-Route::pattern('version', '[0-9]+');
+Route::get('/fix', [FixOrganizerController::class, 'view'])->name('fixOrganizer.index');
+Route::post('/fix', [FixOrganizerController::class, 'handle'])->name('fixOrganizer.handle');
 
-Route::get('/dearsanta/{participant:hash}', [DearSantaController::class, 'view'])->name('dearsanta');
-Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function () {
-    Route::get('/participant/{participant:hash}', [DearSantaController::class, 'fetch'])->name('dearsanta.fetch');
-    Route::post('/dearsanta/{participant:hash}', [DearSantaController::class, 'handle'])->name('dearsanta.contact');
-    Route::get('/dearsanta/{participant:hash}/fetchState', [DearSantaController::class, 'fetchState'])->name('dearsanta.fetchState');
-});
+Route::middleware('signed')
+    ->group(function () {
+        Route::get('/join/{draw:ulid}', [JoinDrawController::class, 'display'])->name('pending.join');
+        Route::post('/join/{draw:ulid}', [JoinDrawController::class, 'handle'])->middleware('decrypt.iv:draw,title')->name('pending.join.handle');
 
-Route::get('/org/{draw:hash}', [OrganizerController::class, 'view'])->name('organizerPanel');
-Route::middleware(['signed', 'decrypt.key:draw,mail_title'])->group(function () {
-    Route::get('/draw/{draw:hash}', [OrganizerController::class, 'fetch'])->name('organizerPanel.fetch');
-    Route::delete('/draw/{draw:hash}', [OrganizerController::class, 'delete'])->name('organizerPanel.delete');
-    Route::get('/draw/{draw:hash}/csvInit', [OrganizerController::class, 'csvInit'])->name('organizerPanel.csvInit');
-    Route::get('/draw/{draw:hash}/csvFinal', [OrganizerController::class, 'csvFinal'])->name('organizerPanel.csvFinal');
-    Route::get('/org/{draw:hash}/fetchState', [OrganizerController::class, 'fetchState'])->name('organizerPanel.fetchState');
-});
-Route::middleware(['signed', 'decrypt.key:participant,name'])->group(function () {
-    Route::post('/org/{draw:hash}/{participant:id}/changeEmail', [OrganizerController::class, 'changeEmail'])->name('organizerPanel.changeEmail');
-});
+        Route::get('/report/{participant:ulid}', [ReportController::class, 'view'])->name('report.index');
+        Route::post('/report/{participant:ulid}', [ReportController::class, 'handle'])->middleware('decrypt.iv:participant,name')->name('report.handle');
+    });
 
-Route::get('/email/{mail:hash}/{version}.png', [MailController::class, 'updateStatus'])->name('pixel')->middleware('signed');
+// Participant actions
+Route::get('/santa/{participant:ulid}', [DrawDashboardController::class, 'index'])->name('participant.index');
+// Route::get('/santa/{participant:ulid}', [DearSantaController::class, 'index'])->name('participant.index');
+Route::middleware(['decrypt.iv:participant,name', 'signed'])
+    ->group(function () {
+        Route::get('/santa/{participant:ulid}/fetch', [DrawDashboardController::class, 'fetch'])->name('participant.fetch');
+
+        Route::post('/santa/{participant:ulid}/name', [DrawDashboardController::class, 'changeParticipantName'])->name('participant.changeName');
+        Route::post('/santa/{participant:ulid}/email', [DrawDashboardController::class, 'changeParticipantEmail'])->name('participant.changeEmail');
+
+        Route::get('/santa/{participant:ulid}/confirm', [DrawDashboardController::class, 'confirmParticipantEmail'])->name('participant.confirmEmail');
+
+        Route::get('/santa/{participant:ulid}/target', [DrawDashboardController::class, 'resendTarget'])->name('participant.resendTarget');
+
+        Route::delete('/santa/{participant:ulid}', [DrawDashboardController::class, 'removeParticipant'])->name('participant.withdraw');
+
+        Route::post('/santa/{participant:ulid}/sendSanta', [DearSantaController::class, 'handleSanta'])->name('participant.contactSanta');
+        Route::post('/santa/{participant:ulid}/sendTarget', [DearSantaController::class, 'handleTarget'])->name('participant.contactTarget');
+
+        Route::get('/santa/{participant:ulid}/resendSanta/{dearSanta}', [DearSantaController::class, 'resendDearSanta'])->name('participant.resendDearSanta');
+        Route::get('/santa/{participant:ulid}/resendTarget/{dearTarget}', [DearSantaController::class, 'resendDearTarget'])->name('participant.resendDearTarget');
+
+    });
+
+// Organizer actions
+Route::middleware(['decrypt.iv:draw,title', 'signed'])
+    ->group(function () {
+        Route::post('/draw/{draw:ulid}/participate', [DrawDashboardController::class, 'participate'])->name('draw.participate');
+        Route::post('/draw/{draw:ulid}/withdraw', [DrawDashboardController::class, 'withdraw'])->name('draw.withdraw');
+
+        Route::post('/draw/{draw:ulid}/title', [DrawDashboardController::class, 'changeTitle'])->name('draw.changeTitle');
+
+        Route::post('/draw/{draw:ulid}/participants', [DrawDashboardController::class, 'addParticipant'])->name('draw.addParticipant');
+        Route::delete('/draw/{draw:ulid}/participants/{participant:ulid}', [DrawDashboardController::class, 'removeParticipant'])->scopeBindings()->name('draw.removeParticipant');
+
+        Route::post('/draw/{draw:ulid}/process', [DrawDashboardController::class, 'handle'])->name('draw.processDraw');
+
+        Route::post('/draw/{draw:ulid}/cancel', [DrawDashboardController::class, 'cancel'])->name('draw.cancelDraw');
+    });

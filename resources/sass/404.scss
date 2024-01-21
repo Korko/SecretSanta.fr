@@ -1,6 +1,3 @@
-/** Source: https://codepen.io/Wandersonsc/pen/RMerRy **/
-@import "layout";
-
 /**
 Wasted
 **/
@@ -43,10 +40,17 @@ Polaroid
     background: #fff;
     padding: 1rem;
     box-shadow: 0 0.2rem 1.2rem rgba(0,0,0,0.2);
-}
-.polaroid > img {
-    max-width: 100%;
-    height: auto;
+    background-image: url("../images/404-1.jpg");
+    background-image: image-set(
+        url("../images/404-1.avif") type("image/avif"),
+        url("../images/404-1.webp") type("image/webp"),
+        url("../images/404-1.jpg") type("image/jpeg")
+    );
+    background-origin: content-box;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height:  19vw;
 }
 .polaroid .caption {
     font-size: 1.8rem;

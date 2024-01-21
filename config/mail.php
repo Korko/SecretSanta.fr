@@ -29,7 +29,7 @@ return [
     | mailers below. You are free to add additional mailers as required.
     |
     | Supported: "smtp", "sendmail", "mailgun", "ses",
-    |            "postmark", "log", "array"
+    |            "postmark", "log", "array", "failover"
     |
     */
 
@@ -37,17 +37,16 @@ return [
         'mailtrap' => [
             'transport' => 'smtp',
             'host' => 'smtp.mailtrap.io',
-            'port' => 465,
+            'port' => 2525,
             'encryption' => 'tls',
             'username' => env('MAILTRAP_USERNAME'),
             'password' => env('MAILTRAP_PASSWORD'),
         ],
 
-        'mailhog' => [
+        'inbucket' => [
             'transport' => 'smtp',
-            'host' => env('MAILHOG_HOST', '127.0.0.1'),
-            'port' => env('MAILHOG_PORT', 1025),
-            'encryption' => null,
+            'host' => env('INBUCKET_HOST', 'inbucket'),
+            'port' => env('INBUCKET_PORT', 2500),
             'username' => null,
             'password' => null,
         ],
@@ -59,15 +58,31 @@ return [
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
         'ses' => [
             'transport' => 'ses',
         ],
 
+        'mailgun' => [
+            'transport' => 'mailgun',
+            // 'client' => [
+            //     'timeout' => 5,
+            // ],
+        ],
+
+        'postmark' => [
+            'transport' => 'postmark',
+            // 'client' => [
+            //     'timeout' => 5,
+            // ],
+        ],
+
         'sendmail' => [
             'transport' => 'sendmail',
-            'path' => '/usr/sbin/sendmail -bs',
+            'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
         ],
 
         'log' => [
@@ -77,6 +92,14 @@ return [
 
         'array' => [
             'transport' => 'array',
+        ],
+
+        'failover' => [
+            'transport' => 'failover',
+            'mailers' => [
+                'smtp',
+                'log',
+            ],
         ],
     ],
 
@@ -137,11 +160,21 @@ return [
     | DKIM Settings
     |--------------------------------------------------------------------------
     */
-    'dkim_selector' => env('MAIL_DKIM_SELECTOR'), // selector, required
-    'dkim_domain' => env('MAIL_DKIM_DOMAIN'), // domain, required
-    'dkim_private_key' => env('MAIL_DKIM_PRIVATE_KEY'), // path to private key, required
-    'dkim_identity' => env('MAIL_DKIM_IDENTITY'), // identity (optional)
-    'dkim_algo' => env('MAIL_DKIM_ALGO', 'rsa-sha256'), // sign algorithm (defaults to rsa-sha256)
-    'dkim_passphrase' => env('MAIL_DKIM_PASSPHRASE'), // private key passphrase (optional)
+
+    'dkim_selector' => env('MAIL_DKIM_SELECTOR'), // selector, required,
+
+    'dkim_domain' => env('MAIL_DKIM_DOMAIN'), // domain, required,
+
+    'dkim_private_key' => env('MAIL_DKIM_PRIVATE_KEY'), // path to private key, required,
+
+    'dkim_passphrase' => env('MAIL_DKIM_PASSPHRASE', ''), // private key passphrase (optional),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mail Interactions Settings
+    |--------------------------------------------------------------------------
+    */
+
+    'resend_delay' => 5 * 60, // 5m delay,
 
 ];

@@ -2,31 +2,23 @@
 
 namespace Tests;
 
-use App\Jobs\SendMail;
-use Closure;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Mail\Mailable;
-use Mail;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
+    use CreatesApplication, RefreshDatabase {
+        migrateFreshUsing as private migrateFreshUsingBase;
+    }
 
-    public function assertHasMailPushed($class, $recipient = null, Closure $callback = null)
+    protected function migrateFreshUsing()
     {
-        Mail::assertSent(function (Mailable $mail) use ($class, $recipient, $callback) {
-            if (
-                $mail instanceof $class &&
-                ($recipient === null || $mail->hasTo($recipient))
-            ) {
-                if ($callback !== null) {
-                    $callback($mail);
-                }
-
-                return true;
-            }
-
-            return false;
-        });
+        return array_merge(
+            [
+                // Specify the schema path as it's the same for mysql and testing connections
+                '--schema-path' => 'database/schema/mysql-schema.sql'
+            ],
+            $this->migrateFreshUsingBase()
+        );
     }
 }

@@ -2,35 +2,34 @@
 
 namespace Tests\Feature;
 
+use App\Models\DearSanta;
+use App\Models\DearTarget;
 use App\Models\Draw;
+use App\Models\Mail;
+use App\Models\Participant;
+use Database\Seeders\ExpiredDrawSeeder;
 
-class CleanupTest extends RequestCase
-{
-    use \Illuminate\Foundation\Testing\DatabaseMigrations;
-    use \Illuminate\Foundation\Testing\DatabaseTransactions;
+it('cleans up expired draws', function (Draw $drawNotExpired, Draw $drawExpired) {
+    artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
 
-    public function testDrawNotExpired(): void
-    {
-        $this->assertEquals(0, Draw::count());
-        $draw = Draw::factory()->create();
-        $this->assertEquals(1, Draw::count());
-        $this->assertDatabaseHas('draws', ['id' => $draw->id]);
+    expect($drawNotExpired)->toExists();
+    expect($drawExpired)->not->toExists();
+})->with('basic draw', 'expired draw');
 
-        Draw::cleanup();
+it('cleans up everything', function () {
+    seed(ExpiredDrawSeeder::class);
 
-        $this->assertEquals(1, Draw::count());
-        $this->assertDatabaseHas('draws', ['id' => $draw->id]);
-    }
+    expect(Draw::class)->not->toHaveCount(0);
+    expect(Participant::class)->not->toHaveCount(0);
+    expect(DearSanta::class)->not->toHaveCount(0);
+    expect(DearTarget::class)->not->toHaveCount(0);
+    expect(Mail::class)->not->toHaveCount(0);
 
-    public function testDrawExpired(): void
-    {
-        $this->assertEquals(0, Draw::count());
-        $draw = Draw::factory()->expired()->create();
-        $this->assertEquals(1, Draw::count());
-        $this->assertDatabaseHas('draws', ['id' => $draw->id]);
+    artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
 
-        Draw::cleanup();
-
-        $this->assertEquals(0, Draw::count());
-    }
-}
+    expect(Draw::class)->toHaveCount(0);
+    expect(Participant::class)->toHaveCount(0);
+    expect(DearSanta::class)->toHaveCount(0);
+    expect(DearTarget::class)->toHaveCount(0);
+    expect(Mail::class)->toHaveCount(0);
+});

@@ -14,16 +14,14 @@ use Illuminate\Support\Facades\Facade;
  * @method static string getKey()
  * @method static void setKey(string $key)
  *
- * @see \App\Services\Encrypter
+ * @see \App\Services\IVEncrypter
  */
 class DrawCrypt extends Facade
 {
     /**
      * Get the registered name of the component.
-     *
-     * @return string
      */
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return 'draw-encrypter';
     }

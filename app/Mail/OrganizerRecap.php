@@ -3,45 +3,41 @@
 namespace App\Mail;
 
 use App;
+use App\Actions\GenerateDrawCsv;
 use App\Models\Draw;
-use DrawCrypt;
+use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\URL;
+use Lang;
 
 class OrganizerRecap extends Mailable
 {
-    public $organizerName;
-    public $expirationDate;
-    public $deletionDate;
-    public $panelLink;
-    public $nextSolvable;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Draw $draw)
-    {
-        $this->subject = __('emails.organizer_recap_title', ['draw' => $draw->id]);
-
-        $this->organizerName = $draw->organizer->name;
-
-        $this->expirationDate = $draw->expires_at->locale(App::getLocale())->isoFormat('LL');
-        $this->deletionDate = $draw->deleted_at->locale(App::getLocale())->isoFormat('LL');
-
-        $this->nextSolvable = $draw->next_solvable;
-
-        $this->panelLink = URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getKey());
+    public function __construct(
+        protected readonly Draw $draw
+    ) {
     }
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
-    public function build()
+    public function build(): static
     {
-        return $this->view('emails.organizer_recap')
-                    ->text('emails.organizer_recap_plain');
+        return $this
+            ->subject(Lang::get('SecretSanta #:draw - Récapitulatif organisateur/organisatrice', ['draw' => $this->draw->ulid]))
+            ->markdown('emails.organizer_recap', [
+                'name' => $this->draw->organizer->name,
+                'draw' => $this->draw->ulid,
+                'deletionDate' => $this->draw->deletes_at->locale(App::getLocale())->isoFormat('LL'),
+                'panelLink' => URL::hashedRoute('participant.index', ['participant' => $this->draw->organizer]),
+            ])
+            ->attachData(
+                data: app(GenerateDrawCsv::class)->generateInitial($this->draw),
+                name: 'secretsanta_'.$this->draw->expires_at->isoFormat('YYYY-MM-DD').'_init.csv',
+                options: ['mime' => 'text/csv'],
+            );
     }
 }

@@ -3,56 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RandomFormRequest;
-use Arr;
-use DrawHandler;
-use Illuminate\Http\Request;
+use App\Models\Draw;
+use App\Notifications\PendingDrawConfirm;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\URL;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Symfony\Component\HttpFoundation\Response;
 
 class RandomFormController extends Controller
 {
-    public function view()
+    public function display(): Response
     {
-        return view('randomForm');
+        return response()->view('pages/random-form');
     }
 
-    public function handle(RandomFormRequest $request)
+    public function handle(RandomFormRequest $request): JsonResponse
     {
-        $this->drawAndInform($request);
+        $safe = $request->safe();
 
-        return response()->json([
-            'message' => trans('message.sent')
+        $draw = new Draw;
+        $draw->title = $safe['title'];
+        $draw->description = $safe['description'] ?? null;
+        $draw->budget = $safe['budget'];
+        $draw->event_date = $safe['event-date'] ?? null;
+        $draw->participant_organizer = $safe['participant-organizer'] ?? false;
+        $draw->save();
+
+        $organizer = $draw->participants()->create([
+            'name' => $safe['organizer']['name'],
+            'email' => $safe['organizer']['email'],
         ]);
-    }
+        $draw->organizer()->associate($organizer);
+        $draw->save();
 
-    protected function drawAndInform(Request $request)
-    {
-        $participants = $this->formatParticipants($request->input('participants'));
-
-        $dataExpiration = $request->input('data-expiration');
-
-        $title = $request->input('title');
-        $body = $request->input('content-email');
-
-        DrawHandler::toParticipants($participants)
-            ->expiresAt($dataExpiration)
-            ->notify($title, $body);
-    }
-
-    protected function formatParticipants(array $participants): array
-    {
-        $totalParticipants = count($participants);
-        for ($i = 0; $i < $totalParticipants; $i++) {
-            $participant = &$participants[$i];
-
-            $participant['exclusions'] = array_map('intval', Arr::get($participant, 'exclusions', []));
+        foreach(($safe->participants ?? []) as $participant) {
+            $draw->participants()->create([
+                'name' => $participant['name'],
+                'email' => $participant['email'] ?? null,
+            ]);
         }
 
-        return $participants;
-    }
+        $draw->organizer->notify(new PendingDrawConfirm($draw));
 
-    public function faq()
-    {
-        return view('faq', [
-            'questions' => __('faq.questions'),
+        $link = URL::signedRoute('pending.join', [
+            'draw' => $draw,
+        ]);
+        return response()->json([
+            'link' => $link,
+            'qrcode' => QrCode::format('png')
+                ->size(256)
+                ->generate($link),
+            'message' => trans('message.pending'),
+            'draw' => $draw->uid
         ]);
     }
 }

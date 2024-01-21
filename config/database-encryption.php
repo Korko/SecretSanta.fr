@@ -3,6 +3,7 @@
  * src/config/database-encryption.php.
  *
  * @author      Austin Heap <me@austinheap.com>
+ *
  * @version     v0.2.1
  */
 
@@ -15,7 +16,7 @@ return [
      *
      * @var null|bool
      */
-    'enabled'            => true,
+    'enabled' => true,
 
     /*
      * Prefix used in attribute header.
@@ -24,7 +25,7 @@ return [
      *
      * @var null|string
      */
-    'prefix'             => null,
+    'prefix' => null,
 
     /*
      * Enable header versioning.
@@ -33,7 +34,7 @@ return [
      *
      * @var null|bool
      */
-    'versioning'         => false,
+    'versioning' => false,
 
     /*
      * Control characters used by header.

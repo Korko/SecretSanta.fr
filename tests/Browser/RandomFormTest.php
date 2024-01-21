@@ -2,22 +2,20 @@
 
 namespace Tests\Browser;
 
-use Faker\Factory as FakerFactory;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
-use Tests\Browser\Pages\RandomFormPage;
-use Tests\Browser\Components\ExclusionPicker;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Dusk\Browser;
+use Tests\Browser\Components\ExclusionPicker;
+use Tests\Browser\Pages\RandomFormPage;
+use Tests\DuskTestCase;
 
 class RandomFormTest extends DuskTestCase
 {
     use withFaker;
 
-    public function testDuplicateName()
+    public function testDuplicateName(): void
     {
         $this->browse(function (Browser $browser) {
-            $name = $this->faker->name;
+            $name = $this->faker->name();
 
             $browser->visit(new RandomFormPage)
                     ->type('participants[0][name]', $name)
@@ -29,20 +27,20 @@ class RandomFormTest extends DuskTestCase
         });
     }
 
-    public function testNoResult()
+    public function testNoResult(): void
     {
         $this->browse(function (Browser $browser) {
-            $name1 = $this->faker->name;
-            $name2 = $this->faker->name;
-            $name3 = $this->faker->name;
+            $name1 = $this->faker->name();
+            $name2 = $this->faker->name();
+            $name3 = $this->faker->name();
 
             $browser->visit(new RandomFormPage)
                     ->type('participants[0][name]', $name1)
                     ->type('participants[1][name]', $name2)
                     ->type('participants[2][name]', $name3)
-                    ->type('participants[0][email]', $this->faker->email)
-                    ->type('participants[1][email]', $this->faker->email)
-                    ->type('participants[2][email]', $this->faker->email)
+                    ->type('participants[0][email]', $this->faker->email())
+                    ->type('participants[1][email]', $this->faker->email())
+                    ->type('participants[2][email]', $this->faker->email())
                     ->within(new ExclusionPicker('tr[dusk=participant0]'), function ($browser) use ($name2, $name3) {
                         $browser->selectParticipant($name2)
                                 ->selectParticipant($name3);
@@ -50,10 +48,9 @@ class RandomFormTest extends DuskTestCase
                     ->within(new ExclusionPicker('tr[dusk=participant2]'), function ($browser) use ($name1) {
                         $browser->selectParticipant($name1);
                     })
-                    ->type('title', $this->faker->sentence)
-                    ->type('content-email', $this->faker->paragraph)
-                    ->append('content-email', '{TARGET}')
-                    ->type('data-expiration', $this->faker->dateTimeBetween('+1 day', '+30 days')->format('m/d/Y'))
+                    ->type('title', $this->faker->sentence())
+                    ->type('content', $this->faker->paragraph())
+                    ->append('content', '{TARGET}')
                     ->scrollIntoView('#randomForm button[type=submit]')
                     ->click('#randomForm button[type=submit]')
                     ->waitForText('Les exclusions que vous avez choisies ne permettent pas d\'attribuer une cible par participant.');

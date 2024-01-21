@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\MigrationSubscriber;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -16,12 +17,19 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Determine if events and listeners should be automatically discovered.
+     * The subscriber classes to register.
      *
-     * @return bool
+     * @var array
      */
-    public function shouldDiscoverEvents()
+    protected $subscribe = [
+        MigrationSubscriber::class,
+    ];
+
+    /**
+     * Determine if events and listeners should be automatically discovered.
+     */
+    public function shouldDiscoverEvents(): bool
     {
-        return true;
+        return false;
     }
 }

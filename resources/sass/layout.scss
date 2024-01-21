@@ -1,13 +1,16 @@
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
-@import '~alertifyjs/build/css/alertify.min';
-@import '~alertifyjs/build/css/themes/bootstrap.min';
+@import "@fortawesome/fontawesome-free/css/all.css";
 
-.alertify .ajs-dialog {
-    top: 50%;
-    transform: translateY(-50%);
-    margin: auto;
+#loadOverlay {
+    display: none;
+}
+.cssLoading * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
 }
 
 /*
@@ -26,14 +29,29 @@ and your footer gets pushed down a bit more, creating vertical scroll bars in th
 html,
 body { height: 100%; }
 
-#wrap { min-height: 100%; }
+input, button, textarea, select {
+    font: inherit;
+}
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
 
 $footer-height: 90px !default;
 
-#main {
-    overflow: auto;
+#app, #app:empty ~ noscript {
+    isolation: isolate;
+    min-height: 100%;
     padding-bottom: $footer-height + 10px;
+    display: flex;
+    flex-direction: column;
 }  /* must be same height as the footer */
+#app:empty, #app:not(:empty) ~ noscript {
+    display: none;
+}
+noscript {
+    text-align: center;
+}
 
 footer {
     position: relative;
@@ -55,18 +73,6 @@ body::before {/* thanks to Maleika (Kohoutec) */
     margin-top: -32767px;/* thank you Erik J - negate effect of float */
 }
 
-/* IMPORTANT
-
-You also need to include this conditional style in the <head> of your HTML file to feed this style to IE 6 and lower and 8 and higher.
-
-<!--[if !IE 7]>
-	<style type="text/css">
-		#wrap {display: table;height: 100%}
-	</style>
-<![endif]-->
-
-*/
-
 /*
 Theme Name: MeatKing
 Version:    1.14.20
@@ -76,28 +82,16 @@ Tiny bug when width <780px, there an horizontal scrollbar
 
 TABLE OF CONTENTS
     01 - General and Typography
-    02 - Header
-    03 - Navigation
-    04 - Parallax
-    05 - What/How
-    06 - Form
-    07 - Footer
-    08 - Responsive styles
-    09 - Ribbon
-    10 - Modal
-    11 - Readability
-    12 - Widgets
-    13 - Tooltip
+    02 - Footer
+    03 - Ribbon
+    04 - Modal
+    05 - Readability
+    06 - Widgets
 */
 
 /* ==========================================================================
     01. General and Typography
 ========================================================================== */
-
-@font-face {
-    font-family: kreon;
-    src: url(../fonts/Kreon-VariableFont_wght.ttf) format('truetype');
-}
 
 html {
     font-size: 14px;
@@ -163,7 +157,7 @@ img {
     z-index: 1;
 }
 
-#main .light-wrapper:last-of-type .ss-style-bottom {
+#app .light-wrapper:last-of-type .ss-style-bottom {
     display: none;
 }
 
@@ -184,86 +178,7 @@ a.link {
 }
 
 /* ==========================================================================
-    03. Navigation
-========================================================================== */
-#menu {
-    background: rgba(33, 45, 57, 0.8);
-    margin-bottom: 0;
-}
-
-nav#navbar {
-    width: 100%;
-    display: flex;
-}
-
-.navbar-brand h2 {
-    margin-top: 0;
-    font-weight: bold;
-    color: white;
-}
-
-.navbar-brand {
-    padding-top: 8px;
-    padding-bottom: 0;
-}
-
-.navbar .navbar-nav > li > a {
-    -webkit-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    transition: all 0.4s;
-    color: white;
-    font-weight: bold;
-    padding: 15px;
-    line-height: 20px;
-    display: block;
-}
-
-.navbar .navbar-nav > li > a:hover,
-.narbar .navbar-nav > .active > a {
-    background: #ed0121;
-    color: white;
-    text-shadow: none;
-}
-
-.nav.navbar-nav-left {
-    display: inline-flex;
-    justify-content: flex-end;
-    flex: 1;
-    margin-right: 60px;
-}
-
-.nav.navbar-nav-right {
-    display: inline-flex;
-    justify-content: flex-start;
-    flex: 1;
-    margin-left: 60px;
-}
-
-#logo {
-    position: absolute;
-    display: block !important;
-    width: 110px;
-    left: 50%;
-    margin-left: calc(-55px - 0.5rem);/* Don't forget half the padding of .navbar */
-    background: black;
-    -webkit-border-radius: 0 0 100% 100%;
-    -moz-border-radius: 0 0 100% 100%;
-    border-radius: 0 0 100% 100%;
-    padding: 12px;
-    top: 0;
-}
-
-/* ==========================================================================
-    06. Content
-========================================================================== */
-#content {
-    padding-top: 140px;
-    padding-bottom: 60px;
-}
-
-/* ==========================================================================
-    07. Footer
+    02. Footer
 ========================================================================== */
 .dark-wrapper {
     background: #b50119;
@@ -276,7 +191,7 @@ nav#navbar {
 }
 
 .themeBy {
-    color: #ed0121;
+    color: #a00;
     background: white;
 }
 
@@ -285,52 +200,7 @@ footer .row {
 }
 
 /* ==========================================================================
-    08. Responsive styles
-========================================================================== */
-@media (max-width: 767px) {
-    .navbar {
-        min-height: 30px;
-    }
-
-    #logo {
-        -webkit-transition: all 0.3s ease;
-        transition: all 0.3s ease;
-    }
-
-    body.scrolled #logo {
-        width: 60px;
-        margin-left: -30px;
-    }
-
-    .navbar-nav > li.btn-group {
-        margin: 0 10px;
-    }
-}
-
-@media (min-width: 768px) {
-    html .navbar-nav {
-        float: none !important;
-        width: 100%;
-        text-align: center;
-        margin-left: -16px;
-    }
-
-    html:lang(en) .navbar-nav {
-        margin-left: 13px;
-    }
-
-    .navbar-nav > li {
-        display: inline-block;
-        float: none;
-    }
-
-    .navbar-nav > li.btn-group {
-        margin: 0 15px;
-    }
-}
-
-/* ==========================================================================
-    09. Ribbon
+    03. Ribbon
 ========================================================================== */
 #ribbon {
     display: none;
@@ -345,7 +215,7 @@ footer .row {
         width: 105px;
         overflow: visible;
         height: 135px;
-        z-index: 9999;
+        z-index: 10000001;
     }
 
     #ribbon a {
@@ -357,7 +227,7 @@ footer .row {
         font-weight: bold;
         padding: 5px 40px;
         line-height: 20px;
-        transition: 0.5s;
+        transition: background 0.5s, color 0.5s;
         width: 200px;
         position: absolute;
         top: 55px;
@@ -394,11 +264,11 @@ footer .row {
 }
 
 /* ==========================================================================
-    10. Modal
+    04. Modal
 ========================================================================== */
 .modal-mask {
     position: fixed;
-    z-index: 9998;
+    z-index: 10000000;
     top: 0;
     left: 0;
     width: 100%;
@@ -461,7 +331,7 @@ footer .row {
 }
 
 /* ==========================================================================
-    11. Readability
+    05. Readability
 ========================================================================== */
 .btn-outline-success {
     color: #2c642c;
@@ -506,193 +376,12 @@ footer .row {
 }
 
 /* ==========================================================================
-    12. Widgets
+    06. Widgets
 ========================================================================== */
 .card-title {
     font-weight: bold;
     text-transform: uppercase;
 }
-
-/* ==========================================================================
-    13. Tooltip
-========================================================================== */
-.tip-wrapper {
-    display: inline-block;
-    position: relative;
-    text-align: left;
-}
-.tip-wrapper .tip-handler {
-    text-decoration: underline dotted;
-}
-
-.tip-content h3 {margin: 12px 0;}
-
-.tip-content {
-    min-width: 300px;
-    max-width: 400px;
-    color: #EEEEEE;
-    background-color: #444444;
-    font-weight: normal;
-    font-size: 13px;
-    border-radius: 8px;
-    position: absolute;
-    z-index: 99999999;
-    box-sizing: border-box;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.5);
-    visibility: hidden; opacity: 0; transition: opacity 0.8s;
-    padding: 0;
-}
-.tip-content.right {
-    top: 50%;
-    left: 100%;
-    margin-left: 20px;
-    transform: translate(0, -50%);
-}
-.tip-content.left {
-    top: 50%;
-    right: 100%;
-    margin-right: 20px;
-    transform: translate(0, -50%);
-}
-.tip-content.top {
-    top: -20px;
-    left: 50%;
-    transform: translate(-30%,-100%);
-}
-.tip-content.bottom {
-    top: 40px;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-
-.tip-wrapper:hover .tip-content {
-    visibility: visible; opacity: 1;
-}
-
-.tip-content img {
-    width: 400px;
-    border-radius: 8px 8px 0 0;
-}
-.tip-content .text-content {
-    padding: 10px 20px;
-}
-
-.tip-content.right i {
-    position: absolute;
-    top: 50%;
-    right: 100%;
-    margin-top: -12px;
-    width: 12px;
-    height: 24px;
-    overflow: hidden;
-}
-.tip-content.right i::after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    left: 0;
-    top: 50%;
-    transform: translate(50%,-50%) rotate(-45deg);
-    background-color: #444444;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.5);
-}
-
-.tip-content.left i {
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    margin-top: -12px;
-    width: 12px;
-    height: 24px;
-    overflow: hidden;
-}
-.tip-content.left i::after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    left: 0;
-    top: 50%;
-    transform: translate(-50%,-50%) rotate(-45deg);
-    background-color: #444444;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.5);
-}
-
-.tip-content.top i {
-    position: absolute;
-    top: 100%;
-    left: 30%;
-    margin-left: -12px;
-    width: 24px;
-    height: 12px;
-    overflow: hidden;
-}
-.tip-content.top i::after {
-    content: '';
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    left: 50%;
-    transform: translate(-50%,-50%) rotate(45deg);
-    background-color: #444444;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.5);
-}
-
-.tip-content.bottom i {
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -12px;
-    width: 24px;
-    height: 12px;
-    overflow: hidden;
-}
-.tip-content.bottom i::after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    left: 50%;
-    transform: translate(-50%,50%) rotate(45deg);
-    background-color: #444444;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.5);
-}
-
-@font-face {
-    font-family: Cookie;
-    src: url(../fonts/Cookie-Regular.ttf) format('truetype');
-}
-
-.bmc-button {
-    line-height: 36px !important;
-    height: 37px !important;
-    text-decoration: none !important;
-    display: inline-flex !important;
-    color: #ffffff !important;
-    background-color: #FF813F !important;
-    border-radius: 3px !important;
-    border: 1px solid transparent !important;
-    padding: 1px 9px !important;
-    font-size: 22px !important;
-    letter-spacing: 0.6px !important;
-    box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;
-    -webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;
-    margin: 0 auto !important;
-    font-family: 'Cookie', cursive !important;
-    -webkit-box-sizing: border-box !important;
-    box-sizing: border-box !important;
-    -o-transition: 0.3s all linear !important;
-    -webkit-transition: 0.3s all linear !important;
-    -moz-transition: 0.3s all linear !important;
-    -ms-transition: 0.3s all linear !important;
-    transition: 0.3s all linear !important;
-}
-
-.bmc-button img {
-    width: 27px !important;
-    margin-bottom: 1px !important;
-    box-shadow: none !important;
-    border: none !important;
-    vertical-align: middle !important;
+.card-body {
+    list-style-position: inside;
 }

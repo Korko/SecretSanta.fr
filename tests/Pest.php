@@ -1,8 +1,13 @@
 <?php
 
 use App\Models\Draw;
-use App\Models\Participant;
-use function Pest\Faker\faker;
+use App\Services\DrawFormHandler;
+
+use App\Services\DrawHandler;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Testing\TestResponse;
+use Tests\DuskTestCase;
+use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +20,8 @@ use function Pest\Faker\faker;
 |
 */
 
-uses(Tests\DuskTestCase::class)->in('Browser');
-uses(Tests\TestCase::class)->in('Feature');
-uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundation\Testing\DatabaseTransactions::class)->in('Feature');
+uses(DuskTestCase::class)->in('Browser');
+uses(TestCase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +38,21 @@ uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundat
     return $this->toBe(1);
 });*/
 
+/**
+ * Assert the count of model entries.
+ *
+ * @param  string  $class
+ * @param  int  $count
+ * @return void
+ */
+expect()->intercept('toHaveCount', fn (mixed $value) => is_string($value) && is_subclass_of($value, Model::class), function (int $count) {
+    return test()->assertDatabaseCount($this->value, $count);
+});
+
+expect()->extend('toExists', function () {
+    return test()->assertModelExists($this->value);
+});
+
 /*
 |--------------------------------------------------------------------------
 | Functions
@@ -45,131 +64,70 @@ uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundat
 |
 */
 
-function assertHasMailPushed($class, $recipient = null, Closure $callback = null) {
-    Mail::assertSent($class, function ($mail) use ($recipient, $callback) {
-        if ($recipient === null || $mail->hasTo($recipient)) {
-            if ($callback !== null) {
-                $callback($mail);
-            }
-
-            return true;
-        }
-
-        return false;
-    });
-}
-
-function prepareAjax($headers = []) {
+function prepareAjax($headers = []): TestCase
+{
     $headers = $headers + [
-        'Accept'           => 'application/json',
+        'Accept' => 'application/json',
         'X-Requested-With' => 'XMLHttpRequest',
-        'X-HASH-KEY'       => base64_encode(DrawCrypt::getKey())
+        'X-HASH-IV' => base64_encode(DrawCrypt::getIV()),
     ];
+
     return test()->withHeaders($headers);
 }
 
-function ajaxPost($url, array $postArgs = [], $headers = []) {
+function ajaxPost($url, array $postArgs = [], $headers = []): TestResponse
+{
     return prepareAjax($headers)->json('POST', $url, $postArgs);
 }
 
-function ajaxGet($url, $headers = []) {
+function ajaxGet($url, $headers = []): TestResponse
+{
     return prepareAjax($headers)->json('GET', $url);
 }
 
-function createDraw($participants) {
-    return DrawHandler::toParticipants($participants)
-        ->expiresAt(date('Y-m-d', strtotime('+2 days')))
-        ->notify('test mail {SANTA} => {TARGET} title', 'test mail {SANTA} => {TARGET} body');
+function ajaxDelete($url, $headers = []): TestResponse
+{
+    return prepareAjax($headers)->json('DELETE', $url);
 }
 
-function createDrawWithParticipants(int $participants): Draw {
-    assertGreaterThan(1, $participants);
+function createDraw($participants, $params = [])
+{
+    return ajaxPost(URL::route('form.process'), $params + [
+        'participant-organizer' => '1',
+        'participants' => $participants,
+        'title' => 'this is a test',
+        'content' => 'test mail {SANTA} => {TARGET}',
+    ])
+        ->assertJsonStructure(['message']);
+}
 
-    $draw = Draw::factory()->create();
-    $draw->participants()->createMany(
-        Participant::factory($participants)->make()->toArray()
-    );
+function createServiceDraw($participants, $data = []): Draw
+{
+    $draw = Draw::factory()
+        ->withParticipants($participants)
+        ->create($data);
 
-    foreach ($draw->participants as $idx => $participant) {
-        $target = $draw->participants[$idx - 1 >= 0 ? $idx - 1 : $participants - 1];
-        $participant->target()->save($target);
-    }
+    DrawHandler::solve($draw);
 
     return $draw;
 }
 
-function createNewDraw(int $totalParticipants): array {
-    assertEquals(0, Draw::count());
-    assertEquals(0, Participant::count());
+/**
+ * Laravel TestCase aliases
+ */
 
-    $participants = generateParticipants($totalParticipants);
-
-    // Initiate DearSanta
-    ajaxPost('/', [
-            'participants'    => $participants,
-            'title'           => faker()->sentence(),
-            'content-email'   => 'test mail {SANTA} => {TARGET}',
-            'data-expiration' => date('Y-m-d', strtotime('+2 days')),
-        ])
-        ->assertJsonStructure(['message'])
-        ->assertStatus(200);
-
-    assertEquals(1, Draw::count());
-    assertEquals($totalParticipants, Participant::count());
-
-    return $participants;
-}
-
-function generateParticipants(int $totalParticipants): array {
-    $participants = [];
-    for ($i = 0; $i < $totalParticipants; $i++) {
-        $participants[] = [
-            'name' => faker()->unique()->name,
-            'email' => faker()->unique()->safeEmail,
-            'target' => ($i === 0) ? $totalParticipants - 1 : $i - 1
-        ];
-    }
-
-    return formatParticipants($participants);
+/**
+ * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithConsole
+ */
+function artisan($command, $parameters = [])
+{
+    return test()->artisan(...func_get_args());
 }
 
 /**
- * Expected $participants array format:
- *
- * $participants = [
- *  [
- *      'name'   => 'foo',
- *      'email'  => 'test@test.com',
- *      'target' => 1,
- *  ],
- *  [
- *      'name'   => 'bar',
- *      'email'  => 'test2@test.com',
- *      'target' => 2,
- *  ],
- *  [
- *      'name'   => 'foobar',
- *      'email'  => 'test3@test.com',
- *      'target' => 0,
- *  ],
- * ];
+ * @see \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase
  */
-function formatParticipants($participants): array {
-    $participants = array_map(function ($idx) use ($participants) {
-        if (isset($participants[$idx]['target'])) {
-            $participants[$idx] += [
-                // Remove the keys and cast as string to simulate an html form submission
-                'exclusions' => array_values(
-                    array_map('strval',
-                        // Get all the participants idx but the current one and the target
-                        // (this participant will only draw their target and nobody else)
-                        array_diff(array_keys($participants), [$idx], [$participants[$idx]['target']])
-                    )
-                ),
-            ];
-        }
-        return $participants[$idx];
-    }, array_keys($participants));
-
-    return $participants;
+function seed($class = 'Database\\Seeders\\DatabaseSeeder')
+{
+    return test()->seed(...func_get_args());
 }

@@ -15,7 +15,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
-        \Fruitcake\Cors\HandleCors::class,
+        \Illuminate\Http\Middleware\HandleCors::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
@@ -35,19 +35,20 @@ class Kernel extends HttpKernel
             //\Illuminate\View\Middleware\ShareErrorsFromSession::class,
             //\App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\HandleInertiaRequests::class,
         ],
     ];
 
     /**
-     * These middleware may be assigned to groups or used individually.
+     * Aliases may be used to conveniently assign middleware to routes and groups.
      *
      * @var array
      */
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
-        'signed'        => \Illuminate\Routing\Middleware\ValidateSignature::class,
-        'throttle'      => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'decrypt.key'   => \App\Http\Middleware\HandleEncryptionKey::class,
+        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'decrypt.iv' => \App\Http\Middleware\HandleEncryptionIV::class,
     ];
 
     /**
@@ -55,14 +56,14 @@ class Kernel extends HttpKernel
      *
      * This forces non-global middleware to always be in the given order.
      *
-     * @var array
+     * @var string[]
      */
     protected $middlewarePriority = [
         //\Illuminate\Session\Middleware\StartSession::class,
         //\Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         //\App\Http\Middleware\EncryptCookies::class,
-        \App\Http\Middleware\HandleEncryptionKey::class,
+        \App\Http\Middleware\HandleEncryptionIV::class,
         //\App\Http\Middleware\VerifyCsrfToken::class,
     ];
 }

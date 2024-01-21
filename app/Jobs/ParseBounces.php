@@ -2,78 +2,41 @@
 
 namespace App\Jobs;
 
-use App\Mail\TrackedMailable;
-use App\Models\Mail as MailModel;
-use App\Services\EmailClient;
-use App\Traits\UpdatesMailDelivery;
+use App\Contracts\EmailMessage;
+use App\Contracts\Mailbox;
+use App\Services\MailTracker;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
-use Webklex\PHPIMAP\Message as EmailMessage;
 
 class ParseBounces implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, UpdatesMailDelivery;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle(EmailClient $emailClient)
+    public function handle(Mailbox $mailbox, MailTracker $tracker): void
     {
-        $unseenMails = $emailClient->getUnseenMails();
-        foreach ($unseenMails as $unseenMail) {
-            $this->handleMail($unseenMail);
+        $recipients = $this->getRecipients($mailbox);
 
-            try {
-                $unseenMail->move(config('imap.folders.trash'));
-            } catch(MessageHeaderFetchingException $e) {
-                // Ignore that error
-            }
+        foreach ($recipients as $recipient) {
+            $tracker->handle($recipient);
         }
     }
 
-    protected function handleMail(EmailMessage $message): void
+    protected function getRecipients(Mailbox $mailbox)
     {
-        $recipient = $this->getFirstRecipientAddress($message);
+        $unseenMails = $mailbox->getUnseenMails();
+        foreach ($unseenMails as $index => &$unseenMail) {
+            yield $this->getFirstRecipientAddress($unseenMail);
 
-        $params = (array) sscanf(
-            $recipient,
-            str_replace('*', '%[a-z]-%[0-9a-zA-Z]-%d', config('mail.return_path'))
-        );
-
-        if(!empty($params[0])) {
-            $mail = MailModel::findByHashOrFail($params[1]);
-
-            switch($params[0]) {
-                case TrackedMailable::BOUNCE:
-                    // TODO: Determine depending on the bounce error, if the failure is temporary (4xx) or final (5xx)
-                    // Auto-retry or not
-                    $this->updateDelivery($mail, MailModel::ERROR, $params[2]);
-                    break;
-                case TrackedMailable::CONFIRM:
-                    $this->updateDelivery($mail, MailModel::RECEIVED, $params[2]);
-                    break;
-            }
+            unset($unseenMails[$index]);
         }
+        unset($unseenMail);
     }
 
     protected function getFirstRecipientAddress(EmailMessage $message): string
     {
-        $recipient = collect($message->getTo())
-            ->first();
-
-        return is_object($recipient) ? $recipient->mailbox : '';
-    }
-
-    protected function parseBounce($recipient): ?array
-    {
-
-
-        return $params[0] ? $params : null;
+        return $message->getTo()[0];
     }
 }
