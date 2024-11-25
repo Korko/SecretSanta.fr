@@ -28,7 +28,7 @@ return [
             'title'    => 'Qu\'est-ce que c\'est ?',
             'subtitle' => 'Description du Secret Santa',
             'heading1' => 'Le principe',
-            'content1' => "Secret Santa est un moyen drôle et original de s'offrir anonymement des cadeaux entre amis, collègues...
+            'content1' => "On le nomme Père Noël Secret, Noël Canadien, Secret Santa est un moyen drôle et original de s'offrir anonymement des cadeaux entre amis, collègues...
 Le déroulement est simple : chaque participant reçoit, de façon aléatoire, le nom de la personne à qui il devra faire un cadeau.
 Le montant du cadeau est généralement fixé au préalable (2€, 5€, 10€...)
 Le but n'est pas forcément de faire un beau cadeau mais d'être créatif !",
@@ -49,8 +49,9 @@ A noter que secretsanta.fr est conçu de façon à ce qu'une personne ne puisse 
             'content2' => "Ajoutez des exclusions. Si vous ne voulez pas que deux participant(e)s puissent se piocher l'un l'autre, remplissez le champ \"Exclusions\".",
             'heading3' => 'Troisième étape : préparer l\'e-mail',
             'content3' => "Il ne vous reste plus qu'à remplir le titre et le corps du courriel que les participant(e)s recevront.
-Le mot clef \"{TARGET}\" est obligatoire dans le corps du message afin de donner à chaque personne sa \"cible\".
-(Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.",
+Le mot clef \"{TARGET}\" est obligatoire dans le corps du message, il sera automatiquement replacé par le nom de la \"cible\" de chaque participant.
+(Optionel) Vous pouvez aussi utiliser le mot clef \"{SANTA}\" qui sera remplacé par le nom du destinataire du message.
+Vous pourriez inclure par exemple la phrase \"Bonjour {SANTA}, tu devras faire un cadeau à {TARGET}\".",
             'notice' => 'secretsanta.fr ne sauvegarde vos données que lorsque cela est requis.
 Celles-ci sont chiffrées pour être inutilisables sans action de votre part.
 Aucune de ces données ne seront partagées et vous avez le contrôle total sur celles-ci.
