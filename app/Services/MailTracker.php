@@ -29,7 +29,7 @@ class MailTracker
         if ($this->isEmailReceived($unseenMail)) {
             $mail->markAsReceived();
         } else {
-            $mail->markAsBounced();
+            $mail->markAsError();
         }
     }
 
@@ -41,7 +41,7 @@ class MailTracker
             throw new ModelNotFoundException();
         }
 
-        return MailModel::where('notification', $notificationId)->first();
+        return MailModel::where('notification', $notificationId)->firstOrFail();
     }
 
     protected function isEmailReceived(EmailMessage $message)
@@ -75,7 +75,16 @@ class MailTracker
     {
         $recipient = $message->getTo()[0];
 
-        return is_object($recipient) ? stristr($recipient->mailbox, '@', true) : '';
+        $address = '';
+        if (is_object($recipient)) {
+            $address = $recipient->mailbox;
+
+            if (str_contains($address, '@')) {
+                $address = stristr($recipient->mailbox, '@', true);
+            }
+        }
+
+        return $address;
     }
 
     protected function parseReturnPath($returnPath)
