@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Channels\MailChannel;
+use App\Solvers\HatSolver;
+use App\Solvers\SolverInterface;
 use DrawCrypt;
 use Illuminate\Foundation\Application;
 use Illuminate\Mail\Markdown;
 use Illuminate\Notifications\ChannelManager;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
 use Queue;
 
@@ -19,13 +23,13 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            \App\Solvers\SolverInterface::class,
-            \App\Solvers\HatSolver::class
+            SolverInterface::class,
+            HatSolver::class
         );
 
         $channelManager = $this->app->get(ChannelManager::class);
         $channelManager->extend('mail', function (Application $application) {
-            return new \App\Channels\MailChannel($application->get('mail.manager'), $application->get(Markdown::class));
+            return new MailChannel($application->get('mail.manager'), $application->get(Markdown::class));
         });
     }
 
@@ -44,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
             ];
         });
 
-        $this->app['events']->listen(\Illuminate\Queue\Events\JobProcessing::class, function ($event) {
+        $this->app['events']->listen(JobProcessing::class, function ($event) {
             if (isset($event->job->payload()['data']['iv'])) {
                 DrawCrypt::setIV(base64_decode($event->job->payload()['data']['iv']));
             }

@@ -30,7 +30,7 @@ class MailFactory extends Factory
     /**
      * Indicate that the mail has failed to be sent.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return Factory
      */
     public function failed()
     {

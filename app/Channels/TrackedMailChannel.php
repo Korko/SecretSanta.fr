@@ -3,7 +3,9 @@
 namespace App\Channels;
 
 use App\Models\Mail as MailModel;
+use Closure;
 use Facades\App\Services\MailTracker;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Mail;
 use Swift_TransportException;
@@ -15,7 +17,7 @@ class TrackedMailChannel extends MailChannel
      * Send the given notification.
      *
      * @param  mixed  $notifiable
-     * @param  \Illuminate\Notifications\Notification  $notification
+     * @param Notification $notification
      * @return void
      */
     public function send($notifiable, Notification $notification)
@@ -37,9 +39,9 @@ class TrackedMailChannel extends MailChannel
      * Get the mailer Closure for the message.
      *
      * @param  mixed  $notifiable
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @param  \Illuminate\Notifications\Messages\MailMessage  $message
-     * @return \Closure
+     * @param Notification $notification
+     * @param  MailMessage  $message
+     * @return Closure
      */
     protected function messageBuilder($notifiable, $notification, $message)
     {

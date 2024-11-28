@@ -9,6 +9,7 @@ use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
@@ -28,7 +29,7 @@ class DearSanta extends Notification implements ShouldQueue, ShouldBeEncrypted
     /**
      * Get the notification's delivery channels.
      *
-     * @param  \App\Models\Participant  $santa
+     * @param Participant $santa
      * @return array
      */
     public function via(Participant $santa)
@@ -44,8 +45,8 @@ class DearSanta extends Notification implements ShouldQueue, ShouldBeEncrypted
     /**
      * Get the mail representation of the notification.
      *
-     * @param  \App\Models\Participant  $santa
-     * @return \Illuminate\Mail\Mailable
+     * @param Participant $santa
+     * @return Mailable
      */
     public function toMail(Participant $santa)
     {

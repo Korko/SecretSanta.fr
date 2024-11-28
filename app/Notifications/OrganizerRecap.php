@@ -10,6 +10,7 @@ use DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -44,7 +45,7 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
     /**
      * Get the notification's delivery channels.
      *
-     * @param  \Illuminate\Notifications\AnonymousNotifiable|\App\Models\Participant $organizer
+     * @param AnonymousNotifiable|Participant $organizer
      * @return array
      */
     public function via($organizer)
@@ -55,8 +56,8 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
     /**
      * Get the mail representation of the notification.
      *
-     * @param  \Illuminate\Notifications\AnonymousNotifiable|\App\Models\Participant $organizer
-     * @return \Illuminate\Mail\Mailable
+     * @param AnonymousNotifiable|Participant $organizer
+     * @return Mailable
      */
     public function toMail($organizer)
     {

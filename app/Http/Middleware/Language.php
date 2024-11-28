@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 
 class Language
 {
@@ -17,8 +18,8 @@ class Language
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
+     * @param Request $request
+     * @param Closure $next
      *
      * @return mixed
      */

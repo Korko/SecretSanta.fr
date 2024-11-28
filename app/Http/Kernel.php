@@ -2,7 +2,18 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\HandleEncryptionIV;
+use App\Http\Middleware\PreventRequestsDuringMaintenance;
+use App\Http\Middleware\TrimStrings;
+use App\Http\Middleware\TrustProxies;
+use Fruitcake\Cors\HandleCors;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
+use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
+use Illuminate\Http\Middleware\SetCacheHeaders;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Routing\Middleware\ValidateSignature;
 
 class Kernel extends HttpKernel
 {
@@ -14,12 +25,12 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
-        \Fruitcake\Cors\HandleCors::class,
-        \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-        \App\Http\Middleware\TrimStrings::class,
-        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\TrustProxies::class,
+        PreventRequestsDuringMaintenance::class,
+        HandleCors::class,
+        ValidatePostSize::class,
+        TrimStrings::class,
+        ConvertEmptyStringsToNull::class,
+        TrustProxies::class,
     ];
 
     /**
@@ -34,7 +45,7 @@ class Kernel extends HttpKernel
             //\Illuminate\Session\Middleware\StartSession::class,
             //\Illuminate\View\Middleware\ShareErrorsFromSession::class,
             //\App\Http\Middleware\VerifyCsrfToken::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            SubstituteBindings::class,
         ],
     ];
 
@@ -44,10 +55,10 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
-        'signed'        => \Illuminate\Routing\Middleware\ValidateSignature::class,
-        'throttle'      => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'decrypt.iv'    => \App\Http\Middleware\HandleEncryptionIV::class,
+        'cache.headers' => SetCacheHeaders::class,
+        'signed'        => ValidateSignature::class,
+        'throttle'      => ThrottleRequests::class,
+        'decrypt.iv'    => HandleEncryptionIV::class,
     ];
 
     /**
@@ -60,9 +71,9 @@ class Kernel extends HttpKernel
     protected $middlewarePriority = [
         //\Illuminate\Session\Middleware\StartSession::class,
         //\Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        SubstituteBindings::class,
         //\App\Http\Middleware\EncryptCookies::class,
-        \App\Http\Middleware\HandleEncryptionIV::class,
+        HandleEncryptionIV::class,
         //\App\Http\Middleware\VerifyCsrfToken::class,
     ];
 }

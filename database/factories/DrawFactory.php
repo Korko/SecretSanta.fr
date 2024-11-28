@@ -48,7 +48,7 @@ class DrawFactory extends Factory
     /**
      * Indicate that the draw is expired.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return Factory
      */
     public function expired()
     {

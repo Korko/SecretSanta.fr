@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use exussum12\xxhash\V32 as xxHash;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Metrics;
 
 class Participant extends Model
@@ -105,7 +107,7 @@ class Participant extends Model
      * Create a new Eloquent Collection instance.
      *
      * @param  array  $models
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
     public function newCollection(array $models = [])
     {
@@ -129,7 +131,7 @@ class Participant extends Model
     /**
      * Route notifications for the mail channel.
      *
-     * @param  \Illuminate\Notifications\Notification  $notification
+     * @param  Notification  $notification
      * @return array|string
      */
     public function routeNotificationForMail($notification)

@@ -51,7 +51,7 @@ class ParticipantRow extends BaseComponent
     /**
      * Select the given exclusion.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
+     * @param Browser $browser
      * @param  string  $name
      * @return void
      */

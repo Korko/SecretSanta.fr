@@ -2,7 +2,10 @@
 
 namespace App\Channels;
 
+use Closure;
 use Illuminate\Notifications\Channels\MailChannel as BaseMailChannel;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 use Swift_Signers_DKIMSigner;
 
 class MailChannel extends BaseMailChannel
@@ -11,9 +14,9 @@ class MailChannel extends BaseMailChannel
      * Get the mailer Closure for the message.
      *
      * @param  mixed  $notifiable
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @param  \Illuminate\Notifications\Messages\MailMessage  $message
-     * @return \Closure
+     * @param  Notification  $notification
+     * @param  MailMessage  $message
+     * @return Closure
      */
     protected function messageBuilder($notifiable, $notification, $message)
     {

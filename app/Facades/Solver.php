@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array one(array $participants, array $exclusions = [])
  * @method static Generator all(array $participants, array $exclusions = [])
  *
- * @see \App\Solvers\SolverInterface
+ * @see SolverInterface
  */
 class Solver extends Facade
 {

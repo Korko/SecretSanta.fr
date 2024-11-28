@@ -10,7 +10,7 @@
  */
 
 
-namespace App\Models{
+namespace App\Models{use Eloquent;use Illuminate\Database\Eloquent\Builder;
 /**
  * App\Models\DearSanta
  *
@@ -19,72 +19,72 @@ namespace App\Models{
  * @property array $mail_body
  * @property-read mixed $draw
  * @property-read mixed $hash
- * @property-read \App\Models\Mail|null $mail
- * @property-read \App\Models\Participant $sender
- * @method static \Illuminate\Database\Eloquent\Builder|DearSanta findByHashOrFail($hash)
- * @method static \Illuminate\Database\Eloquent\Builder|DearSanta newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DearSanta newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DearSanta query()
- * @method static \Illuminate\Database\Eloquent\Builder|DearSanta whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DearSanta whereMailBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DearSanta whereSenderId($value)
+ * @property-read Mail|null $mail
+ * @property-read Participant $sender
+ * @method static Builder|DearSanta findByHashOrFail($hash)
+ * @method static Builder|DearSanta newModelQuery()
+ * @method static Builder|DearSanta newQuery()
+ * @method static Builder|DearSanta query()
+ * @method static Builder|DearSanta whereId($value)
+ * @method static Builder|DearSanta whereMailBody($value)
+ * @method static Builder|DearSanta whereSenderId($value)
  */
-	class DearSanta extends \Eloquent {}
+	class DearSanta extends Eloquent {}
 }
 
-namespace App\Models{
+namespace App\Models{use App\Collections\ParticipantsCollection;use Database\Factories\DrawFactory;use Eloquent;use Illuminate\Database\Eloquent\Builder;use Illuminate\Notifications\DatabaseNotification;use Illuminate\Notifications\DatabaseNotificationCollection;use Illuminate\Support\Carbon;
 /**
  * App\Models\Draw
  *
  * @property int $id
  * @property array $mail_title
  * @property array $mail_body
- * @property \Illuminate\Support\Carbon $expires_at
+ * @property Carbon $expires_at
  * @property bool $next_solvable
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read mixed $can_redraw
  * @property-read mixed $deleted_at
  * @property-read mixed $expired
  * @property-read mixed $hash
  * @property-read mixed $metric_id
  * @property-read mixed $organizer
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \App\Collections\ParticipantsCollection|\App\Models\Participant[] $participants
+ * @property-read ParticipantsCollection|Participant[] $participants
  * @property-read int|null $participants_count
- * @method static \Database\Factories\DrawFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Draw findByHashOrFail($hash)
- * @method static \Illuminate\Database\Eloquent\Builder|Draw newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Draw newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Draw query()
- * @method static \Illuminate\Database\Eloquent\Builder|Draw whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Draw whereExpiresAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Draw whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Draw whereMailBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Draw whereMailTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Draw whereNextSolvable($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Draw whereUpdatedAt($value)
+ * @method static DrawFactory factory(...$parameters)
+ * @method static Builder|Draw findByHashOrFail($hash)
+ * @method static Builder|Draw newModelQuery()
+ * @method static Builder|Draw newQuery()
+ * @method static Builder|Draw query()
+ * @method static Builder|Draw whereCreatedAt($value)
+ * @method static Builder|Draw whereExpiresAt($value)
+ * @method static Builder|Draw whereId($value)
+ * @method static Builder|Draw whereMailBody($value)
+ * @method static Builder|Draw whereMailTitle($value)
+ * @method static Builder|Draw whereNextSolvable($value)
+ * @method static Builder|Draw whereUpdatedAt($value)
  */
-	class Draw extends \Eloquent {}
+	class Draw extends Eloquent {}
 }
 
-namespace App\Models{
+namespace App\Models{use Eloquent;use Illuminate\Database\Eloquent\Builder;
 /**
  * App\Models\Exclusion
  *
  * @property int $participant_id
  * @property int $exclusion_id
- * @method static \Illuminate\Database\Eloquent\Builder|Exclusion newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Exclusion newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Exclusion query()
- * @method static \Illuminate\Database\Eloquent\Builder|Exclusion whereExclusionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Exclusion whereParticipantId($value)
+ * @method static Builder|Exclusion newModelQuery()
+ * @method static Builder|Exclusion newQuery()
+ * @method static Builder|Exclusion query()
+ * @method static Builder|Exclusion whereExclusionId($value)
+ * @method static Builder|Exclusion whereParticipantId($value)
  */
-	class Exclusion extends \Eloquent {}
+	class Exclusion extends Eloquent {}
 }
 
-namespace App\Models{
+namespace App\Models{use Database\Factories\MailFactory;use Eloquent;use Illuminate\Database\Eloquent\Builder;use Illuminate\Support\Carbon;
 /**
  * App\Models\Mail
  *
@@ -93,36 +93,36 @@ namespace App\Models{
  * @property string $mailable_type
  * @property int $mailable_id
  * @property string $delivery_status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $mailable
- * @method static \Database\Factories\MailFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Mail newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Mail newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Mail query()
- * @method static \Illuminate\Database\Eloquent\Builder|Mail whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Mail whereDeliveryStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Mail whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Mail whereMailableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Mail whereMailableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Mail whereNotification($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Mail whereUpdatedAt($value)
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $mailable
+ * @method static MailFactory factory(...$parameters)
+ * @method static Builder|Mail newModelQuery()
+ * @method static Builder|Mail newQuery()
+ * @method static Builder|Mail query()
+ * @method static Builder|Mail whereCreatedAt($value)
+ * @method static Builder|Mail whereDeliveryStatus($value)
+ * @method static Builder|Mail whereId($value)
+ * @method static Builder|Mail whereMailableId($value)
+ * @method static Builder|Mail whereMailableType($value)
+ * @method static Builder|Mail whereNotification($value)
+ * @method static Builder|Mail whereUpdatedAt($value)
  */
-	class Mail extends \Eloquent {}
+	class Mail extends Eloquent {}
 }
 
-namespace App\Models{
+namespace App\Models{use Eloquent;use Illuminate\Database\Eloquent\Builder;
 /**
  * App\Models\Model
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Model newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Model newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Model query()
+ * @method static Builder|Model newModelQuery()
+ * @method static Builder|Model newQuery()
+ * @method static Builder|Model query()
  */
-	class Model extends \Eloquent {}
+	class Model extends Eloquent {}
 }
 
-namespace App\Models{
+namespace App\Models{use App\Collections\ParticipantsCollection;use Database\Factories\ParticipantFactory;use Eloquent;use Illuminate\Database\Eloquent\Builder;use Illuminate\Database\Eloquent\Collection;use Illuminate\Notifications\DatabaseNotification;use Illuminate\Notifications\DatabaseNotificationCollection;use Illuminate\Support\Carbon;
 /**
  * App\Models\Participant
  *
@@ -132,38 +132,38 @@ namespace App\Models{
  * @property array $email
  * @property int|null $target_id
  * @property int $redraw
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\DearSanta[] $dearSantas
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|DearSanta[] $dearSantas
  * @property-read int|null $dear_santas_count
- * @property-read \App\Models\Draw $draw
- * @property-read \App\Collections\ParticipantsCollection|Participant[] $exclusions
+ * @property-read Draw $draw
+ * @property-read ParticipantsCollection|Participant[] $exclusions
  * @property-read int|null $exclusions_count
  * @property-read mixed $exclusions_names
  * @property-read mixed $hash
  * @property-read mixed $metric_id
  * @property-read mixed $sender
- * @property-read \App\Models\Mail|null $mail
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read Mail|null $mail
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read Participant|null $santa
  * @property-read Participant|null $target
- * @method static \App\Collections\ParticipantsCollection|static[] all($columns = ['*'])
- * @method static \Database\Factories\ParticipantFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Participant findByHashOrFail($hash)
- * @method static \App\Collections\ParticipantsCollection|static[] get($columns = ['*'])
- * @method static \Illuminate\Database\Eloquent\Builder|Participant newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Participant newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Participant query()
- * @method static \Illuminate\Database\Eloquent\Builder|Participant whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Participant whereDrawId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Participant whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Participant whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Participant whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Participant whereRedraw($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Participant whereTargetId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Participant whereUpdatedAt($value)
+ * @method static ParticipantsCollection|static[] all($columns = ['*'])
+ * @method static ParticipantFactory factory(...$parameters)
+ * @method static Builder|Participant findByHashOrFail($hash)
+ * @method static ParticipantsCollection|static[] get($columns = ['*'])
+ * @method static Builder|Participant newModelQuery()
+ * @method static Builder|Participant newQuery()
+ * @method static Builder|Participant query()
+ * @method static Builder|Participant whereCreatedAt($value)
+ * @method static Builder|Participant whereDrawId($value)
+ * @method static Builder|Participant whereEmail($value)
+ * @method static Builder|Participant whereId($value)
+ * @method static Builder|Participant whereName($value)
+ * @method static Builder|Participant whereRedraw($value)
+ * @method static Builder|Participant whereTargetId($value)
+ * @method static Builder|Participant whereUpdatedAt($value)
  */
-	class Participant extends \Eloquent {}
+	class Participant extends Eloquent {}
 }
 

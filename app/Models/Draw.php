@@ -6,6 +6,7 @@ use App\Casts\EncryptedString;
 use App\Services\DrawHandler;
 use Carbon\Carbon;
 use exussum12\xxhash\V32 as xxHash;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Notifications\Notifiable;
@@ -66,7 +67,7 @@ class Draw extends Model
     /**
      * Get the prunable model query.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function prunable()
     {

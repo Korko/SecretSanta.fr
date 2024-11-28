@@ -6,6 +6,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
 use Illuminate\Encryption\Encrypter as BaseEncrypter;
 use RuntimeException;
+use function openssl_encrypt;
 
 class IVEncrypter extends BaseEncrypter
 {
@@ -23,7 +24,7 @@ class IVEncrypter extends BaseEncrypter
      * @param  string  $cipher
      * @return void
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function __construct($key, $cipher = 'AES-128-CBC')
     {
@@ -76,14 +77,14 @@ class IVEncrypter extends BaseEncrypter
      * @param  bool  $serialize
      * @return string
      *
-     * @throws \Illuminate\Contracts\Encryption\EncryptException
+     * @throws EncryptException
      */
     public function encrypt($value, $serialize = true)
     {
         // First we will encrypt the value using OpenSSL. After this is encrypted we
         // will proceed to calculating a MAC for the encrypted value so that this
         // value can be verified later as not having been changed by the users.
-        $value = \openssl_encrypt(
+        $value = openssl_encrypt(
             $serialize ? serialize($value) : $value,
             $this->cipher, $this->key, 0, $this->iv
         );
@@ -112,7 +113,7 @@ class IVEncrypter extends BaseEncrypter
      * @param  string  $payload
      * @return array
      *
-     * @throws \Illuminate\Contracts\Encryption\DecryptException
+     * @throws DecryptException
      */
     protected function getJsonPayload($payload)
     {

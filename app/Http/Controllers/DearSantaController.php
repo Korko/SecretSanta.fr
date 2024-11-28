@@ -8,6 +8,7 @@ use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Lang;
 use Str;
@@ -62,7 +63,7 @@ class DearSantaController extends Controller
         ]);
     }
 
-    public function resend(Participant $participant, DearSanta $dearSanta, \Illuminate\Http\Request $request)
+    public function resend(Participant $participant, DearSanta $dearSanta, Request $request)
     {
         abort_unless($dearSanta->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
@@ -93,7 +94,7 @@ class DearSantaController extends Controller
         }
     }
 
-    public function resendTarget(Participant $participant, \Illuminate\Http\Request $request)
+    public function resendTarget(Participant $participant, Request $request)
     {
         $dearSantas = $participant->dearSantas->load('mail');
         $max = $dearSantas->max('mail.updated_at');
