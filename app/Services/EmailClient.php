@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Webklex\IMAP\Facades\Client;
+use Webklex\PHPIMAP\Message;
 
 class EmailClient
 {
@@ -22,6 +23,15 @@ class EmailClient
             ->whereUnseen()
             ->limit($limit)
             ->get();
+    }
+
+    public function delete(Message $message): void
+    {
+        // Flag as DELETED
+        $message->delete();
+
+        // Sometimes, we need to also move it to the trash
+        $message->move(config('imap.folders.trash'));
     }
 
     /**

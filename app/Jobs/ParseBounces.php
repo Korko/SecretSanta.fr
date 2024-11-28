@@ -23,7 +23,7 @@ class ParseBounces implements ShouldQueue
             try {
                 $tracker->handle($unseenMail);
 
-                $unseenMail->delete();
+                $emailClient->delete($unseenMail);
             } catch(Exception) {
                 // Ignore that error
             }
