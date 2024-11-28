@@ -110,7 +110,7 @@
                     return Moment(value, 'YYYY-MM-DD').isSameOrAfter(formatMoment(1, 'day'));
                 },
                 maxValue(value) {
-                    return Moment(value, 'YYYY-MM-DD').isSameOrBefore(formatMoment(6, 'month'));
+                    return Moment(value, 'YYYY-MM-DD').isSameOrBefore(formatMoment(1, 'year'));
                 }
             }
         },
