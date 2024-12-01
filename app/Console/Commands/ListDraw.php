@@ -55,7 +55,7 @@ class ListDraw extends Command
             $draw->participants()
                 ->with(['mail', 'target'])
                 ->get()
-                ->map(fn($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')] + ($this->option('targets') ? ['target' => $col->target_id.' ('.$col->target->name.')'] : []))
+                ->map(fn($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')] + ($this->option('targets') ? ['target' => $col->target->id.' ('.$col->target->name.')'] : []))
                 ->toArray()
         );
     }
