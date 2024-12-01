@@ -15,23 +15,25 @@ class EmailClient
         $this->delegate->connect();
     }
 
+    public function __destruct()
+    {
+        $this->delegate->expunge();
+    }
+
     public function getUnseenMails(int $limit = 0): Iterable
     {
         $oFolder = $this->delegate->getFolder(config('imap.folders.inbox'));
 
         return $oFolder->query()
             ->whereUnseen()
+            ->leaveUnread()
             ->limit($limit)
             ->get();
     }
 
     public function delete(Message $message): void
     {
-        // Flag as DELETED
-        $message->delete();
-
-        // Sometimes, we need to also move it to the trash
-        $message->move(config('imap.folders.trash'));
+        $message->delete(false);
     }
 
     /**

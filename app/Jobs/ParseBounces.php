@@ -7,6 +7,7 @@ use App\Services\MailTracker;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -23,6 +24,9 @@ class ParseBounces implements ShouldQueue
             try {
                 $tracker->handle($unseenMail);
 
+                $emailClient->delete($unseenMail);
+            } catch(ModelNotFoundException) {
+                // The email was already changed or something
                 $emailClient->delete($unseenMail);
             } catch(Exception) {
                 // Ignore that error
