@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Webklex\IMAP\Facades\Client;
+use Webklex\PHPIMAP\Message;
 
 class EmailClient
 {
@@ -14,14 +15,25 @@ class EmailClient
         $this->delegate->connect();
     }
 
+    public function __destruct()
+    {
+        $this->delegate->expunge();
+    }
+
     public function getUnseenMails(int $limit = 0): Iterable
     {
         $oFolder = $this->delegate->getFolder(config('imap.folders.inbox'));
 
         return $oFolder->query()
             ->whereUnseen()
+            ->leaveUnread()
             ->limit($limit)
             ->get();
+    }
+
+    public function delete(Message $message)
+    {
+        $message->delete(false);
     }
 
     /**

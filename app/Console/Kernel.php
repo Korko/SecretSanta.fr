@@ -30,11 +30,11 @@ class Kernel extends ConsoleKernel
             ->daily()
             ->environments(['prod']);
 
-        $schedule
+/*        $schedule
             ->command('secretsanta:parse-bounces')
             ->everyMinute()
             ->withoutOverlapping()
-            ->environments(['prod']);
+            ->environments(['prod']);*/
     }
 
     /**
