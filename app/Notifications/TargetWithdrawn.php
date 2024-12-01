@@ -2,16 +2,12 @@
 
 namespace App\Notifications;
 
-use App\Channels\MailChannel;
 use App\Models\Participant;
-use DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\URL;
 use Lang;
 
 class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
@@ -52,7 +48,7 @@ class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncry
      * Get the mail representation of the notification.
      *
      * @param Participant $santa
-     * @return Mailable
+     * @return MailMessage
      */
     public function toMail(Participant $santa)
     {

@@ -45,7 +45,7 @@ class WithdrawParticipant extends Command
 
         if ($santa->is($target)) {
             // Limit case
-            throw new Exception('Cannot withdraw participant: their target is also their santa');
+            throw new \Exception('Cannot withdraw participant: their target is also their santa');
         }
 
         // A -> B -> C => A -> C

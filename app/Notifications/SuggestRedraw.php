@@ -2,11 +2,8 @@
 
 namespace App\Notifications;
 
-use App\Channels\MailChannel;
 use App\Models\Participant;
 use DrawCrypt;
-//Illuminate/Contracts/Queue/ShouldBeEncrypted
-use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
@@ -28,7 +25,7 @@ class SuggestRedraw extends Notification
      * Get the mail representation of the notification.
      *
      * @param Participant $santa
-     * @return Mailable
+     * @return MailMessage
      */
     public function toMail(Participant $participant)
     {

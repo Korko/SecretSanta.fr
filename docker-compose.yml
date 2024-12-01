@@ -54,7 +54,7 @@ services:
     phpmyadmin:
         image: phpmyadmin
         ports:
-          - 8080:80
+          - "8080:80"
         environment:
           PMA_ARBITRARY: 1
           PMA_HOST: 'mysql'
@@ -90,9 +90,9 @@ services:
     inbucket:
         image: 'inbucket/inbucket'
         ports:
-            - 9000:9000
-            - 2500:2500
-            - 1100:1100
+            - "9000:9000"
+            - "2500:2500"
+            - "1100:1100"
         networks:
             - sail
 networks:
