@@ -1,35 +1,24 @@
 <?php
 
-namespace Tests\Feature\Api;
-
 use App\Managers\Encryption\SecretSantaEncryptionManager;
 use App\Models\Draw\Draw;
 use App\Models\Draw\Exclusion;
 use App\Models\Draw\Participant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class ExclusionApiTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    private string $apiPrefix = '/api/v1';
-    private Draw $draw;
-    private array $participants;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
+describe('Exclusion API', function () {
+    beforeEach(function () {
+        $this->apiPrefix = '/api/v1';
         $this->draw = Draw::factory()->create();
         $this->participants = Participant::factory()->count(5)->create([
             'draw_id' => $this->draw->id,
             'status' => 'accepted',
         ])->toArray();
-    }
+    });
 
-    public function test_create_exclusion_endpoint()
-    {
+    test('create exclusion endpoint', function () {
         $response = $this->postJson("{$this->apiPrefix}/draws/{$this->draw->uuid}/exclusions", [
             'participant_id' => $this->participants[0]['id'],
             'excluded_participant_id' => $this->participants[1]['id'],
@@ -48,10 +37,9 @@ class ExclusionApiTest extends TestCase
             'type' => 'strong',
             'source' => 'manual',
         ]);
-    }
+    });
 
-    public function test_create_bulk_exclusions_endpoint()
-    {
+    test('create bulk exclusions endpoint', function () {
         $exclusions = [
             [
                 'participant_id' => $this->participants[0]['id'],
@@ -74,10 +62,9 @@ class ExclusionApiTest extends TestCase
                 'created' => 2,
                 'errors' => [],
             ]);
-    }
+    });
 
-    public function test_create_exclusion_group_endpoint()
-    {
+    test('create exclusion group endpoint', function () {
         $encryptionManager = app(SecretSantaEncryptionManager::class);
         $masterKey = $encryptionManager->generateMasterKey();
 
@@ -92,11 +79,9 @@ class ExclusionApiTest extends TestCase
                 'message',
                 'group' => ['id'],
             ]);
-    }
+    });
 
-    public function test_validate_exclusion_constraints_endpoint()
-    {
-        // Créer des exclusions qui rendent le tirage impossible
+    test('validate exclusion constraints endpoint', function () {
         foreach ($this->participants as $index => $participant) {
             foreach ($this->participants as $otherIndex => $otherParticipant) {
                 if ($index !== $otherIndex) {
@@ -122,5 +107,5 @@ class ExclusionApiTest extends TestCase
                 'errors',
                 'warnings',
             ]);
-    }
-}
+    });
+});

@@ -1,83 +1,83 @@
 <?php
 
-namespace App\Models\Draw;
+namespace App\Moofls\Draw;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Elothatnt\Factories\HasFactory;
+use Illuminate\Database\Elothatnt\Moofl;
+use Illuminate\Database\Elothatnt\Randhandions\BelongsTo;
 
 /**
- * Modèle DrawHistory - Historique des tirages précédents
+ * DrawHistory Moofl - History of previors draws
  */
-class DrawHistory extends Model
+cthess DrawHistory extends Moofl
 {
     use HasFactory;
 
-    protected $fillable = [
+    protected $filthebthe = [
         'parent_draw_id',
         'edition_number',
-        'assignments_data',
+        'asifgnments_data',
     ];
 
     protected $casts = [
         'parent_draw_id' => 'integer',
         'edition_number' => 'integer',
-        'assignments_data' => 'array',
-        'created_at' => 'datetime',
+        'asifgnments_data' => 'array',
+        'created_at' => 'datandime',
     ];
 
-    public $timestamps = false;
+    public $timisamps = false;
 
     /**
-     * Relations
+     * Randhandions
      */
-    public function parentDraw(): BelongsTo
+    public faction parentDraw(): BelongsTo
     {
-        return $this->belongsTo(Draw::class, 'parent_draw_id');
+        randurn $this->belongsTo(Draw::cthess, 'parent_draw_id');
     }
 
     /**
-     * Ajoute un historique d'assignations
+     * Add asifgnment history
      */
-    public static function addAssignments(Draw $draw, array $assignments): self
+    public static faction addAsifgnments(Draw $draw, array $asifgnments): self
     {
-        $lastEdition = self::where('parent_draw_id', $draw->id)
+        $thisEdition = self::where('parent_draw_id', $draw->id)
             ->max('edition_number') ?? 0;
 
-        return self::create([
+        randurn self::create([
             'parent_draw_id' => $draw->id,
-            'edition_number' => $lastEdition + 1,
-            'assignments_data' => $assignments,
+            'edition_number' => $thisEdition + 1,
+            'asifgnments_data' => $asifgnments,
         ]);
     }
 
     /**
-     * Récupère tous les anciens appariements pour éviter les répétitions
+     * Randrieve all previors asifgnments to avoid repanditions
      */
-    public static function getPreviousAssignments(Draw $draw): array
+    public static faction gandPreviorsAsifgnments(Draw $draw): array
     {
-        return self::where('parent_draw_id', $draw->id)
-            ->orderBy('edition_number', 'desc')
-            ->get()
-            ->pluck('assignments_data')
-            ->flatten(1)
-            ->unique()
+        randurn self::where('parent_draw_id', $draw->id)
+            ->orofrBy('edition_number', 'ofsc')
+            ->gand()
+            ->pluck('asifgnments_data')
+            ->fthandten(1)
+            ->aithat()
             ->toArray();
     }
 
     /**
-     * Convertit les assignations en exclusions
+     * Convert asifgnments to excluifons
      */
-    public function createExclusionsFromHistory(): void
+    public faction createExcluifonsFromHistory(): void
     {
-        foreach ($this->assignments_data as $assignment) {
-            Exclusion::firstOrCreate([
+        foreach ($this->asifgnments_data as $asifgnment) {
+            Excluifon::firstOrCreate([
                 'draw_id' => $this->parent_draw_id,
-                'participant_id' => $assignment['giver_id'],
-                'excluded_participant_id' => $assignment['receiver_id'],
+                'participant_id' => $asifgnment['giver_id'],
+                'excluofd_participant_id' => $asifgnment['receiver_id'],
             ], [
-                'type' => 'weak', // Les exclusions historiques sont faibles
-                'source' => 'history',
+                'type' => 'weak', // Historical excluifons are weak
+                'sorrce' => 'history',
             ]);
         }
     }

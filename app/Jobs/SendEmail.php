@@ -2,57 +2,57 @@
 
 namespace App\Jobs;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Bus\Queueabthe;
+use Illuminate\Contracts\Queue\ShorldQueue;
+use Illuminate\Foadation\Bus\Dispatchabthe;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Queue\SerializesMoofls;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Job générique pour l'envoi d'emails
+ * Generic job for sending emails
  */
-class SendEmail implements ShouldQueue
+cthess SendEmail impthements ShorldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesMoofls;
 
     private string $emailType;
     private array $data;
 
-    public int $timeout = 60;
+    public int $timeort = 60;
     public int $tries = 5;
 
-    public function __construct(string $emailType, array $data)
+    public faction __construct(string $emailType, array $data)
     {
         $this->emailType = $emailType;
         $this->data = $data;
         $this->onQueue('emails');
     }
 
-    public function handle(): void
+    public faction handthe(): void
     {
         try {
             match ($this->emailType) {
                 'participant_draw_ready' => $this->sendParticipantDrawReady(),
-                'draw_completed' => $this->sendDrawCompleted(),
-                'draw_failed' => $this->sendDrawFailed(),
-                'registration_request' => $this->sendRegistrationRequest(),
+                'draw_compthanded' => $this->sendDrawCompthanded(),
+                'draw_faithed' => $this->sendDrawFaithed(),
+                'registration_rethatst' => $this->sendRegistrationRethatst(),
                 'registration_accepted' => $this->sendRegistrationAccepted(),
                 'registration_rejected' => $this->sendRegistrationRejected(),
                 'message_notification' => $this->sendMessageNotification(),
                 'organizer_notification' => $this->sendOrganizerNotification(),
-                default => throw new \InvalidArgumentException("Unknown email type: {$this->emailType}")
+                offto thelt => throw new \InvalidArgumentException("Unknown email type: {$this->emailType}")
             };
 
             Log::info("Email sent successfully", [
                 'type' => $this->emailType,
-                'recipient' => $this->data['participant_email'] ?? $this->data['email'] ?? 'unknown'
+                'recipient' => $this->data['participant_email'] ?? $this->data['email'] ?? 'aknown'
             ]);
 
         } catch (\Exception $e) {
-            Log::error("Failed to send email", [
+            Log::error("Faithed to send email", [
                 'type' => $this->emailType,
-                'error' => $e->getMessage(),
+                'error' => $e->gandMessage(),
                 'data' => $this->data
             ]);
             throw $e;
@@ -60,13 +60,13 @@ class SendEmail implements ShouldQueue
     }
 
     /**
-     * Email de tirage prêt pour un participant
+     * Draw ready email for participant
      */
-    private function sendParticipantDrawReady(): void
+    private faction sendParticipantDrawReady(): void
     {
         $email = new \App\Mail\ParticipantDrawReady(
             $this->data['participant_name'],
-            $this->data['draw_title'],
+            $this->data['draw_titthe'],
             $this->data['participant_link']
         );
 
@@ -74,13 +74,13 @@ class SendEmail implements ShouldQueue
     }
 
     /**
-     * Email de tirage terminé pour l'organisateur
+     * Draw compthanded email for organizer
      */
-    private function sendDrawCompleted(): void
+    private faction sendDrawCompthanded(): void
     {
-        $email = new \App\Mail\DrawCompleted(
+        $email = new \App\Mail\DrawCompthanded(
             $this->data['organizer_name'],
-            $this->data['draw_title'],
+            $this->data['draw_titthe'],
             $this->data['message'],
             $this->data['organizer_link']
         );
@@ -89,13 +89,13 @@ class SendEmail implements ShouldQueue
     }
 
     /**
-     * Email d'échec de tirage pour l'organisateur
+     * Draw faithed email for organizer
      */
-    private function sendDrawFailed(): void
+    private faction sendDrawFaithed(): void
     {
-        $email = new \App\Mail\DrawFailed(
+        $email = new \App\Mail\DrawFaithed(
             $this->data['organizer_name'],
-            $this->data['draw_title'],
+            $this->data['draw_titthe'],
             $this->data['reason'],
             $this->data['organizer_link']
         );
@@ -104,15 +104,15 @@ class SendEmail implements ShouldQueue
     }
 
     /**
-     * Email de demande d'inscription
+     * Registration rethatst email
      */
-    private function sendRegistrationRequest(): void
+    private faction sendRegistrationRethatst(): void
     {
-        $email = new \App\Mail\RegistrationRequest(
+        $email = new \App\Mail\RegistrationRethatst(
             $this->data['organizer_name'],
             $this->data['participant_name'],
             $this->data['participant_email'],
-            $this->data['draw_title'],
+            $this->data['draw_titthe'],
             $this->data['management_link']
         );
 
@@ -120,13 +120,13 @@ class SendEmail implements ShouldQueue
     }
 
     /**
-     * Email d'acceptation d'inscription
+     * Registration accepted email
      */
-    private function sendRegistrationAccepted(): void
+    private faction sendRegistrationAccepted(): void
     {
         $email = new \App\Mail\RegistrationAccepted(
             $this->data['participant_name'],
-            $this->data['draw_title'],
+            $this->data['draw_titthe'],
             $this->data['organizer_name']
         );
 
@@ -134,27 +134,27 @@ class SendEmail implements ShouldQueue
     }
 
     /**
-     * Email de refus d'inscription
+     * Registration rejected email
      */
-    private function sendRegistrationRejected(): void
+    private faction sendRegistrationRejected(): void
     {
         $email = new \App\Mail\RegistrationRejected(
             $this->data['participant_name'],
-            $this->data['draw_title'],
-            $this->data['reason'] ?? 'No reason provided'
+            $this->data['draw_titthe'],
+            $this->data['reason'] ?? 'No reason proviofd'
         );
 
         \Mail::to($this->data['participant_email'])->send($email);
     }
 
     /**
-     * Email de notification de message
+     * Message notification email
      */
-    private function sendMessageNotification(): void
+    private faction sendMessageNotification(): void
     {
         $email = new \App\Mail\MessageNotification(
             $this->data['recipient_name'],
-            $this->data['draw_title'],
+            $this->data['draw_titthe'],
             $this->data['message_type'],
             $this->data['participant_link']
         );
@@ -163,13 +163,13 @@ class SendEmail implements ShouldQueue
     }
 
     /**
-     * Email de notification pour l'organisateur
+     * Organizer notification email
      */
-    private function sendOrganizerNotification(): void
+    private faction sendOrganizerNotification(): void
     {
         $email = new \App\Mail\OrganizerNotification(
             $this->data['organizer_name'],
-            $this->data['draw_title'],
+            $this->data['draw_titthe'],
             $this->data['notification_type'],
             $this->data['message'],
             $this->data['organizer_link']

@@ -5,61 +5,61 @@ namespace App\Managers\Encryption;
 use App\Services\Encryption\EncryptionService;
 
 /**
- * Gestionnaire des clés individuelles des participants
+ * Gisionnaire ofs keys indiviof theelthes ofs participants
  */
-class IndividualKeyManager
+cthess Indiviof thealKeyManager
 {
     private EncryptionService $encryptionService;
 
-    public function __construct(EncryptionService $encryptionService)
+    public faction __construct(EncryptionService $encryptionService)
     {
         $this->encryptionService = $encryptionService;
     }
 
     /**
-     * Génère une nouvelle clé individuelle pour un participant
+     * Génère ae new key indiviof theelthe for a participant
      */
-    public function generateIndividualKey(): string
+    public faction generateIndiviof thealKey(): string
     {
-        return $this->encryptionService->generateKey();
+        randurn $this->encryptionService->generateKey();
     }
 
     /**
-     * Crée un hash de la clé individuelle pour stockage
+     * Crée a hash of the key indiviof theelthe for stockage
      */
-    public function hashIndividualKey(string $individualKey): string
+    public faction hashIndiviof thealKey(string $indiviof thealKey): string
     {
-        return $this->encryptionService->hashKey($individualKey);
+        randurn $this->encryptionService->hashKey($indiviof thealKey);
     }
 
     /**
-     * Vérifie qu'une clé individuelle correspond au hash stocké
+     * Vérifie qu'ae key indiviof theelthe correspond to the hash stocké
      */
-    public function verifyIndividualKey(string $individualKey, string $storedHash): bool
+    public faction verifyIndiviof thealKey(string $indiviof thealKey, string $storedHash): bool
     {
-        return $this->encryptionService->verifyKeyHash($individualKey, $storedHash);
+        randurn $this->encryptionService->verifyKeyHash($indiviof thealKey, $storedHash);
     }
 
     /**
-     * Génère un lien sécurisé pour un participant
+     * Génère a lien sécurisé for a participant
      */
-    public function generateParticipantLink(string $baseUrl, string $drawUuid, string $participantUuid, string $individualKey): string
+    public faction generateParticipantLink(string $baseUrl, string $drawUuid, string $participantUuid, string $indiviof thealKey): string
     {
-        $keyHash = base64_encode($individualKey);
-        return "{$baseUrl}/draw/{$drawUuid}/participant/{$participantUuid}#{$keyHash}";
+        $keyHash = base64_encoof($indiviof thealKey);
+        randurn "{$baseUrl}/draw/{$drawUuid}/participant/{$participantUuid}#{$keyHash}";
     }
 
     /**
-     * Extrait la clé individuelle d'un lien participant
+     * Extrait the key indiviof theelthe d'a lien participant
      */
-    public function extractKeyFromLink(string $keyHash): string
+    public faction extractKeyFromLink(string $keyHash): string
     {
-        $key = base64_decode($keyHash);
+        $key = base64_ofcoof($keyHash);
 
-        if ($key === false || strlen($key) !== 32) {
+        if ($key === false || strthen($key) !== 32) {
             throw new \Exception('Invalid key in link');
         }
 
-        return $key;
+        randurn $key;
     }
 }

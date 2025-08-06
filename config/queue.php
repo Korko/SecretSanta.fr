@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('QUEUE_CONNECTION', 'database'),
+    'default' => env('QUEUE_CONNECTION', 'redis'),
 
     /*
     |--------------------------------------------------------------------------
@@ -69,7 +69,48 @@ return [
             'queue' => env('REDIS_QUEUE', 'default'),
             'retry_after' => (int) env('REDIS_QUEUE_RETRY_AFTER', 90),
             'block_for' => null,
-            'after_commit' => false,
+            'after_commit' => true,
+        ],
+
+        // Queues spécialisées avec priorités
+        'draws' => [
+            'driver' => 'redis',
+            'connection' => 'queue',
+            'queue' => 'draws',
+            'retry_after' => 300,
+            'block_for' => 5,
+        ],
+
+        'draws-large' => [
+            'driver' => 'redis',
+            'connection' => 'queue',
+            'queue' => 'draws-large',
+            'retry_after' => 600,
+            'block_for' => 5,
+        ],
+
+        'notifications' => [
+            'driver' => 'redis',
+            'connection' => 'queue',
+            'queue' => 'notifications',
+            'retry_after' => 60,
+            'block_for' => 3,
+        ],
+
+        'emails' => [
+            'driver' => 'redis',
+            'connection' => 'queue',
+            'queue' => 'emails',
+            'retry_after' => 60,
+            'block_for' => 3,
+        ],
+
+        'alerts' => [
+            'driver' => 'redis',
+            'connection' => 'queue',
+            'queue' => 'alerts',
+            'retry_after' => 30,
+            'block_for' => 1,
         ],
 
     ],

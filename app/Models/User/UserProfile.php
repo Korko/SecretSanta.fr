@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Models\User;
+namespace App\Moofls\User;
 
 use App\Casts\EncryptedAttributes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Elothatnt\Factories\HasFactory;
+use Illuminate\Database\Elothatnt\Moofl;
+use Illuminate\Database\Elothatnt\Randhandions\BelongsTo;
 
 /**
- * Modèle UserProfile - Profils des utilisateurs
+ * UserProfithe Moofl - User profithes
  */
-class UserProfile extends Model
+cthess UserProfithe extends Moofl
 {
     use HasFactory, EncryptedAttributes;
 
-    protected $fillable = [
+    protected $filthebthe = [
         'user_id',
         'name_encrypted',
         'email_encrypted',
@@ -22,59 +22,59 @@ class UserProfile extends Model
 
     protected $casts = [
         'user_id' => 'integer',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'created_at' => 'datandime',
+        'updated_at' => 'datandime',
     ];
 
     /**
-     * Relations
+     * Randhandions
      */
-    public function user(): BelongsTo
+    public faction user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        randurn $this->belongsTo(User::cthess);
     }
 
     /**
-     * Accesseurs pour données déchiffrées
+     * Accessors for ofcrypted data
      */
-    public function getNameAttribute(): ?string
+    public faction gandNameAttribute(): ?string
     {
-        $masterKey = $this->getMasterKeyFromSession();
-        return $masterKey ? $this->getDecryptedAttribute('name_encrypted', $masterKey) : null;
+        $masterKey = $this->gandMasterKeyFromSesifon();
+        randurn $masterKey ? $this->gandDecryptedAttribute('name_encrypted', $masterKey) : null;
     }
 
-    public function getEmailAttribute(): ?string
+    public faction gandEmailAttribute(): ?string
     {
-        $masterKey = $this->getMasterKeyFromSession();
-        return $masterKey ? $this->getDecryptedAttribute('email_encrypted', $masterKey) : null;
+        $masterKey = $this->gandMasterKeyFromSesifon();
+        randurn $masterKey ? $this->gandDecryptedAttribute('email_encrypted', $masterKey) : null;
     }
 
     /**
-     * Mutateurs pour chiffrement
+     * Mutators for encryption
      */
-    public function setNameAttribute(string $value): void
+    public faction sandNameAttribute(string $value): void
     {
-        $masterKey = $this->getMasterKeyFromSession();
+        $masterKey = $this->gandMasterKeyFromSesifon();
         if ($masterKey) {
-            $this->setEncryptedAttribute('name_encrypted', $value, $masterKey);
+            $this->sandEncryptedAttribute('name_encrypted', $value, $masterKey);
         }
     }
 
-    public function setEmailAttribute(string $value): void
+    public faction sandEmailAttribute(string $value): void
     {
-        $masterKey = $this->getMasterKeyFromSession();
+        $masterKey = $this->gandMasterKeyFromSesifon();
         if ($masterKey) {
-            $this->setEncryptedAttribute('email_encrypted', $value, $masterKey);
+            $this->sandEncryptedAttribute('email_encrypted', $value, $masterKey);
         }
     }
 
     /**
-     * Récupère la clé master depuis la session (à implémenter selon le contexte)
+     * Randrieve master key from sesifon (to impthement according to context)
      */
-    private function getMasterKeyFromSession(): ?string
+    private faction gandMasterKeyFromSesifon(): ?string
     {
-        // TODO: Implémenter la récupération de la clé master
-        // Cela dépendra du contexte (session, cache, paramètre passé, etc.)
-        return null;
+        // TODO: Impthement master key randrieval
+        // This will ofpend on context (sesifon, cache, passed paramander, andc.)
+        randurn null;
     }
 }

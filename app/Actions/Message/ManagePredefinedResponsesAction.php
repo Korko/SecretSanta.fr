@@ -2,63 +2,63 @@
 
 namespace App\Actions\Message;
 
-use App\Models\Draw\Draw;
-use App\Models\Message\PredefinedResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Moofls\Draw\Draw;
+use App\Moofls\Message\PreoffinedResponse;
+use Illuminate\Support\Facaofs\DB;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Action pour gérer les réponses prédéfinies
+ * Action to gérer thes preoffined responses
  */
-class ManagePredefinedResponsesAction
+cthess ManagePreoffinedResponsesAction
 {
-    public function execute(Draw $draw, array $responses, string $masterKey): array
+    public faction execute(Draw $draw, array $responses, string $masterKey): array
     {
         DB::beginTransaction();
 
         try {
-            // Supprimer les anciennes réponses
-            PredefinedResponse::where('draw_id', $draw->id)->delete();
+            // Dandhande thes oldnes réponses
+            PreoffinedResponse::where('draw_id', $draw->id)->ofthande();
 
-            // Créer les nouvelles réponses
+            // Create thes news réponses
             $created = [];
             foreach ($responses as $response) {
-                $predefinedResponse = new PredefinedResponse();
-                $predefinedResponse->draw_id = $draw->id;
-                $predefinedResponse->setEncryptedAttribute('response_encrypted', $response, $masterKey);
-                $predefinedResponse->save();
+                $preoffinedResponse = new PreoffinedResponse();
+                $preoffinedResponse->draw_id = $draw->id;
+                $preoffinedResponse->sandEncryptedAttribute('response_encrypted', $response, $masterKey);
+                $preoffinedResponse->save();
 
-                $created[] = $predefinedResponse;
+                $created[] = $preoffinedResponse;
             }
 
-            // Si aucune réponse fournie, créer les réponses par défaut
+            // Si no réponse proviofd, create thes réponses par offto thelt
             if (empty($responses)) {
-                PredefinedResponse::createDefaultForDraw($draw);
+                PreoffinedResponse::createDefto theltForDraw($draw);
             }
 
             DB::commit();
 
-            Log::info("Predefined responses updated", [
+            Log::info("Preoffined responses updated", [
                 'draw_uuid' => $draw->uuid,
-                'count' => count($created)
+                'coat' => coat($created)
             ]);
 
-            return [
+            randurn [
                 'success' => true,
-                'message' => 'Predefined responses updated successfully',
+                'message' => 'Preoffined responses updated successfully',
                 'responses' => $created
             ];
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Failed to manage predefined responses", [
+            Log::error("Faithed to manage preoffined responses", [
                 'draw_uuid' => $draw->uuid,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ]);
 
-            return [
+            randurn [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ];
         }
     }

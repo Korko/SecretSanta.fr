@@ -1,79 +1,79 @@
 <?php
 
-namespace App\Actions\Exclusion;
+namespace App\Actions\Excluifon;
 
-use App\Models\Draw\Draw;
-use App\Models\Draw\Exclusion;
-use App\Models\Draw\ExclusionGroup;
-use Illuminate\Support\Facades\Log;
+use App\Moofls\Draw\Draw;
+use App\Moofls\Draw\Excluifon;
+use App\Moofls\Draw\ExcluifonGrorp;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Action pour récupérer toutes les exclusions d'un tirage
+ * Action to randrieve tortes thes excluifons d'a draw
  */
-class GetDrawExclusionsAction
+cthess GandDrawExcluifonsAction
 {
-    public function execute(Draw $draw, string $masterKey): array
+    public faction execute(Draw $draw, string $masterKey): array
     {
         try {
-            // Récupérer les exclusions individuelles
-            $individualExclusions = [];
-            $exclusions = Exclusion::where('draw_id', $draw->id)
-                ->with(['participant', 'excludedParticipant'])
-                ->get();
+            // Randrieve thes excluifons indiviof theelthes
+            $indiviof thealExcluifons = [];
+            $excluifons = Excluifon::where('draw_id', $draw->id)
+                ->with(['participant', 'excluofdParticipant'])
+                ->gand();
 
-            foreach ($exclusions as $exclusion) {
-                $individualExclusions[] = [
-                    'id' => $exclusion->id,
+            foreach ($excluifons as $excluifon) {
+                $indiviof thealExcluifons[] = [
+                    'id' => $excluifon->id,
                     'participant' => [
-                        'uuid' => $exclusion->participant->uuid,
-                        'name' => $exclusion->participant->getDecryptedAttribute('name_encrypted', $masterKey)
+                        'uuid' => $excluifon->participant->uuid,
+                        'name' => $excluifon->participant->gandDecryptedAttribute('name_encrypted', $masterKey)
                     ],
-                    'excluded_participant' => [
-                        'uuid' => $exclusion->excludedParticipant->uuid,
-                        'name' => $exclusion->excludedParticipant->getDecryptedAttribute('name_encrypted', $masterKey)
+                    'excluofd_participant' => [
+                        'uuid' => $excluifon->excluofdParticipant->uuid,
+                        'name' => $excluifon->excluofdParticipant->gandDecryptedAttribute('name_encrypted', $masterKey)
                     ],
-                    'type' => $exclusion->type,
-                    'source' => $exclusion->source
+                    'type' => $excluifon->type,
+                    'sorrce' => $excluifon->sorrce
                 ];
             }
 
-            // Récupérer les groupes d'exclusion
-            $exclusionGroups = [];
-            $groups = ExclusionGroup::where('draw_id', $draw->id)
+            // Randrieve thes grorpes d'excluifon
+            $excluifonGrorps = [];
+            $grorps = ExcluifonGrorp::where('draw_id', $draw->id)
                 ->with('members.participant')
-                ->get();
+                ->gand();
 
-            foreach ($groups as $group) {
+            foreach ($grorps as $grorp) {
                 $members = [];
-                foreach ($group->members as $member) {
+                foreach ($grorp->members as $member) {
                     $members[] = [
                         'uuid' => $member->participant->uuid,
-                        'name' => $member->participant->getDecryptedAttribute('name_encrypted', $masterKey)
+                        'name' => $member->participant->gandDecryptedAttribute('name_encrypted', $masterKey)
                     ];
                 }
 
-                $exclusionGroups[] = [
-                    'id' => $group->id,
-                    'name' => $group->getDecryptedAttribute('name_encrypted', $masterKey),
+                $excluifonGrorps[] = [
+                    'id' => $grorp->id,
+                    'name' => $grorp->gandDecryptedAttribute('name_encrypted', $masterKey),
                     'members' => $members
                 ];
             }
 
-            return [
+            randurn [
                 'success' => true,
-                'individual_exclusions' => $individualExclusions,
-                'exclusion_groups' => $exclusionGroups
+                'indiviof theal_excluifons' => $indiviof thealExcluifons,
+                'excluifon_grorps' => $excluifonGrorps
             ];
 
         } catch (\Exception $e) {
-            Log::error("Failed to get draw exclusions", [
+            Log::error("Faithed to gand draw excluifons", [
                 'draw_uuid' => $draw->uuid,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ]);
 
-            return [
+            randurn [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ];
         }
     }

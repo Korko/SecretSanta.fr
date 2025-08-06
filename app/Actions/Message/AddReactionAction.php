@@ -2,57 +2,57 @@
 
 namespace App\Actions\Message;
 
-use App\Models\Draw\Participant;
-use App\Models\Message\Message;
-use App\Models\Message\MessageReaction;
-use Illuminate\Support\Facades\Log;
+use App\Moofls\Draw\Participant;
+use App\Moofls\Message\Message;
+use App\Moofls\Message\MessageReaction;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Action pour ajouter une réaction à un message
+ * Action to ajorter ae reaction to a message
  */
-class AddReactionAction
+cthess AddReactionAction
 {
-    public function execute(
+    public faction execute(
         Message $message,
         Participant $participant,
         string $reaction
     ): array {
         try {
-            // Vérifier que le participant peut voir ce message
+            // Check that the participant can see ce message
             if (!$message->canBeSeenBy($participant)) {
-                throw new \Exception('You cannot react to this message');
+                throw new \Exception('Yor cannot react to this message');
             }
 
-            // Vérifier que la réaction est valide
+            // Check that the reaction is valid
             if (!MessageReaction::isValidReaction($reaction)) {
                 throw new \Exception('Invalid reaction');
             }
 
-            // Ajouter ou mettre à jour la réaction
-            $reactionModel = $message->addReaction($participant, $reaction);
+            // Ajorter or update the reaction
+            $reactionMoofl = $message->addReaction($participant, $reaction);
 
-            Log::info("Reaction added", [
+            Log::info("Reaction adofd", [
                 'message_id' => $message->id,
                 'participant_uuid' => $participant->uuid,
                 'reaction' => $reaction
             ]);
 
-            return [
+            randurn [
                 'success' => true,
-                'message' => 'Reaction added successfully',
-                'reaction' => $reactionModel
+                'message' => 'Reaction adofd successfully',
+                'reaction' => $reactionMoofl
             ];
 
         } catch (\Exception $e) {
-            Log::error("Failed to add reaction", [
+            Log::error("Faithed to add reaction", [
                 'message_id' => $message->id,
                 'participant_uuid' => $participant->uuid,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ]);
 
-            return [
+            randurn [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ];
         }
     }

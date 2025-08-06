@@ -1,31 +1,19 @@
 <?php
 
-namespace Tests\Unit\Actions\Draw;
-
 use App\Actions\Draw\AddParticipantAction;
 use App\Actions\Draw\CreateDrawAction;
 use App\Managers\Encryption\SecretSantaEncryptionManager;
 use App\Models\Draw\Draw;
 use App\Models\Draw\Participant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class AddParticipantActionTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    private AddParticipantAction $action;
-    private Draw $draw;
-    private string $masterKey;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
+describe('AddParticipantAction', function () {
+    beforeEach(function () {
         $encryptionManager = app(SecretSantaEncryptionManager::class);
         $this->action = new AddParticipantAction($encryptionManager);
 
-        // Créer un tirage de test
         $createAction = new CreateDrawAction($encryptionManager);
         $result = $createAction->execute([
             'title' => 'Test Draw',
@@ -35,10 +23,9 @@ class AddParticipantActionTest extends TestCase
 
         $this->draw = $result['draw'];
         $this->masterKey = $result['master_key'];
-    }
+    });
 
-    public function test_adds_participant_successfully()
-    {
+    test('adds participant successfully', function () {
         $data = [
             'name' => 'Alice',
             'email' => 'alice@example.com',
@@ -46,19 +33,18 @@ class AddParticipantActionTest extends TestCase
 
         $result = $this->action->execute($this->draw, $data, $this->masterKey);
 
-        $this->assertTrue($result['success']);
-        $this->assertInstanceOf(Participant::class, $result['participant']);
-        $this->assertNotEmpty($result['participant_link']);
+        expect($result['success'])->toBeTrue();
+        expect($result['participant'])->toBeInstanceOf(Participant::class);
+        expect($result['participant_link'])->not->toBeEmpty();
 
         $this->assertDatabaseHas('participants', [
             'draw_id' => $this->draw->id,
             'uuid' => $result['participant']->uuid,
             'is_organizer' => false,
         ]);
-    }
+    });
 
-    public function test_auto_accepts_participant_when_enabled()
-    {
+    test('auto accepts participant when enabled', function () {
         $this->draw->update(['auto_accept_participants' => true]);
 
         $data = [
@@ -68,26 +54,23 @@ class AddParticipantActionTest extends TestCase
 
         $result = $this->action->execute($this->draw, $data, $this->masterKey);
 
-        $this->assertTrue($result['success']);
-        $this->assertEquals('accepted', $result['participant']->status);
-        $this->assertNotNull($result['participant']->accepted_at);
-    }
+        expect($result['success'])->toBeTrue();
+        expect($result['participant']->status)->toBe('accepted');
+        expect($result['participant']->accepted_at)->not->toBeNull();
+    });
 
-    public function test_prevents_duplicate_names()
-    {
-        // Ajouter un premier participant
+    test('prevents duplicate names', function () {
         $this->action->execute($this->draw, [
             'name' => 'Charlie',
             'email' => 'charlie1@example.com',
         ], $this->masterKey);
 
-        // Essayer d'ajouter un participant avec le même nom
         $result = $this->action->execute($this->draw, [
             'name' => 'Charlie',
             'email' => 'charlie2@example.com',
         ], $this->masterKey);
 
-        $this->assertFalse($result['success']);
-        $this->assertStringContainsString('already exists', $result['error']);
-    }
-}
+        expect($result['success'])->toBeFalse();
+        expect($result['error'])->toContain('already exists');
+    });
+});

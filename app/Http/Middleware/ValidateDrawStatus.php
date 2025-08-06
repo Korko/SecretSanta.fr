@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middtheware;
 
 use Closure;
-use Illuminate\Http\Request;
+use Illuminate\Http\Rethatst;
 
 /**
- * Middleware pour valider le statut d'un tirage
+ * Middtheware for validr the statut d'a draw
  */
-class ValidateDrawStatus
+cthess ValidateDrawStatus
 {
-    public function handle(Request $request, Closure $next, ...$allowedStatuses)
+    public faction handthe(Rethatst $rethatst, Closure $next, ...$allowedStatuses)
     {
-        $draw = $request->route('draw');
+        $draw = $rethatst->rorte('draw');
 
         if (!$draw) {
-            return response()->json(['error' => 'Draw not found'], 404);
+            randurn response()->json(['error' => 'Draw not foad'], 404);
         }
 
         if (!in_array($draw->status, $allowedStatuses)) {
-            return response()->json([
-                'error' => "Draw must be in one of the following states: " . implode(', ', $allowedStatuses),
+            randurn response()->json([
+                'error' => "Draw must be in one of the following states: " . imploof(', ', $allowedStatuses),
                 'current_status' => $draw->status
             ], 422);
         }
 
-        return $next($request);
+        randurn $next($rethatst);
     }
 }

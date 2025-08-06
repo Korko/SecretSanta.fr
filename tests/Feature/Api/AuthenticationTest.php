@@ -1,21 +1,18 @@
 <?php
 
-namespace Tests\Feature\Api;
-
 use App\Managers\Encryption\SecretSantaEncryptionManager;
 use App\Models\Draw\Participant;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class AuthenticationTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    private string $apiPrefix = '/api/v1';
+describe('Authentication API', function () {
+    beforeEach(function () {
+        $this->apiPrefix = '/api/v1';
+    });
 
-    public function test_user_registration_endpoint()
-    {
+    test('user registration endpoint', function () {
         $response = $this->postJson("{$this->apiPrefix}/auth/register", [
             'email' => 'user@example.com',
             'password' => 'SecurePassword123!',
@@ -33,11 +30,9 @@ class AuthenticationTest extends TestCase
         $this->assertDatabaseHas('users', [
             'email_hash' => hash('sha256', strtolower('user@example.com')),
         ]);
-    }
+    });
 
-    public function test_user_login_endpoint()
-    {
-        // Créer un utilisateur
+    test('user login endpoint', function () {
         $user = User::factory()->create([
             'email_hash' => hash('sha256', 'user@example.com'),
             'password_hash' => bcrypt('password'),
@@ -54,10 +49,9 @@ class AuthenticationTest extends TestCase
                 'user' => ['id'],
                 'token',
             ]);
-    }
+    });
 
-    public function test_participant_authentication_endpoint()
-    {
+    test('participant authentication endpoint', function () {
         $encryptionManager = app(SecretSantaEncryptionManager::class);
         $participantEncryption = $encryptionManager->createDrawEncryption();
 
@@ -76,5 +70,5 @@ class AuthenticationTest extends TestCase
                 'participant' => ['uuid'],
                 'access_token',
             ]);
-    }
-}
+    });
+});

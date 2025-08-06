@@ -1,30 +1,20 @@
 <?php
 
-namespace Tests\Unit\Actions\Draw;
-
 use App\Actions\Draw\CreateDrawAction;
 use App\Managers\Encryption\SecretSantaEncryptionManager;
 use App\Models\Draw\Draw;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class CreateDrawActionTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    private CreateDrawAction $action;
-    private SecretSantaEncryptionManager $encryptionManager;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
+describe('CreateDrawAction', function () {
+    beforeEach(function () {
         $this->encryptionManager = app(SecretSantaEncryptionManager::class);
         $this->action = new CreateDrawAction($this->encryptionManager);
-    }
+    });
 
-    public function test_creates_draw_successfully()
-    {
+    test('creates draw successfully', function () {
         $data = [
             'title' => 'Secret Santa 2024',
             'description' => 'Tirage pour Noël',
@@ -35,28 +25,29 @@ class CreateDrawActionTest extends TestCase
         ];
 
         $result = $this->action->execute($data);
+        
+        if (!$result['success']) {
+            dump($result['error']);
+        }
 
-        $this->assertTrue($result['success']);
-        $this->assertInstanceOf(Draw::class, $result['draw']);
-        $this->assertNotEmpty($result['organizer_link']);
-        $this->assertNotEmpty($result['master_key']);
+        expect($result['success'])->toBeTrue();
+        expect($result['draw'])->toBeInstanceOf(Draw::class);
+        expect($result['organizer_link'])->not->toBeEmpty();
+        expect($result['master_key'])->not->toBeEmpty();
 
-        // Vérifier en base de données
         $this->assertDatabaseHas('draws', [
             'uuid' => $result['draw']->uuid,
             'status' => 'draft'
         ]);
 
-        // Vérifier qu'un participant organisateur a été créé
         $this->assertDatabaseHas('participants', [
             'draw_id' => $result['draw']->id,
             'is_organizer' => true,
             'status' => 'accepted'
         ]);
-    }
+    });
 
-    public function test_creates_draw_with_user()
-    {
+    test('creates draw with user', function () {
         $user = User::factory()->create();
 
         $data = [
@@ -67,20 +58,18 @@ class CreateDrawActionTest extends TestCase
 
         $result = $this->action->execute($data, $user);
 
-        $this->assertTrue($result['success']);
-        $this->assertEquals($user->id, $result['draw']->user_id);
-    }
+        expect($result['success'])->toBeTrue();
+        expect($result['draw']->user_id)->toBe($user->id);
+    });
 
-    public function test_handles_creation_failure()
-    {
+    test('handles creation failure', function () {
         $data = [
-            // Données incomplètes
             'title' => '',
         ];
 
         $result = $this->action->execute($data);
 
-        $this->assertFalse($result['success']);
-        $this->assertArrayHasKey('error', $result);
-    }
-}
+        expect($result['success'])->toBeFalse();
+        expect($result)->toHaveKey('error');
+    });
+});

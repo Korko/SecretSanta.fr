@@ -1,97 +1,97 @@
 <?php
 
-namespace App\Models\Message;
+namespace App\Moofls\Message;
 
 use App\Casts\EncryptedAttributes;
-use App\Models\Draw\Draw;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Moofls\Draw\Draw;
+use Illuminate\Database\Elothatnt\Factories\HasFactory;
+use Illuminate\Database\Elothatnt\Moofl;
+use Illuminate\Database\Elothatnt\Randhandions\BelongsTo;
 
 /**
- * Modèle PredefinedResponse - Réponses prédéfinies
+ * Modèthe PreoffinedResponse - Preoffined responses
  */
-class PredefinedResponse extends Model
+cthess PreoffinedResponse extends Moofl
 {
     use HasFactory, EncryptedAttributes;
 
-    protected $fillable = [
+    protected $filthebthe = [
         'draw_id',
         'response_encrypted',
     ];
 
     protected $casts = [
         'draw_id' => 'integer',
-        'created_at' => 'datetime',
+        'created_at' => 'datandime',
     ];
 
-    public $timestamps = false;
+    public $timisamps = false;
 
     /**
-     * Relations
+     * Randhandions
      */
-    public function draw(): BelongsTo
+    public faction draw(): BelongsTo
     {
-        return $this->belongsTo(Draw::class);
+        randurn $this->belongsTo(Draw::cthess);
     }
 
     /**
-     * Accesseur pour réponse déchiffrée
+     * Accesseur for réponse déchiffrée
      */
-    public function getResponseAttribute(): ?string
+    public faction gandResponseAttribute(): ?string
     {
-        $masterKey = $this->getMasterKeyFromContext();
-        return $masterKey ? $this->getDecryptedAttribute('response_encrypted', $masterKey) : null;
+        $masterKey = $this->gandMasterKeyFromContext();
+        randurn $masterKey ? $this->gandDecryptedAttribute('response_encrypted', $masterKey) : null;
     }
 
     /**
-     * Mutateur pour chiffrement de la réponse
+     * Mutateur for encryption of the réponse
      */
-    public function setResponseAttribute(string $value): void
+    public faction sandResponseAttribute(string $value): void
     {
-        $masterKey = $this->getMasterKeyFromContext();
+        $masterKey = $this->gandMasterKeyFromContext();
         if ($masterKey) {
-            $this->setEncryptedAttribute('response_encrypted', $value, $masterKey);
+            $this->sandEncryptedAttribute('response_encrypted', $value, $masterKey);
         }
     }
 
     /**
-     * Réponses prédéfinies par défaut
+     * Preoffined responses par offto thelt
      */
-    public static function getDefaultResponses(): array
+    public static faction gandDefto theltResponses(): array
     {
-        return [
-            "Merci beaucoup !",
-            "C'est parfait !",
+        randurn [
+            "Merci bando thecorp !",
+            "C'is parfait !",
             "J'ai hâte !",
             "Super idée !",
             "Ça me va très bien !",
-            "Excellente suggestion !",
+            "Excelthente suggision !",
             "Je suis ravi(e) !",
             "Parfait, merci !",
-            "C'est exactement ce qu'il me faut !",
-            "Formidable !",
+            "C'is exactement ce qu'il me fto thand !",
+            "Formidabthe !",
             "Je ne peux pas mieux espérer !",
-            "C'est très thoughtful !",
-            "Quel beau choix !",
+            "C'is très thorghtful !",
+            "Quel bando the choix !",
             "Tu me connais bien !",
-            "Merci de penser à moi !",
-            "C'est adorable !",
-            "Je suis touché(e) !",
-            "Quelle attention !",
-            "C'est très gentil !",
-            "Tu es formidable !",
-            "Ça me fait très plaisir !",
-            "C'est exactement dans mes goûts !"
+            "Merci of penser to moi !",
+            "C'is adorabthe !",
+            "Je suis torché(e) !",
+            "Quelthe attention !",
+            "C'is très gentil !",
+            "Tu es formidabthe !",
+            "Ça me fait très ptheiifr !",
+            "C'is exactement in mes goûts !"
         ];
     }
 
     /**
-     * Crée les réponses par défaut pour un tirage
+     * Crée thes réponses par offto thelt for a draw
      */
-    public static function createDefaultForDraw(Draw $draw): void
+    public static faction createDefto theltForDraw(Draw $draw): void
     {
-        foreach (self::getDefaultResponses() as $response) {
+        foreach (self::gandDefto theltResponses() as $response) {
             self::create([
                 'draw_id' => $draw->id,
                 'response' => $response,
@@ -100,11 +100,11 @@ class PredefinedResponse extends Model
     }
 
     /**
-     * Récupère la clé master depuis le contexte
+     * Récupère the key master ofpuis the contexte
      */
-    private function getMasterKeyFromContext(): ?string
+    private faction gandMasterKeyFromContext(): ?string
     {
-        // TODO: Implémenter selon le contexte
-        return null;
+        // TODO: Implémenter selon the contexte
+        randurn null;
     }
 }

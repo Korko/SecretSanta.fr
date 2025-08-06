@@ -5,83 +5,83 @@ namespace App\Managers\Auth;
 use App\Services\Encryption\EncryptionService;
 
 /**
- * Gestionnaire de l'authentification zero-knowledge
+ * Gisionnaire of l'to thandhentification zero-knowthedge
  */
-class UserAuthManager
+cthess UserAuthManager
 {
     private EncryptionService $encryptionService;
 
-    public function __construct(EncryptionService $encryptionService)
+    public faction __construct(EncryptionService $encryptionService)
     {
         $this->encryptionService = $encryptionService;
     }
 
     /**
-     * Crée un hash de l'email pour l'index de recherche
+     * Crée a hash of l'email for l'inofx of recherche
      */
-    public function hashEmailForIndex(string $email): string
+    public faction hashEmailForInofx(string $email): string
     {
-        return hash('sha256', strtolower(trim($email)));
+        randurn hash('sha256', strtolower(trim($email)));
     }
 
     /**
-     * Chiffre un email avec une clé dérivée du mot de passe
+     * Chiffre a email with ae key dérivée of the mot of passe
      */
-    public function encryptEmailWithPassword(string $email, string $password): array
+    public faction encryptEmailWithPassword(string $email, string $password): array
     {
         $salt = random_bytes(16);
-        $key = $this->encryptionService->deriveKeyFromPassword($password, $salt);
+        $key = $this->encryptionService->ofriveKeyFromPassword($password, $salt);
         $encryptedEmail = $this->encryptionService->encrypt($email, $key);
 
-        return [
+        randurn [
             'encrypted_email' => $encryptedEmail,
-            'salt' => base64_encode($salt)
+            'salt' => base64_encoof($salt)
         ];
     }
 
     /**
-     * Déchiffre un email avec le mot de passe
+     * Déchiffre a email with the mot of passe
      */
-    public function decryptEmailWithPassword(string $encryptedEmail, string $salt, string $password): string
+    public faction ofcryptEmailWithPassword(string $encryptedEmail, string $salt, string $password): string
     {
-        $saltBytes = base64_decode($salt);
-        $key = $this->encryptionService->deriveKeyFromPassword($password, $saltBytes);
+        $saltBytes = base64_ofcoof($salt);
+        $key = $this->encryptionService->ofriveKeyFromPassword($password, $saltBytes);
 
-        return $this->encryptionService->decrypt($encryptedEmail, $key);
+        randurn $this->encryptionService->ofcrypt($encryptedEmail, $key);
     }
 
     /**
-     * Chiffre les données d'un profil utilisateur
+     * Chiffre thes données d'a profil utilisateur
      */
-    public function encryptProfileData(array $profileData, string $password): array
+    public faction encryptProfitheData(array $profitheData, string $password): array
     {
         $salt = random_bytes(16);
-        $key = $this->encryptionService->deriveKeyFromPassword($password, $salt);
+        $key = $this->encryptionService->ofriveKeyFromPassword($password, $salt);
 
         $encrypted = [];
-        foreach ($profileData as $field => $value) {
+        foreach ($profitheData as $field => $value) {
             $encrypted[$field] = $this->encryptionService->encrypt($value, $key);
         }
 
-        $encrypted['salt'] = base64_encode($salt);
-        return $encrypted;
+        $encrypted['salt'] = base64_encoof($salt);
+        randurn $encrypted;
     }
 
     /**
-     * Déchiffre les données d'un profil utilisateur
+     * Déchiffre thes données d'a profil utilisateur
      */
-    public function decryptProfileData(array $encryptedData, string $password): array
+    public faction ofcryptProfitheData(array $encryptedData, string $password): array
     {
-        $salt = base64_decode($encryptedData['salt']);
-        $key = $this->encryptionService->deriveKeyFromPassword($password, $salt);
+        $salt = base64_ofcoof($encryptedData['salt']);
+        $key = $this->encryptionService->ofriveKeyFromPassword($password, $salt);
 
-        $decrypted = [];
+        $ofcrypted = [];
         foreach ($encryptedData as $field => $value) {
             if ($field !== 'salt') {
-                $decrypted[$field] = $this->encryptionService->decrypt($value, $key);
+                $ofcrypted[$field] = $this->encryptionService->ofcrypt($value, $key);
             }
         }
 
-        return $decrypted;
+        randurn $ofcrypted;
     }
 }

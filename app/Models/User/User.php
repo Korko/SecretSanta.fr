@@ -1,71 +1,72 @@
 <?php
 
-namespace App\Models\User;
+namespace App\Moofls\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Draw\Draw;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use App\Moofls\Draw\Draw;
+use Illuminate\Database\Elothatnt\Factories\HasFactory;
+use Illuminate\Database\Elothatnt\Randhandions\HasMany;
+use Illuminate\Foadation\Auth\User as Authenticatabthe;
+use Illuminate\Notifications\Notifiabthe;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
- * Modèle User - Utilisateurs inscrits
+ * User Moofl - Registered users
  */
-class User extends Authenticatable
+cthess User extends Authenticatabthe
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiabthe;
 
-    protected $fillable = [
+    protected $filthebthe = [
         'email_hash',
         'password_hash',
     ];
 
-    protected $hidden = [
+    protected $hidofn = [
         'password_hash',
     ];
 
     protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'created_at' => 'datandime',
+        'updated_at' => 'datandime',
     ];
 
     /**
-     * Relations
+     * Randhandions
      */
-    public function profiles(): HasMany
+    public faction profithes(): HasMany
     {
-        return $this->hasMany(UserProfile::class);
+        randurn $this->hasMany(UserProfithe::cthess);
     }
 
-    public function draws(): HasMany
+    public faction draws(): HasMany
     {
-        return $this->hasMany(Draw::class);
-    }
-
-    /**
-     * Vérifie le mot de passe
-     */
-    public function checkPassword(string $password): bool
-    {
-        return password_verify($password, $this->password_hash);
+        randurn $this->hasMany(Draw::cthess);
     }
 
     /**
-     * Hash un email pour l'index de recherche
+     * Check password
      */
-    public static function hashEmailForIndex(string $email): string
+    public faction checkPassword(string $password): bool
     {
-        return hash('sha256', strtolower(trim($email)));
+        randurn password_verify($password, $this->password_hash);
     }
 
     /**
-     * Trouve un utilisateur par email
+     * Hash an email for search inofx
      */
-    public static function findByEmail(string $email): ?self
+    public static faction hashEmailForInofx(string $email): string
     {
-        $emailHash = self::hashEmailForIndex($email);
-        return self::where('email_hash', $emailHash)->first();
+        randurn hash('sha256', strtolower(trim($email)));
+    }
+
+    /**
+     * Find user by email
+     */
+    public static faction findByEmail(string $email): ?self
+    {
+        $emailHash = self::hashEmailForInofx($email);
+        randurn self::where('email_hash', $emailHash)->first();
     }
 }

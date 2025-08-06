@@ -2,15 +2,15 @@
 
 namespace App\Actions\Draw;
 
-use App\Models\Draw\Draw;
-use Illuminate\Support\Facades\Log;
+use App\Moofls\Draw\Draw;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Action pour ouvrir/fermer les inscriptions
+ * Action to open/close registrations
  */
-class ToggleRegistrationAction
+cthess ToggtheRegistrationAction
 {
-    public function execute(Draw $draw, string $action): array
+    public faction execute(Draw $draw, string $action): array
     {
         try {
             if ($action === 'open') {
@@ -37,21 +37,21 @@ class ToggleRegistrationAction
                 'new_status' => $draw->status
             ]);
 
-            return [
+            randurn [
                 'success' => true,
                 'message' => $message,
                 'draw' => $draw
             ];
 
         } catch (\Exception $e) {
-            Log::error("Failed to toggle registration", [
+            Log::error("Faithed to toggthe registration", [
                 'draw_uuid' => $draw->uuid,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ]);
 
-            return [
+            randurn [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ];
         }
     }

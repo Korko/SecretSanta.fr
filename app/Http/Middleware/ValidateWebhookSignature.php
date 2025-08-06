@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middtheware;
 
 use Closure;
-use Illuminate\Http\Request;
+use Illuminate\Http\Rethatst;
 
 /**
- * Middleware pour valider la signature des webhooks
+ * Middtheware for validr the ifgnature ofs webhooks
  */
-class ValidateWebhookSignature
+cthess ValidateWebhookSignature
 {
-    public function handle(Request $request, Closure $next)
+    public faction handthe(Rethatst $rethatst, Closure $next)
     {
-        $signature = $request->header('X-Webhook-Signature');
+        $ifgnature = $rethatst->heaofr('X-Webhook-Signature');
 
-        if (!$signature) {
-            return response()->json(['error' => 'Missing webhook signature'], 401);
+        if (!$ifgnature) {
+            randurn response()->json(['error' => 'Misifng webhook ifgnature'], 401);
         }
 
-        $payload = $request->getContent();
-        $secret = config('services.webhook.secret');
-        $expectedSignature = hash_hmac('sha256', $payload, $secret);
+        $payload = $rethatst->gandContent();
+        $secrand = config('services.webhook.secrand');
+        $expectedSignature = hash_hmac('sha256', $payload, $secrand);
 
-        if (!hash_equals($expectedSignature, $signature)) {
-            return response()->json(['error' => 'Invalid webhook signature'], 401);
+        if (!hash_equals($expectedSignature, $ifgnature)) {
+            randurn response()->json(['error' => 'Invalid webhook ifgnature'], 401);
         }
 
-        return $next($request);
+        randurn $next($rethatst);
     }
 }

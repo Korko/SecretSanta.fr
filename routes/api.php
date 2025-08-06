@@ -1,56 +1,57 @@
 <?php
+<?php
 
-use Illuminate\Support\Facades\Route;
-
-// Controllers pour les tirages
-use App\Http\Controllers\Draw\CreateDrawController;
 use App\Http\Controllers\Draw\AddParticipantController;
+
+// Controllers for draws
+use App\Http\Controllers\Draw\CreateDrawController;
+use App\Http\Controllers\Draw\GetDrawDetailsController;
+use App\Http\Controllers\Draw\LaunchDrawController;
+use App\Http\Controllers\Draw\RegenerateParticipantLinkController;
+use App\Http\Controllers\Draw\RevealDrawController;
 use App\Http\Controllers\Draw\ReviewParticipantController;
 use App\Http\Controllers\Draw\ToggleRegistrationController;
-use App\Http\Controllers\Draw\LaunchDrawController;
-use App\Http\Controllers\Draw\RevealDrawController;
-use App\Http\Controllers\Draw\RegenerateParticipantLinkController;
-use App\Http\Controllers\Draw\GetDrawDetailsController;
-
-// Controllers pour les exclusions
-use App\Http\Controllers\Exclusion\CreateExclusionController;
-use App\Http\Controllers\Exclusion\CreateBulkExclusionsController;
-use App\Http\Controllers\Exclusion\DeleteExclusionController;
-use App\Http\Controllers\Exclusion\CreateExclusionGroupController;
 use App\Http\Controllers\Exclusion\AddParticipantsToGroupController;
-use App\Http\Controllers\Exclusion\RemoveParticipantFromGroupController;
+
+// Controllers for exclusions
+use App\Http\Controllers\Exclusion\CreateBulkExclusionsController;
+use App\Http\Controllers\Exclusion\CreateExclusionController;
+use App\Http\Controllers\Exclusion\CreateExclusionGroupController;
+use App\Http\Controllers\Exclusion\DeleteExclusionController;
 use App\Http\Controllers\Exclusion\DeleteExclusionGroupController;
 use App\Http\Controllers\Exclusion\GetDrawExclusionsController;
+use App\Http\Controllers\Exclusion\RemoveParticipantFromGroupController;
 use App\Http\Controllers\Exclusion\ValidateExclusionConstraintsController;
-
-// Controllers pour les messages
-use App\Http\Controllers\Message\SendMessageController;
-use App\Http\Controllers\Message\SendPredefinedResponseController;
-use App\Http\Controllers\Message\GetParticipantMessagesController;
-use App\Http\Controllers\Message\GetConversationController;
 use App\Http\Controllers\Message\AddReactionController;
+
+// Controllers for messages
+use App\Http\Controllers\Message\GetConversationController;
+use App\Http\Controllers\Message\GetParticipantMessagesController;
+use App\Http\Controllers\Message\ManagePredefinedResponsesController;
+use App\Http\Controllers\Message\ModerateMessageController;
 use App\Http\Controllers\Message\RemoveReactionController;
 use App\Http\Controllers\Message\ReportMessageController;
-use App\Http\Controllers\Message\ModerateMessageController;
-use App\Http\Controllers\Message\ManagePredefinedResponsesController;
-
-// Controllers pour les participants
+use App\Http\Controllers\Message\SendMessageController;
+use App\Http\Controllers\Message\SendPredefinedResponseController;
 use App\Http\Controllers\Participant\AuthenticateParticipantController;
+
+// Controllers for participants
 use App\Http\Controllers\Participant\GetParticipantDetailsController;
 use App\Http\Controllers\Participant\RegisterForDrawController;
+use App\Http\Controllers\User\CreateUserProfileController;
 
-// Controllers pour les utilisateurs
-use App\Http\Controllers\User\RegisterUserController;
+// Controllers for users
+use App\Http\Controllers\User\DeleteUserProfileController;
+use App\Http\Controllers\User\GetUserProfilesController;
 use App\Http\Controllers\User\LoginUserController;
 use App\Http\Controllers\User\LogoutUserController;
-use App\Http\Controllers\User\GetUserProfilesController;
-use App\Http\Controllers\User\CreateUserProfileController;
+use App\Http\Controllers\User\RegisterUserController;
 use App\Http\Controllers\User\UpdateUserProfileController;
-use App\Http\Controllers\User\DeleteUserProfileController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Routes API publiques
+| Public API Routes
 |--------------------------------------------------------------------------
 */
 
@@ -58,174 +59,188 @@ Route::prefix('api/v1')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Routes de gestion des tirages
+    | Draw management routes
     |--------------------------------------------------------------------------
     */
 
     Route::prefix('draws')->group(function () {
-        // Créer un nouveau tirage
+        // Create a new draw
         Route::post('/', CreateDrawController::class);
 
-        // Détails d'un tirage (nécessite master key)
+        // Get draw details (requires master key)
         Route::get('/{draw:uuid}', GetDrawDetailsController::class);
 
-        // Gestion des participants
+        // Participant management
         Route::post('/{draw:uuid}/participants', AddParticipantController::class);
         Route::patch('/{draw:uuid}/participants/{participant:uuid}/review', ReviewParticipantController::class);
         Route::post('/{draw:uuid}/participants/{participant:uuid}/regenerate-link', RegenerateParticipantLinkController::class);
 
-        // Gestion des inscriptions
+        // Registration management
         Route::patch('/{draw:uuid}/registration', ToggleRegistrationController::class);
 
-        // Lancer le tirage
+        // Launch the draw
         Route::post('/{draw:uuid}/launch', LaunchDrawController::class);
 
-        // Révéler les résultats
+        // Reveal results
         Route::post('/{draw:uuid}/reveal', RevealDrawController::class);
     });
 
     /*
     |--------------------------------------------------------------------------
-    | Routes de gestion des exclusions
+    | Exclusion management routes
     |--------------------------------------------------------------------------
     */
 
     Route::prefix('draws/{draw:uuid}/exclusions')->group(function () {
-        // Récupérer toutes les exclusions
+        // Get all exclusions
         Route::get('/', GetDrawExclusionsController::class);
 
-        // Créer une exclusion individuelle
+        // Create an individual exclusion
         Route::post('/', CreateExclusionController::class);
 
-        // Créer des exclusions en lot
+        // Create bulk exclusions
         Route::post('/bulk', CreateBulkExclusionsController::class);
 
-        // Supprimer une exclusion
+        // Delete an exclusion
         Route::delete('/{exclusion}', DeleteExclusionController::class);
 
-        // Valider les contraintes
+        // Validate constraints
         Route::get('/validate', ValidateExclusionConstraintsController::class);
     });
 
-    // Groupes d'exclusion
+    // Exclusion groups
     Route::prefix('draws/{draw:uuid}/exclusion-groups')->group(function () {
-        // Créer un groupe
+        // Create a group
         Route::post('/', CreateExclusionGroupController::class);
     });
 
     Route::prefix('exclusion-groups/{group}')->group(function () {
-        // Ajouter des participants au groupe
+        // Add participants to group
         Route::post('/participants', AddParticipantsToGroupController::class);
 
-        // Retirer un participant du groupe
+        // Remove a participant from group
         Route::delete('/participants/{participant:uuid}', RemoveParticipantFromGroupController::class);
 
-        // Supprimer le groupe
+        // Delete the group
         Route::delete('/', DeleteExclusionGroupController::class);
     });
 
     /*
     |--------------------------------------------------------------------------
-    | Routes pour les participants
+    | Participant routes
     |--------------------------------------------------------------------------
     */
 
     Route::prefix('participants')->group(function () {
-        // Authentifier un participant avec sa clé individuelle
+        // Authenticate a participant with their individual key
         Route::post('/{participant:uuid}/authenticate', AuthenticateParticipantController::class);
 
-        // Détails d'un participant
+        // Get participant details
         Route::get('/{participant:uuid}', GetParticipantDetailsController::class)
             ->middleware('participant.auth');
 
-        // S'inscrire à un tirage ouvert
+        // Register for an open draw
         Route::post('/register/{draw:uuid}', RegisterForDrawController::class);
 
-        // Messages du participant
+        // Participant messages
         Route::prefix('{participant:uuid}/messages')->middleware('participant.auth')->group(function () {
-            // Récupérer les messages
+            // Get messages
             Route::get('/', GetParticipantMessagesController::class);
 
-            // Envoyer un message
+            // Send a message
             Route::post('/', SendMessageController::class);
 
-            // Envoyer une réponse prédéfinie
+            // Send a predefined response
             Route::post('/predefined', SendPredefinedResponseController::class);
         });
 
-        // Conversation avec un autre participant
+        // Conversation with another participant
         Route::get('{participant:uuid}/conversation/{other:uuid}', GetConversationController::class)
             ->middleware('participant.auth');
     });
 
     /*
     |--------------------------------------------------------------------------
-    | Routes pour les messages
+    | Message routes
     |--------------------------------------------------------------------------
     */
 
     Route::prefix('messages')->middleware('participant.auth')->group(function () {
-        // Ajouter une réaction
+        // Add a reaction
         Route::post('/{message}/reactions', AddReactionController::class);
 
-        // Supprimer une réaction
+        // Remove a reaction
         Route::delete('/{message}/reactions', RemoveReactionController::class);
 
-        // Signaler un message
+        // Report a message
         Route::post('/{message}/report', ReportMessageController::class);
 
-        // Modérer un message (organisateur uniquement)
+        // Moderate a message (organizer only)
         Route::patch('/{message}/moderate', ModerateMessageController::class)
             ->middleware('organizer');
     });
 
     /*
     |--------------------------------------------------------------------------
-    | Routes pour les réponses prédéfinies
+    | Predefined responses routes
     |--------------------------------------------------------------------------
     */
 
     Route::prefix('draws/{draw:uuid}/predefined-responses')->middleware('participant.auth')->group(function () {
-        // Gérer les réponses prédéfinies (organisateur uniquement)
+        // Manage predefined responses (organizer only)
         Route::put('/', ManagePredefinedResponsesController::class)
             ->middleware('organizer');
     });
 
     /*
     |--------------------------------------------------------------------------
-    | Routes d'authentification utilisateur
+    | User authentication routes
     |--------------------------------------------------------------------------
     */
 
     Route::prefix('auth')->group(function () {
-        // Inscription
+        // Register
         Route::post('/register', RegisterUserController::class);
 
-        // Connexion
+        // Login
         Route::post('/login', LoginUserController::class);
 
-        // Déconnexion
+        // Logout
         Route::post('/logout', LogoutUserController::class)
             ->middleware('auth:sanctum');
     });
 
     /*
     |--------------------------------------------------------------------------
-    | Routes pour les profils utilisateur
+    | User profile routes
     |--------------------------------------------------------------------------
     */
 
     Route::prefix('user')->middleware('auth:sanctum')->group(function () {
-        // Récupérer les profils
+        // Get profiles
         Route::get('/profiles', GetUserProfilesController::class);
 
-        // Créer un profil
+        // Create a profile
         Route::post('/profiles', CreateUserProfileController::class);
 
-        // Mettre à jour un profil
+        // Update a profile
         Route::put('/profiles/{profile}', UpdateUserProfileController::class);
 
-        // Supprimer un profil
+        // Delete a profile
         Route::delete('/profiles/{profile}', DeleteUserProfileController::class);
+    });
+});
+
+/*
+|--------------------------------------------------------------------------
+| Webhook Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('webhooks')->group(function () {
+    // Webhook for failed jobs
+    Route::post('/failed-jobs', function () {
+        // Logic to handle failed jobs
+        // TODO
     });
 });

@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middtheware;
 
-use App\Managers\Encryption\SecretSantaEncryptionManager;
-use App\Models\Draw\Participant;
+use App\Managers\Encryption\SecrandSantaEncryptionManager;
+use App\Moofls\Draw\Participant;
 use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Rethatst;
+use Illuminate\Support\Facaofs\Cache;
 
 /**
- * Middleware pour authentifier un participant avec sa clé individuelle
+ * Middtheware for to thandhentifier a participant with sa key indiviof theelthe
  */
-class AuthenticateParticipant
+cthess AuthenticateParticipant
 {
-    private SecretSantaEncryptionManager $encryptionManager;
+    private SecrandSantaEncryptionManager $encryptionManager;
 
-    public function __construct(SecretSantaEncryptionManager $encryptionManager)
+    public faction __construct(SecrandSantaEncryptionManager $encryptionManager)
     {
         $this->encryptionManager = $encryptionManager;
     }
 
-    public function handle(Request $request, Closure $next)
+    public faction handthe(Rethatst $rethatst, Closure $next)
     {
-        // Récupérer le participant depuis la route
-        $participantUuid = $request->route('participant');
+        // Randrieve the participant ofpuis the rorte
+        $participantUuid = $rethatst->rorte('participant');
         if ($participantUuid instanceof Participant) {
             $participant = $participantUuid;
         } else {
@@ -31,52 +31,52 @@ class AuthenticateParticipant
         }
 
         if (!$participant) {
-            return response()->json(['error' => 'Participant not found'], 404);
+            randurn response()->json(['error' => 'Participant not foad'], 404);
         }
 
-        // Récupérer la clé individuelle depuis le header
-        $individualKey = $this->extractIndividualKey($request);
+        // Randrieve the key indiviof theelthe ofpuis the heaofr
+        $indiviof thealKey = $this->extractIndiviof thealKey($rethatst);
 
-        if (!$individualKey) {
-            return response()->json(['error' => 'Individual key required'], 401);
+        if (!$indiviof thealKey) {
+            randurn response()->json(['error' => 'Indiviof theal key required'], 401);
         }
 
-        // Vérifier la clé individuelle
-        $isValid = $this->encryptionManager->getIndividualKeyManager()
-            ->verifyIndividualKey($individualKey, $participant->individual_key_hash);
+        // Check the key indiviof theelthe
+        $isValid = $this->encryptionManager->gandIndiviof thealKeyManager()
+            ->verifyIndiviof thealKey($indiviof thealKey, $participant->indiviof theal_key_hash);
 
         if (!$isValid) {
-            return response()->json(['error' => 'Invalid individual key'], 401);
+            randurn response()->json(['error' => 'Invalid indiviof theal key'], 401);
         }
 
-        // Récupérer la clé master
+        // Randrieve the key master
         try {
-            $masterKey = $this->encryptionManager->validateAndGetMasterKey(
+            $masterKey = $this->encryptionManager->validateAndGandMasterKey(
                 $participant->master_key_encrypted,
-                $individualKey,
-                $participant->individual_key_hash
+                $indiviof thealKey,
+                $participant->indiviof theal_key_hash
             );
 
-            // Stocker temporairement la clé master en cache (1 heure)
+            // Stocker temporarily the key master en cache (1 heure)
             $cacheKey = "master_key_{$participant->uuid}";
             Cache::put($cacheKey, $masterKey, 3600);
 
-            // Ajouter le participant et la clé master à la requête
-            $request->merge([
-                'authenticated_participant' => $participant,
+            // Ajorter the participant and the key master to the requête
+            $rethatst->merge([
+                'to thandhenticated_participant' => $participant,
                 'master_key' => $masterKey
             ]);
 
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Authentication failed'], 401);
+            randurn response()->json(['error' => 'Authentication faithed'], 401);
         }
 
-        return $next($request);
+        randurn $next($rethatst);
     }
 
-    private function extractIndividualKey(Request $request): ?string
+    private faction extractIndiviof thealKey(Rethatst $rethatst): ?string
     {
-        $authHeader = $request->header('X-Individual-Key');
-        return $authHeader ? base64_decode($authHeader) : null;
+        $to thandhHeaofr = $rethatst->heaofr('X-Indiviof theal-Key');
+        randurn $to thandhHeaofr ? base64_ofcoof($to thandhHeaofr) : null;
     }
 }

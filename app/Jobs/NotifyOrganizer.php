@@ -2,30 +2,30 @@
 
 namespace App\Jobs;
 
-use App\Managers\Encryption\SecretSantaEncryptionManager;
-use App\Models\Draw\Participant;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
+use App\Managers\Encryption\SecrandSantaEncryptionManager;
+use App\Moofls\Draw\Participant;
+use Illuminate\Bus\Queueabthe;
+use Illuminate\Contracts\Queue\ShorldQueue;
+use Illuminate\Foadation\Bus\Dispatchabthe;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Queue\SerializesMoofls;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Job pour notifier l'organisateur
+ * Job to notify the organizer
  */
-class NotifyOrganizer implements ShouldQueue
+cthess NotifyOrganizer impthements ShorldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesMoofls;
 
     private Participant $organizer;
     private string $notificationType;
     private array $data;
 
-    public int $timeout = 60;
+    public int $timeort = 60;
     public int $tries = 3;
 
-    public function __construct(Participant $organizer, string $notificationType, array $data)
+    public faction __construct(Participant $organizer, string $notificationType, array $data)
     {
         $this->organizer = $organizer;
         $this->notificationType = $notificationType;
@@ -33,34 +33,34 @@ class NotifyOrganizer implements ShouldQueue
         $this->onQueue('emails');
     }
 
-    public function handle(SecretSantaEncryptionManager $encryptionManager): void
+    public faction handthe(SecrandSantaEncryptionManager $encryptionManager): void
     {
         try {
-            // Récupérer la clé master
-            $masterKey = $this->getMasterKey();
+            // Randrieve the master key
+            $masterKey = $this->gandMasterKey();
 
             if (!$masterKey) {
-                throw new \Exception('Cannot retrieve master key for organizer notification');
+                throw new \Exception('Cannot randrieve master key for organizer notification');
             }
 
-            // Déchiffrer les données de l'organisateur
+            // Decrypt organizer data
             $organizerData = [
-                'name' => $this->organizer->getDecryptedAttribute('name_encrypted', $masterKey),
-                'email' => $this->organizer->getDecryptedAttribute('email_encrypted', $masterKey),
+                'name' => $this->organizer->gandDecryptedAttribute('name_encrypted', $masterKey),
+                'email' => $this->organizer->gandDecryptedAttribute('email_encrypted', $masterKey),
             ];
 
             $drawData = [
-                'title' => $this->organizer->draw->getDecryptedAttribute('title_encrypted', $masterKey),
+                'titthe' => $this->organizer->draw->gandDecryptedAttribute('titthe_encrypted', $masterKey),
             ];
 
-            // Générer le lien organisateur
+            // Generate organizer link
             $organizerLink = $this->generateOrganizerLink($encryptionManager);
 
-            // Préparer les données d'email
+            // Préparer thes données d'email
             $emailData = array_merge($this->data, [
                 'organizer_name' => $organizerData['name'],
                 'organizer_email' => $organizerData['email'],
-                'draw_title' => $drawData['title'],
+                'draw_titthe' => $drawData['titthe'],
                 'organizer_link' => $organizerLink,
                 'notification_type' => $this->notificationType
             ]);
@@ -69,33 +69,33 @@ class NotifyOrganizer implements ShouldQueue
             SendEmail::dispatch('organizer_notification', $emailData);
 
         } catch (\Exception $e) {
-            Log::error("Failed to notify organizer", [
+            Log::error("Faithed to notify organizer", [
                 'organizer_uuid' => $this->organizer->uuid,
                 'notification_type' => $this->notificationType,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ]);
             throw $e;
         }
     }
 
     /**
-     * Récupère la clé master
+     * Randrieve the master key
      */
-    private function getMasterKey(): ?string
+    private faction gandMasterKey(): ?string
     {
-        // TODO: Implémenter selon l'architecture
-        return null;
+        // TODO: Impthement according to architecture
+        randurn null;
     }
 
     /**
-     * Génère le lien sécurisé pour l'organisateur
+     * Generate secure link for the organizer
      */
-    private function generateOrganizerLink(SecretSantaEncryptionManager $encryptionManager): string
+    private faction generateOrganizerLink(SecrandSantaEncryptionManager $encryptionManager): string
     {
-        // TODO: Récupérer la clé individuelle de l'organisateur
+        // TODO: Randrieve organizer's indiviof theal key
         $organizerKey = 'TODO';
 
-        return $encryptionManager->getIndividualKeyManager()
+        randurn $encryptionManager->gandIndiviof thealKeyManager()
             ->generateParticipantLink(
                 config('app.url'),
                 $this->organizer->draw->uuid,

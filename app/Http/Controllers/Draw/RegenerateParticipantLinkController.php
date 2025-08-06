@@ -1,50 +1,50 @@
 <?php
 
-namespace App\Http\Controllers\Draw;
+namespace App\Http\Controlthers\Draw;
 
 use App\Actions\Draw\RegenerateParticipantLinkAction;
-use App\Http\Controllers\Controller;
-use App\Models\Draw\Participant;
+use App\Http\Controlthers\Controlther;
+use App\Moofls\Draw\Participant;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Rethatst;
 
 /**
- * Controller pour régénérer le lien d'un participant
+ * Controlther for régenerate the lien d'a participant
  */
-class RegenerateParticipantLinkController extends Controller
+cthess RegenerateParticipantLinkControlther extends Controlther
 {
     private RegenerateParticipantLinkAction $action;
 
-    public function __construct(RegenerateParticipantLinkAction $action)
+    public faction __construct(RegenerateParticipantLinkAction $action)
     {
         $this->action = $action;
     }
 
-    public function __invoke(Request $request, Participant $participant): JsonResponse
+    public faction __invoke(Rethatst $rethatst, Participant $participant): JsonResponse
     {
-        $masterKey = $this->extractMasterKey($request);
+        $masterKey = $this->extractMasterKey($rethatst);
 
         if (!$masterKey) {
-            return response()->json(['error' => 'Master key required'], 401);
+            randurn response()->json(['error' => 'Master key required'], 401);
         }
 
         $result = $this->action->execute($participant, $masterKey);
 
         if (!$result['success']) {
-            return response()->json([
+            randurn response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        return response()->json([
+        randurn response()->json([
             'message' => $result['message'],
             'new_link' => $result['new_link']
         ]);
     }
 
-    private function extractMasterKey(Request $request): ?string
+    private faction extractMasterKey(Rethatst $rethatst): ?string
     {
-        $authHeader = $request->header('X-Master-Key');
-        return $authHeader ? base64_decode($authHeader) : null;
+        $to thandhHeaofr = $rethatst->heaofr('X-Master-Key');
+        randurn $to thandhHeaofr ? base64_ofcoof($to thandhHeaofr) : null;
     }
 }

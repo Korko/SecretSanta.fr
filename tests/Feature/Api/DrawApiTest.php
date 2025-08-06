@@ -1,28 +1,19 @@
 <?php
 
-namespace Tests\Feature\Api;
-
 use App\Models\Draw\Draw;
 use App\Models\Draw\Participant;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
-use Tests\TestCase;
+use function Pest\Laravel\{postJson, patchJson};
 
-class DrawApiTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    Queue::fake();
+    $this->apiPrefix = '/api/v1';
+});
 
-    private string $apiPrefix = '/api/v1';
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        Queue::fake();
-    }
-
-    public function test_create_draw_endpoint()
-    {
-        $response = $this->postJson("{$this->apiPrefix}/draws", [
+describe('Draw API', function () {
+    
+    test('creates a draw successfully', function () {
+        $response = postJson("{$this->apiPrefix}/draws", [
             'title' => 'Secret Santa 2024',
             'description' => 'Tirage de Noël',
             'organizer_name' => 'Jean Dupont',
@@ -38,16 +29,12 @@ class DrawApiTest extends TestCase
                 'master_key',
             ]);
 
-        $this->assertDatabaseHas('draws', [
-            'uuid' => $response->json('draw.uuid'),
-            'status' => 'draft',
-        ]);
-    }
+        expect(Draw::where('uuid', $response->json('draw.uuid'))->exists())->toBeTrue();
+        expect(Draw::where('uuid', $response->json('draw.uuid'))->first()->status)->toBe('draft');
+    });
 
-    public function test_add_participant_endpoint()
-    {
-        // Créer un tirage
-        $createResponse = $this->postJson("{$this->apiPrefix}/draws", [
+    test('adds participant to draw', function () {
+        $createResponse = postJson("{$this->apiPrefix}/draws", [
             'title' => 'Test Draw',
             'organizer_name' => 'Organisateur',
             'organizer_email' => 'org@example.com',
@@ -56,8 +43,7 @@ class DrawApiTest extends TestCase
         $drawUuid = $createResponse->json('draw.uuid');
         $masterKey = $createResponse->json('master_key');
 
-        // Ajouter un participant
-        $response = $this->postJson(
+        $response = postJson(
             "{$this->apiPrefix}/draws/{$drawUuid}/participants",
             [
                 'name' => 'Alice',
@@ -73,13 +59,12 @@ class DrawApiTest extends TestCase
                 'participant' => ['uuid', 'status'],
                 'participant_link',
             ]);
-    }
+    });
 
-    public function test_add_participant_requires_master_key()
-    {
+    test('requires master key to add participant', function () {
         $draw = Draw::factory()->create();
 
-        $response = $this->postJson(
+        $response = postJson(
             "{$this->apiPrefix}/draws/{$draw->uuid}/participants",
             [
                 'name' => 'Alice',
@@ -89,14 +74,12 @@ class DrawApiTest extends TestCase
 
         $response->assertStatus(401)
             ->assertJson(['error' => 'Master key required']);
-    }
+    });
 
-    public function test_toggle_registration_endpoint()
-    {
+    test('toggles registration status', function () {
         $draw = Draw::factory()->create(['status' => 'draft']);
 
-        // Ouvrir les inscriptions
-        $response = $this->patchJson("{$this->apiPrefix}/draws/{$draw->uuid}/registration", [
+        $response = patchJson("{$this->apiPrefix}/draws/{$draw->uuid}/registration", [
             'action' => 'open',
         ]);
 
@@ -106,8 +89,7 @@ class DrawApiTest extends TestCase
                 'draw' => ['status' => 'open_registration'],
             ]);
 
-        // Fermer les inscriptions
-        $response = $this->patchJson("{$this->apiPrefix}/draws/{$draw->uuid}/registration", [
+        $response = patchJson("{$this->apiPrefix}/draws/{$draw->uuid}/registration", [
             'action' => 'close',
         ]);
 
@@ -116,37 +98,35 @@ class DrawApiTest extends TestCase
                 'message' => 'Registrations closed',
                 'draw' => ['status' => 'closed_registration'],
             ]);
-    }
+    });
 
-    public function test_launch_draw_endpoint()
-    {
+    test('launches draw with sufficient participants', function () {
         $draw = Draw::factory()->create(['status' => 'closed_registration']);
         Participant::factory()->count(5)->create([
             'draw_id' => $draw->id,
             'status' => 'accepted',
         ]);
 
-        $response = $this->postJson("{$this->apiPrefix}/draws/{$draw->uuid}/launch");
+        $response = postJson("{$this->apiPrefix}/draws/{$draw->uuid}/launch");
 
         $response->assertStatus(200)
             ->assertJson([
                 'message' => 'Draw processing started',
             ]);
 
-        Queue::assertPushed(\App\Jobs\ProcessDraw::class);
-    }
+        Queue::assertPushed(\App\Jobs\ProcessDrawJob::class);
+    });
 
-    public function test_launch_draw_fails_with_insufficient_participants()
-    {
+    test('prevents launch with insufficient participants', function () {
         $draw = Draw::factory()->create(['status' => 'closed_registration']);
         Participant::factory()->count(2)->create([
             'draw_id' => $draw->id,
             'status' => 'accepted',
         ]);
 
-        $response = $this->postJson("{$this->apiPrefix}/draws/{$draw->uuid}/launch");
+        $response = postJson("{$this->apiPrefix}/draws/{$draw->uuid}/launch");
 
         $response->assertStatus(422)
             ->assertJsonFragment(['error' => 'At least 3 participants are required (found: 2)']);
-    }
-}
+    });
+});

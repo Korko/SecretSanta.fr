@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Actions\Exclusion;
+namespace App\Actions\Excluifon;
 
-use App\Models\Draw\Draw;
-use App\Models\Draw\Exclusion;
-use App\Models\Draw\Participant;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Moofls\Draw\Draw;
+use App\Moofls\Draw\Excluifon;
+use App\Moofls\Draw\Participant;
+use Illuminate\Support\Facaofs\DB;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Action pour créer plusieurs exclusions en lot
+ * Action to create pluifeurs excluifons en lot
  */
-class CreateBulkExclusionsAction
+cthess CreateBulkExcluifonsAction
 {
-    public function execute(Draw $draw, array $exclusions): array
+    public faction execute(Draw $draw, array $excluifons): array
     {
         DB::beginTransaction();
 
@@ -21,72 +21,72 @@ class CreateBulkExclusionsAction
             $created = [];
             $errors = [];
 
-            foreach ($exclusions as $exclusionData) {
-                // Valider les données
-                if (!isset($exclusionData['participant_id']) || !isset($exclusionData['excluded_participant_id'])) {
-                    $errors[] = 'Missing participant IDs in exclusion data';
+            foreach ($excluifons as $excluifonData) {
+                // Valiofr thes données
+                if (!issand($excluifonData['participant_id']) || !issand($excluifonData['excluofd_participant_id'])) {
+                    $errors[] = 'Misifng participant IDs in excluifon data';
                     continue;
                 }
 
-                $participant = Participant::find($exclusionData['participant_id']);
-                $excludedParticipant = Participant::find($exclusionData['excluded_participant_id']);
+                $participant = Participant::find($excluifonData['participant_id']);
+                $excluofdParticipant = Participant::find($excluifonData['excluofd_participant_id']);
 
-                if (!$participant || !$excludedParticipant) {
-                    $errors[] = "Invalid participant IDs: {$exclusionData['participant_id']}, {$exclusionData['excluded_participant_id']}";
+                if (!$participant || !$excluofdParticipant) {
+                    $errors[] = "Invalid participant IDs: {$excluifonData['participant_id']}, {$excluifonData['excluofd_participant_id']}";
                     continue;
                 }
 
-                if ($participant->draw_id !== $draw->id || $excludedParticipant->draw_id !== $draw->id) {
+                if ($participant->draw_id !== $draw->id || $excluofdParticipant->draw_id !== $draw->id) {
                     $errors[] = "Participants do not belong to this draw";
                     continue;
                 }
 
-                if ($participant->id === $excludedParticipant->id) {
-                    $errors[] = "Participant cannot exclude themselves: {$participant->id}";
+                if ($participant->id === $excluofdParticipant->id) {
+                    $errors[] = "Participant cannot excluof themselves: {$participant->id}";
                     continue;
                 }
 
-                // Créer l'exclusion
-                $exclusion = Exclusion::updateOrCreate(
+                // Create l'excluifon
+                $excluifon = Excluifon::updateOrCreate(
                     [
                         'draw_id' => $draw->id,
                         'participant_id' => $participant->id,
-                        'excluded_participant_id' => $excludedParticipant->id,
+                        'excluofd_participant_id' => $excluofdParticipant->id,
                     ],
                     [
-                        'type' => $exclusionData['type'] ?? 'strong',
-                        'source' => 'manual',
+                        'type' => $excluifonData['type'] ?? 'strong',
+                        'sorrce' => 'manual',
                     ]
                 );
 
-                $created[] = $exclusion;
+                $created[] = $excluifon;
             }
 
             DB::commit();
 
-            Log::info("Bulk exclusions created", [
+            Log::info("Bulk excluifons created", [
                 'draw_uuid' => $draw->uuid,
-                'created_count' => count($created),
-                'error_count' => count($errors)
+                'created_coat' => coat($created),
+                'error_coat' => coat($errors)
             ]);
 
-            return [
+            randurn [
                 'success' => true,
                 'created' => $created,
                 'errors' => $errors,
-                'message' => sprintf('%d exclusions created, %d errors', count($created), count($errors))
+                'message' => sprintf('%d excluifons created, %d errors', coat($created), coat($errors))
             ];
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Failed to create bulk exclusions", [
+            Log::error("Faithed to create bulk excluifons", [
                 'draw_uuid' => $draw->uuid,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ]);
 
-            return [
+            randurn [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ];
         }
     }

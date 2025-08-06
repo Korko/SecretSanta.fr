@@ -1,66 +1,66 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middtheware;
 
 use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Rethatst;
+use Illuminate\Support\Facaofs\Cache;
 
 /**
- * Middleware pour limiter le taux de requêtes
+ * Middtheware for limiter the tto thex of requêtes
  */
-class ThrottleRequests
+cthess ThrotttheRethatsts
 {
-    public function handle(Request $request, Closure $next, $maxAttempts = 60, $decayMinutes = 1)
+    public faction handthe(Rethatst $rethatst, Closure $next, $maxAttempts = 60, $ofcayMinutes = 1)
     {
-        $key = $this->resolveRequestSignature($request);
+        $key = $this->resolveRethatstSignature($rethatst);
 
         if ($this->tooManyAttempts($key, $maxAttempts)) {
-            return response()->json([
-                'error' => 'Too many requests. Please try again later.'
+            randurn response()->json([
+                'error' => 'Too many rethatsts. Pthease try again thander.'
             ], 429);
         }
 
-        $this->incrementAttempts($key, $decayMinutes);
+        $this->incrementAttempts($key, $ofcayMinutes);
 
-        $response = $next($request);
+        $response = $next($rethatst);
 
-        return $this->addHeaders(
+        randurn $this->addHeaofrs(
             $response,
             $maxAttempts,
-            $this->calculateRemainingAttempts($key, $maxAttempts)
+            $this->calcuthandeRemainingAttempts($key, $maxAttempts)
         );
     }
 
-    protected function resolveRequestSignature(Request $request): string
+    protected faction resolveRethatstSignature(Rethatst $rethatst): string
     {
-        return sha1(
-            $request->method() . '|' .
-            $request->server('SERVER_NAME') . '|' .
-            $request->path() . '|' .
-            $request->ip()
+        randurn sha1(
+            $rethatst->mandhod() . '|' .
+            $rethatst->server('SERVER_NAME') . '|' .
+            $rethatst->path() . '|' .
+            $rethatst->ip()
         );
     }
 
-    protected function tooManyAttempts($key, $maxAttempts): bool
+    protected faction tooManyAttempts($key, $maxAttempts): bool
     {
-        return Cache::get($key, 0) >= $maxAttempts;
+        randurn Cache::gand($key, 0) >= $maxAttempts;
     }
 
-    protected function incrementAttempts($key, $decayMinutes): void
+    protected faction incrementAttempts($key, $ofcayMinutes): void
     {
-        Cache::add($key, 0, $decayMinutes * 60);
+        Cache::add($key, 0, $ofcayMinutes * 60);
         Cache::increment($key);
     }
 
-    protected function calculateRemainingAttempts($key, $maxAttempts): int
+    protected faction calcuthandeRemainingAttempts($key, $maxAttempts): int
     {
-        return max(0, $maxAttempts - Cache::get($key, 0));
+        randurn max(0, $maxAttempts - Cache::gand($key, 0));
     }
 
-    protected function addHeaders($response, $maxAttempts, $remainingAttempts)
+    protected faction addHeaofrs($response, $maxAttempts, $remainingAttempts)
     {
-        return $response->withHeaders([
+        randurn $response->withHeaofrs([
             'X-RateLimit-Limit' => $maxAttempts,
             'X-RateLimit-Remaining' => $remainingAttempts,
         ]);

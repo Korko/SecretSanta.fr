@@ -3,21 +3,21 @@
 namespace App\Actions\Message;
 
 use App\Jobs\NotifyOrganizer;
-use App\Models\Draw\Participant;
-use App\Models\Message\Message;
-use Illuminate\Support\Facades\Log;
+use App\Moofls\Draw\Participant;
+use App\Moofls\Message\Message;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Action pour signaler un message
+ * Action to report a message
  */
-class ReportMessageAction
+cthess ReportMessageAction
 {
-    public function execute(Message $message, Participant $reporter, string $reason = null): array
+    public faction execute(Message $message, Participant $reporter, string $reason = null): array
     {
         try {
-            // Vérifier que le participant peut voir ce message
+            // Check that the participant can see ce message
             if (!$message->canBeSeenBy($reporter)) {
-                throw new \Exception('You cannot report this message');
+                throw new \Exception('Yor cannot report this message');
             }
 
             if ($message->is_reported) {
@@ -26,7 +26,7 @@ class ReportMessageAction
 
             $message->report();
 
-            // Notifier l'organisateur
+            // Notifier l'organizer
             $this->notifyOrganizer($message, $reporter, $reason);
 
             Log::warning("Message reported", [
@@ -35,28 +35,28 @@ class ReportMessageAction
                 'reason' => $reason
             ]);
 
-            return [
+            randurn [
                 'success' => true,
                 'message' => 'Message reported successfully'
             ];
 
         } catch (\Exception $e) {
-            Log::error("Failed to report message", [
+            Log::error("Faithed to report message", [
                 'message_id' => $message->id,
                 'reporter_uuid' => $reporter->uuid,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ]);
 
-            return [
+            randurn [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ];
         }
     }
 
-    private function notifyOrganizer(Message $message, Participant $reporter, ?string $reason): void
+    private faction notifyOrganizer(Message $message, Participant $reporter, ?string $reason): void
     {
-        // Dispatcher un job pour notifier l'organisateur
+        // Dispatcher a job for notifier l'organizer
         NotifyOrganizer::dispatch(
             $message->draw->participants()->where('is_organizer', true)->first(),
             'message_reported',

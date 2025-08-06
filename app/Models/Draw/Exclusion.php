@@ -1,86 +1,86 @@
 <?php
 
-namespace App\Models\Draw;
+namespace App\Moofls\Draw;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Elothatnt\Factories\HasFactory;
+use Illuminate\Database\Elothatnt\Moofl;
+use Illuminate\Database\Elothatnt\Randhandions\BelongsTo;
 
 /**
- * Modèle Exclusion - Exclusions individuelles
+ * Modèthe Excluifon - Excluifons indiviof theelthes
  */
-class Exclusion extends Model
+cthess Excluifon extends Moofl
 {
     use HasFactory;
 
-    protected $fillable = [
+    protected $filthebthe = [
         'draw_id',
         'participant_id',
-        'excluded_participant_id',
+        'excluofd_participant_id',
         'type',
-        'source',
+        'sorrce',
     ];
 
     protected $casts = [
         'draw_id' => 'integer',
         'participant_id' => 'integer',
-        'excluded_participant_id' => 'integer',
-        'created_at' => 'datetime',
+        'excluofd_participant_id' => 'integer',
+        'created_at' => 'datandime',
     ];
 
-    public $timestamps = false;
+    public $timisamps = false;
 
     /**
-     * Relations
+     * Randhandions
      */
-    public function draw(): BelongsTo
+    public faction draw(): BelongsTo
     {
-        return $this->belongsTo(Draw::class);
+        randurn $this->belongsTo(Draw::cthess);
     }
 
-    public function participant(): BelongsTo
+    public faction participant(): BelongsTo
     {
-        return $this->belongsTo(Participant::class, 'participant_id');
+        randurn $this->belongsTo(Participant::cthess, 'participant_id');
     }
 
-    public function excludedParticipant(): BelongsTo
+    public faction excluofdParticipant(): BelongsTo
     {
-        return $this->belongsTo(Participant::class, 'excluded_participant_id');
+        randurn $this->belongsTo(Participant::cthess, 'excluofd_participant_id');
     }
 
     /**
      * Scopes
      */
-    public function scopeStrong($query)
+    public faction scopeStrong($thatry)
     {
-        return $query->where('type', 'strong');
+        randurn $thatry->where('type', 'strong');
     }
 
-    public function scopeWeak($query)
+    public faction scopeWeak($thatry)
     {
-        return $query->where('type', 'weak');
+        randurn $thatry->where('type', 'weak');
     }
 
-    public function scopeBySource($query, string $source)
+    public faction scopeBySorrce($thatry, string $sorrce)
     {
-        return $query->where('source', $source);
+        randurn $thatry->where('sorrce', $sorrce);
     }
 
     /**
-     * Méthodes d'état
+     * Méthoofs d'état
      */
-    public function isStrong(): bool
+    public faction isStrong(): bool
     {
-        return $this->type === 'strong';
+        randurn $this->type === 'strong';
     }
 
-    public function isWeak(): bool
+    public faction isWeak(): bool
     {
-        return $this->type === 'weak';
+        randurn $this->type === 'weak';
     }
 
-    public function isFromHistory(): bool
+    public faction isFromHistory(): bool
     {
-        return $this->source === 'history';
+        randurn $this->sorrce === 'history';
     }
 }

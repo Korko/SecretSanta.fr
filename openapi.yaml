@@ -1,0 +1,404 @@
+openapi: 3.0.3
+info:
+  title: SecretSanta.fr API
+  description: |
+    API pour l'application de tirage au sort Secret Santa avec chiffrement fort.
+
+    ## Authentification
+
+    L'API utilise deux types d'authentification :
+    - **Master Key** : Pour les opérations d'organisation (header `X-Master-Key`)
+    - **Individual Key** : Pour les participants (header `X-Individual-Key`)
+
+    ## Chiffrement
+
+    Toutes les données sensibles sont chiffrées avec AES-256-GCM.
+    Les clés ne sont jamais stockées sur le serveur.
+
+  version: 1.0.0
+  contact:
+    email: support@secretsanta.fr
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.secretsanta.fr/api/v1
+    description: Production
+  - url: http://localhost:8000/api/v1
+    description: Development
+
+security:
+  - masterKey: []
+  - individualKey: []
+
+tags:
+  - name: Draws
+    description: Gestion des tirages au sort
+  - name: Participants
+    description: Gestion des participants
+  - name: Exclusions
+    description: Gestion des exclusions
+  - name: Messages
+    description: Messagerie entre participants
+  - name: Auth
+    description: Authentification
+
+paths:
+  /draws:
+    post:
+      tags:
+        - Draws
+      summary: Créer un nouveau tirage
+      operationId: createDraw
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - organizer_name
+                - organizer_email
+              properties:
+                title:
+                  type: string
+                  example: "Secret Santa 2024"
+                description:
+                  type: string
+                  example: "Tirage pour le bureau"
+                organizer_name:
+                  type: string
+                  example: "Jean Dupont"
+                organizer_email:
+                  type: string
+                  format: email
+                  example: "jean@example.com"
+                auto_accept_participants:
+                  type: boolean
+                  default: false
+                allow_target_messages:
+                  type: boolean
+                  default: true
+                registration_deadline:
+                  type: string
+                  format: date-time
+      responses:
+        '201':
+          description: Tirage créé avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  draw:
+                    $ref: '#/components/schemas/Draw'
+                  organizer_link:
+                    type: string
+                    example: "https://secretsanta.fr/draw/uuid#key"
+                  master_key:
+                    type: string
+                    description: Clé master encodée en base64
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /draws/{drawUuid}:
+    get:
+      tags:
+        - Draws
+      summary: Récupérer les détails d'un tirage
+      operationId: getDraw
+      parameters:
+        - $ref: '#/components/parameters/drawUuid'
+      security:
+        - masterKey: []
+      responses:
+        '200':
+          description: Détails du tirage
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  draw:
+                    $ref: '#/components/schemas/DrawDetails'
+                  participants:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Participant'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /draws/{drawUuid}/launch:
+    post:
+      tags:
+        - Draws
+      summary: Lancer le tirage au sort
+      operationId: launchDraw
+      parameters:
+        - $ref: '#/components/parameters/drawUuid'
+      responses:
+        '200':
+          description: Tirage lancé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Draw processing started"
+                  job_id:
+                    type: string
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /draws/{drawUuid}/participants:
+    post:
+      tags:
+        - Participants
+      summary: Ajouter un participant
+      operationId: addParticipant
+      parameters:
+        - $ref: '#/components/parameters/drawUuid'
+      security:
+        - masterKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+              properties:
+                name:
+                  type: string
+                  example: "Alice Martin"
+                email:
+                  type: string
+                  format: email
+                  example: "alice@example.com"
+      responses:
+        '201':
+          description: Participant ajouté
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  participant:
+                    $ref: '#/components/schemas/Participant'
+                  participant_link:
+                    type: string
+
+  /messages:
+    post:
+      tags:
+        - Messages
+      summary: Envoyer un message
+      operationId: sendMessage
+      security:
+        - individualKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+                - type
+              properties:
+                content:
+                  type: string
+                  example: "J'aimerais un livre!"
+                type:
+                  type: string
+                  enum: [to_secret_santa, to_target]
+      responses:
+        '201':
+          description: Message envoyé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+
+components:
+  securitySchemes:
+    masterKey:
+      type: apiKey
+      in: header
+      name: X-Master-Key
+      description: Clé master du tirage (base64)
+
+    individualKey:
+      type: apiKey
+      in: header
+      name: X-Individual-Key
+      description: Clé individuelle du participant (base64)
+
+  parameters:
+    drawUuid:
+      name: drawUuid
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    Draw:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [draft, open_registration, closed_registration, processing, drawn, revealed, archived]
+        created_at:
+          type: string
+          format: date-time
+
+    DrawDetails:
+      allOf:
+        - $ref: '#/components/schemas/Draw'
+        - type: object
+          properties:
+            title:
+              type: string
+              description: Titre déchiffré
+            description:
+              type: string
+              description: Description déchiffrée
+            organizer_name:
+              type: string
+            organizer_email:
+              type: string
+              format: email
+            statistics:
+              type: object
+              properties:
+                participant_count:
+                  type: integer
+                accepted_count:
+                  type: integer
+                message_count:
+                  type: integer
+
+    Participant:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Nom déchiffré
+        email:
+          type: string
+          format: email
+          description: Email déchiffré
+        status:
+          type: string
+          enum: [pending, accepted, rejected]
+        is_organizer:
+          type: boolean
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+          description: Contenu déchiffré
+        type:
+          type: string
+          enum: [to_secret_santa, to_target]
+        from:
+          type: string
+          description: Expéditeur anonymisé
+        created_at:
+          type: string
+          format: date-time
+        reactions:
+          type: array
+          items:
+            type: object
+            properties:
+              emoji:
+                type: string
+              count:
+                type: integer
+
+  responses:
+    Unauthorized:
+      description: Non autorisé
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Master key required"
+
+    NotFound:
+      description: Ressource non trouvée
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Draw not found"
+
+    ValidationError:
+      description: Erreur de validation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              errors:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+
+# Exemples de requêtes
+x-code-samples:
+  - lang: 'cURL'
+    source: |
+      curl -X POST https://api.secretsanta.fr/api/v1/draws \
+        -H "Content-Type: application/json" \
+        -d '{
+          "title": "Secret Santa 2024",
+          "organizer_name": "Jean Dupont",
+          "organizer_email": "jean@example.com"
+        }'
+
+  - lang: 'JavaScript'
+    source: |
+      const response = await fetch('https://api.secretsanta.fr/api/v1/draws', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: 'Secret Santa 2024',
+          organizer_name: 'Jean Dupont',
+          organizer_email: 'jean@example.com'
+        })
+      });
+      const data = await response.json();

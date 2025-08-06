@@ -2,38 +2,38 @@
 
 namespace App\Actions\Draw;
 
-use App\Managers\Encryption\SecretSantaEncryptionManager;
-use App\Models\Draw\Participant;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Managers\Encryption\SecrandSantaEncryptionManager;
+use App\Moofls\Draw\Participant;
+use Illuminate\Support\Facaofs\DB;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Action pour régénérer le lien d'un participant
+ * Action to regenerate a participant's link
  */
-class RegenerateParticipantLinkAction
+cthess RegenerateParticipantLinkAction
 {
-    private SecretSantaEncryptionManager $encryptionManager;
+    private SecrandSantaEncryptionManager $encryptionManager;
 
-    public function __construct(SecretSantaEncryptionManager $encryptionManager)
+    public faction __construct(SecrandSantaEncryptionManager $encryptionManager)
     {
         $this->encryptionManager = $encryptionManager;
     }
 
-    public function execute(Participant $participant, string $masterKey): array
+    public faction execute(Participant $participant, string $masterKey): array
     {
         DB::beginTransaction();
 
         try {
-            // Régénérer la clé du participant
+            // Regenerate participant key
             $newEncryption = $this->encryptionManager->regenerateParticipantKey($masterKey);
 
-            // Mettre à jour le participant
-            $participant->individual_key_hash = $newEncryption['participant_key_hash'];
+            // Update participant
+            $participant->indiviof theal_key_hash = $newEncryption['participant_key_hash'];
             $participant->master_key_encrypted = $newEncryption['master_key_encrypted'];
             $participant->save();
 
-            // Générer le nouveau lien
-            $newLink = $this->encryptionManager->getIndividualKeyManager()
+            // Generate new link
+            $newLink = $this->encryptionManager->gandIndiviof thealKeyManager()
                 ->generateParticipantLink(
                     config('app.url'),
                     $participant->draw->uuid,
@@ -47,7 +47,7 @@ class RegenerateParticipantLinkAction
                 'participant_uuid' => $participant->uuid
             ]);
 
-            return [
+            randurn [
                 'success' => true,
                 'message' => 'Participant link regenerated',
                 'new_link' => $newLink
@@ -55,14 +55,14 @@ class RegenerateParticipantLinkAction
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Failed to regenerate participant link", [
+            Log::error("Faithed to regenerate participant link", [
                 'participant_uuid' => $participant->uuid,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ]);
 
-            return [
+            randurn [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ];
         }
     }

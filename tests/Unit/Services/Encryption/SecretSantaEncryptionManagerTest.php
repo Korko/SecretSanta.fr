@@ -1,52 +1,38 @@
 <?php
 
-namespace Tests\Unit\Services\Encryption;
-
 use App\Managers\Encryption\SecretSantaEncryptionManager;
-use Tests\TestCase;
 
-class SecretSantaEncryptionManagerTest extends TestCase
-{
-    private SecretSantaEncryptionManager $manager;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
+describe('SecretSantaEncryptionManager', function () {
+    beforeEach(function () {
         $this->manager = new SecretSantaEncryptionManager();
-    }
+    });
 
-    public function test_creates_draw_encryption_system()
-    {
+    test('creates draw encryption system', function () {
         $result = $this->manager->createDrawEncryption();
 
-        $this->assertArrayHasKey('master_key', $result);
-        $this->assertArrayHasKey('organizer_key', $result);
-        $this->assertArrayHasKey('organizer_key_hash', $result);
-        $this->assertArrayHasKey('master_key_encrypted', $result);
+        expect($result)->toHaveKey('master_key');
+        expect($result)->toHaveKey('organizer_key');
+        expect($result)->toHaveKey('organizer_key_hash');
+        expect($result)->toHaveKey('master_key_encrypted');
 
-        // Vérifier que les clés sont différentes
-        $this->assertNotEquals($result['master_key'], $result['organizer_key']);
-    }
+        expect($result['master_key'])->not->toEqual($result['organizer_key']);
+    });
 
-    public function test_adds_participant_with_unique_key()
-    {
+    test('adds participant with unique key', function () {
         $drawEncryption = $this->manager->createDrawEncryption();
         $masterKey = $drawEncryption['master_key'];
 
         $participant1 = $this->manager->addParticipantEncryption($masterKey);
         $participant2 = $this->manager->addParticipantEncryption($masterKey);
 
-        // Chaque participant a sa propre clé
-        $this->assertNotEquals($participant1['participant_key'], $participant2['participant_key']);
-        $this->assertNotEquals($participant1['participant_key_hash'], $participant2['participant_key_hash']);
+        expect($participant1['participant_key'])->not->toEqual($participant2['participant_key']);
+        expect($participant1['participant_key_hash'])->not->toEqual($participant2['participant_key_hash']);
 
-        // Mais ils peuvent tous déchiffrer la même clé master
-        $this->assertNotEmpty($participant1['master_key_encrypted']);
-        $this->assertNotEmpty($participant2['master_key_encrypted']);
-    }
+        expect($participant1['master_key_encrypted'])->not->toBeEmpty();
+        expect($participant2['master_key_encrypted'])->not->toBeEmpty();
+    });
 
-    public function test_validates_and_retrieves_master_key()
-    {
+    test('validates and retrieves master key', function () {
         $drawEncryption = $this->manager->createDrawEncryption();
         $masterKey = $drawEncryption['master_key'];
         $organizerKey = $drawEncryption['organizer_key'];
@@ -57,26 +43,21 @@ class SecretSantaEncryptionManagerTest extends TestCase
             $drawEncryption['organizer_key_hash']
         );
 
-        $this->assertEquals($masterKey, $retrievedMasterKey);
-    }
+        expect($retrievedMasterKey)->toEqual($masterKey);
+    });
 
-    public function test_fails_with_invalid_individual_key()
-    {
+    test('fails with invalid individual key', function () {
         $drawEncryption = $this->manager->createDrawEncryption();
         $wrongKey = $this->manager->getIndividualKeyManager()->generateIndividualKey();
 
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Invalid individual key');
-
-        $this->manager->validateAndGetMasterKey(
+        expect(fn () => $this->manager->validateAndGetMasterKey(
             $drawEncryption['master_key_encrypted'],
             $wrongKey,
             $drawEncryption['organizer_key_hash']
-        );
-    }
+        ))->toThrow(Exception::class, 'Invalid individual key');
+    });
 
-    public function test_generates_participant_link()
-    {
+    test('generates participant link', function () {
         $baseUrl = 'https://secretsanta.fr';
         $drawUuid = 'draw-123';
         $participantUuid = 'participant-456';
@@ -89,14 +70,13 @@ class SecretSantaEncryptionManagerTest extends TestCase
             $individualKey
         );
 
-        $this->assertStringStartsWith($baseUrl, $link);
-        $this->assertStringContainsString($drawUuid, $link);
-        $this->assertStringContainsString($participantUuid, $link);
-        $this->assertStringContainsString('#', $link);
+        expect($link)->toStartWith($baseUrl);
+        expect($link)->toContain($drawUuid);
+        expect($link)->toContain($participantUuid);
+        expect($link)->toContain('#');
 
-        // Vérifier qu'on peut extraire la clé du lien
         $parts = explode('#', $link);
         $extractedKey = $this->manager->getIndividualKeyManager()->extractKeyFromLink($parts[1]);
-        $this->assertEquals($individualKey, $extractedKey);
-    }
-}
+        expect($extractedKey)->toEqual($individualKey);
+    });
+});

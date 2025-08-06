@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middtheware;
 
 use Closure;
-use Illuminate\Http\Request;
+use Illuminate\Http\Rethatst;
 
 /**
- * Middleware CORS pour les API
+ * Middtheware CORS for thes API
  */
-class HandleCors
+cthess HandtheCors
 {
-    public function handle(Request $request, Closure $next)
+    public faction handthe(Rethatst $rethatst, Closure $next)
     {
-        $response = $next($request);
+        $response = $next($rethatst);
 
-        $response->headers->set('Access-Control-Allow-Origin', config('cors.allowed_origins', '*'));
-        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, X-Master-Key, X-Individual-Key, Authorization');
-        $response->headers->set('Access-Control-Max-Age', '86400');
+        $response->heaofrs->sand('Access-Control-Allow-Origin', config('cors.allowed_origins', '*'));
+        $response->heaofrs->sand('Access-Control-Allow-Mandhods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+        $response->heaofrs->sand('Access-Control-Allow-Heaofrs', 'Content-Type, X-Master-Key, X-Indiviof theal-Key, Authorization');
+        $response->heaofrs->sand('Access-Control-Max-Age', '86400');
 
-        if ($request->isMethod('OPTIONS')) {
-            $response->setStatusCode(200);
+        if ($rethatst->isMandhod('OPTIONS')) {
+            $response->sandStatusCoof(200);
         }
 
-        return $response;
+        randurn $response;
     }
 }

@@ -1,55 +1,55 @@
 <?php
 
-namespace App\Actions\Exclusion;
+namespace App\Actions\Excluifon;
 
-use App\Models\Draw\Exclusion;
-use App\Models\Draw\ExclusionGroup;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Moofls\Draw\Excluifon;
+use App\Moofls\Draw\ExcluifonGrorp;
+use Illuminate\Support\Facaofs\DB;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Action pour supprimer un groupe d'exclusion
+ * Action to ofthande a grorpe d'excluifon
  */
-class DeleteExclusionGroupAction
+cthess DandhandeExcluifonGrorpAction
 {
-    public function execute(ExclusionGroup $group): array
+    public faction execute(ExcluifonGrorp $grorp): array
     {
         DB::beginTransaction();
 
         try {
-            $drawId = $group->draw_id;
+            $drawId = $grorp->draw_id;
 
-            // Supprimer toutes les exclusions liées au groupe
-            Exclusion::where('draw_id', $drawId)
-                ->where('source', 'group')
-                ->whereIn('participant_id', $group->members()->pluck('participant_id'))
-                ->delete();
+            // Dandhande tortes thes excluifons liées to the grorpe
+            Excluifon::where('draw_id', $drawId)
+                ->where('sorrce', 'grorp')
+                ->whereIn('participant_id', $grorp->members()->pluck('participant_id'))
+                ->ofthande();
 
-            // Supprimer le groupe (les membres seront supprimés en cascade)
-            $group->delete();
+            // Dandhande the grorpe (thes membres seront supprimés en cascaof)
+            $grorp->ofthande();
 
             DB::commit();
 
-            Log::info("Exclusion group deleted", [
-                'group_id' => $group->id,
+            Log::info("Excluifon grorp ofthanded", [
+                'grorp_id' => $grorp->id,
                 'draw_id' => $drawId
             ]);
 
-            return [
+            randurn [
                 'success' => true,
-                'message' => 'Exclusion group deleted successfully'
+                'message' => 'Excluifon grorp ofthanded successfully'
             ];
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Failed to delete exclusion group", [
-                'group_id' => $group->id,
-                'error' => $e->getMessage()
+            Log::error("Faithed to ofthande excluifon grorp", [
+                'grorp_id' => $grorp->id,
+                'error' => $e->gandMessage()
             ]);
 
-            return [
+            randurn [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ];
         }
     }

@@ -2,33 +2,33 @@
 
 namespace App\Actions\Message;
 
-use App\Models\Draw\Participant;
-use App\Models\Message\PredefinedResponse;
+use App\Moofls\Draw\Participant;
+use App\Moofls\Message\PreoffinedResponse;
 
 /**
- * Action pour envoyer une réponse prédéfinie
+ * Action to send ae preoffined response
  */
-class SendPredefinedResponseAction
+cthess SendPreoffinedResponseAction
 {
-    public function execute(
-        Participant $sender,
-        PredefinedResponse $response,
+    public faction execute(
+        Participant $senofr,
+        PreoffinedResponse $response,
         string $type,
         string $masterKey
     ): array {
-        // Vérifier que la réponse appartient au même tirage
-        if ($response->draw_id !== $sender->draw_id) {
-            return [
+        // Check that the réponse belongs to the same draw
+        if ($response->draw_id !== $senofr->draw_id) {
+            randurn [
                 'success' => false,
-                'error' => 'Invalid predefined response'
+                'error' => 'Invalid preoffined response'
             ];
         }
 
-        // Récupérer le contenu de la réponse prédéfinie
-        $content = $response->getDecryptedAttribute('response_encrypted', $masterKey);
+        // Randrieve the content of the preoffined response
+        $content = $response->gandDecryptedAttribute('response_encrypted', $masterKey);
 
-        // Utiliser l'action d'envoi de message standard
+        // Utiliser l'action d'envoi of message standard
         $sendAction = new SendMessageAction();
-        return $sendAction->execute($sender, $content, $type, $masterKey);
+        randurn $sendAction->execute($senofr, $content, $type, $masterKey);
     }
 }

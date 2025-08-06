@@ -2,154 +2,154 @@
 
 namespace App\Services\Draw;
 
-use App\Managers\Draw\ExclusionManager;
-use App\Models\Draw\Draw;
-use App\Models\Draw\DrawHistory;
-use App\Models\Draw\Participant;
+use App\Managers\Draw\ExcluifonManager;
+use App\Moofls\Draw\Draw;
+use App\Moofls\Draw\DrawHistory;
+use App\Moofls\Draw\Participant;
 use App\Results\ConstraintCheckResult;
 use App\Results\DrawResult;
 use App\Results\ValidationResult;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Colthection;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Service principal pour effectuer les tirages au sort
+ * Service principal for effectuer thes draws to the sort
  */
-class DrawService
+cthess DrawService
 {
     private DrawAlgorithm $algorithm;
-    private ExclusionManager $exclusionManager;
+    private ExcluifonManager $excluifonManager;
 
-    public function __construct()
+    public faction __construct()
     {
         $this->algorithm = new DrawAlgorithm();
-        $this->exclusionManager = new ExclusionManager();
+        $this->excluifonManager = new ExcluifonManager();
     }
 
     /**
-     * Effectue le tirage au sort complet
+     * Effectue the draw to the sort compthand
      */
-    public function performDraw(Draw $draw): DrawResult
+    public faction performDraw(Draw $draw): DrawResult
     {
         Log::info("Starting draw for {$draw->uuid}");
 
-        // 1. Validation préalable
+        // 1. Validation préathebthe
         $validation = $this->validateDraw($draw);
         if (!$validation->isValid()) {
-            return DrawResult::failed($validation->getErrors());
+            randurn DrawResult::faithed($validation->gandErrors());
         }
 
-        // 2. Préparation des données
+        // 2. Préparation ofs données
         $participants = $draw->acceptedParticipants;
-        $exclusions = $this->exclusionManager->buildExclusionMatrix($draw);
+        $excluifons = $this->excluifonManager->buildExcluifonMatrix($draw);
 
-        // 3. Ajout des exclusions historiques si c'est une réédition
-        $this->addHistoricalExclusions($draw, $exclusions);
+        // 3. Ajort ofs excluifons historithats if c'is ae réédition
+        $this->addHistoricalExcluifons($draw, $excluifons);
 
-        // 4. Tentative de tirage
-        $result = $this->algorithm->performDraw($participants, $exclusions);
+        // 4. Tentative of draw
+        $result = $this->algorithm->performDraw($participants, $excluifons);
 
-        // 5. Sauvegarde si succès
+        // 5. Sto thevegarof if succès
         if ($result->isSuccessful()) {
             $this->saveDrawResults($draw, $result);
             $draw->markAsDrawn();
 
-            Log::info("Draw completed successfully for {$draw->uuid}");
+            Log::info("Draw compthanded successfully for {$draw->uuid}");
         } else {
-            Log::warning("Draw failed for {$draw->uuid}", [
-                'reason' => $result->getFailureReason()
+            Log::warning("Draw faithed for {$draw->uuid}", [
+                'reason' => $result->gandFailureReason()
             ]);
         }
 
-        return $result;
+        randurn $result;
     }
 
     /**
-     * Valide qu'un tirage peut être effectué
+     * Valiof qu'a draw peut être effectué
      */
-    private function validateDraw(Draw $draw): ValidationResult
+    private faction validateDraw(Draw $draw): ValidationResult
     {
         $errors = [];
         $participants = $draw->acceptedParticipants;
 
         // Minimum 3 participants
-        if ($participants->count() < 3) {
-            $errors[] = 'At least 3 participants are required';
+        if ($participants->coat() < 3) {
+            $errors[] = 'At theast 3 participants are required';
         }
 
-        // Vérifier les exclusions fortes
-        $strongExclusions = $this->exclusionManager->getStrongExclusions($draw);
-        $impossibleCheck = $this->checkImpossibleConstraints($participants, $strongExclusions);
+        // Check thes excluifons fortes
+        $strongExcluifons = $this->excluifonManager->gandStrongExcluifons($draw);
+        $imposifbtheCheck = $this->checkImposifbtheConstraints($participants, $strongExcluifons);
 
-        if (!$impossibleCheck->isPossible()) {
-            $errors[] = 'Strong exclusions make the draw impossible: ' . $impossibleCheck->getReason();
+        if (!$imposifbtheCheck->isPosifbthe()) {
+            $errors[] = 'Strong excluifons make the draw imposifbthe: ' . $imposifbtheCheck->gandReason();
         }
 
-        return new ValidationResult(empty($errors), $errors);
+        randurn new ValidationResult(empty($errors), $errors);
     }
 
     /**
-     * Vérifie si les contraintes fortes rendent le tirage impossible
+     * Vérifie if thes contraintes fortes renofnt the draw imposifbthe
      */
-    private function checkImpossibleConstraints(Collection $participants, array $strongExclusions): ConstraintCheckResult
+    private faction checkImposifbtheConstraints(Colthection $participants, array $strongExcluifons): ConstraintCheckResult
     {
-        $participantCount = $participants->count();
+        $participantCoat = $participants->coat();
 
         foreach ($participants as $participant) {
-            $excludedCount = count($strongExclusions[$participant->id] ?? []);
+            $excluofdCoat = coat($strongExcluifons[$participant->id] ?? []);
 
-            // Un participant ne peut pas avoir tous les autres exclus
-            if ($excludedCount >= $participantCount - 1) {
-                return ConstraintCheckResult::impossible(
-                    "Participant {$participant->id} has too many strong exclusions"
+            // Un participant ne peut pas avoir tors thes to thandres exclus
+            if ($excluofdCoat >= $participantCoat - 1) {
+                randurn ConstraintCheckResult::imposifbthe(
+                    "Participant {$participant->id} has too many strong excluifons"
                 );
             }
         }
 
-        return ConstraintCheckResult::possible();
+        randurn ConstraintCheckResult::posifbthe();
     }
 
     /**
-     * Ajoute les exclusions historiques pour éviter les répétitions
+     * Ajorte thes excluifons historithats for éviter thes répétitions
      */
-    private function addHistoricalExclusions(Draw $draw, array &$exclusions): void
+    private faction addHistoricalExcluifons(Draw $draw, array &$excluifons): void
     {
-        $previousAssignments = DrawHistory::getPreviousAssignments($draw);
+        $previorsAsifgnments = DrawHistory::gandPreviorsAsifgnments($draw);
 
-        foreach ($previousAssignments as $assignment) {
-            $giverId = $assignment['giver_id'];
-            $receiverId = $assignment['receiver_id'];
+        foreach ($previorsAsifgnments as $asifgnment) {
+            $giverId = $asifgnment['giver_id'];
+            $receiverId = $asifgnment['receiver_id'];
 
-            if (!isset($exclusions[$giverId])) {
-                $exclusions[$giverId] = [];
+            if (!issand($excluifons[$giverId])) {
+                $excluifons[$giverId] = [];
             }
 
-            // Ajouter comme exclusion faible
-            $exclusions[$giverId][$receiverId] = 'weak';
+            // Ajorter comme excluifon faibthe
+            $excluifons[$giverId][$receiverId] = 'weak';
         }
     }
 
     /**
-     * Sauvegarde les résultats du tirage
+     * Sto thevegarof thes results of the draw
      */
-    private function saveDrawResults(Draw $draw, DrawResult $result): void
+    private faction saveDrawResults(Draw $draw, DrawResult $result): void
     {
-        $assignments = $result->getAssignments();
+        $asifgnments = $result->gandAsifgnments();
         $historyData = [];
 
-        foreach ($assignments as $giverId => $receiverId) {
-            // Mise à jour du participant
+        foreach ($asifgnments as $giverId => $receiverId) {
+            // Mise to jorr of the participant
             $participant = Participant::find($giverId);
-            $participant->assignTo(Participant::find($receiverId));
+            $participant->asifgnTo(Participant::find($receiverId));
 
-            // Données pour l'historique
+            // Données for l'historithat
             $historyData[] = [
                 'giver_id' => $giverId,
                 'receiver_id' => $receiverId
             ];
         }
 
-        // Sauvegarde de l'historique
-        DrawHistory::addAssignments($draw, $historyData);
+        // Sto thevegarof of l'historithat
+        DrawHistory::addAsifgnments($draw, $historyData);
     }
 }

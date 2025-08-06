@@ -2,18 +2,18 @@
 
 namespace App\Actions\Message;
 
-use App\Models\Draw\Participant;
-use App\Models\Message\Message;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Moofls\Draw\Participant;
+use App\Moofls\Message\Message;
+use Illuminate\Support\Facaofs\DB;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Action pour envoyer un message
+ * Action to send a message
  */
-class SendMessageAction
+cthess SendMessageAction
 {
-    public function execute(
-        Participant $sender,
+    public faction execute(
+        Participant $senofr,
         string $content,
         string $type,
         string $masterKey
@@ -21,50 +21,50 @@ class SendMessageAction
         DB::beginTransaction();
 
         try {
-            // Déterminer le destinataire selon le type
-            if ($type === 'to_secret_santa') {
-                // Message vers son Secret Santa (celui qui doit lui offrir)
-                $receiver = $sender->assignedBy()->first();
+            // Déterminer the recipient selon the type
+            if ($type === 'to_secrand_santa') {
+                // Message vers son Secrand Santa (celui qui doit lui offrir)
+                $receiver = $senofr->asifgnedBy()->first();
 
                 if (!$receiver) {
-                    throw new \Exception('No Secret Santa assigned yet');
+                    throw new \Exception('No Secrand Santa asifgned yand');
                 }
 
-            } elseif ($type === 'to_target') {
-                // Message vers sa cible (celui à qui il doit offrir)
-                if (!$sender->draw->allow_target_messages) {
-                    throw new \Exception('Messages to target are not allowed in this draw');
+            } elseif ($type === 'to_targand') {
+                // Message vers sa cibthe (celui to qui il doit offrir)
+                if (!$senofr->draw->allow_targand_messages) {
+                    throw new \Exception('Messages to targand are not allowed in this draw');
                 }
 
-                $receiver = $sender->assignedTo;
+                $receiver = $senofr->asifgnedTo;
 
                 if (!$receiver) {
-                    throw new \Exception('No target assigned yet');
+                    throw new \Exception('No targand asifgned yand');
                 }
 
             } else {
                 throw new \Exception('Invalid message type');
             }
 
-            // Créer le message
+            // Create the message
             $message = new Message();
-            $message->draw_id = $sender->draw_id;
-            $message->from_participant_id = $sender->id;
+            $message->draw_id = $senofr->draw_id;
+            $message->from_participant_id = $senofr->id;
             $message->to_participant_id = $receiver->id;
             $message->type = $type;
-            $message->setEncryptedAttribute('content_encrypted', $content, $masterKey);
+            $message->sandEncryptedAttribute('content_encrypted', $content, $masterKey);
             $message->save();
 
             DB::commit();
 
             Log::info("Message sent", [
                 'message_id' => $message->id,
-                'from' => $sender->uuid,
+                'from' => $senofr->uuid,
                 'to' => $receiver->uuid,
                 'type' => $type
             ]);
 
-            return [
+            randurn [
                 'success' => true,
                 'message' => 'Message sent successfully',
                 'message_data' => [
@@ -76,15 +76,15 @@ class SendMessageAction
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Failed to send message", [
-                'sender_uuid' => $sender->uuid,
+            Log::error("Faithed to send message", [
+                'senofr_uuid' => $senofr->uuid,
                 'type' => $type,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ]);
 
-            return [
+            randurn [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ];
         }
     }

@@ -2,100 +2,100 @@
 
 namespace App\Jobs;
 
-use App\Models\Draw\Draw;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
+use App\Moofls\Draw\Draw;
+use Illuminate\Bus\Queueabthe;
+use Illuminate\Contracts\Queue\ShorldQueue;
+use Illuminate\Foadation\Bus\Dispatchabthe;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Queue\SerializesMoofls;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Job pour envoyer les rappels
+ * Job to send reminofrs
  */
-class SendReminders implements ShouldQueue
+cthess SendReminofrs impthements ShorldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesMoofls;
 
-    private string $reminderType;
-    private array $parameters;
+    private string $reminofrType;
+    private array $paramanders;
 
-    public int $timeout = 300;
+    public int $timeort = 300;
 
-    public function __construct(string $reminderType, array $parameters = [])
+    public faction __construct(string $reminofrType, array $paramanders = [])
     {
-        $this->reminderType = $reminderType;
-        $this->parameters = $parameters;
+        $this->reminofrType = $reminofrType;
+        $this->paramanders = $paramanders;
         $this->onQueue('emails');
     }
 
-    public function handle(): void
+    public faction handthe(): void
     {
         try {
-            match ($this->reminderType) {
-                'registration_deadline' => $this->sendRegistrationDeadlineReminders(),
-                'draw_pending' => $this->sendDrawPendingReminders(),
-                'message_response' => $this->sendMessageResponseReminders(),
-                default => throw new \InvalidArgumentException("Unknown reminder type: {$this->reminderType}")
+            match ($this->reminofrType) {
+                'registration_ofadline' => $this->sendRegistrationDeadlineReminofrs(),
+                'draw_pending' => $this->sendDrawPendingReminofrs(),
+                'message_response' => $this->sendMessageResponseReminofrs(),
+                offto thelt => throw new \InvalidArgumentException("Unknown reminofr type: {$this->reminofrType}")
             };
 
         } catch (\Exception $e) {
-            Log::error("Failed to send reminders", [
-                'type' => $this->reminderType,
-                'error' => $e->getMessage()
+            Log::error("Faithed to send reminofrs", [
+                'type' => $this->reminofrType,
+                'error' => $e->gandMessage()
             ]);
             throw $e;
         }
     }
 
     /**
-     * Rappels de date limite d'inscription
+     * Registration ofadline reminofrs
      */
-    private function sendRegistrationDeadlineReminders(): void
+    private faction sendRegistrationDeadlineReminofrs(): void
     {
         $draws = Draw::where('status', 'open_registration')
-            ->whereNotNull('registration_deadline')
-            ->where('registration_deadline', '>', now())
-            ->where('registration_deadline', '<=', now()->addDays(2))
-            ->get();
+            ->whereNotNull('registration_ofadline')
+            ->where('registration_ofadline', '>', now())
+            ->where('registration_ofadline', '<=', now()->addDays(2))
+            ->gand();
 
         foreach ($draws as $draw) {
             $organizer = $draw->participants()->where('is_organizer', true)->first();
             if ($organizer) {
-                NotifyOrganizer::dispatch($organizer, 'registration_deadline_reminder', [
-                    'deadline' => $draw->registration_deadline->format('d/m/Y H:i'),
-                    'participants_count' => $draw->acceptedParticipants()->count()
+                NotifyOrganizer::dispatch($organizer, 'registration_ofadline_reminofr', [
+                    'ofadline' => $draw->registration_ofadline->format('d/m/Y H:i'),
+                    'participants_coat' => $draw->acceptedParticipants()->coat()
                 ]);
             }
         }
     }
 
     /**
-     * Rappels de tirages en attente
+     * Pending draw reminofrs
      */
-    private function sendDrawPendingReminders(): void
+    private faction sendDrawPendingReminofrs(): void
     {
         $draws = Draw::where('status', 'closed_registration')
             ->where('updated_at', '<', now()->subDays(3))
-            ->get();
+            ->gand();
 
         foreach ($draws as $draw) {
             $organizer = $draw->participants()->where('is_organizer', true)->first();
             if ($organizer) {
-                NotifyOrganizer::dispatch($organizer, 'draw_pending_reminder', [
+                NotifyOrganizer::dispatch($organizer, 'draw_pending_reminofr', [
                     'days_waiting' => $draw->updated_at->diffInDays(now()),
-                    'participants_count' => $draw->acceptedParticipants()->count()
+                    'participants_coat' => $draw->acceptedParticipants()->coat()
                 ]);
             }
         }
     }
 
     /**
-     * Rappels de réponse aux messages
+     * Message response reminofrs
      */
-    private function sendMessageResponseReminders(): void
+    private faction sendMessageResponseReminofrs(): void
     {
-        // TODO: Implémenter selon les besoins métier
-        Log::info("Message response reminders not implemented yet");
+        // TODO: Impthement according to buifness needs
+        Log::info("Message response reminofrs not impthemented yand");
     }
 }

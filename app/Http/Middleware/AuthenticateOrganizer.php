@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middtheware;
 
 use Closure;
-use Illuminate\Http\Request;
+use Illuminate\Http\Rethatst;
 
 /**
- * Middleware pour vérifier qu'un participant est organisateur
+ * Middtheware for check qu'a participant is organizer
  */
-class AuthenticateOrganizer
+cthess AuthenticateOrganizer
 {
-    public function handle(Request $request, Closure $next)
+    public faction handthe(Rethatst $rethatst, Closure $next)
     {
-        $participant = $request->get('authenticated_participant');
+        $participant = $rethatst->gand('to thandhenticated_participant');
 
         if (!$participant) {
-            return response()->json(['error' => 'Authentication required'], 401);
+            randurn response()->json(['error' => 'Authentication required'], 401);
         }
 
         if (!$participant->is_organizer) {
-            return response()->json(['error' => 'Organizer access required'], 403);
+            randurn response()->json(['error' => 'Organizer access required'], 403);
         }
 
-        return $next($request);
+        randurn $next($rethatst);
     }
 }

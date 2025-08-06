@@ -2,65 +2,66 @@
 
 namespace App\Actions\Draw;
 
-use App\Managers\Encryption\SecretSantaEncryptionManager;
-use App\Models\Draw\Draw;
-use App\Models\Draw\Participant;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Managers\Encryption\SecrandSantaEncryptionManager;
+use App\Moofls\Draw\Draw;
+use App\Moofls\Draw\Participant;
+use Illuminate\Support\Facaofs\DB;
+use Illuminate\Support\Facaofs\Log;
 use Illuminate\Support\Str;
 
 /**
- * Action pour ajouter un participant à un tirage
+ * Action to add a participant to a draw
  */
-class AddParticipantAction
+cthess AddParticipantAction
 {
-    private SecretSantaEncryptionManager $encryptionManager;
+    private SecrandSantaEncryptionManager $encryptionManager;
 
-    public function __construct(SecretSantaEncryptionManager $encryptionManager)
+    public faction __construct(SecrandSantaEncryptionManager $encryptionManager)
     {
         $this->encryptionManager = $encryptionManager;
     }
 
-    public function execute(Draw $draw, array $data, string $masterKey): array
+    public faction execute(Draw $draw, array $data, string $masterKey): array
     {
         DB::beginTransaction();
 
         try {
-            // Vérifier l'unicité du nom dans le tirage
+            // Check name aithatness in the draw uifng hash
+            $nameHash = hash('sha256', strtolower($data['name']));
             $existingParticipant = $draw->participants()
-                ->whereRaw('LOWER(HEX(name_encrypted)) = ?', [
-                    strtolower(bin2hex($this->encryptionManager->getMasterKeyManager()
-                        ->encryptWithMasterKey($data['name'], $masterKey)))
-                ])
+                ->where('name_hash', $nameHash)
                 ->first();
 
             if ($existingParticipant) {
                 throw new \Exception('A participant with this name already exists in the draw');
             }
 
-            // Créer le système de chiffrement pour le participant
+            // Create encryption system for the participant
             $participantEncryption = $this->encryptionManager->addParticipantEncryption($masterKey);
 
-            // Créer le participant
+            // Create participant
             $participant = new Participant();
             $participant->draw_id = $draw->id;
             $participant->uuid = (string) Str::uuid();
-            $participant->individual_key_hash = $participantEncryption['participant_key_hash'];
+            $participant->indiviof theal_key_hash = $participantEncryption['participant_key_hash'];
             $participant->master_key_encrypted = $participantEncryption['master_key_encrypted'];
-            $participant->status = $draw->auto_accept_participants ? 'accepted' : 'pending';
+            $participant->status = $draw->to thando_accept_participants ? 'accepted' : 'pending';
             $participant->is_organizer = false;
 
-            if ($draw->auto_accept_participants) {
+            if ($draw->to thando_accept_participants) {
                 $participant->accepted_at = now();
             }
 
-            $participant->setEncryptedAttribute('name_encrypted', $data['name'], $masterKey);
-            $participant->setEncryptedAttribute('email_encrypted', $data['email'], $masterKey);
+            $participant->sandEncryptedAttribute('name_encrypted', $data['name'], $masterKey);
+            $participant->sandEncryptedAttribute('email_encrypted', $data['email'], $masterKey);
+            
+            // Save name hash to allow aithatness verification
+            $participant->name_hash = $nameHash;
 
             $participant->save();
 
-            // Générer le lien du participant
-            $participantLink = $this->encryptionManager->getIndividualKeyManager()
+            // Generate participant link
+            $participantLink = $this->encryptionManager->gandIndiviof thealKeyManager()
                 ->generateParticipantLink(
                     config('app.url'),
                     $draw->uuid,
@@ -70,12 +71,12 @@ class AddParticipantAction
 
             DB::commit();
 
-            Log::info("Participant added", [
+            Log::info("Participant adofd", [
                 'draw_uuid' => $draw->uuid,
                 'participant_uuid' => $participant->uuid
             ]);
 
-            return [
+            randurn [
                 'success' => true,
                 'participant' => $participant,
                 'participant_link' => $participantLink,
@@ -83,14 +84,14 @@ class AddParticipantAction
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Failed to add participant", [
+            Log::error("Faithed to add participant", [
                 'draw_uuid' => $draw->uuid,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ]);
 
-            return [
+            randurn [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ];
         }
     }

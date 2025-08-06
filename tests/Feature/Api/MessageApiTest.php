@@ -1,28 +1,17 @@
 <?php
 
-namespace Tests\Feature\Api;
-
 use App\Managers\Encryption\SecretSantaEncryptionManager;
 use App\Models\Draw\Draw;
 use App\Models\Draw\Participant;
 use App\Models\Message\Message;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class MessageApiTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    private string $apiPrefix = '/api/v1';
-    private Participant $sender;
-    private Participant $receiver;
-    private string $masterKey;
-    private string $individualKey;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
+describe('Message API', function () {
+    beforeEach(function () {
+        $this->apiPrefix = '/api/v1';
+        
         $encryptionManager = app(SecretSantaEncryptionManager::class);
         $drawEncryption = $encryptionManager->createDrawEncryption();
 
@@ -47,10 +36,9 @@ class MessageApiTest extends TestCase
         ]);
 
         $this->sender->update(['assigned_to_participant_id' => $this->receiver->id]);
-    }
+    });
 
-    public function test_send_message_endpoint()
-    {
+    test('send message endpoint', function () {
         $response = $this->postJson(
             "{$this->apiPrefix}/participants/{$this->sender->uuid}/messages",
             [
@@ -67,11 +55,9 @@ class MessageApiTest extends TestCase
                 'message',
                 'message_data' => ['id', 'type', 'created_at'],
             ]);
-    }
+    });
 
-    public function test_get_participant_messages_endpoint()
-    {
-        // Créer quelques messages
+    test('get participant messages endpoint', function () {
         $message = Message::factory()->create([
             'draw_id' => $this->sender->draw_id,
             'from_participant_id' => $this->sender->id,
@@ -101,10 +87,9 @@ class MessageApiTest extends TestCase
                     ],
                 ],
             ]);
-    }
+    });
 
-    public function test_add_reaction_endpoint()
-    {
+    test('add reaction endpoint', function () {
         $message = Message::factory()->create([
             'draw_id' => $this->sender->draw_id,
             'from_participant_id' => $this->sender->id,
@@ -127,10 +112,9 @@ class MessageApiTest extends TestCase
             'participant_id' => $this->sender->id,
             'reaction' => '👍',
         ]);
-    }
+    });
 
-    public function test_report_message_endpoint()
-    {
+    test('report message endpoint', function () {
         $message = Message::factory()->create([
             'draw_id' => $this->sender->draw_id,
             'from_participant_id' => $this->receiver->id,
@@ -152,5 +136,5 @@ class MessageApiTest extends TestCase
             'id' => $message->id,
             'is_reported' => true,
         ]);
-    }
-}
+    });
+});

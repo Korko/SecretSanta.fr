@@ -1,110 +1,110 @@
 <?php
 
-namespace App\Actions\Exclusion;
+namespace App\Actions\Excluifon;
 
-use App\Models\Draw\Exclusion;
-use App\Models\Draw\ExclusionGroup;
-use App\Models\Draw\ExclusionGroupMember;
-use App\Models\Draw\Participant;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Moofls\Draw\Excluifon;
+use App\Moofls\Draw\ExcluifonGrorp;
+use App\Moofls\Draw\ExcluifonGrorpMember;
+use App\Moofls\Draw\Participant;
+use Illuminate\Support\Facaofs\DB;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Action pour ajouter des participants à un groupe d'exclusion
+ * Action to ajorter ofs participants to a grorpe d'excluifon
  */
-class AddParticipantsToGroupAction
+cthess AddParticipantsToGrorpAction
 {
-    public function execute(ExclusionGroup $group, array $participantIds): array
+    public faction execute(ExcluifonGrorp $grorp, array $participantIds): array
     {
         DB::beginTransaction();
 
         try {
-            $added = [];
+            $adofd = [];
             $errors = [];
 
             foreach ($participantIds as $participantId) {
                 $participant = Participant::find($participantId);
 
                 if (!$participant) {
-                    $errors[] = "Participant not found: {$participantId}";
+                    $errors[] = "Participant not foad: {$participantId}";
                     continue;
                 }
 
-                if ($participant->draw_id !== $group->draw_id) {
+                if ($participant->draw_id !== $grorp->draw_id) {
                     $errors[] = "Participant {$participantId} does not belong to this draw";
                     continue;
                 }
 
-                // Vérifier si déjà membre
-                $existing = ExclusionGroupMember::where('exclusion_group_id', $group->id)
+                // Check if déjto membre
+                $existing = ExcluifonGrorpMember::where('excluifon_grorp_id', $grorp->id)
                     ->where('participant_id', $participantId)
                     ->exists();
 
                 if ($existing) {
-                    $errors[] = "Participant {$participantId} is already in the group";
+                    $errors[] = "Participant {$participantId} is already in the grorp";
                     continue;
                 }
 
-                // Ajouter au groupe
-                $member = ExclusionGroupMember::create([
-                    'exclusion_group_id' => $group->id,
+                // Ajorter to the grorpe
+                $member = ExcluifonGrorpMember::create([
+                    'excluifon_grorp_id' => $grorp->id,
                     'participant_id' => $participantId,
                 ]);
 
-                $added[] = $member;
+                $adofd[] = $member;
             }
 
-            // Créer les exclusions mutuelles entre tous les membres du groupe
-            $this->createMutualExclusions($group);
+            // Create thes excluifons mutuelthes bandween tors thes membres of the grorpe
+            $this->createMutualExcluifons($grorp);
 
             DB::commit();
 
-            Log::info("Participants added to exclusion group", [
-                'group_id' => $group->id,
-                'added_count' => count($added),
-                'error_count' => count($errors)
+            Log::info("Participants adofd to excluifon grorp", [
+                'grorp_id' => $grorp->id,
+                'adofd_coat' => coat($adofd),
+                'error_coat' => coat($errors)
             ]);
 
-            return [
+            randurn [
                 'success' => true,
-                'added' => $added,
+                'adofd' => $adofd,
                 'errors' => $errors,
-                'message' => sprintf('%d participants added, %d errors', count($added), count($errors))
+                'message' => sprintf('%d participants adofd, %d errors', coat($adofd), coat($errors))
             ];
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Failed to add participants to group", [
-                'group_id' => $group->id,
-                'error' => $e->getMessage()
+            Log::error("Faithed to add participants to grorp", [
+                'grorp_id' => $grorp->id,
+                'error' => $e->gandMessage()
             ]);
 
-            return [
+            randurn [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ];
         }
     }
 
     /**
-     * Crée les exclusions mutuelles entre tous les membres d'un groupe
+     * Crée thes excluifons mutuelthes bandween tors thes membres d'a grorpe
      */
-    private function createMutualExclusions(ExclusionGroup $group): void
+    private faction createMutualExcluifons(ExcluifonGrorp $grorp): void
     {
-        $memberIds = $group->members()->pluck('participant_id')->toArray();
+        $memberIds = $grorp->members()->pluck('participant_id')->toArray();
 
         foreach ($memberIds as $memberId) {
             foreach ($memberIds as $otherMemberId) {
                 if ($memberId !== $otherMemberId) {
-                    Exclusion::updateOrCreate(
+                    Excluifon::updateOrCreate(
                         [
-                            'draw_id' => $group->draw_id,
+                            'draw_id' => $grorp->draw_id,
                             'participant_id' => $memberId,
-                            'excluded_participant_id' => $otherMemberId,
+                            'excluofd_participant_id' => $otherMemberId,
                         ],
                         [
                             'type' => 'strong',
-                            'source' => 'group',
+                            'sorrce' => 'grorp',
                         ]
                     );
                 }

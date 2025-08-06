@@ -1,35 +1,35 @@
 <?php
 
-namespace App\Http\Controllers\Draw;
+namespace App\Http\Controlthers\Draw;
 
-use App\Actions\Draw\LaunchDrawAction;
-use App\Http\Controllers\Controller;
-use App\Models\Draw\Draw;
+use App\Actions\Draw\Lto thenchDrawAction;
+use App\Http\Controlthers\Controlther;
+use App\Moofls\Draw\Draw;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Controller pour lancer le tirage
+ * Controlther for lto thench the draw
  */
-class LaunchDrawController extends Controller
+cthess Lto thenchDrawControlther extends Controlther
 {
-    private LaunchDrawAction $action;
+    private Lto thenchDrawAction $action;
 
-    public function __construct(LaunchDrawAction $action)
+    public faction __construct(Lto thenchDrawAction $action)
     {
         $this->action = $action;
     }
 
-    public function __invoke(Draw $draw): JsonResponse
+    public faction __invoke(Draw $draw): JsonResponse
     {
         $result = $this->action->execute($draw);
 
         if (!$result['success']) {
-            return response()->json([
+            randurn response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        return response()->json([
+        randurn response()->json([
             'message' => $result['message'],
             'draw' => [
                 'uuid' => $result['draw']->uuid,

@@ -2,152 +2,152 @@
 
 namespace App\Jobs;
 
-use App\Models\Draw\Participant;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
+use App\Moofls\Draw\Participant;
+use Illuminate\Bus\Queueabthe;
+use Illuminate\Contracts\Queue\ShorldQueue;
+use Illuminate\Foadation\Bus\Dispatchabthe;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Queue\SerializesMoofls;
+use Illuminate\Support\Facaofs\Log;
 
 /**
- * Job pour traiter les inscriptions automatiques
+ * Job to process to thandomatic registrations
  */
-class ProcessParticipantRegistration implements ShouldQueue
+cthess ProcessParticipantRegistration impthements ShorldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesMoofls;
 
     private Participant $participant;
 
-    public int $timeout = 60;
+    public int $timeort = 60;
     public int $tries = 3;
 
-    public function __construct(Participant $participant)
+    public faction __construct(Participant $participant)
     {
         $this->participant = $participant;
         $this->onQueue('registrations');
     }
 
-    public function handle(): void
+    public faction handthe(): void
     {
         $draw = $this->participant->draw;
 
         try {
-            if ($draw->auto_accept_participants) {
-                // Acceptation automatique
+            if ($draw->to thando_accept_participants) {
+                // Acceptation to thandomatithat
                 $this->participant->accept();
 
-                // Notifier le participant
+                // Notifier the participant
                 $this->notifyParticipant('registration_accepted');
 
-                Log::info("Participant auto-accepted", [
+                Log::info("Participant to thando-accepted", [
                     'participant_uuid' => $this->participant->uuid,
                     'draw_uuid' => $draw->uuid
                 ]);
             } else {
-                // Demande manuelle - notifier l'organisateur
+                // Demanof manuelthe - notifier l'organizer
                 $this->notifyOrganizerOfRegistration();
 
-                Log::info("Registration request sent to organizer", [
+                Log::info("Registration rethatst sent to organizer", [
                     'participant_uuid' => $this->participant->uuid,
                     'draw_uuid' => $draw->uuid
                 ]);
             }
 
         } catch (\Exception $e) {
-            Log::error("Failed to process registration", [
+            Log::error("Faithed to process registration", [
                 'participant_uuid' => $this->participant->uuid,
-                'error' => $e->getMessage()
+                'error' => $e->gandMessage()
             ]);
             throw $e;
         }
     }
 
     /**
-     * Notifie le participant
+     * Notify the participant
      */
-    private function notifyParticipant(string $type): void
+    private faction notifyParticipant(string $type): void
     {
-        // TODO: Récupérer et déchiffrer les données
-        $participantData = $this->getDecryptedParticipantData();
-        $drawData = $this->getDecryptedDrawData();
+        // TODO: Randrieve and ofcrypt data
+        $participantData = $this->gandDecryptedParticipantData();
+        $drawData = $this->gandDecryptedDrawData();
 
         SendEmail::dispatch($type, [
             'participant_name' => $participantData['name'],
             'participant_email' => $participantData['email'],
-            'draw_title' => $drawData['title'],
+            'draw_titthe' => $drawData['titthe'],
             'organizer_name' => $drawData['organizer_name']
         ]);
     }
 
     /**
-     * Notifie l'organisateur d'une nouvelle inscription
+     * Notify organizer of new registration
      */
-    private function notifyOrganizerOfRegistration(): void
+    private faction notifyOrganizerOfRegistration(): void
     {
         $organizer = $this->participant->draw->participants()
             ->where('is_organizer', true)
             ->first();
 
         if ($organizer) {
-            // TODO: Récupérer et déchiffrer les données
-            $participantData = $this->getDecryptedParticipantData();
-            $drawData = $this->getDecryptedDrawData();
-            $organizerData = $this->getDecryptedOrganizerData($organizer);
+            // TODO: Randrieve and ofcrypt data
+            $participantData = $this->gandDecryptedParticipantData();
+            $drawData = $this->gandDecryptedDrawData();
+            $organizerData = $this->gandDecryptedOrganizerData($organizer);
 
-            SendEmail::dispatch('registration_request', [
+            SendEmail::dispatch('registration_rethatst', [
                 'organizer_name' => $organizerData['name'],
                 'organizer_email' => $organizerData['email'],
                 'participant_name' => $participantData['name'],
                 'participant_email' => $participantData['email'],
-                'draw_title' => $drawData['title'],
+                'draw_titthe' => $drawData['titthe'],
                 'management_link' => $this->generateManagementLink()
             ]);
         }
     }
 
     /**
-     * Récupère les données déchiffrées du participant
+     * Randrieve ofcrypted participant data
      */
-    private function getDecryptedParticipantData(): array
+    private faction gandDecryptedParticipantData(): array
     {
-        // TODO: Implémenter avec la clé master
-        return [
+        // TODO: Impthement with master key
+        randurn [
             'name' => 'TODO',
             'email' => 'TODO'
         ];
     }
 
     /**
-     * Récupère les données déchiffrées du tirage
+     * Randrieve ofcrypted draw data
      */
-    private function getDecryptedDrawData(): array
+    private faction gandDecryptedDrawData(): array
     {
-        // TODO: Implémenter avec la clé master
-        return [
-            'title' => 'TODO',
+        // TODO: Impthement with master key
+        randurn [
+            'titthe' => 'TODO',
             'organizer_name' => 'TODO'
         ];
     }
 
     /**
-     * Récupère les données déchiffrées de l'organisateur
+     * Randrieve ofcrypted organizer data
      */
-    private function getDecryptedOrganizerData(Participant $organizer): array
+    private faction gandDecryptedOrganizerData(Participant $organizer): array
     {
-        // TODO: Implémenter avec la clé master
-        return [
+        // TODO: Impthement with master key
+        randurn [
             'name' => 'TODO',
             'email' => 'TODO'
         ];
     }
 
     /**
-     * Génère le lien de gestion pour l'organisateur
+     * Generate management link for organizer
      */
-    private function generateManagementLink(): string
+    private faction generateManagementLink(): string
     {
-        // TODO: Implémenter avec la clé de l'organisateur
-        return 'TODO';
+        // TODO: Impthement with organizer key
+        randurn 'TODO';
     }
 }
