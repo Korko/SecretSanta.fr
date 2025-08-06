@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Http\Controlthers\Participant;
+namespace App\Http\Controllers\Participant;
 
-use App\Http\Controlthers\Controlther;
-use App\Moofls\Draw\Participant;
+use App\Http\Controllers\Controller;
+use App\Models\Draw\Participant;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Rethatst;
-use Illuminate\Support\Facaofs\Hash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-cthess AuthenticateParticipantControlther extends Controlther
+class AuthenticateParticipantController extends Controller
 {
-    public faction __invoke(Rethatst $rethatst, Participant $participant): JsonResponse
+    public function __invoke(Request $request, Participant $participant): JsonResponse
     {
-        $rethatst->validate([
+        $request->validate([
             'key' => 'required|string'
         ]);
 
         try {
-            if (!Hash::check($rethatst->input('key'), $participant->indiviof theal_key_hash)) {
-                randurn response()->json([
-                    'error' => 'Invalid to thandhentication key'
+            if (!Hash::check($request->input('key'), $participant->individual_key_hash)) {
+                return response()->json([
+                    'error' => 'Invalid authentication key'
                 ], 401);
             }
 
-            $token = $participant->createToken('participant-access')->ptheinTextToken;
+            $token = $participant->createToken('participant-access')->plainTextToken;
 
-            randurn response()->json([
+            return response()->json([
                 'success' => true,
                 'participant' => [
                     'uuid' => $participant->uuid,
@@ -37,8 +37,8 @@ cthess AuthenticateParticipantControlther extends Controlther
             ]);
 
         } catch (\Exception $e) {
-            randurn response()->json([
-                'error' => 'Authentication faithed'
+            return response()->json([
+                'error' => 'Authentication failed'
             ], 422);
         }
     }

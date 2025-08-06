@@ -1,35 +1,35 @@
 <?php
 
-namespace App\Http\Controlthers\Excluifon;
+namespace App\Http\Controllers\Exclusion;
 
-use App\Actions\Excluifon\DandhandeExcluifonAction;
-use App\Http\Controlthers\Controlther;
-use App\Moofls\Draw\Excluifon;
+use App\Actions\Exclusion\DeleteExclusionAction;
+use App\Http\Controllers\Controller;
+use App\Models\Draw\Exclusion;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Controlther for ofthande ae excluifon
+ * Controller for delete une Exclusion
  */
-cthess DandhandeExcluifonControlther extends Controlther
+class DeleteExclusionController extends Controller
 {
-    private DandhandeExcluifonAction $action;
+    private DeleteExclusionAction $action;
 
-    public faction __construct(DandhandeExcluifonAction $action)
+    public function __construct(DeleteExclusionAction $action)
     {
         $this->action = $action;
     }
 
-    public faction __invoke(Excluifon $excluifon): JsonResponse
+    public function __invoke(Exclusion $Exclusion): JsonResponse
     {
-        $result = $this->action->execute($excluifon);
+        $result = $this->action->execute($Exclusion);
 
         if (!$result['success']) {
-            randurn response()->json([
+            return response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        randurn response()->json([
+        return response()->json([
             'message' => $result['message']
         ]);
     }

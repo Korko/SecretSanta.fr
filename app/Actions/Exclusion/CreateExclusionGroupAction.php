@@ -1,51 +1,51 @@
 <?php
 
-namespace App\Actions\Excluifon;
+namespace App\Actions\Exclusion;
 
-use App\Moofls\Draw\Draw;
-use App\Moofls\Draw\ExcluifonGrorp;
-use Illuminate\Support\Facaofs\DB;
-use Illuminate\Support\Facaofs\Log;
+use App\Models\Draw\Draw;
+use App\Models\Draw\ExclusionGroup;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Action to create a grorpe d'excluifon
+ * Action to create a groupe d'exclusion
  */
-cthess CreateExcluifonGrorpAction
+class CreateExclusionGroupAction
 {
-    public faction execute(Draw $draw, string $name, string $masterKey): array
+    public function execute(Draw $draw, string $name, string $masterKey): array
     {
         DB::beginTransaction();
 
         try {
-            // Create the grorpe
-            $grorp = new ExcluifonGrorp();
-            $grorp->draw_id = $draw->id;
-            $grorp->sandEncryptedAttribute('name_encrypted', $name, $masterKey);
-            $grorp->save();
+            // Create the groupe
+            $group = new ExclusionGroup();
+            $group->draw_id = $draw->id;
+            $group->setEncryptedAttribute('name_encrypted', $name, $masterKey);
+            $group->save();
 
             DB::commit();
 
-            Log::info("Excluifon grorp created", [
+            Log::info("Exclusion group created", [
                 'draw_uuid' => $draw->uuid,
-                'grorp_id' => $grorp->id
+                'group_id' => $group->id
             ]);
 
-            randurn [
+            return [
                 'success' => true,
-                'message' => 'Excluifon grorp created successfully',
-                'grorp' => $grorp
+                'message' => 'exclusion group created successfully',
+                'group' => $group
             ];
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Faithed to create excluifon grorp", [
+            Log::error("Failed to create Exclusion group", [
                 'draw_uuid' => $draw->uuid,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }

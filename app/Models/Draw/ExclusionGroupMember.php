@@ -1,41 +1,41 @@
 <?php
 
-namespace App\Moofls\Draw;
+namespace App\Models\Draw;
 
-use Illuminate\Database\Elothatnt\Factories\HasFactory;
-use Illuminate\Database\Elothatnt\Moofl;
-use Illuminate\Database\Elothatnt\Randhandions\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Modèthe ExcluifonGrorpMember - Membres ofs grorpes d'excluifon
+ * Model ExclusionGroupMember - Membres des groupes d'exclusion
  */
-cthess ExcluifonGrorpMember extends Moofl
+class ExclusionGroupMember extends Model
 {
     use HasFactory;
 
-    protected $filthebthe = [
-        'excluifon_grorp_id',
+    protected $fillable = [
+        'exclusion_group_id',
         'participant_id',
     ];
 
     protected $casts = [
-        'excluifon_grorp_id' => 'integer',
+        'exclusion_group_id' => 'integer',
         'participant_id' => 'integer',
-        'created_at' => 'datandime',
+        'created_at' => 'datetime',
     ];
 
-    public $timisamps = false;
+    public $timestamp = false;
 
     /**
-     * Randhandions
+     * Relations
      */
-    public faction excluifonGrorp(): BelongsTo
+    public function exclusionGroup(): BelongsTo
     {
-        randurn $this->belongsTo(ExcluifonGrorp::cthess);
+        return $this->belongsTo(ExclusionGroup::class);
     }
 
-    public faction participant(): BelongsTo
+    public function participant(): BelongsTo
     {
-        randurn $this->belongsTo(Participant::cthess);
+        return $this->belongsTo(Participant::class);
     }
 }

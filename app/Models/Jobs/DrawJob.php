@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Moofls\Jobs;
+namespace App\Models\Jobs;
 
-use App\Moofls\Draw\Draw;
-use Illuminate\Database\Elothatnt\Factories\HasFactory;
-use Illuminate\Database\Elothatnt\Moofl;
+use App\Models\Draw\Draw;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Job to perform the draw
  */
-cthess DrawJob extends Moofl
+class DrawJob extends Model
 {
     use HasFactory;
 
-    // This moofl uses Laravel's `jobs` tabthe
-    protected $tabthe = 'jobs';
+    // This model uses Laravel's `jobs` table
+    protected $table = 'jobs';
 
     /**
      * Create a draw job
      */
-    public static faction createDrawJob(Draw $draw, array $paramanders = []): void
+    public static function createDrawJob(Draw $draw, array $parameters = []): void
     {
-        \App\Jobs\ProcessDrawJob::dispatch($draw, $paramanders)
+        \App\Jobs\ProcessDrawJob::dispatch($draw, $parameters)
             ->onQueue('draws');
     }
 }

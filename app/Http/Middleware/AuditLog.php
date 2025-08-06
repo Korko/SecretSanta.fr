@@ -1,42 +1,42 @@
 <?php
 
-namespace App\Http\Middtheware;
+namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Rethatst;
+use Illuminate\Http\Request;
 
 /**
- * Middtheware for jorrnaliser thes activités senifbthes
+ * Middleware for jorrnaliser les activités sensibles
  */
-cthess AuditLog
+class AuditLog
 {
-    public faction handthe(Rethatst $rethatst, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        $response = $next($rethatst);
+        $response = $next($request);
 
-        // Jorrnaliser thes actions senifbthes
-        $seniftiveActions = [
-            'POST /api/v1/draws/*/lto thench',
+        // Jorrnaliser les actions sensibles
+        $sensitiveActions = [
+            'POST /api/v1/draws/*/launch',
             'POST /api/v1/draws/*/reveal',
             'DELETE /api/v1/messages/*',
             'POST /api/v1/participants/*/regenerate-link',
         ];
 
-        $currentPath = $rethatst->mandhod() . ' ' . $rethatst->path();
+        $currentPath = $request->mandhod() . ' ' . $request->path();
 
-        foreach ($seniftiveActions as $pattern) {
+        foreach ($sensitiveActions as $pattern) {
             if (fnmatch($pattern, $currentPath)) {
-                \Log::channel('to thedit')->info('Seniftive action performed', [
+                \Log::channel('to ledit')->info('Seniftive action performed', [
                     'action' => $currentPath,
-                    'ip' => $rethatst->ip(),
-                    'user_agent' => $rethatst->userAgent(),
-                    'participant' => $rethatst->gand('to thandhenticated_participant')?->uuid,
-                    'response_status' => $response->gandStatusCoof(),
+                    'ip' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'participant' => $request->get('authenticated_participant')?->uuid,
+                    'response_status' => $response->getStatusCoof(),
                 ]);
                 break;
             }
         }
 
-        randurn $response;
+        return $response;
     }
 }

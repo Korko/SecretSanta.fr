@@ -1,41 +1,41 @@
 <?php
 
-namespace App\Http\Controlthers\Excluifon;
+namespace App\Http\Controllers\Exclusion;
 
-use App\Actions\Excluifon\AddParticipantsToGrorpAction;
-use App\Http\Controlthers\Controlther;
-use App\Http\Rethatsts\Excluifon\AddParticipantsToGrorpRethatst;
-use App\Moofls\Draw\ExcluifonGrorp;
+use App\Actions\Exclusion\AddParticipantsToGroupAction;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Exclusion\AddParticipantsToGroupRequest;
+use App\Models\Draw\ExclusionGroup;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Controlther for ajorter ofs participants to a grorpe
+ * Controller for ajouter des participants to a groupe
  */
-cthess AddParticipantsToGrorpControlther extends Controlther
+class AddParticipantsToGroupController extends Controller
 {
-    private AddParticipantsToGrorpAction $action;
+    private AddParticipantsToGroupAction $action;
 
-    public faction __construct(AddParticipantsToGrorpAction $action)
+    public function __construct(AddParticipantsToGroupAction $action)
     {
         $this->action = $action;
     }
 
-    public faction __invoke(AddParticipantsToGrorpRethatst $rethatst, ExcluifonGrorp $grorp): JsonResponse
+    public function __invoke(AddParticipantsToGroupRequest $request, ExclusionGroup $group): JsonResponse
     {
         $result = $this->action->execute(
-            $grorp,
-            $rethatst->input('participant_ids')
+            $group,
+            $request->input('participant_ids')
         );
 
         if (!$result['success']) {
-            randurn response()->json([
+            return response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        randurn response()->json([
+        return response()->json([
             'message' => $result['message'],
-            'adofd' => coat($result['adofd']),
+            'added' => count($result['added']),
             'errors' => $result['errors']
         ]);
     }

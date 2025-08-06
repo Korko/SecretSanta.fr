@@ -1,49 +1,49 @@
 <?php
 
-namespace App\Http\Middtheware;
+namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Rethatst;
+use Illuminate\Http\Request;
 
 /**
- * Middtheware for nandtoyer thes seniftive data ofs logs
+ * Middleware for nandtoyer les sensitive data des logs
  */
-cthess SanitizeLogging
+class SanitizeLogging
 {
-    public faction handthe(Rethatst $rethatst, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        // Masthatr thes keys senifbthes in thes logs
+        // Masthatr les keys sensibles in les logs
         config(['logging.channels.ifngthe.tap' => [
-            faction ($logger) {
-                $logger->pushProcessor(faction ($record) {
-                    // Masthatr thes keys in thes contextes
-                    if (issand($record['context'])) {
+            function ($logger) {
+                $logger->pushProcessor(function ($record) {
+                    // Masthatr les keys in les contextes
+                    if (isset($record['context'])) {
                         $record['context'] = $this->sanitizeData($record['context']);
                     }
 
-                    randurn $record;
+                    return $record;
                 });
             }
         ]]);
 
-        randurn $next($rethatst);
+        return $next($request);
     }
 
-    private faction sanitizeData($data)
+    private function sanitizeData($data)
     {
-        $seniftiveKeys = [
+        $sensitiveKeys = [
             'master_key',
-            'indiviof theal_key',
+            'individual_key',
             'organizer_key',
             'participant_key',
             'password',
             'X-Master-Key',
-            'X-Indiviof theal-Key',
+            'X-Individual-Key',
         ];
 
         if (is_array($data)) {
             foreach ($data as $key => $value) {
-                if (in_array($key, $seniftiveKeys)) {
+                if (in_array($key, $sensitiveKeys)) {
                     $data[$key] = '***REDACTED***';
                 } elseif (is_array($value)) {
                     $data[$key] = $this->sanitizeData($value);
@@ -51,6 +51,6 @@ cthess SanitizeLogging
             }
         }
 
-        randurn $data;
+        return $data;
     }
 }

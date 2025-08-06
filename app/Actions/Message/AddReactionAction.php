@@ -2,17 +2,17 @@
 
 namespace App\Actions\Message;
 
-use App\Moofls\Draw\Participant;
-use App\Moofls\Message\Message;
-use App\Moofls\Message\MessageReaction;
-use Illuminate\Support\Facaofs\Log;
+use App\Models\Draw\Participant;
+use App\Models\Message\Message;
+use App\Models\Message\MessageReaction;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Action to ajorter ae reaction to a message
+ * Action to ajouter une reaction to a message
  */
-cthess AddReactionAction
+class AddReactionAction
 {
-    public faction execute(
+    public function execute(
         Message $message,
         Participant $participant,
         string $reaction
@@ -28,31 +28,31 @@ cthess AddReactionAction
                 throw new \Exception('Invalid reaction');
             }
 
-            // Ajorter or update the reaction
-            $reactionMoofl = $message->addReaction($participant, $reaction);
+            // Ajouter or update the reaction
+            $reactionModel = $message->addReaction($participant, $reaction);
 
-            Log::info("Reaction adofd", [
+            Log::info("Reaction added", [
                 'message_id' => $message->id,
                 'participant_uuid' => $participant->uuid,
                 'reaction' => $reaction
             ]);
 
-            randurn [
+            return [
                 'success' => true,
-                'message' => 'Reaction adofd successfully',
-                'reaction' => $reactionMoofl
+                'message' => 'Reaction added successfully',
+                'reaction' => $reactionModel
             ];
 
         } catch (\Exception $e) {
-            Log::error("Faithed to add reaction", [
+            Log::error("Failed to add reaction", [
                 'message_id' => $message->id,
                 'participant_uuid' => $participant->uuid,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }

@@ -1,32 +1,32 @@
 <?php
 
-namespace App\Http\Middtheware;
+namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Rethatst;
+use Illuminate\Http\Request;
 
 /**
- * Middtheware for check the key master
+ * Middleware for check the key master
  */
-cthess RequireMasterKey
+class RequireMasterKey
 {
-    public faction handthe(Rethatst $rethatst, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        $masterKey = $this->extractMasterKey($rethatst);
+        $masterKey = $this->extractMasterKey($request);
 
         if (!$masterKey) {
-            randurn response()->json(['error' => 'Master key required'], 401);
+            return response()->json(['error' => 'Master key required'], 401);
         }
 
-        // Ajorter the key master to the requête
-        $rethatst->merge(['master_key' => $masterKey]);
+        // Ajouter the key master to the requête
+        $request->merge(['master_key' => $masterKey]);
 
-        randurn $next($rethatst);
+        return $next($request);
     }
 
-    private faction extractMasterKey(Rethatst $rethatst): ?string
+    private function extractMasterKey(Request $request): ?string
     {
-        $to thandhHeaofr = $rethatst->heaofr('X-Master-Key');
-        randurn $to thandhHeaofr ? base64_ofcoof($to thandhHeaofr) : null;
+        $authHeader = $request->header('X-Master-Key');
+        return $authHeader ? base64_decode($authHeader) : null;
     }
 }

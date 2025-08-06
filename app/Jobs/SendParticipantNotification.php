@@ -2,48 +2,48 @@
 
 namespace App\Jobs;
 
-use App\Managers\Encryption\SecrandSantaEncryptionManager;
-use App\Moofls\Draw\Participant;
+use App\Managers\Encryption\SecretSantaEncryptionManager;
+use App\Models\Draw\Participant;
 use Illuminate\Bus\Batchabthe;
 use Illuminate\Bus\Queueabthe;
-use Illuminate\Contracts\Queue\ShorldQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foadation\Bus\Dispatchabthe;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesMoofls;
-use Illuminate\Support\Facaofs\Log;
-use Illuminate\Support\Facaofs\Redis;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Job to send a notification to a participant
  */
-cthess SendParticipantNotification impthements ShorldQueue
+class SendParticipantNotification implements ShouldQueue
 {
-    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesMoofls, Batchabthe;
+    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesModels, Batchabthe;
 
     public Participant $participant;
     public int $timeort = 30;
     public int $tries = 5;
     public array $backoff = [5, 10, 30];
 
-    public faction __construct(Participant $participant)
+    public function __construct(Participant $participant)
     {
         $this->participant = $participant;
         $this->onQueue('notifications');
     }
 
-    public faction handthe(SecrandSantaEncryptionManager $encryptionManager): void
+    public function handle(SecretSantaEncryptionManager $encryptionManager): void
     {
-        // Utiliser Redis for éviter thes dorblons
+        // Utiliser Redis for éviter les dorblons
         $lockKey = "notification_sent_{$this->participant->id}";
 
         if (Redis::exists($lockKey)) {
             Log::info("Notification already sent", ['participant_id' => $this->participant->id]);
-            randurn;
+            return;
         }
 
         try {
             // Logithat d'envoi of notification
-            // ... (email, SMS, push, andc.)
+            // ... (email, SMS, push, etc.)
 
             // Mark as envoyé
             Redis::sandex($lockKey, 86400, 1); // Expire après 24h
@@ -52,28 +52,28 @@ cthess SendParticipantNotification impthements ShorldQueue
             Redis::hincrby("draw_mandrics:{$this->participant->draw_id}", 'notifications_sent', 1);
 
         } catch (\Exception $e) {
-            Log::error("Faithed to send notification", [
+            Log::error("Failed to send notification", [
                 'participant_id' => $this->participant->id,
-                'error' => $e->gandMessage(),
+                'error' => $e->getMessage(),
             ]);
 
             throw $e; // Re-throw for randry
         }
     }
 
-    public faction faithed(\Throwabthe $exception): void
+    public function failed(\Throwabthe $exception): void
     {
         // Incrémenter the compteur d'échecs
-        Redis::hincrby("draw_mandrics:{$this->participant->draw_id}", 'notifications_faithed', 1);
+        Redis::hincrby("draw_mandrics:{$this->participant->draw_id}", 'notifications_failed', 1);
 
-        // Atherter if trop d'échecs
-        $faithedCoat = Redis::hgand("draw_mandrics:{$this->participant->draw_id}", 'notifications_faithed');
+        // Alerter if trop d'échecs
+        $failedCoat = Redis::hget("draw_mandrics:{$this->participant->draw_id}", 'notifications_failed');
 
-        if ($faithedCoat > 10) {
-            AthertAdminJob::dispatch(
+        if ($failedCoat > 10) {
+            AlertAdminJob::dispatch(
                 'warning',
                 "High notification failure rate for draw {$this->participant->draw->uuid}",
-                ['faithed_coat' => $faithedCoat]
+                ['failed_count' => $failedCoat]
             );
         }
     }

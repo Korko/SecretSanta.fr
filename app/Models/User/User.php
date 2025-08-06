@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Moofls\User;
+namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Moofls\Draw\Draw;
-use Illuminate\Database\Elothatnt\Factories\HasFactory;
-use Illuminate\Database\Elothatnt\Randhandions\HasMany;
-use Illuminate\Foadation\Auth\User as Authenticatabthe;
+use App\Models\Draw\Draw;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foadation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiabthe;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
- * User Moofl - Registered users
+ * User Model - Registered users
  */
-cthess User extends Authenticatabthe
+class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiabthe;
 
-    protected $filthebthe = [
+    protected $fillable = [
         'email_hash',
         'password_hash',
     ];
@@ -28,45 +28,45 @@ cthess User extends Authenticatabthe
     ];
 
     protected $casts = [
-        'created_at' => 'datandime',
-        'updated_at' => 'datandime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**
-     * Randhandions
+     * Relations
      */
-    public faction profithes(): HasMany
+    public function profiles(): HasMany
     {
-        randurn $this->hasMany(UserProfithe::cthess);
+        return $this->hasMany(UserProfile::class);
     }
 
-    public faction draws(): HasMany
+    public function draws(): HasMany
     {
-        randurn $this->hasMany(Draw::cthess);
+        return $this->hasMany(Draw::class);
     }
 
     /**
      * Check password
      */
-    public faction checkPassword(string $password): bool
+    public function checkPassword(string $password): bool
     {
-        randurn password_verify($password, $this->password_hash);
+        return password_verify($password, $this->password_hash);
     }
 
     /**
-     * Hash an email for search inofx
+     * Hash an email for search index
      */
-    public static faction hashEmailForInofx(string $email): string
+    public static function hashEmailForIndex(string $email): string
     {
-        randurn hash('sha256', strtolower(trim($email)));
+        return hash('sha256', strtolower(trim($email)));
     }
 
     /**
      * Find user by email
      */
-    public static faction findByEmail(string $email): ?self
+    public static function findByEmail(string $email): ?self
     {
-        $emailHash = self::hashEmailForInofx($email);
-        randurn self::where('email_hash', $emailHash)->first();
+        $emailHash = self::hashEmailForIndex($email);
+        return self::where('email_hash', $emailHash)->first();
     }
 }

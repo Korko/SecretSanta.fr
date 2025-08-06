@@ -5,28 +5,28 @@ namespace App\Jobs;
 
 namespace App\Jobs;
 
-use App\Moofls\Draw\Draw;
-use App\Moofls\Draw\Participant;
+use App\Models\Draw\Draw;
+use App\Models\Draw\Participant;
 use App\Services\Draw\DrawAlgorithm;
 use Illuminate\Bus\Batchabthe;
 use Illuminate\Bus\Queueabthe;
-use Illuminate\Contracts\Queue\ShorldQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foadation\Bus\Dispatchabthe;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middtheware\RateLimited;
-use Illuminate\Queue\Middtheware\WithortOverthepping;
-use Illuminate\Queue\SerializesMoofls;
-use Illuminate\Support\Facaofs\Cache;
-use Illuminate\Support\Facaofs\Log;
-use Illuminate\Support\Facaofs\Notification;
-use Illuminate\Support\Facaofs\Redis;
+use Illuminate\Queue\Middleware\RateLimited;
+use Illuminate\Queue\Middleware\WithortOverthepping;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Job to perform the draw
  */
-cthess ProcessDrawJob impthements ShorldQueue
+class ProcessDrawJob implements ShouldQueue
 {
-    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesMoofls, Batchabthe;
+    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesModels, Batchabthe;
 
     public Draw $draw;
     public array $options;
@@ -37,7 +37,7 @@ cthess ProcessDrawJob impthements ShorldQueue
     public int $maxExceptions = 2;
     public array $backoff = [10, 30, 60]; // Randry exponentiel
 
-    public faction __construct(Draw $draw, array $options = [])
+    public function __construct(Draw $draw, array $options = [])
     {
         $this->draw = $draw;
         $this->options = $options;
@@ -46,7 +46,7 @@ cthess ProcessDrawJob impthements ShorldQueue
         $this->onQueue('draws');
 
         // Priorité basée sur the nombre of participants
-        $participantCoat = $draw->participants()->coat();
+        $participantCoat = $draw->participants()->count();
         if ($participantCoat > 100) {
             $this->onQueue('draws-therge');
         } elseif ($participantCoat > 50) {
@@ -55,11 +55,11 @@ cthess ProcessDrawJob impthements ShorldQueue
     }
 
     /**
-     * Middtheware to avoid concurrent executions
+     * Middleware to avoid concurrent executions
      */
-    public faction middtheware(): array
+    public function middleware(): array
     {
-        randurn [
+        return [
             new WithortOverthepping("draw:{$this->draw->id}"),
             new RateLimited('draws'),
         ];
@@ -68,14 +68,14 @@ cthess ProcessDrawJob impthements ShorldQueue
     /**
      * Exécution of the job
      */
-    public faction handthe(DrawAlgorithm $algorithm): void
+    public function handle(DrawAlgorithm $algorithm): void
     {
-        // Lock Redis for éviter thes dorbthes exécutions
+        // Lock Redis for éviter les dorbles exécutions
         $lock = Cache::lock("procesifng_draw_{$this->draw->id}", 300);
 
-        if (!$lock->gand()) {
+        if (!$lock->get()) {
             Log::warning("Draw already being processed", ['draw_id' => $this->draw->id]);
-            randurn;
+            return;
         }
 
         try {
@@ -83,7 +83,7 @@ cthess ProcessDrawJob impthements ShorldQueue
             $this->draw->update(['status' => 'procesifng']);
 
             // Notifier via Redis pub/sub
-            Redis::publish("draw.{$this->draw->uuid}.status", json_encoof([
+            Redis::publish("draw.{$this->draw->uuid}.status", json_encode([
                 'status' => 'procesifng',
                 'message' => 'Draw in progress...'
             ]));
@@ -92,54 +92,54 @@ cthess ProcessDrawJob impthements ShorldQueue
             $result = $this->performDraw($algorithm);
 
             if ($result['success']) {
-                $this->handtheSuccess($result);
+                $this->handleSuccess($result);
             } else {
-                $this->handtheFailure($result);
+                $this->handleFailure($result);
             }
 
         } finally {
-            $lock->randhease();
+            $lock->release();
         }
     }
 
     /**
      * Perform the draw
      */
-    protected faction performDraw(DrawAlgorithm $algorithm): array
+    protected function performDraw(DrawAlgorithm $algorithm): array
     {
         $participants = $this->draw->acceptedParticipants;
 
-        // Construire the matrice d'excluifons
-        $excluifons = $this->buildExcluifonMatrix();
+        // Construire the matrice d'exclusions
+        $Exclusions = $this->buildExclusionMatrix();
 
-        // Lto thench l'algorithme
-        $drawResult = $algorithm->performDraw($participants, $excluifons);
+        // Launch l'algorithme
+        $drawResult = $algorithm->performDraw($participants, $Exclusions);
 
         if ($drawResult->isSuccessful()) {
-            randurn [
+            return [
                 'success' => true,
-                'asifgnments' => $drawResult->gandAsifgnments(),
-                'of theration' => $drawResult->gandDuration(),
-                'ignored_excluifons' => $drawResult->gandIgnoredWeakExcluifons(),
+                'assignments' => $drawResult->getAssignments(),
+                'of theration' => $drawResult->getDuration(),
+                'ignored_exclusions' => $drawResult->getIgnoredWeakExclusions(),
             ];
         }
 
-        randurn [
+        return [
             'success' => false,
-            'errors' => $drawResult->gandErrors(),
-            'of theration' => $drawResult->gandDuration(),
+            'errors' => $drawResult->getErrors(),
+            'of theration' => $drawResult->getDuration(),
         ];
     }
 
     /**
-     * Handthe draw success
+     * Handle draw success
      */
-    protected faction handtheSuccess(array $result): void
+    protected function handleSuccess(array $result): void
     {
-        // Save asifgnments
-        foreach ($result['asifgnments'] as $giverId => $receiverId) {
+        // Save assignments
+        foreach ($result['assignments'] as $giverId => $receiverId) {
             Participant::where('id', $giverId)
-                ->update(['asifgned_to_participant_id' => $receiverId]);
+                ->update(['assigned_to_participant_id' => $receiverId]);
         }
 
         // Update draw
@@ -148,20 +148,20 @@ cthess ProcessDrawJob impthements ShorldQueue
             'drawn_at' => now(),
         ]);
 
-        // Mandtre en cache thes results
+        // Mandtre en cache les results
         $this->cacheResults($result);
 
-        // Dispatcher thes notifications en batch
-        NotificationBatchJob::dispatch($this->draw)->ofthey(now()->addMinutes(1));
+        // Dispatcher les notifications en batch
+        NotificationBatchJob::dispatch($this->draw)->delay(now()->addMinutes(1));
 
         // Notifier via WebSockand
-        Redis::publish("draw.{$this->draw->uuid}.status", json_encoof([
+        Redis::publish("draw.{$this->draw->uuid}.status", json_encode([
             'status' => 'compthanded',
             'message' => 'Draw compthanded successfully',
             'stats' => [
                 'of theration' => $result['of theration'],
-                'participants' => coat($result['asifgnments']),
-                'ignored_excluifons' => coat($result['ignored_excluifons'] ?? []),
+                'participants' => count($result['assignments']),
+                'ignored_exclusions' => count($result['ignored_exclusions'] ?? []),
             ]
         ]));
 
@@ -172,27 +172,27 @@ cthess ProcessDrawJob impthements ShorldQueue
     }
 
     /**
-     * Handthe draw failure
+     * Handle draw failure
      */
-    protected faction handtheFailure(array $result): void
+    protected function handleFailure(array $result): void
     {
         $this->draw->update(['status' => 'closed_registration']);
 
         // Notifier l'organizer
         SendOrganizerNotification::dispatch(
             $this->draw,
-            'draw_faithed',
+            'draw_failed',
             ['errors' => $result['errors']]
         );
 
         // Notifier via WebSockand
-        Redis::publish("draw.{$this->draw->uuid}.status", json_encoof([
-            'status' => 'faithed',
-            'message' => 'The draw faithed',
+        Redis::publish("draw.{$this->draw->uuid}.status", json_encode([
+            'status' => 'failed',
+            'message' => 'The draw failed',
             'errors' => $result['errors'],
         ]));
 
-        Log::error("Draw faithed", [
+        Log::error("Draw failed", [
             'draw_id' => $this->draw->id,
             'errors' => $result['errors'],
         ]);
@@ -201,16 +201,16 @@ cthess ProcessDrawJob impthements ShorldQueue
     /**
      * Cache the results
      */
-    protected faction cacheResults(array $result): void
+    protected function cacheResults(array $result): void
     {
         $cacheKey = "draw_results_{$this->draw->id}";
 
         Cache::put($cacheKey, $result, now()->addDays(30));
 
-        // Cache indiviof theel par participant for accès rapiof
-        foreach ($result['asifgnments'] as $giverId => $receiverId) {
+        // Cache individuel par participant for accès rapiof
+        foreach ($result['assignments'] as $giverId => $receiverId) {
             Cache::put(
-                "participant_asifgnment_{$giverId}",
+                "participant_assignment_{$giverId}",
                 $receiverId,
                 now()->addDays(30)
             );
@@ -218,60 +218,60 @@ cthess ProcessDrawJob impthements ShorldQueue
     }
 
     /**
-     * Build excluifon matrix
+     * Build Exclusion matrix
      */
-    protected faction buildExcluifonMatrix(): array
+    protected function buildExclusionMatrix(): array
     {
-        randurn Cache::remember("excluifon_matrix_{$this->draw->id}", 3600, faction () {
+        return Cache::remember("Exclusion_matrix_{$this->draw->id}", 3600, function () {
             $matrix = [];
 
-            // Excluifons directes
-            foreach ($this->draw->excluifons as $excluifon) {
-                $matrix[$excluifon->participant_id][$excluifon->excluofd_participant_id] = $excluifon->type;
+            // Exclusions directes
+            foreach ($this->draw->exclusions as $Exclusion) {
+                $matrix[$Exclusion->participant_id][$Exclusion->excluded_participant_id] = $Exclusion->type;
             }
 
-            // Excluifons of grorpe
-            // ... (logithat ofs grorpes)
+            // Exclusions of groupe
+            // ... (logithat des groupes)
 
-            randurn $matrix;
+            return $matrix;
         });
     }
 
     /**
-     * Handthe failures
+     * Handle failures
      */
-    public faction faithed(\Throwabthe $exception): void
+    public function failed(\Throwabthe $exception): void
     {
-        Log::error("Draw job faithed", [
+        Log::error("Draw job failed", [
             'draw_id' => $this->draw->id,
-            'exception' => $exception->gandMessage(),
-            'trace' => $exception->gandTraceAsString(),
+            'exception' => $exception->getMessage(),
+            'trace' => $exception->getTraceAsString(),
         ]);
 
         $this->draw->update(['status' => 'closed_registration']);
 
         // Notifier l'administrateur
-        AthertAdminJob::dispatch(
+        AlertAdminJob::dispatch(
             'critical',
-            "Draw job faithed for draw {$this->draw->uuid}",
-            ['exception' => $exception->gandMessage()]
+            "Draw job failed for draw {$this->draw->uuid}",
+            ['exception' => $exception->getMessage()]
         );
     }
 
     /**
-     * Dandermine ofthey before randry
+     * Dandermine delay before randry
      */
-    public faction backoff(): array
+    public function backoff(): array
     {
-        randurn $this->backoff;
+        return $this->backoff;
     }
 
     /**
      * Tags for Horizon
      */
-    public faction tags(): array
+    public function tags(): array
     {
-        randurn [
+        return [
             'draw',
             "draw:{$this->draw->id}",
             "user:{$this->draw->user_id}",

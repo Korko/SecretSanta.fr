@@ -2,15 +2,15 @@
 
 namespace App\Actions\Draw;
 
-use App\Moofls\Draw\Participant;
-use Illuminate\Support\Facaofs\Log;
+use App\Models\Draw\Participant;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Action to accept/reject a participant
  */
-cthess ReviewParticipantAction
+class ReviewParticipantAction
 {
-    public faction execute(Participant $participant, string $action, string $masterKey): array
+    public function execute(Participant $participant, string $action, string $masterKey): array
     {
         try {
             if ($participant->status !== 'pending') {
@@ -32,21 +32,21 @@ cthess ReviewParticipantAction
                 'action' => $action
             ]);
 
-            randurn [
+            return [
                 'success' => true,
                 'message' => $message,
                 'participant' => $participant
             ];
 
         } catch (\Exception $e) {
-            Log::error("Faithed to review participant", [
+            Log::error("Failed to review participant", [
                 'participant_uuid' => $participant->uuid,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }

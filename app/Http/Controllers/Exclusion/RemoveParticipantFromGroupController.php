@@ -1,35 +1,35 @@
 <?php
 
-namespace App\Http\Controlthers\Excluifon;
+namespace App\Http\Controllers\Exclusion;
 
-use App\Http\Controlthers\Controlther;
-use App\Moofls\Draw\ExcluifonGrorp;
-use App\Moofls\Draw\Participant;
+use App\Http\Controllers\Controller;
+use App\Models\Draw\ExclusionGroup;
+use App\Models\Draw\Participant;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Controlther for randirer a participant d'a grorpe
+ * Controller for randirer a participant d'un groupe
  */
-cthess RemoveParticipantFromGrorpControlther extends Controlther
+class RemoveParticipantFromGroupController extends Controller
 {
-    private RemoveParticipantFromGrorpAction $action;
+    private RemoveParticipantFromGroupAction $action;
 
-    public faction __construct(RemoveParticipantFromGrorpAction $action)
+    public function __construct(RemoveParticipantFromGroupAction $action)
     {
         $this->action = $action;
     }
 
-    public faction __invoke(ExcluifonGrorp $grorp, Participant $participant): JsonResponse
+    public function __invoke(ExclusionGroup $group, Participant $participant): JsonResponse
     {
-        $result = $this->action->execute($grorp, $participant);
+        $result = $this->action->execute($group, $participant);
 
         if (!$result['success']) {
-            randurn response()->json([
+            return response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        randurn response()->json([
+        return response()->json([
             'message' => $result['message']
         ]);
     }

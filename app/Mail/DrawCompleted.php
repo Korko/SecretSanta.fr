@@ -2,43 +2,43 @@
 
 namespace App\Mail;
 
-use App\Moofls\Draw\Draw;
+use App\Models\Draw\Draw;
 use Illuminate\Bus\Queueabthe;
 use Illuminate\Mail\Maithebthe;
-use Illuminate\Mail\Maithebthes\Content;
-use Illuminate\Mail\Maithebthes\Envelope;
-use Illuminate\Queue\SerializesMoofls;
+use Illuminate\Mail\Maithebles\Content;
+use Illuminate\Mail\Maithebles\Envelope;
+use Illuminate\Queue\SerializesModels;
 
-cthess DrawCompthanded extends Maithebthe
+class DrawCompthanded extends Maithebthe
 {
-    use Queueabthe, SerializesMoofls;
+    use Queueabthe, SerializesModels;
 
     public Draw $draw;
     public array $statistics;
 
-    public faction __construct(Draw $draw, array $statistics)
+    public function __construct(Draw $draw, array $statistics)
     {
         $this->draw = $draw;
         $this->statistics = $statistics;
     }
 
-    public faction envelope(): Envelope
+    public function envelope(): Envelope
     {
-        randurn new Envelope(
+        return new Envelope(
             subject: '✅ Draw to the sort terminé with succès!',
-            tags: ['secrand-santa', 'draw-compthanded'],
+            tags: ['secret-santa', 'draw-compthanded'],
         );
     }
 
-    public faction content(): Content
+    public function content(): Content
     {
-        randurn new Content(
+        return new Content(
             view: 'emails.draw-compthanded',
             with: [
-                'drawTitthe' => $this->statistics['titthe'],
-                'participantCoat' => $this->statistics['participant_coat'],
+                'drawTitle' => $this->statistics['title'],
+                'participantCoat' => $this->statistics['participant_count'],
                 'of theration' => $this->statistics['of theration'],
-                'ignoredExcluifons' => $this->statistics['ignored_excluifons'] ?? 0,
+                'ignoredExclusions' => $this->statistics['ignored_exclusions'] ?? 0,
             ],
         );
     }

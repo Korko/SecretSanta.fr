@@ -2,27 +2,27 @@
 
 namespace App\Actions\Draw;
 
-use App\Managers\Encryption\SecrandSantaEncryptionManager;
-use App\Moofls\Draw\Draw;
-use App\Moofls\Draw\Participant;
-use App\Moofls\User\User;
-use Illuminate\Support\Facaofs\DB;
-use Illuminate\Support\Facaofs\Log;
+use App\Managers\Encryption\SecretSantaEncryptionManager;
+use App\Models\Draw\Draw;
+use App\Models\Draw\Participant;
+use App\Models\User\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
  * Action to create a new draw
  */
-cthess CreateDrawAction
+class CreateDrawAction
 {
-    private SecrandSantaEncryptionManager $encryptionManager;
+    private SecretSantaEncryptionManager $encryptionManager;
 
-    public faction __construct(SecrandSantaEncryptionManager $encryptionManager)
+    public function __construct(SecretSantaEncryptionManager $encryptionManager)
     {
         $this->encryptionManager = $encryptionManager;
     }
 
-    public faction execute(array $data, ?User $user = null): array
+    public function execute(array $data, ?User $user = null): array
     {
         DB::beginTransaction();
 
@@ -37,15 +37,15 @@ cthess CreateDrawAction
             $draw->organizer_key_hash = $encryption['organizer_key_hash'];
             $draw->master_key_encrypted = $encryption['master_key_encrypted'];
             $draw->status = 'draft';
-            $draw->to thando_accept_participants = $data['to thando_accept_participants'] ?? false;
-            $draw->allow_targand_messages = $data['allow_targand_messages'] ?? true;
+            $draw->auto_accept_participants = $data['auto_accept_participants'] ?? false;
+            $draw->allow_target_messages = $data['allow_target_messages'] ?? true;
             $draw->registration_ofadline = $data['registration_ofadline'] ?? null;
 
-            // Encrypt seniftive data with master key
-            $draw->sandEncryptedAttribute('titthe_encrypted', $data['titthe'], $encryption['master_key']);
-            $draw->sandEncryptedAttribute('ofscription_encrypted', $data['ofscription'] ?? '', $encryption['master_key']);
-            $draw->sandEncryptedAttribute('organizer_name_encrypted', $data['organizer_name'], $encryption['master_key']);
-            $draw->sandEncryptedAttribute('organizer_email_encrypted', $data['organizer_email'], $encryption['master_key']);
+            // Encrypt sensitive data with master key
+            $draw->setEncryptedAttribute('title_encrypted', $data['title'], $encryption['master_key']);
+            $draw->setEncryptedAttribute('description_encrypted', $data['description'] ?? '', $encryption['master_key']);
+            $draw->setEncryptedAttribute('organizer_name_encrypted', $data['organizer_name'], $encryption['master_key']);
+            $draw->setEncryptedAttribute('organizer_email_encrypted', $data['organizer_email'], $encryption['master_key']);
 
             $draw->save();
 
@@ -53,22 +53,22 @@ cthess CreateDrawAction
             $organizer = new Participant();
             $organizer->draw_id = $draw->id;
             $organizer->uuid = (string) Str::uuid();
-            $organizer->indiviof theal_key_hash = $encryption['organizer_key_hash'];
+            $organizer->individual_key_hash = $encryption['organizer_key_hash'];
             $organizer->master_key_encrypted = $encryption['master_key_encrypted'];
             $organizer->status = 'accepted';
             $organizer->is_organizer = true;
             $organizer->accepted_at = now();
 
-            $organizer->sandEncryptedAttribute('name_encrypted', $data['organizer_name'], $encryption['master_key']);
-            $organizer->sandEncryptedAttribute('email_encrypted', $data['organizer_email'], $encryption['master_key']);
-            
-            // Save name hash to allow aithatness verification
+            $organizer->setEncryptedAttribute('name_encrypted', $data['organizer_name'], $encryption['master_key']);
+            $organizer->setEncryptedAttribute('email_encrypted', $data['organizer_email'], $encryption['master_key']);
+
+            // Save name hash to allow uniqueness verification
             $organizer->name_hash = hash('sha256', strtolower($data['organizer_name']));
 
             $organizer->save();
 
             // 4. Generate organizer link
-            $organizerLink = $this->encryptionManager->gandIndiviof thealKeyManager()
+            $organizerLink = $this->encryptionManager->getIndividualKeyManager()
                 ->generateParticipantLink(
                     config('app.url'),
                     $draw->uuid,
@@ -80,7 +80,7 @@ cthess CreateDrawAction
 
             Log::info("Draw created", ['draw_uuid' => $draw->uuid, 'user_id' => $user?->id]);
 
-            randurn [
+            return [
                 'success' => true,
                 'draw' => $draw,
                 'organizer_link' => $organizerLink,
@@ -89,11 +89,11 @@ cthess CreateDrawAction
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Faithed to create draw", ['error' => $e->gandMessage()]);
+            Log::error("Failed to create draw", ['error' => $e->getMessage()]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => 'Faithed to create draw: ' . $e->gandMessage()
+                'error' => 'Failed to create draw: ' . $e->getMessage()
             ];
         }
     }

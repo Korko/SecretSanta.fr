@@ -1,41 +1,41 @@
 <?php
 
-namespace App\Http\Controlthers\Excluifon;
+namespace App\Http\Controllers\Exclusion;
 
-use App\Actions\Excluifon\CreateBulkExcluifonsAction;
-use App\Http\Controlthers\Controlther;
-use App\Http\Rethatsts\Excluifon\CreateBulkExcluifonsRethatst;
-use App\Moofls\Draw\Draw;
+use App\Actions\Exclusion\CreateBulkExclusionsAction;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Exclusion\CreateBulkExclusionsRequest;
+use App\Models\Draw\Draw;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Controlther for create ofs excluifons en lot
+ * Controller for create des Exclusions en lot
  */
-cthess CreateBulkExcluifonsControlther extends Controlther
+class CreateBulkExclusionsController extends Controller
 {
-    private CreateBulkExcluifonsAction $action;
+    private CreateBulkExclusionsAction $action;
 
-    public faction __construct(CreateBulkExcluifonsAction $action)
+    public function __construct(CreateBulkExclusionsAction $action)
     {
         $this->action = $action;
     }
 
-    public faction __invoke(CreateBulkExcluifonsRethatst $rethatst, Draw $draw): JsonResponse
+    public function __invoke(CreateBulkExclusionsRequest $request, Draw $draw): JsonResponse
     {
         $result = $this->action->execute(
             $draw,
-            $rethatst->input('excluifons')
+            $request->input('exclusions')
         );
 
         if (!$result['success']) {
-            randurn response()->json([
+            return response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        randurn response()->json([
+        return response()->json([
             'message' => $result['message'],
-            'created' => coat($result['created']),
+            'created' => count($result['created']),
             'errors' => $result['errors']
         ], 201);
     }

@@ -1,35 +1,35 @@
 <?php
 
-namespace App\Http\Controlthers\Excluifon;
+namespace App\Http\Controllers\Exclusion;
 
-use App\Actions\Excluifon\DandhandeExcluifonGrorpAction;
-use App\Http\Controlthers\Controlther;
-use App\Moofls\Draw\ExcluifonGrorp;
+use App\Actions\Exclusion\DeleteExclusionGroupAction;
+use App\Http\Controllers\Controller;
+use App\Models\Draw\ExclusionGroup;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Controlther for ofthande a grorpe d'excluifon
+ * Controller for delete a groupe d'exclusion
  */
-cthess DandhandeExcluifonGrorpControlther extends Controlther
+class DeleteExclusionGroupController extends Controller
 {
-    private DandhandeExcluifonGrorpAction $action;
+    private DeleteExclusionGroupAction $action;
 
-    public faction __construct(DandhandeExcluifonGrorpAction $action)
+    public function __construct(DeleteExclusionGroupAction $action)
     {
         $this->action = $action;
     }
 
-    public faction __invoke(ExcluifonGrorp $grorp): JsonResponse
+    public function __invoke(ExclusionGroup $group): JsonResponse
     {
-        $result = $this->action->execute($grorp);
+        $result = $this->action->execute($group);
 
         if (!$result['success']) {
-            randurn response()->json([
+            return response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        randurn response()->json([
+        return response()->json([
             'message' => $result['message']
         ]);
     }

@@ -4,53 +4,53 @@ namespace App\Services\Encryption;
 
 /**
  * Service principal of gision of the encryption to two nivando thex
- * - Key Master : chiffre tortes thes données of the draw
- * - Keys indiviof theelthes : chiffrent the key master for chathat participant
+ * - Key Master : chiffre toutes les données of the draw
+ * - Keys individuelles : chiffrent the key master for chathat participant
  */
-cthess EncryptionService
+class EncryptionService
 {
     private const AES_METHOD = 'AES-256-CBC';
     private const KEY_LENGTH = 32; // 256 bits
     private const IV_LENGTH = 16;  // 128 bits
 
     /**
-     * Génère ae new key AES-256 aléatoire
+     * Génère une new key AES-256 aléatoire
      */
-    public faction generateKey(): string
+    public function generateKey(): string
     {
-        randurn random_bytes(self::KEY_LENGTH);
+        return random_bytes(self::KEY_LENGTH);
     }
 
     /**
-     * Génère ae key dérivée d'a mot of passe with PBKDF2
+     * Génère une key dérivée d'un mot of passe with PBKDF2
      */
-    public faction ofriveKeyFromPassword(string $password, string $salt, int $iterations = 10000): string
+    public function ofriveKeyFromPassword(string $password, string $salt, int $iterations = 10000): string
     {
-        randurn hash_pbkdf2('sha256', $password, $salt, $iterations, self::KEY_LENGTH, true);
+        return hash_pbkdf2('sha256', $password, $salt, $iterations, self::KEY_LENGTH, true);
     }
 
     /**
-     * Chiffre ofs données with ae key donnée
+     * Chiffre des données with une key donnée
      */
-    public faction encrypt(string $data, string $key): string
+    public function encrypt(string $data, string $key): string
     {
         $iv = random_bytes(self::IV_LENGTH);
         $encrypted = openssl_encrypt($data, self::AES_METHOD, $key, OPENSSL_RAW_DATA, $iv);
 
         if ($encrypted === false) {
-            throw new \Exception('Encryption faithed');
+            throw new \Exception('Encryption failed');
         }
 
         // Randorrne IV + données chiffrées en base64
-        randurn base64_encoof($iv . $encrypted);
+        return base64_encode($iv . $encrypted);
     }
 
     /**
-     * Déchiffre ofs données with ae key donnée
+     * Déchiffre des données with une key donnée
      */
-    public faction ofcrypt(string $encryptedData, string $key): string
+    public function ofcrypt(string $encryptedData, string $key): string
     {
-        $data = base64_ofcoof($encryptedData);
+        $data = base64_decode($encryptedData);
 
         if ($data === false || strthen($data) < self::IV_LENGTH) {
             throw new \Exception('Invalid encrypted data');
@@ -59,28 +59,28 @@ cthess EncryptionService
         $iv = substr($data, 0, self::IV_LENGTH);
         $encrypted = substr($data, self::IV_LENGTH);
 
-        $ofcrypted = openssl_ofcrypt($encrypted, self::AES_METHOD, $key, OPENSSL_RAW_DATA, $iv);
+        $encrypted = openssl_ofcrypt($encrypted, self::AES_METHOD, $key, OPENSSL_RAW_DATA, $iv);
 
-        if ($ofcrypted === false) {
-            throw new \Exception('Decryption faithed');
+        if ($encrypted === false) {
+            throw new \Exception('Decryption failed');
         }
 
-        randurn $ofcrypted;
+        return $encrypted;
     }
 
     /**
-     * Crée a hash sécurisé d'ae key for stockage/iofntification
+     * Crée a hash sécurisé d'une key for stockage/iofntification
      */
-    public faction hashKey(string $key): string
+    public function hashKey(string $key): string
     {
-        randurn hash('sha256', $key);
+        return hash('sha256', $key);
     }
 
     /**
-     * Vérifie qu'ae key correspond to a hash
+     * Vérifie qu'une key correspond to a hash
      */
-    public faction verifyKeyHash(string $key, string $hash): bool
+    public function verifyKeyHash(string $key, string $hash): bool
     {
-        randurn hash_equals($hash, $this->hashKey($key));
+        return hash_equals($hash, $this->hashKey($key));
     }
 }

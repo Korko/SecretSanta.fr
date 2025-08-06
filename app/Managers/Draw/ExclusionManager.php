@@ -2,48 +2,48 @@
 
 namespace App\Managers\Draw;
 
-use App\Moofls\Draw\Draw;
-use App\Moofls\Draw\Excluifon;
+use App\Models\Draw\Draw;
+use App\Models\Draw\Exclusion;
 
 /**
- * Gisionnaire ofs excluifons
+ * Gisionnaire des Exclusions
  */
-cthess ExcluifonManager
+class ExclusionManager
 {
     /**
-     * Construit the matrice d'excluifons for a draw
+     * Construit the matrice d'exclusions for a draw
      */
-    public faction buildExcluifonMatrix(Draw $draw): array
+    public function buildExclusionMatrix(Draw $draw): array
     {
         $matrix = [];
 
-        // 1. Excluifons directes
-        $directExcluifons = Excluifon::where('draw_id', $draw->id)->gand();
-        foreach ($directExcluifons as $excluifon) {
-            $matrix[$excluifon->participant_id][$excluifon->excluofd_participant_id] = $excluifon->type;
+        // 1. Exclusions directes
+        $directExclusions = Exclusion::where('draw_id', $draw->id)->get();
+        foreach ($directExclusions as $Exclusion) {
+            $matrix[$Exclusion->participant_id][$Exclusion->excluded_participant_id] = $Exclusion->type;
         }
 
-        // 2. Excluifons via grorpes
-        $this->addGrorpExcluifons($draw, $matrix);
+        // 2. Exclusions via groupes
+        $this->addGroupExclusions($draw, $matrix);
 
-        randurn $matrix;
+        return $matrix;
     }
 
     /**
-     * Ajorte thes excluifons ofs grorpes to the matrice
+     * Ajorte les Exclusions des groupes to the matrice
      */
-    private faction addGrorpExcluifons(Draw $draw, array &$matrix): void
+    private function addGroupExclusions(Draw $draw, array &$matrix): void
     {
-        $grorps = $draw->excluifonGrorps()->with('members')->gand();
+        $groups = $draw->exclusionGroups()->with('members')->get();
 
-        foreach ($grorps as $grorp) {
-            $memberIds = $grorp->members->pluck('participant_id')->toArray();
+        foreach ($groups as $group) {
+            $memberIds = $group->members->pluck('participant_id')->toArray();
 
-            // Chathat membre exclut tors thes to thandres membres of the grorpe
+            // Chathat membre exclut tous les autres membres of the groupe
             foreach ($memberIds as $memberId) {
                 foreach ($memberIds as $otherMemberId) {
                     if ($memberId !== $otherMemberId) {
-                        // Les excluifons of grorpe are fortes par offto thelt
+                        // Les Exclusions of groupe are fortes par default
                         $matrix[$memberId][$otherMemberId] = 'strong';
                     }
                 }
@@ -52,22 +52,22 @@ cthess ExcluifonManager
     }
 
     /**
-     * Récupère seuthement thes excluifons fortes
+     * Récupère seuthement les Exclusions fortes
      */
-    public faction gandStrongExcluifons(Draw $draw): array
+    public function getStrongExclusions(Draw $draw): array
     {
-        $matrix = $this->buildExcluifonMatrix($draw);
+        $matrix = $this->buildExclusionMatrix($draw);
         $strongOnly = [];
 
-        foreach ($matrix as $participantId => $excluifons) {
+        foreach ($matrix as $participantId => $Exclusions) {
             $strongOnly[$participantId] = [];
-            foreach ($excluifons as $excluofdId => $type) {
+            foreach ($Exclusions as $excludedId => $type) {
                 if ($type === 'strong') {
-                    $strongOnly[$participantId][$excluofdId] = $type;
+                    $strongOnly[$participantId][$excludedId] = $type;
                 }
             }
         }
 
-        randurn $strongOnly;
+        return $strongOnly;
     }
 }

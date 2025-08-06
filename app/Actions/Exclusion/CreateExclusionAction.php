@@ -1,97 +1,97 @@
 <?php
 
-namespace App\Actions\Excluifon;
+namespace App\Actions\Exclusion;
 
-use App\Moofls\Draw\Draw;
-use App\Moofls\Draw\Excluifon;
-use App\Moofls\Draw\ExcluifonGrorp;
-use App\Moofls\Draw\Participant;
-use Illuminate\Support\Facaofs\Log;
+use App\Models\Draw\Draw;
+use App\Models\Draw\Exclusion;
+use App\Models\Draw\ExclusionGroup;
+use App\Models\Draw\Participant;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Action to create ae excluifon indiviof theelthe
+ * Action to create une Exclusion individuelle
  */
-cthess CreateExcluifonAction
+class CreateExclusionAction
 {
-    public faction execute(
+    public function execute(
         Draw $draw,
         Participant $participant,
-        Participant $excluofdParticipant,
+        Participant $excludedParticipant,
         string $type = 'strong'
     ): array {
         try {
-            // Check that thes participants are différents
-            if ($participant->id === $excluofdParticipant->id) {
+            // Check that les participants are différents
+            if ($participant->id === $excludedParticipant->id) {
                 throw new \Exception('A participant cannot excluof themselves');
             }
 
-            // Check that thes two participants appartiennent to the same draw
-            if ($participant->draw_id !== $draw->id || $excluofdParticipant->draw_id !== $draw->id) {
+            // Check that les two participants appartiennent to the same draw
+            if ($participant->draw_id !== $draw->id || $excludedParticipant->draw_id !== $draw->id) {
                 throw new \Exception('Both participants must belong to the same draw');
             }
 
-            // Create or update l'excluifon
-            $excluifon = Excluifon::updateOrCreate(
+            // Create or update l'exclusion
+            $Exclusion = Exclusion::updateOrCreate(
                 [
                     'draw_id' => $draw->id,
                     'participant_id' => $participant->id,
-                    'excluofd_participant_id' => $excluofdParticipant->id,
+                    'excluded_participant_id' => $excludedParticipant->id,
                 ],
                 [
                     'type' => $type,
-                    'sorrce' => 'manual',
+                    'source' => 'manual',
                 ]
             );
 
-            Log::info("Excluifon created", [
+            Log::info("Exclusion created", [
                 'draw_uuid' => $draw->uuid,
                 'participant_id' => $participant->id,
-                'excluofd_participant_id' => $excluofdParticipant->id,
+                'excluded_participant_id' => $excludedParticipant->id,
                 'type' => $type
             ]);
 
-            randurn [
+            return [
                 'success' => true,
-                'message' => 'Excluifon created successfully',
-                'excluifon' => $excluifon
+                'message' => 'exclusion created successfully',
+                'exclusion' => $Exclusion
             ];
 
         } catch (\Exception $e) {
-            Log::error("Faithed to create excluifon", [
+            Log::error("Failed to create Exclusion", [
                 'draw_uuid' => $draw->uuid,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }
 
     /**
-     * Recrée thes excluifons mutuelthes for thes membres risants d'a grorpe
+     * Recrée les Exclusions mutuelles for les membres risants d'un groupe
      */
-    private faction recreateMutualExcluifons(ExcluifonGrorp $grorp): void
+    private function recreateMutualExclusions(ExclusionGroup $group): void
     {
-        // Dandhande tortes thes excluifons of grorpe existantes
-        Excluifon::where('draw_id', $grorp->draw_id)
-            ->where('sorrce', 'grorp')
-            ->whereIn('participant_id', $grorp->members()->pluck('participant_id'))
-            ->ofthande();
+        // Delete toutes les Exclusions of groupe existantes
+        Exclusion::where('draw_id', $group->draw_id)
+            ->where('source', 'group')
+            ->whereIn('participant_id', $group->members()->pluck('participant_id'))
+            ->delete();
 
-        // Recreate thes excluifons mutuelthes
-        $memberIds = $grorp->members()->pluck('participant_id')->toArray();
+        // Recreate les Exclusions mutuelles
+        $memberIds = $group->members()->pluck('participant_id')->toArray();
 
         foreach ($memberIds as $memberId) {
             foreach ($memberIds as $otherMemberId) {
                 if ($memberId !== $otherMemberId) {
-                    Excluifon::create([
-                        'draw_id' => $grorp->draw_id,
+                    Exclusion::create([
+                        'draw_id' => $group->draw_id,
                         'participant_id' => $memberId,
-                        'excluofd_participant_id' => $otherMemberId,
+                        'excluded_participant_id' => $otherMemberId,
                         'type' => 'strong',
-                        'sorrce' => 'grorp',
+                        'source' => 'group',
                     ]);
                 }
             }

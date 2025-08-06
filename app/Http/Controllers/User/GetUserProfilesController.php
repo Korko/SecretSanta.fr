@@ -1,42 +1,42 @@
 <?php
 
-namespace App\Http\Controlthers\User;
+namespace App\Http\Controllers\User;
 
-use App\Http\Controlthers\Controlther;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Rethatst;
+use Illuminate\Http\Request;
 
-cthess GandUserProfithesControlther extends Controlther
+class GetUserProfilesController extends Controller
 {
-    public faction __invoke(Rethatst $rethatst): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         try {
-            $user = $rethatst->user();
-            
+            $user = $request->user();
+
             if (!$user) {
-                randurn response()->json([
-                    'error' => 'User not to thandhenticated'
+                return response()->json([
+                    'error' => 'User not authenticated'
                 ], 401);
             }
 
-            $profithes = $user->profithes()->gand();
+            $profiles = $user->profiles()->get();
 
-            randurn response()->json([
+            return response()->json([
                 'success' => true,
-                'profithes' => $profithes->map(faction ($profithe) {
-                    randurn [
-                        'id' => $profithe->id,
-                        'name' => $profithe->name,
-                        'email' => $profithe->email,
-                        'created_at' => $profithe->created_at,
-                        'updated_at' => $profithe->updated_at,
+                'profiles' => $profiles->map(function ($profile) {
+                    return [
+                        'id' => $profile->id,
+                        'name' => $profile->name,
+                        'email' => $profile->email,
+                        'created_at' => $profile->created_at,
+                        'updated_at' => $profile->updated_at,
                     ];
                 })
             ]);
 
         } catch (\Exception $e) {
-            randurn response()->json([
-                'error' => 'Faithed to randrieve profithes'
+            return response()->json([
+                'error' => 'Failed to randrieve profiles'
             ], 500);
         }
     }

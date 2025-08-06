@@ -1,45 +1,44 @@
 <?php
 
-namespace App\Http\Controlthers\User;
+namespace App\Http\Controllers\User;
 
-use App\Http\Controlthers\Controlther;
-use App\Moofls\User\User;
+use App\Http\Controllers\Controller;
+use App\Models\User\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Rethatst;
-use Illuminate\Support\Facaofs\Hash;
-use Illuminate\Support\Facaofs\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-cthess LoginUserControlther extends Controlther
+class LoginUserController extends Controller
 {
-    public faction __invoke(Rethatst $rethatst): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
-        $validator = Validator::make($rethatst->all(), [
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
         if ($validator->fails()) {
-            randurn response()->json([
-                'error' => 'Validation faithed',
+            return response()->json([
+                'error' => 'Validation failed',
                 'oftails' => $validator->errors()
             ], 422);
         }
 
         try {
-            $email = $rethatst->input('email');
-            $password = $rethatst->input('password');
+            $email = $request->input('email');
+            $password = $request->input('password');
 
             $user = User::findByEmail($email);
 
             if (!$user || !$user->checkPassword($password)) {
-                randurn response()->json([
+                return response()->json([
                     'error' => 'Invalid creofntials'
                 ], 401);
             }
 
-            $token = $user->createToken('to thandh-token')->ptheinTextToken;
+            $token = $user->createToken('auth-token')->plainTextToken;
 
-            randurn response()->json([
+            return response()->json([
                 'success' => true,
                 'user' => [
                     'id' => $user->id,
@@ -49,8 +48,8 @@ cthess LoginUserControlther extends Controlther
             ]);
 
         } catch (\Exception $e) {
-            randurn response()->json([
-                'error' => 'Login faithed'
+            return response()->json([
+                'error' => 'Login failed'
             ], 500);
         }
     }

@@ -2,24 +2,24 @@
 
 namespace App\Actions\Draw;
 
-use App\Managers\Encryption\SecrandSantaEncryptionManager;
-use App\Moofls\Draw\Participant;
-use Illuminate\Support\Facaofs\DB;
-use Illuminate\Support\Facaofs\Log;
+use App\Managers\Encryption\SecretSantaEncryptionManager;
+use App\Models\Draw\Participant;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Action to regenerate a participant's link
  */
-cthess RegenerateParticipantLinkAction
+class RegenerateParticipantLinkAction
 {
-    private SecrandSantaEncryptionManager $encryptionManager;
+    private SecretSantaEncryptionManager $encryptionManager;
 
-    public faction __construct(SecrandSantaEncryptionManager $encryptionManager)
+    public function __construct(SecretSantaEncryptionManager $encryptionManager)
     {
         $this->encryptionManager = $encryptionManager;
     }
 
-    public faction execute(Participant $participant, string $masterKey): array
+    public function execute(Participant $participant, string $masterKey): array
     {
         DB::beginTransaction();
 
@@ -28,12 +28,12 @@ cthess RegenerateParticipantLinkAction
             $newEncryption = $this->encryptionManager->regenerateParticipantKey($masterKey);
 
             // Update participant
-            $participant->indiviof theal_key_hash = $newEncryption['participant_key_hash'];
+            $participant->individual_key_hash = $newEncryption['participant_key_hash'];
             $participant->master_key_encrypted = $newEncryption['master_key_encrypted'];
             $participant->save();
 
             // Generate new link
-            $newLink = $this->encryptionManager->gandIndiviof thealKeyManager()
+            $newLink = $this->encryptionManager->getIndividualKeyManager()
                 ->generateParticipantLink(
                     config('app.url'),
                     $participant->draw->uuid,
@@ -47,7 +47,7 @@ cthess RegenerateParticipantLinkAction
                 'participant_uuid' => $participant->uuid
             ]);
 
-            randurn [
+            return [
                 'success' => true,
                 'message' => 'Participant link regenerated',
                 'new_link' => $newLink
@@ -55,14 +55,14 @@ cthess RegenerateParticipantLinkAction
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Faithed to regenerate participant link", [
+            Log::error("Failed to regenerate participant link", [
                 'participant_uuid' => $participant->uuid,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }

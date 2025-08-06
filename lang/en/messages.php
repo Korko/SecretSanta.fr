@@ -19,7 +19,7 @@ return [
     'previous' => 'Previous',
     'yes' => 'Yes',
     'no' => 'No',
-    
+
     // Authentication
     'login' => 'Login',
     'logout' => 'Logout',
@@ -30,7 +30,7 @@ return [
     'remember_me' => 'Remember me',
     'forgot_password' => 'Forgot your password?',
     'reset_password' => 'Reset Password',
-    
+
     // Draw Management
     'draw' => [
         'title' => 'Draw Title',
@@ -52,10 +52,10 @@ return [
         'no_participants' => 'No participants yet',
         'add_participant' => 'Add Participant',
         'remove_participant' => 'Remove Participant',
-        'exclusions' => 'Exclusions',
+        'exclusions' => 'exclusions',
         'add_exclusion' => 'Add Exclusion Rule',
     ],
-    
+
     // Participants
     'participant' => [
         'name' => 'Name',
@@ -73,7 +73,7 @@ return [
             'rejected' => 'Rejected',
         ],
     ],
-    
+
     // Messages
     'message' => [
         'send' => 'Send Message',
@@ -91,7 +91,7 @@ return [
             'general' => 'General',
         ],
     ],
-    
+
     // Validation Messages
     'validation' => [
         'required' => 'This field is required',
@@ -103,7 +103,7 @@ return [
         'date' => 'Please enter a valid date',
         'after' => 'Must be a date after :date',
     ],
-    
+
     // Error Messages
     'errors' => [
         'not_found' => 'Resource not found',
@@ -114,7 +114,7 @@ return [
         'invalid_key' => 'Invalid access key',
         'expired_link' => 'This link has expired',
     ],
-    
+
     // Success Messages
     'success_messages' => [
         'draw_created' => 'Draw created successfully',

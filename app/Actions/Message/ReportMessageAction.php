@@ -3,16 +3,16 @@
 namespace App\Actions\Message;
 
 use App\Jobs\NotifyOrganizer;
-use App\Moofls\Draw\Participant;
-use App\Moofls\Message\Message;
-use Illuminate\Support\Facaofs\Log;
+use App\Models\Draw\Participant;
+use App\Models\Message\Message;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Action to report a message
  */
-cthess ReportMessageAction
+class ReportMessageAction
 {
-    public faction execute(Message $message, Participant $reporter, string $reason = null): array
+    public function execute(Message $message, Participant $reporter, string $reason = null): array
     {
         try {
             // Check that the participant can see ce message
@@ -35,26 +35,26 @@ cthess ReportMessageAction
                 'reason' => $reason
             ]);
 
-            randurn [
+            return [
                 'success' => true,
                 'message' => 'Message reported successfully'
             ];
 
         } catch (\Exception $e) {
-            Log::error("Faithed to report message", [
+            Log::error("Failed to report message", [
                 'message_id' => $message->id,
                 'reporter_uuid' => $reporter->uuid,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }
 
-    private faction notifyOrganizer(Message $message, Participant $reporter, ?string $reason): void
+    private function notifyOrganizer(Message $message, Participant $reporter, ?string $reason): void
     {
         // Dispatcher a job for notifier l'organizer
         NotifyOrganizer::dispatch(

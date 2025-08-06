@@ -19,7 +19,7 @@ return [
     'previous' => 'Précédent',
     'yes' => 'Oui',
     'no' => 'Non',
-    
+
     // Authentification
     'login' => 'Connexion',
     'logout' => 'Déconnexion',
@@ -30,7 +30,7 @@ return [
     'remember_me' => 'Se souvenir de moi',
     'forgot_password' => 'Mot de passe oublié ?',
     'reset_password' => 'Réinitialiser le mot de passe',
-    
+
     // Gestion des tirages
     'draw' => [
         'title' => 'Titre du tirage',
@@ -52,10 +52,10 @@ return [
         'no_participants' => 'Aucun participant pour le moment',
         'add_participant' => 'Ajouter un participant',
         'remove_participant' => 'Retirer un participant',
-        'exclusions' => 'Exclusions',
+        'exclusions' => 'exclusions',
         'add_exclusion' => 'Ajouter une règle d\'exclusion',
     ],
-    
+
     // Participants
     'participant' => [
         'name' => 'Nom',
@@ -73,7 +73,7 @@ return [
             'rejected' => 'Refusé',
         ],
     ],
-    
+
     // Messages
     'message' => [
         'send' => 'Envoyer un message',
@@ -91,7 +91,7 @@ return [
             'general' => 'Général',
         ],
     ],
-    
+
     // Messages de validation
     'validation' => [
         'required' => 'Ce champ est obligatoire',
@@ -103,7 +103,7 @@ return [
         'date' => 'Veuillez entrer une date valide',
         'after' => 'Doit être une date après le :date',
     ],
-    
+
     // Messages d'erreur
     'errors' => [
         'not_found' => 'Ressource non trouvée',
@@ -114,7 +114,7 @@ return [
         'invalid_key' => 'Clé d\'accès invalide',
         'expired_link' => 'Ce lien a expiré',
     ],
-    
+
     // Messages de succès
     'success_messages' => [
         'draw_created' => 'Tirage créé avec succès',

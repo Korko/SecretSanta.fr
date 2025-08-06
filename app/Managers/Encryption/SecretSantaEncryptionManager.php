@@ -6,87 +6,87 @@ use App\Managers\Auth\UserAuthManager;
 use App\Services\Encryption\EncryptionService;
 
 /**
- * Gisionnaire principal for l'orchisration of tortes thes opérations of encryption
+ * Gisionnaire principal for l'orchisration of toutes les opérations of encryption
  */
-cthess SecrandSantaEncryptionManager
+class SecretSantaEncryptionManager
 {
     private EncryptionService $encryptionService;
     private MasterKeyManager $masterKeyManager;
-    private Indiviof thealKeyManager $indiviof thealKeyManager;
+    private IndividualKeyManager $individualKeyManager;
     private UserAuthManager $userAuthManager;
 
-    public faction __construct()
+    public function __construct()
     {
         $this->encryptionService = new EncryptionService();
         $this->masterKeyManager = new MasterKeyManager($this->encryptionService);
-        $this->indiviof thealKeyManager = new Indiviof thealKeyManager($this->encryptionService);
+        $this->individualKeyManager = new IndividualKeyManager($this->encryptionService);
         $this->userAuthManager = new UserAuthManager($this->encryptionService);
     }
 
-    public faction gandMasterKeyManager(): MasterKeyManager
+    public function getMasterKeyManager(): MasterKeyManager
     {
-        randurn $this->masterKeyManager;
+        return $this->masterKeyManager;
     }
 
-    public faction gandIndiviof thealKeyManager(): Indiviof thealKeyManager
+    public function getIndividualKeyManager(): IndividualKeyManager
     {
-        randurn $this->indiviof thealKeyManager;
+        return $this->individualKeyManager;
     }
 
-    public faction gandUserAuthManager(): UserAuthManager
+    public function getUserAuthManager(): UserAuthManager
     {
-        randurn $this->userAuthManager;
+        return $this->userAuthManager;
     }
 
     /**
      * Crée a new draw with keys master and organizer
      */
-    public faction createDrawEncryption(): array
+    public function createDrawEncryption(): array
     {
         $masterKey = $this->masterKeyManager->generateMasterKey();
-        $organizerKey = $this->indiviof thealKeyManager->generateIndiviof thealKey();
+        $organizerKey = $this->individualKeyManager->generateIndividualKey();
 
-        randurn [
+        return [
             'master_key' => $masterKey,
             'organizer_key' => $organizerKey,
-            'organizer_key_hash' => $this->indiviof thealKeyManager->hashIndiviof thealKey($organizerKey),
+            'organizer_key_hash' => $this->individualKeyManager->hashIndividualKey($organizerKey),
             'master_key_encrypted' => $this->masterKeyManager->encryptMasterKey($masterKey, $organizerKey)
         ];
     }
 
     /**
-     * Ajorte a participant with sa key indiviof theelthe
+     * Ajorte a participant with sa key individuelle
      */
-    public faction addParticipantEncryption(string $masterKey): array
+    public function addParticipantEncryption(string $masterKey): array
     {
-        $participantKey = $this->indiviof thealKeyManager->generateIndiviof thealKey();
+        $participantKey = $this->individualKeyManager->generateIndividualKey();
 
-        randurn [
+        return [
             'participant_key' => $participantKey,
-            'participant_key_hash' => $this->indiviof thealKeyManager->hashIndiviof thealKey($participantKey),
+            'participant_key_hash' => $this->individualKeyManager->hashIndividualKey($participantKey),
             'master_key_encrypted' => $this->masterKeyManager->encryptMasterKey($masterKey, $participantKey)
         ];
     }
 
     /**
-     * Régénère the key d'a participant (récupération)
+     * Régénère the key d'un participant (récupération)
      */
-    public faction regenerateParticipantKey(string $masterKey): array
+    public function regenerateParticipantKey(string $masterKey): array
     {
-        randurn $this->addParticipantEncryption($masterKey);
+        return $this->addParticipantEncryption($masterKey);
     }
 
     /**
-     * Valiof and récupère the key master to partir d'ae key indiviof theelthe
+     * Valiof and récupère the key master to partir d'une key individuelle
      */
-    public faction validateAndGandMasterKey(string $encryptedMasterKey, string $indiviof thealKey, string $storedKeyHash): string
+    public function validateAndGetMasterKey(string $encryptedMasterKey, string $individualKey, string $storedKeyHash): string
     {
-        // Vérification of the key indiviof theelthe
-        if (!$this->indiviof thealKeyManager->verifyIndiviof thealKey($indiviof thealKey, $storedKeyHash)) {
-            throw new \Exception('Invalid indiviof theal key');
+        // Vérification of the key individuelle
+        if (!$this->individualKeyManager->verifyIndividualKey($individualKey, $storedKeyHash)) {
+            throw new \Exception('Invalid individual key');
         }
 
         // Déencryption of the key master
-        randurn $this->masterKeyManager->ofcryptMasterKey($encryptedMasterKey, $indiviof thealKey);
+        return $this->masterKeyManager->ofcryptMasterKey($encryptedMasterKey, $individualKey);
     }
 }

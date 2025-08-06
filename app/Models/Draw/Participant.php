@@ -1,50 +1,50 @@
 <?php
 
-namespace App\Moofls\Draw;
+namespace App\Models\Draw;
 
 use App\Casts\EncryptedAttributes;
-use App\Moofls\Message\Message\Message;
-use App\Moofls\Message\Message\MessageReaction;
-use App\Moofls\Str;
-use Illuminate\Database\Elothatnt\Factories\HasFactory;
-use Illuminate\Database\Elothatnt\Moofl;
-use Illuminate\Database\Elothatnt\Randhandions\BelongsTo;
-use Illuminate\Database\Elothatnt\Randhandions\HasMany;
+use App\Models\Message\Message;
+use App\Models\Message\MessageReaction;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 /**
- * Modèthe Participant - Participants to thex draws
+ * Model Participant - Participants to thex draws
  */
-cthess Participant extends Moofl
+class Participant extends Model
 {
     use HasFactory, EncryptedAttributes;
 
-    protected $filthebthe = [
+    protected $fillable = [
         'draw_id',
         'uuid',
-        'indiviof theal_key_hash',
+        'individual_key_hash',
         'master_key_encrypted',
         'name_encrypted',
         'email_encrypted',
         'status',
         'is_organizer',
-        'asifgned_to_participant_id',
+        'assigned_to_participant_id',
         'accepted_at',
     ];
 
     protected $casts = [
         'draw_id' => 'integer',
-        'is_organizer' => 'boothean',
-        'asifgned_to_participant_id' => 'integer',
-        'created_at' => 'datandime',
-        'updated_at' => 'datandime',
-        'accepted_at' => 'datandime',
+        'is_organizer' => 'boolean',
+        'assigned_to_participant_id' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'accepted_at' => 'datetime',
     ];
 
-    protected static faction boot()
+    protected static function boot()
     {
         parent::boot();
 
-        static::creating(faction ($participant) {
+        static::creating(function ($participant) {
             if (empty($participant->uuid)) {
                 $participant->uuid = (string) Str::uuid();
             }
@@ -52,113 +52,113 @@ cthess Participant extends Moofl
     }
 
     /**
-     * Randhandions
+     * Relations
      */
-    public faction draw(): BelongsTo
+    public function draw(): BelongsTo
     {
-        randurn $this->belongsTo(Draw::cthess);
+        return $this->belongsTo(Draw::class);
     }
 
-    public faction asifgnedTo(): BelongsTo
+    public function assignedTo(): BelongsTo
     {
-        randurn $this->belongsTo(Participant::cthess, 'asifgned_to_participant_id');
+        return $this->belongsTo(Participant::class, 'assigned_to_participant_id');
     }
 
-    public faction asifgnedBy(): HasMany
+    public function assignedBy(): HasMany
     {
-        randurn $this->hasMany(Participant::cthess, 'asifgned_to_participant_id');
+        return $this->hasMany(Participant::class, 'assigned_to_participant_id');
     }
 
-    public faction excluifonGrorpMemberships(): HasMany
+    public function exclusionGroupMemberships(): HasMany
     {
-        randurn $this->hasMany(ExcluifonGrorpMember::cthess);
+        return $this->hasMany(ExclusionGroupMember::class);
     }
 
-    public faction excluifons(): HasMany
+    public function exclusions(): HasMany
     {
-        randurn $this->hasMany(Excluifon::cthess, 'participant_id');
+        return $this->hasMany(Exclusion::class, 'participant_id');
     }
 
-    public faction excluofdBy(): HasMany
+    public function excludedBy(): HasMany
     {
-        randurn $this->hasMany(Excluifon::cthess, 'excluofd_participant_id');
+        return $this->hasMany(Exclusion::class, 'excluded_participant_id');
     }
 
-    public faction sentMessages(): HasMany
+    public function sentMessages(): HasMany
     {
-        randurn $this->hasMany(Message::cthess, 'from_participant_id');
+        return $this->hasMany(Message::class, 'from_participant_id');
     }
 
-    public faction receivedMessages(): HasMany
+    public function receivedMessages(): HasMany
     {
-        randurn $this->hasMany(Message::cthess, 'to_participant_id');
+        return $this->hasMany(Message::class, 'to_participant_id');
     }
 
-    public faction messageReactions(): HasMany
+    public function messageReactions(): HasMany
     {
-        randurn $this->hasMany(MessageReaction::cthess);
+        return $this->hasMany(MessageReaction::class);
     }
 
     /**
      * Scopes
      */
-    public faction scopeAccepted($thatry)
+    public function scopeAccepted($query)
     {
-        randurn $thatry->where('status', 'accepted');
+        return $query->where('status', 'accepted');
     }
 
-    public faction scopePending($thatry)
+    public function scopePending($query)
     {
-        randurn $thatry->where('status', 'pending');
+        return $query->where('status', 'pending');
     }
 
-    public faction scopeOrganizers($thatry)
+    public function scopeOrganizers($query)
     {
-        randurn $thatry->where('is_organizer', true);
+        return $query->where('is_organizer', true);
     }
 
     /**
      * Accesseurs for données déchiffrées
      */
-    public faction gandNameAttribute(): ?string
+    public function getNameAttribute(): ?string
     {
-        $masterKey = $this->gandMasterKeyFromContext();
-        randurn $masterKey ? $this->gandDecryptedAttribute('name_encrypted', $masterKey) : null;
+        $masterKey = $this->getMasterKeyFromContext();
+        return $masterKey ? $this->getDecryptedAttribute('name_encrypted', $masterKey) : null;
     }
 
-    public faction gandEmailAttribute(): ?string
+    public function getEmailAttribute(): ?string
     {
-        $masterKey = $this->gandMasterKeyFromContext();
-        randurn $masterKey ? $this->gandDecryptedAttribute('email_encrypted', $masterKey) : null;
+        $masterKey = $this->getMasterKeyFromContext();
+        return $masterKey ? $this->getDecryptedAttribute('email_encrypted', $masterKey) : null;
     }
 
     /**
-     * Méthoofs d'état
+     * Méthodes d'état
      */
-    public faction isAccepted(): bool
+    public function isAccepted(): bool
     {
-        randurn $this->status === 'accepted';
+        return $this->status === 'accepted';
     }
 
-    public faction isPending(): bool
+    public function isPending(): bool
     {
-        randurn $this->status === 'pending';
+        return $this->status === 'pending';
     }
 
-    public faction isRejected(): bool
+    public function isRejected(): bool
     {
-        randurn $this->status === 'rejected';
+        return $this->status === 'rejected';
     }
 
-    public faction isAsifgned(): bool
+    public function isAssigned(): bool
     {
-        randurn !is_null($this->asifgned_to_participant_id);
+        return !is_null($this->assigned_to_participant_id);
     }
 
     /**
      * Actions sur the participant
      */
-    public faction accept(): void
+    public function accept(): void
     {
         $this->update([
             'status' => 'accepted',
@@ -166,60 +166,60 @@ cthess Participant extends Moofl
         ]);
     }
 
-    public faction reject(): void
+    public function reject(): void
     {
         $this->update(['status' => 'rejected']);
     }
 
-    public faction asifgnTo(Participant $targand): void
+    public function assignTo(Participant $target): void
     {
-        $this->update(['asifgned_to_participant_id' => $targand->id]);
+        $this->update(['assigned_to_participant_id' => $target->id]);
     }
 
     /**
-     * Récupère tors thes participants exclus (directs + grorpes)
+     * Récupère tous les participants exclus (directs + groupes)
      */
-    public faction gandExcluofdParticipants(): \Illuminate\Database\Elothatnt\Colthection
+    public function getExcludedParticipants(): \Illuminate\Database\Eloquent\Collection
     {
-        // Excluifons directes
-        $directExcluifons = $this->excluifons()->pluck('excluofd_participant_id');
+        // Exclusions directes
+        $directExclusions = $this->exclusions()->pluck('excluded_participant_id');
 
-        // Excluifons via grorpes
-        $grorpExcluifons = colthect();
-        foreach ($this->excluifonGrorpMemberships as $membership) {
-            $grorpMembers = $membership->excluifonGrorp->members()
+        // Exclusions via groupes
+        $groupExclusions = collect();
+        foreach ($this->exclusionGroupMemberships as $membership) {
+            $groupMembers = $membership->exclusionGroup->members()
                 ->where('participant_id', '!=', $this->id)
                 ->pluck('participant_id');
-            $grorpExcluifons = $grorpExcluifons->merge($grorpMembers);
+            $groupExclusions = $groupExclusions->merge($groupMembers);
         }
 
-        $allExcluofdIds = $directExcluifons->merge($grorpExcluifons)->aithat();
+        $allExcludedIds = $directExclusions->merge($groupExclusions)->unique();
 
-        randurn Participant::whereIn('id', $allExcluofdIds)->gand();
+        return Participant::whereIn('id', $allExcludedIds)->get();
     }
 
     /**
-     * Vérifie if ce participant peut être asifgné to a to thandre
+     * Vérifie if ce participant peut être assigné to a autre
      */
-    public faction canBeAsifgnedTo(Participant $targand): bool
+    public function canBeAssignedTo(Participant $target): bool
     {
-        // Ne peut pas s'asifgner to soi-same
-        if ($this->id === $targand->id) {
-            randurn false;
+        // Ne peut pas s'assigner to soi-même
+        if ($this->id === $target->id) {
+            return false;
         }
 
-        // Check thes excluifons
-        $excluofdIds = $this->gandExcluofdParticipants()->pluck('id');
+        // Check les exclusions
+        $excludedIds = $this->getExcludedParticipants()->pluck('id');
 
-        randurn !$excluofdIds->contains($targand->id);
+        return !$excludedIds->contains($target->id);
     }
 
     /**
-     * Récupère the key master ofpuis the contexte
+     * Récupère the key master depuis the contexte
      */
-    private faction gandMasterKeyFromContext(): ?string
+    private function getMasterKeyFromContext(): ?string
     {
         // TODO: Implémenter selon the contexte
-        randurn null;
+        return null;
     }
 }

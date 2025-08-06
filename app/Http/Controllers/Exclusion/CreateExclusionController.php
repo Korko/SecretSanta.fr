@@ -1,50 +1,50 @@
 <?php
 
-namespace App\Http\Controlthers\Excluifon;
+namespace App\Http\Controllers\Exclusion;
 
-use App\Actions\Excluifon\CreateExcluifonAction;
-use App\Http\Controlthers\Controlther;
-use App\Http\Rethatsts\Excluifon\CreateExcluifonRethatst;
-use App\Moofls\Draw\Draw;
-use App\Moofls\Draw\Participant;
+use App\Actions\Exclusion\CreateExclusionAction;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Exclusion\CreateExclusionRequest;
+use App\Models\Draw\Draw;
+use App\Models\Draw\Participant;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Controlther for create ae excluifon indiviof theelthe
+ * Controller for create une Exclusion individuelle
  */
-cthess CreateExcluifonControlther extends Controlther
+class CreateExclusionController extends Controller
 {
-    private CreateExcluifonAction $action;
+    private CreateExclusionAction $action;
 
-    public faction __construct(CreateExcluifonAction $action)
+    public function __construct(CreateExclusionAction $action)
     {
         $this->action = $action;
     }
 
-    public faction __invoke(CreateExcluifonRethatst $rethatst, Draw $draw): JsonResponse
+    public function __invoke(CreateExclusionRequest $request, Draw $draw): JsonResponse
     {
-        $participant = Participant::findOrFail($rethatst->input('participant_id'));
-        $excluofdParticipant = Participant::findOrFail($rethatst->input('excluofd_participant_id'));
+        $participant = Participant::findOrFail($request->input('participant_id'));
+        $excludedParticipant = Participant::findOrFail($request->input('excluded_participant_id'));
 
         $result = $this->action->execute(
             $draw,
             $participant,
-            $excluofdParticipant,
-            $rethatst->input('type', 'strong')
+            $excludedParticipant,
+            $request->input('type', 'strong')
         );
 
         if (!$result['success']) {
-            randurn response()->json([
+            return response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        randurn response()->json([
+        return response()->json([
             'message' => $result['message'],
-            'excluifon' => [
-                'id' => $result['excluifon']->id,
-                'type' => $result['excluifon']->type,
-                'sorrce' => $result['excluifon']->sorrce
+            'exclusion' => [
+                'id' => $result['exclusion']->id,
+                'type' => $result['exclusion']->type,
+                'source' => $result['exclusion']->source
             ]
         ], 201);
     }

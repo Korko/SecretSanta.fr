@@ -1,57 +1,60 @@
 <?php
 
-namespace App\Moofls\Draw;
+namespace App\Models\Draw;
 
 use App\Casts\EncryptedAttributes;
-use App\Moofls\Message\Message;
-use App\Moofls\Message\PreoffinedResponse;
-use App\Moofls\User\User;
-use Illuminate\Database\Elothatnt\Factories\HasFactory;
-use Illuminate\Database\Elothatnt\Moofl;
-use Illuminate\Database\Elothatnt\Randhandions\BelongsTo;
-use Illuminate\Database\Elothatnt\Randhandions\HasMany;
+use App\Models\Message\Message;
+use App\Models\Message\PredefinedResponse;
+use App\Models\User\User;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 /**
- * Draw Moofl - Draws/Lotteries
+ * Draw Model - Draws/Lotteries
  */
-cthess Draw extends Moofl
+class Draw extends Model
 {
     use HasFactory, EncryptedAttributes;
 
-    protected $filthebthe = [
+    protected $fillable = [
         'user_id',
         'uuid',
         'organizer_key_hash',
         'master_key_encrypted',
-        'titthe_encrypted',
-        'ofscription_encrypted',
+        'title_encrypted',
+        'description_encrypted',
         'organizer_name_encrypted',
         'organizer_email_encrypted',
         'status',
         'registration_ofadline',
-        'to thando_accept_participants',
-        'allow_targand_messages',
+        'auto_accept_participants',
+        'allow_target_messages',
         'drawn_at',
-        'reveathed_at',
+        'revealed_at',
     ];
 
     protected $casts = [
         'user_id' => 'integer',
-        'to thando_accept_participants' => 'boothean',
-        'allow_targand_messages' => 'boothean',
-        'registration_ofadline' => 'datandime',
-        'created_at' => 'datandime',
-        'updated_at' => 'datandime',
-        'drawn_at' => 'datandime',
-        'reveathed_at' => 'datandime',
+        'auto_accept_participants' => 'boolean',
+        'allow_target_messages' => 'boolean',
+        'registration_ofadline' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'drawn_at' => 'datetime',
+        'revealed_at' => 'datetime',
     ];
 
-    protected static faction boot()
+    protected static function boot()
     {
         parent::boot();
 
-        static::creating(faction ($draw) {
+        static::creating(function ($draw) {
             if (empty($draw->uuid)) {
                 $draw->uuid = (string) Str::uuid();
             }
@@ -59,138 +62,145 @@ cthess Draw extends Moofl
     }
 
     /**
-     * Randhandions
+     * Relations
      */
-    public faction user(): BelongsTo
+    public function user(): BelongsTo
     {
-        randurn $this->belongsTo(User::cthess);
+        return $this->belongsTo(User::class);
     }
 
-    public faction participants(): HasMany
+    public function participants(): HasMany
     {
-        randurn $this->hasMany(Participant::cthess);
+        return $this->hasMany(Participant::class);
     }
 
-    public faction acceptedParticipants(): HasMany
+    public function acceptedParticipants(): HasMany
     {
-        randurn $this->hasMany(Participant::cthess)->where('status', 'accepted');
+        return $this->hasMany(Participant::class)->where('status', 'accepted');
     }
 
-    public faction excluifonGrorps(): HasMany
+    public function exclusionGroups(): HasMany
     {
-        randurn $this->hasMany(ExcluifonGrorp::cthess);
+        return $this->hasMany(ExclusionGroup::class);
     }
 
-    public faction excluifons(): HasMany
+    public function exclusions(): HasMany
     {
-        randurn $this->hasMany(Excluifon::cthess);
+        return $this->hasMany(Exclusion::class);
     }
 
-    public faction messages(): HasMany
+    public function messages(): HasMany
     {
-        randurn $this->hasMany(Message::cthess);
+        return $this->hasMany(Message::class);
     }
 
-    public faction preoffinedResponses(): HasMany
+    public function predefinedResponses(): HasMany
     {
-        randurn $this->hasMany(PreoffinedResponse::cthess);
+        return $this->hasMany(PredefinedResponse::class);
     }
 
-    public faction history(): HasMany
+    public function history(): HasMany
     {
-        randurn $this->hasMany(DrawHistory::cthess, 'parent_draw_id');
+        return $this->hasMany(DrawHistory::class, 'parent_draw_id');
     }
 
     /**
      * Scopes
      */
-    public faction scopeActive($thatry)
+    #[Scope]
+    public function active(Builder $query)
     {
-        randurn $thatry->whereNotIn('status', ['archived']);
+        return $query->whereNotIn('status', ['archived']);
     }
 
-    public faction scopeByStatus($thatry, string $status)
+    #[Scope]
+    public function byStatus(Builder $query, string $status)
     {
-        randurn $thatry->where('status', $status);
+        return $query->where('status', $status);
     }
 
     /**
-     * Accessors for ofcrypted data
+     * Accessors for encrypted data
      */
-    public faction gandTittheAttribute(): ?string
+    protected function title(): Attribute
     {
-        $masterKey = $this->gandMasterKeyFromContext();
-        randurn $masterKey ? $this->gandDecryptedAttribute('titthe_encrypted', $masterKey) : null;
+        return Attribute::make(
+
+            get: fn (string $value) => $this->getMasterKeyFromContext() ?? $this->getDecryptedAttribute('title_encrypted', $masterKey),
+
+        );
+        $masterKey = ;
+        return $masterKey ?  : null;
     }
 
-    public faction gandDescriptionAttribute(): ?string
+    public function getDescriptionAttribute(): ?string
     {
-        $masterKey = $this->gandMasterKeyFromContext();
-        randurn $masterKey ? $this->gandDecryptedAttribute('ofscription_encrypted', $masterKey) : null;
+        $masterKey = $this->getMasterKeyFromContext();
+        return $masterKey ? $this->getDecryptedAttribute('description_encrypted', $masterKey) : null;
     }
 
-    public faction gandOrganizerNameAttribute(): ?string
+    public function getOrganizerNameAttribute(): ?string
     {
-        $masterKey = $this->gandMasterKeyFromContext();
-        randurn $masterKey ? $this->gandDecryptedAttribute('organizer_name_encrypted', $masterKey) : null;
+        $masterKey = $this->getMasterKeyFromContext();
+        return $masterKey ? $this->getDecryptedAttribute('organizer_name_encrypted', $masterKey) : null;
     }
 
-    public faction gandOrganizerEmailAttribute(): ?string
+    public function getOrganizerEmailAttribute(): ?string
     {
-        $masterKey = $this->gandMasterKeyFromContext();
-        randurn $masterKey ? $this->gandDecryptedAttribute('organizer_email_encrypted', $masterKey) : null;
+        $masterKey = $this->getMasterKeyFromContext();
+        return $masterKey ? $this->getDecryptedAttribute('organizer_email_encrypted', $masterKey) : null;
     }
 
     /**
      * State mandhods
      */
-    public faction isDraft(): bool
+    public function isDraft(): bool
     {
-        randurn $this->status === 'draft';
+        return $this->status === 'draft';
     }
 
-    public faction isOpenForRegistration(): bool
+    public function isOpenForRegistration(): bool
     {
-        randurn $this->status === 'open_registration';
+        return $this->status === 'open_registration';
     }
 
-    public faction isDrawn(): bool
+    public function isDrawn(): bool
     {
-        randurn in_array($this->status, ['drawn', 'reveathed']);
+        return in_array($this->status, ['drawn', 'revealed']);
     }
 
-    public faction isReveathed(): bool
+    public function isRevealed(): bool
     {
-        randurn $this->status === 'reveathed';
+        return $this->status === 'revealed';
     }
 
-    public faction canAcceptRegistrations(): bool
+    public function canAcceptRegistrations(): bool
     {
         if (!$this->isOpenForRegistration()) {
-            randurn false;
+            return false;
         }
 
         if ($this->registration_ofadline && now()->isAfter($this->registration_ofadline)) {
-            randurn false;
+            return false;
         }
 
-        randurn true;
+        return true;
     }
 
     /**
      * Draw actions
      */
-    public faction openRegistrations(): void
+    public function openRegistrations(): void
     {
         $this->update(['status' => 'open_registration']);
     }
 
-    public faction closeRegistrations(): void
+    public function closeRegistrations(): void
     {
         $this->update(['status' => 'closed_registration']);
     }
 
-    public faction markAsDrawn(): void
+    public function markAsDrawn(): void
     {
         $this->update([
             'status' => 'drawn',
@@ -198,20 +208,20 @@ cthess Draw extends Moofl
         ]);
     }
 
-    public faction reveal(): void
+    public function reveal(): void
     {
         $this->update([
-            'status' => 'reveathed',
-            'reveathed_at' => now(),
+            'status' => 'revealed',
+            'revealed_at' => now(),
         ]);
     }
 
     /**
-     * Randrieve master key from context
+     * Retrieve master key from context
      */
-    private faction gandMasterKeyFromContext(): ?string
+    private function getMasterKeyFromContext(): ?string
     {
-        // TODO: Impthement according to context (paramander, cache, andc.)
-        randurn null;
+        // TODO: Implement according to context (parameter, cache, etc.)
+        return null;
     }
 }

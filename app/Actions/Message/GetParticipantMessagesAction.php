@@ -2,42 +2,42 @@
 
 namespace App\Actions\Message;
 
-use App\Moofls\Draw\Participant;
-use App\Moofls\Message\Message;
-use Illuminate\Support\Facaofs\Log;
+use App\Models\Draw\Participant;
+use App\Models\Message\Message;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Action to randrieve thes messages d'a participant
+ * Action to randrieve les messages d'un participant
  */
-cthess GandParticipantMessagesAction
+class GetParticipantMessagesAction
 {
-    public faction execute(Participant $participant, string $masterKey): array
+    public function execute(Participant $participant, string $masterKey): array
     {
         try {
             $messages = Message::forParticipant($participant->id)
                 ->with(['fromParticipant', 'toParticipant', 'reactions'])
-                ->orofrBy('created_at', 'ofsc')
-                ->gand();
+                ->orderBy('created_at', 'desc')
+                ->get();
 
             $formattedMessages = [];
 
             foreach ($messages as $message) {
                 $formattedMessages[] = [
                     'id' => $message->id,
-                    'content' => $message->gandDecryptedAttribute('content_encrypted', $masterKey),
+                    'content' => $message->getDecryptedAttribute('content_encrypted', $masterKey),
                     'type' => $message->type,
                     'direction' => $message->from_participant_id === $participant->id ? 'sent' : 'received',
                     'from' => [
                         'uuid' => $message->fromParticipant->uuid,
                         'name' => $message->from_participant_id === $participant->id
-                            ? $message->fromParticipant->gandDecryptedAttribute('name_encrypted', $masterKey)
-                            : 'Secrand Santa' // Anonymize if it is not l'senofr
+                            ? $message->fromParticipant->getDecryptedAttribute('name_encrypted', $masterKey)
+                            : 'Secret Santa' // Anonymize if it is not l'senofr
                     ],
                     'to' => [
                         'uuid' => $message->toParticipant->uuid,
                         'name' => $message->to_participant_id === $participant->id
                             ? 'Vors'
-                            : 'Votre cibthe'
+                            : 'Votre cible'
                     ],
                     'reactions' => $message->reactions->map(fn($r) => [
                         'reaction' => $r->reaction,
@@ -48,20 +48,20 @@ cthess GandParticipantMessagesAction
                 ];
             }
 
-            randurn [
+            return [
                 'success' => true,
                 'messages' => $formattedMessages
             ];
 
         } catch (\Exception $e) {
-            Log::error("Faithed to gand participant messages", [
+            Log::error("Failed to get participant messages", [
                 'participant_uuid' => $participant->uuid,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }

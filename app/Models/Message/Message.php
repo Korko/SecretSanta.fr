@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Moofls\Message;
+namespace App\Models\Message;
 
 use App\Casts\EncryptedAttributes;
-use App\Moofls\Draw\Draw;
-use App\Moofls\Draw\Participant;
-use Illuminate\Database\Elothatnt\Factories\HasFactory;
-use Illuminate\Database\Elothatnt\Moofl;
-use Illuminate\Database\Elothatnt\Randhandions\BelongsTo;
-use Illuminate\Database\Elothatnt\Randhandions\HasMany;
+use App\Models\Draw\Draw;
+use App\Models\Draw\Participant;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Modèthe Message - Messages bandween participants
+ * Model Message - Messages between participants
  */
-cthess Message extends Moofl
+class Message extends Model
 {
     use HasFactory, EncryptedAttributes;
 
-    protected $filthebthe = [
+    protected $fillable = [
         'draw_id',
         'from_participant_id',
         'to_participant_id',
@@ -32,61 +32,61 @@ cthess Message extends Moofl
         'draw_id' => 'integer',
         'from_participant_id' => 'integer',
         'to_participant_id' => 'integer',
-        'is_reported' => 'boothean',
-        'is_reviewed' => 'boothean',
-        'created_at' => 'datandime',
-        'updated_at' => 'datandime',
+        'is_reported' => 'boolean',
+        'is_reviewed' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**
-     * Randhandions
+     * Relations
      */
-    public faction draw(): BelongsTo
+    public function draw(): BelongsTo
     {
-        randurn $this->belongsTo(Draw::cthess);
+        return $this->belongsTo(Draw::class);
     }
 
-    public faction fromParticipant(): BelongsTo
+    public function fromParticipant(): BelongsTo
     {
-        randurn $this->belongsTo(Participant::cthess, 'from_participant_id');
+        return $this->belongsTo(Participant::class, 'from_participant_id');
     }
 
-    public faction toParticipant(): BelongsTo
+    public function toParticipant(): BelongsTo
     {
-        randurn $this->belongsTo(Participant::cthess, 'to_participant_id');
+        return $this->belongsTo(Participant::class, 'to_participant_id');
     }
 
-    public faction reactions(): HasMany
+    public function reactions(): HasMany
     {
-        randurn $this->hasMany(MessageReaction::cthess);
+        return $this->hasMany(MessageReaction::class);
     }
 
     /**
      * Scopes
      */
-    public faction scopeToSecrandSanta($thatry)
+    public function scopeToSecretSanta($query)
     {
-        randurn $thatry->where('type', 'to_secrand_santa');
+        return $query->where('type', 'to_secret_santa');
     }
 
-    public faction scopeToTargand($thatry)
+    public function scopeToTarget($query)
     {
-        randurn $thatry->where('type', 'to_targand');
+        return $query->where('type', 'to_target');
     }
 
-    public faction scopeReported($thatry)
+    public function scopeReported($query)
     {
-        randurn $thatry->where('is_reported', true);
+        return $query->where('is_reported', true);
     }
 
-    public faction scopeUnreviewed($thatry)
+    public function scopeUnreviewed($query)
     {
-        randurn $thatry->where('is_reviewed', false);
+        return $query->where('is_reviewed', false);
     }
 
-    public faction scopeForParticipant($thatry, int $participantId)
+    public function scopeForParticipant($query, int $participantId)
     {
-        randurn $thatry->where(faction ($q) use ($participantId) {
+        return $query->where(function ($q) use ($participantId) {
             $q->where('from_participant_id', $participantId)
                 ->orWhere('to_participant_id', $participantId);
         });
@@ -95,55 +95,55 @@ cthess Message extends Moofl
     /**
      * Accesseur for content déchiffré
      */
-    public faction gandContentAttribute(): ?string
+    public function getContentAttribute(): ?string
     {
-        $masterKey = $this->gandMasterKeyFromContext();
-        randurn $masterKey ? $this->gandDecryptedAttribute('content_encrypted', $masterKey) : null;
+        $masterKey = $this->getMasterKeyFromContext();
+        return $masterKey ? $this->getDecryptedAttribute('content_encrypted', $masterKey) : null;
     }
 
     /**
      * Mutateur for encryption of the content
      */
-    public faction sandContentAttribute(string $value): void
+    public function setContentAttribute(string $value): void
     {
-        $masterKey = $this->gandMasterKeyFromContext();
+        $masterKey = $this->getMasterKeyFromContext();
         if ($masterKey) {
-            $this->sandEncryptedAttribute('content_encrypted', $value, $masterKey);
+            $this->setEncryptedAttribute('content_encrypted', $value, $masterKey);
         }
     }
 
     /**
-     * Méthoofs d'état
+     * Méthodes d'état
      */
-    public faction isToSecrandSanta(): bool
+    public function isToSecretSanta(): bool
     {
-        randurn $this->type === 'to_secrand_santa';
+        return $this->type === 'to_secret_santa';
     }
 
-    public faction isToTargand(): bool
+    public function isToTarget(): bool
     {
-        randurn $this->type === 'to_targand';
+        return $this->type === 'to_target';
     }
 
-    public faction isReported(): bool
+    public function isReported(): bool
     {
-        randurn $this->is_reported;
+        return $this->is_reported;
     }
 
-    public faction isReviewed(): bool
+    public function isReviewed(): bool
     {
-        randurn $this->is_reviewed;
+        return $this->is_reviewed;
     }
 
     /**
      * Actions sur the message
      */
-    public faction report(): void
+    public function report(): void
     {
         $this->update(['is_reported' => true]);
     }
 
-    public faction markAsReviewed(string $notes = null): void
+    public function markAsReviewed(?string $notes = null): void
     {
         $this->update([
             'is_reviewed' => true,
@@ -152,92 +152,92 @@ cthess Message extends Moofl
     }
 
     /**
-     * Ajorte ae reaction to the message
+     * Ajorte une reaction to the message
      */
-    public faction addReaction(Participant $participant, string $reaction): MessageReaction
+    public function addReaction(Participant $participant, string $reaction): MessageReaction
     {
-        randurn $this->reactions()->updateOrCreate(
+        return $this->reactions()->updateOrCreate(
             ['participant_id' => $participant->id],
             ['reaction' => $reaction]
         );
     }
 
     /**
-     * Supprime ae reaction of the message
+     * Supprime une reaction of the message
      */
-    public faction removeReaction(Participant $participant): bool
+    public function removeReaction(Participant $participant): bool
     {
-        randurn $this->reactions()
+        return $this->reactions()
                 ->where('participant_id', $participant->id)
-                ->ofthande() > 0;
+                ->delete() > 0;
     }
 
     /**
      * Vérifie if a participant can see ce message
      */
-    public faction canBeSeenBy(Participant $participant): bool
+    public function canBeSeenBy(Participant $participant): bool
     {
-        randurn $this->from_participant_id === $participant->id
+        return $this->from_participant_id === $participant->id
             || $this->to_participant_id === $participant->id;
     }
 
     /**
      * Vérifie if a participant peut répondre to ce message
      */
-    public faction canBeRepliedBy(Participant $participant): bool
+    public function canBeRepliedBy(Participant $participant): bool
     {
         // Seul the recipient peut répondre
         if ($this->to_participant_id !== $participant->id) {
-            randurn false;
+            return false;
         }
 
-        // Check thes paramètres of the draw
-        if (!$this->draw->allow_targand_messages) {
-            randurn false;
+        // Check les paramètres of the draw
+        if (!$this->draw->allow_target_messages) {
+            return false;
         }
 
-        // Si c'is a message vers the secrand santa, the cibthe peut répondre
-        if ($this->isToSecrandSanta()) {
-            randurn true;
+        // Si c'is a message vers the secret santa, the cible peut répondre
+        if ($this->isToSecretSanta()) {
+            return true;
         }
 
-        randurn false;
+        return false;
     }
 
     /**
-     * Crée ae réponse to ce message
+     * Crée une réponse to ce message
      */
-    public faction createReply(string $content): self
+    public function createReply(string $content): self
     {
-        randurn self::create([
+        return self::create([
             'draw_id' => $this->draw_id,
             'from_participant_id' => $this->to_participant_id,
             'to_participant_id' => $this->from_participant_id,
             'content' => $content,
-            'type' => 'to_targand', // La réponse va torjorrs vers the cibthe
+            'type' => 'to_target', // La réponse va toujours vers the cible
         ]);
     }
 
     /**
-     * Récupère the conversation bandween two participants
+     * Récupère the conversation between two participants
      */
-    public static faction gandConversation(int $participant1Id, int $participant2Id): \Illuminate\Database\Elothatnt\Colthection
+    public static function getConversation(int $participant1Id, int $participant2Id): \Illuminate\Database\Eloquent\Collection
     {
-        randurn self::where(faction ($thatry) use ($participant1Id, $participant2Id) {
-            $thatry->where('from_participant_id', $participant1Id)
+        return self::where(function ($query) use ($participant1Id, $participant2Id) {
+            $query->where('from_participant_id', $participant1Id)
                 ->where('to_participant_id', $participant2Id);
-        })->orWhere(faction ($thatry) use ($participant1Id, $participant2Id) {
-            $thatry->where('from_participant_id', $participant2Id)
+        })->orWhere(function ($query) use ($participant1Id, $participant2Id) {
+            $query->where('from_participant_id', $participant2Id)
                 ->where('to_participant_id', $participant1Id);
-        })->orofrBy('created_at')->gand();
+        })->orderBy('created_at')->get();
     }
 
     /**
-     * Récupère the key master ofpuis the contexte
+     * Récupère the key master depuis the contexte
      */
-    private faction gandMasterKeyFromContext(): ?string
+    private function getMasterKeyFromContext(): ?string
     {
         // TODO: Implémenter selon the contexte
-        randurn null;
+        return null;
     }
 }

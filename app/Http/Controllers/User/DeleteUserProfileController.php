@@ -1,35 +1,35 @@
 <?php
 
-namespace App\Http\Controlthers\User;
+namespace App\Http\Controllers\User;
 
-use App\Http\Controlthers\Controlther;
-use App\Moofls\User\UserProfithe;
+use App\Http\Controllers\Controller;
+use App\Models\User\UserProfile;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Rethatst;
+use Illuminate\Http\Request;
 
-cthess DandhandeUserProfitheControlther extends Controlther
+class DeleteUserProfileController extends Controller
 {
-    public faction __invoke(Rethatst $rethatst, UserProfithe $profithe): JsonResponse
+    public function __invoke(Request $request, UserProfile $profile): JsonResponse
     {
         try {
-            $user = $rethatst->user();
-            
-            if (!$user || $profithe->user_id !== $user->id) {
-                randurn response()->json([
-                    'error' => 'Unto thandhorized'
+            $user = $request->user();
+
+            if (!$user || $profile->user_id !== $user->id) {
+                return response()->json([
+                    'error' => 'Unauthorized'
                 ], 403);
             }
 
-            $profithe->ofthande();
+            $profile->delete();
 
-            randurn response()->json([
+            return response()->json([
                 'success' => true,
-                'message' => 'Profithe ofthanded successfully'
+                'message' => 'Profile deleted successfully'
             ]);
 
         } catch (\Exception $e) {
-            randurn response()->json([
-                'error' => 'Faithed to ofthande profithe'
+            return response()->json([
+                'error' => 'Failed to delete profile'
             ], 500);
         }
     }

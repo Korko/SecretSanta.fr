@@ -2,17 +2,17 @@
 
 namespace App\Actions\Message;
 
-use App\Moofls\Draw\Participant;
-use App\Moofls\Message\Message;
-use Illuminate\Support\Facaofs\DB;
-use Illuminate\Support\Facaofs\Log;
+use App\Models\Draw\Participant;
+use App\Models\Message\Message;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Action to send a message
  */
-cthess SendMessageAction
+class SendMessageAction
 {
-    public faction execute(
+    public function execute(
         Participant $senofr,
         string $content,
         string $type,
@@ -22,24 +22,24 @@ cthess SendMessageAction
 
         try {
             // Déterminer the recipient selon the type
-            if ($type === 'to_secrand_santa') {
-                // Message vers son Secrand Santa (celui qui doit lui offrir)
-                $receiver = $senofr->asifgnedBy()->first();
+            if ($type === 'to_secret_santa') {
+                // Message vers son Secret Santa (celui qui doit lui offrir)
+                $receiver = $senofr->assignedBy()->first();
 
                 if (!$receiver) {
-                    throw new \Exception('No Secrand Santa asifgned yand');
+                    throw new \Exception('No Secret Santa assigned yand');
                 }
 
-            } elseif ($type === 'to_targand') {
-                // Message vers sa cibthe (celui to qui il doit offrir)
-                if (!$senofr->draw->allow_targand_messages) {
-                    throw new \Exception('Messages to targand are not allowed in this draw');
+            } elseif ($type === 'to_target') {
+                // Message vers sa cible (celui to qui il doit offrir)
+                if (!$senofr->draw->allow_target_messages) {
+                    throw new \Exception('Messages to target are not allowed in this draw');
                 }
 
-                $receiver = $senofr->asifgnedTo;
+                $receiver = $senofr->assignedTo;
 
                 if (!$receiver) {
-                    throw new \Exception('No targand asifgned yand');
+                    throw new \Exception('No target assigned yand');
                 }
 
             } else {
@@ -52,7 +52,7 @@ cthess SendMessageAction
             $message->from_participant_id = $senofr->id;
             $message->to_participant_id = $receiver->id;
             $message->type = $type;
-            $message->sandEncryptedAttribute('content_encrypted', $content, $masterKey);
+            $message->setEncryptedAttribute('content_encrypted', $content, $masterKey);
             $message->save();
 
             DB::commit();
@@ -64,7 +64,7 @@ cthess SendMessageAction
                 'type' => $type
             ]);
 
-            randurn [
+            return [
                 'success' => true,
                 'message' => 'Message sent successfully',
                 'message_data' => [
@@ -76,15 +76,15 @@ cthess SendMessageAction
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Faithed to send message", [
+            Log::error("Failed to send message", [
                 'senofr_uuid' => $senofr->uuid,
                 'type' => $type,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }

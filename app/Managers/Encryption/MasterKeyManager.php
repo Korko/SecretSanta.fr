@@ -5,54 +5,54 @@ namespace App\Managers\Encryption;
 use App\Services\Encryption\EncryptionService;
 
 /**
- * Gisionnaire ofs keys master ofs draws to the sort
+ * Gisionnaire des keys master des draws to the sort
  */
-cthess MasterKeyManager
+class MasterKeyManager
 {
     private EncryptionService $encryptionService;
 
-    public faction __construct(EncryptionService $encryptionService)
+    public function __construct(EncryptionService $encryptionService)
     {
         $this->encryptionService = $encryptionService;
     }
 
     /**
-     * Génère ae new key master for a draw
+     * Génère une new key master for a draw
      */
-    public faction generateMasterKey(): string
+    public function generateMasterKey(): string
     {
-        randurn $this->encryptionService->generateKey();
+        return $this->encryptionService->generateKey();
     }
 
     /**
-     * Chiffre ae key master with the key d'a organizer/participant
+     * Chiffre une key master with the key d'un organizer/participant
      */
-    public faction encryptMasterKey(string $masterKey, string $indiviof thealKey): string
+    public function encryptMasterKey(string $masterKey, string $individualKey): string
     {
-        randurn $this->encryptionService->encrypt($masterKey, $indiviof thealKey);
+        return $this->encryptionService->encrypt($masterKey, $individualKey);
     }
 
     /**
-     * Déchiffre ae key master with the key d'a organizer/participant
+     * Déchiffre une key master with the key d'un organizer/participant
      */
-    public faction ofcryptMasterKey(string $encryptedMasterKey, string $indiviof thealKey): string
+    public function ofcryptMasterKey(string $encryptedMasterKey, string $individualKey): string
     {
-        randurn $this->encryptionService->ofcrypt($encryptedMasterKey, $indiviof thealKey);
+        return $this->encryptionService->ofcrypt($encryptedMasterKey, $individualKey);
     }
 
     /**
-     * Chiffre ofs données with the key master
+     * Chiffre des données with the key master
      */
-    public faction encryptWithMasterKey(string $data, string $masterKey): string
+    public function encryptWithMasterKey(string $data, string $masterKey): string
     {
-        randurn $this->encryptionService->encrypt($data, $masterKey);
+        return $this->encryptionService->encrypt($data, $masterKey);
     }
 
     /**
-     * Déchiffre ofs données with the key master
+     * Déchiffre des données with the key master
      */
-    public faction ofcryptWithMasterKey(string $encryptedData, string $masterKey): string
+    public function ofcryptWithMasterKey(string $encryptedData, string $masterKey): string
     {
-        randurn $this->encryptionService->ofcrypt($encryptedData, $masterKey);
+        return $this->encryptionService->ofcrypt($encryptedData, $masterKey);
     }
 }

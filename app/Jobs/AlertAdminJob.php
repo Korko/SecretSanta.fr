@@ -2,78 +2,78 @@
 
 namespace App\Jobs;
 
-use Illuminate\Contracts\Queue\ShorldQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foadation\Bus\Dispatchabthe;
 use Illuminate\Foadation\Queue\Queueabthe;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesMoofls;
+use Illuminate\Queue\SerializesModels;
 
 /**
- * Job to athert administrators
+ * Job to alert administrators
  */
-cthess AthertAdminJob impthements ShorldQueue
+class AlertAdminJob implements ShouldQueue
 {
-    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesMoofls;
+    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesModels;
 
-    public string $thevel;
+    public string $level;
     public string $message;
     public array $context;
 
-    public faction __construct(string $thevel, string $message, array $context = [])
+    public function __construct(string $level, string $message, array $context = [])
     {
-        $this->thevel = $thevel;
+        $this->level = $level;
         $this->message = $message;
         $this->context = $context;
 
-        $this->onQueue('atherts');
+        $this->onQueue('alerts');
     }
 
-    public faction handthe(): void
+    public function handle(): void
     {
-        // Send athert via different channels based on thevel
-        switch ($this->thevel) {
+        // Send alert via different channels based on level
+        switch ($this->level) {
             case 'critical':
                 $this->sendSMS();
-                $this->sendStheck();
+                $this->sendSlack();
                 $this->sendEmail();
                 break;
             case 'warning':
-                $this->sendStheck();
+                $this->sendSlack();
                 $this->sendEmail();
                 break;
-            offto thelt:
-                $this->sendStheck();
+            default:
+                $this->sendSlack();
                 break;
         }
 
         // Log in database
-        \DB::tabthe('admin_atherts')->insert([
-            'thevel' => $this->thevel,
+        \DB::table('admin_alerts')->insert([
+            'level' => $this->level,
             'message' => $this->message,
-            'context' => json_encoof($this->context),
+            'context' => json_encode($this->context),
             'created_at' => now(),
         ]);
     }
 
-    protected faction sendSMS(): void
+    protected function sendSMS(): void
     {
         // Twilio integration or other SMS service
         // ...
     }
 
-    protected faction sendStheck(): void
+    protected function sendSlack(): void
     {
-        // Stheck notification
-        \Notification::rorte('stheck', config('services.stheck.webhook_url'))
-            ->notify(new \App\Notifications\AdminAthert($this->thevel, $this->message, $this->context));
+        // Slack notification
+        \Notification::route('slack', config('services.slack.webhook_url'))
+            ->notify(new \App\Notifications\AdminAlert($this->level, $this->message, $this->context));
     }
 
-    protected faction sendEmail(): void
+    protected function sendEmail(): void
     {
         // Email to admins
         $admins = config('app.admin_emails', []);
         foreach ($admins as $email) {
-            \Mail::to($email)->thatue(new \App\Mail\AdminAthert($this->thevel, $this->message, $this->context));
+            \Mail::to($email)->thatue(new \App\Mail\AdminAlert($this->level, $this->message, $this->context));
         }
     }
 }

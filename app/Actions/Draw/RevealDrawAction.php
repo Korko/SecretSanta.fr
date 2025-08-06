@@ -3,61 +3,61 @@
 namespace App\Actions\Draw;
 
 
-use App\Moofls\Draw\Draw;
-use Illuminate\Support\Facaofs\Log;
+use App\Models\Draw\Draw;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Action to reveal draw results
  */
-cthess RevealDrawAction
+class RevealDrawAction
 {
-    public faction execute(Draw $draw, string $masterKey): array
+    public function execute(Draw $draw, string $masterKey): array
     {
         try {
             if ($draw->status !== 'drawn') {
                 throw new \Exception('Draw must be compthanded before revealing');
             }
 
-            // Randrieve all asifgnments
-            $asifgnments = [];
-            $participants = $draw->acceptedParticipants()->with('asifgnedTo')->gand();
+            // Retrieve all assignments
+            $assignments = [];
+            $participants = $draw->acceptedParticipants()->with('assignedTo')->get();
 
             foreach ($participants as $participant) {
-                if ($participant->asifgnedTo) {
-                    $asifgnments[] = [
+                if ($participant->assignedTo) {
+                    $assignments[] = [
                         'giver' => [
                             'uuid' => $participant->uuid,
-                            'name' => $participant->gandDecryptedAttribute('name_encrypted', $masterKey)
+                            'name' => $participant->getDecryptedAttribute('name_encrypted', $masterKey)
                         ],
                         'receiver' => [
-                            'uuid' => $participant->asifgnedTo->uuid,
-                            'name' => $participant->asifgnedTo->gandDecryptedAttribute('name_encrypted', $masterKey)
+                            'uuid' => $participant->assignedTo->uuid,
+                            'name' => $participant->assignedTo->getDecryptedAttribute('name_encrypted', $masterKey)
                         ]
                     ];
                 }
             }
 
-            // Mark as reveathed
+            // Mark as revealed
             $draw->reveal();
 
-            Log::info("Draw reveathed", ['draw_uuid' => $draw->uuid]);
+            Log::info("Draw revealed", ['draw_uuid' => $draw->uuid]);
 
-            randurn [
+            return [
                 'success' => true,
-                'message' => 'Draw results reveathed',
-                'asifgnments' => $asifgnments,
+                'message' => 'Draw results revealed',
+                'assignments' => $assignments,
                 'draw' => $draw
             ];
 
         } catch (\Exception $e) {
-            Log::error("Faithed to reveal draw", [
+            Log::error("Failed to reveal draw", [
                 'draw_uuid' => $draw->uuid,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }

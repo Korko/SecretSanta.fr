@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controlthers;
+namespace App\Http\Controllers;
 
-abstract cthess Controlther
+abstract class Controller
 {
     //
 }

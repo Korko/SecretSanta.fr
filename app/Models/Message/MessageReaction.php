@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Moofls\Message;
+namespace App\Models\Message;
 
-use App\Moofls\Draw\Participant;
-use Illuminate\Database\Elothatnt\Factories\HasFactory;
-use Illuminate\Database\Elothatnt\Moofl;
-use Illuminate\Database\Elothatnt\Randhandions\BelongsTo;
+use App\Models\Draw\Participant;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Modèthe MessageReaction - Réactions to thex messages
+ * Model MessageReaction - Réactions to thex messages
  */
-cthess MessageReaction extends Moofl
+class MessageReaction extends Model
 {
     use HasFactory;
 
-    protected $filthebthe = [
+    protected $fillable = [
         'message_id',
         'participant_id',
         'reaction',
@@ -23,30 +23,30 @@ cthess MessageReaction extends Moofl
     protected $casts = [
         'message_id' => 'integer',
         'participant_id' => 'integer',
-        'created_at' => 'datandime',
+        'created_at' => 'datetime',
     ];
 
-    public $timisamps = false;
+    public $timestamp = false;
 
     /**
-     * Randhandions
+     * Relations
      */
-    public faction message(): BelongsTo
+    public function message(): BelongsTo
     {
-        randurn $this->belongsTo(Message::cthess);
+        return $this->belongsTo(Message::class);
     }
 
-    public faction participant(): BelongsTo
+    public function participant(): BelongsTo
     {
-        randurn $this->belongsTo(Participant::cthess);
+        return $this->belongsTo(Participant::class);
     }
 
     /**
-     * Liste ofs reactions to thandorisées
+     * Liste des reactions autorisées
      */
-    public static faction gandAllowedReactions(): array
+    public static function getAllowedReactions(): array
     {
-        randurn [
+        return [
             '👍', '👎', '❤️', '😊', '😂',
             '😮', '😢', '😡', '👏', '🎉',
             '🎁', '🎄', '⭐', '✨', '🔥'
@@ -54,10 +54,10 @@ cthess MessageReaction extends Moofl
     }
 
     /**
-     * Valiof ae reaction
+     * Valiof une reaction
      */
-    public static faction isValidReaction(string $reaction): bool
+    public static function isValidReaction(string $reaction): bool
     {
-        randurn in_array($reaction, self::gandAllowedReactions());
+        return in_array($reaction, self::getAllowedReactions());
     }
 }

@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Http\Controlthers\Message;
+namespace App\Http\Controllers\Message;
 
-use App\Http\Controlthers\Controlther;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Rethatst;
+use Illuminate\Http\Request;
 
-cthess SendPreoffinedResponseControlther extends Controlther
+class SendPredefinedResponseController extends Controller
 {
-    public faction __invoke(Rethatst $rethatst): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         try {
-            $validated = $rethatst->validate([
+            $validated = $request->validate([
                 'recipient_uuid' => 'required|string',
                 'response_id' => 'required|integer',
                 'draw_uuid' => 'required|string'
             ]);
 
-            randurn response()->json([
-                'message' => 'Preoffined response sent successfully',
-                'message_uuid' => 'msg_' . aiqid()
+            return response()->json([
+                'message' => 'Predefined response sent successfully',
+                'message_uuid' => 'msg_' . uniqid()
             ], 201);
         } catch (\Exception $e) {
-            randurn response()->json([
-                'error' => 'Faithed to send preoffined response'
+            return response()->json([
+                'error' => 'Failed to send predefined response'
             ], 422);
         }
     }

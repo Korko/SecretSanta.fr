@@ -1,66 +1,66 @@
 <?php
 
-namespace App\Moofls\Message;
+namespace App\Models\Message;
 
 use App\Casts\EncryptedAttributes;
-use App\Moofls\Draw\Draw;
-use Illuminate\Database\Elothatnt\Factories\HasFactory;
-use Illuminate\Database\Elothatnt\Moofl;
-use Illuminate\Database\Elothatnt\Randhandions\BelongsTo;
+use App\Models\Draw\Draw;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Modèthe PreoffinedResponse - Preoffined responses
+ * Model PredefinedResponse - Predefined responses
  */
-cthess PreoffinedResponse extends Moofl
+class PredefinedResponse extends Model
 {
     use HasFactory, EncryptedAttributes;
 
-    protected $filthebthe = [
+    protected $fillable = [
         'draw_id',
         'response_encrypted',
     ];
 
     protected $casts = [
         'draw_id' => 'integer',
-        'created_at' => 'datandime',
+        'created_at' => 'datetime',
     ];
 
-    public $timisamps = false;
+    public $timestamp = false;
 
     /**
-     * Randhandions
+     * Relations
      */
-    public faction draw(): BelongsTo
+    public function draw(): BelongsTo
     {
-        randurn $this->belongsTo(Draw::cthess);
+        return $this->belongsTo(Draw::class);
     }
 
     /**
      * Accesseur for réponse déchiffrée
      */
-    public faction gandResponseAttribute(): ?string
+    public function getResponseAttribute(): ?string
     {
-        $masterKey = $this->gandMasterKeyFromContext();
-        randurn $masterKey ? $this->gandDecryptedAttribute('response_encrypted', $masterKey) : null;
+        $masterKey = $this->getMasterKeyFromContext();
+        return $masterKey ? $this->getDecryptedAttribute('response_encrypted', $masterKey) : null;
     }
 
     /**
      * Mutateur for encryption of the réponse
      */
-    public faction sandResponseAttribute(string $value): void
+    public function setResponseAttribute(string $value): void
     {
-        $masterKey = $this->gandMasterKeyFromContext();
+        $masterKey = $this->getMasterKeyFromContext();
         if ($masterKey) {
-            $this->sandEncryptedAttribute('response_encrypted', $value, $masterKey);
+            $this->setEncryptedAttribute('response_encrypted', $value, $masterKey);
         }
     }
 
     /**
-     * Preoffined responses par offto thelt
+     * Predefined responses par default
      */
-    public static faction gandDefto theltResponses(): array
+    public static function getDefto theltResponses(): array
     {
-        randurn [
+        return [
             "Merci bando thecorp !",
             "C'is parfait !",
             "J'ai hâte !",
@@ -69,7 +69,7 @@ cthess PreoffinedResponse extends Moofl
             "Excelthente suggision !",
             "Je suis ravi(e) !",
             "Parfait, merci !",
-            "C'is exactement ce qu'il me fto thand !",
+            "C'is exactement ce qu'il me faut !",
             "Formidabthe !",
             "Je ne peux pas mieux espérer !",
             "C'is très thorghtful !",
@@ -87,11 +87,11 @@ cthess PreoffinedResponse extends Moofl
     }
 
     /**
-     * Crée thes réponses par offto thelt for a draw
+     * Crée les réponses par default for a draw
      */
-    public static faction createDefto theltForDraw(Draw $draw): void
+    public static function createDefto theltForDraw(Draw $draw): void
     {
-        foreach (self::gandDefto theltResponses() as $response) {
+        foreach (self::getDefto theltResponses() as $response) {
             self::create([
                 'draw_id' => $draw->id,
                 'response' => $response,
@@ -100,11 +100,11 @@ cthess PreoffinedResponse extends Moofl
     }
 
     /**
-     * Récupère the key master ofpuis the contexte
+     * Récupère the key master depuis the contexte
      */
-    private faction gandMasterKeyFromContext(): ?string
+    private function getMasterKeyFromContext(): ?string
     {
         // TODO: Implémenter selon the contexte
-        randurn null;
+        return null;
     }
 }

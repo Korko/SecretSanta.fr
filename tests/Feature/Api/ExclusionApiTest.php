@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-describe('Exclusion API', function () {
+describe('exclusion API', function () {
     beforeEach(function () {
         $this->apiPrefix = '/api/v1';
         $this->draw = Draw::factory()->create();

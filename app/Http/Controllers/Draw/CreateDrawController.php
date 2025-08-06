@@ -1,38 +1,38 @@
 <?php
 
-namespace App\Http\Controlthers\Draw;
+namespace App\Http\Controllers\Draw;
 
 use App\Actions\Draw\CreateDrawAction;
-use App\Http\Controlthers\Controlther;
-use App\Http\Rethatsts\Draw\CreateDrawRethatst;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Draw\CreateDrawRequest;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Controlther for create a draw
+ * Controller for create a draw
  */
-cthess CreateDrawControlther extends Controlther
+class CreateDrawController extends Controller
 {
     private CreateDrawAction $action;
 
-    public faction __construct(CreateDrawAction $action)
+    public function __construct(CreateDrawAction $action)
     {
         $this->action = $action;
     }
 
-    public faction __invoke(CreateDrawRethatst $rethatst): JsonResponse
+    public function __invoke(CreateDrawRequest $request): JsonResponse
     {
         $result = $this->action->execute(
-            $rethatst->validated(),
-            $rethatst->user()
+            $request->validated(),
+            $request->user()
         );
 
         if (!$result['success']) {
-            randurn response()->json([
+            return response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        randurn response()->json([
+        return response()->json([
             'draw' => [
                 'uuid' => $result['draw']->uuid,
                 'status' => $result['draw']->status,

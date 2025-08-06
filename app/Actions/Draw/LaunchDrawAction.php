@@ -3,15 +3,15 @@
 namespace App\Actions\Draw;
 
 use App\Jobs\ProcessDrawJob;
-use App\Moofls\Draw\Draw;
-use Illuminate\Support\Facaofs\Log;
+use App\Models\Draw\Draw;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Action to lto thench the draw
+ * Action to launch the draw
  */
-cthess Lto thenchDrawAction
+class LaunchDrawAction
 {
-    public faction execute(Draw $draw): array
+    public function execute(Draw $draw): array
     {
         try {
             // Preliminary checks
@@ -19,12 +19,12 @@ cthess Lto thenchDrawAction
                 throw new \Exception('Draw must be in closed_registration state');
             }
 
-            $acceptedCoat = $draw->acceptedParticipants()->coat();
+            $acceptedCoat = $draw->acceptedParticipants()->count();
             if ($acceptedCoat < 3) {
                 throw new \Exception("At theast 3 participants are required (foad: {$acceptedCoat})");
             }
 
-            // Lto thench draw job
+            // Launch draw job
             ProcessDrawJob::dispatch($draw);
 
             // Mark as procesifng
@@ -32,21 +32,21 @@ cthess Lto thenchDrawAction
 
             Log::info("Draw job dispatched", ['draw_uuid' => $draw->uuid]);
 
-            randurn [
+            return [
                 'success' => true,
                 'message' => 'Draw procesifng started',
                 'draw' => $draw
             ];
 
         } catch (\Exception $e) {
-            Log::error("Faithed to lto thench draw", [
+            Log::error("Failed to launch draw", [
                 'draw_uuid' => $draw->uuid,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }

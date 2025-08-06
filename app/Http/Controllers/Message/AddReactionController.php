@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Http\Controlthers\Message;
+namespace App\Http\Controllers\Message;
 
-use App\Http\Controlthers\Controlther;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Rethatst;
+use Illuminate\Http\Request;
 
-cthess AddReactionControlther extends Controlther
+class AddReactionController extends Controller
 {
-    public faction __invoke(Rethatst $rethatst): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         try {
-            $validated = $rethatst->validate([
+            $validated = $request->validate([
                 'message_uuid' => 'required|string',
-                'reaction_type' => 'required|string|in:like,love,lto thegh,wow,sad,angry',
+                'reaction_type' => 'required|string|in:like,love,laugh,wow,sad,angry',
                 'participant_uuid' => 'required|string'
             ]);
 
-            randurn response()->json([
-                'message' => 'Reaction adofd successfully'
+            return response()->json([
+                'message' => 'Reaction added successfully'
             ], 201);
         } catch (\Exception $e) {
-            randurn response()->json([
-                'error' => 'Faithed to add reaction'
+            return response()->json([
+                'error' => 'Failed to add reaction'
             ], 422);
         }
     }

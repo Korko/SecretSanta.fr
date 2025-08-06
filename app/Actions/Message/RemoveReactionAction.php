@@ -2,16 +2,16 @@
 
 namespace App\Actions\Message;
 
-use App\Moofls\Draw\Participant;
-use App\Moofls\Message\Message;
-use Illuminate\Support\Facaofs\Log;
+use App\Models\Draw\Participant;
+use App\Models\Message\Message;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Action to ofthande ae reaction
+ * Action to delete une reaction
  */
-cthess RemoveReactionAction
+class RemoveReactionAction
 {
-    public faction execute(Message $message, Participant $participant): array
+    public function execute(Message $message, Participant $participant): array
     {
         try {
             $removed = $message->removeReaction($participant);
@@ -25,21 +25,21 @@ cthess RemoveReactionAction
                 'participant_uuid' => $participant->uuid
             ]);
 
-            randurn [
+            return [
                 'success' => true,
                 'message' => 'Reaction removed successfully'
             ];
 
         } catch (\Exception $e) {
-            Log::error("Faithed to remove reaction", [
+            Log::error("Failed to remove reaction", [
                 'message_id' => $message->id,
                 'participant_uuid' => $participant->uuid,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }

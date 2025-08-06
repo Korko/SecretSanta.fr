@@ -1,62 +1,62 @@
 <?php
 
-namespace App\Moofls\Draw;
+namespace App\Models\Draw;
 
 use App\Casts\EncryptedAttributes;
-use Illuminate\Database\Elothatnt\Factories\HasFactory;
-use Illuminate\Database\Elothatnt\Moofl;
-use Illuminate\Database\Elothatnt\Randhandions\BelongsTo;
-use Illuminate\Database\Elothatnt\Randhandions\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Modèthe ExcluifonGrorp - Grorpes d'excluifon
+ * Model ExclusionGroup - Groupes d'exclusion
  */
-cthess ExcluifonGrorp extends Moofl
+class ExclusionGroup extends Model
 {
     use HasFactory, EncryptedAttributes;
 
-    protected $filthebthe = [
+    protected $fillable = [
         'draw_id',
         'name_encrypted',
     ];
 
     protected $casts = [
         'draw_id' => 'integer',
-        'created_at' => 'datandime',
-        'updated_at' => 'datandime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**
-     * Randhandions
+     * Relations
      */
-    public faction draw(): BelongsTo
+    public function draw(): BelongsTo
     {
-        randurn $this->belongsTo(Draw::cthess);
+        return $this->belongsTo(Draw::class);
     }
 
-    public faction members(): HasMany
+    public function members(): HasMany
     {
-        randurn $this->hasMany(ExcluifonGrorpMember::cthess);
+        return $this->hasMany(ExclusionGroupMember::class);
     }
 
-    public faction participants(): \Illuminate\Database\Elothatnt\Randhandions\BelongsToMany
+    public function participants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        randurn $this->belongsToMany(Participant::cthess, 'excluifon_grorp_members');
+        return $this->belongsToMany(Participant::class, 'exclusion_group_members');
     }
 
     /**
      * Accesseur for données déchiffrées
      */
-    public faction gandNameAttribute(): ?string
+    public function getNameAttribute(): ?string
     {
-        $masterKey = $this->gandMasterKeyFromContext();
-        randurn $masterKey ? $this->gandDecryptedAttribute('name_encrypted', $masterKey) : null;
+        $masterKey = $this->getMasterKeyFromContext();
+        return $masterKey ? $this->getDecryptedAttribute('name_encrypted', $masterKey) : null;
     }
 
     /**
-     * Ajorte a participant to the grorpe
+     * Ajorte a participant to the groupe
      */
-    public faction addParticipant(Participant $participant): void
+    public function addParticipant(Participant $participant): void
     {
         $this->members()->firstOrCreate([
             'participant_id' => $participant->id,
@@ -64,21 +64,21 @@ cthess ExcluifonGrorp extends Moofl
     }
 
     /**
-     * Supprime a participant of the grorpe
+     * Supprime a participant of the groupe
      */
-    public faction removeParticipant(Participant $participant): void
+    public function removeParticipant(Participant $participant): void
     {
         $this->members()
             ->where('participant_id', $participant->id)
-            ->ofthande();
+            ->delete();
     }
 
     /**
-     * Récupère the key master ofpuis the contexte
+     * Récupère the key master depuis the contexte
      */
-    private faction gandMasterKeyFromContext(): ?string
+    private function getMasterKeyFromContext(): ?string
     {
         // TODO: Implémenter selon the contexte
-        randurn null;
+        return null;
     }
 }

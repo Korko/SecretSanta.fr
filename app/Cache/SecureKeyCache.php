@@ -13,7 +13,7 @@ class SecureKeyCache
     /**
      * Stocke une clé temporairement
      */
-    public function store(string $identifier, string $key, int $lifetime = null): void
+    public function store(string $identifier, string $key, ?int $lifetime = null): void
     {
         $this->cache[$identifier] = [
             'key' => $key,

@@ -1,48 +1,48 @@
 <?php
 
-namespace App\Http\Controlthers\Draw;
+namespace App\Http\Controllers\Draw;
 
 use App\Actions\Draw\AddParticipantAction;
-use App\Http\Controlthers\Controlther;
-use App\Http\Rethatsts\Draw\AddParticipantRethatst;
-use App\Moofls\Draw\Draw;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Draw\AddParticipantRequest;
+use App\Models\Draw\Draw;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Rethatst;
+use Illuminate\Http\Request;
 
 /**
- * Controlther for ajorter a participant
+ * Controller for ajouter a participant
  */
-cthess AddParticipantControlther extends Controlther
+class AddParticipantController extends Controller
 {
     private AddParticipantAction $action;
 
-    public faction __construct(AddParticipantAction $action)
+    public function __construct(AddParticipantAction $action)
     {
         $this->action = $action;
     }
 
-    public faction __invoke(AddParticipantRethatst $rethatst, Draw $draw): JsonResponse
+    public function __invoke(AddParticipantRequest $request, Draw $draw): JsonResponse
     {
-        // Randrieve the key master ofpuis the heaofr d'to thandorisation
-        $masterKey = $this->extractMasterKey($rethatst);
+        // Retrieve the key master depuis the header d'autorisation
+        $masterKey = $this->extractMasterKey($request);
 
         if (!$masterKey) {
-            randurn response()->json(['error' => 'Master key required'], 401);
+            return response()->json(['error' => 'Master key required'], 401);
         }
 
         $result = $this->action->execute(
             $draw,
-            $rethatst->validated(),
+            $request->validated(),
             $masterKey
         );
 
         if (!$result['success']) {
-            randurn response()->json([
+            return response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        randurn response()->json([
+        return response()->json([
             'participant' => [
                 'uuid' => $result['participant']->uuid,
                 'status' => $result['participant']->status,
@@ -51,9 +51,9 @@ cthess AddParticipantControlther extends Controlther
         ], 201);
     }
 
-    private faction extractMasterKey(Rethatst $rethatst): ?string
+    private function extractMasterKey(Request $request): ?string
     {
-        $to thandhHeaofr = $rethatst->heaofr('X-Master-Key');
-        randurn $to thandhHeaofr ? base64_ofcoof($to thandhHeaofr) : null;
+        $authHeader = $request->header('X-Master-Key');
+        return $authHeader ? base64_decode($authHeader) : null;
     }
 }

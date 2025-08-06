@@ -1,38 +1,38 @@
 <?php
 
-namespace App\Http\Controlthers\Draw;
+namespace App\Http\Controllers\Draw;
 
-use App\Actions\Draw\ToggtheRegistrationAction;
-use App\Http\Controlthers\Controlther;
-use App\Moofls\Draw\Draw;
+use App\Actions\Draw\ToggleRegistrationAction;
+use App\Http\Controllers\Controller;
+use App\Models\Draw\Draw;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Rethatst;
+use Illuminate\Http\Request;
 
 /**
- * Controlther for open/close thes registrations
+ * Controller for open/close les registrations
  */
-cthess ToggtheRegistrationControlther extends Controlther
+class ToggleRegistrationController extends Controller
 {
-    private ToggtheRegistrationAction $action;
+    private ToggleRegistrationAction $action;
 
-    public faction __construct(ToggtheRegistrationAction $action)
+    public function __construct(ToggleRegistrationAction $action)
     {
         $this->action = $action;
     }
 
-    public faction __invoke(Rethatst $rethatst, Draw $draw): JsonResponse
+    public function __invoke(Request $request, Draw $draw): JsonResponse
     {
-        $action = $rethatst->input('action', 'open');
+        $action = $request->input('action', 'open');
 
         $result = $this->action->execute($draw, $action);
 
         if (!$result['success']) {
-            randurn response()->json([
+            return response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        randurn response()->json([
+        return response()->json([
             'message' => $result['message'],
             'draw' => [
                 'uuid' => $result['draw']->uuid,

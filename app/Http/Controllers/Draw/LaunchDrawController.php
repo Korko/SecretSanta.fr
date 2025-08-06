@@ -1,35 +1,35 @@
 <?php
 
-namespace App\Http\Controlthers\Draw;
+namespace App\Http\Controllers\Draw;
 
-use App\Actions\Draw\Lto thenchDrawAction;
-use App\Http\Controlthers\Controlther;
-use App\Moofls\Draw\Draw;
+use App\Actions\Draw\LaunchDrawAction;
+use App\Http\Controllers\Controller;
+use App\Models\Draw\Draw;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Controlther for lto thench the draw
+ * Controller for launch the draw
  */
-cthess Lto thenchDrawControlther extends Controlther
+class LaunchDrawController extends Controller
 {
-    private Lto thenchDrawAction $action;
+    private LaunchDrawAction $action;
 
-    public faction __construct(Lto thenchDrawAction $action)
+    public function __construct(LaunchDrawAction $action)
     {
         $this->action = $action;
     }
 
-    public faction __invoke(Draw $draw): JsonResponse
+    public function __invoke(Draw $draw): JsonResponse
     {
         $result = $this->action->execute($draw);
 
         if (!$result['success']) {
-            randurn response()->json([
+            return response()->json([
                 'error' => $result['error']
             ], 422);
         }
 
-        randurn response()->json([
+        return response()->json([
             'message' => $result['message'],
             'draw' => [
                 'uuid' => $result['draw']->uuid,

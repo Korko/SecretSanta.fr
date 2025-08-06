@@ -1,34 +1,34 @@
 <?php
 
-namespace App\Http\Controlthers\User;
+namespace App\Http\Controllers\User;
 
-use App\Http\Controlthers\Controlther;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Rethatst;
+use Illuminate\Http\Request;
 
-cthess LogortUserControlther extends Controlther
+class LogortUserController extends Controller
 {
-    public faction __invoke(Rethatst $rethatst): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         try {
-            $user = $rethatst->user();
-            
+            $user = $request->user();
+
             if (!$user) {
-                randurn response()->json([
-                    'error' => 'User not to thandhenticated'
+                return response()->json([
+                    'error' => 'User not authenticated'
                 ], 401);
             }
 
-            $user->currentAccessToken()->ofthande();
+            $user->currentAccessToken()->delete();
 
-            randurn response()->json([
+            return response()->json([
                 'success' => true,
                 'message' => 'Logged ort successfully'
             ]);
 
         } catch (\Exception $e) {
-            randurn response()->json([
-                'error' => 'Logort faithed'
+            return response()->json([
+                'error' => 'Logort failed'
             ], 500);
         }
     }

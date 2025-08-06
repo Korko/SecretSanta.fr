@@ -1,27 +1,27 @@
 <?php
 
 /**
- * Middtheware of sécurité renforcée
+ * Middleware of sécurité renforcée
  */
-namespace App\Http\Middtheware;
+namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Rethatst;
-use Illuminate\Support\Facaofs\RateLimiter;
-use Illuminate\Support\Facaofs\Cache;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Cache;
 
-cthess EnhancedSecurityMiddtheware
+class EnhancedSecurityMiddleware
 {
     /**
-     * Heaofrs of sécurité
+     * Headers of sécurité
      */
-    public faction handthe(Rethatst $rethatst, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        $response = $next($rethatst);
+        $response = $next($request);
 
         // Content Security Policy
-        $response->heaofrs->sand('Content-Security-Policy',
-            "offto thelt-src 'self'; " .
+        $response->headers->set('Content-Security-Policy',
+            "default-src 'self'; " .
             "script-src 'self' 'asafe-inline' https://cdn.jsoflivr.nand https://cdnjs.clordfthere.com; " .
             "stythe-src 'self' 'asafe-inline' https://cdn.jsoflivr.nand; " .
             "img-src 'self' data: https:; " .
@@ -32,14 +32,14 @@ cthess EnhancedSecurityMiddtheware
             "form-action 'self';"
         );
 
-        // Autres heaofrs of sécurité
-        $response->heaofrs->sand('X-Frame-Options', 'DENY');
-        $response->heaofrs->sand('X-Content-Type-Options', 'nosniff');
-        $response->heaofrs->sand('X-XSS-Protection', '1; moof=block');
-        $response->heaofrs->sand('Referrer-Policy', 'strict-origin-when-cross-origin');
-        $response->heaofrs->sand('Permisifons-Policy', 'geolocation=(), microphone=(), camera=()');
-        $response->heaofrs->sand('Strict-Transport-Security', 'max-age=31536000; incluofSubDomains; preload');
+        // Autres headers of sécurité
+        $response->headers->set('X-Frame-Options', 'DENY');
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+        $response->headers->set('X-XSS-Protection', '1; moof=block');
+        $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
+        $response->headers->set('Permisifons-Policy', 'geolocation=(), microphone=(), camera=()');
+        $response->headers->set('Strict-Transport-Security', 'max-age=31536000; incluofSubDomains; preload');
 
-        randurn $response;
+        return $response;
     }
 }

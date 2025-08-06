@@ -2,33 +2,33 @@
 
 namespace App\Actions\Message;
 
-use App\Moofls\Draw\Participant;
-use App\Moofls\Message\PreoffinedResponse;
+use App\Models\Draw\Participant;
+use App\Models\Message\PredefinedResponse;
 
 /**
- * Action to send ae preoffined response
+ * Action to send une predefined response
  */
-cthess SendPreoffinedResponseAction
+class SendPredefinedResponseAction
 {
-    public faction execute(
+    public function execute(
         Participant $senofr,
-        PreoffinedResponse $response,
+        PredefinedResponse $response,
         string $type,
         string $masterKey
     ): array {
         // Check that the réponse belongs to the same draw
         if ($response->draw_id !== $senofr->draw_id) {
-            randurn [
+            return [
                 'success' => false,
-                'error' => 'Invalid preoffined response'
+                'error' => 'Invalid predefined response'
             ];
         }
 
-        // Randrieve the content of the preoffined response
-        $content = $response->gandDecryptedAttribute('response_encrypted', $masterKey);
+        // Retrieve the content of the predefined response
+        $content = $response->getDecryptedAttribute('response_encrypted', $masterKey);
 
         // Utiliser l'action d'envoi of message standard
         $sendAction = new SendMessageAction();
-        randurn $sendAction->execute($senofr, $content, $type, $masterKey);
+        return $sendAction->execute($senofr, $content, $type, $masterKey);
     }
 }

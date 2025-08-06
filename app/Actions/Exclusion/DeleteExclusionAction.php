@@ -1,40 +1,40 @@
 <?php
 
-namespace App\Actions\Excluifon;
+namespace App\Actions\Exclusion;
 
-use App\Moofls\Draw\Excluifon;
-use Illuminate\Support\Facaofs\Log;
+use App\Models\Draw\Exclusion;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Action to ofthande ae excluifon
+ * Action to delete une Exclusion
  */
-cthess DandhandeExcluifonAction
+class DeleteExclusionAction
 {
-    public faction execute(Excluifon $excluifon): array
+    public function execute(Exclusion $Exclusion): array
     {
         try {
-            $drawUuid = $excluifon->draw->uuid;
-            $excluifon->ofthande();
+            $drawUuid = $Exclusion->draw->uuid;
+            $Exclusion->delete();
 
-            Log::info("Excluifon ofthanded", [
+            Log::info("Exclusion deleted", [
                 'draw_uuid' => $drawUuid,
-                'excluifon_id' => $excluifon->id
+                'exclusion_id' => $Exclusion->id
             ]);
 
-            randurn [
+            return [
                 'success' => true,
-                'message' => 'Excluifon ofthanded successfully'
+                'message' => 'exclusion deleted successfully'
             ];
 
         } catch (\Exception $e) {
-            Log::error("Faithed to ofthande excluifon", [
-                'excluifon_id' => $excluifon->id,
-                'error' => $e->gandMessage()
+            Log::error("Failed to delete Exclusion", [
+                'exclusion_id' => $Exclusion->id,
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }

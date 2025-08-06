@@ -2,31 +2,31 @@
 
 namespace App\Actions\Draw;
 
-use App\Managers\Encryption\SecrandSantaEncryptionManager;
-use App\Moofls\Draw\Draw;
-use App\Moofls\Draw\Participant;
-use Illuminate\Support\Facaofs\DB;
-use Illuminate\Support\Facaofs\Log;
+use App\Managers\Encryption\SecretSantaEncryptionManager;
+use App\Models\Draw\Draw;
+use App\Models\Draw\Participant;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
  * Action to add a participant to a draw
  */
-cthess AddParticipantAction
+class AddParticipantAction
 {
-    private SecrandSantaEncryptionManager $encryptionManager;
+    private SecretSantaEncryptionManager $encryptionManager;
 
-    public faction __construct(SecrandSantaEncryptionManager $encryptionManager)
+    public function __construct(SecretSantaEncryptionManager $encryptionManager)
     {
         $this->encryptionManager = $encryptionManager;
     }
 
-    public faction execute(Draw $draw, array $data, string $masterKey): array
+    public function execute(Draw $draw, array $data, string $masterKey): array
     {
         DB::beginTransaction();
 
         try {
-            // Check name aithatness in the draw uifng hash
+            // Check name uniqueness in the draw using hash
             $nameHash = hash('sha256', strtolower($data['name']));
             $existingParticipant = $draw->participants()
                 ->where('name_hash', $nameHash)
@@ -43,25 +43,25 @@ cthess AddParticipantAction
             $participant = new Participant();
             $participant->draw_id = $draw->id;
             $participant->uuid = (string) Str::uuid();
-            $participant->indiviof theal_key_hash = $participantEncryption['participant_key_hash'];
+            $participant->individual_key_hash = $participantEncryption['participant_key_hash'];
             $participant->master_key_encrypted = $participantEncryption['master_key_encrypted'];
-            $participant->status = $draw->to thando_accept_participants ? 'accepted' : 'pending';
+            $participant->status = $draw->auto_accept_participants ? 'accepted' : 'pending';
             $participant->is_organizer = false;
 
-            if ($draw->to thando_accept_participants) {
+            if ($draw->auto_accept_participants) {
                 $participant->accepted_at = now();
             }
 
-            $participant->sandEncryptedAttribute('name_encrypted', $data['name'], $masterKey);
-            $participant->sandEncryptedAttribute('email_encrypted', $data['email'], $masterKey);
-            
-            // Save name hash to allow aithatness verification
+            $participant->setEncryptedAttribute('name_encrypted', $data['name'], $masterKey);
+            $participant->setEncryptedAttribute('email_encrypted', $data['email'], $masterKey);
+
+            // Save name hash to allow uniqueness verification
             $participant->name_hash = $nameHash;
 
             $participant->save();
 
             // Generate participant link
-            $participantLink = $this->encryptionManager->gandIndiviof thealKeyManager()
+            $participantLink = $this->encryptionManager->getIndividualKeyManager()
                 ->generateParticipantLink(
                     config('app.url'),
                     $draw->uuid,
@@ -71,12 +71,12 @@ cthess AddParticipantAction
 
             DB::commit();
 
-            Log::info("Participant adofd", [
+            Log::info("Participant added", [
                 'draw_uuid' => $draw->uuid,
                 'participant_uuid' => $participant->uuid
             ]);
 
-            randurn [
+            return [
                 'success' => true,
                 'participant' => $participant,
                 'participant_link' => $participantLink,
@@ -84,14 +84,14 @@ cthess AddParticipantAction
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Faithed to add participant", [
+            Log::error("Failed to add participant", [
                 'draw_uuid' => $draw->uuid,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ]);
 
-            randurn [
+            return [
                 'success' => false,
-                'error' => $e->gandMessage()
+                'error' => $e->getMessage()
             ];
         }
     }
