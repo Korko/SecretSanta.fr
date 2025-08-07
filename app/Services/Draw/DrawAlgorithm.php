@@ -394,9 +394,7 @@ class DrawAlgorithm
         }
 
         // Sort by descending score (more options = better)
-        arsort($scores);
-
-        return array_keys($scores);
+        return array_keys_sort($scores, SORT_DESC);
     }
 
     /**
@@ -429,9 +427,10 @@ class DrawAlgorithm
             return false;
         }
 
-        // Check l'uniqueness des receivers
+        // Check uniqueness of receiver
         $receivers = array_values($this->assignments);
-        if (count($receivers) !== count(array_unique($receivers))) {
+        $uniqueReceivers = array_unique($receivers);
+        if (!array_all($uniqueReceivers, fn($receiver) => array_count_values($receivers)[$receiver] === 1)) {
             return false;
         }
 

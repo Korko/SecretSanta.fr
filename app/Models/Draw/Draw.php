@@ -3,6 +3,7 @@
 namespace App\Models\Draw;
 
 use App\Casts\EncryptedAttributes;
+use App\Enums\DrawStatus;
 use App\Models\Message\Message;
 use App\Models\Message\PredefinedResponse;
 use App\Models\User\User;
@@ -21,6 +22,19 @@ use Illuminate\Support\Str;
 class Draw extends Model
 {
     use HasFactory, EncryptedAttributes;
+
+    public DrawStatus $status {
+        set(DrawStatus|string $value) {
+            $enumValue = $value instanceof DrawStatus ? $value : DrawStatus::from($value);
+            $this->attributes['status'] = $enumValue->value;
+        }
+
+        get => DrawStatus::from($this->attributes['status'] ?? 'draft');
+    }
+
+    public private(set) ?string $uuid = null;
+    public private(set) ?\DateTime $drawn_at = null;
+    public private(set) ?\DateTime $revealed_at = null;
 
     protected $fillable = [
         'user_id',
@@ -41,6 +55,7 @@ class Draw extends Model
 
     protected $casts = [
         'user_id' => 'integer',
+        'status' => DrawStatus::class,
         'auto_accept_participants' => 'boolean',
         'allow_target_messages' => 'boolean',
         'registration_deadline' => 'datetime',
@@ -167,64 +182,69 @@ class Draw extends Model
      */
     public function isDraft(): bool
     {
-        return $this->status === 'draft';
+        return $this->status === DrawStatus::DRAFT;
     }
 
     public function isOpenForRegistration(): bool
     {
-        return $this->status === 'open_registration';
+        return $this->status === DrawStatus::OPEN_REGISTRATION;
     }
 
     public function isDrawn(): bool
     {
-        return in_array($this->status, ['drawn', 'revealed']);
+        return $this->status->isComplete();
     }
 
     public function isRevealed(): bool
     {
-        return $this->status === 'revealed';
+        return $this->status === DrawStatus::REVEALED;
     }
 
     public function canAcceptRegistrations(): bool
     {
-        if (!$this->isOpenForRegistration()) {
-            return false;
-        }
-
-        if ($this->registration_deadline && now()->isAfter($this->registration_deadline)) {
-            return false;
-        }
-
-        return true;
+        return $this->status->canAcceptRegistrations() &&
+               (!$this->registration_deadline || now()->isBefore($this->registration_deadline));
     }
 
     /**
-     * Draw actions
+     * Draw actions with transition validation
      */
     public function openRegistrations(): void
     {
-        $this->update(['status' => 'open_registration']);
+        if (!$this->status->canTransitionTo(DrawStatus::OPEN_REGISTRATION)) {
+            throw new \InvalidArgumentException('Cannot transition to open registration from current status');
+        }
+        $this->status = DrawStatus::OPEN_REGISTRATION;
+        $this->save();
     }
 
     public function closeRegistrations(): void
     {
-        $this->update(['status' => 'closed_registration']);
+        if (!$this->status->canTransitionTo(DrawStatus::CLOSED_REGISTRATION)) {
+            throw new \InvalidArgumentException('Cannot close registrations from current status');
+        }
+        $this->status = DrawStatus::CLOSED_REGISTRATION;
+        $this->save();
     }
 
     public function markAsDrawn(): void
     {
-        $this->update([
-            'status' => 'drawn',
-            'drawn_at' => now(),
-        ]);
+        if (!$this->status->canTransitionTo(DrawStatus::DRAWN)) {
+            throw new \InvalidArgumentException('Cannot mark as drawn from current status');
+        }
+        $this->status = DrawStatus::DRAWN;
+        $this->drawn_at = now();
+        $this->save();
     }
 
     public function reveal(): void
     {
-        $this->update([
-            'status' => 'revealed',
-            'revealed_at' => now(),
-        ]);
+        if (!$this->status->canTransitionTo(DrawStatus::REVEALED)) {
+            throw new \InvalidArgumentException('Cannot reveal from current status');
+        }
+        $this->status = DrawStatus::REVEALED;
+        $this->revealed_at = now();
+        $this->save();
     }
 
     /**
