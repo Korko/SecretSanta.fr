@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class LogortUserController extends Controller
+class LogoutUserController extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {
@@ -28,7 +28,7 @@ class LogortUserController extends Controller
 
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Logort failed'
+                'error' => 'Logout failed'
             ], 500);
         }
     }

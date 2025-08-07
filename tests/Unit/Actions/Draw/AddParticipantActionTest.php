@@ -55,7 +55,7 @@ describe('AddParticipantAction', function () {
         $result = $this->action->execute($this->draw, $data, $this->masterKey);
 
         expect($result['success'])->toBeTrue();
-        expect($result['participant']->status)->toBe('accepted');
+        expect($result['participant']->status->value)->toBe('accepted');
         expect($result['participant']->accepted_at)->not->toBeNull();
     });
 

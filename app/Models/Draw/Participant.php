@@ -32,9 +32,6 @@ class Participant extends Model
         get => ParticipantStatus::from($this->attributes['status'] ?? 'pending');
     }
 
-    // Asymmetric Visibility
-    public private(set) ?string $uuid = null;
-    public private(set) ?\DateTime $accepted_at = null;
 
     protected $fillable = [
         'draw_id',

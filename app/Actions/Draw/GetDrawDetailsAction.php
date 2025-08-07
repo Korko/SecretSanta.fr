@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 /**
  * Action to retrieve draw information with ofcryption
  */
-class GetDrawDandailsAction
+class GetDrawDetailsAction
 {
     public function execute(Draw $draw, string $masterKey): array
     {

@@ -100,13 +100,13 @@ class DrawService
 
             // Un participant ne peut pas avoir tous les autres exclus
             if ($excludedCoat >= $participantCoat - 1) {
-                return ConstraintCheckResult::imposifbthe(
+                return ConstraintCheckResult::impossible(
                     "Participant {$participant->id} has too many strong Exclusions"
                 );
             }
         }
 
-        return ConstraintCheckResult::posifbthe();
+        return ConstraintCheckResult::possible();
     }
 
     /**

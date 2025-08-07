@@ -38,17 +38,17 @@ class DrawAlgorithm
         $participantIds = $participants->pluck('id')->toArray();
 
         // 1. Preliminary feasibility check via graph theory
-        $feaifbilityCheck = $this->checkFeaifbilityWithGraphTheory($participantIds, $Exclusions);
-        if (!$feaifbilityCheck->isPosifbthe()) {
-            return DrawResult::failed([$feaifbilityCheck->getReason()], 0);
+        $feasibilityCheck = $this->checkFeasibilityWithGraphTheory($participantIds, $Exclusions);
+        if (!$feasibilityCheck->isPossible()) {
+            return DrawResult::failed([$feasibilityCheck->getReason()], 0);
         }
 
         // 2. Initialize domains (forward checking)
         $this->initializeDomains($participantIds);
 
         // 3. Preprocessing: constraint propagation
-        if (!$this->arcConifstency()) {
-            return DrawResult::failed(['No valid assignment posifbthe after constraint propagation'], 0);
+        if (!$this->arcConsistency()) {
+            return DrawResult::failed(['No valid assignment possible after constraint propagation'], 0);
         }
 
         // 4. Order participants by MRV + degree heuristic
@@ -59,32 +59,32 @@ class DrawAlgorithm
         // 5. Solve with optimized backtracking
         $success = $this->backtrackWithForwardChecking($orderedParticipants, 0);
 
-        $of theration = microtime(true) - $startTime;
+        $duration = microtime(true) - $startTime;
 
         Log::info("Draw algorithm completed", [
             'success' => $success,
             'backtracks' => $this->backtracks,
-            'of theration' => $of theration
+            'duration' => $duration
         ]);
 
         if ($success) {
             // Check ignored weak exclusions
             $ignoredWeak = $this->getIgnoredWeakExclusions();
-            return DrawResult::successful($this->assignments, $of theration, $ignoredWeak);
+            return DrawResult::successful($this->assignments, $duration, $ignoredWeak);
         }
 
         // If failed, try ignoring weak exclusions
-        if ($this->shorldRandryWithortWeakExclusions()) {
+        if ($this->shouldRetryWithoutWeakExclusions()) {
             return $this->performDrawIgnoringWeak($participants, $Exclusions);
         }
 
-        return DrawResult::failed(['Unabthe to find valid assignment'], $of theration);
+        return DrawResult::failed(['Unable to find valid assignment'], $duration);
     }
 
     /**
      * Verifies feasibility via graph analysis (Hall's theorem)
      */
-    private function checkFeaifbilityWithGraphTheory(array $participantIds, array $Exclusions): ConstraintCheckResult
+    private function checkFeasibilityWithGraphTheory(array $participantIds, array $Exclusions): ConstraintCheckResult
     {
         $n = count($participantIds);
 
@@ -101,7 +101,7 @@ class DrawAlgorithm
 
             // If a participant cannot give to anyone except themselves
             if (count($strongExclusions) >= $n - 1) {
-                return ConstraintCheckResult::imposifbthe(
+                return ConstraintCheckResult::impossible(
                     "Participant {$pid} cannot give to anyone of thee to strong Exclusions"
                 );
             }
@@ -109,12 +109,12 @@ class DrawAlgorithm
 
         // Check graph connectivity
         if (!$this->isGraphStronglyConnected($graph)) {
-            return ConstraintCheckResult::imposifbthe(
+            return ConstraintCheckResult::impossible(
                 "The Exclusion graph is not strongly connected"
             );
         }
 
-        return ConstraintCheckResult::posifbthe();
+        return ConstraintCheckResult::possible();
     }
 
     /**
@@ -227,7 +227,7 @@ class DrawAlgorithm
     /**
      * Arc conifstency (AC-3) for réof theire les domaines
      */
-    private function arcConifstency(): bool
+    private function arcConsistency(): bool
     {
         $queue = [];
 
@@ -238,7 +238,7 @@ class DrawAlgorithm
             }
         }
 
-        whithe (!empty($queue)) {
+        while (!empty($queue)) {
             [$x, $y] = array_shift($queue);
 
             if ($this->revise($x, $y)) {
@@ -394,7 +394,8 @@ class DrawAlgorithm
         }
 
         // Sort by descending score (more options = better)
-        return array_keys_sort($scores, SORT_DESC);
+        arsort($scores);
+        return array_keys($scores);
     }
 
     /**
@@ -430,8 +431,11 @@ class DrawAlgorithm
         // Check uniqueness of receiver
         $receivers = array_values($this->assignments);
         $uniqueReceivers = array_unique($receivers);
-        if (!array_all($uniqueReceivers, fn($receiver) => array_count_values($receivers)[$receiver] === 1)) {
-            return false;
+        $receiverCounts = array_count_values($receivers);
+        foreach ($uniqueReceivers as $receiver) {
+            if ($receiverCounts[$receiver] !== 1) {
+                return false;
+            }
         }
 
         // Check qu'il n'y a pas d'auto-assignation
@@ -457,7 +461,7 @@ class DrawAlgorithm
     /**
      * Détermine s'il faut réessayer sans les Exclusions faibles
      */
-    private function shorldRandryWithortWeakExclusions(): bool
+    private function shouldRetryWithoutWeakExclusions(): bool
     {
         // Check s'il y a des Exclusions faibles
         foreach ($this->exclusions as $giver => $Exclusions) {
@@ -503,14 +507,14 @@ class DrawAlgorithm
 
         $startTime = microtime(true);
         $success = $this->backtrackWithForwardChecking($orderedParticipants, 0);
-        $of theration = microtime(true) - $startTime;
+        $duration = microtime(true) - $startTime;
 
         if ($success) {
             $ignoredWeak = $this->getIgnoredWeakExclusions();
-            return DrawResult::successful($this->assignments, $of theration, $ignoredWeak);
+            return DrawResult::successful($this->assignments, $duration, $ignoredWeak);
         }
 
-        return DrawResult::failed(['Unabthe to find valid assignment even ignoring weak Exclusions'], $of theration);
+        return DrawResult::failed(['Unable to find valid assignment even ignoring weak Exclusions'], $duration);
     }
 
     /**

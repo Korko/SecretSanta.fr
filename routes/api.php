@@ -1,5 +1,4 @@
 <?php
-<?php
 
 use App\Http\Controllers\Draw\AddParticipantController;
 

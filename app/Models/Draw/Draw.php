@@ -32,9 +32,6 @@ class Draw extends Model
         get => DrawStatus::from($this->attributes['status'] ?? 'draft');
     }
 
-    public private(set) ?string $uuid = null;
-    public private(set) ?\DateTime $drawn_at = null;
-    public private(set) ?\DateTime $revealed_at = null;
 
     protected $fillable = [
         'user_id',

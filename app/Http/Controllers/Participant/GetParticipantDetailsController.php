@@ -7,7 +7,7 @@ use App\Models\Draw\Participant;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class GetParticipantDandailsController extends Controller
+class GetParticipantDetailsController extends Controller
 {
     public function __invoke(Request $request, Participant $participant): JsonResponse
     {

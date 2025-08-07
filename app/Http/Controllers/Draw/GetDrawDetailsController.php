@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Draw;
 
-use App\Actions\Draw\GetDrawDandailsAction;
+use App\Actions\Draw\GetDrawDetailsAction;
 use App\Http\Controllers\Controller;
 use App\Models\Draw\Draw;
 use Illuminate\Http\JsonResponse;
@@ -11,11 +11,11 @@ use Illuminate\Http\Request;
 /**
  * Controller for obtenir les détails d'un draw
  */
-class GetDrawDandailsController extends Controller
+class GetDrawDetailsController extends Controller
 {
-    private GetDrawDandailsAction $action;
+    private GetDrawDetailsAction $action;
 
-    public function __construct(GetDrawDandailsAction $action)
+    public function __construct(GetDrawDetailsAction $action)
     {
         $this->action = $action;
     }

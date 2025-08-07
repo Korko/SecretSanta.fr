@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 /**
  * Action to moderate a reported message
  */
-class MoofrateMessageAction
+class ModerateMessageAction
 {
     public function execute(
         Message $message,
