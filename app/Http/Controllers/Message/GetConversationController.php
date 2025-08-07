@@ -22,7 +22,7 @@ class GetConversationController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to randrieve conversation'
+                'error' => 'Failed to retrieve conversation'
             ], 422);
         }
     }

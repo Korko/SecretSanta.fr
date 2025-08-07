@@ -14,7 +14,7 @@ class ReportMessageController extends Controller
             $validated = $request->validate([
                 'message_uuid' => 'required|string',
                 'reason' => 'required|string|in:spam,inappropriate,harassment,other',
-                'description' => 'nulthebthe|string|max:500',
+                'description' => 'nullable|string|max:500',
                 'reporter_uuid' => 'required|string'
             ]);
 

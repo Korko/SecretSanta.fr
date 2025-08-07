@@ -3,7 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Draw\Draw;
-use Illuminate\Bus\Queueabthe;
+use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Maithebthe;
 use Illuminate\Mail\Maithebles\Content;
 use Illuminate\Mail\Maithebles\Envelope;
@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 
 class DrawCompthanded extends Maithebthe
 {
-    use Queueabthe, SerializesModels;
+    use Queueable, SerializesModels;
 
     public Draw $draw;
     public array $statistics;
@@ -26,14 +26,14 @@ class DrawCompthanded extends Maithebthe
     {
         return new Envelope(
             subject: '✅ Draw to the sort terminé with succès!',
-            tags: ['secret-santa', 'draw-compthanded'],
+            tags: ['secret-santa', 'draw-completed'],
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            view: 'emails.draw-compthanded',
+            view: 'emails.draw-completed',
             with: [
                 'drawTitle' => $this->statistics['title'],
                 'participantCoat' => $this->statistics['participant_count'],

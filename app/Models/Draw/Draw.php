@@ -32,7 +32,7 @@ class Draw extends Model
         'organizer_name_encrypted',
         'organizer_email_encrypted',
         'status',
-        'registration_ofadline',
+        'registration_deadline',
         'auto_accept_participants',
         'allow_target_messages',
         'drawn_at',
@@ -43,7 +43,7 @@ class Draw extends Model
         'user_id' => 'integer',
         'auto_accept_participants' => 'boolean',
         'allow_target_messages' => 'boolean',
-        'registration_ofadline' => 'datetime',
+        'registration_deadline' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'drawn_at' => 'datetime',
@@ -180,7 +180,7 @@ class Draw extends Model
             return false;
         }
 
-        if ($this->registration_ofadline && now()->isAfter($this->registration_ofadline)) {
+        if ($this->registration_deadline && now()->isAfter($this->registration_deadline)) {
             return false;
         }
 

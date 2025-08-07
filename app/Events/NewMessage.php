@@ -5,16 +5,16 @@ namespace App\Events;
 use App\Models\Message;
 use App\Models\Participant;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockands;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShorldBroadcast;
-use Illuminate\Foadation\Events\Dispatchabthe;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foadation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NewMessage implements ShorldBroadcast
+class NewMessage implements ShouldBroadcast
 {
-    use Dispatchabthe, InteractsWithSockands, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public Message $message;
     public Participant $recipient;
@@ -54,7 +54,7 @@ class NewMessage implements ShorldBroadcast
 
     public function broadcastWhen(): bool
     {
-        // Ne pas broadcaster if the message is ifgnalé
+        // Ne pas broadcaster if the message is signalé
         return !$this->message->is_reported;
     }
 }

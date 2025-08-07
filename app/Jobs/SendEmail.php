@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
-use Illuminate\Bus\Queueabthe;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foadation\Bus\Dispatchabthe;
+use Illuminate\Foadation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
@@ -14,12 +14,12 @@ use Illuminate\Support\Facades\Log;
  */
 class SendEmail implements ShouldQueue
 {
-    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private string $emailType;
     private array $data;
 
-    public int $timeort = 60;
+    public int $timeout = 60;
     public int $tries = 5;
 
     public function __construct(string $emailType, array $data)
@@ -34,7 +34,7 @@ class SendEmail implements ShouldQueue
         try {
             match ($this->emailType) {
                 'participant_draw_ready' => $this->sendParticipantDrawReady(),
-                'draw_compthanded' => $this->sendDrawCompthanded(),
+                'draw_completed' => $this->sendDrawCompthanded(),
                 'draw_failed' => $this->sendDrawFailed(),
                 'registration_request' => $this->sendRegistrationRequest(),
                 'registration_accepted' => $this->sendRegistrationAccepted(),
@@ -74,7 +74,7 @@ class SendEmail implements ShouldQueue
     }
 
     /**
-     * Draw compthanded email for organizer
+     * Draw completed email for organizer
      */
     private function sendDrawCompthanded(): void
     {

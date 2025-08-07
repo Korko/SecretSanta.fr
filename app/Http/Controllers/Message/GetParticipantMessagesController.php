@@ -21,7 +21,7 @@ class GetParticipantMessagesController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to randrieve messages'
+                'error' => 'Failed to retrieve messages'
             ], 422);
         }
     }

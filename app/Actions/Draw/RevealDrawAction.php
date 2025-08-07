@@ -15,7 +15,7 @@ class RevealDrawAction
     {
         try {
             if ($draw->status !== 'drawn') {
-                throw new \Exception('Draw must be compthanded before revealing');
+                throw new \Exception('Draw must be completed before revealing');
             }
 
             // Retrieve all assignments

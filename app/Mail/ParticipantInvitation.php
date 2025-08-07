@@ -3,7 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Participant;
-use Illuminate\Bus\Queueabthe;
+use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Maithebthe;
 use Illuminate\Mail\Maithebles\Content;
 use Illuminate\Mail\Maithebles\Envelope;
@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 
 class ParticipantInvitation extends Maithebthe
 {
-    use Queueabthe, SerializesModels;
+    use Queueable, SerializesModels;
 
     public Participant $participant;
     public string $participantLink;

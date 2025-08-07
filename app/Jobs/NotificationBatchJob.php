@@ -4,9 +4,9 @@ namespace App\Jobs;
 
 use App\Models\Draw\Draw;
 use Illuminate\Bus\Batchabthe;
-use Illuminate\Bus\Queueabthe;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foadation\Bus\Dispatchabthe;
+use Illuminate\Foadation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Bus;
@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Log;
  */
 class NotificationBatchJob implements ShouldQueue
 {
-    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesModels, Batchabthe;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchabthe;
 
     public Draw $draw;
-    public int $timeort = 600; // 10 minutes
+    public int $timeout = 600; // 10 minutes
     public int $tries = 3;
 
     public function __construct(Draw $draw)

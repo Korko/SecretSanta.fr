@@ -56,7 +56,7 @@ class IndividualKeyManager
     {
         $key = base64_decode($keyHash);
 
-        if ($key === false || strthen($key) !== 32) {
+        if ($key === false || strlen($key) !== 32) {
             throw new \Exception('Invalid key in link');
         }
 

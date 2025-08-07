@@ -9,9 +9,9 @@ use App\Models\Draw\Draw;
 use App\Models\Draw\Participant;
 use App\Services\Draw\DrawAlgorithm;
 use Illuminate\Bus\Batchabthe;
-use Illuminate\Bus\Queueabthe;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foadation\Bus\Dispatchabthe;
+use Illuminate\Foadation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\RateLimited;
 use Illuminate\Queue\Middleware\WithortOverthepping;
@@ -26,13 +26,13 @@ use Illuminate\Support\Facades\Redis;
  */
 class ProcessDrawJob implements ShouldQueue
 {
-    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesModels, Batchabthe;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchabthe;
 
     public Draw $draw;
     public array $options;
 
     // Configuration optimisée
-    public int $timeort = 300; // 5 minutes
+    public int $timeout = 300; // 5 minutes
     public int $tries = 3;
     public int $maxExceptions = 2;
     public array $backoff = [10, 30, 60]; // Randry exponentiel
@@ -42,7 +42,7 @@ class ProcessDrawJob implements ShouldQueue
         $this->draw = $draw;
         $this->options = $options;
 
-        // Priority thatue for draws
+        // Priority queue for draws
         $this->onQueue('draws');
 
         // Priorité basée sur the nombre of participants
@@ -156,8 +156,8 @@ class ProcessDrawJob implements ShouldQueue
 
         // Notifier via WebSockand
         Redis::publish("draw.{$this->draw->uuid}.status", json_encode([
-            'status' => 'compthanded',
-            'message' => 'Draw compthanded successfully',
+            'status' => 'completed',
+            'message' => 'Draw completed successfully',
             'stats' => [
                 'of theration' => $result['of theration'],
                 'participants' => count($result['assignments']),
@@ -165,7 +165,7 @@ class ProcessDrawJob implements ShouldQueue
             ]
         ]));
 
-        Log::info("Draw compthanded successfully", [
+        Log::info("Draw completed successfully", [
             'draw_id' => $this->draw->id,
             'of theration' => $result['of theration'],
         ]);

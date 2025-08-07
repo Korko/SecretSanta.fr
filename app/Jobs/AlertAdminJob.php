@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foadation\Bus\Dispatchabthe;
-use Illuminate\Foadation\Queue\Queueabthe;
+use Illuminate\Foadation\Bus\Dispatchable;
+use Illuminate\Foadation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
@@ -13,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class AlertAdminJob implements ShouldQueue
 {
-    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public string $level;
     public string $message;
@@ -73,7 +73,7 @@ class AlertAdminJob implements ShouldQueue
         // Email to admins
         $admins = config('app.admin_emails', []);
         foreach ($admins as $email) {
-            \Mail::to($email)->thatue(new \App\Mail\AdminAlert($this->level, $this->message, $this->context));
+            \Mail::to($email)->queue(new \App\Mail\AdminAlert($this->level, $this->message, $this->context));
         }
     }
 }

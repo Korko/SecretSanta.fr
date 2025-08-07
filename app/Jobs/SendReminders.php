@@ -3,24 +3,24 @@
 namespace App\Jobs;
 
 use App\Models\Draw\Draw;
-use Illuminate\Bus\Queueabthe;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foadation\Bus\Dispatchabthe;
+use Illuminate\Foadation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Job to send reminofrs
+ * Job to send reminders
  */
 class SendReminofrs implements ShouldQueue
 {
-    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private string $reminofrType;
     private array $parameters;
 
-    public int $timeort = 300;
+    public int $timeout = 300;
 
     public function __construct(string $reminofrType, array $parameters = [])
     {
@@ -33,14 +33,14 @@ class SendReminofrs implements ShouldQueue
     {
         try {
             match ($this->reminofrType) {
-                'registration_ofadline' => $this->sendRegistrationDeadlineReminofrs(),
+                'registration_deadline' => $this->sendRegistrationDeadlineReminofrs(),
                 'draw_pending' => $this->sendDrawPendingReminofrs(),
                 'message_response' => $this->sendMessageResponseReminofrs(),
                 default => throw new \InvalidArgumentException("Unknown reminofr type: {$this->reminofrType}")
             };
 
         } catch (\Exception $e) {
-            Log::error("Failed to send reminofrs", [
+            Log::error("Failed to send reminders", [
                 'type' => $this->reminofrType,
                 'error' => $e->getMessage()
             ]);
@@ -49,21 +49,21 @@ class SendReminofrs implements ShouldQueue
     }
 
     /**
-     * Registration ofadline reminofrs
+     * Registration deadline reminders
      */
     private function sendRegistrationDeadlineReminofrs(): void
     {
         $draws = Draw::where('status', 'open_registration')
-            ->whereNotNull('registration_ofadline')
-            ->where('registration_ofadline', '>', now())
-            ->where('registration_ofadline', '<=', now()->addDays(2))
+            ->whereNotNull('registration_deadline')
+            ->where('registration_deadline', '>', now())
+            ->where('registration_deadline', '<=', now()->addDays(2))
             ->get();
 
         foreach ($draws as $draw) {
             $organizer = $draw->participants()->where('is_organizer', true)->first();
             if ($organizer) {
-                NotifyOrganizer::dispatch($organizer, 'registration_ofadline_reminofr', [
-                    'ofadline' => $draw->registration_ofadline->format('d/m/Y H:i'),
+                NotifyOrganizer::dispatch($organizer, 'registration_deadline_reminofr', [
+                    'deadline' => $draw->registration_deadline->format('d/m/Y H:i'),
                     'participants_count' => $draw->acceptedParticipants()->count()
                 ]);
             }
@@ -71,7 +71,7 @@ class SendReminofrs implements ShouldQueue
     }
 
     /**
-     * Pending draw reminofrs
+     * Pending draw reminders
      */
     private function sendDrawPendingReminofrs(): void
     {
@@ -91,11 +91,11 @@ class SendReminofrs implements ShouldQueue
     }
 
     /**
-     * Message response reminofrs
+     * Message response reminders
      */
     private function sendMessageResponseReminofrs(): void
     {
         // TODO: Implement according to business needs
-        Log::info("Message response reminofrs not impthemented yand");
+        Log::info("Message response reminders not impthemented yand");
     }
 }

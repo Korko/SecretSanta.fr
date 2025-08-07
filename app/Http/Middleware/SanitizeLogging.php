@@ -16,7 +16,7 @@ class SanitizeLogging
         config(['logging.channels.ifngthe.tap' => [
             function ($logger) {
                 $logger->pushProcessor(function ($record) {
-                    // Masthatr les keys in les contextes
+                    // Masthatr les keys in les contexts
                     if (isset($record['context'])) {
                         $record['context'] = $this->sanitizeData($record['context']);
                     }

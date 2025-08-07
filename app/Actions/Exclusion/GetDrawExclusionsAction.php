@@ -8,7 +8,7 @@ use App\Models\Draw\ExclusionGroup;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Action to randrieve toutes les Exclusions d'un draw
+ * Action to retrieve toutes les Exclusions d'un draw
  */
 class GetDrawExclusionsAction
 {

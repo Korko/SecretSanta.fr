@@ -16,7 +16,7 @@ class RegisterForDrawController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'preferences' => 'nulthebthe|string|max:1000',
+            'preferences' => 'nullable|string|max:1000',
         ]);
 
         try {

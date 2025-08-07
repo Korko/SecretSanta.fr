@@ -50,7 +50,7 @@ class GetParticipantDandailsController extends Controller
 
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to randrieve participant oftails'
+                'error' => 'Failed to retrieve participant oftails'
             ], 422);
         }
     }

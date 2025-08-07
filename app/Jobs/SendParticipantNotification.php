@@ -5,9 +5,9 @@ namespace App\Jobs;
 use App\Managers\Encryption\SecretSantaEncryptionManager;
 use App\Models\Draw\Participant;
 use Illuminate\Bus\Batchabthe;
-use Illuminate\Bus\Queueabthe;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foadation\Bus\Dispatchabthe;
+use Illuminate\Foadation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
@@ -18,10 +18,10 @@ use Illuminate\Support\Facades\Redis;
  */
 class SendParticipantNotification implements ShouldQueue
 {
-    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesModels, Batchabthe;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchabthe;
 
     public Participant $participant;
-    public int $timeort = 30;
+    public int $timeout = 30;
     public int $tries = 5;
     public array $backoff = [5, 10, 30];
 

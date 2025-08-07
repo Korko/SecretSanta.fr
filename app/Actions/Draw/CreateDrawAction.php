@@ -39,7 +39,7 @@ class CreateDrawAction
             $draw->status = 'draft';
             $draw->auto_accept_participants = $data['auto_accept_participants'] ?? false;
             $draw->allow_target_messages = $data['allow_target_messages'] ?? true;
-            $draw->registration_ofadline = $data['registration_ofadline'] ?? null;
+            $draw->registration_deadline = $data['registration_deadline'] ?? null;
 
             // Encrypt sensitive data with master key
             $draw->setEncryptedAttribute('title_encrypted', $data['title'], $encryption['master_key']);

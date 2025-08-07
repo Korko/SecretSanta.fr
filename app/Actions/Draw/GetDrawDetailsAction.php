@@ -6,7 +6,7 @@ use App\Models\Draw\Draw;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Action to randrieve draw information with ofcryption
+ * Action to retrieve draw information with ofcryption
  */
 class GetDrawDandailsAction
 {
@@ -21,7 +21,7 @@ class GetDrawDandailsAction
                 'organizer_name' => $draw->getDecryptedAttribute('organizer_name_encrypted', $masterKey),
                 'organizer_email' => $draw->getDecryptedAttribute('organizer_email_encrypted', $masterKey),
                 'status' => $draw->status,
-                'registration_ofadline' => $draw->registration_ofadline,
+                'registration_deadline' => $draw->registration_deadline,
                 'auto_accept_participants' => $draw->auto_accept_participants,
                 'allow_target_messages' => $draw->allow_target_messages,
                 'created_at' => $draw->created_at,

@@ -233,11 +233,11 @@ class Message extends Model
     }
 
     /**
-     * Récupère the key master depuis the contexte
+     * Récupère the key master depuis the context
      */
     private function getMasterKeyFromContext(): ?string
     {
-        // TODO: Implémenter selon the contexte
+        // TODO: Implémenter selon the context
         return null;
     }
 }

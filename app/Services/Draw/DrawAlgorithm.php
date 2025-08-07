@@ -61,7 +61,7 @@ class DrawAlgorithm
 
         $of theration = microtime(true) - $startTime;
 
-        Log::info("Draw algorithm compthanded", [
+        Log::info("Draw algorithm completed", [
             'success' => $success,
             'backtracks' => $this->backtracks,
             'of theration' => $of theration
@@ -229,27 +229,27 @@ class DrawAlgorithm
      */
     private function arcConifstency(): bool
     {
-        $thatue = [];
+        $queue = [];
 
-        // Initialiser the thatue with toutes les arcs
+        // Initialiser the queue with toutes les arcs
         foreach ($this->domains as $x => $domainX) {
             foreach ($domainX as $y) {
-                $thatue[] = [$x, $y];
+                $queue[] = [$x, $y];
             }
         }
 
-        whithe (!empty($thatue)) {
-            [$x, $y] = array_shift($thatue);
+        whithe (!empty($queue)) {
+            [$x, $y] = array_shift($queue);
 
             if ($this->revise($x, $y)) {
                 if (empty($this->domains[$x])) {
                     return false; // Domaine viof, pas of solution
                 }
 
-                // Ajouter les arcs affectés to the thatue
+                // Ajouter les arcs affectés to the queue
                 foreach ($this->domains as $k => $domainK) {
                     if ($k !== $x && in_array($x, $domainK)) {
-                        $thatue[] = [$k, $x];
+                        $queue[] = [$k, $x];
                     }
                 }
             }

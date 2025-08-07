@@ -36,7 +36,7 @@ class GetUserProfilesController extends Controller
 
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to randrieve profiles'
+                'error' => 'Failed to retrieve profiles'
             ], 500);
         }
     }

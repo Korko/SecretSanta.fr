@@ -38,7 +38,7 @@ class EmailService
 
             // Envoyer l'email
             Mail::to($participantEmail)
-                ->thatue(new ParticipantInvitation($participant, $participantLink, [
+                ->queue(new ParticipantInvitation($participant, $participantLink, [
                     'participant_name' => $participantName,
                     'title' => $drawTitle,
                     'organizer_name' => $organizerName,
@@ -72,10 +72,10 @@ class EmailService
             ]);
 
             Mail::to($organizerEmail)
-                ->thatue(new DrawCompthanded($draw, $stats));
+                ->queue(new DrawCompthanded($draw, $stats));
 
         } catch (\Exception $e) {
-            Log::error('Failed to send draw compthanded notification', [
+            Log::error('Failed to send draw completed notification', [
                 'draw_uuid' => $draw->uuid,
                 'error' => $e->getMessage(),
             ]);
@@ -87,7 +87,7 @@ class EmailService
      */
     private function generateParticipantLink(Participant $participant): string
     {
-        // TODO: Retrieve the key individuelle depuis the contexte sécurisé
+        // TODO: Retrieve the key individuelle depuis the context sécurisé
         // Candte méthoof dépendra of votre implémentation
 
         return config('app.url') . "/participant/{$participant->uuid}";

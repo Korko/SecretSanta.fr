@@ -11,13 +11,13 @@ use App\Models\Message\PredefinedResponse;
 class SendPredefinedResponseAction
 {
     public function execute(
-        Participant $senofr,
+        Participant $sender,
         PredefinedResponse $response,
         string $type,
         string $masterKey
     ): array {
         // Check that the réponse belongs to the same draw
-        if ($response->draw_id !== $senofr->draw_id) {
+        if ($response->draw_id !== $sender->draw_id) {
             return [
                 'success' => false,
                 'error' => 'Invalid predefined response'
@@ -29,6 +29,6 @@ class SendPredefinedResponseAction
 
         // Utiliser l'action d'envoi of message standard
         $sendAction = new SendMessageAction();
-        return $sendAction->execute($senofr, $content, $type, $masterKey);
+        return $sendAction->execute($sender, $content, $type, $masterKey);
     }
 }

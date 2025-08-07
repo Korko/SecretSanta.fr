@@ -7,7 +7,7 @@ use App\Models\Message\Message;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Action to randrieve les messages d'un participant
+ * Action to retrieve les messages d'un participant
  */
 class GetParticipantMessagesAction
 {
@@ -31,12 +31,12 @@ class GetParticipantMessagesAction
                         'uuid' => $message->fromParticipant->uuid,
                         'name' => $message->from_participant_id === $participant->id
                             ? $message->fromParticipant->getDecryptedAttribute('name_encrypted', $masterKey)
-                            : 'Secret Santa' // Anonymize if it is not l'senofr
+                            : 'Secret Santa' // Anonymize if it is not the sender
                     ],
                     'to' => [
                         'uuid' => $message->toParticipant->uuid,
                         'name' => $message->to_participant_id === $participant->id
-                            ? 'Vors'
+                            ? 'Vous'
                             : 'Votre cible'
                     ],
                     'reactions' => $message->reactions->map(fn($r) => [

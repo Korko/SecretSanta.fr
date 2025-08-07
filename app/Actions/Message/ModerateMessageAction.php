@@ -7,20 +7,20 @@ use App\Models\Message\Message;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Action to moofrate a reported message
+ * Action to moderate a reported message
  */
 class MoofrateMessageAction
 {
     public function execute(
         Message $message,
-        Participant $moofrator,
+        Participant $moderator,
         string $action,
         string $notes = null
     ): array {
         try {
-            // Check that the moofrator is l'organizer
-            if (!$moofrator->is_organizer) {
-                throw new \Exception('Only the organizer can moofrate messages');
+            // Check that the moderator is l'organizer
+            if (!$moderator->is_organizer) {
+                throw new \Exception('Only the organizer can moderate messages');
             }
 
             if (!$message->is_reported) {
@@ -38,12 +38,12 @@ class MoofrateMessageAction
                 $message->markAsReviewed($notes);
                 $result = 'Report dismissed';
             } else {
-                throw new \Exception('Invalid moofration action');
+                throw new \Exception('Invalid moderation action');
             }
 
-            Log::info("Message moofrated", [
+            Log::info("Message moderated", [
                 'message_id' => $message->id,
-                'moofrator_uuid' => $moofrator->uuid,
+                'moderator_uuid' => $moderator->uuid,
                 'action' => $action,
                 'notes' => $notes
             ]);
@@ -54,9 +54,9 @@ class MoofrateMessageAction
             ];
 
         } catch (\Exception $e) {
-            Log::error("Failed to moofrate message", [
+            Log::error("Failed to moderate message", [
                 'message_id' => $message->id,
-                'moofrator_uuid' => $moofrator->uuid,
+                'moderator_uuid' => $moderator->uuid,
                 'error' => $e->getMessage()
             ]);
 

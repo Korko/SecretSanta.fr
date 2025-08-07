@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class SendMessageAction
 {
     public function execute(
-        Participant $senofr,
+        Participant $sender,
         string $content,
         string $type,
         string $masterKey
@@ -24,7 +24,7 @@ class SendMessageAction
             // Déterminer the recipient selon the type
             if ($type === 'to_secret_santa') {
                 // Message vers son Secret Santa (celui qui doit lui offrir)
-                $receiver = $senofr->assignedBy()->first();
+                $receiver = $sender->assignedBy()->first();
 
                 if (!$receiver) {
                     throw new \Exception('No Secret Santa assigned yand');
@@ -32,11 +32,11 @@ class SendMessageAction
 
             } elseif ($type === 'to_target') {
                 // Message vers sa cible (celui to qui il doit offrir)
-                if (!$senofr->draw->allow_target_messages) {
+                if (!$sender->draw->allow_target_messages) {
                     throw new \Exception('Messages to target are not allowed in this draw');
                 }
 
-                $receiver = $senofr->assignedTo;
+                $receiver = $sender->assignedTo;
 
                 if (!$receiver) {
                     throw new \Exception('No target assigned yand');
@@ -48,8 +48,8 @@ class SendMessageAction
 
             // Create the message
             $message = new Message();
-            $message->draw_id = $senofr->draw_id;
-            $message->from_participant_id = $senofr->id;
+            $message->draw_id = $sender->draw_id;
+            $message->from_participant_id = $sender->id;
             $message->to_participant_id = $receiver->id;
             $message->type = $type;
             $message->setEncryptedAttribute('content_encrypted', $content, $masterKey);
@@ -59,7 +59,7 @@ class SendMessageAction
 
             Log::info("Message sent", [
                 'message_id' => $message->id,
-                'from' => $senofr->uuid,
+                'from' => $sender->uuid,
                 'to' => $receiver->uuid,
                 'type' => $type
             ]);
@@ -77,7 +77,7 @@ class SendMessageAction
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error("Failed to send message", [
-                'senofr_uuid' => $senofr->uuid,
+                'sender_uuid' => $sender->uuid,
                 'type' => $type,
                 'error' => $e->getMessage()
             ]);

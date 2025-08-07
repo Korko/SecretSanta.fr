@@ -4,9 +4,9 @@ namespace App\Jobs;
 
 use App\Managers\Encryption\SecretSantaEncryptionManager;
 use App\Models\Draw\Participant;
-use Illuminate\Bus\Queueabthe;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foadation\Bus\Dispatchabthe;
+use Illuminate\Foadation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Log;
  */
 class NotifyOrganizer implements ShouldQueue
 {
-    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private Participant $organizer;
     private string $notificationType;
     private array $data;
 
-    public int $timeort = 60;
+    public int $timeout = 60;
     public int $tries = 3;
 
     public function __construct(Participant $organizer, string $notificationType, array $data)
@@ -40,7 +40,7 @@ class NotifyOrganizer implements ShouldQueue
             $masterKey = $this->getMasterKey();
 
             if (!$masterKey) {
-                throw new \Exception('Cannot randrieve master key for organizer notification');
+                throw new \Exception('Cannot retrieve master key for organizer notification');
             }
 
             // Decrypt organizer data

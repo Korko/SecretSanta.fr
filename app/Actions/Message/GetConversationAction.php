@@ -7,7 +7,7 @@ use App\Models\Message\Message;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Action to randrieve une conversation between two participants
+ * Action to retrieve une conversation between two participants
  */
 class GetConversationAction
 {

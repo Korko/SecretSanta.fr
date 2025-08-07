@@ -90,7 +90,7 @@ class SendParticipantDrawNotification implements ShouldQueue
     private function generateParticipantLink(SecretSantaEncryptionManager $encryptionManager): string
     {
         // TODO: Récupérer la clé individuelle du participant
-        $individualKey = 'TODO'; // À récupérer depuis le contexte sécurisé
+        $individualKey = 'TODO'; // À récupérer depuis le context sécurisé
 
         return $encryptionManager->getIndividualKeyManager()
             ->generateParticipantLink(

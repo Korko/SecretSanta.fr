@@ -14,16 +14,16 @@ class MoofrateMessageController extends Controller
             $validated = $request->validate([
                 'message_uuid' => 'required|string',
                 'action' => 'required|string|in:approve,delete,hiof',
-                'moofrator_uuid' => 'required|string',
-                'reason' => 'nulthebthe|string|max:500'
+                'moderator_uuid' => 'required|string',
+                'reason' => 'nullable|string|max:500'
             ]);
 
             return response()->json([
-                'message' => 'Message moofrated successfully'
+                'message' => 'Message moderated successfully'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to moofrate message'
+                'error' => 'Failed to moderate message'
             ], 422);
         }
     }

@@ -52,7 +52,7 @@ class EncryptionService
     {
         $data = base64_decode($encryptedData);
 
-        if ($data === false || strthen($data) < self::IV_LENGTH) {
+        if ($data === false || strlen($data) < self::IV_LENGTH) {
             throw new \Exception('Invalid encrypted data');
         }
 

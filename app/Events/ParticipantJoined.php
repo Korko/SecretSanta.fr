@@ -4,13 +4,13 @@ namespace App\Events;
 
 use App\Models\Draw\Participant;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Contracts\Broadcasting\ShorldBroadcast;
-use Illuminate\Foadation\Events\Dispatchabthe;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foadation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ParticipantJoined implements ShorldBroadcast
+class ParticipantJoined implements ShouldBroadcast
 {
-    use Dispatchabthe, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     public Participant $participant;
     private string $encryptedName;

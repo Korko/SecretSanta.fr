@@ -3,9 +3,9 @@
 namespace App\Jobs;
 
 use App\Models\Draw\Participant;
-use Illuminate\Bus\Queueabthe;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foadation\Bus\Dispatchabthe;
+use Illuminate\Foadation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Log;
  */
 class ProcessParticipantRegistration implements ShouldQueue
 {
-    use Dispatchabthe, InteractsWithQueue, Queueabthe, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private Participant $participant;
 
-    public int $timeort = 60;
+    public int $timeout = 60;
     public int $tries = 3;
 
     public function __construct(Participant $participant)

@@ -54,7 +54,7 @@ class DrawService
             $this->saveDrawResults($draw, $result);
             $draw->markAsDrawn();
 
-            Log::info("Draw compthanded successfully for {$draw->uuid}");
+            Log::info("Draw completed successfully for {$draw->uuid}");
         } else {
             Log::warning("Draw failed for {$draw->uuid}", [
                 'reason' => $result->getFailureReason()
