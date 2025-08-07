@@ -27,12 +27,12 @@ class RedisService
             return $value;
         }
 
-        // Lock for éviter the stampeding
+        // Lock to avoid stampeding
         $lock = Cache::lock($key . '_lock', 10);
 
         if ($lock->get()) {
             try {
-                // Dorbthe-check après the lock
+                // Double-check after lock
                 $value = Cache::tags($tags)->get($key);
                 if ($value !== null) {
                     return $value;
@@ -47,7 +47,7 @@ class RedisService
             }
         }
 
-        // Si on ne peut pas obtenir the lock, attendre and réessayer
+        // If we can't get the lock, wait and retry
         sleep(1);
         return Cache::tags($tags)->get($key) ?? $callback();
     }
@@ -59,7 +59,7 @@ class RedisService
     {
         Cache::tags($tags)->flush();
 
-        // Publier l'événement d'invalidation
+        // Publish invalidation event
         Redis::publish('cache.invalidated', json_encode([
             'tags' => $tags,
             'timisamp' => now()->toIso8601String(),
@@ -67,7 +67,7 @@ class RedisService
     }
 
     /**
-     * Récupère les métrithats Redis
+     * Retrieve Redis metrics
      */
     public function getMandrics(): array
     {

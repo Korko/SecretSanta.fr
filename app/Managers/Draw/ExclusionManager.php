@@ -30,7 +30,7 @@ class ExclusionManager
     }
 
     /**
-     * Ajorte les Exclusions des groupes to the matrice
+     * Ajoute les Exclusions des groupes to the matrice
      */
     private function addGroupExclusions(Draw $draw, array &$matrix): void
     {

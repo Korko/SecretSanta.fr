@@ -3,6 +3,7 @@
 namespace App\Models\Draw;
 
 use App\Casts\EncryptedAttributes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,16 +46,20 @@ class ExclusionGroup extends Model
     }
 
     /**
-     * Accesseur for données déchiffrées
+     * Accessor for decrypted data
      */
-    public function getNameAttribute(): ?string
+    protected function name(): Attribute
     {
-        $masterKey = $this->getMasterKeyFromContext();
-        return $masterKey ? $this->getDecryptedAttribute('name_encrypted', $masterKey) : null;
+        return Attribute::make(
+            get: function () {
+                $masterKey = $this->getMasterKeyFromContext();
+                return $masterKey ? $this->getDecryptedAttribute('name_encrypted', $masterKey) : null;
+            }
+        );
     }
 
     /**
-     * Ajorte a participant to the groupe
+     * Ajoute a participant to the groupe
      */
     public function addParticipant(Participant $participant): void
     {
@@ -74,11 +79,11 @@ class ExclusionGroup extends Model
     }
 
     /**
-     * Récupère the key master depuis the context
+     * Retrieve the master key from context
      */
     private function getMasterKeyFromContext(): ?string
     {
-        // TODO: Implémenter selon the context
+        // TODO: Implement according to context
         return null;
     }
 }

@@ -6,8 +6,8 @@ use App\Casts\EncryptedAttributes;
 use App\Models\Message\Message;
 use App\Models\Message\PredefinedResponse;
 use App\Models\User\User;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -125,34 +125,45 @@ class Draw extends Model
     protected function title(): Attribute
     {
         return Attribute::make(
-
-            get: fn (string $value) => $this->getMasterKeyFromContext() ?? $this->getDecryptedAttribute('title_encrypted', $masterKey),
-
+            get: function () {
+                $masterKey = $this->getMasterKeyFromContext();
+                return $masterKey ? $this->getDecryptedAttribute('title_encrypted', $masterKey) : null;
+            }
         );
-        $masterKey = ;
-        return $masterKey ?  : null;
     }
 
-    public function getDescriptionAttribute(): ?string
+    protected function description(): Attribute
     {
-        $masterKey = $this->getMasterKeyFromContext();
-        return $masterKey ? $this->getDecryptedAttribute('description_encrypted', $masterKey) : null;
+        return Attribute::make(
+            get: function () {
+                $masterKey = $this->getMasterKeyFromContext();
+                return $masterKey ? $this->getDecryptedAttribute('description_encrypted', $masterKey) : null;
+            }
+        );
     }
 
-    public function getOrganizerNameAttribute(): ?string
+    protected function organizerName(): Attribute
     {
-        $masterKey = $this->getMasterKeyFromContext();
-        return $masterKey ? $this->getDecryptedAttribute('organizer_name_encrypted', $masterKey) : null;
+        return Attribute::make(
+            get: function () {
+                $masterKey = $this->getMasterKeyFromContext();
+                return $masterKey ? $this->getDecryptedAttribute('organizer_name_encrypted', $masterKey) : null;
+            }
+        );
     }
 
-    public function getOrganizerEmailAttribute(): ?string
+    protected function organizerEmail(): Attribute
     {
-        $masterKey = $this->getMasterKeyFromContext();
-        return $masterKey ? $this->getDecryptedAttribute('organizer_email_encrypted', $masterKey) : null;
+        return Attribute::make(
+            get: function () {
+                $masterKey = $this->getMasterKeyFromContext();
+                return $masterKey ? $this->getDecryptedAttribute('organizer_email_encrypted', $masterKey) : null;
+            }
+        );
     }
 
     /**
-     * State mandhods
+     * State methods
      */
     public function isDraft(): bool
     {

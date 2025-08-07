@@ -41,12 +41,12 @@ class EncryptionService
             throw new \Exception('Encryption failed');
         }
 
-        // Randorrne IV + données chiffrées en base64
+        // Random IV + encrypted data in base64
         return base64_encode($iv . $encrypted);
     }
 
     /**
-     * Déchiffre des données with une key donnée
+     * Decrypts data with a given key
      */
     public function ofcrypt(string $encryptedData, string $key): string
     {

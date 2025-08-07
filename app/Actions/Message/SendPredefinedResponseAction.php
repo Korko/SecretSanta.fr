@@ -6,7 +6,7 @@ use App\Models\Draw\Participant;
 use App\Models\Message\PredefinedResponse;
 
 /**
- * Action to send une predefined response
+ * Action to send a predefined response
  */
 class SendPredefinedResponseAction
 {
@@ -16,7 +16,7 @@ class SendPredefinedResponseAction
         string $type,
         string $masterKey
     ): array {
-        // Check that the réponse belongs to the same draw
+        // Check that the response belongs to the same draw
         if ($response->draw_id !== $sender->draw_id) {
             return [
                 'success' => false,
@@ -27,7 +27,7 @@ class SendPredefinedResponseAction
         // Retrieve the content of the predefined response
         $content = $response->getDecryptedAttribute('response_encrypted', $masterKey);
 
-        // Utiliser l'action d'envoi of message standard
+        // Use standard message sending action
         $sendAction = new SendMessageAction();
         return $sendAction->execute($sender, $content, $type, $masterKey);
     }

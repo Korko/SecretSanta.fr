@@ -56,7 +56,7 @@ class NotifyOrganizer implements ShouldQueue
             // Generate organizer link
             $organizerLink = $this->generateOrganizerLink($encryptionManager);
 
-            // Préparer les données d'email
+            // Prepare email data
             $emailData = array_merge($this->data, [
                 'organizer_name' => $organizerData['name'],
                 'organizer_email' => $organizerData['email'],
@@ -65,7 +65,7 @@ class NotifyOrganizer implements ShouldQueue
                 'notification_type' => $this->notificationType
             ]);
 
-            // Envoyer l'email
+            // Send the email
             SendEmail::dispatch('organizer_notification', $emailData);
 
         } catch (\Exception $e) {

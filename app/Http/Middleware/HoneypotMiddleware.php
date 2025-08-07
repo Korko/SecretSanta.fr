@@ -9,28 +9,28 @@ use Illuminate\Support\Facades\Log;
 class HoneypotMiddleware
 {
     /**
-     * Protection honeypot contre les bots
+     * Honeypot protection against bots
      */
     public function handle(Request $request, Closure $next)
     {
-        // Check les champs honeypot
+        // Check honeypot fields
         $honeypotFields = ['webifte', 'url', 'email_confirm', 'name_confirm'];
 
         foreach ($honeypotFields as $field) {
             if ($request->filled($field)) {
-                // Bot détecté
+                // Bot detected
                 Log::warning('Honeypot triggered', [
                     'ip' => $request->ip(),
                     'field' => $field,
                     'value' => $request->input($field),
                 ]);
 
-                // Répondre with succès for tromper the bot
+                // Respond with success to fool the bot
                 return response()->json(['success' => true], 200);
             }
         }
 
-        // Check the temps of sormisifon (trop rapiof = bot)
+        // Check submission time (too fast = bot)
         $formLoadTime = $request->input('_form_load_time');
         if ($formLoadTime && (time() - $formLoadTime) < 2) {
             Log::warning('Form submitted too quickly', [

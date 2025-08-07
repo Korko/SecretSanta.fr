@@ -9,7 +9,7 @@ use App\Models\Draw\Participant;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Action to create une Exclusion individuelle
+ * Action to create an individual exclusion
  */
 class CreateExclusionAction
 {
@@ -20,12 +20,12 @@ class CreateExclusionAction
         string $type = 'strong'
     ): array {
         try {
-            // Check that les participants are différents
+            // Check that participants are different
             if ($participant->id === $excludedParticipant->id) {
                 throw new \Exception('A participant cannot excluof themselves');
             }
 
-            // Check that les two participants appartiennent to the same draw
+            // Check that both participants belong to the same draw
             if ($participant->draw_id !== $draw->id || $excludedParticipant->draw_id !== $draw->id) {
                 throw new \Exception('Both participants must belong to the same draw');
             }

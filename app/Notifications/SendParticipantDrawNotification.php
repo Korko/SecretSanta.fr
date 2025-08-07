@@ -33,20 +33,20 @@ class SendParticipantDrawNotification implements ShouldQueue
     public function handle(SecretSantaEncryptionManager $encryptionManager): void
     {
         try {
-            // Récupérer la clé master (TODO: implémenter selon l'architecture)
+            // Retrieve master key (TODO: implement according to architecture)
             $masterKey = $this->getMasterKey();
 
             if (!$masterKey) {
                 throw new \Exception('Cannot retrieve master key for participant notification');
             }
 
-            // Déchiffrer les données du participant
+            // Decrypt participant data
             $participantData = $this->decryptParticipantData($masterKey);
 
-            // Générer le lien sécurisé
+            // Generate secure link
             $participantLink = $this->generateParticipantLink($encryptionManager);
 
-            // Envoyer l'email
+            // Send the email
             $this->sendEmail($participantData, $participantLink);
 
             Log::info("Participant notification sent", [
@@ -68,13 +68,13 @@ class SendParticipantDrawNotification implements ShouldQueue
      */
     private function getMasterKey(): ?string
     {
-        // TODO: Implémenter la récupération de la clé master
-        // Cela pourrait venir du cache, d'un paramètre, etc.
+        // TODO: Implement master key retrieval
+        // This could come from cache, parameter, etc.
         return null;
     }
 
     /**
-     * Déchiffre les données du participant
+     * Decrypt participant data
      */
     private function decryptParticipantData(string $masterKey): array
     {
@@ -85,12 +85,12 @@ class SendParticipantDrawNotification implements ShouldQueue
     }
 
     /**
-     * Génère le lien sécurisé pour le participant
+     * Generate secure link for participant
      */
     private function generateParticipantLink(SecretSantaEncryptionManager $encryptionManager): string
     {
-        // TODO: Récupérer la clé individuelle du participant
-        $individualKey = 'TODO'; // À récupérer depuis le context sécurisé
+        // TODO: Retrieve participant's individual key
+        $individualKey = 'TODO'; // To retrieve from secure context
 
         return $encryptionManager->getIndividualKeyManager()
             ->generateParticipantLink(

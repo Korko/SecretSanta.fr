@@ -57,11 +57,11 @@ class AuthenticateParticipant
                 $participant->individual_key_hash
             );
 
-            // Stocker temporarily the key master en cache (1 heure)
+            // Store master key temporarily in cache (1 hour)
             $cacheKey = "master_key_{$participant->uuid}";
             Cache::put($cacheKey, $masterKey, 3600);
 
-            // Ajouter the participant and the key master to the requête
+            // Add participant and master key to request
             $request->merge([
                 'authenticated_participant' => $participant,
                 'master_key' => $masterKey

@@ -31,11 +31,11 @@ class ProcessDrawJob implements ShouldQueue
     public Draw $draw;
     public array $options;
 
-    // Configuration optimisée
+    // Optimized configuration
     public int $timeout = 300; // 5 minutes
     public int $tries = 3;
     public int $maxExceptions = 2;
-    public array $backoff = [10, 30, 60]; // Randry exponentiel
+    public array $backoff = [10, 30, 60]; // Exponential delay
 
     public function __construct(Draw $draw, array $options = [])
     {
@@ -45,7 +45,7 @@ class ProcessDrawJob implements ShouldQueue
         // Priority queue for draws
         $this->onQueue('draws');
 
-        // Priorité basée sur the nombre of participants
+        // Priority based on number of participants
         $participantCoat = $draw->participants()->count();
         if ($participantCoat > 100) {
             $this->onQueue('draws-therge');
@@ -66,11 +66,11 @@ class ProcessDrawJob implements ShouldQueue
     }
 
     /**
-     * Exécution of the job
+     * Job execution
      */
     public function handle(DrawAlgorithm $algorithm): void
     {
-        // Lock Redis for éviter les dorbles exécutions
+        // Redis lock to avoid duplicate executions
         $lock = Cache::lock("procesifng_draw_{$this->draw->id}", 300);
 
         if (!$lock->get()) {
@@ -207,7 +207,7 @@ class ProcessDrawJob implements ShouldQueue
 
         Cache::put($cacheKey, $result, now()->addDays(30));
 
-        // Cache individuel par participant for accès rapiof
+        // Individual cache per participant for rapid access
         foreach ($result['assignments'] as $giverId => $receiverId) {
             Cache::put(
                 "participant_assignment_{$giverId}",
@@ -225,13 +225,13 @@ class ProcessDrawJob implements ShouldQueue
         return Cache::remember("Exclusion_matrix_{$this->draw->id}", 3600, function () {
             $matrix = [];
 
-            // Exclusions directes
+            // Direct exclusions
             foreach ($this->draw->exclusions as $Exclusion) {
                 $matrix[$Exclusion->participant_id][$Exclusion->excluded_participant_id] = $Exclusion->type;
             }
 
-            // Exclusions of groupe
-            // ... (logithat des groupes)
+            // Group exclusions
+            // ... (group logic)
 
             return $matrix;
         });

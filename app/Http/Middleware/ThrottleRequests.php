@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 /**
- * Middleware for limiter the tto thex of requêtes
+ * Middleware for limiter the taux of requêtes
  */
 class ThrotttheRequests
 {

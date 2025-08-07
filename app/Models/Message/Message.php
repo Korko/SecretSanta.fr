@@ -5,6 +5,9 @@ namespace App\Models\Message;
 use App\Casts\EncryptedAttributes;
 use App\Models\Draw\Draw;
 use App\Models\Draw\Participant;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -64,27 +67,32 @@ class Message extends Model
     /**
      * Scopes
      */
-    public function scopeToSecretSanta($query)
+    #[Scope]
+    public function toSecretSanta(Builder $query)
     {
         return $query->where('type', 'to_secret_santa');
     }
 
-    public function scopeToTarget($query)
+    #[Scope]
+    public function toTarget(Builder $query)
     {
         return $query->where('type', 'to_target');
     }
 
-    public function scopeReported($query)
+    #[Scope]
+    public function reported(Builder $query)
     {
         return $query->where('is_reported', true);
     }
 
-    public function scopeUnreviewed($query)
+    #[Scope]
+    public function unreviewed(Builder $query)
     {
         return $query->where('is_reviewed', false);
     }
 
-    public function scopeForParticipant($query, int $participantId)
+    #[Scope]
+    public function forParticipant(Builder $query, int $participantId)
     {
         return $query->where(function ($q) use ($participantId) {
             $q->where('from_participant_id', $participantId)
@@ -93,27 +101,27 @@ class Message extends Model
     }
 
     /**
-     * Accesseur for content déchiffré
+     * Accessor and Mutator for decrypted content
      */
-    public function getContentAttribute(): ?string
+    protected function content(): Attribute
     {
-        $masterKey = $this->getMasterKeyFromContext();
-        return $masterKey ? $this->getDecryptedAttribute('content_encrypted', $masterKey) : null;
+        return Attribute::make(
+            get: function () {
+                $masterKey = $this->getMasterKeyFromContext();
+                return $masterKey ? $this->getDecryptedAttribute('content_encrypted', $masterKey) : null;
+            },
+            set: function (string $value) {
+                $masterKey = $this->getMasterKeyFromContext();
+                if ($masterKey) {
+                    $this->setEncryptedAttribute('content_encrypted', $value, $masterKey);
+                }
+                return $value;
+            }
+        );
     }
 
     /**
-     * Mutateur for encryption of the content
-     */
-    public function setContentAttribute(string $value): void
-    {
-        $masterKey = $this->getMasterKeyFromContext();
-        if ($masterKey) {
-            $this->setEncryptedAttribute('content_encrypted', $value, $masterKey);
-        }
-    }
-
-    /**
-     * Méthodes d'état
+     * State methods
      */
     public function isToSecretSanta(): bool
     {
@@ -136,7 +144,7 @@ class Message extends Model
     }
 
     /**
-     * Actions sur the message
+     * Actions on the message
      */
     public function report(): void
     {
@@ -152,7 +160,7 @@ class Message extends Model
     }
 
     /**
-     * Ajorte une reaction to the message
+     * Add a reaction to the message
      */
     public function addReaction(Participant $participant, string $reaction): MessageReaction
     {
@@ -163,7 +171,7 @@ class Message extends Model
     }
 
     /**
-     * Supprime une reaction of the message
+     * Remove a reaction from the message
      */
     public function removeReaction(Participant $participant): bool
     {
@@ -173,7 +181,7 @@ class Message extends Model
     }
 
     /**
-     * Vérifie if a participant can see ce message
+     * Check if a participant can see this message
      */
     public function canBeSeenBy(Participant $participant): bool
     {
@@ -182,21 +190,21 @@ class Message extends Model
     }
 
     /**
-     * Vérifie if a participant peut répondre to ce message
+     * Check if a participant can reply to this message
      */
     public function canBeRepliedBy(Participant $participant): bool
     {
-        // Seul the recipient peut répondre
+        // Only the recipient can reply
         if ($this->to_participant_id !== $participant->id) {
             return false;
         }
 
-        // Check les paramètres of the draw
+        // Check the draw settings
         if (!$this->draw->allow_target_messages) {
             return false;
         }
 
-        // Si c'is a message vers the secret santa, the cible peut répondre
+        // If it's a message to the secret santa, the target can reply
         if ($this->isToSecretSanta()) {
             return true;
         }
@@ -205,7 +213,7 @@ class Message extends Model
     }
 
     /**
-     * Crée une réponse to ce message
+     * Create a reply to this message
      */
     public function createReply(string $content): self
     {
@@ -214,12 +222,12 @@ class Message extends Model
             'from_participant_id' => $this->to_participant_id,
             'to_participant_id' => $this->from_participant_id,
             'content' => $content,
-            'type' => 'to_target', // La réponse va toujours vers the cible
+            'type' => 'to_target', // The reply always goes to the target
         ]);
     }
 
     /**
-     * Récupère the conversation between two participants
+     * Get the conversation between two participants
      */
     public static function getConversation(int $participant1Id, int $participant2Id): \Illuminate\Database\Eloquent\Collection
     {
@@ -233,11 +241,11 @@ class Message extends Model
     }
 
     /**
-     * Récupère the key master depuis the context
+     * Get the master key from context
      */
     private function getMasterKeyFromContext(): ?string
     {
-        // TODO: Implémenter selon the context
+        // TODO: Implement according to context
         return null;
     }
 }

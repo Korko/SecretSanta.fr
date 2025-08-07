@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Model Exclusion - Exclusions individuelles
+ * Exclusion Model - Individual exclusions
  */
 class Exclusion extends Model
 {
@@ -74,7 +74,7 @@ class Exclusion extends Model
     }
 
     /**
-     * Méthodes d'état
+     * State methods
      */
     public function isStrong(): bool
     {

@@ -4,22 +4,22 @@ use App\Models\Draw\Participant;
 use App\Models\Draw\Draw;
 use Illuminate\Support\Facades\Broadcast;
 
-// Canal public pour les mises à jour du tirage
+// Public channel for draw updates
 Broadcast::channel('draw.{drawUuid}', function ($user, $drawUuid) {
-    // Tout le monde peut écouter les mises à jour publiques d'un tirage
+    // Everyone can listen to public updates of a draw
     return Draw::where('uuid', $drawUuid)->exists();
 });
 
-// Canal privé pour les participants
+// Private channel for participants
 Broadcast::channel('participant.{participantUuid}', function ($user, $participantUuid) {
-    // Vérifier que l'utilisateur a accès à ce participant
+    // Verify that user has access to this participant
     $participant = Participant::where('uuid', $participantUuid)->first();
 
     if (!$participant) {
         return false;
     }
 
-    // Vérifier l'authentification via la clé individuelle
+    // Verify authentication via individual key
     $individualKey = request()->header('X-Individual-Key');
     if (!$individualKey) {
         return false;
@@ -30,7 +30,7 @@ Broadcast::channel('participant.{participantUuid}', function ($user, $participan
         ->verifyIndividualKey(base64_decode($individualKey), $participant->individual_key_hash);
 });
 
-// Canal presence pour voir qui est en ligne
+// Presence channel to see who is online
 Broadcast::channel('draw.{drawUuid}.presence', function ($user, $drawUuid) {
     $draw = Draw::where('uuid', $drawUuid)->first();
 
@@ -38,9 +38,9 @@ Broadcast::channel('draw.{drawUuid}.presence', function ($user, $drawUuid) {
         return false;
     }
 
-    // Retourner les infos de présence
+    // Return presence info
     return [
         'id' => $user->id ?? uniqid(),
-        'name' => $user->name ?? 'Anonyme',
+        'name' => $user->name ?? 'Anonymous',
     ];
 });

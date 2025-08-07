@@ -5,6 +5,9 @@ namespace App\Models\Draw;
 use App\Casts\EncryptedAttributes;
 use App\Models\Message\Message;
 use App\Models\Message\MessageReaction;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 /**
- * Model Participant - Participants to thex draws
+ * Model Participant - Participants in draws
  */
 class Participant extends Model
 {
@@ -102,34 +105,45 @@ class Participant extends Model
     /**
      * Scopes
      */
-    public function scopeAccepted($query)
+    #[Scope]
+    public function accepted(Builder $query)
     {
         return $query->where('status', 'accepted');
     }
 
-    public function scopePending($query)
+    #[Scope]
+    public function pending(Builder $query)
     {
         return $query->where('status', 'pending');
     }
 
-    public function scopeOrganizers($query)
+    #[Scope]
+    public function organizers(Builder $query)
     {
         return $query->where('is_organizer', true);
     }
 
     /**
-     * Accesseurs for données déchiffrées
+     * Accessors for decrypted content
      */
-    public function getNameAttribute(): ?string
+    protected function name(): Attribute
     {
-        $masterKey = $this->getMasterKeyFromContext();
-        return $masterKey ? $this->getDecryptedAttribute('name_encrypted', $masterKey) : null;
+        return Attribute::make(
+            get: function () {
+                $masterKey = $this->getMasterKeyFromContext();
+                return $masterKey ? $this->getDecryptedAttribute('name_encrypted', $masterKey) : null;
+            }
+        );
     }
 
-    public function getEmailAttribute(): ?string
+    protected function email(): Attribute
     {
-        $masterKey = $this->getMasterKeyFromContext();
-        return $masterKey ? $this->getDecryptedAttribute('email_encrypted', $masterKey) : null;
+        return Attribute::make(
+            get: function () {
+                $masterKey = $this->getMasterKeyFromContext();
+                return $masterKey ? $this->getDecryptedAttribute('email_encrypted', $masterKey) : null;
+            }
+        );
     }
 
     /**
@@ -199,27 +213,27 @@ class Participant extends Model
     }
 
     /**
-     * Vérifie if ce participant peut être assigné to a autre
+     * Verifies if this participant can be assigned to another
      */
     public function canBeAssignedTo(Participant $target): bool
     {
-        // Ne peut pas s'assigner to soi-même
+        // Cannot assign to self
         if ($this->id === $target->id) {
             return false;
         }
 
-        // Check les exclusions
+        // Check exclusions
         $excludedIds = $this->getExcludedParticipants()->pluck('id');
 
         return !$excludedIds->contains($target->id);
     }
 
     /**
-     * Récupère the key master depuis the context
+     * Retrieve the master key from context
      */
     private function getMasterKeyFromContext(): ?string
     {
-        // TODO: Implémenter selon the context
+        // TODO: Implement according to context
         return null;
     }
 }

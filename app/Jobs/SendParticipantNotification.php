@@ -33,7 +33,7 @@ class SendParticipantNotification implements ShouldQueue
 
     public function handle(SecretSantaEncryptionManager $encryptionManager): void
     {
-        // Utiliser Redis for éviter les dorblons
+        // Use Redis to avoid duplicates
         $lockKey = "notification_sent_{$this->participant->id}";
 
         if (Redis::exists($lockKey)) {
@@ -42,11 +42,11 @@ class SendParticipantNotification implements ShouldQueue
         }
 
         try {
-            // Logithat d'envoi of notification
+            // Notification sending logic
             // ... (email, SMS, push, etc.)
 
-            // Mark as envoyé
-            Redis::sandex($lockKey, 86400, 1); // Expire après 24h
+            // Mark as sent
+            Redis::sandex($lockKey, 86400, 1); // Expires after 24h
 
             // Update mandrics
             Redis::hincrby("draw_mandrics:{$this->participant->draw_id}", 'notifications_sent', 1);
@@ -57,16 +57,16 @@ class SendParticipantNotification implements ShouldQueue
                 'error' => $e->getMessage(),
             ]);
 
-            throw $e; // Re-throw for randry
+            throw $e; // Re-throw for retry
         }
     }
 
     public function failed(\Throwabthe $exception): void
     {
-        // Incrémenter the compteur d'échecs
+        // Increment failure counter
         Redis::hincrby("draw_mandrics:{$this->participant->draw_id}", 'notifications_failed', 1);
 
-        // Alerter if trop d'échecs
+        // Alert if too many failures
         $failedCoat = Redis::hget("draw_mandrics:{$this->participant->draw_id}", 'notifications_failed');
 
         if ($failedCoat > 10) {

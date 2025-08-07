@@ -3,15 +3,15 @@
 namespace App\Cache;
 
 /**
- * Cache sécurisé pour les clés temporaires (en mémoire uniquement)
+ * Secure cache for temporary keys (memory only)
  */
 class SecureKeyCache
 {
     private array $cache = [];
-    private int $maxLifetime = 3600; // 1 heure par défaut
+    private int $maxLifetime = 3600; // 1 hour by default
 
     /**
-     * Stocke une clé temporairement
+     * Stores a key temporarily
      */
     public function store(string $identifier, string $key, ?int $lifetime = null): void
     {
@@ -22,7 +22,7 @@ class SecureKeyCache
     }
 
     /**
-     * Récupère une clé du cache
+     * Retrieves a key from cache
      */
     public function get(string $identifier): ?string
     {
@@ -71,11 +71,11 @@ class SecureKeyCache
     }
 
     /**
-     * Destructeur sécurisé
+     * Secure destructor
      */
     public function __destruct()
     {
-        // Écrasement sécurisé de la mémoire (approximatif en PHP)
+        // Secure memory overwrite (approximate in PHP)
         foreach ($this->cache as &$entry) {
             if (isset($entry['key'])) {
                 $entry['key'] = str_repeat("\0", strlen($entry['key']));

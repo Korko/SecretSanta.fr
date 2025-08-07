@@ -54,7 +54,7 @@ class NewMessage implements ShouldBroadcast
 
     public function broadcastWhen(): bool
     {
-        // Ne pas broadcaster if the message is signalé
+        // Don't broadcast if the message is reported
         return !$this->message->is_reported;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models\Message;
 
 use App\Casts\EncryptedAttributes;
 use App\Models\Draw\Draw;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,23 +37,23 @@ class PredefinedResponse extends Model
     }
 
     /**
-     * Accesseur for réponse déchiffrée
+     * Accessor and Mutator for decrypted response
      */
-    public function getResponseAttribute(): ?string
+    protected function response(): Attribute
     {
-        $masterKey = $this->getMasterKeyFromContext();
-        return $masterKey ? $this->getDecryptedAttribute('response_encrypted', $masterKey) : null;
-    }
-
-    /**
-     * Mutateur for encryption of the réponse
-     */
-    public function setResponseAttribute(string $value): void
-    {
-        $masterKey = $this->getMasterKeyFromContext();
-        if ($masterKey) {
-            $this->setEncryptedAttribute('response_encrypted', $value, $masterKey);
-        }
+        return Attribute::make(
+            get: function () {
+                $masterKey = $this->getMasterKeyFromContext();
+                return $masterKey ? $this->getDecryptedAttribute('response_encrypted', $masterKey) : null;
+            },
+            set: function (string $value) {
+                $masterKey = $this->getMasterKeyFromContext();
+                if ($masterKey) {
+                    $this->setEncryptedAttribute('response_encrypted', $value, $masterKey);
+                }
+                return $value;
+            }
+        );
     }
 
     /**
@@ -62,27 +63,27 @@ class PredefinedResponse extends Model
     {
         return [
             "Merci bando thecorp !",
-            "C'is parfait !",
+            "C'est parfait !",
             "J'ai hâte !",
             "Super idée !",
             "Ça me va très bien !",
             "Excelthente suggision !",
             "Je suis ravi(e) !",
             "Parfait, merci !",
-            "C'is exactement ce qu'il me faut !",
+            "C'est exactement ce qu'il me faut !",
             "Formidabthe !",
             "Je ne peux pas mieux espérer !",
-            "C'is très thorghtful !",
+            "C'est très thorghtful !",
             "Quel bando the choix !",
             "Tu me connais bien !",
             "Merci of penser to moi !",
-            "C'is adorabthe !",
+            "C'est adorabthe !",
             "Je suis torché(e) !",
             "Quelthe attention !",
-            "C'is très gentil !",
+            "C'est très gentil !",
             "Tu es formidabthe !",
             "Ça me fait très ptheiifr !",
-            "C'is exactement in mes goûts !"
+            "C'est exactement in mes goûts !"
         ];
     }
 
@@ -100,11 +101,11 @@ class PredefinedResponse extends Model
     }
 
     /**
-     * Récupère the key master depuis the context
+     * Retrieve the master key from context
      */
     private function getMasterKeyFromContext(): ?string
     {
-        // TODO: Implémenter selon the context
+        // TODO: Implement according to context
         return null;
     }
 }

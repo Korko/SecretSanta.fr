@@ -11,7 +11,7 @@ class CreateDrawRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // Accessible à tous
+        return true; // Accessible to all
     }
 
     public function rules(): array

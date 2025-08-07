@@ -42,7 +42,7 @@ class NotificationBatchJob implements ShouldQueue
             $jobs[] = new SendParticipantNotification($participant);
         }
 
-        // Dispatcher en chunks for éviter the surcharge
+        // Dispatch in chunks to avoid overload
         $chunks = array_chunk($jobs, 50);
 
         foreach ($chunks as $index => $chunk) {

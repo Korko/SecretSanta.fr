@@ -72,7 +72,7 @@ return [
             'after_commit' => true,
         ],
 
-        // Queues spécialisées avec priorités
+        // Specialized queues with priorities
         'draws' => [
             'driver' => 'redis',
             'connection' => 'queue',

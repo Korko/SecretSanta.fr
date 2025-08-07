@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Model MessageReaction - Réactions to thex messages
+ * MessageReaction Model - Reactions to messages
  */
 class MessageReaction extends Model
 {
@@ -42,7 +42,7 @@ class MessageReaction extends Model
     }
 
     /**
-     * Liste des reactions autorisées
+     * List of allowed reactions
      */
     public static function getAllowedReactions(): array
     {
@@ -54,7 +54,7 @@ class MessageReaction extends Model
     }
 
     /**
-     * Valiof une reaction
+     * Validate a reaction
      */
     public static function isValidReaction(string $reaction): bool
     {

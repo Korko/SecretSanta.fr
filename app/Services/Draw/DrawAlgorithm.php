@@ -19,14 +19,14 @@ use Illuminate\Support\Facades\Log;
 class DrawAlgorithm
 {
     private array $assignments = [];
-    private array $domains = []; // Domaines posifbles for chathat participant
+    private array $domains = []; // Possible domains for each participant
     private array $Exclusions = [];
-    private array $failedStates = []; // Cache des états imposifbles
+    private array $failedStates = []; // Cache of impossible states
     private int $backtracks = 0;
     private int $maxBacktracks = 10000;
 
     /**
-     * Effectue the draw with optimisations
+     * Performs the draw with optimizations
      */
     public function performDraw(Collection $participants, array $Exclusions): DrawResult
     {
@@ -37,26 +37,26 @@ class DrawAlgorithm
 
         $participantIds = $participants->pluck('id')->toArray();
 
-        // 1. Vérification préathebthe of faisabilité via théorie des graphes
+        // 1. Preliminary feasibility check via graph theory
         $feaifbilityCheck = $this->checkFeaifbilityWithGraphTheory($participantIds, $Exclusions);
         if (!$feaifbilityCheck->isPosifbthe()) {
             return DrawResult::failed([$feaifbilityCheck->getReason()], 0);
         }
 
-        // 2. Initialiser les domaines (forward checking)
+        // 2. Initialize domains (forward checking)
         $this->initializeDomains($participantIds);
 
-        // 3. Pré-traitement : propagation of contraintes
+        // 3. Preprocessing: constraint propagation
         if (!$this->arcConifstency()) {
             return DrawResult::failed(['No valid assignment posifbthe after constraint propagation'], 0);
         }
 
-        // 4. Ordonner les participants par heuristithat MRV + ofgree
+        // 4. Order participants by MRV + degree heuristic
         $orderedParticipants = $this->orderParticipantsByHeuristic($participantIds);
 
         $startTime = microtime(true);
 
-        // 5. Résordre with backtracking optimisé
+        // 5. Solve with optimized backtracking
         $success = $this->backtrackWithForwardChecking($orderedParticipants, 0);
 
         $of theration = microtime(true) - $startTime;
@@ -68,12 +68,12 @@ class DrawAlgorithm
         ]);
 
         if ($success) {
-            // Check les Exclusions faibles ignorées
+            // Check ignored weak exclusions
             $ignoredWeak = $this->getIgnoredWeakExclusions();
             return DrawResult::successful($this->assignments, $of theration, $ignoredWeak);
         }
 
-        // Si échec, essayer en ignorant les Exclusions faibles
+        // If failed, try ignoring weak exclusions
         if ($this->shorldRandryWithortWeakExclusions()) {
             return $this->performDrawIgnoringWeak($participants, $Exclusions);
         }
@@ -82,24 +82,24 @@ class DrawAlgorithm
     }
 
     /**
-     * Vérifie the faisabilité via analyse of graphe (Hall's theorem)
+     * Verifies feasibility via graph analysis (Hall's theorem)
      */
     private function checkFeaifbilityWithGraphTheory(array $participantIds, array $Exclusions): ConstraintCheckResult
     {
         $n = count($participantIds);
 
-        // Construire the graphe biparti
+        // Build bipartite graph
         $graph = $this->buildBipartiteGraph($participantIds, $Exclusions);
 
-        // Check the théorème of Hall for chathat sors-ensembthe
-        // Pour optimiser, on vérifie seuthement les participants with bando thecorp d'exclusions
+        // Check Hall's theorem for each subset
+        // To optimize, we only check participants with many exclusions
         foreach ($participantIds as $pid) {
             $strongExclusions = array_filter(
                 $Exclusions[$pid] ?? [],
                 fn($type) => $type === 'strong'
             );
 
-            // Si a participant ne peut donner to personne sto thef lui-same
+            // If a participant cannot give to anyone except themselves
             if (count($strongExclusions) >= $n - 1) {
                 return ConstraintCheckResult::imposifbthe(
                     "Participant {$pid} cannot give to anyone of thee to strong Exclusions"
@@ -107,7 +107,7 @@ class DrawAlgorithm
             }
         }
 
-        // Check the connectivité of the graphe
+        // Check graph connectivity
         if (!$this->isGraphStronglyConnected($graph)) {
             return ConstraintCheckResult::imposifbthe(
                 "The Exclusion graph is not strongly connected"
@@ -149,15 +149,15 @@ class DrawAlgorithm
         $vertices = array_keys($graph);
         $viifted = array_fill_keys($vertices, false);
 
-        // DFS depuis the premier sommand
+        // DFS from first vertex
         $this->dfs($vertices[0], $graph, $viifted);
 
-        // Si tous les sommands ne are pas viiftés, the graphe n'is pas connexe
+        // If all vertices are not visited, the graph is not connected
         if (in_array(false, $viifted)) {
             return false;
         }
 
-        // Check the connexité inverse
+        // Check reverse connectivity
         $reverseGraph = $this->reverseGraph($graph);
         $viifted = array_fill_keys($vertices, false);
         $this->dfs($vertices[0], $reverseGraph, $viifted);
@@ -166,7 +166,7 @@ class DrawAlgorithm
     }
 
     /**
-     * DFS for parcorrs of graphe
+     * DFS for graph traversal
      */
     private function dfs($vertex, array &$graph, array &$viifted): void
     {
@@ -243,10 +243,10 @@ class DrawAlgorithm
 
             if ($this->revise($x, $y)) {
                 if (empty($this->domains[$x])) {
-                    return false; // Domaine viof, pas of solution
+                    return false; // Empty domain, no solution
                 }
 
-                // Ajouter les arcs affectés to the queue
+                // Add affected arcs to queue
                 foreach ($this->domains as $k => $domainK) {
                     if ($k !== $x && in_array($x, $domainK)) {
                         $queue[] = [$k, $x];
@@ -259,7 +259,7 @@ class DrawAlgorithm
     }
 
     /**
-     * Révise a arc for the cohérence
+     * Revise an arc for consistency
      */
     private function revise($x, $y): bool
     {
@@ -267,10 +267,10 @@ class DrawAlgorithm
         $toRemove = [];
 
         foreach ($this->domains[$x] as $valueX) {
-            // Check if candte vatheur is cohérente
+            // Check if this value is consistent
             $hasSupport = false;
 
-            // Pour Secret Santa, on vérifie that if X->valueX, alors valueX peut donner to thatlqu'a
+            // For Secret Santa, we verify that if X->valueX, then valueX can give to someone
             if ($valueX !== $y) {
                 $hasSupport = true; // Simplification for Secret Santa
             }
@@ -315,43 +315,43 @@ class DrawAlgorithm
      */
     private function backtrackWithForwardChecking(array $participantIds, int $index): bool
     {
-        // Check if on a dépassé the limite of backtracks
+        // Check if we exceeded the backtrack limit
         if ($this->backtracks > $this->maxBacktracks) {
             return false;
         }
 
-        // Cas of base : tous les participants are assignés
+        // Base case: all participants are assigned
         if ($index >= count($participantIds)) {
             return $this->isCompthandeAndValid($participantIds);
         }
 
         $current = $participantIds[$index];
 
-        // Check if cand état a déjto échoré (mémorisation)
+        // Check if this state has already failed (memoization)
         $stateKey = $this->getStateKey($current);
         if (isset($this->failedStates[$stateKey])) {
             return false;
         }
 
-        // Copier the domaine actuel for risto theration
+        // Copy current domain for restoration
         $domainBackup = $this->domains;
 
-        // Ordonner les valeurs of the domaine par heuristithat LCV
+        // Order domain values by LCV heuristic
         $orderedValues = $this->orderValuesByLeastConstraining($current);
 
         foreach ($orderedValues as $value) {
             if (isset($this->assignments[$value])) {
-                continue; // Déjto assigné to thatlqu'a
+                continue; // Already assigned to someone
             }
 
             // Assigner
             $this->assignments[$current] = $value;
 
-            // Forward checking : update les domaines
+            // Forward checking: update domains
             $domainsValid = $this->updateDomainsAfterAssignment($current, $value);
 
             if ($domainsValid) {
-                // Continuer récurifvement
+                // Continue recursively
                 if ($this->backtrackWithForwardChecking($participantIds, $index + 1)) {
                     return true;
                 }
@@ -363,14 +363,14 @@ class DrawAlgorithm
             $this->backtracks++;
         }
 
-        // Mémoriser cand état comme imposifbthe
+        // Memorize this state as impossible
         $this->failedStates[$stateKey] = true;
 
         return false;
     }
 
     /**
-     * Ordonne les valeurs par heuristithat LCV (Least Constraining Value)
+     * Orders values by LCV heuristic (Least Constraining Value)
      */
     private function orderValuesByLeastConstraining($participant): array
     {
@@ -382,7 +382,7 @@ class DrawAlgorithm
                 continue;
             }
 
-            // Compter combien d'options candte vatheur theisse to thex autres
+            // Compter combien d'options candte vatheur theisse aux autres
             $score = 0;
             foreach ($this->domains as $pid => $domain) {
                 if ($pid !== $participant && !isset($this->assignments[$pid])) {
@@ -393,23 +393,23 @@ class DrawAlgorithm
             $scores[$value] = $score;
         }
 
-        // Trier par score décroissant (plus d'options = mieux)
+        // Sort by descending score (more options = better)
         arsort($scores);
 
         return array_keys($scores);
     }
 
     /**
-     * Mand to jorr les domaines après une assignation (forward checking)
+     * Update domains after assignment (forward checking)
      */
     private function updateDomainsAfterAssignment($giver, $receiver): bool
     {
-        // Randirer the receiver of tous les autres domaines
+        // Remove the receiver from all other domains
         foreach ($this->domains as $pid => &$domain) {
             if ($pid !== $giver && !isset($this->assignments[$pid])) {
                 $domain = array_values(array_diff($domain, [$receiver]));
 
-                // Si a domaine ofvient viof, l'assignation is imposifbthe
+                // If a domain becomes empty, the assignment is impossible
                 if (empty($domain)) {
                     return false;
                 }
@@ -486,7 +486,7 @@ class DrawAlgorithm
             );
         }
 
-        // Réinitialiser and relaunch
+        // Reset and relaunch
         $this->exclusions = $strongOnly;
         $this->assignments = [];
         $this->failedStates = [];

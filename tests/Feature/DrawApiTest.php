@@ -68,7 +68,7 @@ describe('Draw API', function () {
     test('launches draw with sufficient participants', function () {
         $draw = createDraw(['status' => 'closed_registration']);
 
-        // Créer 5 participants
+        // Create 5 participants
         foreach (range(1, 5) as $i) {
             createParticipant($draw);
         }
@@ -78,7 +78,7 @@ describe('Draw API', function () {
         $response->assertStatus(200)
             ->assertJson(['message' => 'Draw processing started']);
 
-        // Vérifier que le job est dispatché
+        // Verify that the job is dispatched
         \Illuminate\Support\Facades\Queue::assertPushed(\App\Jobs\ProcessDrawJob::class);
     });
 

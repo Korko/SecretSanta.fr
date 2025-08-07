@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Action to gérer les predefined responses
+ * Action to manage predefined responses
  */
 class ManagePredefinedResponsesAction
 {
@@ -17,10 +17,10 @@ class ManagePredefinedResponsesAction
         DB::beginTransaction();
 
         try {
-            // Delete les oldnes réponses
+            // Delete old responses
             PredefinedResponse::where('draw_id', $draw->id)->delete();
 
-            // Create les news réponses
+            // Create new responses
             $created = [];
             foreach ($responses as $response) {
                 $predefinedResponse = new PredefinedResponse();
@@ -31,7 +31,7 @@ class ManagePredefinedResponsesAction
                 $created[] = $predefinedResponse;
             }
 
-            // Si no réponse provided, create les réponses par default
+            // If no response provided, create default responses
             if (empty($responses)) {
                 PredefinedResponse::createDefto theltForDraw($draw);
             }

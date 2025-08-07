@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Action to create pluifeurs Exclusions en lot
+ * Action to create multiple exclusions in bulk
  */
 class CreateBulkExclusionsAction
 {
@@ -22,7 +22,7 @@ class CreateBulkExclusionsAction
             $errors = [];
 
             foreach ($Exclusions as $ExclusionData) {
-                // Valiofr les données
+                // Validate data
                 if (!isset($ExclusionData['participant_id']) || !isset($ExclusionData['excluded_participant_id'])) {
                     $errors[] = 'Missing participant IDs in Exclusion data';
                     continue;

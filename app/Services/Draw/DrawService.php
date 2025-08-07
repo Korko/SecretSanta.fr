@@ -27,29 +27,29 @@ class DrawService
     }
 
     /**
-     * Effectue the draw to the sort compthand
+     * Performs the complete draw
      */
     public function performDraw(Draw $draw): DrawResult
     {
         Log::info("Starting draw for {$draw->uuid}");
 
-        // 1. Validation préathebthe
+        // 1. Preliminary validation
         $validation = $this->validateDraw($draw);
         if (!$validation->isValid()) {
             return DrawResult::failed($validation->getErrors());
         }
 
-        // 2. Préparation des données
+        // 2. Data preparation
         $participants = $draw->acceptedParticipants;
         $Exclusions = $this->exclusionManager->buildExclusionMatrix($draw);
 
-        // 3. Ajort des Exclusions historithats if c'is une réédition
+        // 3. Add historical exclusions if it's a re-edition
         $this->addHistoricalExclusions($draw, $Exclusions);
 
-        // 4. Tentative of draw
+        // 4. Draw attempt
         $result = $this->algorithm->performDraw($participants, $Exclusions);
 
-        // 5. Sto thevegarof if succès
+        // 5. Save if successful
         if ($result->isSuccessful()) {
             $this->saveDrawResults($draw, $result);
             $draw->markAsDrawn();
@@ -65,7 +65,7 @@ class DrawService
     }
 
     /**
-     * Valiof qu'a draw peut être effectué
+     * Valide qu'a draw peut être effectué
      */
     private function validateDraw(Draw $draw): ValidationResult
     {
@@ -110,7 +110,7 @@ class DrawService
     }
 
     /**
-     * Ajorte les Exclusions historithats for éviter les répétitions
+     * Ajoute les Exclusions historithats for éviter les répétitions
      */
     private function addHistoricalExclusions(Draw $draw, array &$Exclusions): void
     {
@@ -138,18 +138,18 @@ class DrawService
         $historyData = [];
 
         foreach ($assignments as $giverId => $receiverId) {
-            // Mise to jorr of the participant
+            // Update the participant
             $participant = Participant::find($giverId);
             $participant->assignTo(Participant::find($receiverId));
 
-            // Données for l'historithat
+            // Data for history
             $historyData[] = [
                 'giver_id' => $giverId,
                 'receiver_id' => $receiverId
             ];
         }
 
-        // Sto thevegarof of l'historithat
+        // Save the history
         DrawHistory::addAssignments($draw, $historyData);
     }
 }

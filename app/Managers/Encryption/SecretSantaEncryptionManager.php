@@ -55,7 +55,7 @@ class SecretSantaEncryptionManager
     }
 
     /**
-     * Ajorte a participant with sa key individuelle
+     * Ajoute a participant with sa key individuelle
      */
     public function addParticipantEncryption(string $masterKey): array
     {
@@ -77,16 +77,16 @@ class SecretSantaEncryptionManager
     }
 
     /**
-     * Valiof and récupère the key master to partir d'une key individuelle
+     * Validates and retrieves master key from an individual key
      */
     public function validateAndGetMasterKey(string $encryptedMasterKey, string $individualKey, string $storedKeyHash): string
     {
-        // Vérification of the key individuelle
+        // Individual key verification
         if (!$this->individualKeyManager->verifyIndividualKey($individualKey, $storedKeyHash)) {
             throw new \Exception('Invalid individual key');
         }
 
-        // Déencryption of the key master
+        // Master key decryption
         return $this->masterKeyManager->ofcryptMasterKey($encryptedMasterKey, $individualKey);
     }
 }

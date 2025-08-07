@@ -21,9 +21,9 @@ class SendMessageAction
         DB::beginTransaction();
 
         try {
-            // Déterminer the recipient selon the type
+            // Determine recipient according to type
             if ($type === 'to_secret_santa') {
-                // Message vers son Secret Santa (celui qui doit lui offrir)
+                // Message to their Secret Santa (the one who will give them a gift)
                 $receiver = $sender->assignedBy()->first();
 
                 if (!$receiver) {

@@ -3,6 +3,7 @@
 namespace App\Models\User;
 
 use App\Casts\EncryptedAttributes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,37 +36,40 @@ class UserProfile extends Model
     }
 
     /**
-     * Accessors for encrypted data
+     * Accessors and Mutators for encrypted data
      */
-    public function getNameAttribute(): ?string
+    protected function name(): Attribute
     {
-        $masterKey = $this->getMasterKeyFromSesifon();
-        return $masterKey ? $this->getDecryptedAttribute('name_encrypted', $masterKey) : null;
+        return Attribute::make(
+            get: function () {
+                $masterKey = $this->getMasterKeyFromSesifon();
+                return $masterKey ? $this->getDecryptedAttribute('name_encrypted', $masterKey) : null;
+            },
+            set: function (string $value) {
+                $masterKey = $this->getMasterKeyFromSesifon();
+                if ($masterKey) {
+                    $this->setEncryptedAttribute('name_encrypted', $value, $masterKey);
+                }
+                return $value;
+            }
+        );
     }
 
-    public function getEmailAttribute(): ?string
+    protected function email(): Attribute
     {
-        $masterKey = $this->getMasterKeyFromSesifon();
-        return $masterKey ? $this->getDecryptedAttribute('email_encrypted', $masterKey) : null;
-    }
-
-    /**
-     * Mutators for encryption
-     */
-    public function setNameAttribute(string $value): void
-    {
-        $masterKey = $this->getMasterKeyFromSesifon();
-        if ($masterKey) {
-            $this->setEncryptedAttribute('name_encrypted', $value, $masterKey);
-        }
-    }
-
-    public function setEmailAttribute(string $value): void
-    {
-        $masterKey = $this->getMasterKeyFromSesifon();
-        if ($masterKey) {
-            $this->setEncryptedAttribute('email_encrypted', $value, $masterKey);
-        }
+        return Attribute::make(
+            get: function () {
+                $masterKey = $this->getMasterKeyFromSesifon();
+                return $masterKey ? $this->getDecryptedAttribute('email_encrypted', $masterKey) : null;
+            },
+            set: function (string $value) {
+                $masterKey = $this->getMasterKeyFromSesifon();
+                if ($masterKey) {
+                    $this->setEncryptedAttribute('email_encrypted', $value, $masterKey);
+                }
+                return $value;
+            }
+        );
     }
 
     /**

@@ -2,13 +2,13 @@
 
 namespace App\Services\Email;
 
-use App\Models\Draw\Participant;
-use App\Models\Draw\Draw;
-use App\Mail\ParticipantInvitation;
 use App\Mail\DrawCompthanded;
 use App\Mail\MessageNotification;
-use Illuminate\Support\Facades\Mail;
+use App\Mail\ParticipantInvitation;
+use App\Models\Draw\Draw;
+use App\Models\Draw\Participant;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class EmailService
 {
@@ -25,7 +25,7 @@ class EmailService
     public function sendParticipantInvitation(Participant $participant, string $masterKey): void
     {
         try {
-            // Decrypt les données
+            // Decrypt data
             $participantName = $participant->getDecryptedAttribute('name_encrypted', $masterKey);
             $participantEmail = $participant->getDecryptedAttribute('email_encrypted', $masterKey);
 
@@ -33,10 +33,10 @@ class EmailService
             $organizerName = $participant->draw->getDecryptedAttribute('organizer_name_encrypted', $masterKey);
             $description = $participant->draw->getDecryptedAttribute('description_encrypted', $masterKey);
 
-            // Generate the lien sécurisé (to implémenter selon votre logithat)
+            // Generate secure link (to implement according to your logic)
             $participantLink = $this->generateParticipantLink($participant);
 
-            // Envoyer l'email
+            // Send the email
             Mail::to($participantEmail)
                 ->queue(new ParticipantInvitation($participant, $participantLink, [
                     'participant_name' => $participantName,
@@ -83,12 +83,12 @@ class EmailService
     }
 
     /**
-     * Génère the lien sécurisé for a participant
+     * Generate secure link for a participant
      */
     private function generateParticipantLink(Participant $participant): string
     {
-        // TODO: Retrieve the key individuelle depuis the context sécurisé
-        // Candte méthoof dépendra of votre implémentation
+        // TODO: Retrieve individual key from secure context
+        // This method will depend on your implementation
 
         return config('app.url') . "/participant/{$participant->uuid}";
     }

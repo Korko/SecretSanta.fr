@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 
 /**
- * Middleware for check the key master
+ * Middleware to check master key
  */
 class RequireMasterKey
 {
@@ -18,7 +18,7 @@ class RequireMasterKey
             return response()->json(['error' => 'Master key required'], 401);
         }
 
-        // Ajouter the key master to the requête
+        // Add master key to request
         $request->merge(['master_key' => $masterKey]);
 
         return $next($request);

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Action to delete a groupe d'exclusion
+ * Action to delete an exclusion group
  */
 class DeleteExclusionGroupAction
 {
@@ -19,13 +19,13 @@ class DeleteExclusionGroupAction
         try {
             $drawId = $group->draw_id;
 
-            // Delete toutes les Exclusions liées to the groupe
+            // Delete all exclusions linked to the group
             Exclusion::where('draw_id', $drawId)
                 ->where('source', 'group')
                 ->whereIn('participant_id', $group->members()->pluck('participant_id'))
                 ->delete();
 
-            // Delete the groupe (les membres seront supprimés en cascaof)
+            // Delete the group (members will be deleted in cascade)
             $group->delete();
 
             DB::commit();

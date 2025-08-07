@@ -1,7 +1,7 @@
 <?php
 
 return [
-    // Général
+    // General
     'app_name' => 'Secret Santa',
     'welcome' => 'Bienvenue sur Secret Santa',
     'loading' => 'Chargement...',
@@ -115,7 +115,7 @@ return [
         'expired_link' => 'Ce lien a expiré',
     ],
 
-    // Messages de succès
+    // Success messages
     'success_messages' => [
         'draw_created' => 'Tirage créé avec succès',
         'draw_updated' => 'Tirage mis à jour avec succès',

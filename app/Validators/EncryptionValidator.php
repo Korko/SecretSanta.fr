@@ -35,12 +35,12 @@ class EncryptionValidator
             return false;
         }
 
-        // Au minimum IV (16 bytes) + quelques données chiffrées
+        // At minimum IV (16 bytes) + some encrypted data
         return strlen($decoded) >= 32;
     }
 
     /**
-     * Valide qu'une clé peut déchiffrer des données
+     * Validates that a key can decrypt data
      */
     public function validateKeyCanDecrypt(string $key, string $encryptedData): bool
     {
@@ -57,7 +57,7 @@ class EncryptionValidator
     }
 
     /**
-     * Valide la force d'un mot de passe pour la dérivation de clé
+     * Validates password strength for key derivation
      */
     public function validatePasswordStrength(string $password): array
     {
@@ -94,16 +94,16 @@ class EncryptionValidator
         $score = 0;
         $length = strlen($password);
 
-        // Points pour la longueur
+        // Points for length
         $score += min($length * 4, 40);
 
-        // Points pour la complexité
+        // Points for complexity
         if (preg_match('/[a-z]/', $password)) $score += 10;
         if (preg_match('/[A-Z]/', $password)) $score += 10;
         if (preg_match('/[0-9]/', $password)) $score += 10;
         if (preg_match('/[^a-zA-Z0-9]/', $password)) $score += 15;
 
-        // Points pour la diversité
+        // Points for diversity
         $uniqueChars = count(array_unique(str_split($password)));
         $score += min($uniqueChars * 2, 15);
 

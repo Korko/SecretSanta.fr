@@ -22,7 +22,7 @@ describe('Optimized Draw Algorithm', function () {
             ->and($result->getAssignments())->toHaveCount(4)
             ->and(array_unique($result->getAssignments()))->toHaveCount(4);
 
-        // Vérifier qu'aucun participant ne s'est auto-assigné
+        // Verify that no participant has been self-assigned
         foreach ($result->getAssignments() as $giver => $receiver) {
             expect($giver)->not->toBe($receiver);
         }
@@ -57,7 +57,7 @@ describe('Optimized Draw Algorithm', function () {
             (object)['id' => 3],
         ]);
 
-        // Chaque participant exclut tous les autres
+        // Each participant excludes all others
         $exclusions = [
             1 => [2 => 'strong', 3 => 'strong'],
             2 => [1 => 'strong', 3 => 'strong'],
@@ -87,7 +87,7 @@ describe('Optimized Draw Algorithm', function () {
 
         expect($result->isSuccessful())->toBeTrue();
 
-        // Les exclusions faibles peuvent être ignorées si nécessaire
+        // Weak exclusions can be ignored if necessary
         if (!empty($result->getIgnoredWeakExclusions())) {
             expect($result->getIgnoredWeakExclusions())->toBeArray();
         }
@@ -96,7 +96,7 @@ describe('Optimized Draw Algorithm', function () {
     test('performs efficiently on large draws', function () {
         $participants = collect(range(1, 100))->map(fn($id) => (object)['id' => $id]);
 
-        // Ajouter quelques exclusions aléatoires
+        // Add some random exclusions
         $exclusions = [];
         for ($i = 1; $i <= 20; $i++) {
             $excluded = rand(1, 100);
@@ -111,6 +111,6 @@ describe('Optimized Draw Algorithm', function () {
 
         expect($result->isSuccessful())->toBeTrue()
             ->and($result->getAssignments())->toHaveCount(100)
-            ->and($duration)->toBeLessThan(1.0); // Moins d'une seconde
+            ->and($duration)->toBeLessThan(1.0); // Less than one second
     });
 });
