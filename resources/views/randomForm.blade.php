@@ -116,6 +116,9 @@
         <div class="container inner">
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
             <p class="lead main text-center">@lang('form.section.go.subtitle')</p>
+<!--            <div class="alert alert-warning" role="alert">
+                Il semblerait qu'il y ait des soucis de réception avec les adresses Microsoft (Hotmail, Live, MSN, Outlook, etc).<br />Autant que possible, essayez d'éviter de les utiliser dans le formulaire ci-dessous, vous avez de grandes chances que la personne ne reçoive pas son email.<br/>Cela peut prendre plusieurs jours avant d'être réglé.<br /><u>Le développeur</u> - <i>13 décembre 2024</i>
+            </div>-->
             <random-form id="randomForm" action="/"></random-form>
         </div><!-- /.container -->
         <section class="ss-style-bottom"></section>

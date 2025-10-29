@@ -33,6 +33,13 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
     public $backoff = 30;
 
     /**
+     * The maximum number of unhandled exceptions to allow before failing.
+     *
+     * @var int
+     */
+    public $maxExceptions = 10;
+
+    /**
      * Get the notification's delivery channels.
      *
      * @param Participant $santa

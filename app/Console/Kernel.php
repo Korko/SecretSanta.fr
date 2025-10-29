@@ -26,6 +26,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule
+            ->command('queue:work --stop-when-empty')
+            ->everyMinute()
+            ->withoutOverlapping();
+
+        $schedule
             ->command('model:prune')
             ->daily()
             ->environments(['prod']);
@@ -34,6 +39,11 @@ class Kernel extends ConsoleKernel
             ->command('secretsanta:parse-bounces')
             ->everyMinute()
             ->withoutOverlapping()
+            ->environments(['prod']);
+
+        $schedule
+            ->command('secretsanta:clean-bounces')
+            ->daily()
             ->environments(['prod']);
     }
 

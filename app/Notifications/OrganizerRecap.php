@@ -35,6 +35,13 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
      */
     public $backoff = 30;
 
+    /**
+     * The maximum number of unhandled exceptions to allow before failing.
+     *
+     * @var int
+     */
+    public $maxExceptions = 10;
+
     protected $draw;
 
     public function __construct(Draw $draw)
