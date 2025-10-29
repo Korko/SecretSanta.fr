@@ -32,6 +32,7 @@ class TrackedMailChannel extends MailChannel
             $mail->markAsSent();
         } catch (Swift_TransportException $exception) {
             $mail->markAsError();
+            throw $e;
         }
     }
 
