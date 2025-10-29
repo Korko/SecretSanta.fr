@@ -26,6 +26,13 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
     public $tries = 10;
 
     /**
+     * The maximum number of unhandled exceptions to allow before failing.
+     *
+     * @var int
+     */
+    public $maxExceptions = 10;
+
+    /**
      * The number of seconds to wait before retrying the job.
      *
      * @var int

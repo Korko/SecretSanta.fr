@@ -29,6 +29,13 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
     public $tries = 20;
 
     /**
+     * The maximum number of unhandled exceptions to allow before failing.
+     *
+     * @var int
+     */
+    public $maxExceptions = 10;
+
+    /**
      * The number of seconds to wait before retrying the job.
      *
      * @var int
