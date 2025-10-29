@@ -40,6 +40,11 @@ class Kernel extends ConsoleKernel
             ->everyMinute()
             ->withoutOverlapping()
             ->environments(['prod']);
+
+        $schedule
+            ->command('secretsanta:clean-bounces')
+            ->daily()
+            ->environments(['prod']);
     }
 
     /**

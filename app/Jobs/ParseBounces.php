@@ -22,9 +22,15 @@ class ParseBounces implements ShouldQueue
 
         foreach ($unseenMails as $unseenMail) {
             try {
+                $deleteEmail = $tracker->isEmailReceived($unseenMail);
+
                 $tracker->handle($unseenMail);
 
-                $emailClient->delete($unseenMail);
+                if ($deleteEmail) {
+                    $emailClient->delete($unseenMail);
+                } else {
+                    $emailClient->trash($unseenMail);
+                }
             } catch(ModelNotFoundException) {
                 // The email was already changed or something
                 $emailClient->delete($unseenMail);

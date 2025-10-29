@@ -20,15 +20,30 @@ class EmailClient
         $this->delegate->expunge();
     }
 
-    public function getUnseenMails(int $limit = 0): Iterable
+    public function getUnseenMails(int $limit = 0, $folder = 'imap.folders.inbox'): Iterable
     {
-        $oFolder = $this->delegate->getFolder(config('imap.folders.inbox'));
+        $oFolder = $this->delegate->getFolder(config($folder));
 
         return $oFolder->query()
             ->whereUnseen()
             ->leaveUnread()
             ->limit($limit)
             ->get();
+    }
+
+    public function getOldMails(int $age = 30, int $limit = 0, $folder = 'imap.folders.trash'): Iterable
+    {
+        $oFolder = $this->delegate->getFolder(config($folder));
+
+        return $oFolder->query()
+            ->whereBefore('-'.$age.' days')
+            ->limit($limit)
+            ->get();
+    }
+
+    public function trash(Message $message): void
+    {
+        $message->move(config('imap.folders.trash'));
     }
 
     public function delete(Message $message): void
