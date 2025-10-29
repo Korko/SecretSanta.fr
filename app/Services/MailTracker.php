@@ -44,13 +44,15 @@ class MailTracker
         return MailModel::where('notification', $notificationId)->firstOrFail();
     }
 
-    protected function isEmailReceived(EmailMessage $message)
+    public function isEmailReceived(EmailMessage $message)
     {
         return (
             $this->getNotificationType($message) === self::CONFIRM // ||
 //            $message->getHeader()->get('X-Autoreply') ||
 //            $message->getHeader()->get('X-Autorespond') ||
-//            $message->getHeader()->get('Auto-Submitted') === 'auto-replied'
+//            strpos($message->getHeader()->get('Auto-Submitted') ?? '', 'auto-replied') !== false ||
+//            strpos($message->getHeader()->get('auto_submitted') ?? '', 'auto-replied') !== false
+
         );
     }
 
