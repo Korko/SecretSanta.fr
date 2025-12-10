@@ -38,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
         $channelManager->extend('mail', function (Application $application) {
             return new MailChannel($application->get('mail.manager'), $application->get(Markdown::class));
         });
+
+        $this->app->bind(\Illuminate\Contracts\Debug\ExceptionHandler::class, \App\Exceptions\Handler::class);
     }
 
     /**
