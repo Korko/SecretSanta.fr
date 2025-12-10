@@ -36,7 +36,7 @@
     },
     "dependencies": {
         "alertifyjs": "^1.13.1",
-        "axios": "^0.25",
+        "axios": "^1.6.4",
         "bootstrap": "^4.6.0",
         "crypto-js": "^3.3.0",
         "jquery": "^3.6.0",
