@@ -34,7 +34,7 @@ dataset('unique participants list', function () {
                 ['name' => uniqid(), 'email' => 'test2@test.com', 'exclusions' => [0]],
                 ['name' => uniqid(), 'email' => 'test3@test.com', 'exclusions' => [1]],
             ],
-            [1, 2, 0]
+            [1, 2, 0],
         ],
     ];
 });

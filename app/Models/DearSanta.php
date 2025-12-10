@@ -37,7 +37,7 @@ class DearSanta extends Model
     {
         parent::boot();
 
-        static::created(function($dearSanta) {
+        static::created(function ($dearSanta) {
             $dearSanta->mail()->save(new Mail);
         });
 

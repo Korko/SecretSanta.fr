@@ -51,7 +51,7 @@ return [
      * Leave this empty if you want to accept requests from all hosts.
      */
     'allowed_origins' => [
-        //'127.0.0.1'
+        // '127.0.0.1'
     ],
 
     /*

@@ -2,12 +2,12 @@
 
 return [
     'nav' => [
-        'go'      => 'Allez, c\'est parti !',
+        'go' => 'Allez, c\'est parti !',
         'contact' => 'J\'ai encore une question',
     ],
 
     'categories' => [
-        'general'   => 'Générales',
+        'general' => 'Générales',
         'technical' => 'Techniques',
     ],
 
@@ -15,14 +15,14 @@ return [
         'general' => [
             'Pourquoi avoir développé SecretSanta.fr ?' => "Le développeur faisait fréquemment des soirées secret santa avec des amis ou des collègues avec les prénoms de chacun dans un chapeau. Chacun piochait un papier et c'est arrivé plusieurs fois que quelqu'un tombe sur son prénom. Parfois on relançait le tirage, parfois la personne ne le disais pas et je trouvais ça dommage. Alors il a eu l'idée d'en faire un outils. Le but était de faire en sorte que tout soit automatique et que personne ne se pioche soit même. Même l'organisateur/organisatrice participait comme tout le monde puisqu'il ne pouvait pas savoir qui avait pioché qui. Après sont venus les exclusions etc.",
             'Comment ce site peut fonctionner en étant gratuit ?' => "SecretSanta.fr est complètement gratuit pour les utilisateurs, pas pour le développeur qui paye les différents frais. Il n'y a aucune publicité ni revente d'informations.",
-            "Nous sommes un nombre impair de participant, cela pose-t-il un problème ?" => "Il n'y a absolument aucun soucis, que vous soyez un nombre pair ou impair. En prenant un exemple avec 3 participants : Anaïs, Béatrice et Cédric, on pourrait avoir Anaïs qui offre à Béatrice, Béatrice qui offre à Cédric et Cédric qui offre à Anaïs. Tout le monde a un cadeau et personne ne s'est pioché soit même.",
+            'Nous sommes un nombre impair de participant, cela pose-t-il un problème ?' => "Il n'y a absolument aucun soucis, que vous soyez un nombre pair ou impair. En prenant un exemple avec 3 participants : Anaïs, Béatrice et Cédric, on pourrait avoir Anaïs qui offre à Béatrice, Béatrice qui offre à Cédric et Cédric qui offre à Anaïs. Tout le monde a un cadeau et personne ne s'est pioché soit même.",
             "Je me suis trompé dans mon adresse email quand j'ai organisé mon secret santa, comment faire ?" => "Pour corriger ce problème, soit vous organizer un autre tirage, soit vous demandez à un des participant de vous transmettre l'adresse web qui lui permet d'écrire à son/sa père/mère noël secret et vous allez ensuite sur la page https://secretsanta.fr/fix. Si malgré cela, vous n'arrivez pas à faire votre modification, vous pouvez envoyez le lien de votre participant par email à l'adresse suivante : help@secretsanta.fr. Après vérification et durant son temps libre, le développeur pourra peut-être vous aider.",
             "J'ai supprimé mon email d'accès au panneau d'organisateur/organisatrice, comment faire ?" => "Pour corriger ce problème, soit vous organizer un autre tirage, soit vous demandez à un des participant de vous transmettre l'adresse web qui lui permet d'écrire à son/sa père/mère noël secret et et vous allez ensuite sur la page https://secretsanta.fr/fix.",
             "Je me suis trompé dans l'adresse d'un participant" => "Lorsque vous avez organisé votre secret santa, vous avez dû recevoir un email avec un lien vers un panneau d'organisateur/organisatrice. Vous pourrez modifier l'adresse email de chaque participant depuis cette interface.",
             "Un des participants n'a pas reçu l'email, que faire ?" => "Alors même que l'adresse renseignée est bonne, il arrive que l'email se perde, finisse en spam ou qu'un problème survienne faisant que l'email n'est pas arrivé. Depuis votre panneau d'organisateur/organisatrice, vous pouvez retrouver un bouton à côté du status de réception de l'email du participant pour pouvoir réenvoyer le-dit email. Comme ça, le participant pourra enfin savoir qui est sa cible et comment parler à son Santa.",
-            "Est-il possible de parler à sa cible ?" => "Pour le moment, ce n'est pas possible, pour des raisons d'anonymat. Seule la cible peut écrire à son/sa père/mère noël secret. Mais c'est en projet.",
-            //"Dans mon panneau d'organisateur/organisatrice, certains emails ne passent pas au status 'Reçu'. Quelque chose ne fonctionne pas ?"
-            //"Dans mon panneau d'organisateur/organisatrice, certains emails ne passent pas au status 'Lu' alors que la personne l'a bien lu. C'est un bug ?"
+            'Est-il possible de parler à sa cible ?' => "Pour le moment, ce n'est pas possible, pour des raisons d'anonymat. Seule la cible peut écrire à son/sa père/mère noël secret. Mais c'est en projet.",
+            // "Dans mon panneau d'organisateur/organisatrice, certains emails ne passent pas au status 'Reçu'. Quelque chose ne fonctionne pas ?"
+            // "Dans mon panneau d'organisateur/organisatrice, certains emails ne passent pas au status 'Lu' alors que la personne l'a bien lu. C'est un bug ?"
             'Quand sont supprimés mes données personnelles ?' => "Toutes vos données d'un tirage sont supprimées 7 jours après la date d'expiration. Ce délai a été fixé afin d'envoyer à l'organisateur/organisatrice la liste des participants avec leur cible piochée par mail afin d'aider à l'organisation d'un secretsanta avec les mêmes personnes plus tard en évitant de retomber sur les mêmes cibles.",
             "J'ai oublié un participant, comment je peux le rajouter ?" => "Malheureusement, de par sa conception, SecretSanta.fr ne permet pas de rajouter quelqu'un une fois le tirage effectué. Il vous reste cependant une option, autre que relancer le tirage : vous pouvez attribuez à cette personne votre propre cible et offrir vous même un cadeau à ce nouveau participant.",
             'Qui peut savoir la liste des cibles ?' => 'Pour faire court : personne. Pour faire long : seul le développeur peut avoir cette information avec le lien de l\'organisateur/organisatrice. Mais il est préférable d\'éviter de briser ce secret autant que possible.',

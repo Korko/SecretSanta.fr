@@ -12,13 +12,12 @@ class HandleEncryptionIV
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next, $parameterToCheck, $fieldToCheck)
     {
         $iv = base64_decode($request->input('iv') ?: $request->header('X-HASH-IV'));
-        if (!empty($iv)) {
+        if (! empty($iv)) {
             DrawCrypt::setIV($iv);
         }
 

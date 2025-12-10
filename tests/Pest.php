@@ -3,9 +3,10 @@
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Services\DrawFormHandler;
-use function Pest\Faker\faker;
-use PHPUnit\Framework\TestCase;
 use Illuminate\Testing\TestResponse;
+use PHPUnit\Framework\TestCase;
+
+use function Pest\Faker\faker;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +49,8 @@ uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundat
 |
 */
 
-function assertHasMailPushed($class, $recipient = null, Closure $callback = null) : void {
+function assertHasMailPushed($class, $recipient = null, ?Closure $callback = null): void
+{
     Mail::assertSent($class, function ($mail) use ($recipient, $callback) {
         if ($recipient === null || $mail->hasTo($recipient)) {
             if ($callback !== null) {
@@ -62,29 +64,35 @@ function assertHasMailPushed($class, $recipient = null, Closure $callback = null
     });
 }
 
-function prepareAjax($headers = []) : TestCase {
+function prepareAjax($headers = []): TestCase
+{
     $headers = $headers + [
-        'Accept'           => 'application/json',
+        'Accept' => 'application/json',
         'X-Requested-With' => 'XMLHttpRequest',
-        'X-HASH-IV'       => base64_encode(DrawCrypt::getIV())
+        'X-HASH-IV' => base64_encode(DrawCrypt::getIV()),
     ];
+
     return test()->withHeaders($headers);
 }
 
-function ajaxPost($url, array $postArgs = [], $headers = []) : TestResponse {
+function ajaxPost($url, array $postArgs = [], $headers = []): TestResponse
+{
     return prepareAjax($headers)->json('POST', $url, $postArgs);
 }
 
-function ajaxGet($url, $headers = []) : TestResponse {
+function ajaxGet($url, $headers = []): TestResponse
+{
     return prepareAjax($headers)->json('GET', $url);
 }
 
-function ajaxDelete($url, $headers = []) : TestResponse {
+function ajaxDelete($url, $headers = []): TestResponse
+{
     return prepareAjax($headers)->json('DELETE', $url);
 }
 
-function createServiceDraw($participants) : Draw {
-    return (new DrawFormHandler())
+function createServiceDraw($participants): Draw
+{
+    return (new DrawFormHandler)
         ->withParticipants($participants)
         ->withExpiration(date('Y-m-d', strtotime('+2 days')))
         ->withTitle('test mail {SANTA} => {TARGET} title')
@@ -92,13 +100,14 @@ function createServiceDraw($participants) : Draw {
         ->save();
 }
 
-function generateParticipants(int $totalParticipants, bool $withExclusions = true) : array {
+function generateParticipants(int $totalParticipants, bool $withExclusions = true): array
+{
     $participants = [];
     for ($i = 0; $i < $totalParticipants; $i++) {
         $participants[] = [
             'name' => faker()->unique()->name,
             'email' => faker()->unique()->safeEmail,
-            'target' => ($i === 0) ? $totalParticipants - 1 : $i - 1
+            'target' => ($i === 0) ? $totalParticipants - 1 : $i - 1,
         ];
     }
 
@@ -126,7 +135,8 @@ function generateParticipants(int $totalParticipants, bool $withExclusions = tru
  *  ],
  * ];
  */
-function formatParticipants($participants) : array {
+function formatParticipants($participants): array
+{
     $participants = array_map(function ($idx) use ($participants) {
         if (isset($participants[$idx]['target'])) {
             $participants[$idx] += [
@@ -140,6 +150,7 @@ function formatParticipants($participants) : array {
                 ),
             ];
         }
+
         return $participants[$idx];
     }, array_keys($participants));
 

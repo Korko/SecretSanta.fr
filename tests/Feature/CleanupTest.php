@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\Draw;
-use App\Models\Participant;
-use App\Models\Exclusion;
 use App\Models\DearSanta;
+use App\Models\Draw;
+use App\Models\Exclusion;
 use App\Models\Mail;
+use App\Models\Participant;
 
 it('cleans up expired draws', function () {
     $drawNotExpired = Draw::factory()->create();
@@ -15,7 +15,7 @@ it('cleans up expired draws', function () {
     test()->artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
 
     assertNotNull($drawNotExpired->fresh());
-    assertNull($drawExpired->fresh());// assertDeleted
+    assertNull($drawExpired->fresh()); // assertDeleted
 });
 
 it('cleans up everything', function () {

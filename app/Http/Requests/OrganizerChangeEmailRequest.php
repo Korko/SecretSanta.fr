@@ -35,7 +35,7 @@ class OrganizerChangeEmailRequest extends Request
     {
         return [
             'email.required' => __('validation.custom.organizer.email.required'),
-            'email.email'    => __('validation.custom.organizer.email.format'),
+            'email.email' => __('validation.custom.organizer.email.format'),
         ];
     }
 }

@@ -34,14 +34,15 @@ class ExportDraw extends Command
         $this->setCryptIVFromUrl($this->argument('url'));
 
         $participant = URLParser::parseByName('dearSanta', $this->argument('url'))->participant;
-        if($participant) {
+        if ($participant) {
             $draw = $participant->draw;
         } else {
             $draw = URLParser::parseByName('organizerPanel', $this->argument('url'))->draw;
         }
 
-        if(!$draw) {
+        if (! $draw) {
             $this->error('Draw not found');
+
             return;
         }
 
@@ -55,7 +56,7 @@ class ExportDraw extends Command
             $draw->participants()
                 ->with(['mail', 'target'])
                 ->get()
-                ->map(fn($col) => Arr::only($col->toArray(), ['name']) + ['target' => $col->target->name])
+                ->map(fn ($col) => Arr::only($col->toArray(), ['name']) + ['target' => $col->target->name])
                 ->toArray()
         );
     }

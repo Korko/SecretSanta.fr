@@ -17,7 +17,7 @@ class FixOrganizerController extends Controller
     public function view()
     {
         return response()->view('fixOrganizer', [
-            'fixUrl' => URL::route('fixOrganizer.handle')
+            'fixUrl' => URL::route('fixOrganizer.handle'),
         ]);
     }
 
@@ -28,7 +28,7 @@ class FixOrganizerController extends Controller
         DrawCrypt::setIV($key);
 
         $participant = URLParser::parseByName('dearSanta', $request->input('url'))->participant;
-        if (!isset($participant)) {
+        if (! isset($participant)) {
             return response()->json([
                 'errors' => [
                     'url' => [
@@ -82,7 +82,7 @@ class FixOrganizerController extends Controller
         $draw->save();
 
         Notification::route('mail', [
-            $draw->organizer_email => $draw->organizer_name
+            $draw->organizer_email => $draw->organizer_name,
         ])->notify(new OrganizerRecap($draw));
 
         if ($participantOrganizer) {

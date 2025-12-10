@@ -32,7 +32,7 @@ class WithdrawParticipant extends Command
         $this->setCryptIVFromUrl($this->argument('url'));
 
         $participant = URLParser::parseByName('dearSanta', $this->argument('url'))->participant;
-        if($participant) {
+        if ($participant) {
             $draw = $participant->draw;
         } else {
             $draw = URLParser::parseByName('organizerPanel', $this->argument('url'))->draw;

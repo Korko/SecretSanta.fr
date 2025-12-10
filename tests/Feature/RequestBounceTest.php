@@ -7,12 +7,12 @@ use Facades\App\Services\MailTracker;
 
 it('can handle bounced emails', function () {
     ajaxPost('/', [
-            'participant-organizer' => true,
-            'participants'          => generateParticipants(3),
-            'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
-        ])
+        'participant-organizer' => true,
+        'participants' => generateParticipants(3),
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 

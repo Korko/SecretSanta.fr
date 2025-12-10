@@ -39,22 +39,22 @@ return [
 
     'connections' => [
         'santa' => [
-            'salt'   => env('HASHIDS_SALT_SANTA', 'secretsanta-santa'),
+            'salt' => env('HASHIDS_SALT_SANTA', 'secretsanta-santa'),
             'length' => '5',
         ],
 
         'draw' => [
-            'salt'   => env('HASHIDS_SALT_DRAW', 'secretsanta-draw'),
+            'salt' => env('HASHIDS_SALT_DRAW', 'secretsanta-draw'),
             'length' => '5',
         ],
 
         'dearSanta' => [
-            'salt'   => env('HASHIDS_SALT_DEARSANTA', 'secretsanta-dearSanta'),
+            'salt' => env('HASHIDS_SALT_DEARSANTA', 'secretsanta-dearSanta'),
             'length' => '5',
         ],
 
         'bounce' => [
-            'salt'   => env('HASHIDS_SALT_BOUNCE', 'secretsanta-bounce'),
+            'salt' => env('HASHIDS_SALT_BOUNCE', 'secretsanta-bounce'),
             'length' => '10',
         ],
     ],

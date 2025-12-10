@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 use Lang;
 
-class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
+class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
 {
     use Queueable;
 
@@ -42,7 +42,6 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
     /**
      * Get the notification's delivery channels.
      *
-     * @param Participant $santa
      * @return array
      */
     public function via(Participant $santa)
@@ -58,7 +57,6 @@ class TargetDrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
     /**
      * Get the mail representation of the notification.
      *
-     * @param Participant $santa
      * @return Mailable
      */
     public function toMail(Participant $santa)

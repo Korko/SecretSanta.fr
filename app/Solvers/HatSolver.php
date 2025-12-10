@@ -8,7 +8,7 @@ use Generator;
 
 class HatSolver implements SolverInterface
 {
-    public function one(array $participants, array $exclusions = []) : array
+    public function one(array $participants, array $exclusions = []): array
     {
         $generator = $this->all($participants, $exclusions);
         if (! $generator->valid()) {
@@ -18,16 +18,16 @@ class HatSolver implements SolverInterface
         return $generator->current();
     }
 
-    public function all(array $participants, array $exclusions = []) : Generator
+    public function all(array $participants, array $exclusions = []): Generator
     {
-        if(count($participants) < 2) {
+        if (count($participants) < 2) {
             throw new SolverException('Not enough participants');
         }
 
         $hat = array_keys($participants);
         shuffle($hat);
 
-        uksort($participants, function($participantIdx1, $participantIdx2) use ($exclusions) {
+        uksort($participants, function ($participantIdx1, $participantIdx2) use ($exclusions) {
             $count1 = count(Arr::get($exclusions, $participantIdx1, []));
             $count2 = count(Arr::get($exclusions, $participantIdx2, []));
 
@@ -39,12 +39,13 @@ class HatSolver implements SolverInterface
         return $this->solve(array_keys($participants), 0, [], $exclusions, $hat);
     }
 
-    private function solve(array $participantIds, int $idx, array $combination, array $allExclusions, array $currentHat) : Generator
+    private function solve(array $participantIds, int $idx, array $combination, array $allExclusions, array $currentHat): Generator
     {
         // End of a loop, we've found a possible combination
         if ($currentHat === []) {
             ksort($combination);
             yield $combination;
+
             return;
         }
 

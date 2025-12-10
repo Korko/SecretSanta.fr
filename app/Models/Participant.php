@@ -14,7 +14,7 @@ use Metrics;
 
 class Participant extends Model
 {
-    use HasFactory, Notifiable, HashId {
+    use HasFactory, HashId, Notifiable {
         resolveRouteBinding as public baseResolver;
     }
 
@@ -41,7 +41,7 @@ class Participant extends Model
     {
         parent::boot();
 
-        static::created(function($participant) {
+        static::created(function ($participant) {
             $participant->mail()->save(new Mail);
         });
 
@@ -106,7 +106,6 @@ class Participant extends Model
     /**
      * Create a new Eloquent Collection instance.
      *
-     * @param  array  $models
      * @return Collection
      */
     public function newCollection(array $models = [])
@@ -124,7 +123,7 @@ class Participant extends Model
         return Metrics::create($name, $value)
             ->setTags([
                 'draw' => $this->draw->metricId,
-                'participant' => $this->metricId
+                'participant' => $this->metricId,
             ]);
     }
 

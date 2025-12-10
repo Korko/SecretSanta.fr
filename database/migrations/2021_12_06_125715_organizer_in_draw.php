@@ -24,17 +24,17 @@ class OrganizerInDraw extends Migration
                     $join
                         ->on('draws.id', '=', 'organizer.draw_id')
                         ->whereNotExists(function ($query) {
-                           $query->select(DB::raw(1))
-                                 ->from('participants')
-                                 ->whereColumn('draws.id', '=', 'participants.draw_id')
-                                 ->whereColumn('organizer.id', '>', 'participants.id');
-                       });
+                            $query->select(DB::raw(1))
+                                ->from('participants')
+                                ->whereColumn('draws.id', '=', 'participants.draw_id')
+                                ->whereColumn('organizer.id', '>', 'participants.id');
+                        });
                 })
                 ->update(
-                    array(
+                    [
                         'organizer_name' => DB::raw('organizer.name'),
-                        'organizer_email' => DB::raw('organizer.email')
-                    )
+                        'organizer_email' => DB::raw('organizer.email'),
+                    ]
                 );
 
             Schema::table('draws', function (Blueprint $table) {

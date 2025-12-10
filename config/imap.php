@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     imap.php
 * Category: config
@@ -61,10 +62,10 @@ return [
     'accounts' => [
 
         'default' => [// account identifier
-            'host'  => env('IMAP_HOST', 'localhost'),
-            'port'  => env('IMAP_PORT', 993),
-            'protocol'  => env('IMAP_PROTOCOL', 'imap'), //might also use imap, [pop3 or nntp (untested)]
-            'encryption'    => env('IMAP_ENCRYPTION', 'ssl'), // Supported: false, 'ssl', 'tls', 'notls', 'starttls'
+            'host' => env('IMAP_HOST', 'localhost'),
+            'port' => env('IMAP_PORT', 993),
+            'protocol' => env('IMAP_PROTOCOL', 'imap'), // might also use imap, [pop3 or nntp (untested)]
+            'encryption' => env('IMAP_ENCRYPTION', 'ssl'), // Supported: false, 'ssl', 'tls', 'notls', 'starttls'
             'validate_cert' => env('IMAP_VALIDATE_CERT', true),
             'username' => env('IMAP_USERNAME', 'root@example.com'),
             'password' => env('IMAP_PASSWORD', ''),
@@ -141,8 +142,8 @@ return [
         ],
         'decoder' => [
             'message' => 'utf-8', // mimeheader
-            'attachment' => 'utf-8' // mimeheader
-        ]
+            'attachment' => 'utf-8', // mimeheader
+        ],
     ],
 
     /*
@@ -152,19 +153,19 @@ return [
     |
     */
     'events' => [
-        "message" => [
+        'message' => [
             'new' => MessageNewEvent::class,
             'moved' => MessageMovedEvent::class,
             'copied' => MessageCopiedEvent::class,
             'deleted' => MessageDeletedEvent::class,
             'restored' => MessageRestoredEvent::class,
         ],
-        "folder" => [
+        'folder' => [
             'new' => FolderNewEvent::class,
             'moved' => FolderMovedEvent::class,
             'deleted' => FolderDeletedEvent::class,
         ],
-        "flag" => [
+        'flag' => [
             'new' => FlagNewEvent::class,
             'deleted' => FlagDeletedEvent::class,
         ],
@@ -185,7 +186,7 @@ return [
     */
     'masks' => [
         'message' => MessageMask::class,
-        'attachment' => AttachmentMask::class
+        'attachment' => AttachmentMask::class,
     ],
 
     /*
@@ -202,5 +203,5 @@ return [
         'drafts' => 'Drafts',
         'sent' => 'Sent',
         'junk' => 'Junk',
-    ]
+    ],
 ];

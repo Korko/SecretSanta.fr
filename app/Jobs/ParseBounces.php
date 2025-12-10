@@ -31,10 +31,10 @@ class ParseBounces implements ShouldQueue
                 } else {
                     $emailClient->trash($unseenMail);
                 }
-            } catch(ModelNotFoundException) {
+            } catch (ModelNotFoundException) {
                 // The email was already changed or something
                 $emailClient->delete($unseenMail);
-            } catch(Exception) {
+            } catch (Exception) {
                 // Ignore that error
             }
         }
