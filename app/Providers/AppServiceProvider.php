@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\Request;
+use Illuminate\Cache\RateLimiting\Limit;
 use App\Channels\MailChannel;
 use App\Solvers\HatSolver;
 use App\Solvers\SolverInterface;
@@ -15,6 +18,15 @@ use Queue;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * The path to your application's "home" route.
+     *
+     * Typically, users are redirected here after authentication.
+     *
+     * @var string
+     */
+    public const HOME = '/home';
+
     /**
      * The path to your application's "home" route.
      *
@@ -59,6 +71,15 @@ class AppServiceProvider extends ServiceProvider
             if (isset($event->job->payload()['data']['iv'])) {
                 DrawCrypt::setIV(base64_decode($event->job->payload()['data']['iv']));
             }
+        });
+
+        $this->bootRoute();
+    }
+
+    public function bootRoute(): void
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
 }
