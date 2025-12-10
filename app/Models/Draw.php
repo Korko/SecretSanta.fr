@@ -67,7 +67,7 @@ class Draw extends Model
      *
      * @return Builder
      */
-    public function prunable()
+    public function prunable(): Builder
     {
         return static::where('expires_at', '<=', Carbon::now()->subWeeks(self::WEEKS_BEFORE_DELETION));
     }

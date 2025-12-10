@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -98,7 +99,7 @@ class Participant extends Model
      * @param  string|null  $field
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, ?string $field = null): ?Model
     {
         $participant = $this->baseResolver($value, $field);
 
@@ -112,7 +113,7 @@ class Participant extends Model
      *
      * @return Collection
      */
-    public function newCollection(array $models = [])
+    public function newCollection(array $models = []): Collection
     {
         return new ParticipantsCollection($models);
     }
@@ -137,7 +138,7 @@ class Participant extends Model
      * @param  Notification  $notification
      * @return array|string
      */
-    public function routeNotificationForMail($notification)
+    public function routeNotificationForMail(Notification $notification)
     {
         return [$this->email => $this->name];
     }

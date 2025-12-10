@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
 use App\Models\Participant;
@@ -16,7 +18,7 @@ class DearSantaController extends Controller
 {
     protected $dearSantaPublicFields = ['id', 'mail_body', 'mail', 'created_at', 'updated_at'];
 
-    public function view(Participant $participant)
+    public function view(Participant $participant): Response
     {
         return response()->view('dearSanta', [
             'participant' => $participant->hash,
@@ -51,7 +53,7 @@ class DearSantaController extends Controller
         ]);
     }
 
-    public function fetchState(Participant $participant)
+    public function fetchState(Participant $participant): JsonResponse
     {
         return response()->json([
             'emails' => $participant->dearSantas->mapWithKeys(function ($dearSanta) {

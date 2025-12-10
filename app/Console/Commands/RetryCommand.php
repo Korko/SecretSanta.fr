@@ -13,7 +13,7 @@ class RetryCommand extends BaseRetryCommand
      * @param  \stdClass  $job
      * @return void
      */
-    protected function retryJob($job)
+    protected function retryJob(stdClass $job): void
     {
         try {
             parent::retryJob($job);

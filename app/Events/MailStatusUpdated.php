@@ -25,7 +25,7 @@ class MailStatusUpdated implements ShouldBroadcast
      *
      * @return array
      */
-    public function broadcastWith()
+    public function broadcastWith(): array
     {
         return [
             'id' => $this->mail->id,
@@ -39,7 +39,7 @@ class MailStatusUpdated implements ShouldBroadcast
      *
      * @return string
      */
-    public function broadcastAs()
+    public function broadcastAs(): string
     {
         return 'mail.update';
     }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\OrganizerChangeEmailRequest;
 use App\Models\Draw;
 use App\Models\Participant;
@@ -14,7 +16,7 @@ use Lang;
 
 class OrganizerController extends Controller
 {
-    public function view(Draw $draw)
+    public function view(Draw $draw): Response
     {
         return response()->view('organizer', [
             'draw' => $draw->hash,
@@ -52,7 +54,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function fetchState(Draw $draw)
+    public function fetchState(Draw $draw): JsonResponse
     {
         return response()->json([
             'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) {
@@ -61,7 +63,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant)
+    public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant): JsonResponse
     {
         if ($participant->email === $request->input('email')) {
             $message = trans('message.sent');
@@ -85,7 +87,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function withdraw(Draw $draw, Participant $participant)
+    public function withdraw(Draw $draw, Participant $participant): JsonResponse
     {
         abort_unless($draw->participants->count() > 3, 403, Lang::get('error.withdraw'));
 
@@ -111,7 +113,7 @@ class OrganizerController extends Controller
         ]);
     }
 
-    public function csvInit(Draw $draw)
+    public function csvInit(Draw $draw): Response
     {
         $draw->createMetric('csv_initial_download');
 
@@ -126,7 +128,7 @@ class OrganizerController extends Controller
             200, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
-    public function csvFinal(Draw $draw)
+    public function csvFinal(Draw $draw): Response
     {
         abort_unless($draw->expired, 403, Lang::get('error.expired'));
         abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
@@ -145,7 +147,7 @@ class OrganizerController extends Controller
             200, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
-    public function delete(Request $request, Draw $draw)
+    public function delete(Request $request, Draw $draw): JsonResponse
     {
         $draw->delete();
 
