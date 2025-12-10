@@ -3,7 +3,7 @@
 @section('header')
     @parent
 
-    <link rel="stylesheet" href="{{ mix('/css/404.css') }}" />
+    @vite('resources/css/404.css')
 @show
 
 @section('content')
