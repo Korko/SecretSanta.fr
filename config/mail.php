@@ -29,7 +29,7 @@ return [
     | mailers below. You are free to add additional mailers as required.
     |
     | Supported: "smtp", "sendmail", "mailgun", "ses",
-    |            "postmark", "log", "array"
+    |            "postmark", "log", "array", "failover"
     |
     */
 
@@ -59,15 +59,25 @@ return [
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
         'ses' => [
             'transport' => 'ses',
         ],
 
+        'mailgun' => [
+            'transport' => 'mailgun',
+        ],
+
+        'postmark' => [
+            'transport' => 'postmark',
+        ],
+
         'sendmail' => [
             'transport' => 'sendmail',
-            'path' => '/usr/sbin/sendmail -bs',
+            'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
         ],
 
         'log' => [
@@ -114,17 +124,6 @@ return [
 
     'return_path' => env('MAIL_RETURN_PATH'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | SMTP Server Username
-    |--------------------------------------------------------------------------
-    |
-    | If your SMTP server requires a username for authentication, you should
-    | set it here. This will get used to authenticate with your server on
-    | connection. You may also set the "password" value below this one.
-    |
-    */
-
     'username' => env('MAIL_USERNAME'),
 
     'password' => env('MAIL_PASSWORD'),
@@ -148,17 +147,18 @@ return [
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | DKIM Settings
-    |--------------------------------------------------------------------------
-    */
-    'dkim_selector' => env('MAIL_DKIM_SELECTOR'), // selector, required
-    'dkim_domain' => env('MAIL_DKIM_DOMAIN'), // domain, required
-    'dkim_private_key' => env('MAIL_DKIM_PRIVATE_KEY'), // path to private key, required
-    'dkim_identity' => env('MAIL_DKIM_IDENTITY'), // identity (optional)
-    'dkim_algo' => env('MAIL_DKIM_ALGO', 'rsa-sha256'), // sign algorithm (defaults to rsa-sha256)
-    'dkim_passphrase' => env('MAIL_DKIM_PASSPHRASE'), // private key passphrase (optional)
+    'dkim_selector' => env('MAIL_DKIM_SELECTOR'), // selector, required,
 
-    'resend_delay' => 5 * 60, // 5m delay
+    'dkim_domain' => env('MAIL_DKIM_DOMAIN'), // domain, required,
+
+    'dkim_private_key' => env('MAIL_DKIM_PRIVATE_KEY'), // path to private key, required,
+
+    'dkim_identity' => env('MAIL_DKIM_IDENTITY'), // identity (optional),
+
+    'dkim_algo' => env('MAIL_DKIM_ALGO', 'rsa-sha256'), // sign algorithm (defaults to rsa-sha256),
+
+    'dkim_passphrase' => env('MAIL_DKIM_PASSPHRASE'), // private key passphrase (optional),
+
+    'resend_delay' => 5 * 60, // 5m delay,
+
 ];
