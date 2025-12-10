@@ -6,10 +6,13 @@ use App\Channels\MailChannel;
 use App\Solvers\HatSolver;
 use App\Solvers\SolverInterface;
 use DrawCrypt;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Mail\Markdown;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Queue;
 
@@ -47,6 +50,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->bootJobs();
+        $this->bootRoute();
+    }
+
+    public function bootJobs(): void
+    {
         Queue::createPayloadUsing(function ($connection, $queue, $payload) {
             return [
                 'data' => array_merge($payload['data'], [
@@ -59,6 +68,13 @@ class AppServiceProvider extends ServiceProvider
             if (isset($event->job->payload()['data']['iv'])) {
                 DrawCrypt::setIV(base64_decode($event->job->payload()['data']['iv']));
             }
+        });
+    }
+
+    public function bootRoute(): void
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
 }
