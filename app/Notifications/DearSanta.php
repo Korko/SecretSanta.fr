@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
-class DearSanta extends Notification implements ShouldQueue, ShouldBeEncrypted
+class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -28,7 +28,6 @@ class DearSanta extends Notification implements ShouldQueue, ShouldBeEncrypted
     /**
      * Get the notification's delivery channels.
      *
-     * @param Participant $santa
      * @return array
      */
     public function via(Participant $santa)
@@ -44,7 +43,6 @@ class DearSanta extends Notification implements ShouldQueue, ShouldBeEncrypted
     /**
      * Get the mail representation of the notification.
      *
-     * @param Participant $santa
      * @return MailMessage
      */
     public function toMail(Participant $santa)
@@ -56,7 +54,7 @@ class DearSanta extends Notification implements ShouldQueue, ShouldBeEncrypted
             ->view(['emails.dearsanta', 'emails.dearsanta_plain'], [
                 'content' => $this->dearSanta->mail_body,
                 'targetName' => $santa->target->name,
-                'dearSantaLink' => $url
+                'dearSantaLink' => $url,
             ]);
     }
 }

@@ -40,11 +40,11 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            //\App\Http\Middleware\EncryptCookies::class,
-            //\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            //\Illuminate\Session\Middleware\StartSession::class,
-            //\Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            //\App\Http\Middleware\VerifyCsrfToken::class,
+            // \App\Http\Middleware\EncryptCookies::class,
+            // \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            // \Illuminate\Session\Middleware\StartSession::class,
+            // \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            // \App\Http\Middleware\VerifyCsrfToken::class,
             SubstituteBindings::class,
         ],
     ];
@@ -56,9 +56,9 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'cache.headers' => SetCacheHeaders::class,
-        'signed'        => ValidateSignature::class,
-        'throttle'      => ThrottleRequests::class,
-        'decrypt.iv'    => HandleEncryptionIV::class,
+        'signed' => ValidateSignature::class,
+        'throttle' => ThrottleRequests::class,
+        'decrypt.iv' => HandleEncryptionIV::class,
     ];
 
     /**
@@ -69,11 +69,11 @@ class Kernel extends HttpKernel
      * @var string[]
      */
     protected $middlewarePriority = [
-        //\Illuminate\Session\Middleware\StartSession::class,
-        //\Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        // \Illuminate\Session\Middleware\StartSession::class,
+        // \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         SubstituteBindings::class,
-        //\App\Http\Middleware\EncryptCookies::class,
+        // \App\Http\Middleware\EncryptCookies::class,
         HandleEncryptionIV::class,
-        //\App\Http\Middleware\VerifyCsrfToken::class,
+        // \App\Http\Middleware\VerifyCsrfToken::class,
     ];
 }

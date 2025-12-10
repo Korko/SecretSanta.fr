@@ -10,6 +10,7 @@ use Webklex\PHPIMAP\Message as EmailMessage;
 class MailTracker
 {
     protected const BOUNCE = 'bounce';
+
     protected const CONFIRM = 'confirm';
 
     public function getBounceReturnPath($mail)
@@ -38,7 +39,7 @@ class MailTracker
         $notificationId = $this->getNotificationId($unseenMail);
 
         if (empty($notificationId)) {
-            throw new ModelNotFoundException();
+            throw new ModelNotFoundException;
         }
 
         return MailModel::where('notification', $notificationId)->firstOrFail();
@@ -46,22 +47,20 @@ class MailTracker
 
     public function isEmailReceived(EmailMessage $message)
     {
-        return (
-            $this->getNotificationType($message) === self::CONFIRM // ||
-//            $message->getHeader()->get('X-Autoreply') ||
-//            $message->getHeader()->get('X-Autorespond') ||
-//            strpos($message->getHeader()->get('Auto-Submitted') ?? '', 'auto-replied') !== false ||
-//            strpos($message->getHeader()->get('auto_submitted') ?? '', 'auto-replied') !== false
-
-        );
+        return
+            $this->getNotificationType($message) === self::CONFIRM; // ||
+        //            $message->getHeader()->get('X-Autoreply') ||
+        //            $message->getHeader()->get('X-Autorespond') ||
+        //            strpos($message->getHeader()->get('Auto-Submitted') ?? '', 'auto-replied') !== false ||
+        //            strpos($message->getHeader()->get('auto_submitted') ?? '', 'auto-replied') !== false
     }
 
-    protected function getNotificationType(EmailMessage $message): string|null
+    protected function getNotificationType(EmailMessage $message): ?string
     {
         return Arr::get($this->parseRecipient($message), 0);
     }
 
-    protected function getNotificationId(EmailMessage $message): string|null
+    protected function getNotificationId(EmailMessage $message): ?string
     {
         return Arr::get($this->parseRecipient($message), 1);
     }

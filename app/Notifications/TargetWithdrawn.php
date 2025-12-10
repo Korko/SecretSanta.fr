@@ -10,7 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Lang;
 
-class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncrypted
+class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
 {
     use Queueable;
 
@@ -31,7 +31,6 @@ class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncry
     /**
      * Get the notification's delivery channels.
      *
-     * @param Participant $santa
      * @return array
      */
     public function via(Participant $santa)
@@ -47,13 +46,12 @@ class TargetWithdrawn extends Notification implements ShouldQueue, ShouldBeEncry
     /**
      * Get the mail representation of the notification.
      *
-     * @param Participant $santa
      * @return MailMessage
      */
     public function toMail(Participant $santa)
     {
         $title = Lang::get('emails.target_withdrawn.title', [
-            'draw' => $santa->draw->id
+            'draw' => $santa->draw->id,
         ]);
 
         return (new MailMessage)

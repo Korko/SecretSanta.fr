@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use App;
-use App\Channels\MailChannel;
 use App\Models\Draw;
 use App\Models\Participant;
 use DrawCrypt;
@@ -17,7 +16,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
-class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncrypted
+class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -52,7 +51,7 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
     /**
      * Get the notification's delivery channels.
      *
-     * @param AnonymousNotifiable|Participant $organizer
+     * @param  AnonymousNotifiable|Participant  $organizer
      * @return array
      */
     public function via($organizer)
@@ -63,7 +62,7 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
     /**
      * Get the mail representation of the notification.
      *
-     * @param AnonymousNotifiable|Participant $organizer
+     * @param  AnonymousNotifiable|Participant  $organizer
      * @return Mailable
      */
     public function toMail($organizer)
@@ -82,11 +81,11 @@ class OrganizerRecap extends Notification implements ShouldQueue, ShouldBeEncryp
                 $this->draw->participants
                     ->toCsv(['name', 'email', 'exclusionsNames'])
                     ->prepend([
-                            ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
-                            ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
+                        ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
+                        ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
                     ]),
-            'secretsanta_'.$this->draw->expires_at->isoFormat('YYYY-MM-DD').'_init.csv', [
-                'mime' => 'text/csv',
-            ]);
+                'secretsanta_'.$this->draw->expires_at->isoFormat('YYYY-MM-DD').'_init.csv', [
+                    'mime' => 'text/csv',
+                ]);
     }
 }

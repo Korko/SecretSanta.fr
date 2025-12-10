@@ -6,7 +6,6 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Validation\ValidationException;
 use Request;
-use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -59,8 +58,7 @@ class Handler extends ExceptionHandler
     {
         return array_merge(parent::context(), [
             'url' => Request::url(),
-            'input' => Request::all()
+            'input' => Request::all(),
         ]);
     }
-
 }

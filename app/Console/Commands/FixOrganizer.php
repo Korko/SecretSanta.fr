@@ -33,7 +33,7 @@ class FixOrganizer extends Command
         $this->setCryptIVFromUrl($this->argument('url'));
 
         $participant = URLParser::parseByName('dearSanta', $this->argument('url'))->participant;
-        if($participant) {
+        if ($participant) {
             $draw = $participant->draw;
         } else {
             $draw = URLParser::parseByName('organizerPanel', $this->argument('url'))->draw;
@@ -50,7 +50,7 @@ class FixOrganizer extends Command
         }
 
         Notification::route('mail', [
-            $draw->organizer_email => $draw->organizer_name
+            $draw->organizer_email => $draw->organizer_name,
         ])->notify(new OrganizerRecap($draw));
         $this->info('Organizer Recap sent');
 

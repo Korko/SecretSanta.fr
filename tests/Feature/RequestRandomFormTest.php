@@ -1,6 +1,5 @@
 <?php
 
-use App\Mail\OrganizerRecap as OrganizerRecapMail;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\OrganizerRecap as OrganizerRecapNotif;
@@ -14,12 +13,12 @@ it('sends no notifications in case of error', function ($participants) {
     assertEquals(0, Participant::count());
 
     ajaxPost('/', [
-            'participant-organizer' => '1',
-            'participants'          => $participants,
-            'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
-        ])
+        'participant-organizer' => '1',
+        'participants' => $participants,
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])
         ->assertStatus(422)
         ->assertJsonStructure(['message']);
 
@@ -36,12 +35,12 @@ it('can create draws', function () {
     $participants = generateParticipants(3);
 
     ajaxPost('/', [
-            'participant-organizer' => '1',
-            'participants'          => $participants,
-            'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
-        ])
+        'participant-organizer' => '1',
+        'participants' => $participants,
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
@@ -53,12 +52,12 @@ it('sends notifications in case of success', function () {
     Notification::fake();
 
     ajaxPost('/', [
-            'participant-organizer' => '1',
-            'participants'          => generateParticipants(3),
-            'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
-        ])
+        'participant-organizer' => '1',
+        'participants' => generateParticipants(3),
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
@@ -76,7 +75,7 @@ it('sends notifications in case of success', function () {
 
     // Ensure Participants receive their own recap
     Notification::assertTimesSent(count($draw->participants), TargetDrawn::class);
-    foreach($draw->participants as $participant) {
+    foreach ($draw->participants as $participant) {
         Notification::assertSentTo($participant, TargetDrawn::class);
     }
 });
@@ -87,13 +86,13 @@ it('can create draws with a non participant organizer', function () {
     $participants = generateParticipants(3);
 
     ajaxPost('/', [
-            'participant-organizer' => '0',
-            'organizer'             => ['name' => 'foo', 'email' => 'foo@foobar.com'],
-            'participants'          => $participants,
-            'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
-        ])
+        'participant-organizer' => '0',
+        'organizer' => ['name' => 'foo', 'email' => 'foo@foobar.com'],
+        'participants' => $participants,
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
@@ -113,7 +112,7 @@ it('can create draws with a non participant organizer', function () {
 
     // Ensure Participants receive their own recap
     Notification::assertTimesSent(count($draw->participants), TargetDrawn::class);
-    foreach($draw->participants as $participant) {
+    foreach ($draw->participants as $participant) {
         assertNotEquals($participant->email, $draw->organizer_email);
         Notification::assertSentTo($participant, TargetDrawn::class);
     }
@@ -123,12 +122,12 @@ it('sends to the organizer the link to their panel', function () {
     Notification::fake();
 
     ajaxPost('/', [
-            'participant-organizer' => '1',
-            'participants'          => generateParticipants(3),
-            'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
-        ])
+        'participant-organizer' => '1',
+        'participants' => generateParticipants(3),
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
@@ -156,12 +155,12 @@ it('sends to the organizer the initial recap', function () {
     Notification::fake();
 
     ajaxPost('/', [
-            'participant-organizer' => '1',
-            'participants'          => generateParticipants(3),
-            'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
-        ])
+        'participant-organizer' => '1',
+        'participants' => generateParticipants(3),
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
@@ -180,11 +179,11 @@ it('sends to the organizer the initial recap', function () {
             // CSV have a BOM at start, remove it to parse, then check the amount of lines not starting with '#' (comments in CSV)
             $attachments[0]['data'] = str_replace("\xEF\xBB\xBF", '', $attachments[0]['data']);
             assertCount($draw->participants()->count(), collect(explode("\n", $attachments[0]['data']))
-                ->map(fn($line) => str_getcsv($line))
-                ->filter(fn($data) => $data[0][0] !== '#')
+                ->map(fn ($line) => str_getcsv($line))
+                ->filter(fn ($data) => $data[0][0] !== '#')
             );
 
-            return TRUE;
+            return true;
         }
     );
 });
@@ -197,12 +196,12 @@ it('can deal with thousands of participants', function () {
     $participants = generateParticipants($totalParticipants, false);
 
     ajaxPost('/', [
-            'participant-organizer' => '1',
-            'participants'          => $participants,
-            'title'                 => 'this is a test',
-            'content-email'         => 'test mail {SANTA} => {TARGET}',
-            'data-expiration'       => date('Y-m-d', strtotime('+2 days')),
-        ])
+        'participant-organizer' => '1',
+        'participants' => $participants,
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 

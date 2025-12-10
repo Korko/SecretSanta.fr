@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Events\MailStatusUpdated;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,9 +29,13 @@ class Mail extends Model
     ];
 
     public const CREATED = 'created';
+
     public const SENDING = 'sending';
+
     public const SENT = 'sent';
+
     public const ERROR = 'error';
+
     public const RECEIVED = 'received';
 
     public static $deliveryStatuses = [
@@ -47,28 +50,33 @@ class Mail extends Model
     {
         parent::boot();
 
-        static::creating(function($mail) {
+        static::creating(function ($mail) {
             $mail->notification = Str::uuid();
         });
     }
 
-    public function markAsCreated() {
+    public function markAsCreated()
+    {
         $this->updateDeliveryStatus(self::CREATED);
     }
 
-    public function markAsSending() {
+    public function markAsSending()
+    {
         $this->updateDeliveryStatus(self::SENDING);
     }
 
-    public function markAsSent() {
+    public function markAsSent()
+    {
         $this->updateDeliveryStatus(self::SENT);
     }
 
-    public function markAsError() {
+    public function markAsError()
+    {
         $this->updateDeliveryStatus(self::ERROR);
     }
 
-    public function markAsReceived() {
+    public function markAsReceived()
+    {
         $this->updateDeliveryStatus(self::RECEIVED);
     }
 
@@ -79,7 +87,7 @@ class Mail extends Model
 
         try {
             MailStatusUpdated::dispatch($this);
-        } catch(BroadcastException $e) {
+        } catch (BroadcastException $e) {
             // Ignore exception
         }
     }

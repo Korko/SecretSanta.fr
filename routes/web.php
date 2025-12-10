@@ -36,7 +36,7 @@ Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').
 Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
 Route::pattern('dearSanta', '[0-9a-zA-Z]{'.config('hashids.connections.dearSanta.length').',}');
 
-Route::middleware('signed')->group(function() {
+Route::middleware('signed')->group(function () {
     Route::get('/dearSanta/{participant}', [DearSantaController::class, 'view'])
         ->name('dearSanta')
         ->missing(function () {
@@ -55,7 +55,7 @@ Route::middleware('signed')->group(function() {
         Route::get('/dearSanta/{participant}/resendTarget', [DearSantaController::class, 'resendTarget'])
             ->name('dearSanta.resend_target');
 
-        Route::post('/participant/{participant}/sub', function(Participant $participant, Request $request) {
+        Route::post('/participant/{participant}/sub', function (Participant $participant, Request $request) {
             $participant->updatePushSubscription(
                 $request->input('endpoint'),
                 $request->input('keys.p256dh'),
@@ -63,15 +63,15 @@ Route::middleware('signed')->group(function() {
             );
 
             return response()->json([
-                'success' => true
+                'success' => true,
             ]);
         })->name('participant.sub');
 
-        Route::post('/participant/{participant}/unsub', function(Participant $participant, Request $request) {
+        Route::post('/participant/{participant}/unsub', function (Participant $participant, Request $request) {
             $participant->deletePushSubscription($request->input('endpoint'));
 
             return response()->json([
-                'success' => true
+                'success' => true,
             ]);
         })->name('participant.unsub');
     });

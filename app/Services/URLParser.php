@@ -8,6 +8,7 @@ use Illuminate\Routing\Router;
 class URLParser
 {
     protected $router;
+
     protected $request;
 
     public function __construct(Router $router, Request $request)

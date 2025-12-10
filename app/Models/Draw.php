@@ -108,7 +108,7 @@ class Draw extends Model
     {
         return Metrics::create($name)
             ->setTags([
-                'draw' => $this->metricId
+                'draw' => $this->metricId,
             ]);
     }
 }

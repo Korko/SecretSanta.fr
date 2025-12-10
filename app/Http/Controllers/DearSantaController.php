@@ -11,7 +11,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Lang;
-use Str;
 
 class DearSantaController extends Controller
 {
@@ -36,19 +35,19 @@ class DearSantaController extends Controller
             'organizer' => $participant->draw->organizer_name,
             'emails' => $participant->dearSantas->mapWithKeys(function ($email) {
                 return [
-                    $email->mail->id => $email->only($this->dearSantaPublicFields)
+                    $email->mail->id => $email->only($this->dearSantaPublicFields),
                 ];
             }),
             'resendEmailUrls' => $participant->dearSantas->mapWithKeys(function ($dearSanta) use ($participant) {
                 return [
                     $dearSanta->mail->id => URL::signedRoute('dearSanta.resend', [
-                        'participant' => $participant, 'dearSanta' => $dearSanta
-                    ])
+                        'participant' => $participant, 'dearSanta' => $dearSanta,
+                    ]),
                 ];
             }),
             'resendTargetEmailsUrl' => URL::signedRoute('dearSanta.resend_target', [
-                'participant' => $participant
-            ])
+                'participant' => $participant,
+            ]),
         ]);
     }
 
@@ -57,7 +56,7 @@ class DearSantaController extends Controller
         return response()->json([
             'emails' => $participant->dearSantas->mapWithKeys(function ($dearSanta) {
                 return [
-                    $dearSanta->mail->id => $dearSanta->only($this->dearSantaPublicFields)
+                    $dearSanta->mail->id => $dearSanta->only($this->dearSantaPublicFields),
                 ];
             }),
         ]);
@@ -82,7 +81,7 @@ class DearSantaController extends Controller
                     'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
                 ]) :
                 redirect('/dearSanta/'.$participant->hash)->with('message', $message);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $error = trans('error.email');
 
             return $request->ajax() ?
@@ -115,7 +114,7 @@ class DearSantaController extends Controller
 
     public function handle(Participant $participant, DearSantaRequest $request)
     {
-        $dearSanta = new DearSanta();
+        $dearSanta = new DearSanta;
         $dearSanta->sender()->associate($participant);
         $dearSanta->mail_body = $request->input('content');
         $dearSanta->save();

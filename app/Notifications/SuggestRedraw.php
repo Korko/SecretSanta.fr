@@ -13,7 +13,6 @@ class SuggestRedraw extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param Participant $participant
      * @return array
      */
     public function via(Participant $participant)
@@ -24,7 +23,7 @@ class SuggestRedraw extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param Participant $santa
+     * @param  Participant  $santa
      * @return MailMessage
      */
     public function toMail(Participant $participant)

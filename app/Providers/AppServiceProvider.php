@@ -43,8 +43,8 @@ class AppServiceProvider extends ServiceProvider
         Queue::createPayloadUsing(function ($connection, $queue, $payload) {
             return [
                 'data' => array_merge($payload['data'], [
-                    'iv' => base64_encode(DrawCrypt::getIV())
-                ])
+                    'iv' => base64_encode(DrawCrypt::getIV()),
+                ]),
             ];
         });
 

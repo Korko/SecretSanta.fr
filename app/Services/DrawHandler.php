@@ -5,9 +5,7 @@ namespace App\Services;
 use App\Collections\ParticipantsCollection;
 use App\Exceptions\SolverException;
 use App\Models\Draw;
-use App\Models\Mail as MailModel;
 use App\Notifications\TargetDrawn;
-use Exception;
 use Solver;
 
 class DrawHandler
@@ -24,12 +22,12 @@ class DrawHandler
         $draw->next_solvable = self::canRedraw($draw->participants->fresh());
         $draw->save();
 
-        $draw->participants->each(function($participant) {
+        $draw->participants->each(function ($participant) {
             $participant->notify(new TargetDrawn);
         });
     }
 
-    public static function getHat(ParticipantsCollection $participants) : array
+    public static function getHat(ParticipantsCollection $participants): array
     {
         return Solver::one(
             $participants->pluck(null, 'id')->toArray(),
@@ -37,7 +35,7 @@ class DrawHandler
         );
     }
 
-    public static function canRedraw(ParticipantsCollection $participants) : bool
+    public static function canRedraw(ParticipantsCollection $participants): bool
     {
         try {
             self::getHat($participants->appendTargetToExclusions());

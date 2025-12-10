@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\SolverException;
-use App\Models\Draw;
-use App\Models\Participant;
-use App\Notifications\OrganizerRecap;
 use App\Http\Requests\RandomFormRequest;
+use App\Notifications\OrganizerRecap;
 use App\Services\DrawFormHandler;
 use Arr;
-use Exception;
 use Notification;
 
 class RandomFormController extends Controller
@@ -24,9 +21,9 @@ class RandomFormController extends Controller
         $safe = $request->safe();
 
         try {
-            $drawForm = (new DrawFormHandler());
+            $drawForm = (new DrawFormHandler);
 
-            if(!Arr::get($safe, 'participant-organizer', false)) {
+            if (! Arr::get($safe, 'participant-organizer', false)) {
                 $drawForm->withOrganizer($safe['organizer']);
             }
 
@@ -38,16 +35,16 @@ class RandomFormController extends Controller
                 ->save();
 
             Notification::route('mail', [
-                $draw->organizer_email => $draw->organizer_name
+                $draw->organizer_email => $draw->organizer_name,
             ])->notify(new OrganizerRecap($draw));
 
             $draw->createMetric('new_draw')
                 ->addExtra('participants', count($draw->participants));
 
             return response()->json([
-                'message' => trans('message.sent')
+                'message' => trans('message.sent'),
             ]);
-        } catch(SolverException $e) {
+        } catch (SolverException $e) {
             return response()->json([
                 'message' => trans('error.solution'),
             ], 422);

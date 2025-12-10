@@ -27,7 +27,7 @@ class SolverTest extends TestCase
         $this->assertEquals(serialize($actual), serialize($expected));
     }
 
-    public function testNoExclusion(): void
+    public function test_no_exclusion(): void
     {
         $participants = ['A', 'B'];
         $this->assertCombination([
@@ -47,7 +47,7 @@ class SolverTest extends TestCase
         ], Solver::all($participants), $participants);
     }
 
-    public function testSimpleExclusion(): void
+    public function test_simple_exclusion(): void
     {
         // A => C
         $participants = ['A', 'B', 'C'];
@@ -56,14 +56,14 @@ class SolverTest extends TestCase
         ], Solver::all($participants, [0 => [2]]), $participants);
     }
 
-    public function testImpossibleSolution(): void
+    public function test_impossible_solution(): void
     {
         $participants = ['A', 'B', 'C'];
         $this->assertCombination([], Solver::all($participants, [0 => [1, 2]]), $participants);
         $this->assertCombination([], Solver::all($participants, [2 => [0, 1]]), $participants);
     }
 
-    public function testOne(): void
+    public function test_one(): void
     {
         $this->assertTrue((function () {
             $solutions = [
@@ -87,7 +87,7 @@ class SolverTest extends TestCase
         })());
     }
 
-    public function testMass(): void
+    public function test_mass(): void
     {
         // 702 characters from 'A' to 'ZZ'
         $participants = [];
@@ -105,14 +105,14 @@ class SolverTest extends TestCase
     /**
      * Test if the system is random enough
      */
-    public function testRandom(): void
+    public function test_random(): void
     {
         // 26 characters from 'A' to 'Z'
         $participants = range('A', 'Z');
 
         // Let's run the algo N times
         $solutions = [];
-        for($i = 0; $i < 10000; $i++) {
+        for ($i = 0; $i < 10000; $i++) {
             try {
                 $solution = Solver::one($participants);
                 ksort($solution, SORT_NUMERIC);
@@ -124,11 +124,11 @@ class SolverTest extends TestCase
 
         // And now count how many times we had each solution
         $solutionsAndCount = [];
-        foreach($solutions as $solution) {
-            if(!isset($solutionsAndCount[$solution])) {
+        foreach ($solutions as $solution) {
+            if (! isset($solutionsAndCount[$solution])) {
                 $solutionsAndCount[$solution] = 0;
-                foreach($solutions as $solution2) {
-                    if($solution === $solution2) {
+                foreach ($solutions as $solution2) {
+                    if ($solution === $solution2) {
                         $solutionsAndCount[$solution]++;
                     }
                 }
@@ -141,11 +141,11 @@ class SolverTest extends TestCase
     /**
      * Test if a lot of exclusions is correctly handled
      */
-    public function testSeveralExclusions(): void
+    public function test_several_exclusions(): void
     {
         $participants = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
         try {
-            $this->assertNotEquals(null, Solver::one($participants, [0 => [7,10,4,13], 1 => [10], 6 => [11, 10], 7 => [0], 8 => [9,10,7], 10 => [0,6], 11 => [6], 14 => [0,1,2,4,5,6,8,6,9,10,11,12,13]]));
+            $this->assertNotEquals(null, Solver::one($participants, [0 => [7, 10, 4, 13], 1 => [10], 6 => [11, 10], 7 => [0], 8 => [9, 10, 7], 10 => [0, 6], 11 => [6], 14 => [0, 1, 2, 4, 5, 6, 8, 6, 9, 10, 11, 12, 13]]));
         } catch (SolverException) {
             $this->fail('No exception expected');
         }

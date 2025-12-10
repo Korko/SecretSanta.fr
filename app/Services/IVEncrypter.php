@@ -6,6 +6,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
 use Illuminate\Encryption\Encrypter as BaseEncrypter;
 use RuntimeException;
+
 use function openssl_encrypt;
 
 class IVEncrypter extends BaseEncrypter
@@ -35,9 +36,6 @@ class IVEncrypter extends BaseEncrypter
 
     /**
      * Override the initialization vector.
-     *
-     * @param  string  $iv
-     * @return void
      */
     public function setIV(string $iv): void
     {
@@ -67,7 +65,7 @@ class IVEncrypter extends BaseEncrypter
      */
     public static function supportedIV($iv, $cipher)
     {
-        return (mb_strlen($iv, '8bit') === openssl_cipher_iv_length($cipher));
+        return mb_strlen($iv, '8bit') === openssl_cipher_iv_length($cipher);
     }
 
     /**

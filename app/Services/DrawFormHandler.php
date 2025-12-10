@@ -11,9 +11,13 @@ use Throwable;
 class DrawFormHandler
 {
     protected $title;
+
     protected $body;
+
     protected $organizer;
+
     protected $participants;
+
     protected $expirationDate;
 
     public function __construct()
@@ -25,45 +29,45 @@ class DrawFormHandler
         $this->expirationDate = date('Y-m-d', strtotime('+2 days'));
     }
 
-    public function withOrganizer(array $organizer) : self
+    public function withOrganizer(array $organizer): self
     {
         $this->organizer = $organizer;
 
         return $this;
     }
 
-    public function withParticipants(array $participants) : self
+    public function withParticipants(array $participants): self
     {
         $this->participants = $participants;
-        if(!isset($this->organizer)) {
+        if (! isset($this->organizer)) {
             $this->organizer = reset($participants);
         }
 
         return $this;
     }
 
-    public function withTitle($title) : self
+    public function withTitle($title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function withBody($body) : self
+    public function withBody($body): self
     {
         $this->body = $body;
 
         return $this;
     }
 
-    public function withExpiration($expirationDate) : self
+    public function withExpiration($expirationDate): self
     {
         $this->expirationDate = $expirationDate;
 
         return $this;
     }
 
-    public function save() : Draw
+    public function save(): Draw
     {
         DB::beginTransaction();
 
@@ -77,16 +81,16 @@ class DrawFormHandler
             DB::commit();
 
             return $draw;
-        } catch(Throwable $e) {
+        } catch (Throwable $e) {
             DB::rollBack();
 
             throw $e;
         }
     }
 
-    protected function createDraw() : Draw
+    protected function createDraw(): Draw
     {
-        $draw = new Draw();
+        $draw = new Draw;
         $draw->expires_at = $this->expirationDate;
         $draw->mail_title = $this->title;
         $draw->mail_body = $this->body;
@@ -95,7 +99,7 @@ class DrawFormHandler
         $draw->save();
 
         foreach ($this->participants as $idx => $santa) {
-            $participant = new Participant();
+            $participant = new Participant;
             $participant->draw()->associate($draw);
             $participant->name = $santa['name'];
             $participant->email = Arr::get($santa, 'email');
@@ -108,7 +112,7 @@ class DrawFormHandler
         return $draw;
     }
 
-    protected function solveExclusions(Draw $draw) : void
+    protected function solveExclusions(Draw $draw): void
     {
         $participants = $this->participants;
         for ($i = 0; $i < count($participants); $i++) {

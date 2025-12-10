@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrganizerChangeEmailRequest;
-use App\Http\Requests\OrganizerResendEmailRequest;
 use App\Models\Draw;
-use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
-use Csv;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Lang;
@@ -35,24 +31,24 @@ class OrganizerController extends Controller
                 return [
                     $participant->hash => $participant->only([
                         'hash', 'name', 'email', 'mail',
-                    ])
+                    ]),
                 ];
             }),
             'changeEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
                 return [
                     $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [
-                        'draw' => $participant->draw, 'participant' => $participant
-                    ])
+                        'draw' => $participant->draw, 'participant' => $participant,
+                    ]),
                 ];
             }),
             'withdrawalUrls' => $draw->participants->mapWithKeys(function ($participant) {
                 return [
                     $participant->hash => URL::signedRoute('organizerPanel.withdraw', [
-                        'draw' => $participant->draw, 'participant' => $participant
-                    ])
+                        'draw' => $participant->draw, 'participant' => $participant,
+                    ]),
                 ];
             }),
-            'finalCsvAvailable' => $draw->next_solvable
+            'finalCsvAvailable' => $draw->next_solvable,
         ]);
     }
 
@@ -101,7 +97,7 @@ class OrganizerController extends Controller
             $santa->target()->save($target);
         } else {
             // Limit case!
-            return;//TODO
+            return; // TODO
         }
 
         $santa->notify(new TargetWithdrawn);

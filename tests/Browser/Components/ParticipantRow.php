@@ -27,7 +27,6 @@ class ParticipantRow extends BaseComponent
     /**
      * Assert that the browser page contains the component.
      *
-     * @param  Browser  $browser
      * @return void
      */
     public function assert(Browser $browser)
@@ -51,14 +50,14 @@ class ParticipantRow extends BaseComponent
     /**
      * Select the given exclusion.
      *
-     * @param Browser $browser
+     * @param  Browser  $browser
      * @param  string  $name
      * @return void
      */
     public function selectParticipant($browser, $name)
     {
         $browser->click('@select-button')
-                ->clickLink($name, '@participant-field')
-                ->click('@select-button');
+            ->clickLink($name, '@participant-field')
+            ->click('@select-button');
     }
 }

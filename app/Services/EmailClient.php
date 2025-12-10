@@ -20,7 +20,7 @@ class EmailClient
         $this->delegate->expunge();
     }
 
-    public function getUnseenMails(int $limit = 0, $folder = 'imap.folders.inbox'): Iterable
+    public function getUnseenMails(int $limit = 0, $folder = 'imap.folders.inbox'): iterable
     {
         $oFolder = $this->delegate->getFolder(config($folder));
 
@@ -31,7 +31,7 @@ class EmailClient
             ->get();
     }
 
-    public function getOldMails(int $age = 30, int $limit = 0, $folder = 'imap.folders.trash'): Iterable
+    public function getOldMails(int $age = 30, int $limit = 0, $folder = 'imap.folders.trash'): iterable
     {
         $oFolder = $this->delegate->getFolder(config($folder));
 
@@ -54,9 +54,8 @@ class EmailClient
     /**
      * Proxies all methods to the delegate.
      *
-     * @param string $method
-     * @param array  $args
-     *
+     * @param  string  $method
+     * @param  array  $args
      * @return mixed
      */
     public function __call($method, $args)

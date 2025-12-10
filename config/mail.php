@@ -160,5 +160,5 @@ return [
     'dkim_algo' => env('MAIL_DKIM_ALGO', 'rsa-sha256'), // sign algorithm (defaults to rsa-sha256)
     'dkim_passphrase' => env('MAIL_DKIM_PASSPHRASE'), // private key passphrase (optional)
 
-    'resend_delay' => 5 * 60 // 5m delay
+    'resend_delay' => 5 * 60, // 5m delay
 ];

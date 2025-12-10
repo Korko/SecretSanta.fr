@@ -17,7 +17,7 @@ class RetryCommand extends BaseRetryCommand
     {
         try {
             parent::retryJob($job);
-        } catch(ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             $this->laravel['queue.failer']->forget($job->id);
         }
     }
