@@ -47,8 +47,7 @@ class MailTracker
 
     public function isEmailReceived(EmailMessage $message)
     {
-        return
-            $this->getNotificationType($message) === self::CONFIRM; // ||
+        return $this->getNotificationType($message) === self::CONFIRM; // ||
         //            $message->getHeader()->get('X-Autoreply') ||
         //            $message->getHeader()->get('X-Autorespond') ||
         //            strpos($message->getHeader()->get('Auto-Submitted') ?? '', 'auto-replied') !== false ||
