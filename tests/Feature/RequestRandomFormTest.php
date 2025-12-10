@@ -64,7 +64,7 @@ it('sends notifications in case of success', function () {
     $draw = Draw::find(1);
 
     // Ensure Organizer receives his recap
-    Notification::assertTimesSent(1, OrganizerRecapNotif::class);
+    Notification::assertSentTimes(OrganizerRecapNotif::class, 1);
     Notification::assertSentTo(
         new AnonymousNotifiable,
         OrganizerRecapNotif::class,
@@ -74,7 +74,7 @@ it('sends notifications in case of success', function () {
     );
 
     // Ensure Participants receive their own recap
-    Notification::assertTimesSent(count($draw->participants), TargetDrawn::class);
+    Notification::assertSentTimes(TargetDrawn::class, count($draw->participants));
     foreach ($draw->participants as $participant) {
         Notification::assertSentTo($participant, TargetDrawn::class);
     }
@@ -101,7 +101,7 @@ it('can create draws with a non participant organizer', function () {
     assertEquals('foo@foobar.com', $draw->organizer_email);
 
     // Ensure Organizer receives his recap
-    Notification::assertTimesSent(1, OrganizerRecapNotif::class);
+    Notification::assertSentTimes(OrganizerRecapNotif::class, 1);
     Notification::assertSentTo(
         new AnonymousNotifiable,
         OrganizerRecapNotif::class,
@@ -111,7 +111,7 @@ it('can create draws with a non participant organizer', function () {
     );
 
     // Ensure Participants receive their own recap
-    Notification::assertTimesSent(count($draw->participants), TargetDrawn::class);
+    Notification::assertSentTimes(TargetDrawn::class, count($draw->participants));
     foreach ($draw->participants as $participant) {
         assertNotEquals($participant->email, $draw->organizer_email);
         Notification::assertSentTo($participant, TargetDrawn::class);

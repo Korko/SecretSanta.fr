@@ -28,6 +28,6 @@ class CleanBounces extends Command
      */
     public function handle()
     {
-        Job::dispatchNow();
+        Job::dispatchSync();
     }
 }
