@@ -10,7 +10,7 @@ class RetryCommand extends BaseRetryCommand
     /**
      * Retry the queue job.
      */
-    protected function retryJob(stdClass $job): void
+    protected function retryJob($job): void
     {
         try {
             parent::retryJob($job);
