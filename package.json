@@ -47,7 +47,7 @@
         "jschardet": "^3.0.0",
         "modernizr": "^3.11.7",
         "moment": "^2.29.1",
-        "npm": "^9.2.0",
+        "npm": "^9.9.4",
         "papaparse": "^5.3.0",
         "toastify-js": "^1.11.2",
         "vue": "^3.5.25",
