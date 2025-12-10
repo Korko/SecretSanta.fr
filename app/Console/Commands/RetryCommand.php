@@ -9,9 +9,6 @@ class RetryCommand extends BaseRetryCommand
 {
     /**
      * Retry the queue job.
-     *
-     * @param  \stdClass  $job
-     * @return void
      */
     protected function retryJob(stdClass $job): void
     {

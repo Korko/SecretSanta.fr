@@ -14,7 +14,6 @@ class TrackedMailChannel extends MailChannel
      * Send the given notification.
      *
      * @param  mixed  $notifiable
-     * @return void
      */
     public function send($notifiable, Notification $notification): void
     {
@@ -36,9 +35,6 @@ class TrackedMailChannel extends MailChannel
      * Get the mailer Closure for the message.
      *
      * @param  mixed  $notifiable
-     * @param  Notification  $notification
-     * @param  MailMessage  $message
-     * @return Closure
      */
     protected function messageBuilder($notifiable, Notification $notification, MailMessage $message): Closure
     {

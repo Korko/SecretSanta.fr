@@ -96,8 +96,6 @@ class Participant extends Model
      * Retrieve the model for a bound value.
      *
      * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function resolveRouteBinding($value, ?string $field = null): ?Model
     {
@@ -110,8 +108,6 @@ class Participant extends Model
 
     /**
      * Create a new Eloquent Collection instance.
-     *
-     * @return Collection
      */
     public function newCollection(array $models = []): Collection
     {
@@ -135,7 +131,6 @@ class Participant extends Model
     /**
      * Route notifications for the mail channel.
      *
-     * @param  Notification  $notification
      * @return array|string
      */
     public function routeNotificationForMail(Notification $notification)

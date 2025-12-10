@@ -54,8 +54,6 @@ class EmailClient
     /**
      * Proxies all methods to the delegate.
      *
-     * @param  string  $method
-     * @param  array  $args
      * @return mixed
      */
     public function __call(string $method, array $args)

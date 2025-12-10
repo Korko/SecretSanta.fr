@@ -36,8 +36,6 @@ trait HashId
      * Retrieve the model for a bound value.
      *
      * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function resolveRouteBinding($value, ?string $field = null): ?Model
     {
@@ -53,8 +51,6 @@ trait HashId
 
     /**
      * Get the route key for the model.
-     *
-     * @return string
      */
     public function getRouteKeyName(): string
     {

@@ -16,8 +16,6 @@ class MailFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     public function definition(): array
     {
@@ -29,8 +27,6 @@ class MailFactory extends Factory
 
     /**
      * Indicate that the mail has failed to be sent.
-     *
-     * @return Factory
      */
     public function failed(): Factory
     {
