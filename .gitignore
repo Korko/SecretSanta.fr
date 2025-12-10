@@ -6,7 +6,7 @@
 .env
 .env.backup
 .phpstorm.meta.php
-.phpunit.result.cache
+/.phpunit.cache
 docker-compose.override.yml
 Homestead.json
 Homestead.yaml
@@ -14,10 +14,4 @@ npm-debug.log
 yarn-error.log
 database/tests.sqlite
 public/assets/*.map
-/public/hot
-/public/storage
-/storage/*.key
-.phpunit.result.cache
-npm-debug.log
-yarn-error.log
 .php_cs.cache
