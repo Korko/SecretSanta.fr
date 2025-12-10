@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Casts\EncryptedString;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DearSanta extends Model
 {

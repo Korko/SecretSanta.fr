@@ -52,7 +52,6 @@ class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQu
      * Get the notification's delivery channels.
      *
      * @param  AnonymousNotifiable|Participant  $organizer
-     * @return array
      */
     public function via($organizer): array
     {
@@ -63,7 +62,6 @@ class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQu
      * Get the mail representation of the notification.
      *
      * @param  AnonymousNotifiable|Participant  $organizer
-     * @return Mailable
      */
     public function toMail($organizer): Mailable
     {

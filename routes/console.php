@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Schedule;
-use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +12,6 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 | simple approach to interacting with each command's IO methods.
 |
 */
-
 
 Schedule::command('queue:work --stop-when-empty')
     ->everyMinute()

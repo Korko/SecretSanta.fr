@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Casts\EncryptedString;
 use App\Services\DrawHandler;
 use Carbon\Carbon;
@@ -10,6 +9,7 @@ use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Metrics;
 

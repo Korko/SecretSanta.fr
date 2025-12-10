@@ -41,8 +41,6 @@ class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @return array
      */
     public function via(Participant $santa): array
     {
@@ -56,8 +54,6 @@ class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @return Mailable
      */
     public function toMail(Participant $santa): Mailable
     {

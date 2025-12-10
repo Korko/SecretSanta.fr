@@ -2,18 +2,17 @@
 
 namespace App\Http\Middleware;
 
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Http\Request;
 use Closure;
 use DrawCrypt;
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class HandleEncryptionIV
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function handle(Request $request, Closure $next, $parameterToCheck, $fieldToCheck): Response
