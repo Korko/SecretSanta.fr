@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Casts\EncryptedString;
 use App\Services\DrawHandler;
 use Carbon\Carbon;
-use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
@@ -95,7 +94,7 @@ class Draw extends Model
 
     public function getMetricIdAttribute()
     {
-        return (new xxHash($this->id))->hash($this->created_at);
+        return hash('xxh32', $this->created_at, false, ['seed' => $this->id]);
     }
 
     public function getCanRedrawAttribute()

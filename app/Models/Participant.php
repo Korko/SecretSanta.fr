@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
-use exussum12\xxhash\V32 as xxHash;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -119,7 +118,7 @@ class Participant extends Model
 
     public function getMetricIdAttribute()
     {
-        return (new xxHash($this->draw->id))->hash((string) $this->id);
+        return hash('xxh32', (string) $this->id, false, ['seed' => $this->draw->id]);
     }
 
     public function createMetric($name, $value = 1)
