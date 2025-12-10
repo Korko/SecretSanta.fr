@@ -64,7 +64,7 @@ class IVEncrypter extends BaseEncrypter
      * Encrypt the given value.
      *
      * @param  mixed  $value
-     * @param  bool   $serialize
+     * @param  bool  $serialize
      *
      * @throws EncryptException
      */
@@ -99,7 +99,7 @@ class IVEncrypter extends BaseEncrypter
     /**
      * Get the JSON array from the given payload.
      *
-     * @param string $payload
+     * @param  string  $payload
      *
      * @throws DecryptException
      */

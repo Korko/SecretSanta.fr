@@ -42,6 +42,7 @@ return [
                 'smtp',
                 'sendmail',
             ],
+            'retry_after' => 60,
         ],
     ],
 
