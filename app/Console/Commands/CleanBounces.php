@@ -26,7 +26,7 @@ class CleanBounces extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         Job::dispatchNow();
     }

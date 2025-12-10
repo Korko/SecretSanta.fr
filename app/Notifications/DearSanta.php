@@ -30,7 +30,7 @@ class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueue
      *
      * @return array
      */
-    public function via(Participant $santa)
+    public function via(Participant $santa): array
     {
         return [TrackedMailChannel::class];
     }
@@ -45,7 +45,7 @@ class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueue
      *
      * @return MailMessage
      */
-    public function toMail(Participant $santa)
+    public function toMail(Participant $santa): MailMessage
     {
         $url = URL::signedRoute('dearSanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
 

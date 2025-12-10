@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use exussum12\xxhash\V32 as xxHash;
@@ -55,22 +59,22 @@ class Participant extends Model
         });
     }
 
-    public function draw()
+    public function draw(): BelongsTo
     {
         return $this->belongsTo(Draw::class);
     }
 
-    public function target()
+    public function target(): HasOne
     {
         return $this->hasOne(self::class, 'target_id');
     }
 
-    public function santa()
+    public function santa(): BelongsTo
     {
         return $this->belongsTo(self::class, 'target_id');
     }
 
-    public function dearSantas()
+    public function dearSantas(): HasMany
     {
         return $this->hasMany(DearSanta::class, 'sender_id')->with('mail');
     }
@@ -80,7 +84,7 @@ class Participant extends Model
         return $this->morphOne(Mail::class, 'mailable');
     }
 
-    public function exclusions()
+    public function exclusions(): BelongsToMany
     {
         return $this->belongsToMany(Participant::class, 'exclusions', 'participant_id', 'exclusion_id');
     }

@@ -28,7 +28,7 @@ class FixOrganizer extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $this->setCryptIVFromUrl($this->argument('url'));
 

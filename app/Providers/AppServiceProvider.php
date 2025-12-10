@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->bind(
             SolverInterface::class,
@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Queue::createPayloadUsing(function ($connection, $queue, $payload) {
             return [

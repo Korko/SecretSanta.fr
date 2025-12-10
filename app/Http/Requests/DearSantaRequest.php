@@ -9,7 +9,7 @@ class DearSantaRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,7 +19,7 @@ class DearSantaRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return parent::rules() + [
             'content' => 'required|string',
@@ -31,7 +31,7 @@ class DearSantaRequest extends Request
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'content.required' => __('validation.custom.dearSanta.content.required'),

@@ -15,7 +15,7 @@ class SuggestRedraw extends Notification
      *
      * @return array
      */
-    public function via(Participant $participant)
+    public function via(Participant $participant): array
     {
         return ['mail'];
     }
@@ -26,7 +26,7 @@ class SuggestRedraw extends Notification
      * @param  Participant  $santa
      * @return MailMessage
      */
-    public function toMail(Participant $participant)
+    public function toMail(Participant $participant): MailMessage
     {
         return (new MailMessage)
             ->subject(__('emails.suggest_redraw_title', ['participant' => $participant->id]))
