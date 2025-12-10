@@ -1,4 +1,3 @@
-# For more information: https://laravel.com/docs/sail
 version: '3'
 services:
     laravel.test:
@@ -23,8 +22,10 @@ services:
             - '.:/var/www/html'
         networks:
             - sail
+        depends_on:
+            - mysql
     selenium:
-        image: 'selenium/standalone-chrome'
+        image: selenium/standalone-chrome
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         volumes:
@@ -37,7 +38,7 @@ services:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
             MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ROOT_HOST: "%"
+            MYSQL_ROOT_HOST: '%'
             MYSQL_DATABASE: '${DB_DATABASE}'
             MYSQL_USER: '${DB_USERNAME}'
             MYSQL_PASSWORD: '${DB_PASSWORD}'
@@ -48,51 +49,30 @@ services:
         networks:
             - sail
         healthcheck:
-            test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
     phpmyadmin:
         image: phpmyadmin
         ports:
-          - "8080:80"
+            - '8080:80'
         environment:
-          PMA_ARBITRARY: 1
-          PMA_HOST: 'mysql'
-          PMA_USER: '${DB_USERNAME}'
-          PMA_PASSWORD: '${DB_PASSWORD}'
+            PMA_ARBITRARY: 1
+            PMA_HOST: mysql
+            PMA_USER: '${DB_USERNAME}'
+            PMA_PASSWORD: '${DB_PASSWORD}'
         networks:
             - sail
-    # redis:
-    #     image: 'redis:alpine'
-    #     ports:
-    #         - '${FORWARD_REDIS_PORT:-6379}:6379'
-    #     volumes:
-    #         - 'sail-redis:/data'
-    #     networks:
-    #         - sail
-    #     healthcheck:
-    #         test: ["CMD", "redis-cli", "ping"]
-    #         retries: 3
-    #         timeout: 5s
-    # memcached:
-    #     image: 'memcached:alpine'
-    #     ports:
-    #         - '11211:11211'
-    #     networks:
-    #         - sail
-    # mailhog:
-    #    image: 'mailhog/mailhog:latest'
-    #    ports:
-    #        - '${FORWARD_MAILHOG_PORT:-1025}:1025'
-    #        - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
-    #    networks:
-    #        - sail
     inbucket:
-        image: 'inbucket/inbucket'
+        image: inbucket/inbucket
         ports:
-            - "9000:9000"
-            - "2500:2500"
-            - "1100:1100"
+            - '9000:9000'
+            - '2500:2500'
+            - '1100:1100'
         networks:
             - sail
 networks:
@@ -101,5 +81,3 @@ networks:
 volumes:
     sail-mysql:
         driver: local
-    # sail-redis:
-    #     driver: local
