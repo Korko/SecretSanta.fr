@@ -32,7 +32,7 @@ class MailFactory extends Factory
      *
      * @return Factory
      */
-    public function failed()
+    public function failed(): Factory
     {
         return $this->state(function () {
             return [

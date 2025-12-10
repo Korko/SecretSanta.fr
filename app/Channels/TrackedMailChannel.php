@@ -16,7 +16,7 @@ class TrackedMailChannel extends MailChannel
      * @param  mixed  $notifiable
      * @return void
      */
-    public function send($notifiable, Notification $notification)
+    public function send($notifiable, Notification $notification): void
     {
         $mail = $notification->getMailableModel($notifiable)->mail;
 
@@ -40,7 +40,7 @@ class TrackedMailChannel extends MailChannel
      * @param  MailMessage  $message
      * @return Closure
      */
-    protected function messageBuilder($notifiable, $notification, $message)
+    protected function messageBuilder($notifiable, Notification $notification, MailMessage $message): Closure
     {
         $mail = $notification->getMailableModel($notifiable)->mail;
 

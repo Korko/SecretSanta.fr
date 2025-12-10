@@ -18,7 +18,7 @@ class MailChannel extends BaseMailChannel
      * @param  MailMessage  $message
      * @return Closure
      */
-    protected function messageBuilder($notifiable, $notification, $message)
+    protected function messageBuilder($notifiable, Notification $notification, MailMessage $message): Closure
     {
         // Sign DKIM
         $message->withSwiftMessage(function ($message) {

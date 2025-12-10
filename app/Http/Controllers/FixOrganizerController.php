@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Facades\DrawCrypt;
 use App\Http\Requests\FixOrganizerRequest;
 use App\Notifications\OrganizerRecap;
@@ -14,14 +16,14 @@ use URLParser;
 
 class FixOrganizerController extends Controller
 {
-    public function view()
+    public function view(): Response
     {
         return response()->view('fixOrganizer', [
             'fixUrl' => URL::route('fixOrganizer.handle'),
         ]);
     }
 
-    public function handle(FixOrganizerRequest $request)
+    public function handle(FixOrganizerRequest $request): JsonResponse
     {
         $hash = Arr::get(explode('#', $request->input('url'), 2), 1);
         $key = base64_decode($hash);

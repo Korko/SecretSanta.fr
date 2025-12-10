@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
 use App\Notifications\OrganizerRecap;
@@ -11,12 +13,12 @@ use Notification;
 
 class RandomFormController extends Controller
 {
-    public function view()
+    public function view(): Response
     {
         return response()->view('randomForm');
     }
 
-    public function handle(RandomFormRequest $request)
+    public function handle(RandomFormRequest $request): JsonResponse
     {
         $safe = $request->safe();
 
@@ -51,7 +53,7 @@ class RandomFormController extends Controller
         }
     }
 
-    public function faq()
+    public function faq(): Response
     {
         return response()->view('faq', [
             'questions' => __('faq.questions'),

@@ -29,7 +29,7 @@ class DrawFactory extends Factory
      *
      * @return $this
      */
-    public function configure()
+    public function configure(): static
     {
         return $this->afterCreating(function (Draw $draw) {
             if ($draw->participants->count() > 0) {
@@ -43,7 +43,7 @@ class DrawFactory extends Factory
      *
      * @return Factory
      */
-    public function expired()
+    public function expired(): Factory
     {
         return $this->state(function () {
             return [
