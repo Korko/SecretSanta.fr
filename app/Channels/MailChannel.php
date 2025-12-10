@@ -14,9 +14,6 @@ class MailChannel extends BaseMailChannel
      * Get the mailer Closure for the message.
      *
      * @param  mixed  $notifiable
-     * @param  Notification  $notification
-     * @param  MailMessage  $message
-     * @return Closure
      */
     protected function messageBuilder($notifiable, Notification $notification, MailMessage $message): Closure
     {

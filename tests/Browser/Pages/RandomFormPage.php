@@ -8,8 +8,6 @@ class RandomFormPage extends Page
 {
     /**
      * Get the URL for the page.
-     *
-     * @return string
      */
     public function url(): string
     {
@@ -18,8 +16,6 @@ class RandomFormPage extends Page
 
     /**
      * Assert that the browser is on the page.
-     *
-     * @return void
      */
     public function assert(Browser $browser): void
     {
@@ -29,8 +25,6 @@ class RandomFormPage extends Page
 
     /**
      * Get the element shortcuts for the page.
-     *
-     * @return array
      */
     public function elements(): array
     {

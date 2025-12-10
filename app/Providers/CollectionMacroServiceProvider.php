@@ -10,8 +10,6 @@ class CollectionMacroServiceProvider extends ServiceProvider
 {
     /**
      * Register the application's response macros.
-     *
-     * @return void
      */
     public function boot(): void
     {

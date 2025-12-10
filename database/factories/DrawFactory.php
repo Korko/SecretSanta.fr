@@ -10,8 +10,6 @@ class DrawFactory extends Factory
 {
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     public function definition(): array
     {
@@ -26,8 +24,6 @@ class DrawFactory extends Factory
 
     /**
      * Configure the model factory.
-     *
-     * @return $this
      */
     public function configure(): static
     {
@@ -40,8 +36,6 @@ class DrawFactory extends Factory
 
     /**
      * Indicate that the draw is expired.
-     *
-     * @return Factory
      */
     public function expired(): Factory
     {

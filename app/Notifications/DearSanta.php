@@ -27,8 +27,6 @@ class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueue
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @return array
      */
     public function via(Participant $santa): array
     {
@@ -42,8 +40,6 @@ class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueue
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @return MailMessage
      */
     public function toMail(Participant $santa): MailMessage
     {
