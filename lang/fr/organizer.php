@@ -11,6 +11,7 @@ return [
         'withdraw' => 'Retirer',
     ],
     'up_and_sent' => 'Modifié avec succès !',
+    'cannot_withdraw' => 'Impossible de supprimer :name',
     'withdrawn' => ':name ne participe plus à l\'évènement.',
     'deleted' => 'Toutes les données ont été supprimées',
     'download' => [

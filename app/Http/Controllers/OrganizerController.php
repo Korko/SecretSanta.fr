@@ -99,7 +99,9 @@ class OrganizerController extends Controller
             $santa->target()->save($target);
         } else {
             // Limit case!
-            return; // TODO
+            return response()->json([
+                'error' => trans('organizer.cannot_withdraw', ['name' => $participant->name]),
+            ]);
         }
 
         $santa->notify(new TargetWithdrawn);
