@@ -39,7 +39,7 @@
         "alertifyjs": "^1.13.1",
         "axios": "^1.11.0",
         "bootstrap": "^4.6.0",
-        "crypto-js": "^3.3.0",
+        "crypto-js": "^4.2.0",
         "jquery": "^3.6.0",
         "jquery-ui": "^1.12.1",
         "jquery.actual": "github:dreamerslab/jquery.actual#master",
