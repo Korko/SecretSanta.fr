@@ -22,7 +22,7 @@ return new class extends Migration
                     $join
                         ->on('draws.id', '=', 'organizer.draw_id')
                         ->whereNotExists(function ($query) {
-                            $query->select(DB::raw(1))
+                            $query->selectRaw(1)
                                 ->from('participants')
                                 ->whereColumn('draws.id', '=', 'participants.draw_id')
                                 ->whereColumn('organizer.id', '>', 'participants.id');
