@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
-use Illuminate\Support\ServiceProvider;
 
 return [
 
@@ -15,7 +14,6 @@ return [
     ],
 
     'challenge' => 'Ping?',
-
 
     'aliases' => Facade::defaultAliases()->merge([
         'Csv' => App\Services\CsvGenerator::class,
