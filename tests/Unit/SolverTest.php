@@ -6,7 +6,7 @@ use App\Exceptions\SolverException;
 use Solver;
 use Tests\TestCase;
 
-class SolverTest extends TestCase
+final class SolverTest extends TestCase
 {
     const LOOP_NUMBER = 100;
 
