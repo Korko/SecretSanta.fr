@@ -2,17 +2,17 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Http\Request;
-use Illuminate\Cache\RateLimiting\Limit;
 use App\Channels\MailChannel;
 use App\Solvers\HatSolver;
 use App\Solvers\SolverInterface;
 use DrawCrypt;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Mail\Markdown;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Queue;
 
