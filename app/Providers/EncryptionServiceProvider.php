@@ -12,7 +12,7 @@ class EncryptionServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         /**
          * Register another singleton to differenciate app encrypter (using the app_key)

@@ -14,7 +14,7 @@ class CleanTrash implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(EmailClient $emailClient, MailTracker $tracker)
+    public function handle(EmailClient $emailClient, MailTracker $tracker): void
     {
         $oldMails = $emailClient->getOldMails(7, 500);
 

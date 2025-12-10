@@ -13,7 +13,7 @@ class CollectionMacroServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Collection::macro('toCsv', function (array $attributes) {
             $attributes = collect($attributes);

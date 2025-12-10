@@ -14,7 +14,7 @@ class ParticipantFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'draw_id' => Draw::factory(),

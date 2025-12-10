@@ -27,7 +27,7 @@ class ListDraws extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $draws = Draw::where('expires_at', '>', now())->get();
         foreach ($draws as $draw) {

@@ -33,7 +33,7 @@ class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQ
      *
      * @return array
      */
-    public function via(Participant $santa)
+    public function via(Participant $santa): array
     {
         return ['mail'];
     }
@@ -48,7 +48,7 @@ class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQ
      *
      * @return MailMessage
      */
-    public function toMail(Participant $santa)
+    public function toMail(Participant $santa): MailMessage
     {
         $title = Lang::get('emails.target_withdrawn.title', [
             'draw' => $santa->draw->id,

@@ -44,7 +44,7 @@ class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
      *
      * @return array
      */
-    public function via(Participant $santa)
+    public function via(Participant $santa): array
     {
         return [TrackedMailChannel::class];
     }
@@ -59,7 +59,7 @@ class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
      *
      * @return Mailable
      */
-    public function toMail(Participant $santa)
+    public function toMail(Participant $santa): Mailable
     {
         $title = $this->parseKeywords(Lang::get('emails.target_draw.title', [
             'draw' => $santa->draw->id,

@@ -9,7 +9,7 @@ class OrganizerChangeEmailRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,7 +19,7 @@ class OrganizerChangeEmailRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return parent::rules() + [
             'email' => 'required|email',
@@ -31,7 +31,7 @@ class OrganizerChangeEmailRequest extends Request
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'email.required' => __('validation.custom.organizer.email.required'),
