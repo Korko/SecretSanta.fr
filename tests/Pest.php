@@ -156,3 +156,5 @@ function formatParticipants($participants): array
 
     return $participants;
 }
+
+pest()->extend(Tests\TestCase::class)->in('Browser');
