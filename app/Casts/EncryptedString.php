@@ -13,7 +13,7 @@ class EncryptedString implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): array
     {
-        return DrawCrypt::decrypt($value);
+        return is_null($value) ? null : DrawCrypt::decrypt($value);
     }
 
     /**
@@ -21,6 +21,6 @@ class EncryptedString implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): string
     {
-        return DrawCrypt::encrypt($value);
+        return is_null($value) ? null : DrawCrypt::encrypt($value);
     }
 }
