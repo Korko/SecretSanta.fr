@@ -26,13 +26,16 @@ class DearSanta extends Model
     public $timestamps = false;
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'mail_body' => EncryptedString::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'mail_body' => EncryptedString::class,
+        ];
+    }
 
     protected static function booted()
     {
