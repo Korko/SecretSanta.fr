@@ -44,7 +44,7 @@ class TrackedMailChannel extends MailChannel
     {
         $mail = $notification->getMailableModel($notifiable)->mail;
 
-        $message->withSwiftMessage(function ($message) use ($mail) {
+        $message->withSymfonyMessage(function ($message) use ($mail) {
             // In case of Bounce
             $message->getHeaders()->addPathHeader('Return-Path', MailTracker::getBounceReturnPath($mail));
 

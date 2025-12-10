@@ -21,7 +21,7 @@ class MailChannel extends BaseMailChannel
     protected function messageBuilder($notifiable, $notification, $message)
     {
         // Sign DKIM
-        $message->withSwiftMessage(function ($message) {
+        $message->withSymfonyMessage(function ($message) {
             if (
                 config('mail.dkim_private_key') &&
                 file_exists(config('mail.dkim_private_key')) &&
