@@ -33,14 +33,17 @@ class Participant extends Model
     protected $fillable = ['name', 'email'];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'name' => EncryptedString::class,
-        'email' => EncryptedString::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'name' => EncryptedString::class,
+            'email' => EncryptedString::class,
+        ];
+    }
 
     protected static function booted()
     {
