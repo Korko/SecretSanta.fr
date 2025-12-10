@@ -34,6 +34,7 @@ class Draw extends Model
      * @var array
      */
     protected $casts = [
+        'expires_at' => 'datetime',
         'mail_title' => EncryptedString::class,
         'mail_body' => EncryptedString::class,
         'next_solvable' => 'boolean',
@@ -46,10 +47,6 @@ class Draw extends Model
      *
      * @var string[]
      */
-    protected $dates = [
-        'expires_at',
-    ];
-
     protected static function booted()
     {
         static::deleting(function ($draw) {
