@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Draw;
-use App\Models\Participant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 
