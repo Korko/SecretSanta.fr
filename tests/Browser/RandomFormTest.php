@@ -8,7 +8,7 @@ use Tests\Browser\Components\ExclusionPicker;
 use Tests\Browser\Pages\RandomFormPage;
 use Tests\DuskTestCase;
 
-class RandomFormTest extends DuskTestCase
+final class RandomFormTest extends DuskTestCase
 {
     use withFaker;
 
