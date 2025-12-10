@@ -33,11 +33,11 @@
         "laravel/sail": "^1.18",
         "martinlindhe/laravel-vue-i18n-generator": "dev-master",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.3",
+        "nunomaduro/collision": "^7.0",
         "pestphp/pest-plugin-faker": "^1.0",
         "pestphp/pest-plugin-global-assertions": "^1.0",
         "pestphp/pest-plugin-laravel": "^1.2",
-        "phpunit/phpunit": "^9.5.10",
+        "phpunit/phpunit": "^10.0",
         "spatie/laravel-ignition": "^2.0"
     },
     "config": {
