@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
 use App\Notifications\OrganizerRecap;
 use App\Services\DrawFormHandler;
 use Arr;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Notification;
 
 class RandomFormController extends Controller
