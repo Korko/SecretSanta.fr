@@ -16,27 +16,6 @@ return [
 
     'challenge' => 'Ping?',
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        /*
-         * Laravel Framework Service Providers...
-         */
-
-        /*
-         * Package Service Providers...
-         */
-        Korko\Validator\ValidatorServiceProvider::class,
-
-        /*
-         * Application Service Providers...
-         */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\CollectionMacroServiceProvider::class,
-        App\Providers\ComposerServiceProvider::class,
-        App\Providers\EncryptionServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-        App\Providers\ValidatorServiceProvider::class,
-    ])->toArray(),
 
     'aliases' => Facade::defaultAliases()->merge([
         'Csv' => App\Services\CsvGenerator::class,
