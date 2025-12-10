@@ -2,9 +2,6 @@
 
 namespace Tests\Browser\Components;
 
-use Laravel\Dusk\Browser;
-use Laravel\Dusk\Component as BaseComponent;
-
 class ExclusionPicker extends BaseComponent
 {
     protected $root;

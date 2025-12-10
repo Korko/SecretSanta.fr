@@ -1,12 +1,8 @@
 <?php
 
 use Illuminate\Foundation\Testing\WithFaker;
-use Laravel\Dusk\Browser;
 use Tests\Browser\Components\ExclusionPicker;
 use Tests\Browser\Pages\RandomFormPage;
-use Tests\DuskTestCase;
-
-uses(Tests\DuskTestCase::class);
 uses(withFaker::class);
 
 test('duplicate name', function () {

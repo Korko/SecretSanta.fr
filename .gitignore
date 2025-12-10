@@ -17,3 +17,5 @@ database/tests.sqlite
 public/assets/*.map
 .php_cs.cache
 /.nova
+
+tests/Browser/Screenshots
