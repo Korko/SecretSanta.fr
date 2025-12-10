@@ -25,4 +25,3 @@ return [
 
     'bmc' => env('BMC_ME'),
 
-];
