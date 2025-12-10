@@ -23,11 +23,11 @@ class DrawFactory extends Factory
     public function definition()
     {
         return [
-            'mail_title' => $this->faker->sentence,
-            'mail_body' => $this->faker->text,
+            'mail_title' => $this->faker->sentence(),
+            'mail_body' => $this->faker->text(),
             'expires_at' => $this->faker->dateTimeBetween('+1 day', '+1 month'),
-            'organizer_name' => $this->faker->name,
-            'organizer_email' => $this->faker->email,
+            'organizer_name' => $this->faker->name(),
+            'organizer_email' => $this->faker->email(),
         ];
     }
 
