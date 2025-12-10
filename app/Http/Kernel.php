@@ -50,12 +50,13 @@ class Kernel extends HttpKernel
     ];
 
     /**
-     * These middleware may be assigned to groups or used individually.
+     * Aliases may be used to conveniently assign middleware to routes and groups.
      *
      * @var array
      */
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
         'cache.headers' => SetCacheHeaders::class,
+        'precognitive' => \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'decrypt.iv' => HandleEncryptionIV::class,
