@@ -48,7 +48,7 @@ class MailStatusUpdated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('draw.'.$this->mail->mailable->draw->hash)
+            new Channel('draw.'.$this->mail->mailable->draw->hash),
         ];
     }
 }
