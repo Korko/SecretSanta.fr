@@ -31,10 +31,10 @@ class OrganizerInDraw extends Migration
                        });
                 })
                 ->update(
-                    array(
+                    [
                         'organizer_name' => DB::raw('organizer.name'),
                         'organizer_email' => DB::raw('organizer.email')
-                    )
+                    ]
                 );
 
             Schema::table('draws', function (Blueprint $table) {
