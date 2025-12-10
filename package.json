@@ -32,7 +32,8 @@
         "sass-loader": "^12.1.0",
         "sass-resources-loader": "^2.2.4",
         "vue-loader": "^15.9.6",
-        "vue-template-compiler": "^2.6.12"
+        "vue-template-compiler": "^2.6.12",
+        "concurrently": "^9.0.1"
     },
     "dependencies": {
         "alertifyjs": "^1.13.1",
