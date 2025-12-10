@@ -9,7 +9,7 @@ class FixOrganizerRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,7 +19,7 @@ class FixOrganizerRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return parent::rules() + [
             'url' => 'required|string',
@@ -32,7 +32,7 @@ class FixOrganizerRequest extends Request
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'url.required' => __('validation.custom.fixOrganizer.url.required'),

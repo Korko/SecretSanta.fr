@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use App\Events\MailStatusUpdated;
 use Exception;
 use Illuminate\Broadcasting\BroadcastException;
@@ -95,7 +96,7 @@ class Mail extends Model
     /**
      * Get the parent mailable model (dearSanta or participant).
      */
-    public function mailable()
+    public function mailable(): MorphTo
     {
         return $this->morphTo();
     }

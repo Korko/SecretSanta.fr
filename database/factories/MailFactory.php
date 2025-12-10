@@ -19,7 +19,7 @@ class MailFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'notification' => $this->faker->uuid(),

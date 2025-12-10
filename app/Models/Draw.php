@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Casts\EncryptedString;
 use App\Services\DrawHandler;
 use Carbon\Carbon;
@@ -71,7 +72,7 @@ class Draw extends Model
         return static::where('expires_at', '<=', Carbon::now()->subWeeks(self::WEEKS_BEFORE_DELETION));
     }
 
-    public function participants()
+    public function participants(): HasMany
     {
         return $this->hasMany(Participant::class);
     }

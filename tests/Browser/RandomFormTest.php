@@ -12,7 +12,7 @@ class RandomFormTest extends DuskTestCase
 {
     use withFaker;
 
-    public function test_duplicate_name()
+    public function test_duplicate_name(): void
     {
         $this->browse(function (Browser $browser) {
             $name = $this->faker->name();
@@ -27,7 +27,7 @@ class RandomFormTest extends DuskTestCase
         });
     }
 
-    public function test_no_result()
+    public function test_no_result(): void
     {
         $this->browse(function (Browser $browser) {
             $name1 = $this->faker->name();

@@ -16,7 +16,7 @@ class ParseBounces implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(EmailClient $emailClient, MailTracker $tracker)
+    public function handle(EmailClient $emailClient, MailTracker $tracker): void
     {
         $unseenMails = $emailClient->getUnseenMails(500);
 

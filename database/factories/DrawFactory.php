@@ -13,7 +13,7 @@ class DrawFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'mail_title' => $this->faker->sentence(),

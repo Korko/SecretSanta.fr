@@ -54,7 +54,7 @@ class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQu
      * @param  AnonymousNotifiable|Participant  $organizer
      * @return array
      */
-    public function via($organizer)
+    public function via($organizer): array
     {
         return ['mail'];
     }
@@ -65,7 +65,7 @@ class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQu
      * @param  AnonymousNotifiable|Participant  $organizer
      * @return Mailable
      */
-    public function toMail($organizer)
+    public function toMail($organizer): Mailable
     {
         return (new MailMessage)
             ->subject(__('emails.organizer_recap_title', ['draw' => $this->draw->id]))
