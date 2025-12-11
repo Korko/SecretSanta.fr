@@ -6583,144 +6583,6 @@ namespace Illuminate\Support\Facades {
 
             }
     /**
-     * @see \Illuminate\Encryption\Encrypter
-     */
-    class Crypt {
-        /**
-         * Determine if the given key and cipher combination is valid.
-         *
-         * @param string $key
-         * @param string $cipher
-         * @return bool
-         * @static
-         */
-        public static function supported($key, $cipher)
-        {
-            return \Illuminate\Encryption\Encrypter::supported($key, $cipher);
-        }
-
-        /**
-         * Create a new encryption key for the given cipher.
-         *
-         * @param string $cipher
-         * @return string
-         * @static
-         */
-        public static function generateKey($cipher)
-        {
-            return \Illuminate\Encryption\Encrypter::generateKey($cipher);
-        }
-
-        /**
-         * Encrypt the given value.
-         *
-         * @param mixed $value
-         * @param bool $serialize
-         * @return string
-         * @throws \Illuminate\Contracts\Encryption\EncryptException
-         * @static
-         */
-        public static function encrypt($value, $serialize = true)
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->encrypt($value, $serialize);
-        }
-
-        /**
-         * Encrypt a string without serialization.
-         *
-         * @param string $value
-         * @return string
-         * @throws \Illuminate\Contracts\Encryption\EncryptException
-         * @static
-         */
-        public static function encryptString($value)
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->encryptString($value);
-        }
-
-        /**
-         * Decrypt the given value.
-         *
-         * @param string $payload
-         * @param bool $unserialize
-         * @return mixed
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static
-         */
-        public static function decrypt($payload, $unserialize = true)
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->decrypt($payload, $unserialize);
-        }
-
-        /**
-         * Decrypt the given string without unserialization.
-         *
-         * @param string $payload
-         * @return string
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static
-         */
-        public static function decryptString($payload)
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->decryptString($payload);
-        }
-
-        /**
-         * Get the encryption key that the encrypter is currently using.
-         *
-         * @return string
-         * @static
-         */
-        public static function getKey()
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->getKey();
-        }
-
-        /**
-         * Get the current encryption key and all previous encryption keys.
-         *
-         * @return array
-         * @static
-         */
-        public static function getAllKeys()
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->getAllKeys();
-        }
-
-        /**
-         * Get the previous encryption keys.
-         *
-         * @return array
-         * @static
-         */
-        public static function getPreviousKeys()
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->getPreviousKeys();
-        }
-
-        /**
-         * Set the previous / legacy encryption keys that should be utilized if decryption fails.
-         *
-         * @param array $keys
-         * @return \Illuminate\Encryption\Encrypter
-         * @throws \RuntimeException
-         * @static
-         */
-        public static function previousKeys($keys)
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->previousKeys($keys);
-        }
-
-            }
-    /**
      * @see https://carbon.nesbot.com/docs/
      * @see https://github.com/briannesbitt/Carbon/blob/master/src/Carbon/Factory.php
      * @method static bool canBeCreatedFromFormat(?string $date, string $format)
@@ -23137,211 +22999,6 @@ namespace Illuminate\Support\Facades {
             }
     }
 
-namespace App\Facades {
-    /**
-     * @method static void setKey(string $key)
-     * @see \App\Services\IVEncrypter
-     */
-    class DrawCrypt extends \Illuminate\Encryption\Encrypter {
-        /**
-         * Override the initialization vector.
-         *
-         * @static
-         */
-        public static function setIV($iv)
-        {
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->setIV($iv);
-        }
-
-        /**
-         * Get the initialization vector.
-         *
-         * @static
-         */
-        public static function getIV()
-        {
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->getIV();
-        }
-
-        /**
-         * Determine if the given iv and cipher combination is valid.
-         *
-         * @static
-         */
-        public static function supportedIV($iv, $cipher)
-        {
-            return \App\Services\IVEncrypter::supportedIV($iv, $cipher);
-        }
-
-        /**
-         * Encrypt the given value.
-         *
-         * @param mixed $value
-         * @param bool $serialize
-         * @throws EncryptException
-         * @static
-         */
-        public static function encrypt($value, $serialize = true)
-        {
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->encrypt($value, $serialize);
-        }
-
-        /**
-         * Determine if the given key and cipher combination is valid.
-         *
-         * @param string $key
-         * @param string $cipher
-         * @return bool
-         * @static
-         */
-        public static function supported($key, $cipher)
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            return \App\Services\IVEncrypter::supported($key, $cipher);
-        }
-
-        /**
-         * Create a new encryption key for the given cipher.
-         *
-         * @param string $cipher
-         * @return string
-         * @static
-         */
-        public static function generateKey($cipher)
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            return \App\Services\IVEncrypter::generateKey($cipher);
-        }
-
-        /**
-         * Encrypt a string without serialization.
-         *
-         * @param string $value
-         * @return string
-         * @throws \Illuminate\Contracts\Encryption\EncryptException
-         * @static
-         */
-        public static function encryptString($value)
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->encryptString($value);
-        }
-
-        /**
-         * Decrypt the given value.
-         *
-         * @param string $payload
-         * @param bool $unserialize
-         * @return mixed
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static
-         */
-        public static function decrypt($payload, $unserialize = true)
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->decrypt($payload, $unserialize);
-        }
-
-        /**
-         * Decrypt the given string without unserialization.
-         *
-         * @param string $payload
-         * @return string
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static
-         */
-        public static function decryptString($payload)
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->decryptString($payload);
-        }
-
-        /**
-         * Get the encryption key that the encrypter is currently using.
-         *
-         * @return string
-         * @static
-         */
-        public static function getKey()
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->getKey();
-        }
-
-        /**
-         * Get the current encryption key and all previous encryption keys.
-         *
-         * @return array
-         * @static
-         */
-        public static function getAllKeys()
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->getAllKeys();
-        }
-
-        /**
-         * Get the previous encryption keys.
-         *
-         * @return array
-         * @static
-         */
-        public static function getPreviousKeys()
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->getPreviousKeys();
-        }
-
-        /**
-         * Set the previous / legacy encryption keys that should be utilized if decryption fails.
-         *
-         * @param array $keys
-         * @return \App\Services\IVEncrypter
-         * @throws \RuntimeException
-         * @static
-         */
-        public static function previousKeys($keys)
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->previousKeys($keys);
-        }
-
-            }
-    /**
-     * @see SolverInterface
-     */
-    class Solver {
-        /**
-         * @static
-         */
-        public static function one($participants, $exclusions = [])
-        {
-            /** @var \App\Solvers\HatSolver $instance */
-            return $instance->one($participants, $exclusions);
-        }
-
-        /**
-         * @static
-         */
-        public static function all($participants, $exclusions = [])
-        {
-            /** @var \App\Solvers\HatSolver $instance */
-            return $instance->all($participants, $exclusions);
-        }
-
-            }
-    }
-
 namespace Vinkla\Hashids\Facades {
     /**
      * @method static string encode(mixed ...$numbers)
@@ -23484,6 +23141,32 @@ namespace Vinkla\Hashids\Facades {
             //Method inherited from \GrahamCampbell\Manager\AbstractManager 
             /** @var \Vinkla\Hashids\HashidsManager $instance */
             return $instance->getConfig();
+        }
+
+            }
+    }
+
+namespace App\Facades {
+    /**
+     * @see SolverInterface
+     */
+    class Solver {
+        /**
+         * @static
+         */
+        public static function one($participants, $exclusions = [])
+        {
+            /** @var \App\Solvers\HatSolver $instance */
+            return $instance->one($participants, $exclusions);
+        }
+
+        /**
+         * @static
+         */
+        public static function all($participants, $exclusions = [])
+        {
+            /** @var \App\Solvers\HatSolver $instance */
+            return $instance->all($participants, $exclusions);
         }
 
             }
@@ -24290,7 +23973,6 @@ namespace  {
     class Config extends \Illuminate\Support\Facades\Config {}
     class Context extends \Illuminate\Support\Facades\Context {}
     class Cookie extends \Illuminate\Support\Facades\Cookie {}
-    class Crypt extends \Illuminate\Support\Facades\Crypt {}
     class Date extends \Illuminate\Support\Facades\Date {}
     class DB extends \Illuminate\Support\Facades\DB {}
 
@@ -29150,7 +28832,6 @@ namespace  {
     class View extends \Illuminate\Support\Facades\View {}
     class Vite extends \Illuminate\Support\Facades\Vite {}
     class Csv extends \App\Services\CsvGenerator {}
-    class DrawCrypt extends \App\Facades\DrawCrypt {}
     class Hashids extends \Vinkla\Hashids\Facades\Hashids {}
     class Solver extends \App\Facades\Solver {}
     class URLParser extends \Facades\App\Services\URLParser {}
