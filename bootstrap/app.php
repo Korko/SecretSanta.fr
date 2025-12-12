@@ -22,13 +22,16 @@ return Application::configure(basePath: dirname(__DIR__))
             'decrypt.iv' => \App\Http\Middleware\HandleEncryptionIV::class,
         ]);
 
+        $middleware->web(remove: [
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+        ]);
+
         $middleware->priority([
-            // \Illuminate\Session\Middleware\StartSession::class,
-            // \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             SubstituteBindings::class,
-            // \App\Http\Middleware\EncryptCookies::class,
             HandleEncryptionIV::class,
-            // \App\Http\Middleware\VerifyCsrfToken::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
