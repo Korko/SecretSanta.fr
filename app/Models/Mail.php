@@ -7,7 +7,7 @@ use Exception;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Str;
+use Illuminate\Support\Str;
 
 class Mail extends Model
 {

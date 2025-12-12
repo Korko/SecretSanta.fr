@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Arr;
+use Illuminate\Support\Arr;
 use DrawCrypt;
 use Illuminate\Console\Command;
-use URL;
+use Illuminate\Support\Facades\URL;
 use URLParser;
 
 class ListDraw extends Command

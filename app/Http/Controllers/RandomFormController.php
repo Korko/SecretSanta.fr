@@ -6,10 +6,10 @@ use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
 use App\Notifications\OrganizerRecap;
 use App\Services\DrawFormHandler;
-use Arr;
+use Illuminate\Support\Arr;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Notification;
+use Illuminate\Support\Facades\Notification;
 
 class RandomFormController extends Controller
 {

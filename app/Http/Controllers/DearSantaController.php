@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\URL;
-use Lang;
+use Illuminate\Support\Facades\Lang;
 
 class DearSantaController extends Controller
 {

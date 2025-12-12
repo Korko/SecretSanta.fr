@@ -6,12 +6,12 @@ use App\Facades\DrawCrypt;
 use App\Http\Requests\FixOrganizerRequest;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
-use Arr;
+use Illuminate\Support\Arr;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Notification;
-use URL;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
 use URLParser;
 
 class FixOrganizerController extends Controller

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use Arr;
+use Illuminate\Support\Arr;
 use DrawCrypt;
 use Illuminate\Console\Command as BaseCommand;
 

@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App;
+use Illuminate\Support\Facades\App;
 use App\Models\Draw;
 use App\Models\Participant;
 use DrawCrypt;

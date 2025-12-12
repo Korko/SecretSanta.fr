@@ -3,7 +3,7 @@
 namespace App\Solvers;
 
 use App\Exceptions\SolverException;
-use Arr;
+use Illuminate\Support\Arr;
 use Generator;
 
 class HatSolver implements SolverInterface

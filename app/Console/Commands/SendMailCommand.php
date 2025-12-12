@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Mail\Message;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class SendMailCommand extends Command
 {

@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Models\Draw;
 use App\Models\Participant;
-use Arr;
-use DB;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class DrawFormHandler

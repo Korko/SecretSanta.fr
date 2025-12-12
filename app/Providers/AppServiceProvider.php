@@ -14,7 +14,7 @@ use Illuminate\Notifications\ChannelManager;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Queue;
+use Illuminate\Support\Facades\Queue;
 
 class AppServiceProvider extends ServiceProvider
 {

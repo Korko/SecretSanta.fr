@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Lang;
+use Illuminate\Support\Facades\Lang;
 
 class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
 {
