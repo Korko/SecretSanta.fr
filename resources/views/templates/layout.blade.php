@@ -6,7 +6,7 @@
 <html class="no-js" lang="{{ App::getLocale() }}"> <!--<![endif]-->
 <head>
     @section('header')
-        <title>@lang('headers.title')</title>
+        <title>{{ __('headers.title') }}</title>
 
         <link rel="canonical" href="{{ url('/') }}">
 
@@ -15,8 +15,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta http-equiv="content-language" content="{{ App::getLocale() }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="@lang('headers.description')">
-        <meta name="keywords" content="@lang('headers.keywords')">
+        <meta name="description" content="{{ __('headers.description') }}">
+        <meta name="keywords" content="{{ __('headers.keywords') }}">
         <meta name="author" content="Korko <webmaster@secretsanta.fr>">
         <meta name=”robots” content="index, follow">
         <meta name="rating" content="safe for kids">
@@ -30,7 +30,7 @@
         <meta property="og:image:alt" content="{{ url('/images/santaclaus.png') }}">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
-        <meta property="og:description" content="@lang('headers.description')">
+        <meta property="og:description" content="{{ __('headers.description') }}">
         <meta property="og:type" content="website">
         <meta property="og:locale" content="{{ App::getLocale() }}">
 
@@ -39,9 +39,9 @@
         <meta name="twitter:site" content="@korkof">
         <meta name="twitter:creator" content="@korkof">
         <meta name="twitter:title" content="SecretSanta.fr">
-        <meta name="twitter:description" content="@lang('headers.description')">
+        <meta name="twitter:description" content="{{ __('headers.description') }}">
         <meta name="twitter:image" content="{{ url('/images/opengraph_banner_16_9.png') }}">
-        <meta name="twitter:image" content="@lang('headers.logo_alt')">
+        <meta name="twitter:image" content="{{ __('headers.logo_alt') }}">
         <meta name="twitter:url" content="{{ url('/') }}">
 
         <!-- facebook image -->
@@ -55,7 +55,7 @@
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
     <div id="loadOverlay" style="background-color:#FFF; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div>
 
-    <span id="ribbon" class="d-none d-md-block"><a href="{{ route('faq') }}">@lang('form.nav.faq')</a></span>
+    <span id="ribbon" class="d-none d-md-block"><a href="{{ route('faq') }}">{{ __('form.nav.faq') }}</a></span>
 
     <div id="wrap">
         <div id="main">

@@ -10,12 +10,12 @@
 
 @section('navbar')
     <ul class="nav navbar-nav navbar-nav-left">
-        <li><a href="#what">@lang('form.nav.what')</a></li>
-        <li><a href="#how">@lang('form.nav.how')</a></li>
+        <li><a href="#what">{{ __('form.nav.what') }}</a></li>
+        <li><a href="#how">{{ __('form.nav.how') }}</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-nav-right">
-        <li><a href="#form">@lang('form.nav.go')</a></li>
-        <li><a class="d-md-none" href="{{ route('faq') }}" target="_blank">@lang('form.nav.faq')</a></li>
+        <li><a href="#form">{{ __('form.nav.go') }}</a></li>
+        <li><a class="d-md-none" href="{{ route('faq') }}" target="_blank">{{ __('form.nav.faq') }}</a></li>
     </ul>
 @stop
 
@@ -24,10 +24,10 @@
         <div class="bg-overlay"></div>
         <div class="center text-center">
             <div class="banner">
-                <h1>@lang('form.title')</h1>
+                <h1>{{ __('form.title') }}</h1>
             </div>
             <div class="subtitle">
-                <h4>@lang('form.subtitle')</h4>
+                <h4>{{ __('form.subtitle') }}</h4>
             </div>
         </div>
         <div class="bottom text-center">
@@ -38,20 +38,20 @@
     <div id="what" class="light-wrapper">
         <section class="ss-style-top"></section>
         <div class="container inner">
-            <h2 class="section-title text-center">@lang('form.section.what.title')</h2>
-            <p class="lead main text-center">@lang('form.section.what.subtitle')</p>
+            <h2 class="section-title text-center">{{ __('form.section.what.title') }}</h2>
+            <p class="lead main text-center">{{ __('form.section.what.subtitle') }}</p>
             <div class="row text-center what">
                 <ul class="media-list w-100">
                     <li class="media media-icon-left media-calendar-icon">
                         <div class="media-body">
-                            <h4 class="media-heading">@lang('form.section.what.heading1')</h4>
+                            <h4 class="media-heading">{{ __('form.section.what.heading1') }}</h4>
                             <p>{!! nl2br(trans('form.section.what.content1')) !!}</p>
                         </div>
                     </li>
                 </ul>
                 <div class="card w-100">
                     <div class="bg-light card-body">
-                        <h6 class="card-title">@lang('form.fyi')</h6>
+                        <h6 class="card-title">{{ __('form.fyi') }}</h6>
                         <p class="card-text">{!! nl2br(trans('form.section.what.notice', ['button' => str_replace("\n", '', view('partials.bmcButton'))])) !!}</p>
                     </div>
                 </div>
@@ -67,38 +67,38 @@
     <div id="how" class="light-wrapper">
         <section class="ss-style-top"></section>
         <div class="container inner">
-            <h2 class="section-title text-center">@lang('form.section.how.title')</h2>
-            <p class="lead main text-center">@lang('form.section.how.subtitle')</p>
+            <h2 class="section-title text-center">{{ __('form.section.how.title') }}</h2>
+            <p class="lead main text-center">{{ __('form.section.how.subtitle') }}</p>
             <div class="row text-center how">
                 <ul class="media-list w-100">
                     <li class="media media-icon-left media-user-icon">
                         <div class="media-body">
-                            <h4 class="media-heading">@lang('form.section.how.heading1')</h4>
+                            <h4 class="media-heading">{{ __('form.section.how.heading1') }}</h4>
                             <p>{!! nl2br(trans('form.section.how.content1')) !!}</p>
                         </div>
                     </li>
                     <li class="media media-icon-right media-paper-icon">
                         <div class="media-body">
-                            <h4 class="media-heading">@lang('form.section.how.heading2')</h4>
+                            <h4 class="media-heading">{{ __('form.section.how.heading2') }}</h4>
                             <p>{!! nl2br(trans('form.section.how.content2')) !!}</p>
                         </div>
                     </li>
                     <li class="media media-icon-left media-mail-icon">
                         <div class="media-body">
-                            <h4 class="media-heading">@lang('form.section.how.heading3')</h4>
+                            <h4 class="media-heading">{{ __('form.section.how.heading3') }}</h4>
                             <p>{!! nl2br(trans('form.section.how.content3')) !!}</p>
                         </div>
                     </li>
                     <li class="media media-icon-right media-clock-icon">
                         <div class="media-body">
-                            <h4 class="media-heading">@lang('form.section.how.heading4')</h4>
+                            <h4 class="media-heading">{{ __('form.section.how.heading4') }}</h4>
                             <p>{!! nl2br(trans('form.section.how.content4')) !!}</p>
                         </div>
                     </li>
                 </ul>
                 <div class="card w-100">
                     <div class="bg-light card-body">
-                        <h6 class="card-title">@lang('form.fyi')</h6>
+                        <h6 class="card-title">{{ __('form.fyi') }}</h6>
                         <p class="card-text">{!! nl2br(trans('form.section.how.notice', ['link' => '<a href="https://github.com/Korko/SecretSanta">GitHub</a>'])) !!}</p>
                     </div>
                 </div>
@@ -114,8 +114,8 @@
     <div id="form" class="light-wrapper v-cloak">
         <section class="ss-style-top"></section>
         <div class="container inner">
-            <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
-            <p class="lead main text-center">@lang('form.section.go.subtitle')</p>
+            <h2 class="section-title text-center">{{ __('form.section.go.title') }}</h2>
+            <p class="lead main text-center">{{ __('form.section.go.subtitle') }}</p>
 <!--        <div class="alert alert-warning" role="alert"></div>-->
             <random-form id="randomForm" action="/"></random-form>
         </div><!-- /.container -->
