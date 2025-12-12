@@ -35,5 +35,21 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->context(fn () => [
+            'url' => Request::url(),
+            'input' => Request::all(),
+        ]);
+
+        $exceptions->render(function (ValidationException $e, $request) {
+            return response()->json([
+                'message' => trans('error.validation'),
+                'errors' => $e->errors(),
+            ], 422);
+        });
+
+        $exceptions->render(function (InvalidSignatureException $e, $request) {
+            return response()->json([
+                'message' => trans('error.signature'),
+            ], 500);
+        });
     })->create();
