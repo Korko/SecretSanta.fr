@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->throttleApi();
+        // $middleware->throttleApi();
 
         $middleware->alias([
             'decrypt.iv' => \App\Http\Middleware\HandleEncryptionIV::class,
