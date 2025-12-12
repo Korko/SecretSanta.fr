@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use Illuminate\Support\Facades\App;
 use App\Models\Draw;
 use App\Models\Participant;
 use DrawCrypt;
@@ -14,6 +13,7 @@ use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 
 class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQueue

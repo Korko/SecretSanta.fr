@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Support\Arr;
 use DrawCrypt;
 use Illuminate\Console\Command as BaseCommand;
+use Illuminate\Support\Arr;
 
 abstract class Command extends BaseCommand
 {
