@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Browser\Components\ExclusionPicker;
 use Tests\Browser\Pages\RandomFormPage;
+
 uses(withFaker::class);
 
 test('duplicate name', function () {
@@ -14,7 +15,7 @@ test('duplicate name', function () {
         ->assertPresent('input[name=\'participants[0][name]\'].is-invalid')
         ->scrollIntoView('#randomForm button[type=submit]')
         ->click('#randomForm button[type=submit]')
-        ->assertPresent('input[name=\'participants[1][name]\'].is-invalid');;
+        ->assertPresent('input[name=\'participants[1][name]\'].is-invalid');
 });
 
 test('no result', function () {
@@ -42,5 +43,5 @@ test('no result', function () {
         ->type('data-expiration', $this->faker->dateTimeBetween('+1 day', '+30 days')->format('m/d/Y'))
         ->scrollIntoView('#randomForm button[type=submit]')
         ->click('#randomForm button[type=submit]')
-        ->waitForText('Les exclusions que vous avez choisies ne permettent pas d\'attribuer une cible par participant.');;
+        ->waitForText('Les exclusions que vous avez choisies ne permettent pas d\'attribuer une cible par participant.');
 });
