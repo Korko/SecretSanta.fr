@@ -1,28 +1,22 @@
-import Vue from 'vue';
+import { createApp } from 'vue'
+import { i18nVue } from 'laravel-vue-i18n'
+
 import RandomForm from './components/randomForm.vue';
 
-import VueI18n from 'vue-i18n';
-Vue.use(VueI18n);
-
-const lang = document.documentElement.lang.substr(0, 2);
-import Locale from './vue-i18n-locales.generated.js';
-
-const i18n = new VueI18n({
-    locale: lang,
-    messages: Locale
-});
-
-window.app = new Vue({
-    el: '#wrap',
-
+window.app = createApp({
     components: {
         RandomForm
     },
-
-    i18n,
 
     mounted: function() {
         document.body.classList.add('cssLoading');
         setTimeout(() => document.body.classList.remove('cssLoading'), 0);
     }
-});
+})
+.use(i18nVue, {
+    resolve: async lang => {
+        const langs = import.meta.glob('../../lang/*.json');
+        return await langs[`../../lang/${lang}.json`]();
+    }
+})
+.mount('#wrap');

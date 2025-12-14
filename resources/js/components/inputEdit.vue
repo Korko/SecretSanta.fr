@@ -1,9 +1,4 @@
 <script>
-    import Vue from 'vue';
-
-    import Vuelidate from 'vuelidate';
-    Vue.use(Vuelidate);
-
     import StateMachine from '../mixins/stateMachine.js';
 
     export default {
@@ -14,10 +9,6 @@
                 type: String,
                 required: true
             },
-            validation: {
-                type: Object,
-                default: null
-            },
             update: {
                 type: Function,
                 required: true
@@ -26,11 +17,6 @@
                 type: Boolean,
                 default: false
             }
-        },
-        validations() {
-            return {
-                newValue: this.validation || {}
-            };
         },
         data: function() {
             return {
@@ -92,19 +78,15 @@
         },
         methods: {
             onBlur() {
-                this.$v.$touch();
                 this.send('blur');
             },
             onCancel() {
-                this.$v.$reset();
                 this.send('cancel');
             },
             onInput() {
-                this.$v.$error && this.$v.$touch();
                 this.send('validate');
             },
             onSubmit() {
-                this.$v.$touch();
                 this.send('submit');
             },
             onResend() {
@@ -127,11 +109,7 @@
                 }
             },
             stateEditingValidating() {
-                if (this.$v.$invalid || this.$el.querySelectorAll('input:invalid').length > 0) {
-                    this.send('invalid');
-                } else {
-                    this.send('valid');
-                }
+                this.send('valid');
             },
             stateViewUpdating() {
                 this.submit()
@@ -170,12 +148,10 @@
                     v-model="newValue"
                     name="input"
                     v-bind="$attrs"
-                    :class="{ 'form-control': true, 'is-invalid': $v.$error }"
+                    class="form-control"
                     :disabled="view"
-                    :aria-invalid="$v.$error"
                     @input="onInput"
                 />
-                <slot name="errors" :$v="$v.newValue"></slot>
                 <div class="input-group-append">
                     <button
                         v-if="state === 'viewError'"

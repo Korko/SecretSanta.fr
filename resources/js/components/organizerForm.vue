@@ -1,11 +1,4 @@
 <script>
-    import Vue from 'vue';
-
-    import VuejsDialog from 'vuejs-dialog';
-    Vue.use(VuejsDialog);
-
-    import { required, email } from 'vuelidate/lib/validators';
-
     import { download } from '../partials/helpers.js';
 
     import Moment from 'moment';
@@ -40,12 +33,6 @@
                 finalCsvAvailable: this.data.finalCsvAvailable,
                 changeEmailUrls: this.data.changeEmailUrls,
                 withdrawalUrls: this.data.withdrawalUrls,
-                validations: {
-                    email: {
-                        required,
-                        format: email
-                    }
-                },
                 canWithdraw: false
             };
         },
@@ -195,15 +182,9 @@
                     <td>
                         <input-edit
                             :value="participant.email"
-                            :validation="validations.email"
                             :update="(email) => updateEmail(k, email)"
                             :disabled="expired"
-                        >
-                            <template #errors="{ $v: $v }">
-                                <div v-if="!$v.required" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.required') }}</div>
-                                <div v-else-if="!$v.format" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.format') }}</div>
-                            </template>
-                        </input-edit>
+                        />
                     </td>
                     <td><email-status :delivery_status="participant.mail.delivery_status" :last_update="participant.mail.updated_at" :disabled="expired" @redo="updateEmail(k, participant.email)" /></td>
                     <td v-if="canWithdraw">
@@ -286,7 +267,7 @@
 </template>
 
 <style scoped>
-    @import "~vuejs-dialog/dist/vuejs-dialog.min.css";
+    @import "vuejs-dialog/dist/vuejs-dialog.min.css";
 
     .table td {
         vertical-align: middle !important;

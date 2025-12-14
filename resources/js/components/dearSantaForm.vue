@@ -1,10 +1,4 @@
 <script>
-    import Vue from 'vue';
-
-    import Vuelidate from 'vuelidate';
-    import { required } from 'vuelidate/lib/validators'
-    Vue.use(Vuelidate);
-
     import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
 
@@ -63,11 +57,6 @@
                     }
                 });
         },
-        validations: {
-            content: {
-                required
-            }
-        },
         methods: {
             success(data) {
                 if(!data.email.updated_at) {
@@ -103,7 +92,7 @@
 
 <template>
     <div>
-        <ajax-form :action="routes.contactUrl" :$v="$v" @success="success" @reset="reset" :autoReset="true">
+        <ajax-form :action="routes.contactUrl" @success="success" @reset="reset" :autoReset="true">
             <fieldset>
                 <div class="form-group">
                     <div class="alert alert-info" role="alert">
@@ -116,11 +105,8 @@
                             v-model="content"
                             name="content"
                             :placeholder="$t('dearsanta.content.placeholder')"
-                            :class="{ 'form-control': true, 'is-invalid': $v.content.$error }"
-                            :aria-invalid="$v.content.$error"
-                            @blur="$v.content.$touch()"
+                            class="form-control"
                         />
-                        <div v-if="!$v.content.required" class="invalid-tooltip">{{ $t('validation.custom.dearSanta.content.required') }}</div>
                     </div>
                 </div>
             </fieldset>

@@ -22,7 +22,7 @@
         <meta name="rating" content="safe for kids">
 
         <!-- opengraph/facebook -->
-        <meta property="og:title" content="SecretSanta.fr">
+*        <meta property="og:title" content="SecretSanta.fr">
         <meta property="og:site_name" content="SecretSanta.fr">
         <meta property="og:url" content="{{ url('/') }}">
         <meta property="og:image" content="{{ url('/images/opengraph_banner_19.1_1.png') }}">
@@ -48,8 +48,8 @@
         <link rel="image_src" href="{{ url('/images/opengraph_banner_19.1_1.png') }}" />
 
         <!-- css -->
-        @vite('resources/css/vendor.css')
-        @vite('resources/css/app.css')
+        @vite('resources/sass/vendor.scss')
+        @vite('resources/sass/app.scss')
     @show
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
@@ -102,8 +102,6 @@
 
     @section('script')
         <script src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" data-auto-replace-svg="nest"></script>
-        @vite('resources/js/manifest.js')
-        @vite('resources/js/vendor.js')
     @show
 </body>
 </html>
