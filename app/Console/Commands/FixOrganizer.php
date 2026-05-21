@@ -5,16 +5,18 @@ namespace App\Console\Commands;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use Illuminate\Support\Facades\Notification;
-use URLParser;
+use function Laravel\Prompts\error;
 
 class FixOrganizer extends Command
 {
+    use ParsesDrawUrl;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'secretsanta:fix-organizer {url : The URL received by one of the participants to write to their santa} {email? : The correct email of the organizer}';
+    protected $signature = 'secretsanta:fix-organizer {url? : The URL received by one of the participants to write to their santa} {email? : The correct email of the organizer}';
 
     /**
      * The console command description.
@@ -28,13 +30,12 @@ class FixOrganizer extends Command
      */
     public function handle(): void
     {
-        $this->setCryptIVFromUrl($this->argument('url'));
-
-        $participant = URLParser::parseByName('dearSanta', $this->argument('url'))->participant;
-        if ($participant) {
-            $draw = $participant->draw;
-        } else {
-            $draw = URLParser::parseByName('organizerPanel', $this->argument('url'))->draw;
+        try {
+            $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
+        } catch(\Exception $e) {
+            error('Draw not found - ' . $e->getMessage());
+            report($e);
+            return;
         }
 
         $participantOrganizer = false;

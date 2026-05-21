@@ -12,6 +12,7 @@
         "ext-openssl": "*",
         "korko/validator": "dev-master",
         "laravel/framework": "^12.42",
+        "laravel/prompts": "^0.3.8",
         "laravel/reverb": "^1.4",
         "laravel/tinker": "^2.10.1",
         "league/flysystem-aws-s3-v3": "^3.0",

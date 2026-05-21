@@ -23093,7 +23093,6 @@ namespace App\Facades {
          * Encrypt the given value.
          *
          * @param mixed $value
-         * @param bool $serialize
          * @throws EncryptException
          * @static
          */
