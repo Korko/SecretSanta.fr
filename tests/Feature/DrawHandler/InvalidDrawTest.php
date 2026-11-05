@@ -5,6 +5,7 @@ use App\Models\Draw;
 use App\Models\Exclusion;
 use App\Models\Participant;
 use App\Services\DrawFormHandler;
+use function PHPUnit\Framework\{assertEquals};
 
 it('throws an exception when there\'s no solution', function ($participants) {
     (new DrawFormHandler)->withParticipants($participants)->save();

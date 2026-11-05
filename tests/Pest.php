@@ -6,8 +6,6 @@ use App\Services\DrawFormHandler;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\TestCase;
 
-require_once __DIR__.'/../vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
-
 
 /*
 |--------------------------------------------------------------------------

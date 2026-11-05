@@ -10,6 +10,10 @@ class ValidatorServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        // Laravel 11+ ships its own array "contains" rule, which shadows korko/validator's string one
+        Validator::extend('contains_text', function ($attribute, $value, $parameters) {
+            return is_string($value) && collect($parameters)->every(fn ($find) => str_contains($value, $find));
+        });
 
         Validator::extend('in_keys', function ($attribute, $value, $parameters, $validator) {
             return collect($parameters)->contains(function ($parameter) use ($value, $validator) {

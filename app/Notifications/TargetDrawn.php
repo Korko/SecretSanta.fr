@@ -55,7 +55,7 @@ class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(Participant $santa): Mailable
+    public function toMail(Participant $santa): MailMessage|Mailable
     {
         $title = $this->parseKeywords(Lang::get('emails.target_draw.title', [
             'draw' => $santa->draw->id,

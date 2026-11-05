@@ -3,6 +3,7 @@
 use App\Models\Draw;
 use App\Models\Exclusion;
 use App\Models\Participant;
+use function PHPUnit\Framework\{assertEquals, assertTrue};
 
 it('records new entries in case of success', function ($participants) {
     assertEquals(0, Draw::count());

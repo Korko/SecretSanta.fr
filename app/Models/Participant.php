@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
-use STS\Metrics;
+use STS\Metrics\Facades\Metrics;
 
 class Participant extends Model
 {

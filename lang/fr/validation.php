@@ -104,7 +104,7 @@ return [
             ],
             'content' => [
                 'required' => 'Le contenu de l\'email est requis.',
-                'contains' => 'Le contenu de l\'email doit contenir le mot {TARGET} pour indiquer la cible.',
+                'contains_text' => 'Le contenu de l\'email doit contenir le mot {TARGET} pour indiquer la cible.',
             ],
             'expiration' => [
                 'required' => 'La date d\'expiration est requise.',

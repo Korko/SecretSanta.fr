@@ -4,6 +4,7 @@ use App\Models\Draw;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
+use function PHPUnit\Framework\{assertEquals, assertNotEquals, assertNull};
 
 test('the organizer can send again the target drawn email', function () {
     Notification::fake();

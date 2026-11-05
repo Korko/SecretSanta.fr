@@ -32,7 +32,7 @@ class RandomFormRequest extends Request
             'participants.*.exclusions.*' => 'integer|in_keys:participants',
 
             'title' => 'required|string',
-            'content-email' => 'required|string|contains:{TARGET}',
+            'content-email' => 'required|string|contains_text:{TARGET}',
 
             'data-expiration' => 'required|date_format:Y-m-d|after_or_equal:tomorrow|before:+1year',
         ];

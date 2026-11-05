@@ -4,6 +4,7 @@ use App\Models\Draw;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use Illuminate\Support\Facades\URL;
+use function PHPUnit\Framework\{assertEquals};
 
 it('send to each participant a link to write to their santa', function () {
     Notification::fake();

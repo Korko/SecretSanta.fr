@@ -7,6 +7,7 @@ use App\Models\Draw;
 use App\Models\Exclusion;
 use App\Models\Mail;
 use App\Models\Participant;
+use function PHPUnit\Framework\{assertEquals, assertNotNull, assertNull};
 
 it('cleans up expired draws', function () {
     $drawNotExpired = Draw::factory()->create();

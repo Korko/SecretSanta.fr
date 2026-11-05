@@ -104,7 +104,7 @@ return [
             ],
             'content' => [
                 'required' => 'Der Inhalt der E-Mail ist erforderlich.',
-                'contains' => 'Der Inhalt der E-Mail muss das Wort {TARGET} enthalten, um das Ziel anzugeben.',
+                'contains_text' => 'Der Inhalt der E-Mail muss das Wort {TARGET} enthalten, um das Ziel anzugeben.',
             ],
             'expiration' => [
                 'required' => 'Das Ablaufdatum ist erforderlich.',

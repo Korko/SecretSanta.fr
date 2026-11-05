@@ -5,6 +5,7 @@ use App\Models\Participant;
 use App\Notifications\OrganizerRecap as OrganizerRecapNotif;
 use App\Notifications\TargetDrawn;
 use Illuminate\Notifications\AnonymousNotifiable;
+use function PHPUnit\Framework\{assertCount, assertEquals, assertNotEquals};
 
 it('sends no notifications in case of error', function ($participants) {
     Notification::fake();
