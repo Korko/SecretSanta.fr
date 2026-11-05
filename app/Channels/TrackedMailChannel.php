@@ -6,7 +6,8 @@ use Closure;
 use Facades\App\Services\MailTracker;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Swift_TransportException;
+use Illuminate\Notifications\Channels\MailChannel;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class TrackedMailChannel extends MailChannel
 {
@@ -25,9 +26,9 @@ class TrackedMailChannel extends MailChannel
             parent::send($notifiable, $notification);
 
             $mail->markAsSent();
-        } catch (Swift_TransportException $exception) {
+        } catch (TransportExceptionInterface $exception) {
             $mail->markAsError();
-            throw $e;
+            throw $exception;
         }
     }
 

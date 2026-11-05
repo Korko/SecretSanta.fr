@@ -2,15 +2,14 @@
 
 namespace App\Providers;
 
-use App\Channels\MailChannel;
+use App\Mail\DkimTransport;
 use App\Solvers\HatSolver;
 use App\Solvers\SolverInterface;
 use DrawCrypt;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Markdown;
-use Illuminate\Notifications\ChannelManager;
+use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Mime\Crypto\DkimSigner;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
@@ -37,10 +36,6 @@ class AppServiceProvider extends ServiceProvider
             HatSolver::class
         );
 
-        $channelManager = $this->app->get(ChannelManager::class);
-        $channelManager->extend('mail', function (Application $application) {
-            return new MailChannel($application->get('mail.manager'), $application->get(Markdown::class));
-        });
     }
 
     /**
@@ -50,6 +45,25 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->bootJobs();
         $this->bootRoute();
+        $this->bootMail();
+    }
+
+    public function bootMail(): void
+    {
+        Mail::extend('dkim', function (array $config) {
+            $signer = new DkimSigner(
+                'file://'.config('mail.dkim_private_key'),
+                config('mail.dkim_domain'),
+                config('mail.dkim_selector'),
+                ['algorithm' => config('mail.dkim_algo')],
+                config('mail.dkim_passphrase') ?? '',
+            );
+
+            return new DkimTransport(
+                Mail::createSymfonyTransport(config('mail.mailers.'.$config['mailer'])),
+                $signer,
+            );
+        });
     }
 
     public function bootJobs(): void
