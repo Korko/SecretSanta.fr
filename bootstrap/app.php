@@ -3,6 +3,11 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\HandleEncryptionIV;
+use Illuminate\Routing\Exceptions\InvalidSignatureException;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withProviders([
@@ -19,14 +24,14 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->throttleApi();
 
         $middleware->alias([
-            'decrypt.iv' => \App\Http\Middleware\HandleEncryptionIV::class,
+            'decrypt.iv' => HandleEncryptionIV::class,
         ]);
 
         $middleware->web(remove: [
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+            \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class,
         ]);
 
         $middleware->priority([

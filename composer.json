@@ -8,23 +8,23 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-openssl": "*",
         "korko/validator": "dev-master",
-        "laravel/framework": "^12.42",
+        "laravel/framework": "^13.0",
         "laravel/prompts": "^0.3.8",
         "laravel/reverb": "^1.4",
-        "laravel/tinker": "^2.10.1",
+        "laravel/tinker": "^3.0",
         "league/flysystem-aws-s3-v3": "^3.0",
-        "predis/predis": "^2.0",
+        "predis/predis": "^3.0",
         "pusher/pusher-php-server": "^7.0",
         "spatie/laravel-blade-javascript": "^2.8",
         "stechstudio/laravel-metrics": "^2.6",
-        "vinkla/hashids": "^13.0",
+        "vinkla/hashids": "^14.0",
         "webklex/laravel-imap": "^6.2"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.15",
+        "barryvdh/laravel-debugbar": "^4.0",
         "barryvdh/laravel-ide-helper": "^3.5",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.2.2",
@@ -32,10 +32,10 @@
         "librenms/laravel-vue-i18n-generator": "dev-master",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
-        "pestphp/pest": "^4.1",
-        "pestphp/pest-plugin-browser": "^4.0",
-        "pestphp/pest-plugin-faker": "^4.0",
-        "pestphp/pest-plugin-laravel": "^4.0"
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-browser": "^5.0",
+        "pestphp/pest-plugin-faker": "^5.0",
+        "pestphp/pest-plugin-laravel": "^5.0"
     },
     "config": {
         "optimize-autoloader": true,
@@ -43,6 +43,9 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true
+        },
+        "platform": {
+            "php": "8.4.1"
         }
     },
     "extra": {
