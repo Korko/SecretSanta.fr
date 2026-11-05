@@ -47,12 +47,15 @@ class MailTracker
 
     public function isEmailReceived(EmailMessage $message)
     {
+        $header = $message->getHeader();
+        $autoSubmitted = (string) $header->get('auto_submitted');
+
         return (
             $this->getNotificationType($message) === self::CONFIRM ||
-            $message->getHeader()->get('x_autoreply') ||
-            $message->getHeader()->get('x_autorespond') ||
-            strpos($message->getHeader()->get('auto_submitted') ?? '', 'auto-replied (vacation)') !== false ||
-            strpos($message->getHeader()->get('auto_submitted') ?? '', 'auto-replied (zimbra') !== false
+            $header->has('x_autoreply') ||
+            $header->has('x_autorespond') ||
+            str_contains($autoSubmitted, 'auto-replied (vacation)') ||
+            str_contains($autoSubmitted, 'auto-replied (zimbra')
         );
     }
 
@@ -95,19 +98,5 @@ class MailTracker
             $returnPath,
             str_replace('*', '%[a-z]-%s', config('mail.return_path'))
         );
-    }
-
-    protected function markMail(MailModel $mail, $type, EmailMessage $unseenMail)
-    {
-        if (
-            $type === self::CONFIRM ||
-            $unseenMail->getHeader()->get('X-Autoreply') ||
-            $unseenMail->getHeader()->get('X-Autorespond') ||
-            $unseenMail->getHeader()->get('Auto-Submitted') === 'auto-replied'
-        ) {
-            $mail->markAsReceived();
-        } else {
-            $mail->markAsError();
-        }
     }
 }

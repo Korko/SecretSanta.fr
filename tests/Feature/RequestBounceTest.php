@@ -3,33 +3,53 @@
 use App\Jobs\ParseBounces;
 use App\Models\Draw;
 use App\Models\Mail as MailModel;
-use Facades\App\Services\MailTracker;
+use App\Services\EmailClient;
+use App\Services\MailTracker;
+use Webklex\PHPIMAP\Attribute;
+use Webklex\PHPIMAP\Header;
+use Webklex\PHPIMAP\Message;
+
+use function PHPUnit\Framework\assertEquals;
+
+function fakeImapMessage(string $returnPath, array $headers = []): Message
+{
+    $header = Mockery::mock(Header::class);
+    $header->shouldReceive('has')->andReturnUsing(fn ($name) => array_key_exists($name, $headers));
+    $header->shouldReceive('get')->andReturnUsing(fn ($name) => new Attribute($name, $headers[$name] ?? []));
+
+    $message = Mockery::mock(Message::class);
+    $message->shouldReceive('getTo')->andReturn([(object) ['mailbox' => $returnPath]]);
+    $message->shouldReceive('getHeader')->andReturn($header);
+
+    return $message;
+}
 
 it('can handle bounced emails', function () {
+    config(['mail.return_path' => 'santa-*@example.com']);
+
     ajaxPost('/', [
         'participant-organizer' => true,
         'participants' => generateParticipants(3),
         'title' => 'this is a test',
         'content-email' => 'test mail {SANTA} => {TARGET}',
         'data-expiration' => date('Y-m-d', strtotime('+2 days')),
-    ])
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+    ])->assertSuccessful();
 
-    $draw = Draw::find(1);
+    [$bounced, $confirmed, $vacation] = Draw::find(1)->participants->all();
+    $tracker = app(MailTracker::class);
 
-    [$bouncedParticipant, $confirmedParticipant] = $draw->participants->random(2);
+    $client = Mockery::mock(EmailClient::class);
+    $client->shouldReceive('getUnseenMails')->andReturn([
+        fakeImapMessage($tracker->getBounceReturnPath($bounced->mail)),
+        fakeImapMessage($tracker->getConfirmReturnPath($confirmed->mail)),
+        fakeImapMessage($tracker->getBounceReturnPath($vacation->mail), ['auto_submitted' => 'auto-replied (vacation)']),
+    ]);
+    $client->shouldReceive('delete', 'trash');
+    app()->instance(EmailClient::class, $client);
 
-    $job = test()->partialMock(ParseBounces::class);
-    $job->shouldAllowMockingProtectedMethods()
-        ->shouldReceive('getRecipients')
-        ->andReturn([
-            MailTracker::getBounceReturnPath($bouncedParticipant->mail),
-            MailTracker::getConfirmReturnPath($confirmedParticipant->mail),
-        ]);
+    app()->call([new ParseBounces, 'handle']);
 
-    app()->call([$job, 'handle']);
-
-    test()->assertEquals(MailModel::ERROR, $bouncedParticipant->fresh()->mail->delivery_status);
-    test()->assertEquals(MailModel::RECEIVED, $confirmedParticipant->fresh()->mail->delivery_status);
-})->skip('Stale: mocks ParseBounces::getRecipients(), removed long ago; needs an EmailClient fake');
+    assertEquals(MailModel::ERROR, $bounced->mail->fresh()->delivery_status);
+    assertEquals(MailModel::RECEIVED, $confirmed->mail->fresh()->delivery_status);
+    assertEquals(MailModel::RECEIVED, $vacation->mail->fresh()->delivery_status);
+});
