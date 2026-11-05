@@ -3,7 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\Draw;
+use DrawCrypt;
 use Illuminate\Support\Arr;
+use URLParser;
+
 use function Laravel\Prompts\text;
 
 trait ParsesDrawUrl

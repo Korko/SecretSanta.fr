@@ -15,7 +15,7 @@ class WithdrawParticipant extends Command
      *
      * @var string
      */
-    protected $signature = 'secretsanta:withdraw-participant {url? : The URL received by one of the participants to write to their santa} {id : The participant id}';
+    protected $signature = 'secretsanta:withdraw-participant {url : The URL received by one of the participants to write to their santa} {id : The participant id}';
 
     /**
      * The console command description.

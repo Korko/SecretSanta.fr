@@ -6,7 +6,8 @@ use App\Services\DrawFormHandler;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\TestCase;
 
-use function Pest\Faker\faker;
+require_once __DIR__.'/../vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,6 @@ use function Pest\Faker\faker;
 |
 */
 
-uses(Tests\DuskTestCase::class)->in('Browser');
 uses(Tests\TestCase::class)->in('Feature');
 uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundation\Testing\DatabaseTransactions::class)->in('Feature');
 
@@ -105,8 +105,8 @@ function generateParticipants(int $totalParticipants, bool $withExclusions = tru
     $participants = [];
     for ($i = 0; $i < $totalParticipants; $i++) {
         $participants[] = [
-            'name' => faker()->unique()->name,
-            'email' => faker()->unique()->safeEmail,
+            'name' => fake()->unique()->name,
+            'email' => fake()->unique()->safeEmail,
             'target' => ($i === 0) ? $totalParticipants - 1 : $i - 1,
         ];
     }

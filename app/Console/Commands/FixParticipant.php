@@ -14,7 +14,7 @@ class FixParticipant extends Command
      *
      * @var string
      */
-    protected $signature = 'secretsanta:fix-participant {url? : The URL received by one of the participants to write to their santa} {id : The participant id} {email? : The correct email of the participant}';
+    protected $signature = 'secretsanta:fix-participant {url : The URL received by one of the participants to write to their santa} {id : The participant id} {email? : The correct email of the participant}';
 
     /**
      * The console command description.

@@ -16,7 +16,7 @@ class ChangeParticipant extends Command
      *
      * @var string
      */
-    protected $signature = 'secretsanta:change-participant {url? : The URL received by one of the participants to write to their santa} {id : The participant id} {name : The new name of the participant} {email : The new email of the participant}';
+    protected $signature = 'secretsanta:change-participant {url : The URL received by one of the participants to write to their santa} {id : The participant id} {name : The new name of the participant} {email : The new email of the participant}';
 
     /**
      * The console command description.

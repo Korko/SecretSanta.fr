@@ -36,7 +36,7 @@ class TrackedMailChannel extends MailChannel
      *
      * @param  mixed  $notifiable
      */
-    protected function messageBuilder($notifiable, Notification $notification, MailMessage $message): Closure
+    protected function messageBuilder($notifiable, $notification, $message)
     {
         $mail = $notification->getMailableModel($notifiable)->mail;
 

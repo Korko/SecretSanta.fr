@@ -15,7 +15,7 @@ class MailChannel extends BaseMailChannel
      *
      * @param  mixed  $notifiable
      */
-    protected function messageBuilder($notifiable, Notification $notification, MailMessage $message): Closure
+    protected function messageBuilder($notifiable, $notification, $message)
     {
         // Sign DKIM
         $message->withSymfonyMessage(function ($message) {

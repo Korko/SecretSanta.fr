@@ -84,7 +84,7 @@ class IVEncrypter extends BaseEncrypter
         // Once we get the encrypted value we'll go ahead and base64_encode the input
         // vector and create the MAC for the encrypted value so we can then verify
         // its authenticity. Then, we'll JSON the data into the "payload" array.
-        $mac = $this->hash(base64_encode($this->iv), $value);
+        $mac = $this->hash(base64_encode($this->iv), $value, $this->key);
 
         $json = json_encode(compact('value', 'mac'), JSON_UNESCAPED_SLASHES);
 
