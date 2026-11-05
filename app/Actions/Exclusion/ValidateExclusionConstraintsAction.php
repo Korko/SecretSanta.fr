@@ -40,12 +40,12 @@ class ValidateExclusionConstraintsAction
 
                 // Un participant ne peut pas avoir tous les autres exclus (fort)
                 if (count($strongExclusions) >= $participantCoat - 1) {
-                    $errors[] = "Participant {$participant->uuid} has too many strong Exclusions";
+                    $errors[] = "Participant {$participant->uuid} has too many strong exclusions";
                 }
 
                 // Avertissement if bando thecorp d'exclusions faibles
                 if (count($weakExclusions) >= $participantCoat - 2) {
-                    $warnings[] = "Participant {$participant->uuid} has many weak Exclusions that might be ignored";
+                    $warnings[] = "Participant {$participant->uuid} has many weak exclusions that might be ignored";
                 }
             }
 

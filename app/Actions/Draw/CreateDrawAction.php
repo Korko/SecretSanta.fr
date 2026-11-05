@@ -4,6 +4,7 @@ namespace App\Actions\Draw;
 
 use App\Managers\Encryption\SecretSantaEncryptionManager;
 use App\Models\Draw\Draw;
+use App\Models\Draw\Organizer;
 use App\Models\Draw\Participant;
 use App\Models\User\User;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +40,7 @@ class CreateDrawAction
             $draw->status = 'draft';
             $draw->auto_accept_participants = $data['auto_accept_participants'] ?? false;
             $draw->allow_target_messages = $data['allow_target_messages'] ?? true;
+            $draw->organizer_participates = $data['organizer_participates'] ?? true;
             $draw->registration_deadline = $data['registration_deadline'] ?? null;
 
             // Encrypt sensitive data with master key
@@ -49,30 +51,16 @@ class CreateDrawAction
 
             $draw->save();
 
-            // 3. Create organizer participant
-            $organizer = new Participant();
-            $organizer->draw_id = $draw->id;
-            $organizer->uuid = (string) Str::uuid();
-            $organizer->individual_key_hash = $encryption['organizer_key_hash'];
-            $organizer->master_key_encrypted = $encryption['master_key_encrypted'];
-            $organizer->status = 'accepted';
-            $organizer->is_organizer = true;
-            $organizer->accepted_at = now();
-
-            $organizer->setEncryptedAttribute('name_encrypted', $data['organizer_name'], $encryption['master_key']);
-            $organizer->setEncryptedAttribute('email_encrypted', $data['organizer_email'], $encryption['master_key']);
-
-            // Save name hash to allow uniqueness verification
-            $organizer->name_hash = hash('sha256', strtolower($data['organizer_name']));
-
-            $organizer->save();
+            // 3. Create organizer (either as separate organizer or as participant)
+            $organizerEntity = $this->createOrganizerEntity($draw, $data, $encryption);
+            $organizerUuid = $organizerEntity->uuid;
 
             // 4. Generate organizer link
             $organizerLink = $this->encryptionManager->getIndividualKeyManager()
                 ->generateParticipantLink(
                     config('app.url'),
                     $draw->uuid,
-                    $organizer->uuid,
+                    $organizerUuid,
                     $encryption['organizer_key']
                 );
 
@@ -95,6 +83,45 @@ class CreateDrawAction
                 'success' => false,
                 'error' => 'Failed to create draw: ' . $e->getMessage()
             ];
+        }
+    }
+
+    private function createOrganizerEntity(Draw $draw, array $data, array $encryption): Participant|Organizer
+    {
+        if ($draw->organizer_participates) {
+            // L'organisateur participe - créer un participant
+            $organizer = new Participant();
+            $organizer->draw_id = $draw->id;
+            $organizer->uuid = (string) Str::uuid();
+            $organizer->individual_key_hash = $encryption['organizer_key_hash'];
+            $organizer->master_key_encrypted = $encryption['master_key_encrypted'];
+            $organizer->status = 'accepted';
+            $organizer->is_organizer = true;
+            $organizer->accepted_at = now();
+
+            $organizer->setEncryptedAttribute('name_encrypted', $data['organizer_name'], $encryption['master_key']);
+            $organizer->setEncryptedAttribute('email_encrypted', $data['organizer_email'], $encryption['master_key']);
+
+            // Save name hash to allow uniqueness verification
+            $organizer->name_hash = hash('sha256', strtolower($data['organizer_name']));
+
+            $organizer->save();
+            
+            return $organizer;
+        } else {
+            // L'organisateur ne participe pas - créer un organisateur séparé
+            $organizer = new Organizer();
+            $organizer->draw_id = $draw->id;
+            $organizer->uuid = (string) Str::uuid();
+            $organizer->individual_key_hash = $encryption['organizer_key_hash'];
+            $organizer->master_key_encrypted = $encryption['master_key_encrypted'];
+
+            $organizer->setEncryptedAttribute('name_encrypted', $data['organizer_name'], $encryption['master_key']);
+            $organizer->setEncryptedAttribute('email_encrypted', $data['organizer_email'], $encryption['master_key']);
+
+            $organizer->save();
+            
+            return $organizer;
         }
     }
 }

@@ -24,7 +24,7 @@ class EncryptionService
     /**
      * Génère une key dérivée d'un mot of passe with PBKDF2
      */
-    public function ofriveKeyFromPassword(string $password, string $salt, int $iterations = 10000): string
+    public function deriveKeyFromPassword(string $password, string $salt, int $iterations = 10000): string
     {
         return hash_pbkdf2('sha256', $password, $salt, $iterations, self::KEY_LENGTH, true);
     }
@@ -48,7 +48,7 @@ class EncryptionService
     /**
      * Decrypts data with a given key
      */
-    public function ofcrypt(string $encryptedData, string $key): string
+    public function decrypt(string $encryptedData, string $key): string
     {
         $data = base64_decode($encryptedData);
 
@@ -59,13 +59,13 @@ class EncryptionService
         $iv = substr($data, 0, self::IV_LENGTH);
         $encrypted = substr($data, self::IV_LENGTH);
 
-        $encrypted = openssl_ofcrypt($encrypted, self::AES_METHOD, $key, OPENSSL_RAW_DATA, $iv);
+        $decrypted = openssl_decrypt($encrypted, self::AES_METHOD, $key, OPENSSL_RAW_DATA, $iv);
 
-        if ($encrypted === false) {
+        if ($decrypted === false) {
             throw new \Exception('Decryption failed');
         }
 
-        return $encrypted;
+        return $decrypted;
     }
 
     /**

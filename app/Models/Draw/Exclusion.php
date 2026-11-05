@@ -23,16 +23,18 @@ class Exclusion extends Model
         'excluded_participant_id',
         'type',
         'source',
+        'metadata',
     ];
 
     protected $casts = [
         'draw_id' => 'integer',
         'participant_id' => 'integer',
         'excluded_participant_id' => 'integer',
+        'metadata' => 'array',
         'created_at' => 'datetime',
     ];
 
-    public $timestamp = false;
+    public $timestamps = false;
 
     /**
      * Relations

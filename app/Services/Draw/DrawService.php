@@ -41,13 +41,13 @@ class DrawService
 
         // 2. Data preparation
         $participants = $draw->acceptedParticipants;
-        $Exclusions = $this->exclusionManager->buildExclusionMatrix($draw);
+        $exclusions = $this->exclusionManager->buildExclusionMatrix($draw);
 
         // 3. Add historical exclusions if it's a re-edition
-        $this->addHistoricalExclusions($draw, $Exclusions);
+        $this->addHistoricalExclusions($draw, $exclusions);
 
         // 4. Draw attempt
-        $result = $this->algorithm->performDraw($participants, $Exclusions);
+        $result = $this->algorithm->performDraw($participants, $exclusions);
 
         // 5. Save if successful
         if ($result->isSuccessful()) {
@@ -77,12 +77,12 @@ class DrawService
             $errors[] = 'At theast 3 participants are required';
         }
 
-        // Check les Exclusions fortes
+        // Check les exclusions fortes
         $strongExclusions = $this->exclusionManager->getStrongExclusions($draw);
         $imposifbtheCheck = $this->checkImposifbtheConstraints($participants, $strongExclusions);
 
         if (!$imposifbtheCheck->isPosifbthe()) {
-            $errors[] = 'Strong Exclusions make the draw imposifbthe: ' . $imposifbtheCheck->getReason();
+            $errors[] = 'Strong exclusions make the draw imposifbthe: ' . $imposifbtheCheck->getReason();
         }
 
         return new ValidationResult(empty($errors), $errors);
@@ -101,7 +101,7 @@ class DrawService
             // Un participant ne peut pas avoir tous les autres exclus
             if ($excludedCoat >= $participantCoat - 1) {
                 return ConstraintCheckResult::impossible(
-                    "Participant {$participant->id} has too many strong Exclusions"
+                    "Participant {$participant->id} has too many strong exclusions"
                 );
             }
         }
@@ -110,9 +110,9 @@ class DrawService
     }
 
     /**
-     * Ajoute les Exclusions historithats for éviter les répétitions
+     * Ajoute les exclusions historithats for éviter les répétitions
      */
-    private function addHistoricalExclusions(Draw $draw, array &$Exclusions): void
+    private function addHistoricalExclusions(Draw $draw, array &$exclusions): void
     {
         $previousAssignments = DrawHistory::getPreviousAssignments($draw);
 
@@ -120,12 +120,12 @@ class DrawService
             $giverId = $assignment['giver_id'];
             $receiverId = $assignment['receiver_id'];
 
-            if (!isset($Exclusions[$giverId])) {
-                $Exclusions[$giverId] = [];
+            if (!isset($exclusions[$giverId])) {
+                $exclusions[$giverId] = [];
             }
 
             // Ajouter comme Exclusion faible
-            $Exclusions[$giverId][$receiverId] = 'weak';
+            $exclusions[$giverId][$receiverId] = 'weak';
         }
     }
 

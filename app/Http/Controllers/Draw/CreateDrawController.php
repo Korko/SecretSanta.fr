@@ -38,7 +38,7 @@ class CreateDrawController extends Controller
                 'status' => $result['draw']->status,
             ],
             'organizer_link' => $result['organizer_link'],
-            'master_key' => $result['master_key']
+            'master_key' => base64_encode($result['master_key'])
         ], 201);
     }
 }

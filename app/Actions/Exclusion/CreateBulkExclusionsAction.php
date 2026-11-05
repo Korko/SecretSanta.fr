@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
  */
 class CreateBulkExclusionsAction
 {
-    public function execute(Draw $draw, array $Exclusions): array
+    public function execute(Draw $draw, array $exclusions): array
     {
         DB::beginTransaction();
 
@@ -21,7 +21,7 @@ class CreateBulkExclusionsAction
             $created = [];
             $errors = [];
 
-            foreach ($Exclusions as $ExclusionData) {
+            foreach ($exclusions as $ExclusionData) {
                 // Validate data
                 if (!isset($ExclusionData['participant_id']) || !isset($ExclusionData['excluded_participant_id'])) {
                     $errors[] = 'Missing participant IDs in Exclusion data';
@@ -64,7 +64,7 @@ class CreateBulkExclusionsAction
 
             DB::commit();
 
-            Log::info("Bulk Exclusions created", [
+            Log::info("Bulk exclusions created", [
                 'draw_uuid' => $draw->uuid,
                 'created_count' => count($created),
                 'error_count' => count($errors)
@@ -74,12 +74,12 @@ class CreateBulkExclusionsAction
                 'success' => true,
                 'created' => $created,
                 'errors' => $errors,
-                'message' => sprintf('%d Exclusions created, %d errors', count($created), count($errors))
+                'message' => sprintf('%d exclusions created, %d errors', count($created), count($errors))
             ];
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Failed to create bulk Exclusions", [
+            Log::error("Failed to create bulk exclusions", [
                 'draw_uuid' => $draw->uuid,
                 'error' => $e->getMessage()
             ]);

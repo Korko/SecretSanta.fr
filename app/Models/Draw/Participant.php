@@ -10,9 +10,11 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 /**
@@ -20,7 +22,7 @@ use Illuminate\Support\Str;
  */
 class Participant extends Model
 {
-    use HasFactory, EncryptedAttributes;
+    use HasApiTokens, HasFactory, EncryptedAttributes;
 
     // Property Hooks with Enum validation
     public ParticipantStatus $status {
@@ -43,7 +45,15 @@ class Participant extends Model
         'status',
         'is_organizer',
         'assigned_to_participant_id',
+        'target_participant_id',
+        'target_name_encrypted',
         'accepted_at',
+        'email_sent_at',
+        'email_opened_at',
+        'email_resent_count',
+        'email_updated_at',
+        'temp_new_email',
+        'last_access_at',
     ];
 
     protected $casts = [
@@ -51,9 +61,15 @@ class Participant extends Model
         'status' => ParticipantStatus::class,
         'is_organizer' => 'boolean',
         'assigned_to_participant_id' => 'integer',
+        'target_participant_id' => 'integer',
+        'email_resent_count' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'accepted_at' => 'datetime',
+        'email_sent_at' => 'datetime',
+        'email_opened_at' => 'datetime',
+        'email_updated_at' => 'datetime',
+        'last_access_at' => 'datetime',
     ];
 
     protected static function boot()
@@ -110,9 +126,31 @@ class Participant extends Model
         return $this->hasMany(Message::class, 'to_participant_id');
     }
 
+    public function targetParticipant(): BelongsTo
+    {
+        return $this->belongsTo(Participant::class, 'target_participant_id');
+    }
+
+    public function giftGiver(): HasOne
+    {
+        return $this->hasOne(Participant::class, 'target_participant_id');
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'from_participant_id')
+            ->orWhere('to_participant_id', $this->id);
+    }
+
     public function messageReactions(): HasMany
     {
         return $this->hasMany(MessageReaction::class);
+    }
+
+    public function emailDeliveries(): HasMany
+    {
+        return $this->hasMany(\App\Models\Email\EmailDelivery::class, 'recipient_id')
+            ->where('recipient_type', self::class);
     }
 
     /**
@@ -193,6 +231,26 @@ class Participant extends Model
     public function isAssigned(): bool
     {
         return !is_null($this->assigned_to_participant_id);
+    }
+
+    /**
+     * Accessor for target name
+     */
+    protected function targetName(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $masterKey = $this->getMasterKeyFromContext();
+                return $masterKey ? $this->getDecryptedAttribute('target_name_encrypted', $masterKey) : null;
+            },
+            set: function (string $value) {
+                $masterKey = $this->getMasterKeyFromContext();
+                if ($masterKey) {
+                    $this->setEncryptedAttribute('target_name_encrypted', $value, $masterKey);
+                }
+                return $value;
+            }
+        );
     }
 
     /**

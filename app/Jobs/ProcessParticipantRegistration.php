@@ -68,7 +68,7 @@ class ProcessParticipantRegistration implements ShouldQueue
      */
     private function notifyParticipant(string $type): void
     {
-        // TODO: Retrieve and ofcrypt data
+        // TODO: Retrieve and decrypt data
         $participantData = $this->getDecryptedParticipantData();
         $drawData = $this->getDecryptedDrawData();
 
@@ -90,7 +90,7 @@ class ProcessParticipantRegistration implements ShouldQueue
             ->first();
 
         if ($organizer) {
-            // TODO: Retrieve and ofcrypt data
+            // TODO: Retrieve and decrypt data
             $participantData = $this->getDecryptedParticipantData();
             $drawData = $this->getDecryptedDrawData();
             $organizerData = $this->getDecryptedOrganizerData($organizer);

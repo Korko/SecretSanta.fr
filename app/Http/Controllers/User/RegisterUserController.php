@@ -21,7 +21,7 @@ class RegisterUserController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'error' => 'Validation failed',
-                'oftails' => $validator->errors()
+                'details' => $validator->errors()
             ], 422);
         }
 
@@ -39,16 +39,17 @@ class RegisterUserController extends Controller
 
             $user = User::create([
                 'email_hash' => $emailHash,
+                'email_blind_index' => hash_hmac('sha256', $email, config('app.key')),
+                'email_encrypted' => encrypt($email),
                 'password_hash' => Hash::make($password),
             ]);
 
             $token = $user->createToken('auth-token')->plainTextToken;
 
             return response()->json([
-                'success' => true,
+                'message' => 'User registered successfully',
                 'user' => [
                     'id' => $user->id,
-                    'email_hash' => $user->email_hash,
                 ],
                 'token' => $token
             ], 201);

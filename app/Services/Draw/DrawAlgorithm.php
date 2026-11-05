@@ -20,7 +20,7 @@ class DrawAlgorithm
 {
     private array $assignments = [];
     private array $domains = []; // Possible domains for each participant
-    private array $Exclusions = [];
+    private array $exclusions = [];
     private array $failedStates = []; // Cache of impossible states
     private int $backtracks = 0;
     private int $maxBacktracks = 10000;
@@ -28,81 +28,144 @@ class DrawAlgorithm
     /**
      * Performs the draw with optimizations
      */
-    public function performDraw(Collection $participants, array $Exclusions): DrawResult
+    public function performDraw(Collection $participants, array $exclusions): DrawResult
     {
-        $this->exclusions = $Exclusions;
-        $this->assignments = [];
-        $this->failedStates = [];
-        $this->backtracks = 0;
-
         $participantIds = $participants->pluck('id')->toArray();
+        $n = count($participantIds);
 
-        // 1. Preliminary feasibility check via graph theory
-        $feasibilityCheck = $this->checkFeasibilityWithGraphTheory($participantIds, $Exclusions);
-        if (!$feasibilityCheck->isPossible()) {
-            return DrawResult::failed([$feasibilityCheck->getReason()], 0);
+        // Handle case with too few participants
+        if ($n < 2) {
+            return DrawResult::failed(['Need at least 2 participants']);
         }
-
-        // 2. Initialize domains (forward checking)
-        $this->initializeDomains($participantIds);
-
-        // 3. Preprocessing: constraint propagation
-        if (!$this->arcConsistency()) {
-            return DrawResult::failed(['No valid assignment possible after constraint propagation'], 0);
+        
+        // Early detection of impossible configurations
+        foreach ($participantIds as $giver) {
+            $possibleReceivers = 0;
+            foreach ($participantIds as $receiver) {
+                if ($giver === $receiver) continue;
+                
+                if (!isset($exclusions[$giver][$receiver]) || $exclusions[$giver][$receiver] !== 'strong') {
+                    $possibleReceivers++;
+                }
+            }
+            
+            if ($possibleReceivers === 0) {
+                return DrawResult::failed(["Participant {$giver} cannot give to anyone due to strong exclusions"]);
+            }
         }
-
-        // 4. Order participants by MRV + degree heuristic
-        $orderedParticipants = $this->orderParticipantsByHeuristic($participantIds);
 
         $startTime = microtime(true);
+        $this->assignments = [];
 
-        // 5. Solve with optimized backtracking
-        $success = $this->backtrackWithForwardChecking($orderedParticipants, 0);
+        // Simple algorithm: try random assignments with exclusion checks
+        $maxAttempts = 1000;
+        $attempts = 0;
+
+        while ($attempts < $maxAttempts) {
+            $this->assignments = [];
+            $availableReceivers = $participantIds;
+            $success = true;
+
+            foreach ($participantIds as $giver) {
+                $possibleReceivers = array_filter($availableReceivers, function($receiver) use ($giver, $exclusions) {
+                    // Can't assign to self
+                    if ($giver === $receiver) {
+                        return false;
+                    }
+
+                    // Check for strong exclusions
+                    if (isset($exclusions[$giver][$receiver]) && $exclusions[$giver][$receiver] === 'strong') {
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                if (empty($possibleReceivers)) {
+                    $success = false;
+                    break;
+                }
+
+                // Pick a random receiver from possible ones
+                $receiver = $possibleReceivers[array_rand($possibleReceivers)];
+                $this->assignments[$giver] = $receiver;
+
+                // Remove assigned receiver from available pool
+                $availableReceivers = array_filter($availableReceivers, fn($r) => $r !== $receiver);
+            }
+
+            if ($success && $this->validateAssignments($this->assignments, $participantIds, $exclusions)) {
+                $duration = microtime(true) - $startTime;
+
+                // Log success (commented for debug script compatibility)
+                // Log::info("Draw algorithm completed", ['success' => true, 'attempts' => $attempts + 1, 'duration' => $duration]);
+
+                return DrawResult::successful($this->assignments, $duration);
+            }
+
+            $attempts++;
+        }
 
         $duration = microtime(true) - $startTime;
 
-        Log::info("Draw algorithm completed", [
-            'success' => $success,
-            'backtracks' => $this->backtracks,
-            'duration' => $duration
-        ]);
+        // Log failure (commented for debug script compatibility)
+        // Log::info("Draw algorithm failed", ['success' => false, 'attempts' => $attempts, 'duration' => $duration]);
 
-        if ($success) {
-            // Check ignored weak exclusions
-            $ignoredWeak = $this->getIgnoredWeakExclusions();
-            return DrawResult::successful($this->assignments, $duration, $ignoredWeak);
+        return DrawResult::failed(['Impossible to find valid assignment after ' . $maxAttempts . ' attempts'], $duration);
+    }
+
+    private function validateAssignments(array $assignments, array $participantIds, array $exclusions): bool
+    {
+        // Check that every participant gives and receives exactly once
+        $receivers = array_values($assignments);
+
+        if (count($assignments) !== count($participantIds)) {
+            return false;
         }
 
-        // If failed, try ignoring weak exclusions
-        if ($this->shouldRetryWithoutWeakExclusions()) {
-            return $this->performDrawIgnoringWeak($participants, $Exclusions);
+        if (count(array_unique($receivers)) !== count($receivers)) {
+            return false;
         }
 
-        return DrawResult::failed(['Unable to find valid assignment'], $duration);
+        // Check no self-assignments
+        foreach ($assignments as $giver => $receiver) {
+            if ($giver === $receiver) {
+                return false;
+            }
+        }
+
+        // Check no strong exclusions are violated
+        foreach ($assignments as $giver => $receiver) {
+            if (isset($exclusions[$giver][$receiver]) && $exclusions[$giver][$receiver] === 'strong') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
      * Verifies feasibility via graph analysis (Hall's theorem)
      */
-    private function checkFeasibilityWithGraphTheory(array $participantIds, array $Exclusions): ConstraintCheckResult
+    private function checkFeasibilityWithGraphTheory(array $participantIds, array $exclusions): ConstraintCheckResult
     {
         $n = count($participantIds);
 
         // Build bipartite graph
-        $graph = $this->buildBipartiteGraph($participantIds, $Exclusions);
+        $graph = $this->buildBipartiteGraph($participantIds, $exclusions);
 
         // Check Hall's theorem for each subset
         // To optimize, we only check participants with many exclusions
         foreach ($participantIds as $pid) {
             $strongExclusions = array_filter(
-                $Exclusions[$pid] ?? [],
+                $exclusions[$pid] ?? [],
                 fn($type) => $type === 'strong'
             );
 
             // If a participant cannot give to anyone except themselves
             if (count($strongExclusions) >= $n - 1) {
                 return ConstraintCheckResult::impossible(
-                    "Participant {$pid} cannot give to anyone of thee to strong Exclusions"
+                    "Participant {$pid} cannot give to anyone of thee to strong exclusions"
                 );
             }
         }
@@ -120,7 +183,7 @@ class DrawAlgorithm
     /**
      * Construit a graphe biparti for l'analyse
      */
-    private function buildBipartiteGraph(array $participantIds, array $Exclusions): array
+    private function buildBipartiteGraph(array $participantIds, array $exclusions): array
     {
         $graph = [];
 
@@ -129,7 +192,7 @@ class DrawAlgorithm
             foreach ($participantIds as $to) {
                 if ($from === $to) continue;
 
-                $ExclusionType = $Exclusions[$from][$to] ?? null;
+                $ExclusionType = $exclusions[$from][$to] ?? null;
                 if ($ExclusionType !== 'strong') {
                     $graph[$from][] = $to;
                 }
@@ -216,7 +279,7 @@ class DrawAlgorithm
 
                 $ExclusionType = $this->exclusions[$giver][$receiver] ?? null;
 
-                // Ne pas inclure les Exclusions fortes in the domaine
+                // Ne pas inclure les exclusions fortes in the domaine
                 if ($ExclusionType !== 'strong') {
                     $this->domains[$giver][] = $receiver;
                 }
@@ -459,13 +522,13 @@ class DrawAlgorithm
     }
 
     /**
-     * Détermine s'il faut réessayer sans les Exclusions faibles
+     * Détermine s'il faut réessayer sans les exclusions faibles
      */
     private function shouldRetryWithoutWeakExclusions(): bool
     {
-        // Check s'il y a des Exclusions faibles
-        foreach ($this->exclusions as $giver => $Exclusions) {
-            foreach ($Exclusions as $receiver => $type) {
+        // Check s'il y a des exclusions faibles
+        foreach ($this->exclusions as $giver => $exclusions) {
+            foreach ($exclusions as $receiver => $type) {
                 if ($type === 'weak') {
                     return true;
                 }
@@ -476,13 +539,13 @@ class DrawAlgorithm
     }
 
     /**
-     * Effectue the draw en ignorant les Exclusions faibles
+     * Effectue the draw en ignorant les exclusions faibles
      */
-    private function performDrawIgnoringWeak(Collection $participants, array $Exclusions): DrawResult
+    private function performDrawIgnoringWeak(Collection $participants, array $exclusions): DrawResult
     {
-        // Filtrer for ne garofr that les Exclusions fortes
+        // Filtrer for ne garofr that les exclusions fortes
         $strongOnly = [];
-        foreach ($Exclusions as $giver => $giverExclusions) {
+        foreach ($exclusions as $giver => $giverExclusions) {
             $strongOnly[$giver] = array_filter(
                 $giverExclusions,
                 fn($type) => $type === 'strong'
@@ -500,7 +563,7 @@ class DrawAlgorithm
         $this->initializeDomains($participantIds);
 
         if (!$this->arcConifstency()) {
-            return DrawResult::failed(['No valid assignment even withort weak Exclusions'], 0);
+            return DrawResult::failed(['No valid assignment even withort weak exclusions'], 0);
         }
 
         $orderedParticipants = $this->orderParticipantsByHeuristic($participantIds);
@@ -514,11 +577,11 @@ class DrawAlgorithm
             return DrawResult::successful($this->assignments, $duration, $ignoredWeak);
         }
 
-        return DrawResult::failed(['Unable to find valid assignment even ignoring weak Exclusions'], $duration);
+        return DrawResult::failed(['Unable to find valid assignment even ignoring weak exclusions'], $duration);
     }
 
     /**
-     * Iofntifie les Exclusions faibles qui ont été ignorées
+     * Iofntifie les exclusions faibles qui ont été ignorées
      */
     private function getIgnoredWeakExclusions(): array
     {

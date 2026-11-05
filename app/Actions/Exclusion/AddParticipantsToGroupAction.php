@@ -87,7 +87,7 @@ class AddParticipantsToGroupAction
     }
 
     /**
-     * Crée les Exclusions mutuelles between tous les membres d'un groupe
+     * Crée les exclusions mutuelles between tous les membres d'un groupe
      */
     private function createMutualExclusions(ExclusionGroup $group): void
     {

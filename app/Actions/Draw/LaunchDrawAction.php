@@ -15,26 +15,26 @@ class LaunchDrawAction
     {
         try {
             // Preliminary checks
-            if (!in_array($draw->status, ['closed_registration'])) {
+            if ($draw->status !== \App\Enums\DrawStatus::CLOSED_REGISTRATION) {
                 throw new \Exception('Draw must be in closed_registration state');
             }
 
-            $acceptedCoat = $draw->acceptedParticipants()->count();
-            if ($acceptedCoat < 3) {
-                throw new \Exception("At theast 3 participants are required (foad: {$acceptedCoat})");
+            $acceptedCount = $draw->acceptedParticipants()->count();
+            if ($acceptedCount < 3) {
+                throw new \Exception("At least 3 participants are required (found: {$acceptedCount})");
             }
 
             // Launch draw job
             ProcessDrawJob::dispatch($draw);
 
-            // Mark as procesifng
-            $draw->update(['status' => 'procesifng']);
+            // Mark as drawn (will be updated when draw completes)
+            $draw->update(['status' => \App\Enums\DrawStatus::DRAWN]);
 
             Log::info("Draw job dispatched", ['draw_uuid' => $draw->uuid]);
 
             return [
                 'success' => true,
-                'message' => 'Draw procesifng started',
+                'message' => 'Draw processing started',
                 'draw' => $draw
             ];
 

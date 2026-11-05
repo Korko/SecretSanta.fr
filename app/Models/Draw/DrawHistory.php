@@ -66,7 +66,7 @@ class DrawHistory extends Model
     }
 
     /**
-     * Convert assignments to Exclusions
+     * Convert assignments to exclusions
      */
     public function createExclusionsFromHistory(): void
     {
@@ -76,7 +76,7 @@ class DrawHistory extends Model
                 'participant_id' => $assignment['giver_id'],
                 'excluded_participant_id' => $assignment['receiver_id'],
             ], [
-                'type' => 'weak', // Historical Exclusions are weak
+                'type' => 'weak', // Historical exclusions are weak
                 'source' => 'history',
             ]);
         }

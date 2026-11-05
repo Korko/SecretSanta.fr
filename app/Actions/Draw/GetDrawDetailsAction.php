@@ -6,7 +6,7 @@ use App\Models\Draw\Draw;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Action to retrieve draw information with ofcryption
+ * Action to retrieve draw information with decryption
  */
 class GetDrawDetailsAction
 {

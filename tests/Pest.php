@@ -15,7 +15,11 @@ uses()->group('browser')->in('Browser');
 uses()->beforeEach(function () {
     // Configuration globale avant chaque test
     \Illuminate\Support\Facades\Cache::flush();
-    \Illuminate\Support\Facades\Redis::flushdb();
+    
+    // Only flush Redis if it's actually configured (not during tests)
+    if (config('cache.default') === 'redis' && config('app.env') !== 'testing') {
+        \Illuminate\Support\Facades\Redis::flushdb();
+    }
 })->in('Feature');
 
 // Helpers globaux

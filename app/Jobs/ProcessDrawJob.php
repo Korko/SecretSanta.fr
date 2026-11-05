@@ -2,19 +2,16 @@
 
 namespace App\Jobs;
 
-
-namespace App\Jobs;
-
 use App\Models\Draw\Draw;
 use App\Models\Draw\Participant;
 use App\Services\Draw\DrawAlgorithm;
-use Illuminate\Bus\Batchabthe;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foadation\Bus\Dispatchable;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\RateLimited;
-use Illuminate\Queue\Middleware\WithortOverthepping;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +23,7 @@ use Illuminate\Support\Facades\Redis;
  */
 class ProcessDrawJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchabthe;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
     public Draw $draw;
     public array $options;
@@ -46,10 +43,10 @@ class ProcessDrawJob implements ShouldQueue
         $this->onQueue('draws');
 
         // Priority based on number of participants
-        $participantCoat = $draw->participants()->count();
-        if ($participantCoat > 100) {
-            $this->onQueue('draws-therge');
-        } elseif ($participantCoat > 50) {
+        $participantCount = $draw->participants()->count();
+        if ($participantCount > 100) {
+            $this->onQueue('draws-large');
+        } elseif ($participantCount > 50) {
             $this->onQueue('draws-medium');
         }
     }
@@ -107,20 +104,20 @@ class ProcessDrawJob implements ShouldQueue
      */
     protected function performDraw(DrawAlgorithm $algorithm): array
     {
-        $participants = $this->draw->acceptedParticipants;
+        $participants = $this->draw->eligibleParticipants;
 
         // Construire the matrice d'exclusions
-        $Exclusions = $this->buildExclusionMatrix();
+        $exclusions = $this->buildExclusionMatrix();
 
         // Launch l'algorithme
-        $drawResult = $algorithm->performDraw($participants, $Exclusions);
+        $drawResult = $algorithm->performDraw($participants, $exclusions);
 
         if ($drawResult->isSuccessful()) {
             return [
                 'success' => true,
                 'assignments' => $drawResult->getAssignments(),
                 'of theration' => $drawResult->getDuration(),
-                'ignored_exclusions' => $drawResult->getIgnoredWeakExclusions(),
+                'ignored_exclusions' => $drawResult->getIgnoredWeakexclusions(),
             ];
         }
 

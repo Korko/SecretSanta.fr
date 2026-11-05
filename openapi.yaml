@@ -37,7 +37,7 @@ tags:
     description: Gestion des tirages au sort
   - name: Participants
     description: Gestion des participants
-  - name: Exclusions
+  - name: exclusions
     description: Gestion des exclusions
   - name: Messages
     description: Messagerie entre participants

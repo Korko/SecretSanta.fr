@@ -9,7 +9,7 @@ use App\Models\Draw\Draw;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Controller for create des Exclusions en lot
+ * Controller for create des exclusions en lot
  */
 class CreateBulkExclusionsController extends Controller
 {

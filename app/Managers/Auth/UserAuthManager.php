@@ -30,7 +30,7 @@ class UserAuthManager
     public function encryptEmailWithPassword(string $email, string $password): array
     {
         $salt = random_bytes(16);
-        $key = $this->encryptionService->ofriveKeyFromPassword($password, $salt);
+        $key = $this->encryptionService->deriveKeyFromPassword($password, $salt);
         $encryptedEmail = $this->encryptionService->encrypt($email, $key);
 
         return [
@@ -42,12 +42,12 @@ class UserAuthManager
     /**
      * Déchiffre a email with the mot of passe
      */
-    public function ofcryptEmailWithPassword(string $encryptedEmail, string $salt, string $password): string
+    public function decryptEmailWithPassword(string $encryptedEmail, string $salt, string $password): string
     {
         $saltBytes = base64_decode($salt);
-        $key = $this->encryptionService->ofriveKeyFromPassword($password, $saltBytes);
+        $key = $this->encryptionService->deriveKeyFromPassword($password, $saltBytes);
 
-        return $this->encryptionService->ofcrypt($encryptedEmail, $key);
+        return $this->encryptionService->decrypt($encryptedEmail, $key);
     }
 
     /**
@@ -56,7 +56,7 @@ class UserAuthManager
     public function encryptProfileData(array $profileData, string $password): array
     {
         $salt = random_bytes(16);
-        $key = $this->encryptionService->ofriveKeyFromPassword($password, $salt);
+        $key = $this->encryptionService->deriveKeyFromPassword($password, $salt);
 
         $encrypted = [];
         foreach ($profileData as $field => $value) {
@@ -70,15 +70,15 @@ class UserAuthManager
     /**
      * Déchiffre les données d'un profil utilisateur
      */
-    public function ofcryptProfileData(array $encryptedData, string $password): array
+    public function decryptProfileData(array $encryptedData, string $password): array
     {
         $salt = base64_decode($encryptedData['salt']);
-        $key = $this->encryptionService->ofriveKeyFromPassword($password, $salt);
+        $key = $this->encryptionService->deriveKeyFromPassword($password, $salt);
 
         $encrypted = [];
         foreach ($encryptedData as $field => $value) {
             if ($field !== 'salt') {
-                $encrypted[$field] = $this->encryptionService->ofcrypt($value, $key);
+                $encrypted[$field] = $this->encryptionService->decrypt($value, $key);
             }
         }
 

@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Controller for retrieve toutes les Exclusions d'un draw
+ * Controller for retrieve toutes les exclusions d'un draw
  */
 class GetDrawExclusionsController extends Controller
 {

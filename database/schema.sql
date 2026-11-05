@@ -148,7 +148,7 @@ CREATE TABLE participants (
 -- TABLES D'EXCLUSIONS OPTIMISÉES
 -- =====================================================
 
--- Exclusions avec index optimisés
+-- exclusions avec index optimisés
 CREATE TABLE exclusions (
                             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                             draw_id BIGINT UNSIGNED NOT NULL,

@@ -17,7 +17,7 @@ class UserFactory extends Factory
             'email_hash' => hash('sha256', $email),
             'email_blind_index' => hash_hmac('sha256', $email, config('app.key')),
             'email_encrypted' => encrypt($email),
-            'password' => bcrypt('password'),
+            'password_hash' => bcrypt('password'),
             'last_login_at' => null,
         ];
     }

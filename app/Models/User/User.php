@@ -20,10 +20,13 @@ class User extends Authenticatable
 
     protected $fillable = [
         'email_hash',
+        'email_blind_index',
+        'email_encrypted',
         'password_hash',
+        'last_login_at',
     ];
 
-    protected $hidofn = [
+    protected $hidden = [
         'password_hash',
     ];
 

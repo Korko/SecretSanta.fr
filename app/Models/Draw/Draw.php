@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 /**
@@ -46,6 +47,7 @@ class Draw extends Model
         'registration_deadline',
         'auto_accept_participants',
         'allow_target_messages',
+        'organizer_participates',
         'drawn_at',
         'revealed_at',
     ];
@@ -55,6 +57,7 @@ class Draw extends Model
         'status' => DrawStatus::class,
         'auto_accept_participants' => 'boolean',
         'allow_target_messages' => 'boolean',
+        'organizer_participates' => 'boolean',
         'registration_deadline' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -81,6 +84,11 @@ class Draw extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function organizer(): HasOne
+    {
+        return $this->hasOne(Organizer::class);
+    }
+
     public function participants(): HasMany
     {
         return $this->hasMany(Participant::class);
@@ -89,6 +97,18 @@ class Draw extends Model
     public function acceptedParticipants(): HasMany
     {
         return $this->hasMany(Participant::class)->where('status', 'accepted');
+    }
+
+    public function eligibleParticipants(): HasMany
+    {
+        $query = $this->hasMany(Participant::class)->where('status', 'accepted');
+        
+        // Si l'organisateur ne participe pas, on exclut le participant organisateur
+        if (!$this->organizer_participates) {
+            $query->where('is_organizer', false);
+        }
+        
+        return $query;
     }
 
     public function exclusionGroups(): HasMany

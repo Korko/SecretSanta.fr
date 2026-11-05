@@ -40,6 +40,7 @@ class CreateExclusionAction
                 [
                     'type' => $type,
                     'source' => 'manual',
+                    'created_at' => now(),
                 ]
             );
 
@@ -70,17 +71,17 @@ class CreateExclusionAction
     }
 
     /**
-     * Recrée les Exclusions mutuelles for les membres risants d'un groupe
+     * Recrée les exclusions mutuelles for les membres risants d'un groupe
      */
     private function recreateMutualExclusions(ExclusionGroup $group): void
     {
-        // Delete toutes les Exclusions of groupe existantes
+        // Delete toutes les exclusions of groupe existantes
         Exclusion::where('draw_id', $group->draw_id)
             ->where('source', 'group')
             ->whereIn('participant_id', $group->members()->pluck('participant_id'))
             ->delete();
 
-        // Recreate les Exclusions mutuelles
+        // Recreate les exclusions mutuelles
         $memberIds = $group->members()->pluck('participant_id')->toArray();
 
         foreach ($memberIds as $memberId) {
@@ -92,6 +93,7 @@ class CreateExclusionAction
                         'excluded_participant_id' => $otherMemberId,
                         'type' => 'strong',
                         'source' => 'group',
+                        'created_at' => now(),
                     ]);
                 }
             }

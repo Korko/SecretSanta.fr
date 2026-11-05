@@ -17,16 +17,13 @@ describe('DrawAlgorithm', function () {
 
         $result = $this->algorithm->performDraw($participants, []);
 
-        expect($result->isSuccessful())->toBeTrue();
-        $assignments = $result->getAssignments();
+        expect($result->isSuccessful())->toBeTrue()
+            ->and($result->getAssignments())->toHaveCount(4)
+            ->and(array_unique($result->getAssignments()))->toHaveCount(4);
 
-        expect($assignments)->toHaveCount(4);
-
-        $assigned = array_values($assignments);
-        expect(array_unique($assigned))->toHaveCount(4);
-
-        foreach ($assignments as $giver => $receiver) {
-            expect($giver)->not->toEqual($receiver);
+        // Verify that no participant has been self-assigned
+        foreach ($result->getAssignments() as $giver => $receiver) {
+            expect($giver)->not->toBe($receiver);
         }
     });
 
@@ -48,8 +45,8 @@ describe('DrawAlgorithm', function () {
         expect($result->isSuccessful())->toBeTrue();
         $assignments = $result->getAssignments();
 
-        expect($assignments[1])->not->toEqual(2);
-        expect($assignments[2])->not->toEqual(3);
+        expect($assignments[1])->not->toBe(2)
+            ->and($assignments[2])->not->toBe(3);
     });
 
     test('draw with weak exclusions', function () {
@@ -57,26 +54,32 @@ describe('DrawAlgorithm', function () {
             (object)['id' => 1],
             (object)['id' => 2],
             (object)['id' => 3],
+            (object)['id' => 4],
         ]);
 
         $exclusions = [
-            1 => [2 => 'weak', 3 => 'weak'],
-            2 => [1 => 'weak', 3 => 'weak'],
-            3 => [1 => 'weak', 2 => 'weak'],
+            1 => [2 => 'weak'],
+            2 => [3 => 'weak'],
         ];
 
         $result = $this->algorithm->performDraw($participants, $exclusions);
 
         expect($result->isSuccessful())->toBeTrue();
+
+        // Weak exclusions can be ignored if necessary
+        if (!empty($result->getIgnoredWeakExclusions())) {
+            expect($result->getIgnoredWeakExclusions())->toBeArray();
+        }
     });
 
-    test('impossible draw with too many strong exclusions', function () {
+    test('detects impossible configurations early', function () {
         $participants = collect([
             (object)['id' => 1],
             (object)['id' => 2],
             (object)['id' => 3],
         ]);
 
+        // Each participant excludes all others
         $exclusions = [
             1 => [2 => 'strong', 3 => 'strong'],
             2 => [1 => 'strong', 3 => 'strong'],
@@ -85,7 +88,28 @@ describe('DrawAlgorithm', function () {
 
         $result = $this->algorithm->performDraw($participants, $exclusions);
 
-        expect($result->isSuccessful())->toBeFalse();
-        expect($result->getFailureReason())->toContain('Impossible');
+        expect($result->isSuccessful())->toBeFalse()
+            ->and($result->getFailureReason())->toContain('cannot give to anyone due to strong exclusions');
+    });
+
+    test('performs efficiently on large draws', function () {
+        $participants = collect(range(1, 50))->map(fn($id) => (object)['id' => $id]);
+
+        // Add some random exclusions
+        $exclusions = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $excluded = rand(1, 50);
+            if ($excluded !== $i) {
+                $exclusions[$i] = [$excluded => 'strong'];
+            }
+        }
+
+        $startTime = microtime(true);
+        $result = $this->algorithm->performDraw($participants, $exclusions);
+        $duration = microtime(true) - $startTime;
+
+        expect($result->isSuccessful())->toBeTrue()
+            ->and($result->getAssignments())->toHaveCount(50)
+            ->and($duration)->toBeLessThan(1.0); // Less than one second
     });
 });

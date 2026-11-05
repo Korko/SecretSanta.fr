@@ -6,7 +6,7 @@ use App\Models\Draw\Draw;
 use App\Models\Draw\Exclusion;
 
 /**
- * Gisionnaire des Exclusions
+ * Gisionnaire des exclusions
  */
 class ExclusionManager
 {
@@ -30,7 +30,7 @@ class ExclusionManager
     }
 
     /**
-     * Ajoute les Exclusions des groupes to the matrice
+     * Ajoute les exclusions des groupes to the matrice
      */
     private function addGroupExclusions(Draw $draw, array &$matrix): void
     {
@@ -43,7 +43,7 @@ class ExclusionManager
             foreach ($memberIds as $memberId) {
                 foreach ($memberIds as $otherMemberId) {
                     if ($memberId !== $otherMemberId) {
-                        // Les Exclusions of groupe are fortes par default
+                        // Les exclusions of groupe are fortes par default
                         $matrix[$memberId][$otherMemberId] = 'strong';
                     }
                 }
@@ -52,16 +52,16 @@ class ExclusionManager
     }
 
     /**
-     * Récupère seuthement les Exclusions fortes
+     * Récupère seuthement les exclusions fortes
      */
     public function getStrongExclusions(Draw $draw): array
     {
         $matrix = $this->buildExclusionMatrix($draw);
         $strongOnly = [];
 
-        foreach ($matrix as $participantId => $Exclusions) {
+        foreach ($matrix as $participantId => $exclusions) {
             $strongOnly[$participantId] = [];
-            foreach ($Exclusions as $excludedId => $type) {
+            foreach ($exclusions as $excludedId => $type) {
                 if ($type === 'strong') {
                     $strongOnly[$participantId][$excludedId] = $type;
                 }

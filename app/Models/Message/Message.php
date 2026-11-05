@@ -24,19 +24,23 @@ class Message extends Model
         'draw_id',
         'from_participant_id',
         'to_participant_id',
+        'encryption_version',
         'content_encrypted',
+        'content_hash',
         'type',
-        'is_reported',
-        'is_reviewed',
-        'reviewer_notes',
+        'status',
+        'moderation_status',
+        'moderation_data',
+        'read_at',
     ];
 
     protected $casts = [
         'draw_id' => 'integer',
         'from_participant_id' => 'integer',
         'to_participant_id' => 'integer',
-        'is_reported' => 'boolean',
-        'is_reviewed' => 'boolean',
+        'encryption_version' => 'integer',
+        'moderation_data' => 'array',
+        'read_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -82,13 +86,13 @@ class Message extends Model
     #[Scope]
     public function reported(Builder $query)
     {
-        return $query->where('is_reported', true);
+        return $query->where('moderation_status', 'reported');
     }
 
     #[Scope]
     public function unreviewed(Builder $query)
     {
-        return $query->where('is_reviewed', false);
+        return $query->where('moderation_status', 'reported');
     }
 
     #[Scope]
@@ -135,12 +139,12 @@ class Message extends Model
 
     public function isReported(): bool
     {
-        return $this->is_reported;
+        return $this->moderation_status === 'reported';
     }
 
     public function isReviewed(): bool
     {
-        return $this->is_reviewed;
+        return $this->moderation_status === 'reviewing';
     }
 
     /**
@@ -148,14 +152,19 @@ class Message extends Model
      */
     public function report(): void
     {
-        $this->update(['is_reported' => true]);
+        $this->update(['moderation_status' => 'reported']);
     }
 
     public function markAsReviewed(?string $notes = null): void
     {
+        $moderationData = $this->moderation_data ?? [];
+        if ($notes) {
+            $moderationData['reviewer_notes'] = $notes;
+        }
+        
         $this->update([
-            'is_reviewed' => true,
-            'reviewer_notes' => $notes,
+            'moderation_status' => 'reviewing',
+            'moderation_data' => $moderationData,
         ]);
     }
 

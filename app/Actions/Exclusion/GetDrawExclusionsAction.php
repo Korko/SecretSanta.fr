@@ -8,20 +8,20 @@ use App\Models\Draw\ExclusionGroup;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Action to retrieve toutes les Exclusions d'un draw
+ * Action to retrieve toutes les exclusions d'un draw
  */
 class GetDrawExclusionsAction
 {
     public function execute(Draw $draw, string $masterKey): array
     {
         try {
-            // Retrieve les Exclusions individuelles
+            // Retrieve les exclusions individuelles
             $individualExclusions = [];
-            $Exclusions = Exclusion::where('draw_id', $draw->id)
+            $exclusions = Exclusion::where('draw_id', $draw->id)
                 ->with(['participant', 'excludedParticipant'])
                 ->get();
 
-            foreach ($Exclusions as $Exclusion) {
+            foreach ($exclusions as $Exclusion) {
                 $individualExclusions[] = [
                     'id' => $Exclusion->id,
                     'participant' => [
@@ -66,7 +66,7 @@ class GetDrawExclusionsAction
             ];
 
         } catch (\Exception $e) {
-            Log::error("Failed to get draw Exclusions", [
+            Log::error("Failed to get draw exclusions", [
                 'draw_uuid' => $draw->uuid,
                 'error' => $e->getMessage()
             ]);

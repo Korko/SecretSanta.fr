@@ -35,9 +35,9 @@ class MasterKeyManager
     /**
      * Déchiffre une key master with the key d'un organizer/participant
      */
-    public function ofcryptMasterKey(string $encryptedMasterKey, string $individualKey): string
+    public function decryptMasterKey(string $encryptedMasterKey, string $individualKey): string
     {
-        return $this->encryptionService->ofcrypt($encryptedMasterKey, $individualKey);
+        return $this->encryptionService->decrypt($encryptedMasterKey, $individualKey);
     }
 
     /**
@@ -51,8 +51,8 @@ class MasterKeyManager
     /**
      * Déchiffre des données with the key master
      */
-    public function ofcryptWithMasterKey(string $encryptedData, string $masterKey): string
+    public function decryptWithMasterKey(string $encryptedData, string $masterKey): string
     {
-        return $this->encryptionService->ofcrypt($encryptedData, $masterKey);
+        return $this->encryptionService->decrypt($encryptedData, $masterKey);
     }
 }

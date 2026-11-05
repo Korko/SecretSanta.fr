@@ -13,7 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'participant.auth' => \App\Http\Middleware\AuthenticateParticipant::class,
+            'organizer' => \App\Http\Middleware\AuthenticateOrganizer::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

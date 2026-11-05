@@ -54,7 +54,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('api/v1')->group(function () {
+Route::prefix('v1')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
@@ -189,6 +189,24 @@ Route::prefix('api/v1')->group(function () {
         // Manage predefined responses (organizer only)
         Route::put('/', ManagePredefinedResponsesController::class)
             ->middleware('organizer');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Organizer management routes
+    |--------------------------------------------------------------------------
+    */
+
+    Route::prefix('organizer/draws/{draw:uuid}')->middleware('organizer')->group(function () {
+        // Dashboard de l'organisateur
+        Route::get('/dashboard', \App\Http\Controllers\Organizer\OrganizerDashboardController::class);
+        
+        // Gestion des participants
+        Route::prefix('participants/{participant:uuid}')->group(function () {
+            Route::get('/', \App\Http\Controllers\Organizer\GetParticipantDetailsController::class);
+            Route::post('/resend-email', \App\Http\Controllers\Organizer\ResendParticipantEmailController::class);
+            Route::patch('/email', \App\Http\Controllers\Organizer\UpdateParticipantEmailController::class);
+        });
     });
 
     /*

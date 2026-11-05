@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('email_hash')->unique();
             $table->string('email_blind_index')->index();
             $table->text('email_encrypted');
-            $table->string('password');
+            $table->string('password_hash');
             $table->timestamp('last_login_at')->nullable();
             $table->timestamps();
         });

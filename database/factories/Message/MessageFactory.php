@@ -25,11 +25,13 @@ class MessageFactory extends Factory
             'draw_id' => Draw::factory(),
             'from_participant_id' => Participant::factory(),
             'to_participant_id' => Participant::factory(),
+            'encryption_version' => 2,
             'content_encrypted' => base64_encode($this->faker->paragraph()),
-            'type' => $this->faker->randomElement(['text', 'image', 'suggestion']),
-            'is_reported' => false,
-            'is_reviewed' => false,
-            'reviewer_notes' => null,
+            'content_hash' => hash('sha256', $this->faker->paragraph()),
+            'type' => $this->faker->randomElement(['to_secret_santa', 'to_target', 'system']),
+            'status' => 'sent',
+            'moderation_status' => 'ok',
+            'moderation_data' => null,
         ];
     }
 
@@ -39,9 +41,7 @@ class MessageFactory extends Factory
     public function reported(): static
     {
         return $this->state(fn (array $attributes) => [
-            'is_reported' => true,
-            'is_reviewed' => false,
-            'reviewer_notes' => null,
+            'moderation_status' => 'reported',
         ]);
     }
 
@@ -51,39 +51,38 @@ class MessageFactory extends Factory
     public function reviewed(): static
     {
         return $this->state(fn (array $attributes) => [
-            'is_reported' => true,
-            'is_reviewed' => true,
-            'reviewer_notes' => $this->faker->sentence(),
+            'moderation_status' => 'reviewing',
+            'moderation_data' => ['reviewer_notes' => $this->faker->sentence()],
         ]);
     }
 
     /**
-     * Create a text message
+     * Create a message to secret santa
      */
-    public function text(): static
+    public function toSecretSanta(): static
     {
         return $this->state(fn (array $attributes) => [
-            'type' => 'text',
+            'type' => 'to_secret_santa',
         ]);
     }
 
     /**
-     * Create an image message
+     * Create a message to target
      */
-    public function image(): static
+    public function toTarget(): static
     {
         return $this->state(fn (array $attributes) => [
-            'type' => 'image',
+            'type' => 'to_target',
         ]);
     }
 
     /**
-     * Create a suggestion message
+     * Create a system message
      */
-    public function suggestion(): static
+    public function system(): static
     {
         return $this->state(fn (array $attributes) => [
-            'type' => 'suggestion',
+            'type' => 'system',
         ]);
     }
 

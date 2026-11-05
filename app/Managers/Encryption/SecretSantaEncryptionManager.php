@@ -38,6 +38,11 @@ class SecretSantaEncryptionManager
         return $this->userAuthManager;
     }
 
+    public function generateMasterKey(): string
+    {
+        return $this->masterKeyManager->generateMasterKey();
+    }
+
     /**
      * Crée a new draw with keys master and organizer
      */
@@ -87,6 +92,6 @@ class SecretSantaEncryptionManager
         }
 
         // Master key decryption
-        return $this->masterKeyManager->ofcryptMasterKey($encryptedMasterKey, $individualKey);
+        return $this->masterKeyManager->decryptMasterKey($encryptedMasterKey, $individualKey);
     }
 }

@@ -20,7 +20,7 @@ class LoginUserController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'error' => 'Validation failed',
-                'oftails' => $validator->errors()
+                'details' => $validator->errors()
             ], 422);
         }
 
@@ -32,17 +32,16 @@ class LoginUserController extends Controller
 
             if (!$user || !$user->checkPassword($password)) {
                 return response()->json([
-                    'error' => 'Invalid creofntials'
+                    'error' => 'Invalid credentials'
                 ], 401);
             }
 
             $token = $user->createToken('auth-token')->plainTextToken;
 
             return response()->json([
-                'success' => true,
+                'message' => 'Login successful',
                 'user' => [
                     'id' => $user->id,
-                    'email_hash' => $user->email_hash,
                 ],
                 'token' => $token
             ]);
