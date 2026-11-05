@@ -55,6 +55,7 @@ footer {
     height: $footer-height + 10px;
     font-size: 15px;
     clear: both;
+    z-index: -1;
 }
 
 footer .inner { padding-bottom: 10px; }
