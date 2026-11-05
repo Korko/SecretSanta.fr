@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Webklex\IMAP\Facades\Client;
 use Webklex\PHPIMAP\Message;
+use Webklex\PHPIMAP\Query\WhereQuery;
 
 class EmailClient
 {
@@ -20,24 +21,44 @@ class EmailClient
         $this->delegate->expunge();
     }
 
+    protected function getFolderQuery($folder)
+    {
+        $oFolder = $this->delegate->getFolder($folder);
+
+        return $oFolder->query();
+    }
+
+    protected function getFolderLimitQuery($folder, int $limit = 0)
+    {
+        $query = $this->getFolderQuery($folder);
+
+        if ($limit > 0) {
+            $query->limit($limit);
+        } else {
+            $query->all();
+        }
+
+        return $query;
+    }
+
+    public function getMails($folder, int $limit = 0): iterable
+    {
+        return $this->getFolderLimitQuery($folder, $limit)
+            ->get();
+    }
+
     public function getUnseenMails(int $limit = 0, $folder = 'imap.folders.inbox'): iterable
     {
-        $oFolder = $this->delegate->getFolder(config($folder));
-
-        return $oFolder->query()
+        return $this->getFolderLimitQuery(config($folder), $limit)
             ->whereUnseen()
             ->leaveUnread()
-            ->limit($limit)
             ->get();
     }
 
     public function getOldMails(int $age = 30, int $limit = 0, $folder = 'imap.folders.trash'): iterable
     {
-        $oFolder = $this->delegate->getFolder(config($folder));
-
-        return $oFolder->query()
+        return $this->getFolderLimitQuery(config($folder), $limit)
             ->whereBefore('-'.$age.' days')
-            ->limit($limit)
             ->get();
     }
 

@@ -45,11 +45,11 @@ class ShowDraw extends Command
         $this->newLine();
 
         table(
-            ['ID', 'Name', 'Email', 'Status', 'Target'],
+            ['ID', 'Name', 'Email', 'Status', 'Target', 'DearSantas Envoyés', 'DearSantas Reçus'],
             $draw->participants()
                 ->with(['mail', 'target'])
                 ->get()
-                ->map(fn ($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status'), 'target' => $col->target->id.' ('.$col->target->name.')'])
+                ->map(fn ($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status'), 'target' => $col->target->id.' ('.$col->target->name.')', 'dearsantas_s' => $col->dearsantas->count(), 'dearsantas_r' => $col->target->dearsantas->count()])
                 ->toArray()
         );
         $this->newLine();
