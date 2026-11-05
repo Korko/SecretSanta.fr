@@ -12,6 +12,8 @@ use URLParser;
 
 class PostBlacklist extends Command
 {
+    use ParsesDrawUrl;
+
     /**
      * The name and signature of the console command.
      *

@@ -8,6 +8,8 @@ use URLParser;
 
 class FixDraw extends Command
 {
+    use ParsesDrawUrl;
+
     /**
      * The name and signature of the console command.
      *
