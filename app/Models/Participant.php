@@ -97,9 +97,10 @@ class Participant extends Model
     /**
      * Retrieve the model for a bound value.
      *
-     * @param  mixed  $value
+     * @param  mixed   $value
+     * @param  ?string $field
      */
-    public function resolveRouteBinding($value, ?string $field = null): ?Model
+    public function resolveRouteBinding($value, $field = null): ?Model
     {
         $participant = $this->baseResolver($value, $field);
 

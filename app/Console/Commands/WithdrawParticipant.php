@@ -4,16 +4,18 @@ namespace App\Console\Commands;
 
 use App\Notifications\DearSanta;
 use App\Notifications\TargetWithdrawn;
-use URLParser;
+use function Laravel\Prompts\error;
 
 class WithdrawParticipant extends Command
 {
+    use ParsesDrawUrl;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'secretsanta:withdraw-participant {url : The URL received by one of the participants to write to their santa} {id : The participant id}';
+    protected $signature = 'secretsanta:withdraw-participant {url? : The URL received by one of the participants to write to their santa} {id : The participant id}';
 
     /**
      * The console command description.
@@ -27,13 +29,12 @@ class WithdrawParticipant extends Command
      */
     public function handle(): void
     {
-        $this->setCryptIVFromUrl($this->argument('url'));
-
-        $participant = URLParser::parseByName('dearSanta', $this->argument('url'))->participant;
-        if ($participant) {
-            $draw = $participant->draw;
-        } else {
-            $draw = URLParser::parseByName('organizerPanel', $this->argument('url'))->draw;
+        try {
+            $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
+        } catch(\Exception $e) {
+            error('Draw not found - ' . $e->getMessage());
+            report($e);
+            return;
         }
 
         $participant = $draw->participants->find($this->argument('id'));
