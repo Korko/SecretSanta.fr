@@ -2,8 +2,10 @@
 
 return [
 
-    // When a DKIM key is configured, mails go through the "dkim" mailer, which signs then delegates to MAIL_MAILER
-    'default' => env('MAIL_DKIM_PRIVATE_KEY') ? 'dkim' : env('MAIL_MAILER', 'log'),
+    // When DKIM is fully configured, mails go through the "dkim" mailer, which signs then delegates to MAIL_MAILER
+    'default' => is_file((string) env('MAIL_DKIM_PRIVATE_KEY')) && env('MAIL_DKIM_SELECTOR') && env('MAIL_DKIM_DOMAIN')
+        ? 'dkim'
+        : env('MAIL_MAILER', 'log'),
 
     'mailers' => [
         'dkim' => [
