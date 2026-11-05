@@ -6,7 +6,7 @@ use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use App\Services\EmailClient;
 use Exception;
-use Illuminate\Routing\Router;
+use Illuminate\Support\Str;
 use Notification;
 use URLParser;
 
@@ -42,23 +42,31 @@ class PostBlacklist extends Command
                     ->content;
                 $content = str_replace("=\r\n", '', $content);
 
-                preg_match('@https://secretsanta\.fr/dearSanta/\w+\?signature=\w+#[\w+=]+@', $content, $match);
+                $pattern = '@'.preg_quote(config('app.url'), '@').'/dearSanta/\w+\?signature=\w+#[\w+=]+@';
+                if (! preg_match($pattern, $content, $match)) {
+                    continue;
+                }
                 $url = quoted_printable_decode($match[0]);
 
-                $this->handleURL($url);
-
-                $emailClient->delete($mail);
-            } catch(Exception $e) {
-                // Ignore
+                if ($this->handleURL($url)) {
+                    $emailClient->delete($mail);
+                }
+            } catch (Exception $e) {
+                $this->warn('Skipped a bounce: '.$e->getMessage());
             }
         }
     }
 
-    protected function handleURL($url)
+    protected function handleURL($url): bool
     {
         $this->setCryptIVFromUrl($url);
 
         $participant = URLParser::parseByName('dearSanta', $url)->participant;
+
+        $domains = array_map(fn ($domain) => '@'.ltrim(strtolower($domain), '@'), $this->argument('domains'));
+        if (! Str::endsWith(strtolower($participant->email), $domains)) {
+            return false;
+        }
 
         if ($participant->draw->organizer->is($participant)) {
             Notification::route('mail', [
@@ -69,5 +77,7 @@ class PostBlacklist extends Command
 
         $participant->notifyNow(new TargetDrawn);
         $this->info('Participant mail sent');
+
+        return true;
     }
 }
