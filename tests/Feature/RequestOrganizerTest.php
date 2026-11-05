@@ -57,10 +57,11 @@ test('the organizer can change a participant\'s email', function () {
 test('the organizer can withdraw a participant', function () {
     Notification::fake();
 
+    // With 5 participants, at least one is in a cycle of 3+ (a 2-cycle can't be withdrawn)
     $draw = Draw::factory()
-        ->hasParticipants(4)
+        ->hasParticipants(5)
         ->create();
-    $participant = $draw->participants->random();
+    $participant = $draw->participants->first(fn ($participant) => $participant->santa->isNot($participant->target));
 
     ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), [
         'content' => 'test dearSanta mail content',
