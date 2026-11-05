@@ -47,12 +47,11 @@ class MailTracker
     public function isEmailReceived(EmailMessage $message)
     {
         return (
-            $this->getNotificationType($message) === self::CONFIRM // ||
-//            $message->getHeader()->get('X-Autoreply') ||
-//            $message->getHeader()->get('X-Autorespond') ||
-//            strpos($message->getHeader()->get('Auto-Submitted') ?? '', 'auto-replied') !== false ||
-//            strpos($message->getHeader()->get('auto_submitted') ?? '', 'auto-replied') !== false
-
+            $this->getNotificationType($message) === self::CONFIRM ||
+            $message->getHeader()->get('x_autoreply') ||
+            $message->getHeader()->get('x_autorespond') ||
+            strpos($message->getHeader()->get('auto_submitted') ?? '', 'auto-replied (vacation)') !== false ||
+            strpos($message->getHeader()->get('auto_submitted') ?? '', 'auto-replied (zimbra') !== false
         );
     }
 

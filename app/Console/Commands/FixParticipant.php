@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use URLParser;
 
@@ -46,5 +47,10 @@ class FixParticipant extends Command
 
         $participant->notifyNow(new TargetDrawn);
         $this->info('Participant mail sent');
+
+        $participant->target->dearSantas->each(function ($dearSanta) use ($participant) {
+            $participant->notify(new DearSanta($dearSanta));
+            $this->info('DearSanta mail sent');
+        });
     }
 }

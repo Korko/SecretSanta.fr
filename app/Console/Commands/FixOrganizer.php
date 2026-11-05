@@ -62,6 +62,11 @@ class FixOrganizer extends Command
 
             $draw->organizer->notifyNow(new TargetDrawn);
             $this->info('Participant mail sent');
+
+            $draw->organizer->target->dearSantas->each(function ($dearSanta) use ($draw) {
+                $draw->organizer->notify(new DearSanta($dearSanta));
+                $this->info('DearSanta mail sent');
+            });
         }
     }
 }

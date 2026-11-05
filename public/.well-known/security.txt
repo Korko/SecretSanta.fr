@@ -1,0 +1,3 @@
+Contact: mailto:webmaster@secretsanta.fr
+Preferred-Languages: fr,en
+Canonical: https://secretsanta.fr/.well-known/security.txt
