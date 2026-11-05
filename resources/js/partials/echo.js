@@ -1,6 +1,5 @@
 import Echo from "laravel-echo"
-import Pusher from 'pusher-js';
-window.Pusher = Pusher;
+window.Pusher = require('pusher-js');
 
 export default new Echo({
     broadcaster: 'pusher',

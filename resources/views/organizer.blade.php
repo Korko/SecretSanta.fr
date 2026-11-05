@@ -16,7 +16,7 @@
         ]
     ])
 
-    @vite('resources/js/common.js')
-    @vite('resources/js/organizer.js')
+    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/organizer.js') }}"></script>
 @stop
 

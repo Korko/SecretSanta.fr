@@ -3,13 +3,13 @@
 @section('script')
     @parent
 
-    @vite('resources/js/common.js')
-    @vite('resources/js/fixOrganizer.js')
+    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/fixOrganizer.js') }}"></script>
 @stop
 
 @section('navbar')
     <ul class="nav navbar-nav navbar-nav-left">
-        <li><a href="/">{{ __('faq.nav.go') }}</a></li>
+        <li><a href="/">@lang('faq.nav.go')</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-nav-right">
     </ul>
