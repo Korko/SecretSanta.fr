@@ -10,7 +10,7 @@
     "require": {
         "php": "^8.4",
         "ext-openssl": "*",
-        "influxdb/influxdb-php": "^1.15",
+        "influxdata/influxdb-client-php": "^3.9",
         "korko/validator": "dev-master",
         "laravel/framework": "^13.0",
         "laravel/prompts": "^0.3.8",
