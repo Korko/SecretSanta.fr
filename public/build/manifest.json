@@ -60,12 +60,8 @@
     "file": "assets/vue-i18n-locales.generated-BTb4GNDA.js",
     "name": "vue-i18n-locales.generated"
   },
-  "_vueFetcher-CFMKrWt2.css": {
-    "file": "assets/vueFetcher-CFMKrWt2.css",
-    "src": "_vueFetcher-CFMKrWt2.css"
-  },
-  "_vueFetcher-_nLUV0Vs.js": {
-    "file": "assets/vueFetcher-_nLUV0Vs.js",
+  "_vueFetcher-B223Y8-x.js": {
+    "file": "assets/vueFetcher-B223Y8-x.js",
     "name": "vueFetcher",
     "imports": [
       "_rolldown-runtime-COiEfhsA.js",
@@ -77,6 +73,10 @@
     "css": [
       "assets/vueFetcher-CFMKrWt2.css"
     ]
+  },
+  "_vueFetcher-CFMKrWt2.css": {
+    "file": "assets/vueFetcher-CFMKrWt2.css",
+    "src": "_vueFetcher-CFMKrWt2.css"
   },
   "resources/fonts/Cookie-Regular.ttf": {
     "file": "assets/Cookie-Regular-DbKmepVV.ttf",
@@ -156,14 +156,14 @@
     ]
   },
   "resources/js/dearSanta.js": {
-    "file": "assets/dearSanta-CRyJTJRr.js",
+    "file": "assets/dearSanta-BmoIwii3.js",
     "name": "dearSanta",
     "src": "resources/js/dearSanta.js",
     "isEntry": true,
     "imports": [
       "__plugin-vue_export-helper-LTa6-UKj.js",
       "_ajaxForm-Du2LAzfU.js",
-      "_vueFetcher-_nLUV0Vs.js",
+      "_vueFetcher-B223Y8-x.js",
       "_tooltip-A4k93Qqs.js",
       "_form-NPSFbpBr.js"
     ],
@@ -196,7 +196,7 @@
     ]
   },
   "resources/js/organizer.js": {
-    "file": "assets/organizer-B7U5Toum.js",
+    "file": "assets/organizer-DDgw_sap.js",
     "name": "organizer",
     "src": "resources/js/organizer.js",
     "isEntry": true,
@@ -205,7 +205,7 @@
       "_ajaxForm-Du2LAzfU.js",
       "_moment-D1DaKkq4.js",
       "_alertify-CJ6XJJaF.js",
-      "_vueFetcher-_nLUV0Vs.js",
+      "_vueFetcher-B223Y8-x.js",
       "_tooltip-A4k93Qqs.js",
       "_form-NPSFbpBr.js"
     ],

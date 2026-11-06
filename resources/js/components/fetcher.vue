@@ -1,10 +1,7 @@
 <script>
     import fetch from '../partials/fetch.js';
 
-    import Timer from './timer.vue';
-
     export default {
-        components: { Timer },
         props: {
             fetchurl: {
                 type: String,
@@ -33,7 +30,5 @@
 </script>
 
 <template>
-    <timer :delay="2000">
-        <!-- TODO Erreur -->
-    </timer>
+    <span />
 </template>
