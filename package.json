@@ -5,13 +5,15 @@
     ],
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "e2e": "tests/e2e/run.sh"
     },
     "devDependencies": {
         "@fullhuman/postcss-purgecss": "^8.0.0",
         "@vitejs/plugin-vue": "^6.0.10",
         "laravel-echo": "^2.6.3",
         "laravel-vite-plugin": "^3.2.1",
+        "playwright": "^1.61.1",
         "popper.js": "^1.16.1",
         "postcss": "^8.2.13",
         "pusher-js": "^8.6.0",

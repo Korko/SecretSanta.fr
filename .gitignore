@@ -19,3 +19,4 @@ public/assets/*.map
 /.nova
 tests/Browser/console
 tests/Browser/Screenshots
+/storage/e2e.sqlite
