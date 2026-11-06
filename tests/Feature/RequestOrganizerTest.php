@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Draw;
 use App\Notifications\DearSanta;
+use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
 use Illuminate\Support\Facades\Notification;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\URL;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
 use function PHPUnit\Framework\assertNull;
+use function PHPUnit\Framework\assertTrue;
 
 test('the organizer can send again the target drawn email', function (): void {
     Notification::fake();
@@ -97,6 +99,27 @@ test('the organizer can withdraw a participant', function (): void {
 
     Notification::assertSentTo($santa, TargetWithdrawn::class);
     Notification::assertSentTo($santa, DearSanta::class);
+});
+
+test('the organizer can withdraw a participant in a 2-cycle', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    [$a, $b, $c, $d] = $draw->participants->all();
+    // A <-> B, C <-> D
+    foreach ([[$a, $b], [$b, $a], [$c, $d], [$d, $c]] as [$santa, $target]) {
+        $target->santa()->associate($santa)->save();
+    }
+
+    ajaxGet(URL::signedRoute('organizerPanel.withdraw', ['draw' => $draw->fresh(), 'participant' => $b]))
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    $otherSanta = $a->fresh()->santa;
+    assertTrue(in_array($otherSanta->id, [$c->id, $d->id], true));
+    assertTrue(in_array($a->fresh()->target->id, [$c->id, $d->id], true));
+    Notification::assertSentTo($a, TargetWithdrawn::class);
+    Notification::assertSentTo($otherSanta, TargetChanged::class);
 });
 
 test('the organizer can download initial data', function (): void {

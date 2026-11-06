@@ -1321,6 +1321,12 @@ parameters:
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$target.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
 			rawMessage: Binary operation "." between '﻿' and mixed results in an error.
 			identifier: binaryOp.invalid
 			count: 1
@@ -1339,15 +1345,45 @@ parameters:
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
+			rawMessage: 'Call to an undefined method Illuminate\Database\Eloquent\Model::notify().'
+			identifier: method.notFound
+			count: 2
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
+			rawMessage: 'Call to an undefined method Illuminate\Database\Eloquent\Model::target().'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
 			rawMessage: Cannot access property $dearSantas on Illuminate\Database\Eloquent\Model|null.
 			identifier: property.nonObject
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
+			rawMessage: Cannot access property $dearSantas on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
+			rawMessage: Cannot access property $exclusions on Illuminate\Database\Eloquent\Model|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
+			rawMessage: Cannot access property $id on Illuminate\Database\Eloquent\Model|null.
+			identifier: property.nonObject
+			count: 2
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
 			rawMessage: 'Cannot call method each() on mixed.'
 			identifier: method.nonObject
-			count: 1
+			count: 2
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
@@ -1358,6 +1394,12 @@ parameters:
 
 		-
 			rawMessage: 'Cannot call method markAsCreated() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
+			rawMessage: 'Cannot call method modelKeys() on mixed.'
 			identifier: method.nonObject
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
@@ -1377,13 +1419,13 @@ parameters:
 		-
 			rawMessage: 'Cannot call method save() on mixed.'
 			identifier: method.nonObject
-			count: 1
+			count: 3
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
 			rawMessage: 'Cannot call method target() on Illuminate\Database\Eloquent\Model|null.'
 			identifier: method.nonObject
-			count: 1
+			count: 2
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
@@ -1405,7 +1447,25 @@ parameters:
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
+			rawMessage: 'Parameter #1 $callback of method Illuminate\Support\Collection<int,Illuminate\Database\Eloquent\Model>::first() expects (callable(Illuminate\Database\Eloquent\Model, int): bool)|null, Closure(App\Models\Participant): bool given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
 			rawMessage: 'Parameter #1 $dearSanta of class App\Notifications\DearSanta constructor expects App\Models\DearSanta, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
+			rawMessage: 'Parameter #1 $key of method Illuminate\Database\Eloquent\Collection<int,Illuminate\Database\Eloquent\Model>::contains() expects (callable(Illuminate\Database\Eloquent\Model, int): bool)|Illuminate\Database\Eloquent\Model|int|string, Illuminate\Database\Eloquent\Model|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
+			rawMessage: 'Parameter #2 $haystack of function in_array expects array, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
@@ -2321,6 +2381,24 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Notifications/SuggestRedraw.php
+
+		-
+			rawMessage: Cannot access property $id on Illuminate\Database\Eloquent\Model|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Notifications/TargetChanged.php
+
+		-
+			rawMessage: Cannot access property $name on Illuminate\Database\Eloquent\Model|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Notifications/TargetChanged.php
+
+		-
+			rawMessage: 'Method App\Notifications\TargetChanged::via() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Notifications/TargetChanged.php
 
 		-
 			rawMessage: Cannot access property $id on Illuminate\Database\Eloquent\Model|null.

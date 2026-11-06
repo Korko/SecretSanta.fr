@@ -8,6 +8,7 @@ use App\Http\Requests\OrganizerChangeEmailRequest;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\DearSanta;
+use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
 use Illuminate\Http\JsonResponse;
@@ -92,10 +93,23 @@ final class OrganizerController extends Controller
             // A -> B -> C => A -> C
             $santa->target()->save($target);
         } else {
-            // Limit case!
-            return response()->json([
-                'error' => trans('organizer.cannot_withdraw', ['name' => $participant->name]),
-            ]);
+            // A <-> B: splice A into another pair, C -> D => C -> A -> D
+            $excluded = $santa->exclusions->modelKeys();
+            $otherSanta = $draw->participants->first(fn (Participant $c): bool => ! in_array($c->id, [$santa->id, $participant->id], true)
+                && ! in_array($c->target->id, $excluded, true)
+                && ! $c->exclusions->contains($santa));
+
+            if ($otherSanta === null) {
+                return response()->json([
+                    'error' => trans('organizer.cannot_withdraw', ['name' => $participant->name]),
+                ]);
+            }
+
+            $target = $otherSanta->target;
+            $santa->target()->save($target);
+            $otherSanta->target()->save($santa);
+            $otherSanta->notify(new TargetChanged);
+            $santa->dearSantas->each(fn ($dearSanta) => $otherSanta->notify(new DearSanta($dearSanta)));
         }
 
         $santa->notify(new TargetWithdrawn);
