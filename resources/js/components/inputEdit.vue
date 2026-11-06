@@ -173,6 +173,7 @@
                     :disabled="view"
                     :aria-invalid="v$.$error"
                     @input="onInput"
+                    @blur="onBlur"
                 />
                 <slot name="errors" :v="v$.newValue"></slot>
                 <div class="input-group-append">
