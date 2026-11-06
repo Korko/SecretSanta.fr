@@ -48,6 +48,9 @@
             };
         },
         computed: {
+            failedKeys() {
+                return Object.keys(this.participants).filter(k => this.participants[k].mail.delivery_status === 'error');
+            },
             checkUpdates() {
                 return !!Object.values(this.participants).find(
                     participant => participant.mail.delivery_status !== 'error'
@@ -109,6 +112,10 @@
                 return fetch(this.changeEmailUrls[this.participants[k].hash], 'POST', {
                     email: email
                 });
+            },
+            // Same as each row's "redo" button, for every failed email at once
+            resendFailed() {
+                this.failedKeys.forEach(k => this.updateEmail(k, this.participants[k].email));
             },
             confirmWithdrawal(k) {
                 hardConfirm({
@@ -198,6 +205,10 @@
                 </tr>
             </tbody>
         </table>
+        <button type="button" class="btn btn-warning" :disabled="expired || !failedKeys.length" @click="resendFailed">
+            <i class="fas fa-redo" />
+            {{ $t('organizer.list.resend_failed', { count: failedKeys.length }) }}
+        </button>
         <button type="button" class="btn btn-danger" @click="confirmPurge">
             <i class="fas fa-trash" />
             {{ $t('organizer.purge.button') }}

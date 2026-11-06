@@ -204,7 +204,8 @@ export default {
                 "email": "E-Mail-Adresse",
                 "status": "E-Mail-Versandstatus",
                 "caption": "Liste der Teilnehmer/innen",
-                "withdraw": "Entfernen"
+                "withdraw": "Entfernen",
+                "resend_failed": "Fehlgeschlagene E-Mails erneut senden ({count})"
             },
             "up_and_sent": "Erfolgreich geändert!",
             "withdrawn": "{name} nimmt nicht mehr an der Veranstaltung teil.",
@@ -624,7 +625,8 @@ export default {
                 "email": "Adresse Email",
                 "status": "Status d'envoi de l'email",
                 "caption": "Liste des participant(e)s",
-                "withdraw": "Retirer"
+                "withdraw": "Retirer",
+                "resend_failed": "Renvoyer les emails en échec ({count})"
             },
             "up_and_sent": "Modifié avec succès !",
             "cannot_withdraw": "Impossible de supprimer {name}",

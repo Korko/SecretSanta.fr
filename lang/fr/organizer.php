@@ -11,6 +11,7 @@ return [
         'status' => 'Status d\'envoi de l\'email',
         'caption' => 'Liste des participant(e)s',
         'withdraw' => 'Retirer',
+        'resend_failed' => 'Renvoyer les emails en échec (:count)',
     ],
     'up_and_sent' => 'Modifié avec succès !',
     'cannot_withdraw' => 'Impossible de supprimer :name',

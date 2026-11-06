@@ -11,6 +11,7 @@ return [
         'status' => 'E-Mail-Versandstatus',
         'caption' => 'Liste der Teilnehmer/innen',
         'withdraw' => 'Entfernen',
+        'resend_failed' => 'Fehlgeschlagene E-Mails erneut senden (:count)',
     ],
     'up_and_sent' => 'Erfolgreich geändert!',
     'withdrawn' => ':name nimmt nicht mehr an der Veranstaltung teil.',

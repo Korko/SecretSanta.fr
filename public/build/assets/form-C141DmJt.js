@@ -1,1 +1,0 @@
-import{A as r}from"./ajaxForm-BRObBqUo.js";import{_ as e,o as t,g as a,r as n}from"./_plugin-vue_export-helper-C1Aj4D5s.js";const s={components:{AjaxForm:r}};function c(m,p,_,f,x,i){const o=n("ajax-form");return t(),a(o)}const $=e(s,[["render",c]]);export{$ as D};
