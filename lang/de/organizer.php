@@ -42,7 +42,7 @@ return [
         'button_final-tooltip' => [
             'title' => 'Vervollständigte Zusammenfassung',
             'explain' => 'Die Daten sind die gleichen wie in der ursprünglichen Zusammenfassung, wurden jedoch mit den Ausschlüssen jedes Teilnehmers/Teilnehmerin ergänzt, sowie der Zielperson, die dieser Teilnehmer/diese Teilnehmerin während der Veranstaltung erhalten hat. Es sei denn, dies führt zu einer Blockierung, bei der keine Zielperson für jeden Teilnehmer/jede Teilnehmerin beim nächsten Mal mehr gefunden werden kann.',
-            'limit' => 'Aufgrund des festgelegten Datums für die Veranstaltung ist diese Funktion nur vom {expires_at} bis zum {deleted_at} verfügbar.',
+            'limit' => 'Aufgrund des festgelegten Datums für die Veranstaltung ist diese Funktion nur vom {expires_at} bis zum {deleted_at} verfügbar, oder sobald Sie die Ziele aufgedeckt haben.',
         ],
     ],
     'purge' => [

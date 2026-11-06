@@ -268,7 +268,7 @@
                     </div>
                 </template>
                 <template #default>
-                    <button :disabled="!expired" type="button" class="btn btn-primary" @click="downloadPlus">
+                    <button :disabled="!expired && !targetsRevealedAt" type="button" class="btn btn-primary" @click="downloadPlus">
                         <i class="fas fa-download" />
                         {{ $t('organizer.download.button_final') }}
                     </button>

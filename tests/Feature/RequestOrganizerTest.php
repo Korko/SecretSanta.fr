@@ -163,6 +163,16 @@ test('the organizer can download total data if the draw is expired', function ()
         ->assertSuccessful();
 });
 
+test('the organizer can download total data once targets are revealed', function (): void {
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create(['targets_revealed_at' => now()]);
+
+    ajaxGet(URL::signedRoute('organizerPanel.csvFinal', ['draw' => $draw]))
+        ->assertHeader('Content-Type', 'text/csv; charset=UTF-8')
+        ->assertSuccessful();
+});
+
 test('the organizer can delete all data before expiration', function (): void {
     $draw = Draw::factory()
         ->hasParticipants(3)

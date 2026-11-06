@@ -43,7 +43,7 @@ return [
         'button_final-tooltip' => [
             'title' => 'Récapitulatif complété',
             'explain' => 'Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de chaque participant(e) la cible qu\'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant(e) pour la prochaine fois.',
-            'limit' => 'Compte tenu de la date de l\'évènement définie, cette fonctionnalité n\'est disponible que du {expires_at} au {deleted_at}.',
+            'limit' => 'Compte tenu de la date de l\'évènement définie, cette fonctionnalité n\'est disponible que du {expires_at} au {deleted_at}, ou dès que vous avez révélé les cibles.',
         ],
     ],
     'purge' => [

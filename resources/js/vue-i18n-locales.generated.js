@@ -240,7 +240,7 @@ export default {
                 "button_final-tooltip": {
                     "title": "Vervollständigte Zusammenfassung",
                     "explain": "Die Daten sind die gleichen wie in der ursprünglichen Zusammenfassung, wurden jedoch mit den Ausschlüssen jedes Teilnehmers/Teilnehmerin ergänzt, sowie der Zielperson, die dieser Teilnehmer/diese Teilnehmerin während der Veranstaltung erhalten hat. Es sei denn, dies führt zu einer Blockierung, bei der keine Zielperson für jeden Teilnehmer/jede Teilnehmerin beim nächsten Mal mehr gefunden werden kann.",
-                    "limit": "Aufgrund des festgelegten Datums für die Veranstaltung ist diese Funktion nur vom {expires_at} bis zum {deleted_at} verfügbar."
+                    "limit": "Aufgrund des festgelegten Datums für die Veranstaltung ist diese Funktion nur vom {expires_at} bis zum {deleted_at} verfügbar, oder sobald Sie die Ziele aufgedeckt haben."
                 }
             },
             "purge": {
@@ -677,7 +677,7 @@ export default {
                 "button_final-tooltip": {
                     "title": "Récapitulatif complété",
                     "explain": "Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de chaque participant(e) la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant(e) pour la prochaine fois.",
-                    "limit": "Compte tenu de la date de l'évènement définie, cette fonctionnalité n'est disponible que du {expires_at} au {deleted_at}."
+                    "limit": "Compte tenu de la date de l'évènement définie, cette fonctionnalité n'est disponible que du {expires_at} au {deleted_at}, ou dès que vous avez révélé les cibles."
                 }
             },
             "purge": {
