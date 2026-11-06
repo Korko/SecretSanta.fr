@@ -2,6 +2,7 @@
     import useVuelidate from '@vuelidate/core';
     import Multiselect from 'vue-multiselect';
     import { required, email } from '@vuelidate/validators';
+    import suggestEmail from '../partials/emailSuggest.js';
 
     export default {
         setup: () => ({ v$: useVuelidate() }),
@@ -67,6 +68,7 @@
             if(this.email) this.v$.email.$touch();
         },
         methods: {
+            suggestEmail,
             changeName(value) {
                 this.$emit('input:name', value);
             },
@@ -122,6 +124,9 @@
                 <div v-else-if="v$.email.format.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.email.format') }}</div>
                 <div v-else-if="fieldError(`participants.${idx}.email`)" class="invalid-tooltip">{{ fieldError(`participants.${idx}.email`) }}</div>
             </div>
+            <i18n-t v-if="suggestEmail(email)" keypath="form.participant.email.suggest" tag="small" class="form-text text-muted email-suggest">
+                <template #email><a href="#" @click.prevent="changeEmail(suggestEmail(email))">{{ suggestEmail(email) }}</a></template>
+            </i18n-t>
         </td>
         <td class="border-right text-left participant-exclusions-wrapper align-middle">
             <multiselect

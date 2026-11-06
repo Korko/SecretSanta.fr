@@ -102,6 +102,7 @@ Le code source est disponible sur :link',
         'email' => [
             'label' => 'Adresse e-mail',
             'placeholder' => 'exemple : michel@aol.com',
+            'suggest' => 'Vouliez-vous dire :email ?',
         ],
         'exclusions' => [
             'label' => 'Exclusions',

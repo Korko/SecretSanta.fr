@@ -17,6 +17,7 @@
     Moment.locale('fr');
 
     import Papa from 'papaparse';
+    import suggestEmail from '../partials/emailSuggest.js';
 
     // Global (not scoped): these style elements rendered by child components / outside Vue
     import 'vue-multiselect/dist/vue-multiselect.css';
@@ -130,6 +131,7 @@
         },
 
         methods: {
+            suggestEmail,
             // Only way to have parameters parsing for vuejs events
             td(key, params) {
                 var data = this.$t(key, params);
@@ -302,6 +304,9 @@
                                                 <div v-else-if="v$.organizer.email.format.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.format') }}</div>
                                                 <div v-else-if="fieldError(`organizer.email`)" class="invalid-tooltip">{{ fieldError(`organizer.email`) }}</div>
                                             </div>
+                                            <i18n-t v-if="suggestEmail(organizer.email)" keypath="form.participant.email.suggest" tag="small" class="form-text text-muted email-suggest">
+                                                <template #email><a href="#" @click.prevent="organizer.email = suggestEmail(organizer.email)">{{ suggestEmail(organizer.email) }}</a></template>
+                                            </i18n-t>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -408,7 +413,7 @@
                                             :aria-invalid="v$.content.$error || fieldError('content-email')"
                                         />
                                         <div v-if="v$.content.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.required') }}</div>
-                                        <div v-else-if="v$.content.contains.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.contains') }}</div>
+                                        <div v-else-if="v$.content.contains.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.contains_text') }}</div>
                                         <div v-else-if="fieldError('content-email')" class="invalid-tooltip">{{ fieldError('content-email') }}</div>
                                     </div>
                                     <textarea

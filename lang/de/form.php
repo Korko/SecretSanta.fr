@@ -101,6 +101,7 @@ Der Quellcode ist unter :link verfügbar.',
         'email' => [
             'label' => 'E-Mail-Adresse',
             'placeholder' => 'z.B. michel@aol.com',
+            'suggest' => 'Meinten Sie :email ?',
         ],
         'exclusions' => [
             'label' => 'Ausschlüsse',
