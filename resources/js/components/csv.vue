@@ -10,13 +10,18 @@
             };
         },
         methods: {
-            // ponytail: valid UTF-8 or else Windows-1252 (Excel's default), add a detector if other charsets show up
+            // ponytail: UTF-8, else Latin-1 family; add a real detector if other charsets show up
             getEncoding: async function(file) {
+                const bytes = new Uint8Array(await file.arrayBuffer());
                 try {
-                    new TextDecoder('utf-8', { fatal: true }).decode(await file.arrayBuffer());
+                    new TextDecoder('utf-8', { fatal: true }).decode(bytes);
                     return 'UTF-8';
                 } catch (e) {
-                    return 'windows-1252';
+                    // 0x80-0x9F are printable only in Windows-1252 (€ œ ’...), control chars in ISO-8859-x
+                    if (bytes.some(b => b >= 0x80 && b <= 0x9F)) return 'windows-1252';
+                    // € Š š Ž ž Œ œ Ÿ in ISO-8859-15 (¤ ¦ ¨ ´ ¸ ¼ ½ ¾ in ISO-8859-1, unlikely in names)
+                    if (bytes.some(b => [0xA4, 0xA6, 0xA8, 0xB4, 0xB8, 0xBC, 0xBD, 0xBE].includes(b))) return 'iso-8859-15';
+                    return 'iso-8859-1';
                 }
             },
             emitSubmit: function() {

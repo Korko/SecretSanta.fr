@@ -282,7 +282,7 @@
     ]
   },
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm-7PbJVGNO.js",
+    "file": "assets/randomForm-DviO7pkG.js",
     "name": "randomForm",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
@@ -321,7 +321,7 @@
     ]
   },
   "resources/sass/vendor.scss": {
-    "file": "assets/vendor-6gnNPMos.css",
+    "file": "assets/vendor-OvNrKKYP.css",
     "src": "resources/sass/vendor.scss",
     "isEntry": true,
     "name": "vendor",
