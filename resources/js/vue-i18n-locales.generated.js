@@ -203,6 +203,10 @@ export default {
         "organizer": {
             "url": "Link, den ein(e) Teilnehmer(in) per E-Mail erhalten hat",
             "fix": "Korrigieren",
+            "date": {
+                "label": "Datum der Veranstaltung",
+                "help": "Die Daten der Veranstaltung werden am {deleted_at} gelöscht."
+            },
             "reveal": {
                 "button": "Empfänger anzeigen",
                 "done": "Empfänger angezeigt am {date}. Die Teilnehmer sehen, dass die Liste eingesehen wurde.",
@@ -639,6 +643,10 @@ export default {
         "organizer": {
             "url": "Lien reçu par un participant par email",
             "fix": "Corriger",
+            "date": {
+                "label": "Date de l'évènement",
+                "help": "Les données de l'évènement seront supprimées le {deleted_at}."
+            },
             "reveal": {
                 "button": "Révéler les cibles",
                 "done": "Cibles révélées le {date}. Les participant(e)s voient que la liste a été consultée.",

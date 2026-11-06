@@ -61,6 +61,9 @@
             expired() {
                 return Moment(this.expires_at).isBefore(Moment());
             },
+            tomorrow() {
+                return Moment().add(1, 'day').format('YYYY-MM-DD');
+            },
             expirationDateShort() {
                 return Moment(this.expires_at).format('YYYY-MM-DD');
             },
@@ -123,6 +126,18 @@
                     () => {}
                 ).set('labels', { ok: this.$t('organizer.reveal.confirm.ok'), cancel: this.$t('organizer.reveal.confirm.cancel') });
             },
+            changeDate(event) {
+                const input = event.target;
+                return fetch(this.routes.changeDateUrl, 'POST', { expires_at: input.value })
+                    .then(data => {
+                        this.expires_at = data.expires_at;
+                        this.deleted_at = data.deleted_at;
+                    })
+                    .catch(error => {
+                        input.value = this.expirationDateShort;
+                        alertify.alert(error.errors?.expires_at?.[0] || error.message);
+                    });
+            },
             revealTargets() {
                 return fetch(this.routes.revealTargetsUrl, 'POST')
                     .then(data => {
@@ -174,6 +189,11 @@
     <div>
         <div v-if="expired" class="alert alert-warning" role="alert">
             {{ $t('organizer.expired', {expires_at: expirationDateLong}) }}
+        </div>
+        <div v-else class="form-group">
+            <label for="expires_at">{{ $t('organizer.date.label') }}</label>
+            <input id="expires_at" type="date" class="form-control w-auto" :value="expirationDateShort" :min="tomorrow" @change="changeDate" />
+            <small class="form-text text-muted">{{ $t('organizer.date.help', {deleted_at: deletionDateLong}) }}</small>
         </div>
         <table class="table table-hover">
             <caption>{{ $t('organizer.list.caption') }}</caption>

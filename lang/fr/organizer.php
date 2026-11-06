@@ -5,6 +5,10 @@ declare(strict_types=1);
 return [
     'url' => 'Lien reçu par un participant par email',
     'fix' => 'Corriger',
+    'date' => [
+        'label' => 'Date de l\'évènement',
+        'help' => 'Les données de l\'évènement seront supprimées le {deleted_at}.',
+    ],
     'reveal' => [
         'button' => 'Révéler les cibles',
         'done' => 'Cibles révélées le :date. Les participant(e)s voient que la liste a été consultée.',

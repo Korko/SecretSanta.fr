@@ -69,6 +69,29 @@ final class OrganizerController extends Controller
         ]);
     }
 
+    // Organizers often mistype the date or the event moves: it drives expiration (final recap) and deletion
+    public function changeDate(Request $request, Draw $draw): JsonResponse
+    {
+        abort_if($draw->expired, 403, Lang::get('error.expired'));
+
+        $request->validate([
+            'expires_at' => ['required', 'date_format:Y-m-d', 'after_or_equal:tomorrow', 'before:+1year'],
+        ], [
+            'expires_at.required' => __('validation.custom.randomform.expiration.required'),
+            'expires_at.after_or_equal' => __('validation.custom.randomform.expiration.min'),
+            'expires_at.before' => __('validation.custom.randomform.expiration.max'),
+            'expires_at.date_format' => __('validation.custom.randomform.expiration.format'),
+        ]);
+
+        $draw->expires_at = $request->date('expires_at')?->toImmutable()->startOfDay();
+        $draw->save();
+
+        return response()->json([
+            'expires_at' => $draw->expires_at,
+            'deleted_at' => $draw->deleted_at,
+        ]);
+    }
+
     public function fetchState(Draw $draw): JsonResponse
     {
         return response()->json([

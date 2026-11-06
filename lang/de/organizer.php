@@ -5,6 +5,10 @@ declare(strict_types=1);
 return [
     'url' => 'Link, den ein(e) Teilnehmer(in) per E-Mail erhalten hat',
     'fix' => 'Korrigieren',
+    'date' => [
+        'label' => 'Datum der Veranstaltung',
+        'help' => 'Die Daten der Veranstaltung werden am {deleted_at} gelöscht.',
+    ],
     'reveal' => [
         'button' => 'Empfänger anzeigen',
         'done' => 'Empfänger angezeigt am :date. Die Teilnehmer sehen, dass die Liste eingesehen wurde.',

@@ -230,3 +230,22 @@ test('the organizer can reveal the targets, once, and participants see it', func
         ->and($fetch()->json('targets'))->toHaveCount(3)
         ->and($participantFetch()->json('targetsRevealed'))->toBeTrue();
 });
+
+test('the organizer can change the event date', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $path = URL::signedRoute('organizerPanel.changeDate', ['draw' => $draw]);
+    $date = now()->addDays(20)->format('Y-m-d');
+
+    ajaxPost($path, ['expires_at' => $date])->assertSuccessful();
+    assertEquals($date, $draw->refresh()->expires_at->format('Y-m-d'));
+
+    ajaxPost($path, ['expires_at' => now()->subDay()->format('Y-m-d')])->assertStatus(422);
+    assertEquals($date, $draw->refresh()->expires_at->format('Y-m-d'));
+});
+
+test('the organizer cannot change the date of an expired draw', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->expired()->create();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeDate', ['draw' => $draw]), ['expires_at' => now()->addDays(5)->format('Y-m-d')])
+        ->assertForbidden();
+});
