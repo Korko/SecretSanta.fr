@@ -35,9 +35,13 @@
         setup: () => ({ v$: useVuelidate() }),
 
         directives: {
-            // ponytail: grow the textarea with its content; CSS field-sizing once Firefox supports it
+            // Grow the textarea with its content: CSS field-sizing where supported, JS fallback (Firefox) otherwise.
+            // ponytail: drop this directive once Firefox ships field-sizing
             autosize: {
                 mounted(el) {
+                    if (CSS.supports('field-sizing', 'content')) {
+                        return;
+                    }
                     const resize = () => { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; };
                     el.addEventListener('input', resize);
                     resize();
@@ -532,6 +536,8 @@
     }
 
     #mailContent {
+        field-sizing: content;
+        min-height: 5em;
         border-bottom: 0;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
