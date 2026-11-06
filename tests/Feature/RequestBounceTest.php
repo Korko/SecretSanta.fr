@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Enums\DeliveryStatus;
 use App\Jobs\ParseBounces;
 use App\Models\Draw;
-use App\Models\Mail as MailModel;
 use App\Services\EmailClient;
 use App\Services\MailTracker;
 use Webklex\PHPIMAP\Attribute;
@@ -51,7 +51,7 @@ it('can handle bounced emails', function (): void {
 
     app()->call([new ParseBounces, 'handle']);
 
-    assertEquals(MailModel::ERROR, $bounced->mail->fresh()->delivery_status);
-    assertEquals(MailModel::RECEIVED, $confirmed->mail->fresh()->delivery_status);
-    assertEquals(MailModel::RECEIVED, $vacation->mail->fresh()->delivery_status);
+    assertEquals(DeliveryStatus::Error, $bounced->mail->fresh()->delivery_status);
+    assertEquals(DeliveryStatus::Received, $confirmed->mail->fresh()->delivery_status);
+    assertEquals(DeliveryStatus::Received, $vacation->mail->fresh()->delivery_status);
 });

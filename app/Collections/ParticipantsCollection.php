@@ -7,6 +7,9 @@ namespace App\Collections;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\Collection as BaseCollection;
 
+/**
+ * @extends BaseCollection<int, Participant>
+ */
 final class ParticipantsCollection extends BaseCollection
 {
     public function redrawables(): self

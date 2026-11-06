@@ -21,6 +21,8 @@ use STS\Metrics\Metric;
 
 /**
  * @property CarbonImmutable $expires_at
+ * @property-read CarbonImmutable $deleted_at
+ * @property-read bool $expired
  * @property-read ParticipantsCollection $participants
  */
 #[Fillable(['mail_title', 'mail_body', 'expires_at', 'next_solvable', 'organizer_name', 'organizer_email'])]

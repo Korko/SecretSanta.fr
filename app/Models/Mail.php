@@ -4,25 +4,19 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\DeliveryStatus;
 use App\Events\MailStatusUpdated;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
 
+/**
+ * @property DeliveryStatus $delivery_status
+ */
 final class Mail extends Model
 {
     use HasFactory;
-
-    public const string CREATED = 'created';
-
-    public const string SENDING = 'sending';
-
-    public const string SENT = 'sent';
-
-    public const string ERROR = 'error';
-
-    public const string RECEIVED = 'received';
 
     /**
      * Indicates if the model's ID is auto-incrementing.
@@ -31,21 +25,13 @@ final class Mail extends Model
      */
     public $incrementing = true;
 
-    public static $deliveryStatuses = [
-        self::CREATED,
-        self::SENDING,
-        self::SENT,
-        self::ERROR,
-        self::RECEIVED,
-    ];
-
     /**
      * The model's default values for attributes.
      *
      * @var array
      */
     protected $attributes = [
-        'delivery_status' => self::CREATED,
+        'delivery_status' => DeliveryStatus::Created,
     ];
 
     public static function boot(): void
@@ -59,30 +45,30 @@ final class Mail extends Model
 
     public function markAsCreated(): void
     {
-        $this->updateDeliveryStatus(self::CREATED);
+        $this->updateDeliveryStatus(DeliveryStatus::Created);
     }
 
     public function markAsSending(): void
     {
-        $this->updateDeliveryStatus(self::SENDING);
+        $this->updateDeliveryStatus(DeliveryStatus::Sending);
     }
 
     public function markAsSent(): void
     {
-        $this->updateDeliveryStatus(self::SENT);
+        $this->updateDeliveryStatus(DeliveryStatus::Sent);
     }
 
     public function markAsError(): void
     {
-        $this->updateDeliveryStatus(self::ERROR);
+        $this->updateDeliveryStatus(DeliveryStatus::Error);
     }
 
     public function markAsReceived(): void
     {
-        $this->updateDeliveryStatus(self::RECEIVED);
+        $this->updateDeliveryStatus(DeliveryStatus::Received);
     }
 
-    public function updateDeliveryStatus($status): void
+    public function updateDeliveryStatus(DeliveryStatus $status): void
     {
         $this->delivery_status = $status;
         $this->save();
@@ -106,5 +92,11 @@ final class Mail extends Model
     public function draw()
     {
         return $this->mailable->draw();
+    }
+
+    /** @return array<string, string> */
+    protected function casts(): array
+    {
+        return ['delivery_status' => DeliveryStatus::class];
     }
 }

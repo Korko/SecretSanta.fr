@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\DeliveryStatus;
 use App\Models\Mail as MailModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,7 +27,7 @@ final class MailFactory extends Factory
     {
         return [
             'notification' => fake()->uuid(),
-            'delivery_status' => MailModel::CREATED,
+            'delivery_status' => DeliveryStatus::Created,
         ];
     }
 
@@ -36,7 +37,7 @@ final class MailFactory extends Factory
     public function failed(): Factory
     {
         return $this->state(fn (): array => [
-            'delivery_status' => MailModel::ERROR,
+            'delivery_status' => DeliveryStatus::Error,
         ]);
     }
 }

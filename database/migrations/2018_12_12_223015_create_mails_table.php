@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\Mail;
+use App\Enums\DeliveryStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('notification')->unique();
             $table->morphs('mailable');
-            $table->enum('delivery_status', Mail::$deliveryStatuses);
+            $table->enum('delivery_status', array_column(DeliveryStatus::cases(), 'value'));
             $table->timestamps();
         });
     }
