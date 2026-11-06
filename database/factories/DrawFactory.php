@@ -30,7 +30,7 @@ final class DrawFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (Draw $draw): void {
-            if ($draw->participants->count() > 0) {
+            if ($draw->participants->isNotEmpty()) {
                 DrawHandler::solve($draw, $draw->participants);
             }
         });
