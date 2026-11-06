@@ -7,5 +7,5 @@ use App\Providers\ComposerServiceProvider;
 arch()->preset()->php();
 arch()->preset()->security()->ignoring(['assert', ComposerServiceProvider::class]); // fixed git commands for the footer version
 
-// ponytail: kit presets not enabled: strict() forbids protected methods in final classes (Eloquent accessors),
+// kit presets not enabled: strict() forbids protected methods in final classes (Eloquent accessors),
 // laravel() needs resource-style controllers.

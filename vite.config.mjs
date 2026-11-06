@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
     plugins: [
         laravel({
             input: [
@@ -20,11 +20,13 @@ export default defineConfig({
         vue(),
     ],
     resolve: {
-        // Webpack-style "~package" imports in scss
         alias: [
+            // Only bundle the translations of the site locale (APP_LOCALE)
+            { find: '@lang', replacement: `/resources/js/langs/${loadEnv(mode, process.cwd(), '').APP_LOCALE}.js` },
+            // Webpack-style "~package" imports in scss
             { find: /^~(.+)/, replacement: '$1' },
             // In-DOM templates in blade need the template compiler
             { find: /^vue$/, replacement: 'vue/dist/vue.esm-bundler.js' },
         ],
     },
-});
+}));

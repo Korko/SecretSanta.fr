@@ -60,6 +60,7 @@ return [
     |
     */
     'jsPath' => '/resources/js/langs/',
+    // Generate with --multi-locales: the front only imports langs/fr.js
     'jsFile' => '/resources/js/vue-i18n-locales.generated.js',
 
     /*

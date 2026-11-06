@@ -34,7 +34,7 @@
 
         directives: {
             // Grow the textarea with its content: CSS field-sizing where supported, JS fallback (Firefox) otherwise.
-            // ponytail: drop this directive once Firefox ships field-sizing
+            // drop this directive once Firefox ships field-sizing
             autosize: {
                 mounted(el) {
                     if (CSS.supports('field-sizing', 'content')) {

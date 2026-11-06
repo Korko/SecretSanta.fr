@@ -23,7 +23,7 @@ function levenshtein(a, b) {
     return d[rows - 1][cols - 1];
 }
 
-// ponytail: flat popular-domain list + plain Levenshtein, not a real spellchecker — good enough for "gamil"/"gmail.ocm" style typos
+// flat popular-domain list + plain Levenshtein, not a real spellchecker — good enough for "gamil"/"gmail.ocm" style typos
 function suggestDomain(domain) {
     let best = null;
     let bestDistance = Infinity;

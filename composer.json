@@ -77,6 +77,10 @@
         }
     },
     "scripts": {
+        "build": [
+            "@php artisan vue-i18n:generate --multi-locales",
+            "npm run build"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

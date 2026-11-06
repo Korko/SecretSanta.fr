@@ -29,6 +29,7 @@ return [
         'resend_failed' => 'Fehlgeschlagene E-Mails erneut senden (:count)',
     ],
     'up_and_sent' => 'Erfolgreich geändert!',
+    'cannot_withdraw' => ':name kann nicht entfernt werden',
     'withdrawn' => ':name nimmt nicht mehr an der Veranstaltung teil.',
     'deleted' => 'Alle Daten wurden gelöscht',
     'download' => [

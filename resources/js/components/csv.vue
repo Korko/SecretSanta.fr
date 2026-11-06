@@ -9,7 +9,7 @@
             };
         },
         methods: {
-            // ponytail: UTF-8, else Latin-1 family; add a real detector if other charsets show up
+            // UTF-8, else Latin-1 family; add a real detector if other charsets show up
             getEncoding: async function(file) {
                 const bytes = new Uint8Array(await file.arrayBuffer());
                 try {

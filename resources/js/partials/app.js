@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import { createI18n } from 'vue-i18n';
-import Locale from '../vue-i18n-locales.generated.js';
+import Locale from '@lang';
 
 // vue-i18n >= 9 parses "@" as a linked message and drops unknown {params}:
 // keep literal "@" (emails) and the {SANTA}/{TARGET} keywords

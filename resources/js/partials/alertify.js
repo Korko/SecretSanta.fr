@@ -8,7 +8,7 @@ alertify.defaults.theme.input = "form-control";
 alertify.defaults.notifier.position = 'top-right'
 
 const lang = document.documentElement.lang.substr(0, 2);
-import Locale from '../vue-i18n-locales.generated.js';
+import Locale from '@lang';
 
 // Extend existing 'alert' dialog
 if (!alertify.errorAlert) {
