@@ -1,9 +1,7 @@
 <script>
-    import Vue from 'vue';
+    import useVuelidate from '@vuelidate/core';
 
-    import Vuelidate from 'vuelidate';
-    import { required } from 'vuelidate/lib/validators'
-    Vue.use(Vuelidate);
+    import { required } from '@vuelidate/validators'
 
     import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
@@ -13,6 +11,7 @@
     import DefaultForm from './form.vue';
 
     export default {
+        setup: () => ({ v$: useVuelidate() }),
         components: { EmailStatus, Tooltip },
         extends: DefaultForm,
         props: {
@@ -103,7 +102,7 @@
 
 <template>
     <div>
-        <ajax-form :action="routes.contactUrl" :$v="$v" @success="success" @reset="reset" :autoReset="true">
+        <ajax-form :action="routes.contactUrl" :validator="v$" @success="success" @reset="reset" :autoReset="true">
             <fieldset>
                 <div class="form-group">
                     <div class="alert alert-info" role="alert">
@@ -116,11 +115,11 @@
                             v-model="content"
                             name="content"
                             :placeholder="$t('dearsanta.content.placeholder')"
-                            :class="{ 'form-control': true, 'is-invalid': $v.content.$error }"
-                            :aria-invalid="$v.content.$error"
-                            @blur="$v.content.$touch()"
+                            :class="{ 'form-control': true, 'is-invalid': v$.content.$error }"
+                            :aria-invalid="v$.content.$error"
+                            @blur="v$.content.$touch()"
                         />
-                        <div v-if="!$v.content.required" class="invalid-tooltip">{{ $t('validation.custom.dearSanta.content.required') }}</div>
+                        <div v-if="v$.content.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.dearSanta.content.required') }}</div>
                     </div>
                 </div>
             </fieldset>

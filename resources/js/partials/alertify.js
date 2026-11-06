@@ -90,3 +90,13 @@ if (!alertify.confirmAlert) {
 
 
 export default alertify;
+// Confirmation where the user must type `word` (replaces vuejs-dialog "hard" confirm)
+export const hardConfirm = ({ title, body, word, help, ok, cancel }) => new Promise(resolve => {
+    alertify.prompt(title, body + '<div class="mt-2">' + help.replace('[+:verification]', word) + '</div>', '', (event, value) => {
+        if (value.trim() === word) {
+            resolve();
+        } else {
+            event.cancel = true;
+        }
+    }, () => {}).set('labels', { ok, cancel });
+});

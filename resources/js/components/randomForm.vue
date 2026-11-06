@@ -1,18 +1,14 @@
 <script>
+    import useVuelidate from '@vuelidate/core';
     import jQuery from 'jquery';
     window.$ = window.jQuery = jQuery;
 
     import alertify from '../partials/alertify.js';
     import Toastify from '../partials/toastify.js';
 
-    import Vue from 'vue';
 
-    import VueAutosize from 'vue-autosize';
-    Vue.use(VueAutosize);
 
-    import Vuelidate from 'vuelidate';
-    import { required, minLength, email, requiredIf } from 'vuelidate/lib/validators'
-    Vue.use(Vuelidate);
+    import { required, minLength, email, requiredIf } from '@vuelidate/validators';
 
     // Still using CommonJS syntax
 
@@ -21,6 +17,10 @@
     Moment.locale('fr');
 
     import Papa from 'papaparse';
+
+    // Global (not scoped): these style elements rendered by child components / outside Vue
+    import 'vue-multiselect/dist/vue-multiselect.css';
+    import 'toastify-js/src/toastify.css';
 
     import Csv from './csv.vue';
     import AjaxForm from './ajaxForm.vue';
@@ -31,6 +31,18 @@
     const formatMoment = (amount, unit) => Moment(window.now).add(amount, unit).format('YYYY-MM-DD')
 
     export default {
+        setup: () => ({ v$: useVuelidate() }),
+
+        directives: {
+            // ponytail: grow the textarea with its content; CSS field-sizing once Firefox supports it
+            autosize: {
+                mounted(el) {
+                    const resize = () => { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; };
+                    el.addEventListener('input', resize);
+                    resize();
+                }
+            }
+        },
 
         components: {
             AjaxForm,
@@ -57,61 +69,36 @@
             };
         },
 
-        validations: {
-            organizer: {
-                name: {
-                    required: requiredIf(function() {
-                        return !this.participantOrganizer;
-                    })
-                },
-                email: {
-                    required: requiredIf(function() {
-                        return !this.participantOrganizer;
-                    }),
-                    format: email
-                }
-            },
-            participants: {
-                required,
-                minLength: minLength(3),
-                $each: {
-                    $trackBy: 'id',
+        validations() {
+            return {
+                organizer: {
                     name: {
-                        required,
-                        unique(value) {
-                            // standalone validator ideally should not assume a field is required
-                            if (value === '') return true;
-
-                            return (this.participants.filter(participant => (participant.name === value)).length === 1);
-                        }
+                        required: requiredIf(() => !this.participantOrganizer)
                     },
                     email: {
-                        required,
+                        required: requiredIf(() => !this.participantOrganizer),
                         format: email
                     }
-                }
-            },
-            title: {
-                required
-            },
-            content: {
-                required,
-                contains(value) {
-                    return value.indexOf('{TARGET}') >= 0;
-                }
-            },
-            expiration: {
-                required,
-                format(value) {
-                    return /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(value);
                 },
-                minValue(value) {
-                    return Moment(value, 'YYYY-MM-DD').isSameOrAfter(formatMoment(1, 'day'));
+                // Each participant row validates itself (participant.vue), vuelidate collects child results
+                participants: {
+                    required,
+                    minLength: minLength(3)
                 },
-                maxValue(value) {
-                    return Moment(value, 'YYYY-MM-DD').isSameOrBefore(formatMoment(1, 'year'));
+                title: {
+                    required
+                },
+                content: {
+                    required,
+                    contains: value => value.indexOf('{TARGET}') >= 0
+                },
+                expiration: {
+                    required,
+                    format: value => /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(value),
+                    minValue: value => Moment(value, 'YYYY-MM-DD').isSameOrAfter(formatMoment(1, 'day')),
+                    maxValue: value => Moment(value, 'YYYY-MM-DD').isSameOrBefore(formatMoment(1, 'year'))
                 }
-            }
+            };
         },
 
         watch: {
@@ -135,18 +122,16 @@
             this.addParticipant();
             this.addParticipant();
 
-            Vue.nextTick(
-                function() {
-                    if (!window.FileReader) {
-                        jQuery('.participants-imports').remove();
-                    }
-                }.bind(this)
-            );
+            this.$nextTick(() => {
+                if (!window.FileReader) {
+                    jQuery('.participants-imports').remove();
+                }
+            });
         },
 
         methods: {
             // Only way to have parameters parsing for vuejs events
-            $td(key, params) {
+            td(key, params) {
                 var data = this.$t(key, params);
                 return {
                     name: "dynamic-string",
@@ -176,9 +161,7 @@
 
                 setTimeout(
                     () => {
-                        this.$set(
-                            this.participants[n - 1],
-                            'exclusions',
+                        this.participants[n - 1].exclusions = (
                             (exclusions || '')
                                 .split(',')
                                 .map(s => s.trim())
@@ -234,6 +217,11 @@
                 Toastify.success(this.$t('common.copied'));
             },
 
+            // vuelidate 2 doesn't $touch child components: show participant errors on submit
+            touchParticipants() {
+                (this.$refs.participants || []).forEach(participant => participant.v$.$touch());
+            },
+
             reset() {
                 this.participants = [];
                 this.title = '';
@@ -251,7 +239,7 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :$v="$v" @reset="reset" send-icon="dice">
+            <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :validator="v$" @reset="reset" @before-submit="touchParticipants" send-icon="dice">
                 <template #default="{ sending, sent, fieldError }">
                     <div v-show="sent" id="success-wrapper" class="alert alert-success">
                         {{ $t('form.success') }}
@@ -285,11 +273,11 @@
                                                     :placeholder="$t('form.participant.name.placeholder')"
                                                     v-model="organizer.name"
                                                     class="form-control participant-name"
-                                                    :class="{ 'is-invalid': $v.organizer.name.$error || fieldError(`organizer.name`)}"
-                                                    :aria-invalid="$v.organizer.name.$error || fieldError(`organizer.name`)"
-                                                    @blur="$v.organizer.name.$touch()"
+                                                    :class="{ 'is-invalid': v$.organizer.name.$error || fieldError(`organizer.name`)}"
+                                                    :aria-invalid="v$.organizer.name.$error || fieldError(`organizer.name`)"
+                                                    @blur="v$.organizer.name.$touch()"
                                                 />
-                                                <div v-if="!$v.organizer.name.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.name.required') }}</div>
+                                                <div v-if="v$.organizer.name.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.name.required') }}</div>
                                                 <div v-else-if="fieldError(`organizer.name`)" class="invalid-tooltip">{{ fieldError(`organizer.name`) }}</div>
                                             </div>
                                         </td>
@@ -306,12 +294,12 @@
                                                     :placeholder="$t('form.participant.email.placeholder')"
                                                     v-model="organizer.email"
                                                     class="form-control participant-email"
-                                                    :class="{ 'is-invalid': $v.organizer.email.$error || fieldError(`organizer.email`)}"
-                                                    :aria-invalid="$v.organizer.email.$error || fieldError(`organizer.email`)"
-                                                    @blur="$v.organizer.email.$touch()"
+                                                    :class="{ 'is-invalid': v$.organizer.email.$error || fieldError(`organizer.email`)}"
+                                                    :aria-invalid="v$.organizer.email.$error || fieldError(`organizer.email`)"
+                                                    @blur="v$.organizer.email.$touch()"
                                                 />
-                                                <div v-if="!$v.organizer.email.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.required') }}</div>
-                                                <div v-else-if="!$v.organizer.email.format" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.format') }}</div>
+                                                <div v-if="v$.organizer.email.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.required') }}</div>
+                                                <div v-else-if="v$.organizer.email.format.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.format') }}</div>
                                                 <div v-else-if="fieldError(`organizer.email`)" class="invalid-tooltip">{{ fieldError(`organizer.email`) }}</div>
                                             </div>
                                         </td>
@@ -340,10 +328,10 @@
                                         <th style="width: 3%" scope="col" />
                                     </tr>
                                 </thead>
-                                <tbody is="transition-group" type="transition" name="fade">
+                                <transition-group tag="tbody" name="fade">
                                     <!-- Default is three empty rows to have three entries at any time -->
-                                    <tr
-                                        is="participant"
+                                    <participant
+                                        ref="participants"
                                         v-for="(participant, idx) in participants"
                                         :key="idx"
                                         :id="participant.id"
@@ -354,16 +342,15 @@
                                         :all="participants"
                                         :required="idx < 3 && participants.length <= 3"
                                         :field-error="fieldError"
-                                        :$v="$v.participants.$each[idx]"
                                         :participantOrganizer="participantOrganizer"
-                                        @input:name="$set(participant, 'name', $event)"
-                                        @input:email="$set(participant, 'email', $event)"
-                                        @input:exclusions="$set(participant, 'exclusions', $event)"
+                                        @input:name="participant.name = $event"
+                                        @input:email="participant.email = $event"
+                                        @input:exclusions="participant.exclusions = $event"
                                         @removeExclusion="participant.exclusions.remove($event)"
                                         @addExclusion="participant.exclusions.push($event)"
                                         @delete="participants.splice(idx, 1)"
                                     />
-                                </tbody>
+                                </transition-group>
                             </table>
                             <button type="button" class="btn btn-outline-success participant-add" @click="addParticipant()">
                                 <i class="fas fa-plus" />
@@ -400,8 +387,8 @@
                                             v-model="title"
                                             :placeholder="$t('form.mail.title.placeholder')"
                                             class="form-control"
-                                            :class="{ 'is-invalid': $v.title.$error || fieldError('title') }"
-                                            :aria-invalid="$v.title.$error || fieldError('title')"
+                                            :class="{ 'is-invalid': v$.title.$error || fieldError('title') }"
+                                            :aria-invalid="v$.title.$error || fieldError('title')"
                                         />
                                         <div class="invalid-tooltip">{{ $t('validation.custom.randomform.title.required') }}</div>
                                     </div>
@@ -417,11 +404,11 @@
                                             :placeholder="$t('form.mail.content.placeholder')"
                                             rows="3"
                                             class="form-control"
-                                            :class="{ 'is-invalid': $v.content.$error || fieldError('content-email') }"
-                                            :aria-invalid="$v.content.$error || fieldError('content-email')"
+                                            :class="{ 'is-invalid': v$.content.$error || fieldError('content-email') }"
+                                            :aria-invalid="v$.content.$error || fieldError('content-email')"
                                         />
-                                        <div v-if="!$v.content.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.required') }}</div>
-                                        <div v-else-if="!$v.content.contains" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.contains') }}</div>
+                                        <div v-if="v$.content.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.required') }}</div>
+                                        <div v-else-if="v$.content.contains.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.contains') }}</div>
                                         <div v-else-if="fieldError('content-email')" class="invalid-tooltip">{{ fieldError('content-email') }}</div>
                                     </div>
                                     <textarea
@@ -429,11 +416,11 @@
                                         class="form-control extended"
                                         read-only
                                         disabled
-                                        :value="$t('form.mail.post')"
+                                        :value="$t('form.mail.post', { link: '{link}' })"
                                     />
 
                                     <blockquote class="tips">
-                                        <p :is="$td('form.mail.content.tip1', {target: anchor('target'), santa: anchor('santa'), close:'</a>'})" @santa="appendSanta" @target="appendTarget"></p>
+                                        <component :is="td('form.mail.content.tip1', {target: anchor('target'), santa: anchor('santa'), close:'</a>'})" @santa="appendSanta" @target="appendTarget"></component>
                                         <p>{{ $t('form.mail.content.tip2') }}</p>
                                     </blockquote>
                                 </div>
@@ -463,16 +450,16 @@
                                     name="data-expiration"
                                     id="expiration"
                                     v-model="expiration"
-                                    :class="{ 'is-invalid': $v.expiration.$error || fieldError('data-expiration') }"
-                                    :aria-invalid="$v.expiration.$error || fieldError('data-expiration')"
-                                    @blur="$v.expiration.$touch()"
+                                    :class="{ 'is-invalid': v$.expiration.$error || fieldError('data-expiration') }"
+                                    :aria-invalid="v$.expiration.$error || fieldError('data-expiration')"
+                                    @blur="v$.expiration.$touch()"
                                     :min="moment(1, 'day')"
                                     :max="moment(1, 'year')"
                                 />
-                                <div class="invalid-tooltip" v-if="!$v.expiration.required">{{ $t('validation.custom.randomform.expiration.required') }}</div>
-                                <div class="invalid-tooltip" v-else-if="!$v.expiration.format">{{ $t('validation.custom.randomform.expiration.format') }}</div>
-                                <div class="invalid-tooltip" v-else-if="!$v.expiration.minValue">{{ $t('validation.custom.randomform.expiration.min') }}</div>
-                                <div class="invalid-tooltip" v-else-if="!$v.expiration.maxValue">{{ $t('validation.custom.randomform.expiration.max') }}</div>
+                                <div class="invalid-tooltip" v-if="v$.expiration.required.$invalid">{{ $t('validation.custom.randomform.expiration.required') }}</div>
+                                <div class="invalid-tooltip" v-else-if="v$.expiration.format.$invalid">{{ $t('validation.custom.randomform.expiration.format') }}</div>
+                                <div class="invalid-tooltip" v-else-if="v$.expiration.minValue.$invalid">{{ $t('validation.custom.randomform.expiration.min') }}</div>
+                                <div class="invalid-tooltip" v-else-if="v$.expiration.maxValue.$invalid">{{ $t('validation.custom.randomform.expiration.max') }}</div>
                                 <div class="invalid-tooltip" v-else-if="fieldError('data-expiration')">{{ fieldError('data-expiration') }}</div>
                             </div>
                         </div>
@@ -488,9 +475,6 @@
 </template>
 
 <style scoped>
-    @import "~vue-multiselect/dist/vue-multiselect.min";
-    @import "~toastify-js/src/toastify.css";
-
     .organizerToggle {
         display: inline-block;
     }

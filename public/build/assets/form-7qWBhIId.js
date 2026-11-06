@@ -1,1 +1,0 @@
-import{A as o}from"./ajaxForm-Ds0DaR5j.js";import{n as e}from"./_plugin-vue2_normalizer-D39hzw3X.js";const a={components:{AjaxForm:o}};var s=function(){var r=this,n=r._self._c;return n("ajax-form")},t=[],_=e(a,s,t,!1,null,null);const l=_.exports;export{l as D};

@@ -31,7 +31,7 @@
                 type: String,
                 default: ''
             },
-            $v: {
+            validator: {
                 type: Object,
                 default: null
             },
@@ -62,9 +62,9 @@
             },
             call(url, options) {
                 if (!this.sending && !this.sent) {
-                    this.$v && this.$v.$touch();
+                    this.validator && this.validator.$touch();
 
-                    if (this.$v && this.$v.$invalid) {
+                    if (this.validator && this.validator.$invalid) {
                         return false;
                     }
 
@@ -120,7 +120,7 @@
             onReset() {
                 this.$emit('reset');
                 this.fieldErrors = [];
-                this.$v.$reset();
+                this.validator && this.validator.$reset();
                 this.sending = false;
                 this.sent = false;
             },

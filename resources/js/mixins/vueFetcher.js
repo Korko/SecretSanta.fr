@@ -15,9 +15,7 @@ export const VueFetcher = Form => {
             Form
         },
 
-        el: '#wrap',
-
-        data: {
+        data: () => ({
             state: 'Fetcher',
             states: Object.freeze({
                 Fetcher: {
@@ -25,7 +23,7 @@ export const VueFetcher = Form => {
                     failure: 'Failure'
                 }
             })
-        }
+        })
     };
 };
 

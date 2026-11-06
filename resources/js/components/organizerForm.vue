@@ -1,15 +1,13 @@
 <script>
-    import Vue from 'vue';
 
-    import VuejsDialog from 'vuejs-dialog';
-    Vue.use(VuejsDialog);
 
-    import { required, email } from 'vuelidate/lib/validators';
+    import { required, email } from '@vuelidate/validators';
 
     import { download } from '../partials/helpers.js';
 
     import Moment from 'moment';
 
+    import alertify, { hardConfirm } from '../partials/alertify.js';
     import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
 
@@ -81,38 +79,27 @@
         },
         methods: {
             confirmPurge() {
-                let options = {
-                    okText: this.$t('organizer.purge.confirm.ok'),
-                    cancelText: this.$t('organizer.purge.confirm.cancel'),
-                    verification: this.$t('organizer.purge.confirm.value'),
-                    verificationHelp: this.$t('organizer.purge.confirm.help'),
-                    type: 'hard',
-                    customClass: 'purge'
-                };
-
-                let message = {
-                    title: this.$t('organizer.purge.confirm.title', {deletion: this.deletionDateLong}),
-                    body: ''
-                };
+                let body;
                 if(this.finalCsvAvailable && !this.expired) {
-                    message.body = this.$t('organizer.purge.confirm.body_final'); // Won't be able to download final recap + dearSanta
+                    body = this.$t('organizer.purge.confirm.body_final'); // Won't be able to download final recap + dearSanta
                 } else if(this.expired) {
-                    message.body = this.$t('organizer.purge.confirm.body_expired'); // Won't be able to download recap anymore
+                    body = this.$t('organizer.purge.confirm.body_expired'); // Won't be able to download recap anymore
                 } else {
-                    message.body = this.$t('organizer.purge.confirm.body_nofinal'); // Won't be able to download recap anymore + DearSanta
+                    body = this.$t('organizer.purge.confirm.body_nofinal'); // Won't be able to download recap anymore + DearSanta
                 }
 
-                this.$dialog
-                    .confirm(message, options)
-                    .then(this.purge);
+                hardConfirm({
+                    title: this.$t('organizer.purge.confirm.title', {deletion: this.deletionDateLong}),
+                    body,
+                    word: this.$t('organizer.purge.confirm.value'),
+                    help: this.$t('organizer.purge.confirm.help'),
+                    ok: this.$t('organizer.purge.confirm.ok'),
+                    cancel: this.$t('organizer.purge.confirm.cancel')
+                }).then(this.purge);
             },
             purge() {
                 return fetch(this.routes.deleteUrl, 'DELETE')
-                    .then(data => {
-                        this.$dialog
-                            .alert(data.message)
-                            .then(() => window.location.pathname = '/');
-                    });
+                    .then(data => alertify.confirmAlert(data.message, () => window.location.pathname = '/'));
             },
             updateEmail(k, email) {
                 this.participants[k].email = email;
@@ -124,30 +111,23 @@
                 });
             },
             confirmWithdrawal(k) {
-                let options = {
-                    okText: this.$t('organizer.withdraw.confirm.ok'),
-                    cancelText: this.$t('organizer.withdraw.confirm.cancel'),
-                    verification: this.$t('organizer.withdraw.confirm.value'),
-                    verificationHelp: this.$t('organizer.withdraw.confirm.help'),
-                    type: 'hard',
-                    customClass: 'withdraw'
-                };
-
-                this.$dialog
-                    .confirm({
-                        title: this.$t('organizer.withdraw.confirm.title', {deletion: this.deletionDateLong}),
-                        body: this.$t('organizer.withdraw.confirm.body', {name: this.participants[k].name})
-                    }, options)
-                    .then(() => this.withdraw(k));
+                hardConfirm({
+                    title: this.$t('organizer.withdraw.confirm.title', {deletion: this.deletionDateLong}),
+                    body: this.$t('organizer.withdraw.confirm.body', {name: this.participants[k].name}),
+                    word: this.$t('organizer.withdraw.confirm.value'),
+                    help: this.$t('organizer.withdraw.confirm.help'),
+                    ok: this.$t('organizer.withdraw.confirm.ok'),
+                    cancel: this.$t('organizer.withdraw.confirm.cancel')
+                }).then(() => this.withdraw(k));
             },
             withdraw(k) {
-                var url = this.withdrawalUrls[this.participants[k].hash];
-                this.$delete(this.participants, k);
-
-                return fetch(url)
+                return fetch(this.withdrawalUrls[this.participants[k].hash])
                     .then(data => {
-                        this.$dialog
-                            .alert(data.message);
+                        if (data.error) {
+                            return alertify.errorAlert(data.error);
+                        }
+                        delete this.participants[k];
+                        alertify.confirmAlert(data.message);
                     });
             },
             download() {
@@ -199,9 +179,9 @@
                             :update="(email) => updateEmail(k, email)"
                             :disabled="expired"
                         >
-                            <template #errors="{ $v: $v }">
-                                <div v-if="!$v.required" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.required') }}</div>
-                                <div v-else-if="!$v.format" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.format') }}</div>
+                            <template #errors="{ v }">
+                                <div v-if="v.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.required') }}</div>
+                                <div v-else-if="v.format.$invalid" class="invalid-tooltip">{{ $t('validation.custom.organizer.email.format') }}</div>
                             </template>
                         </input-edit>
                     </td>
@@ -274,7 +254,6 @@
 </template>
 
 <style scoped>
-    @import "~vuejs-dialog/dist/vuejs-dialog.min.css";
 
     .table td {
         vertical-align: middle !important;

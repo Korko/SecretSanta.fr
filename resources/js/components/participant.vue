@@ -1,7 +1,10 @@
 <script>
+    import useVuelidate from '@vuelidate/core';
     import Multiselect from 'vue-multiselect';
+    import { required, email } from '@vuelidate/validators';
 
     export default {
+        setup: () => ({ v$: useVuelidate() }),
         components: {
             Multiselect
         },
@@ -34,14 +37,23 @@
                 type: Function,
                 required: true
             },
-            $v: {
-                type: Object,
-                required: true
-            },
             participantOrganizer: {
                 type: Boolean,
                 default: true
             }
+        },
+        validations() {
+            return {
+                name: {
+                    required,
+                    // standalone validator ideally should not assume a field is required
+                    unique: value => !value || this.all.filter(participant => participant.name === value).length === 1
+                },
+                email: {
+                    required,
+                    format: email
+                }
+            };
         },
         computed: {
             otherParticipants() {
@@ -51,8 +63,8 @@
             }
         },
         created: function() {
-            if(this.name) this.$v.name.$touch();
-            if(this.email) this.$v.email.$touch();
+            if(this.name) this.v$.name.$touch();
+            if(this.email) this.v$.email.$touch();
         },
         methods: {
             changeName(value) {
@@ -83,13 +95,13 @@
                     :placeholder="$t('form.participant.name.placeholder')"
                     :value="name"
                     class="form-control participant-name"
-                    :class="{ 'is-invalid': $v.name.$error || fieldError(`participants.${idx}.name`) }"
-                    :aria-invalid="$v.name.$error || fieldError(`participants.${idx}.name`)"
+                    :class="{ 'is-invalid': v$.name.$error || fieldError(`participants.${idx}.name`) }"
+                    :aria-invalid="v$.name.$error || fieldError(`participants.${idx}.name`)"
                     @input="changeName($event.target.value)"
-                    @blur="$v.name.$touch()"
+                    @blur="v$.name.$touch()"
                 />
-                <div v-if="!$v.name.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.required') }}</div>
-                <div v-else-if="!$v.name.unique" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.distinct') }}</div>
+                <div v-if="v$.name.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.required') }}</div>
+                <div v-else-if="v$.name.unique.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.distinct') }}</div>
                 <div v-else-if="fieldError(`participants.${idx}.name`)" class="invalid-tooltip">{{ fieldError(`participants.${idx}.name`) }}</div>
             </div>
         </td>
@@ -101,13 +113,13 @@
                     :placeholder="$t('form.participant.email.placeholder')"
                     :value="email"
                     class="form-control participant-email"
-                    :class="{ 'is-invalid': $v.email.$error || fieldError(`participants.${idx}.email`)}"
-                    :aria-invalid="$v.email.$error || fieldError(`participants.${idx}.email`)"
+                    :class="{ 'is-invalid': v$.email.$error || fieldError(`participants.${idx}.email`)}"
+                    :aria-invalid="v$.email.$error || fieldError(`participants.${idx}.email`)"
                     @input="changeEmail($event.target.value)"
-                    @blur="$v.email.$touch()"
+                    @blur="v$.email.$touch()"
                 />
-                <div v-if="!$v.email.required" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.email.required') }}</div>
-                <div v-else-if="!$v.email.format" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.email.format') }}</div>
+                <div v-if="v$.email.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.email.required') }}</div>
+                <div v-else-if="v$.email.format.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.email.format') }}</div>
                 <div v-else-if="fieldError(`participants.${idx}.email`)" class="invalid-tooltip">{{ fieldError(`participants.${idx}.email`) }}</div>
             </div>
         </td>
@@ -116,7 +128,7 @@
                 :options="otherParticipants"
                 label="name"
                 track-by="idx"
-                :value="exclusions"
+                :model-value="exclusions"
                 :placeholder="$t('form.participant.exclusions.placeholder')"
                 :multiple="true"
                 :hide-selected="true"
