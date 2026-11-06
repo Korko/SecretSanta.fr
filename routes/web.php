@@ -87,6 +87,8 @@ Route::middleware('signed')->group(function (): void {
             ->name('organizerPanel.csvFinal');
         Route::post('/draw/{draw}/revealTargets', [OrganizerController::class, 'revealTargets'])
             ->name('organizerPanel.revealTargets');
+        Route::post('/draw/{draw}/participants', [OrganizerController::class, 'changeParticipants'])
+            ->name('organizerPanel.changeParticipants');
         Route::post('/draw/{draw}/changeDate', [OrganizerController::class, 'changeDate'])
             ->name('organizerPanel.changeDate');
         Route::get('/org/{draw}/fetchState', [OrganizerController::class, 'fetchState'])
@@ -95,8 +97,6 @@ Route::middleware('signed')->group(function (): void {
     Route::middleware('decrypt.iv:participant,name')->group(function (): void {
         Route::post('/org/{draw}/{participant}/changeEmail', [OrganizerController::class, 'changeEmail'])
             ->name('organizerPanel.changeEmail');
-        Route::get('/org/{draw}/{participant}/withdraw', [OrganizerController::class, 'withdraw'])
-            ->name('organizerPanel.withdraw');
     });
 });
 

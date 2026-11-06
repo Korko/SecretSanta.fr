@@ -7,16 +7,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrganizerChangeEmailRequest;
 use App\Models\Draw;
 use App\Models\Participant;
-use App\Notifications\DearSanta;
-use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
-use App\Notifications\TargetWithdrawn;
+use App\Services\ParticipantsEditor;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Validation\Rule;
 
 final class OrganizerController extends Controller
 {
@@ -27,7 +26,7 @@ final class OrganizerController extends Controller
         ]);
     }
 
-    public function fetch(Draw $draw)
+    public function fetch(Draw $draw): JsonResponse
     {
         return response()->json([
             'draw' => $draw->hash,
@@ -40,11 +39,6 @@ final class OrganizerController extends Controller
             ]),
             'changeEmailUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
                 $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [
-                    'draw' => $participant->draw, 'participant' => $participant,
-                ]),
-            ]),
-            'withdrawalUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
-                $participant->hash => URL::signedRoute('organizerPanel.withdraw', [
                     'draw' => $participant->draw, 'participant' => $participant,
                 ]),
             ]),
@@ -130,45 +124,37 @@ final class OrganizerController extends Controller
         ]);
     }
 
-    public function withdraw(Draw $draw, Participant $participant): JsonResponse
+    // One button (a single change) or the "several at once" mode: either way, each santa gets at most one email
+    public function changeParticipants(Request $request, Draw $draw): JsonResponse
     {
-        abort_unless($draw->participants->count() > 3, 403, Lang::get('error.withdraw'));
+        abort_if($draw->expired, 403, Lang::get('error.expired'));
 
-        $santa = $participant->santa;
-        $target = $participant->target;
-
-        if ($santa->isNot($target)) {
-            // A -> B -> C => A -> C
-            $santa->target()->save($target);
-        } else {
-            // A <-> B: splice A into another pair, C -> D => C -> A -> D
-            $excluded = $santa->exclusions->modelKeys();
-            $otherSanta = $draw->participants->first(fn (Participant $c): bool => ! in_array($c->id, [$santa->id, $participant->id], true)
-                && ! in_array($c->target->id, $excluded, true)
-                && ! $c->exclusions->contains($santa));
-
-            if ($otherSanta === null) {
-                return response()->json([
-                    'error' => trans('organizer.cannot_withdraw', ['name' => $participant->name]),
-                ]);
-            }
-
-            $target = $otherSanta->target;
-            $santa->target()->save($target);
-            $otherSanta->target()->save($santa);
-            $otherSanta->notify(new TargetChanged);
-            $santa->dearSantas->each(fn ($dearSanta) => $otherSanta->notify(new DearSanta($dearSanta)));
-        }
-
-        $santa->notify(new TargetWithdrawn);
-        $target->dearSantas->each(function ($dearSanta) use ($santa): void {
-            $santa->notify(new DearSanta($dearSanta));
-        });
-        $participant->delete();
-
-        return response()->json([
-            'message' => trans('organizer.withdrawn', ['name' => $participant->name]),
+        $names = $draw->participants->pluck('name')->all();
+        $hashes = $draw->participants->pluck('hash')->all();
+        $request->validate([
+            'remove' => ['array'],
+            'remove.*' => ['distinct', Rule::in($hashes)],
+            'add' => ['array'],
+            'add.*.name' => ['required', 'string', 'distinct', Rule::notIn($names)],
+            'add.*.email' => ['required', 'email'],
+        ], [
+            'add.*.name.required' => __('validation.custom.randomform.participant.name.required'),
+            'add.*.name.distinct' => __('validation.custom.randomform.participant.name.distinct'),
+            'add.*.name.not_in' => __('validation.custom.randomform.participant.name.distinct'),
+            'add.*.email.required' => __('validation.custom.randomform.participant.email.required'),
+            'add.*.email.email' => __('validation.custom.randomform.participant.email.format'),
         ]);
+
+        $remove = $draw->participants->whereIn('hash', $request->array('remove'))->values()->all();
+        /** @var list<array{name: string, email: string}> $add validated above */
+        $add = array_values($request->array('add'));
+        new ParticipantsEditor($draw)->apply($remove, $add);
+
+        $draw->createMetric('participants_changed')
+            ->addExtra('added', count($add))
+            ->addExtra('removed', count($remove));
+
+        return $this->fetch($draw->refresh());
     }
 
     public function csvInit(Draw $draw): Response

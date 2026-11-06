@@ -83,12 +83,9 @@ test('the organizer can withdraw a participant', function (): void {
     $santa = $participant->santa;
     $target = $participant->target;
 
-    ajaxGet(URL::signedRoute('organizerPanel.withdraw', [
-        'draw' => $draw,
-        'participant' => $participant,
-    ]))
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), ['remove' => [$participant->hash]])
         ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+        ->assertJsonStructure(['participants']);
 
     $santa = $santa->fresh();
     $participant = $participant->fresh();
@@ -111,15 +108,62 @@ test('the organizer can withdraw a participant in a 2-cycle', function (): void 
         $target->santa()->associate($santa)->save();
     }
 
-    ajaxGet(URL::signedRoute('organizerPanel.withdraw', ['draw' => $draw->fresh(), 'participant' => $b]))
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), ['remove' => [$b->hash]])
+        ->assertSuccessful();
 
     $otherSanta = $a->fresh()->santa;
     assertTrue(in_array($otherSanta->id, [$c->id, $d->id], true));
     assertTrue(in_array($a->fresh()->target->id, [$c->id, $d->id], true));
     Notification::assertSentTo($a, TargetWithdrawn::class);
     Notification::assertSentTo($otherSanta, TargetChanged::class);
+});
+
+test('the organizer can add a participant, only their santa is notified', function (): void {
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    Notification::fake();
+    $before = $draw->participants->mapWithKeys(fn ($p): array => [$p->id => $p->target->id]);
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), [
+        'add' => [['name' => 'Newbie', 'email' => 'newbie@example.com']],
+    ])->assertSuccessful()->assertJsonCount(5, 'participants');
+
+    $new = $draw->fresh()->participants->firstWhere('name', 'Newbie');
+    $santa = $new->santa;
+    assertEquals($before[$santa->id], $new->target->id);
+    Notification::assertSentTo($new, TargetDrawn::class);
+    Notification::assertSentTo($santa, TargetChanged::class);
+    Notification::assertSentTimes(TargetChanged::class, 1);
+    Notification::assertSentTimes(TargetDrawn::class, 1);
+});
+
+test('the organizer can add and remove several participants, each santa gets one email', function (): void {
+    $draw = Draw::factory()->hasParticipants(6)->create();
+    Notification::fake();
+    [$a, $b] = $draw->participants->all();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), [
+        'remove' => [$a->hash, $b->hash],
+        'add' => [['name' => 'N1', 'email' => 'n1@example.com'], ['name' => 'N2', 'email' => 'n2@example.com'], ['name' => 'N3', 'email' => 'n3@example.com']],
+    ])->assertSuccessful()->assertJsonCount(7, 'participants');
+
+    $draw = $draw->fresh();
+    assertEquals(7, $draw->participants->count());
+    assertEquals(7, $draw->participants->pluck('target_id')->filter()->unique()->count());
+    Notification::assertSentTimes(TargetDrawn::class, 3);
+    foreach ($draw->participants as $participant) {
+        // At most one email per santa, whatever the number of changes
+        $emails = Notification::sent($participant, TargetChanged::class)->count() + Notification::sent($participant, TargetWithdrawn::class)->count();
+        assertTrue($emails <= 1, "{$participant->name} got {$emails} emails");
+    }
+});
+
+test('the organizer cannot add a name already taken nor go under 3 participants', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $url = URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]);
+
+    ajaxPost($url, ['add' => [['name' => $draw->participants->first()->name, 'email' => 'x@example.com']]])->assertStatus(422);
+    ajaxPost($url, ['remove' => [$draw->participants->first()->hash]])->assertStatus(422);
+    assertEquals(3, $draw->fresh()->participants->count());
 });
 
 test('the organizer can download initial data', function (): void {

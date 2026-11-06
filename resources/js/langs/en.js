@@ -224,7 +224,8 @@ export default {
                 "status": "Email delivery status",
                 "caption": "List of participants",
                 "withdraw": "Remove",
-                "resend_failed": "Resend failed emails ({count})"
+                "resend_failed": "Resend failed emails ({count})",
+                "received_count": "{received}/{total} participants confirmed receiving their email (reply, page visit or acknowledgement)"
             },
             "up_and_sent": "Successfully updated!",
             "cannot_withdraw": "Unable to remove {name}",
@@ -259,6 +260,23 @@ export default {
                     "help": "Type \"[+:verification]\" below to confirm.",
                     "ok": "Ok",
                     "cancel": "Cancel"
+                }
+            },
+            "edit": {
+                "add": "Add",
+                "new": "new",
+                "undo": "Undo",
+                "multi": "Change several participants at once",
+                "validate": "Confirm ({add} added, {remove} removed)",
+                "cancel": "Discard changes",
+                "done": "Changes saved, the participants concerned have been notified.",
+                "confirm_add": {
+                    "title": "Add {name} to the event?",
+                    "body": "{name} will receive their target by email, and a single person will change target (they will be notified). This action cannot be undone."
+                },
+                "confirm_multi": {
+                    "title": "Confirm the changes?",
+                    "body": "{add} added and {remove} removed. Each person whose target changes will receive a single email. This action cannot be undone."
                 }
             },
             "withdraw": {

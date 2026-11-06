@@ -224,7 +224,8 @@ export default {
                 "status": "E-Mail-Versandstatus",
                 "caption": "Liste der Teilnehmer/innen",
                 "withdraw": "Entfernen",
-                "resend_failed": "Fehlgeschlagene E-Mails erneut senden ({count})"
+                "resend_failed": "Fehlgeschlagene E-Mails erneut senden ({count})",
+                "received_count": "{received}/{total} Teilnehmer haben den Empfang ihrer E-Mail bestätigt (Antwort, Seitenbesuch oder Empfangsbestätigung)"
             },
             "up_and_sent": "Erfolgreich geändert!",
             "cannot_withdraw": "{name} kann nicht entfernt werden",
@@ -259,6 +260,23 @@ export default {
                     "help": "Bitte geben Sie \"[+:verification]\" unten ein, um zu bestätigen.",
                     "ok": "Ok",
                     "cancel": "Abbrechen"
+                }
+            },
+            "edit": {
+                "add": "Hinzufügen",
+                "new": "neu",
+                "undo": "Rückgängig",
+                "multi": "Mehrere Teilnehmer auf einmal ändern",
+                "validate": "Bestätigen ({add} hinzugefügt, {remove} entfernt)",
+                "cancel": "Änderungen verwerfen",
+                "done": "Änderungen gespeichert, die betroffenen Teilnehmer wurden benachrichtigt.",
+                "confirm_add": {
+                    "title": "{name} zur Veranstaltung hinzufügen?",
+                    "body": "{name} erhält das Ziel per E-Mail, und nur eine Person bekommt ein neues Ziel (sie wird benachrichtigt). Diese Aktion kann nicht rückgängig gemacht werden."
+                },
+                "confirm_multi": {
+                    "title": "Änderungen bestätigen?",
+                    "body": "{add} hinzugefügt und {remove} entfernt. Jede Person, deren Ziel sich ändert, erhält nur eine E-Mail. Diese Aktion kann nicht rückgängig gemacht werden."
                 }
             },
             "withdraw": {

@@ -76,6 +76,10 @@ const BASE = 'http://127.0.0.1:8765';
   const org = (log.match(/https?:\/\/127\.0\.0\.1:8765\/org\/[^"'\s<]+/g) || []).pop();
   const ds = (log.match(/https?:\/\/127\.0\.0\.1:8765\/dearSanta\/[^"'\s<]+/g) || []).pop();
   console.log('org', !!org, 'dearSanta', !!ds);
+  await step('participating organizer gets a single email (target + organizer block)', async () => {
+    if (!log.includes('En tant qu')) throw new Error('no organizer block in the target email');
+    if (log.includes('capitulatif Organisateur')) throw new Error('separate recap sent');
+  });
   if (ds) {
     await page.goto(ds);
     await step('dearSanta page shows form', async () => { await page.waitForSelector('textarea', { timeout: 8000 }); });
@@ -131,13 +135,42 @@ const BASE = 'http://127.0.0.1:8765';
       console.log('     alert:', await page.locator('.ajs-content:visible').innerText()); await page.locator('.ajs-footer .btn-primary:visible').click();
       const v = await page.locator('#expires_at').inputValue(); if (v !== d) throw new Error('input not restored: ' + v + ' vs ' + d);
     });
+    const ok = async () => { await page.waitForTimeout(500); await page.locator('.ajs-footer .btn-primary:visible').last().click(); };
+    const rows = () => page.locator('tbody tr:not(.pending-add)').count();
+    await step('organizer adds a participant', async () => {
+      await page.fill('.participant-add-name', 'Dan'); await page.fill('.participant-add-email', 'dan@example.com');
+      await page.locator('button.participant-add').click();
+      await ok();
+      await page.waitForSelector('tbody td:text-is("Dan")', { timeout: 8000 });
+      await ok();
+      if (await rows() !== 4) throw new Error('rows=' + await rows());
+      const c = await page.locator('.received-count').innerText(); if (!/\/4/.test(c)) throw new Error(c);
+    });
+    await step('several at once: 2 added, 1 removed, a single request', async () => {
+      const posts = []; const h = r => { if (r.method() === 'POST' && r.url().includes('/participants')) posts.push(r.url()); }; page.on('request', h);
+      await page.locator('.multi-toggle').click();
+      for (const [n, e] of [['Eve', 'eve@example.com'], ['Fred', 'fred@example.com']]) {
+        await page.fill('.participant-add-name', n); await page.fill('.participant-add-email', e); await page.locator('button.participant-add').click();
+      }
+      await page.locator('tbody tr:has(td:text-is("Dan")) .participant-remove').click();
+      if (await page.locator('tr.pending-add').count() !== 2 || await page.locator('tr.pending-remove').count() !== 1) throw new Error('pending not shown');
+      if (posts.length) throw new Error('sent before validation');
+      await page.locator('.multi-validate').click();
+      await ok();
+      await page.waitForSelector('tbody td:text-is("Fred")', { timeout: 8000 });
+      await ok();
+      page.off('request', h);
+      const names = await page.locator('tbody tr td:first-child').allInnerTexts();
+      console.log('     ', names.join(', '), '- posts', posts.length);
+      if (posts.length !== 1 || names.length !== 5 || names.some(n => n.includes('Dan'))) throw new Error('bad result');
+    });
     await step('organizer reveals targets after confirmation', async () => {
       if (await page.locator('td.target').count()) throw new Error('targets visible before reveal');
       await page.locator('button:has-text("Révéler les cibles")').click();
       await page.locator('.ajs-footer .btn-primary:visible').click();
       await page.waitForSelector('td.target', { timeout: 5000 });
       const t = await page.locator('td.target').allInnerTexts(); console.log('     targets:', t);
-      if (t.length !== 3 || t.some(x => !x.trim())) throw new Error('bad targets');
+      if (t.length !== await rows() || t.some(x => !x.trim())) throw new Error('bad targets');
       await page.reload(); await page.waitForSelector('td.target', { timeout: 8000 });
     });
     await step('final CSV downloadable once revealed', async () => {
@@ -165,6 +198,24 @@ const BASE = 'http://127.0.0.1:8765';
   await step('fix form validates', async () => {
     await page.goto(BASE + '/fix'); await page.locator('button[type=submit]').click(); await page.waitForTimeout(300);
     if (!await page.locator('.is-invalid').count()) throw new Error('no error');
+  });
+  await step('non participating organizer gets a separate recap', async () => {
+    const start = fs.readFileSync(process.env.LOG, 'utf8').length;
+    await page.goto(BASE + '/'); await page.locator('.organizerToggle input').evaluate(e => e.click());
+    await page.fill('input[name="organizer[name]"]', 'Orga'); await page.fill('input[name="organizer[email]"]', 'orga@example.com');
+    const ppl = [['Gus', 'gus@example.com'], ['Hugo', 'hugo@example.com'], ['Ines', 'ines@example.com']];
+    for (let i = 0; i < 3; i++) { await page.fill(`input[name="participants[${i}][name]"]`, ppl[i][0]); await page.fill(`input[name="participants[${i}][email]"]`, ppl[i][1]); }
+    await page.fill('#mailTitle, input[name=title]', 'Noel 2');
+    await page.fill('#mailContent', 'Salut {SANTA}, offre a {TARGET}');
+    await page.fill('input[name=data-expiration]', new Date(Date.now() + 5 * 864e5).toISOString().slice(0, 10));
+    await page.locator('#randomForm button[type=submit]').click();
+    await page.waitForSelector('text=/envoy/i', { timeout: 8000 }).catch(async e => {
+      console.log('     invalid:', await page.locator('.is-invalid').evaluateAll(l => l.map(x => x.name + '=' + x.value)), await page.locator('.invalid-feedback:visible, .invalid-tooltip:visible').allInnerTexts());
+      throw e;
+    });
+    const added = fs.readFileSync(process.env.LOG, 'utf8').slice(start).replace(/=\r?\n/g, '');
+    if (!added.includes('capitulatif Organisateur')) throw new Error('no recap');
+    if (added.includes('En tant qu')) throw new Error('organizer block in a participant email');
   });
   console.log('console:', errors.length ? '\n  ' + [...new Set(errors)].join('\n  ') : 'clean');
   await browser.close();

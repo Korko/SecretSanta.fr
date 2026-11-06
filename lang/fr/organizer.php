@@ -27,6 +27,7 @@ return [
         'caption' => 'Liste des participant(e)s',
         'withdraw' => 'Retirer',
         'resend_failed' => 'Renvoyer les emails en échec (:count)',
+        'received_count' => ':received/:total participant(e)s ont bien reçu leur email (réponse, visite de leur page ou accusé de réception)',
     ],
     'up_and_sent' => 'Modifié avec succès !',
     'cannot_withdraw' => 'Impossible de supprimer :name',
@@ -65,6 +66,23 @@ return [
             'help' => 'Saisir "[+!:verification]" en dessous pour confirmer.',
             'ok' => 'Ok',
             'cancel' => 'Annuler',
+        ],
+    ],
+    'edit' => [
+        'add' => 'Ajouter',
+        'new' => 'nouveau',
+        'undo' => 'Annuler',
+        'multi' => 'Modifier plusieurs participant(e)s à la fois',
+        'validate' => 'Valider ({add} ajout(s), {remove} retrait(s))',
+        'cancel' => 'Abandonner les modifications',
+        'done' => 'Modifications enregistrées, les participant(e)s concerné(e)s ont été prévenu(e)s.',
+        'confirm_add' => [
+            'title' => 'Ajouter {name} à l\'évènement ?',
+            'body' => '{name} recevra sa cible par email, et une seule personne changera de cible (elle sera prévenue). Cette action ne peut être annulée.',
+        ],
+        'confirm_multi' => [
+            'title' => 'Valider les modifications ?',
+            'body' => '{add} ajout(s) et {remove} retrait(s). Chaque personne dont la cible change recevra un seul email. Cette action ne peut être annulée.',
         ],
     ],
     'withdraw' => [

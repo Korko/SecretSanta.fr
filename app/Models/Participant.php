@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use STS\Metrics\Facades\Metrics;
@@ -25,6 +26,7 @@ use STS\Metrics\Metric;
  * @property-read Draw $draw
  * @property-read Participant $target
  * @property-read Participant $santa
+ * @property-read Mail $mail
  */
 #[CollectedBy(ParticipantsCollection::class)]
 #[Fillable(['name', 'email'])]
@@ -67,7 +69,8 @@ final class Participant extends Model
         return $this->hasMany(DearSanta::class, 'sender_id')->with('mail');
     }
 
-    public function mail()
+    /** @return MorphOne<Mail, $this> */
+    public function mail(): MorphOne
     {
         return $this->morphOne(Mail::class, 'mailable');
     }
@@ -120,7 +123,7 @@ final class Participant extends Model
             $participant->mail()->save(new Mail);
         });
 
-        self::deleting(function ($participant): void {
+        self::deleting(function (Participant $participant): void {
             $participant->dearSantas()->lazy()->each->delete();
             $participant->exclusions()->detach(); // pivot rows only (delete() would remove the excluded participants)
             $participant->mail()->delete();

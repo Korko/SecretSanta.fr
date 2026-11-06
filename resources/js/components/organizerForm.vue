@@ -37,7 +37,6 @@
                 deleted_at: this.data.deleted_at,
                 finalCsvAvailable: this.data.finalCsvAvailable,
                 changeEmailUrls: this.data.changeEmailUrls,
-                withdrawalUrls: this.data.withdrawalUrls,
                 targetsRevealedAt: this.data.targetsRevealedAt,
                 targets: this.data.targets,
                 validations: {
@@ -46,10 +45,20 @@
                         format: email
                     }
                 },
-                canWithdraw: false
+                // "Several at once" mode: changes wait here until validated, to email each santa only once
+                multiMode: false,
+                pendingRemove: [],
+                pendingAdd: [],
+                newParticipant: { name: '', email: '' }
             };
         },
         computed: {
+            canEdit() {
+                return !this.expired;
+            },
+            receivedCount() {
+                return Object.values(this.participants).filter(p => p.mail.delivery_status === 'received').length;
+            },
             failedKeys() {
                 return Object.keys(this.participants).filter(k => this.participants[k].mail.delivery_status === 'error');
             },
@@ -150,6 +159,13 @@
                 this.failedKeys.forEach(k => this.updateEmail(k, this.participants[k].email));
             },
             confirmWithdrawal(k) {
+                const hash = this.participants[k].hash;
+                if (this.multiMode) {
+                    this.pendingRemove = this.pendingRemove.includes(hash)
+                        ? this.pendingRemove.filter(h => h !== hash)
+                        : [...this.pendingRemove, hash];
+                    return;
+                }
                 hardConfirm({
                     title: this.$t('organizer.withdraw.confirm.title', {deletion: this.deletionDateLong}),
                     body: this.$t('organizer.withdraw.confirm.body', {name: this.participants[k].name}),
@@ -157,16 +173,51 @@
                     help: this.$t('organizer.withdraw.confirm.help'),
                     ok: this.$t('organizer.withdraw.confirm.ok'),
                     cancel: this.$t('organizer.withdraw.confirm.cancel')
-                }).then(() => this.withdraw(k));
+                }).then(() => this.submitChanges([hash], []));
             },
-            withdraw(k) {
-                return fetch(this.withdrawalUrls[this.participants[k].hash])
+            addParticipant() {
+                const participant = { ...this.newParticipant };
+                if (this.multiMode) {
+                    this.pendingAdd.push(participant);
+                    this.newParticipant = { name: '', email: '' };
+                    return;
+                }
+                alertify.confirm(
+                    this.$t('organizer.edit.confirm_add.title', {name: participant.name}),
+                    this.$t('organizer.edit.confirm_add.body', {name: participant.name}),
+                    () => this.submitChanges([], [participant]).then(() => this.newParticipant = { name: '', email: '' }),
+                    () => {}
+                );
+            },
+            toggleMultiMode() {
+                this.multiMode = !this.multiMode;
+                this.pendingRemove = [];
+                this.pendingAdd = [];
+            },
+            confirmMultiChanges() {
+                alertify.confirm(
+                    this.$t('organizer.edit.confirm_multi.title'),
+                    this.$t('organizer.edit.confirm_multi.body', {add: this.pendingAdd.length, remove: this.pendingRemove.length}),
+                    () => this.submitChanges(this.pendingRemove, this.pendingAdd).then(this.toggleMultiMode),
+                    () => {}
+                );
+            },
+            submitChanges(remove, add) {
+                // The fetch helper sends flat FormData: name the array entries like a form would
+                const data = {};
+                remove.forEach((hash, i) => data['remove['+i+']'] = hash);
+                add.forEach((p, i) => { data['add['+i+'][name]'] = p.name; data['add['+i+'][email]'] = p.email; });
+
+                return fetch(this.routes.changeParticipantsUrl, 'POST', data)
                     .then(data => {
-                        if (data.error) {
-                            return alertify.errorAlert(data.error);
-                        }
-                        delete this.participants[k];
-                        alertify.confirmAlert(data.message);
+                        this.participants = data.participants;
+                        this.changeEmailUrls = data.changeEmailUrls;
+                        this.targets = data.targets;
+                        alertify.confirmAlert(this.$t('organizer.edit.done'));
+                    })
+                    .catch(error => {
+                        alertify.errorAlert(Object.values(error.errors || {})[0]?.[0] || error.message);
+                        return Promise.reject(error);
                     });
             },
             download() {
@@ -195,6 +246,10 @@
             <input id="expires_at" type="date" class="form-control w-auto" :value="expirationDateShort" :min="tomorrow" @change="changeDate" />
             <small class="form-text text-muted">{{ $t('organizer.date.help', {deleted_at: deletionDateLong}) }}</small>
         </div>
+        <p class="received-count">
+            <i class="fas fa-check" />
+            {{ $t('organizer.list.received_count', { received: receivedCount, total: Object.keys(participants).length }) }}
+        </p>
         <table class="table table-hover">
             <caption>{{ $t('organizer.list.caption') }}</caption>
             <thead>
@@ -208,16 +263,16 @@
                     <th v-if="targets" scope="col">
                         {{ $t('organizer.list.target') }}
                     </th>
-                    <th :style="canWithdraw ? 'width: 30%' : 'width: 33%'" scope="col">
+                    <th :style="canEdit ? 'width: 30%' : 'width: 33%'" scope="col">
                         {{ $t('organizer.list.status') }}
                     </th>
-                    <th v-if="canWithdraw" style="width: 3%" scope="col">
+                    <th v-if="canEdit" style="width: 3%" scope="col">
                         {{ $t('organizer.list.withdraw') }}
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(participant, k) in participants" :key="participant.hash">
+                <tr v-for="(participant, k) in participants" :key="participant.hash" :class="{ 'pending-remove': pendingRemove.includes(participant.hash) }">
                     <td>{{ participant.name }}</td>
                     <td>
                         <input-edit
@@ -234,18 +289,58 @@
                     </td>
                     <td v-if="targets" class="target">{{ targets[participant.hash] }}</td>
                     <td><email-status :delivery_status="participant.mail.delivery_status" :last_update="participant.mail.updated_at" :disabled="expired" @redo="updateEmail(k, participant.email)" /></td>
-                    <td v-if="canWithdraw">
+                    <td v-if="canEdit">
                         <button
                             type="button"
                             class="btn btn-outline-danger participant-remove"
                             @click="confirmWithdrawal(k)"
                         >
-                            <i class="fas fa-minus" /><span> {{ $t('organizer.withdraw.button') }}</span>
+                            <template v-if="pendingRemove.includes(participant.hash)"><i class="fas fa-undo" /><span> {{ $t('organizer.edit.undo') }}</span></template>
+                            <template v-else><i class="fas fa-minus" /><span> {{ $t('organizer.withdraw.button') }}</span></template>
+                        </button>
+                    </td>
+                </tr>
+                <tr v-for="(participant, i) in pendingAdd" :key="'new'+i" class="pending-add">
+                    <td>{{ participant.name }} <span class="badge badge-success">{{ $t('organizer.edit.new') }}</span></td>
+                    <td>{{ participant.email }}</td>
+                    <td v-if="targets" />
+                    <td />
+                    <td>
+                        <button type="button" class="btn btn-outline-danger" @click="pendingAdd.splice(i, 1)">
+                            <i class="fas fa-undo" /><span> {{ $t('organizer.edit.undo') }}</span>
                         </button>
                     </td>
                 </tr>
             </tbody>
+            <tfoot v-if="canEdit">
+                <tr>
+                    <td><input v-model.trim="newParticipant.name" form="addParticipant" class="form-control participant-add-name" required :placeholder="$t('organizer.list.name')" /></td>
+                    <td><input v-model.trim="newParticipant.email" form="addParticipant" type="email" class="form-control participant-add-email" required :placeholder="$t('organizer.list.email')" /></td>
+                    <td :colspan="targets ? 3 : 2">
+                        <form id="addParticipant" @submit.prevent="addParticipant">
+                            <button type="submit" class="btn btn-outline-success participant-add">
+                                <i class="fas fa-plus" /><span> {{ $t('organizer.edit.add') }}</span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
+        <div v-if="canEdit" class="multi-mode mb-3">
+            <template v-if="multiMode">
+                <button type="button" class="btn btn-success multi-validate" :disabled="!pendingAdd.length && !pendingRemove.length" @click="confirmMultiChanges">
+                    <i class="fas fa-check" />
+                    {{ $t('organizer.edit.validate', {add: pendingAdd.length, remove: pendingRemove.length}) }}
+                </button>
+                <button type="button" class="btn btn-outline-secondary" @click="toggleMultiMode">
+                    {{ $t('organizer.edit.cancel') }}
+                </button>
+            </template>
+            <button v-else type="button" class="btn btn-outline-primary multi-toggle" @click="toggleMultiMode">
+                <i class="fas fa-tasks" />
+                {{ $t('organizer.edit.multi') }}
+            </button>
+        </div>
         <button type="button" class="btn btn-warning" :disabled="expired || !failedKeys.length" @click="resendFailed">
             <i class="fas fa-redo" />
             {{ $t('organizer.list.resend_failed', { count: failedKeys.length }) }}
@@ -317,6 +412,11 @@
 
     .table td {
         vertical-align: middle !important;
+    }
+
+    .pending-remove td:not(:last-child) {
+        text-decoration: line-through;
+        opacity: .5;
     }
 
     table caption {
