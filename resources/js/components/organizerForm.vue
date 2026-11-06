@@ -225,11 +225,7 @@
         <template v-if="data.finalCsvAvailable">
             <tooltip direction="right">
                 <template #tooltip>
-                    <picture>
-                        <source srcset="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp" type="image/webp" />
-                        <source srcset="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" type="image/jpg" />
-                        <img class="media-object" src="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" />
-                    </picture>
+                    <img class="media-object" src="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp" />
                     <div class="text-content">
                         <h3>{{ $t('organizer.download.button_initial-tooltip.title') }}</h3>
                         <p>{{ $t('organizer.download.button_initial-tooltip.content') }}</p>
@@ -244,11 +240,7 @@
             </tooltip>
             <tooltip direction="right">
                 <template #tooltip>
-                    <picture>
-                        <source srcset="../../images/mike-arney-9r-_2gzP37k-unsplash.webp" type="image/webp" />
-                        <source srcset="../../images/mike-arney-9r-_2gzP37k-unsplash.jpg" type="image/jpg" />
-                        <img class="media-object" src="../../images/mike-arney-9r-_2gzP37k-unsplash.jpg" />
-                    </picture>
+                    <img class="media-object" src="../../images/mike-arney-9r-_2gzP37k-unsplash.webp" />
                     <div class="text-content">
                         <h3>{{ $t('organizer.download.button_final-tooltip.title') }}</h3>
                         <p>{{ $t('organizer.download.button_final-tooltip.explain') }}</p>
@@ -265,11 +257,7 @@
         </template>
         <tooltip v-else direction="right">
             <template #tooltip>
-                <picture>
-                    <source srcset="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp" type="image/webp" />
-                    <source srcset="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" type="image/jpg" />
-                    <img class="media-object" src="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg" />
-                </picture>
+                <img class="media-object" src="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp" />
                 <div class="text-content">
                     <h3>{{ $t('organizer.download.button-tooltip.title') }}</h3>
                     <p>{{ $t('organizer.download.button-tooltip.content') }}</p>

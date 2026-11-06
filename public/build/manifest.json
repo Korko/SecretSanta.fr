@@ -85,113 +85,57 @@
     "file": "assets/pricedownbl-DBgWJu69.ttf",
     "src": "resources/fonts/pricedownbl.ttf"
   },
-  "resources/images/404-1.jpg": {
-    "file": "assets/404-1-Crbv7rXy.jpg",
-    "src": "resources/images/404-1.jpg"
-  },
   "resources/images/404-1.webp": {
     "file": "assets/404-1-Bd6IHWzP.webp",
     "src": "resources/images/404-1.webp"
-  },
-  "resources/images/BMC Logo - Black.png": {
-    "file": "assets/BMC Logo - Black-DRsW10H8.png",
-    "src": "resources/images/BMC Logo - Black.png"
   },
   "resources/images/BMC Logo - Black.webp": {
     "file": "assets/BMC Logo - Black-D0iseT07.webp",
     "src": "resources/images/BMC Logo - Black.webp"
   },
-  "resources/images/calendar-icon.png": {
-    "file": "assets/calendar-icon-BCFkYteC.png",
-    "src": "resources/images/calendar-icon.png"
-  },
   "resources/images/calendar-icon.webp": {
     "file": "assets/calendar-icon-CrngGSZj.webp",
     "src": "resources/images/calendar-icon.webp"
-  },
-  "resources/images/clock-icon.png": {
-    "file": "assets/clock-icon-CJTRLIfC.png",
-    "src": "resources/images/clock-icon.png"
   },
   "resources/images/clock-icon.webp": {
     "file": "assets/clock-icon-qGJSK2to.webp",
     "src": "resources/images/clock-icon.webp"
   },
-  "resources/images/gifts-1.jpg": {
-    "file": "assets/gifts-1-C7zBYAdE.jpg",
-    "src": "resources/images/gifts-1.jpg"
-  },
   "resources/images/gifts-1.webp": {
     "file": "assets/gifts-1-BjyNA4Fc.webp",
     "src": "resources/images/gifts-1.webp"
-  },
-  "resources/images/gifts-2.jpg": {
-    "file": "assets/gifts-2-DvVy4e63.jpg",
-    "src": "resources/images/gifts-2.jpg"
   },
   "resources/images/gifts-2.webp": {
     "file": "assets/gifts-2-CJCtCWac.webp",
     "src": "resources/images/gifts-2.webp"
   },
-  "resources/images/gifts-3.jpg": {
-    "file": "assets/gifts-3-BLYG0Q0f.jpg",
-    "src": "resources/images/gifts-3.jpg"
-  },
   "resources/images/gifts-3.webp": {
     "file": "assets/gifts-3-BoLO03El.webp",
     "src": "resources/images/gifts-3.webp"
-  },
-  "resources/images/logo.png": {
-    "file": "assets/logo-lD6EeqUA.png",
-    "src": "resources/images/logo.png"
   },
   "resources/images/logo.webp": {
     "file": "assets/logo-BYoL4Cfi.webp",
     "src": "resources/images/logo.webp"
   },
-  "resources/images/mail-icon.png": {
-    "file": "assets/mail-icon-DxSyyGwE.png",
-    "src": "resources/images/mail-icon.png"
-  },
   "resources/images/mail-icon.webp": {
     "file": "assets/mail-icon-DmsWdb5J.webp",
     "src": "resources/images/mail-icon.webp"
-  },
-  "resources/images/mike-arney-9r-_2gzP37k-unsplash.jpg": {
-    "file": "assets/mike-arney-9r-_2gzP37k-unsplash-BiHYktd4.jpg",
-    "src": "resources/images/mike-arney-9r-_2gzP37k-unsplash.jpg"
   },
   "resources/images/mike-arney-9r-_2gzP37k-unsplash.webp": {
     "file": "assets/mike-arney-9r-_2gzP37k-unsplash-DPKQlmIh.webp",
     "src": "resources/images/mike-arney-9r-_2gzP37k-unsplash.webp"
   },
-  "resources/images/paper-icon.png": {
-    "file": "assets/paper-icon-BI-VoJ6k.png",
-    "src": "resources/images/paper-icon.png"
-  },
   "resources/images/paper-icon.webp": {
     "file": "assets/paper-icon-COzGnr4k.webp",
     "src": "resources/images/paper-icon.webp"
-  },
-  "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg": {
-    "file": "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-DM_aoHn6.jpg",
-    "src": "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg"
   },
   "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp": {
     "file": "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-NdXp0FSx.webp",
     "src": "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp"
   },
-  "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg": {
-    "file": "assets/srikanta-h-u-TrGVhbsUf40-unsplash-B5sDuDtf.jpg",
-    "src": "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg"
-  },
   "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.webp": {
     "file": "assets/srikanta-h-u-TrGVhbsUf40-unsplash-BLvCjRi5.webp",
     "src": "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.webp"
-  },
-  "resources/images/user-icon.png": {
-    "file": "assets/user-icon-ByqeCz2N.png",
-    "src": "resources/images/user-icon.png"
   },
   "resources/images/user-icon.webp": {
     "file": "assets/user-icon-E39mYMdb.webp",
@@ -256,7 +200,7 @@
     ]
   },
   "resources/js/organizer.js": {
-    "file": "assets/organizer-JldMxXLZ.js",
+    "file": "assets/organizer-BTefvYbP.js",
     "name": "organizer",
     "src": "resources/js/organizer.js",
     "isEntry": true,
@@ -272,17 +216,15 @@
       "_alertify-VxIvnuMT.js"
     ],
     "css": [
-      "assets/organizer-B-XJrB4k.css"
+      "assets/organizer-CZkSO4f1.css"
     ],
     "assets": [
       "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-NdXp0FSx.webp",
-      "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-DM_aoHn6.jpg",
-      "assets/mike-arney-9r-_2gzP37k-unsplash-DPKQlmIh.webp",
-      "assets/mike-arney-9r-_2gzP37k-unsplash-BiHYktd4.jpg"
+      "assets/mike-arney-9r-_2gzP37k-unsplash-DPKQlmIh.webp"
     ]
   },
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm-DviO7pkG.js",
+    "file": "assets/randomForm-5codHDzA.js",
     "name": "randomForm",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
@@ -295,11 +237,10 @@
       "_vue-i18n-locales.generated-CLAADm6C.js"
     ],
     "css": [
-      "assets/randomForm-C9HYnbST.css"
+      "assets/randomForm-Pt0_N2qd.css"
     ],
     "assets": [
-      "assets/srikanta-h-u-TrGVhbsUf40-unsplash-BLvCjRi5.webp",
-      "assets/srikanta-h-u-TrGVhbsUf40-unsplash-B5sDuDtf.jpg"
+      "assets/srikanta-h-u-TrGVhbsUf40-unsplash-BLvCjRi5.webp"
     ]
   },
   "resources/sass/404.scss": {
@@ -312,7 +253,7 @@
     ]
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-CJD67Xg7.css",
+    "file": "assets/app-uGom1b49.css",
     "src": "resources/sass/app.scss",
     "isEntry": true,
     "name": "app",

@@ -445,11 +445,7 @@
                             <div class="input-inline-group">
                                 <tooltip direction="top">
                                     <template #tooltip>
-                                        <picture>
-                                            <source srcset="../../images/srikanta-h-u-TrGVhbsUf40-unsplash.webp" type="image/webp" />
-                                            <source srcset="../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" type="image/jpg" />
-                                            <img class="media-object" src="../../images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg" />
-                                        </picture>
+                                        <img class="media-object" src="../../images/srikanta-h-u-TrGVhbsUf40-unsplash.webp" />
                                         <div class="text-content">
                                             <h3>{{ $t('form.data-expiration-tooltip.title') }}</h3>
                                             <ul>

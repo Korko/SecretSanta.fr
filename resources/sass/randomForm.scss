@@ -10,9 +10,6 @@
     background-repeat: no-repeat;
     position: relative;
 }
-body.nowebp #header {
-    background-image: url(../images/gifts-1.jpg);
-}
 
 #header .center {
     position: relative;
@@ -82,9 +79,6 @@ body.nowebp #header {
     position: relative;
     color: #fff;
 }
-body.nowebp .parallax {
-    background-image: url(../images/gifts-2.jpg);
-}
 
 .parallax .inner {
     padding-top: 130px;
@@ -93,9 +87,6 @@ body.nowebp .parallax {
 
 .parallax.parallax2 {
     background-image: url(../images/gifts-3.webp);
-}
-body.nowebp .parallax.parallax2 {
-    background-image: url(../images/gifts-3.jpg);
 }
 
 /* ==========================================================================
@@ -157,28 +148,23 @@ body.nowebp .parallax.parallax2 {
 }
 
 .media-calendar-icon {
-    background-image: url("../images/calendar-icon.png");
-    background-image: image-set(url("../images/calendar-icon.webp"), url("../images/calendar-icon.png"));
+    background-image: url("../images/calendar-icon.webp");
     background-repeat: no-repeat;
 }
 .media-user-icon {
-    background-image: url("../images/user-icon.png");
-    background-image: image-set(url("../images/user-icon.webp"), url("../images/user-icon.png"));
+    background-image: url("../images/user-icon.webp");
     background-repeat: no-repeat;
 }
 .media-paper-icon {
-    background-image: url("../images/paper-icon.png");
-    background-image: image-set(url("../images/paper-icon.webp"), url("../images/paper-icon.png"));
+    background-image: url("../images/paper-icon.webp");
     background-repeat: no-repeat;
 }
 .media-mail-icon {
-    background-image: url("../images/mail-icon.png");
-    background-image: image-set(url("../images/mail-icon.webp"), url("../images/mail-icon.png"));
+    background-image: url("../images/mail-icon.webp");
     background-repeat: no-repeat;
 }
 .media-clock-icon {
-    background-image: url("../images/clock-icon.png");
-    background-image: image-set(url("../images/clock-icon.webp"), url("../images/clock-icon.png"));
+    background-image: url("../images/clock-icon.webp");
     background-repeat: no-repeat;
 }
 
