@@ -54,7 +54,8 @@ e2e:
       - .npm/
       - .playwright/
   before_script:
-    - apt-get update -qq && apt-get install -yqq --no-install-recommends git unzip libzip-dev libicu-dev libsqlite3-dev nodejs npm > /dev/null
+    - curl -fsSL https://deb.nodesource.com/setup_22.x | bash - > /dev/null # Debian ships node 20, vue-i18n needs 22 like the assets job
+    - apt-get update -qq && apt-get install -yqq --no-install-recommends git unzip libzip-dev libicu-dev libsqlite3-dev nodejs > /dev/null
     - docker-php-ext-install -j"$(nproc)" zip intl bcmath sockets pdo_sqlite > /dev/null
     - curl -sS https://getcomposer.org/installer | php -- --quiet
     - php composer.phar install --no-interaction --no-progress
