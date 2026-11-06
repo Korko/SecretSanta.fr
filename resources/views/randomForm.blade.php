@@ -126,6 +126,6 @@
 @section('script')
     @parent
 
-    <script type="text/javascript" src="{{ mix('/js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('/js/randomForm.js') }}"></script>
+    @vite('resources/js/common.js')
+    @vite('resources/js/randomForm.js')
 @stop

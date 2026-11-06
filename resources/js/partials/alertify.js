@@ -1,4 +1,4 @@
-const alertify = require('alertifyjs');
+import alertify from 'alertifyjs';
 
 alertify.defaults.transition = "slide";
 alertify.defaults.theme.ok = "btn btn-primary";

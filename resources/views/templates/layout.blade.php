@@ -48,8 +48,8 @@
         <link rel="image_src" href="{{ url('/images/opengraph_banner_19.1_1.png') }}" />
 
         <!-- css -->
-        <link rel="stylesheet" href="{{ mix('/css/vendor.css') }}" />
-        <link rel="stylesheet" href="{{ mix('/css/app.css') }}" />
+        @vite('resources/sass/vendor.scss')
+        @vite('resources/sass/app.scss')
     @show
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="120">
@@ -102,8 +102,6 @@
 
     @section('script')
         <script src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" data-auto-replace-svg="nest"></script>
-        <script src="{{ mix('/js/manifest.js') }}"></script>
-        <script src="{{ mix('/js/vendor.js') }}"></script>
     @show
 </body>
 </html>

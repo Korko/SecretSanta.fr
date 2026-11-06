@@ -1,0 +1,332 @@
+{
+  "__plugin-vue2_normalizer-D39hzw3X.js": {
+    "file": "assets/_plugin-vue2_normalizer-D39hzw3X.js",
+    "name": "_plugin-vue2_normalizer"
+  },
+  "_ajaxForm-Ds0DaR5j.js": {
+    "file": "assets/ajaxForm-Ds0DaR5j.js",
+    "name": "ajaxForm",
+    "imports": [
+      "_alertify-VxIvnuMT.js",
+      "__plugin-vue2_normalizer-D39hzw3X.js"
+    ]
+  },
+  "_alertify-VxIvnuMT.js": {
+    "file": "assets/alertify-VxIvnuMT.js",
+    "name": "alertify",
+    "imports": [
+      "_vue-i18n-locales.generated-CLAADm6C.js"
+    ]
+  },
+  "_form-7qWBhIId.js": {
+    "file": "assets/form-7qWBhIId.js",
+    "name": "form",
+    "imports": [
+      "_ajaxForm-Ds0DaR5j.js",
+      "__plugin-vue2_normalizer-D39hzw3X.js"
+    ]
+  },
+  "_moment-Bk4j6UKA.js": {
+    "file": "assets/moment-Bk4j6UKA.js",
+    "name": "moment"
+  },
+  "_tooltip-DKOQ7Q31.css": {
+    "file": "assets/tooltip-DKOQ7Q31.css",
+    "src": "_tooltip-DKOQ7Q31.css"
+  },
+  "_tooltip-DlaPjaeO.js": {
+    "file": "assets/tooltip-DlaPjaeO.js",
+    "name": "tooltip",
+    "imports": [
+      "__plugin-vue2_normalizer-D39hzw3X.js"
+    ],
+    "css": [
+      "assets/tooltip-DKOQ7Q31.css"
+    ]
+  },
+  "_vue-i18n-locales.generated-CLAADm6C.js": {
+    "file": "assets/vue-i18n-locales.generated-CLAADm6C.js",
+    "name": "vue-i18n-locales.generated"
+  },
+  "_vueFetcher-Bvd3FuMy.js": {
+    "file": "assets/vueFetcher-Bvd3FuMy.js",
+    "name": "vueFetcher",
+    "imports": [
+      "_alertify-VxIvnuMT.js",
+      "_tooltip-DlaPjaeO.js",
+      "__plugin-vue2_normalizer-D39hzw3X.js",
+      "_ajaxForm-Ds0DaR5j.js",
+      "_form-7qWBhIId.js"
+    ],
+    "css": [
+      "assets/vueFetcher-CMHUg_nH.css"
+    ]
+  },
+  "_vueFetcher-CMHUg_nH.css": {
+    "file": "assets/vueFetcher-CMHUg_nH.css",
+    "src": "_vueFetcher-CMHUg_nH.css"
+  },
+  "_vuejs-dialog.min-8mV6xW9g.js": {
+    "file": "assets/vuejs-dialog.min-8mV6xW9g.js",
+    "name": "vuejs-dialog.min",
+    "imports": [
+      "_alertify-VxIvnuMT.js"
+    ]
+  },
+  "resources/fonts/Cookie-Regular.ttf": {
+    "file": "assets/Cookie-Regular-DbKmepVV.ttf",
+    "src": "resources/fonts/Cookie-Regular.ttf"
+  },
+  "resources/fonts/Kreon-VariableFont_wght.ttf": {
+    "file": "assets/Kreon-VariableFont_wght-RgNRRZXg.ttf",
+    "src": "resources/fonts/Kreon-VariableFont_wght.ttf"
+  },
+  "resources/fonts/pricedownbl.ttf": {
+    "file": "assets/pricedownbl-DBgWJu69.ttf",
+    "src": "resources/fonts/pricedownbl.ttf"
+  },
+  "resources/images/404-1.jpg": {
+    "file": "assets/404-1-Crbv7rXy.jpg",
+    "src": "resources/images/404-1.jpg"
+  },
+  "resources/images/404-1.webp": {
+    "file": "assets/404-1-Bd6IHWzP.webp",
+    "src": "resources/images/404-1.webp"
+  },
+  "resources/images/BMC Logo - Black.png": {
+    "file": "assets/BMC Logo - Black-DRsW10H8.png",
+    "src": "resources/images/BMC Logo - Black.png"
+  },
+  "resources/images/BMC Logo - Black.webp": {
+    "file": "assets/BMC Logo - Black-D0iseT07.webp",
+    "src": "resources/images/BMC Logo - Black.webp"
+  },
+  "resources/images/calendar-icon.png": {
+    "file": "assets/calendar-icon-BCFkYteC.png",
+    "src": "resources/images/calendar-icon.png"
+  },
+  "resources/images/calendar-icon.webp": {
+    "file": "assets/calendar-icon-CrngGSZj.webp",
+    "src": "resources/images/calendar-icon.webp"
+  },
+  "resources/images/clock-icon.png": {
+    "file": "assets/clock-icon-CJTRLIfC.png",
+    "src": "resources/images/clock-icon.png"
+  },
+  "resources/images/clock-icon.webp": {
+    "file": "assets/clock-icon-qGJSK2to.webp",
+    "src": "resources/images/clock-icon.webp"
+  },
+  "resources/images/gifts-1.jpg": {
+    "file": "assets/gifts-1-C7zBYAdE.jpg",
+    "src": "resources/images/gifts-1.jpg"
+  },
+  "resources/images/gifts-1.webp": {
+    "file": "assets/gifts-1-BjyNA4Fc.webp",
+    "src": "resources/images/gifts-1.webp"
+  },
+  "resources/images/gifts-2.jpg": {
+    "file": "assets/gifts-2-DvVy4e63.jpg",
+    "src": "resources/images/gifts-2.jpg"
+  },
+  "resources/images/gifts-2.webp": {
+    "file": "assets/gifts-2-CJCtCWac.webp",
+    "src": "resources/images/gifts-2.webp"
+  },
+  "resources/images/gifts-3.jpg": {
+    "file": "assets/gifts-3-BLYG0Q0f.jpg",
+    "src": "resources/images/gifts-3.jpg"
+  },
+  "resources/images/gifts-3.webp": {
+    "file": "assets/gifts-3-BoLO03El.webp",
+    "src": "resources/images/gifts-3.webp"
+  },
+  "resources/images/logo.png": {
+    "file": "assets/logo-lD6EeqUA.png",
+    "src": "resources/images/logo.png"
+  },
+  "resources/images/logo.webp": {
+    "file": "assets/logo-BYoL4Cfi.webp",
+    "src": "resources/images/logo.webp"
+  },
+  "resources/images/mail-icon.png": {
+    "file": "assets/mail-icon-DxSyyGwE.png",
+    "src": "resources/images/mail-icon.png"
+  },
+  "resources/images/mail-icon.webp": {
+    "file": "assets/mail-icon-DmsWdb5J.webp",
+    "src": "resources/images/mail-icon.webp"
+  },
+  "resources/images/mike-arney-9r-_2gzP37k-unsplash.jpg": {
+    "file": "assets/mike-arney-9r-_2gzP37k-unsplash-BiHYktd4.jpg",
+    "src": "resources/images/mike-arney-9r-_2gzP37k-unsplash.jpg"
+  },
+  "resources/images/mike-arney-9r-_2gzP37k-unsplash.webp": {
+    "file": "assets/mike-arney-9r-_2gzP37k-unsplash-DPKQlmIh.webp",
+    "src": "resources/images/mike-arney-9r-_2gzP37k-unsplash.webp"
+  },
+  "resources/images/paper-icon.png": {
+    "file": "assets/paper-icon-BI-VoJ6k.png",
+    "src": "resources/images/paper-icon.png"
+  },
+  "resources/images/paper-icon.webp": {
+    "file": "assets/paper-icon-COzGnr4k.webp",
+    "src": "resources/images/paper-icon.webp"
+  },
+  "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg": {
+    "file": "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-DM_aoHn6.jpg",
+    "src": "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.jpg"
+  },
+  "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp": {
+    "file": "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-NdXp0FSx.webp",
+    "src": "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp"
+  },
+  "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg": {
+    "file": "assets/srikanta-h-u-TrGVhbsUf40-unsplash-B5sDuDtf.jpg",
+    "src": "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.jpg"
+  },
+  "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.webp": {
+    "file": "assets/srikanta-h-u-TrGVhbsUf40-unsplash-BLvCjRi5.webp",
+    "src": "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.webp"
+  },
+  "resources/images/user-icon.png": {
+    "file": "assets/user-icon-ByqeCz2N.png",
+    "src": "resources/images/user-icon.png"
+  },
+  "resources/images/user-icon.webp": {
+    "file": "assets/user-icon-E39mYMdb.webp",
+    "src": "resources/images/user-icon.webp"
+  },
+  "resources/js/common.js": {
+    "file": "assets/common-B9zZ1bZC.js",
+    "name": "common",
+    "src": "resources/js/common.js",
+    "isEntry": true,
+    "imports": [
+      "_alertify-VxIvnuMT.js",
+      "_vue-i18n-locales.generated-CLAADm6C.js"
+    ]
+  },
+  "resources/js/dearSanta.js": {
+    "file": "assets/dearSanta-o5WB1pyx.js",
+    "name": "dearSanta",
+    "src": "resources/js/dearSanta.js",
+    "isEntry": true,
+    "imports": [
+      "__plugin-vue2_normalizer-D39hzw3X.js",
+      "_vue-i18n-locales.generated-CLAADm6C.js",
+      "_ajaxForm-Ds0DaR5j.js",
+      "_vueFetcher-Bvd3FuMy.js",
+      "_tooltip-DlaPjaeO.js",
+      "_form-7qWBhIId.js",
+      "_alertify-VxIvnuMT.js"
+    ],
+    "css": [
+      "assets/dearSanta-UY5IUzPP.css"
+    ]
+  },
+  "resources/js/faq.js": {
+    "file": "assets/faq-CJYmVfFY.js",
+    "name": "faq",
+    "src": "resources/js/faq.js",
+    "isEntry": true,
+    "imports": [
+      "__plugin-vue2_normalizer-D39hzw3X.js",
+      "_vue-i18n-locales.generated-CLAADm6C.js"
+    ],
+    "css": [
+      "assets/faq-D8MYzs2H.css"
+    ]
+  },
+  "resources/js/fixOrganizer.js": {
+    "file": "assets/fixOrganizer-BbwW5l3k.js",
+    "name": "fixOrganizer",
+    "src": "resources/js/fixOrganizer.js",
+    "isEntry": true,
+    "imports": [
+      "__plugin-vue2_normalizer-D39hzw3X.js",
+      "_vue-i18n-locales.generated-CLAADm6C.js",
+      "_vuejs-dialog.min-8mV6xW9g.js",
+      "_ajaxForm-Ds0DaR5j.js",
+      "_form-7qWBhIId.js",
+      "_alertify-VxIvnuMT.js"
+    ],
+    "css": [
+      "assets/fixOrganizer-Bk3tK56h.css"
+    ]
+  },
+  "resources/js/organizer.js": {
+    "file": "assets/organizer-Fvzk6wC7.js",
+    "name": "organizer",
+    "src": "resources/js/organizer.js",
+    "isEntry": true,
+    "imports": [
+      "__plugin-vue2_normalizer-D39hzw3X.js",
+      "_vue-i18n-locales.generated-CLAADm6C.js",
+      "_vuejs-dialog.min-8mV6xW9g.js",
+      "_ajaxForm-Ds0DaR5j.js",
+      "_moment-Bk4j6UKA.js",
+      "_vueFetcher-Bvd3FuMy.js",
+      "_tooltip-DlaPjaeO.js",
+      "_form-7qWBhIId.js",
+      "_alertify-VxIvnuMT.js"
+    ],
+    "css": [
+      "assets/organizer-B3InpwEJ.css"
+    ],
+    "assets": [
+      "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-NdXp0FSx.webp",
+      "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-DM_aoHn6.jpg",
+      "assets/mike-arney-9r-_2gzP37k-unsplash-DPKQlmIh.webp",
+      "assets/mike-arney-9r-_2gzP37k-unsplash-BiHYktd4.jpg"
+    ]
+  },
+  "resources/js/randomForm.js": {
+    "file": "assets/randomForm-CF2WNrNt.js",
+    "name": "randomForm",
+    "src": "resources/js/randomForm.js",
+    "isEntry": true,
+    "imports": [
+      "__plugin-vue2_normalizer-D39hzw3X.js",
+      "_alertify-VxIvnuMT.js",
+      "_ajaxForm-Ds0DaR5j.js",
+      "_moment-Bk4j6UKA.js",
+      "_tooltip-DlaPjaeO.js",
+      "_vue-i18n-locales.generated-CLAADm6C.js"
+    ],
+    "css": [
+      "assets/randomForm-M1Ft0MXz.css"
+    ],
+    "assets": [
+      "assets/srikanta-h-u-TrGVhbsUf40-unsplash-BLvCjRi5.webp",
+      "assets/srikanta-h-u-TrGVhbsUf40-unsplash-B5sDuDtf.jpg"
+    ]
+  },
+  "resources/sass/404.scss": {
+    "file": "assets/404-O5IZpnbz.css",
+    "src": "resources/sass/404.scss",
+    "isEntry": true,
+    "name": "404",
+    "names": [
+      "404.css"
+    ]
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-Cw1Uk02j.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/sass/vendor.scss": {
+    "file": "assets/vendor-BjAaSbmX.css",
+    "src": "resources/sass/vendor.scss",
+    "isEntry": true,
+    "name": "vendor",
+    "names": [
+      "vendor.css"
+    ]
+  }
+}

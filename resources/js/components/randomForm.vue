@@ -15,7 +15,6 @@
     Vue.use(Vuelidate);
 
     // Still using CommonJS syntax
-    const Modernizr = require("Modernizr");
 
     import Moment from 'moment';
     import 'moment/locale/fr';
@@ -138,7 +137,7 @@
 
             Vue.nextTick(
                 function() {
-                    if (!Modernizr.filereader) {
+                    if (!window.FileReader) {
                         jQuery('.participants-imports').remove();
                     }
                 }.bind(this)
