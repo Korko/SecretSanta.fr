@@ -31,6 +31,16 @@ export default {
         },
         "dearsanta": {
             "reminder": "Rappelez vous que votre Père/Mère Noël secrêt ne pourra pas vous répondre ! Pensez bien à lui donner le maximum d'informations possibles.",
+            "report": {
+                "question": "Un problème ?",
+                "not_me": "Cet email ne m'est pas destiné",
+                "not_participating": "Je ne participe pas",
+                "cancel": "Annuler le signalement",
+                "sent": {
+                    "not_me": "{organizer} verra sur sa page que cet email ne vous était pas destiné.",
+                    "not_participating": "{organizer} verra sur sa page que vous ne participez pas."
+                }
+            },
             "targets": {
                 "revealed": "L'organisateur/organisatrice a consulté la liste des cibles",
                 "secret": "La liste des cibles n'a pas été consultée par l'organisateur/organisatrice"
@@ -260,6 +270,14 @@ export default {
                     "help": "Saisir \"[+:verification]\" en dessous pour confirmer.",
                     "ok": "Ok",
                     "cancel": "Annuler"
+                }
+            },
+            "report": {
+                "not_me": "Mauvais destinataire",
+                "not_participating": "Ne participe pas",
+                "help": {
+                    "not_me": "La personne qui a reçu cet email indique qu'il ne lui était pas destiné : corrigez l'adresse (sa cible lui a été révélée, vous pouvez aussi la retirer et l'ajouter à nouveau).",
+                    "not_participating": "Cette personne indique ne pas participer : vous pouvez la retirer de l'évènement."
                 }
             },
             "edit": {

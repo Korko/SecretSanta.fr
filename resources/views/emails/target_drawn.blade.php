@@ -10,6 +10,8 @@
     <hr/>
 
     <p style="padding-bottom:10px !important">Vous pouvez écrire à votre Père Noël Secret ! Ca se passe ici : <a href="{{ $dearSantaLink }}">{{ $dearSantaLink }}</a></p>
+
+    <p style="padding-bottom:10px !important"><small>Cet email ne vous est pas destiné, ou vous ne participez pas ? Signalez-le à l'organisateur en bas de cette même page.</small></p>
 @if($organizer)
 
     <hr/>

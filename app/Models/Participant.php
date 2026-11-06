@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
+use App\Enums\ReportReason;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -27,6 +28,7 @@ use STS\Metrics\Metric;
  * @property-read Participant $target
  * @property-read Participant $santa
  * @property-read Mail $mail
+ * @property ReportReason|null $report
  */
 #[CollectedBy(ParticipantsCollection::class)]
 #[Fillable(['name', 'email'])]
@@ -37,6 +39,9 @@ final class Participant extends Model
     }
 
     protected $hashConnection = 'santa';
+
+    /** @var array<string, mixed> */
+    protected $attributes = ['report' => null];
 
     // When the organizer takes part, they are the first participant (see DrawFormHandler)
     public function isOrganizer(): bool
@@ -150,6 +155,7 @@ final class Participant extends Model
         return [
             'name' => EncryptedString::class,
             'email' => EncryptedString::class,
+            'report' => ReportReason::class,
         ];
     }
 }

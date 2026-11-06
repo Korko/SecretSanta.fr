@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 return [
     'reminder' => 'Denken Sie daran, dass Ihr geheimer Weihnachtsmann oder Ihre geheime Weihnachtsfrau Ihnen nicht antworten kann! Geben sie ihm oder ihr so viele Informationen wie möglich zu geben.',
+    'report' => [
+        'question' => 'Ein Problem?',
+        'not_me' => 'Diese E-Mail ist nicht für mich',
+        'not_participating' => 'Ich nehme nicht teil',
+        'cancel' => 'Meldung zurückziehen',
+        'sent' => [
+            'not_me' => '{organizer} sieht auf der eigenen Seite, dass diese E-Mail nicht für Sie war.',
+            'not_participating' => '{organizer} sieht auf der eigenen Seite, dass Sie nicht teilnehmen.',
+        ],
+    ],
     'targets' => [
         'revealed' => 'Der Organisator hat die Liste der Empfänger eingesehen',
         'secret' => 'Der Organisator hat die Liste der Empfänger nicht eingesehen',

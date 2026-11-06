@@ -91,10 +91,19 @@ const BASE = 'http://127.0.0.1:8765';
       await page.locator('button[type=submit]').click(); await page.waitForTimeout(300);
       if (!await page.locator('textarea.is-invalid').count()) throw new Error('no error');
     });
+    await step('participant reports the email was not for them', async () => {
+      await page.locator('.report-not-me').click();
+      const t = await page.locator('.report-sent').innerText({ timeout: 5000 }); console.log('     ', t.trim());
+      await page.reload(); await page.waitForSelector('.report-sent', { timeout: 8000 });
+    });
   }
   if (org) {
     await page.goto(org);
     await step('organizer page lists participants', async () => { await page.waitForSelector('text=Alice', { timeout: 8000 }); });
+    await step('organizer sees the participant report', async () => {
+      const b = await page.locator('.participant-report').allInnerTexts();
+      if (b.length !== 1 || !/Mauvais destinataire/.test(b[0])) throw new Error(JSON.stringify(b));
+    });
     await step('resend failed emails in one click', async () => {
       const btn = page.locator('button.btn-warning:has(.fa-redo)');
       if (!await btn.isDisabled()) throw new Error('enabled with no failure');

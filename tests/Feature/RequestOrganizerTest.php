@@ -293,3 +293,24 @@ test('the organizer cannot change the date of an expired draw', function (): voi
     ajaxPost(URL::signedRoute('organizerPanel.changeDate', ['draw' => $draw]), ['expires_at' => now()->addDays(5)->format('Y-m-d')])
         ->assertForbidden();
 });
+
+test('a participant report shows on the organizer panel, and fixing the address clears it', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+
+    ajaxPost(URL::signedRoute('dearSanta.report', ['participant' => $participant]), ['reason' => 'not_me'])
+        ->assertSuccessful()->assertJson(['report' => 'not_me']);
+    ajaxPost(URL::signedRoute('dearSanta.report', ['participant' => $participant]), ['reason' => 'whatever'])
+        ->assertStatus(422);
+
+    ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))
+        ->assertJsonPath("participants.{$participant->hash}.report", 'not_me');
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeEmail', ['draw' => $draw, 'participant' => $participant]), ['email' => 'fixed@example.com'])
+        ->assertSuccessful();
+    assertNull($participant->fresh()->report);
+
+    ajaxPost(URL::signedRoute('dearSanta.report', ['participant' => $participant]), ['reason' => 'not_participating']);
+    ajaxPost(URL::signedRoute('dearSanta.report', ['participant' => $participant]), [])->assertJson(['report' => null]);
+    assertNull($participant->fresh()->report);
+});

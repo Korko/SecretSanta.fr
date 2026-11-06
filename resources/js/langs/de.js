@@ -31,6 +31,16 @@ export default {
         },
         "dearsanta": {
             "reminder": "Denken Sie daran, dass Ihr geheimer Weihnachtsmann oder Ihre geheime Weihnachtsfrau Ihnen nicht antworten kann! Geben sie ihm oder ihr so viele Informationen wie möglich zu geben.",
+            "report": {
+                "question": "Ein Problem?",
+                "not_me": "Diese E-Mail ist nicht für mich",
+                "not_participating": "Ich nehme nicht teil",
+                "cancel": "Meldung zurückziehen",
+                "sent": {
+                    "not_me": "{organizer} sieht auf der eigenen Seite, dass diese E-Mail nicht für Sie war.",
+                    "not_participating": "{organizer} sieht auf der eigenen Seite, dass Sie nicht teilnehmen."
+                }
+            },
             "targets": {
                 "revealed": "Der Organisator hat die Liste der Empfänger eingesehen",
                 "secret": "Der Organisator hat die Liste der Empfänger nicht eingesehen"
@@ -260,6 +270,14 @@ export default {
                     "help": "Bitte geben Sie \"[+:verification]\" unten ein, um zu bestätigen.",
                     "ok": "Ok",
                     "cancel": "Abbrechen"
+                }
+            },
+            "report": {
+                "not_me": "Falscher Empfänger",
+                "not_participating": "Nimmt nicht teil",
+                "help": {
+                    "not_me": "Der Empfänger dieser E-Mail gibt an, dass sie nicht für ihn war: Korrigieren Sie die Adresse (das Ziel wurde ihm angezeigt, Sie können die Person auch entfernen und neu hinzufügen).",
+                    "not_participating": "Diese Person gibt an, nicht teilzunehmen: Sie können sie aus der Veranstaltung entfernen."
                 }
             },
             "edit": {

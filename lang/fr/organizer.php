@@ -68,6 +68,14 @@ return [
             'cancel' => 'Annuler',
         ],
     ],
+    'report' => [
+        'not_me' => 'Mauvais destinataire',
+        'not_participating' => 'Ne participe pas',
+        'help' => [
+            'not_me' => 'La personne qui a reçu cet email indique qu\'il ne lui était pas destiné : corrigez l\'adresse (sa cible lui a été révélée, vous pouvez aussi la retirer et l\'ajouter à nouveau).',
+            'not_participating' => 'Cette personne indique ne pas participer : vous pouvez la retirer de l\'évènement.',
+        ],
+    ],
     'edit' => [
         'warning' => 'Un(e) participant(e) choisi(e) au hasard pourra voir sa cible changer. Le tirage a eu lieu il y a {days} jour(s) : plus il est ancien, plus c\'est gênant pour cette personne, qui a peut-être déjà acheté son cadeau.',
         'add' => 'Ajouter',

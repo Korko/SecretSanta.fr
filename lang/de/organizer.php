@@ -68,6 +68,14 @@ return [
             'cancel' => 'Abbrechen',
         ],
     ],
+    'report' => [
+        'not_me' => 'Falscher Empfänger',
+        'not_participating' => 'Nimmt nicht teil',
+        'help' => [
+            'not_me' => 'Der Empfänger dieser E-Mail gibt an, dass sie nicht für ihn war: Korrigieren Sie die Adresse (das Ziel wurde ihm angezeigt, Sie können die Person auch entfernen und neu hinzufügen).',
+            'not_participating' => 'Diese Person gibt an, nicht teilzunehmen: Sie können sie aus der Veranstaltung entfernen.',
+        ],
+    ],
     'edit' => [
         'warning' => 'Ein zufällig ausgewählter Teilnehmer kann ein neues Ziel bekommen. Die Auslosung fand vor {days} Tag(en) statt: Je länger das her ist, desto unangenehmer für diese Person, die ihr Geschenk vielleicht schon gekauft hat.',
         'add' => 'Hinzufügen',

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\ReportReason;
 use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
 use App\Models\Participant;
@@ -15,6 +16,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Validation\Rule;
 
 final class DearSantaController extends Controller
 {
@@ -39,6 +41,7 @@ final class DearSantaController extends Controller
             'draw' => $participant->draw->hash,
             'organizer' => $participant->draw->organizer_name,
             'targetsRevealed' => $participant->draw->targets_revealed_at !== null,
+            'report' => $participant->report,
             'emails' => $participant->dearSantas->mapWithKeys(fn ($email): array => [
                 $email->mail->id => $email->only($this->dearSantaPublicFields),
             ]),
@@ -51,6 +54,19 @@ final class DearSantaController extends Controller
                 'participant' => $participant,
             ]),
         ]);
+    }
+
+    // "Not me" / "not taking part": shown to the organizer on their panel, null withdraws the report
+    public function report(Request $request, Participant $participant): JsonResponse
+    {
+        $request->validate(['reason' => ['nullable', Rule::enum(ReportReason::class)]]);
+
+        $participant->report = $request->enum('reason', ReportReason::class);
+        $participant->save();
+
+        $participant->createMetric($participant->report ? 'report_'.$participant->report->value : 'report_cancelled');
+
+        return response()->json(['report' => $participant->report]);
     }
 
     public function fetchState(Participant $participant): JsonResponse

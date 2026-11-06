@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 return [
     'reminder' => "Rappelez vous que votre Père/Mère Noël secrêt ne pourra pas vous répondre ! Pensez bien à lui donner le maximum d'informations possibles.",
+    'report' => [
+        'question' => 'Un problème ?',
+        'not_me' => 'Cet email ne m\'est pas destiné',
+        'not_participating' => 'Je ne participe pas',
+        'cancel' => 'Annuler le signalement',
+        'sent' => [
+            'not_me' => '{organizer} verra sur sa page que cet email ne vous était pas destiné.',
+            'not_participating' => '{organizer} verra sur sa page que vous ne participez pas.',
+        ],
+    ],
     'targets' => [
         'revealed' => 'L\'organisateur/organisatrice a consulté la liste des cibles',
         'secret' => 'La liste des cibles n\'a pas été consultée par l\'organisateur/organisatrice',

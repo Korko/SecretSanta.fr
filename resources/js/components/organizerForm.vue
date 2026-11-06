@@ -280,7 +280,12 @@
             </thead>
             <tbody>
                 <tr v-for="(participant, k) in participants" :key="participant.hash" :class="{ 'pending-remove': pendingRemove.includes(participant.hash) }">
-                    <td>{{ participant.name }}</td>
+                    <td>
+                        {{ participant.name }}
+                        <span v-if="participant.report" class="badge badge-warning participant-report" :title="$t('organizer.report.help.' + participant.report)">
+                            <i class="fas fa-flag" /> {{ $t('organizer.report.' + participant.report) }}
+                        </span>
+                    </td>
                     <td>
                         <input-edit
                             :value="participant.email"

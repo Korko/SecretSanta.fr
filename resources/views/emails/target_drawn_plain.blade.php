@@ -10,6 +10,8 @@
     ---
 
     Vous pouvez écrire à votre Père Noël Secret ! Ca se passe ici : {{ $dearSantaLink }}
+
+    Cet email ne vous est pas destiné, ou vous ne participez pas ? Signalez-le à l'organisateur en bas de cette même page.
 @if($organizer)
 
     ---

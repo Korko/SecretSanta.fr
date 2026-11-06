@@ -68,6 +68,14 @@ return [
             'cancel' => 'Cancel',
         ],
     ],
+    'report' => [
+        'not_me' => 'Wrong recipient',
+        'not_participating' => 'Not taking part',
+        'help' => [
+            'not_me' => 'Whoever received this email says it wasn\'t for them: fix the address (they saw the target, you can also remove and add them again).',
+            'not_participating' => 'This person says they are not taking part: you can remove them from the event.',
+        ],
+    ],
     'edit' => [
         'warning' => 'A randomly chosen participant may get a new target. The draw took place {days} day(s) ago: the older it is, the more inconvenient for that person, who may already have bought their gift.',
         'add' => 'Add',

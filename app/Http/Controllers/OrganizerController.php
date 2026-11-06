@@ -35,7 +35,7 @@ final class OrganizerController extends Controller
             'drawn_at' => $draw->created_at,
             'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [
                 $participant->hash => $participant->only([
-                    'hash', 'name', 'email', 'mail',
+                    'hash', 'name', 'email', 'mail', 'report',
                 ]),
             ]),
             'changeEmailUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
@@ -109,6 +109,7 @@ final class OrganizerController extends Controller
             }
 
             $participant->email = $request->input('email');
+            $participant->report = null; // a fixed address answers a "not me" report
             $participant->save();
 
             $participant->createMetric('change_email');

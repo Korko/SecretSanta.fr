@@ -32,7 +32,8 @@
                 resendEmailUrls: this.data.resendEmailUrls,
                 resendTargetEmailsUrl: this.data.resendTargetEmailsUrl,
                 targetDearSantaLastUpdate: this.data.targetDearSantaLastUpdate,
-                targetsRevealed: this.data.targetsRevealed
+                targetsRevealed: this.data.targetsRevealed,
+                report: this.data.report
             };
         },
         computed: {
@@ -83,6 +84,10 @@
                 this.emails[id].mail.updated_at = new Date().getTime();
 
                 return fetch(this.resendEmailUrls[id]);
+            },
+            sendReport(reason) {
+                return fetch(this.routes.reportUrl, 'POST', reason ? { reason } : {})
+                    .then(data => this.report = data.report);
             },
             resend_target() {
                 this.targetDearSantaLastUpdate = new Date().getTime();
@@ -176,6 +181,21 @@
                 <i class="fas fa-redo" />
                 {{ $t('dearsanta.resend.button') }}
             </button>
+        </div>
+        <!-- Wrong recipient or not taking part: the organizer sees it on their panel (they can't be emailed) -->
+        <div class="report text-center mt-4 small">
+            <template v-if="report">
+                <p class="text-warning report-sent">
+                    <i class="fas fa-flag" />
+                    {{ $t('dearsanta.report.sent.' + report, { organizer: data.organizer }) }}
+                </p>
+                <button type="button" class="btn btn-link btn-sm report-cancel" @click="sendReport(null)">{{ $t('dearsanta.report.cancel') }}</button>
+            </template>
+            <template v-else>
+                <span class="text-muted">{{ $t('dearsanta.report.question') }}</span>
+                <button type="button" class="btn btn-link btn-sm report-not-me" @click="sendReport('not_me')">{{ $t('dearsanta.report.not_me') }}</button>
+                <button type="button" class="btn btn-link btn-sm report-not-participating" @click="sendReport('not_participating')">{{ $t('dearsanta.report.not_participating') }}</button>
+            </template>
         </div>
     </div>
 </template>
