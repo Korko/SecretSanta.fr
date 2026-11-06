@@ -2,8 +2,6 @@
     import Modal from './modal.vue';
     import jQuery from 'jquery';
 
-    import jschardet from "jschardet"
-
     export default {
         components: { Modal },
         data() {
@@ -12,15 +10,14 @@
             };
         },
         methods: {
+            // ponytail: valid UTF-8 or else Windows-1252 (Excel's default), add a detector if other charsets show up
             getEncoding: async function(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        let csvResult = e.target.result.split(/\r|\n|\r\n/);
-                        resolve(jschardet.detect(csvResult.toString()).encoding);
-                    }
-                    reader.readAsBinaryString(file);
-                });
+                try {
+                    new TextDecoder('utf-8', { fatal: true }).decode(await file.arrayBuffer());
+                    return 'UTF-8';
+                } catch (e) {
+                    return 'windows-1252';
+                }
             },
             emitSubmit: function() {
                 const file = jQuery('#uploadCsv input[type=file]')[0].files[0];
