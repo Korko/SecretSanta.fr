@@ -6,15 +6,16 @@ use App\Facades\DrawCrypt;
 use App\Http\Requests\FixOrganizerRequest;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
-use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use URLParser;
 
-class FixOrganizerController extends Controller
+final class FixOrganizerController extends Controller
 {
     public function view(): Response
     {
@@ -45,7 +46,7 @@ class FixOrganizerController extends Controller
 
             // Access the email in a try/catch to handle invalid decrypt key
             $organizerEmail = $draw->organizer_email;
-        } catch (\Exception $e) {
+        } catch (Exception) {
             return response()->json([
                 'errors' => [
                     'url' => [
@@ -65,7 +66,7 @@ class FixOrganizerController extends Controller
             ], 422);
         }
 
-        if ($draw->organizer->mail->updated_at->diffInSeconds(Carbon::now()) <= config('mail.resend_delay')) {
+        if ($draw->organizer->mail->updated_at->diffInSeconds(Date::now()) <= config('mail.resend_delay')) {
             return response()->json([
                 'errors' => [
                     'email' => [

@@ -14,8 +14,8 @@ use function PHPUnit\Framework\assertEquals;
 function fakeImapMessage(string $returnPath, array $headers = []): Message
 {
     $header = Mockery::mock(Header::class);
-    $header->shouldReceive('has')->andReturnUsing(fn ($name) => array_key_exists($name, $headers));
-    $header->shouldReceive('get')->andReturnUsing(fn ($name) => new Attribute($name, $headers[$name] ?? []));
+    $header->shouldReceive('has')->andReturnUsing(fn ($name): bool => array_key_exists($name, $headers));
+    $header->shouldReceive('get')->andReturnUsing(fn ($name): Attribute => new Attribute($name, $headers[$name] ?? []));
 
     $message = Mockery::mock(Message::class);
     $message->shouldReceive('getTo')->andReturn([(object) ['mailbox' => $returnPath]]);
@@ -24,7 +24,7 @@ function fakeImapMessage(string $returnPath, array $headers = []): Message
     return $message;
 }
 
-it('can handle bounced emails', function () {
+it('can handle bounced emails', function (): void {
     config(['mail.return_path' => 'santa-*@example.com']);
 
     ajaxPost('/', [
@@ -35,8 +35,8 @@ it('can handle bounced emails', function () {
         'data-expiration' => date('Y-m-d', strtotime('+2 days')),
     ])->assertSuccessful();
 
-    [$bounced, $confirmed, $vacation] = Draw::find(1)->participants->all();
-    $tracker = app(MailTracker::class);
+    [$bounced, $confirmed, $vacation] = Draw::query()->find(1)->participants->all();
+    $tracker = resolve(MailTracker::class);
 
     $client = Mockery::mock(EmailClient::class);
     $client->shouldReceive('getUnseenMails')->andReturn([

@@ -11,10 +11,10 @@ use App\Notifications\TargetWithdrawn;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\URL;
 
-class OrganizerController extends Controller
+final class OrganizerController extends Controller
 {
     public function view(Draw $draw): Response
     {
@@ -29,27 +29,21 @@ class OrganizerController extends Controller
             'draw' => $draw->hash,
             'expires_at' => $draw->expires_at,
             'deleted_at' => $draw->deleted_at,
-            'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) {
-                return [
-                    $participant->hash => $participant->only([
-                        'hash', 'name', 'email', 'mail',
-                    ]),
-                ];
-            }),
-            'changeEmailUrls' => $draw->participants->mapWithKeys(function ($participant) {
-                return [
-                    $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [
-                        'draw' => $participant->draw, 'participant' => $participant,
-                    ]),
-                ];
-            }),
-            'withdrawalUrls' => $draw->participants->mapWithKeys(function ($participant) {
-                return [
-                    $participant->hash => URL::signedRoute('organizerPanel.withdraw', [
-                        'draw' => $participant->draw, 'participant' => $participant,
-                    ]),
-                ];
-            }),
+            'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [
+                $participant->hash => $participant->only([
+                    'hash', 'name', 'email', 'mail',
+                ]),
+            ]),
+            'changeEmailUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
+                $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [
+                    'draw' => $participant->draw, 'participant' => $participant,
+                ]),
+            ]),
+            'withdrawalUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
+                $participant->hash => URL::signedRoute('organizerPanel.withdraw', [
+                    'draw' => $participant->draw, 'participant' => $participant,
+                ]),
+            ]),
             'finalCsvAvailable' => $draw->next_solvable,
         ]);
     }
@@ -57,9 +51,7 @@ class OrganizerController extends Controller
     public function fetchState(Draw $draw): JsonResponse
     {
         return response()->json([
-            'participants' => $draw->participants->load('mail')->mapWithKeys(function ($participant) {
-                return [$participant->hash => $participant->only(['hash', 'mail'])];
-            }),
+            'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [$participant->hash => $participant->only(['hash', 'mail'])]),
         ]);
     }
 
@@ -105,7 +97,7 @@ class OrganizerController extends Controller
         }
 
         $santa->notify(new TargetWithdrawn);
-        $target->dearSantas->each(function ($dearSanta) use ($santa) {
+        $target->dearSantas->each(function ($dearSanta) use ($santa): void {
             $santa->notify(new DearSanta($dearSanta));
         });
         $participant->delete();

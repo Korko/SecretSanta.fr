@@ -15,28 +15,11 @@ trait HashId
      */
     protected $append = ['hash'];
 
-    protected function getHashConnection()
-    {
-        return property_exists($this, 'hashConnection') ? $this->hashConnection : null;
-    }
-
-    public function getHashAttribute()
-    {
-        return Hashids::connection($this->getHashConnection())->encode($this->id);
-    }
-
-    public function scopeFindByHashOrFail($query, $hash)
-    {
-        $ids = Hashids::connection($this->getHashConnection())->decode($hash);
-
-        return $query->findOrFail(collect((array) $ids)->first());
-    }
-
     /**
      * Retrieve the model for a bound value.
      *
-     * @param  mixed   $value
-     * @param  ?string $field
+     * @param  mixed  $value
+     * @param  ?string  $field
      */
     public function resolveRouteBinding($value, $field = null): ?Model
     {
@@ -56,5 +39,22 @@ trait HashId
     public function getRouteKeyName(): string
     {
         return 'hash';
+    }
+
+    protected function getHashAttribute()
+    {
+        return Hashids::connection($this->getHashConnection())->encode($this->id);
+    }
+
+    protected function scopeFindByHashOrFail($query, $hash)
+    {
+        $ids = Hashids::connection($this->getHashConnection())->decode($hash);
+
+        return $query->findOrFail(collect((array) $ids)->first());
+    }
+
+    protected function getHashConnection()
+    {
+        return property_exists($this, 'hashConnection') ? $this->hashConnection : null;
     }
 }

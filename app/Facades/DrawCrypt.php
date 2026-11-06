@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Facades;
 
 use Illuminate\Support\Facades\Facade;
@@ -16,7 +18,7 @@ use Illuminate\Support\Facades\Facade;
  *
  * @see \App\Services\IVEncrypter
  */
-class DrawCrypt extends Facade
+final class DrawCrypt extends Facade
 {
     /**
      * Get the registered name of the component.

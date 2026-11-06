@@ -4,41 +4,31 @@ namespace App\Console\Commands;
 
 use App\Models\Draw;
 use App\Models\Mail;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-class ListDraws extends Command
+#[Description('List draws')]
+#[Signature('secretsanta:list-draws')]
+final class ListDraws extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'secretsanta:list-draws';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'List draws';
-
     /**
      * Execute the console command.
      */
     public function handle(): void
     {
-        $draws = Draw::where('expires_at', '>', now())->get();
+        $draws = Draw::query()->where('expires_at', '>', now())->get();
         foreach ($draws as $draw) {
             $this->info('Draw #'.$draw->id.' ('.$draw->created_at.' - '.$draw->expires_at.')');
             $this->table(
                 ['Participants', 'Created', 'Sending', 'Sent', 'Received', 'Bounced'],
                 [[
                     $draw->participants->count(),
-                    $draw->participants->filter(fn ($p) => $p->mail->delivery_status === Mail::CREATED)->count(),
-                    $draw->participants->filter(fn ($p) => $p->mail->delivery_status === Mail::SENDING)->count(),
-                    $draw->participants->filter(fn ($p) => $p->mail->delivery_status === Mail::SENT)->count(),
-                    $draw->participants->filter(fn ($p) => $p->mail->delivery_status === Mail::RECEIVED)->count(),
-                    $draw->participants->filter(fn ($p) => $p->mail->delivery_status === Mail::ERROR)->count(),
+                    $draw->participants->filter(fn ($p): bool => $p->mail->delivery_status === Mail::CREATED)->count(),
+                    $draw->participants->filter(fn ($p): bool => $p->mail->delivery_status === Mail::SENDING)->count(),
+                    $draw->participants->filter(fn ($p): bool => $p->mail->delivery_status === Mail::SENT)->count(),
+                    $draw->participants->filter(fn ($p): bool => $p->mail->delivery_status === Mail::RECEIVED)->count(),
+                    $draw->participants->filter(fn ($p): bool => $p->mail->delivery_status === Mail::ERROR)->count(),
                 ]]
             );
             $this->newLine();

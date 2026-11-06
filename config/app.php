@@ -1,6 +1,11 @@
 <?php
 
+use App\Facades\DrawCrypt;
+use App\Facades\Solver;
+use App\Services\CsvGenerator;
+use Facades\App\Services\URLParser;
 use Illuminate\Support\Facades\Facade;
+use Vinkla\Hashids\Facades\Hashids;
 
 return [
 
@@ -16,11 +21,11 @@ return [
     'challenge' => 'Ping?',
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Csv' => App\Services\CsvGenerator::class,
-        'DrawCrypt' => App\Facades\DrawCrypt::class,
-        'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
-        'Solver' => App\Facades\Solver::class,
-        'URLParser' => Facades\App\Services\URLParser::class,
+        'Csv' => CsvGenerator::class,
+        'DrawCrypt' => DrawCrypt::class,
+        'Hashids' => Hashids::class,
+        'Solver' => Solver::class,
+        'URLParser' => URLParser::class,
     ])->toArray(),
 
     'bmc' => env('BMC_ME'),

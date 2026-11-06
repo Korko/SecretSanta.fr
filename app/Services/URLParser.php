@@ -5,17 +5,9 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 
-class URLParser
+final readonly class URLParser
 {
-    protected $router;
-
-    protected $request;
-
-    public function __construct(Router $router, Request $request)
-    {
-        $this->router = $router;
-        $this->request = $request;
-    }
+    public function __construct(private Router $router, private Request $request) {}
 
     public function parseByName($routeName, $url)
     {

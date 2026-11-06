@@ -3,33 +3,33 @@
 use App\Models\Draw;
 use App\Models\Exclusion;
 use App\Models\Participant;
-use function PHPUnit\Framework\{assertEquals, assertTrue};
 
-it('records new entries in case of success', function ($participants) {
-    assertEquals(0, Draw::count());
-    assertEquals(0, Participant::count());
-    assertEquals(0, Exclusion::count());
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertTrue;
+
+it('records new entries in case of success', function ($participants): void {
+    assertEquals(0, Draw::query()->count());
+    assertEquals(0, Participant::query()->count());
+    assertEquals(0, Exclusion::query()->count());
 
     $draw = createServiceDraw($participants);
 
-    $exclusions = array_reduce($participants, function ($sum, $participant) {
-        return $sum + count($participant['exclusions']);
-    });
+    $exclusions = array_reduce($participants, fn (int|float $sum, array $participant): int|float => $sum + count($participant['exclusions']), 0);
 
-    assertEquals(1, Draw::count());
-    assertTrue($draw->is(Draw::find(1)));
+    assertEquals(1, Draw::query()->count());
+    assertTrue($draw->is(Draw::query()->find(1)));
 
-    assertEquals(count($participants), Participant::count());
-    assertEquals($exclusions, Exclusion::count());
+    assertEquals(count($participants), Participant::query()->count());
+    assertEquals($exclusions, Exclusion::query()->count());
 
     // Carreful, array is 0..n, Db is 1..n
     foreach ($participants as $idx => $participant) {
-        assertEquals($participant['name'], Participant::find($idx + 1)->name);
-        assertEquals($participant['email'], Participant::find($idx + 1)->email);
+        assertEquals($participant['name'], Participant::query()->find($idx + 1)->name);
+        assertEquals($participant['email'], Participant::query()->find($idx + 1)->email);
     }
 })->with('valid participants list');
 
-it('saves the correct target', function ($participants, $targets) {
+it('saves the correct target', function (array $participants, array $targets): void {
     $draw = createServiceDraw($participants);
 
     foreach ($participants as $idx => $participant) {
@@ -38,7 +38,7 @@ it('saves the correct target', function ($participants, $targets) {
     }
 })->with('unique participants list');
 
-it('can handle several exclusions', function () {
+it('can handle several exclusions', function (): void {
     $participants = [
         ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => [11, 22, 16, 18, 8, 9, 5, 4, 2, 1, 3, 7, 12, 23, 21, 20, 19, 14]],
         ['name' => uniqid(), 'email' => 'test@test.com', 'exclusions' => []],

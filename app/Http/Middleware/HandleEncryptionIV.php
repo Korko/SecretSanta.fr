@@ -4,11 +4,12 @@ namespace App\Http\Middleware;
 
 use Closure;
 use DrawCrypt;
+use Exception;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class HandleEncryptionIV
+final class HandleEncryptionIV
 {
     /**
      * Handle an incoming request.
@@ -25,7 +26,7 @@ class HandleEncryptionIV
             $request->route()->parameters()[$parameterToCheck]->$fieldToCheck;
         } catch (DecryptException $e) {
             abort(500, 'Invalid encryption iv: '.$e->getMessage());
-        } catch (\Exception $e) {
+        } catch (Exception) {
             // Something may be wrong with the Controller parameters (missing the parameter to check?)
         }
 

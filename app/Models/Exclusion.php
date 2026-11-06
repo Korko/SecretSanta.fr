@@ -1,20 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-class Exclusion extends Model
-{
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
-    protected $fillable = ['participant_id', 'exclusion_id'];
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
+#[Fillable(['participant_id', 'exclusion_id'])]
+#[WithoutTimestamps]
+final class Exclusion extends Model
+{
+    use HasFactory;
 }

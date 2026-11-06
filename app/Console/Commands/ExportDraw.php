@@ -3,28 +3,23 @@
 namespace App\Console\Commands;
 
 use DrawCrypt;
-use function Laravel\Prompts\{error, info, note, table};
+use Exception;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
 
-class ExportDraw extends Command
+use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\note;
+use function Laravel\Prompts\table;
+
+#[Description('List draw participants')]
+#[Signature('secretsanta:export-draw {url? : The URL received by one of the participants to write to their santa or the link to the organizer panel}')]
+final class ExportDraw extends Command
 {
     use ParsesDrawUrl;
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'secretsanta:export-draw {url? : The URL received by one of the participants to write to their santa or the link to the organizer panel}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'List draw participants';
 
     /**
      * Execute the console command.
@@ -33,9 +28,10 @@ class ExportDraw extends Command
     {
         try {
             $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
-        } catch(\Exception $e) {
-            error('Draw not found - ' . $e->getMessage());
-            report($e);
+        } catch (Exception $exception) {
+            error('Draw not found - '.$exception->getMessage());
+            report($exception);
+
             return;
         }
 
@@ -49,8 +45,8 @@ class ExportDraw extends Command
             $draw->participants()
                 ->with(['mail', 'target'])
                 ->get()
-                ->map(fn ($col) => Arr::only($col->toArray(), ['name']) + ['target' => $col->target->name])
-                ->toArray()
+                ->map(fn ($col): array => Arr::only($col->toArray(), ['name']) + ['target' => $col->target->name])
+                ->all()
         );
     }
 }

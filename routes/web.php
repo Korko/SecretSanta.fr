@@ -7,6 +7,7 @@ use App\Http\Controllers\RandomFormController;
 use App\Models\Participant;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,11 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-RateLimiter::for('global', function (Request $request) {
-    return Limit::perMinute(100)->by($request->ip())->response(function () {
-        return abort(429);
-    });
-});
+RateLimiter::for('global', fn (Request $request) => Limit::perMinute(100)->by($request->ip())->response(fn () => abort(429)));
 
 Route::get('/', [RandomFormController::class, 'view']);
 Route::post('/', [RandomFormController::class, 'handle']);
@@ -36,14 +33,12 @@ Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').
 Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
 Route::pattern('dearSanta', '[0-9a-zA-Z]{'.config('hashids.connections.dearSanta.length').',}');
 
-Route::middleware('signed')->group(function () {
+Route::middleware('signed')->group(function (): void {
     Route::get('/dearSanta/{participant}', [DearSantaController::class, 'view'])
         ->name('dearSanta')
-        ->missing(function () {
-            return response()->view('missingDraw', [], 404);
-        });
+        ->missing(fn () => response()->view('missingDraw', [], 404));
 
-    Route::middleware('decrypt.iv:participant,name')->group(function () {
+    Route::middleware('decrypt.iv:participant,name')->group(function (): void {
         Route::get('/participant/{participant}', [DearSantaController::class, 'fetch'])
             ->name('dearSanta.fetch');
         Route::post('/dearSanta/{participant}', [DearSantaController::class, 'handle'])
@@ -77,11 +72,9 @@ Route::middleware('signed')->group(function () {
     });
 
     Route::get('/org/{draw}', [OrganizerController::class, 'view'])->name('organizerPanel')
-        ->missing(function () {
-            return response()->view('missingDraw', [], 404);
-        });
+        ->missing(fn () => response()->view('missingDraw', [], 404));
 
-    Route::middleware('decrypt.iv:draw,mail_title')->group(function () {
+    Route::middleware('decrypt.iv:draw,mail_title')->group(function (): void {
         Route::get('/draw/{draw}', [OrganizerController::class, 'fetch'])
             ->name('organizerPanel.fetch');
         Route::delete('/draw/{draw}', [OrganizerController::class, 'delete'])
@@ -93,7 +86,7 @@ Route::middleware('signed')->group(function () {
         Route::get('/org/{draw}/fetchState', [OrganizerController::class, 'fetchState'])
             ->name('organizerPanel.fetchState');
     });
-    Route::middleware('decrypt.iv:participant,name')->group(function () {
+    Route::middleware('decrypt.iv:participant,name')->group(function (): void {
         Route::post('/org/{draw}/{participant}/changeEmail', [OrganizerController::class, 'changeEmail'])
             ->name('organizerPanel.changeEmail');
         Route::get('/org/{draw}/{participant}/withdraw', [OrganizerController::class, 'withdraw'])

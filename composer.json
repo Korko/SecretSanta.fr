@@ -17,6 +17,7 @@
         "laravel/reverb": "^1.4",
         "laravel/tinker": "^3.0",
         "league/flysystem-aws-s3-v3": "^3.0",
+        "nunomaduro/essentials": "^1.2",
         "predis/predis": "^3.0",
         "pusher/pusher-php-server": "^7.0",
         "spatie/laravel-blade-javascript": "^2.8",
@@ -27,8 +28,12 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.0",
         "barryvdh/laravel-ide-helper": "^3.5",
+        "dg/bypass-finals": "^1.11",
+        "driftingly/rector-laravel": "^2.7",
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.14",
         "laravel/pail": "^1.2.2",
+        "laravel/pint": "^1.32",
         "laravel/sail": "^1.51",
         "librenms/laravel-vue-i18n-generator": "dev-master",
         "mockery/mockery": "^1.6",
@@ -36,7 +41,10 @@
         "pestphp/pest": "^5.0",
         "pestphp/pest-plugin-browser": "^5.0",
         "pestphp/pest-plugin-faker": "^5.0",
-        "pestphp/pest-plugin-laravel": "^5.0"
+        "pestphp/pest-plugin-laravel": "^5.0",
+        "pestphp/pest-plugin-type-coverage": "^5.1",
+        "rector/rector": "^2.8",
+        "roave/security-advisories": "dev-latest"
     },
     "config": {
         "optimize-autoloader": true,
@@ -46,7 +54,7 @@
             "pestphp/pest-plugin": true
         },
         "platform": {
-            "php": "8.4.1"
+            "php": "8.4.27"
         }
     },
     "extra": {
@@ -85,8 +93,6 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "check-style": "php-cs-fixer fix --dry-run --allow-risky=yes --diff",
-        "fix-style": "php-cs-fixer fix --allow-risky=yes",
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
@@ -100,11 +106,27 @@
             "npm run build"
         ],
         "test": [
-            "@php artisan config:clear --ansi",
-            "@php artisan test"
+            "@test:unit",
+            "@test:lint",
+            "@test:types",
+            "@test:type-coverage"
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ],
+        "lint": [
+            "rector",
+            "pint --parallel"
+        ],
+        "test:lint": [
+            "pint --parallel --test",
+            "rector --dry-run"
+        ],
+        "test:types": "phpstan --memory-limit=2G",
+        "test:type-coverage": "pest --type-coverage --min=90",
+        "test:unit": [
+            "@php artisan config:clear --ansi",
+            "@php artisan test"
         ]
     },
     "repositories": [

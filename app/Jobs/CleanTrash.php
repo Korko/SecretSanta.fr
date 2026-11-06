@@ -4,15 +4,12 @@ namespace App\Jobs;
 
 use App\Services\EmailClient;
 use App\Services\MailTracker;
-use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Queue\Queueable;
 
-class CleanTrash implements ShouldQueue
+final class CleanTrash implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Queueable;
 
     public function handle(EmailClient $emailClient, MailTracker $tracker): void
     {

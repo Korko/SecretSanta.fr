@@ -4,11 +4,10 @@ namespace App\Services;
 
 use Webklex\IMAP\Facades\Client;
 use Webklex\PHPIMAP\Message;
-use Webklex\PHPIMAP\Query\WhereQuery;
 
-class EmailClient
+final class EmailClient
 {
-    protected $delegate;
+    private $delegate;
 
     public function __construct($connexion = 'default')
     {
@@ -21,24 +20,14 @@ class EmailClient
         $this->delegate->expunge();
     }
 
-    protected function getFolderQuery($folder)
+    /**
+     * Proxies all methods to the delegate.
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
     {
-        $oFolder = $this->delegate->getFolder($folder);
-
-        return $oFolder->query();
-    }
-
-    protected function getFolderLimitQuery($folder, int $limit = 0)
-    {
-        $query = $this->getFolderQuery($folder);
-
-        if ($limit > 0) {
-            $query->limit($limit);
-        } else {
-            $query->all();
-        }
-
-        return $query;
+        return call_user_func_array([$this->delegate, $method], $args);
     }
 
     public function getMails($folder, int $limit = 0): iterable
@@ -72,13 +61,23 @@ class EmailClient
         $message->delete(false);
     }
 
-    /**
-     * Proxies all methods to the delegate.
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
+    private function getFolderQuery($folder)
     {
-        return call_user_func_array([$this->delegate, $method], $args);
+        $oFolder = $this->delegate->getFolder($folder);
+
+        return $oFolder->query();
+    }
+
+    private function getFolderLimitQuery($folder, int $limit = 0)
+    {
+        $query = $this->getFolderQuery($folder);
+
+        if ($limit > 0) {
+            $query->limit($limit);
+        } else {
+            $query->all();
+        }
+
+        return $query;
     }
 }

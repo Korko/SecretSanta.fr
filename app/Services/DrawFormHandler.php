@@ -8,24 +8,20 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class DrawFormHandler
+final class DrawFormHandler
 {
-    protected $title;
+    private $title = '';
 
-    protected $body;
+    private $body = '';
 
-    protected $organizer;
+    private ?array $organizer = null;
 
-    protected $participants;
+    private array $participants = [];
 
-    protected $expirationDate;
+    private string $expirationDate;
 
     public function __construct()
     {
-        $this->title = '';
-        $this->body = '';
-        $this->organizer = null;
-        $this->participants = [];
         $this->expirationDate = date('Y-m-d', strtotime('+2 days'));
     }
 
@@ -39,9 +35,7 @@ class DrawFormHandler
     public function withParticipants(array $participants): self
     {
         $this->participants = $participants;
-        if (! isset($this->organizer)) {
-            $this->organizer = reset($participants);
-        }
+        $this->organizer ??= reset($participants);
 
         return $this;
     }
@@ -60,7 +54,7 @@ class DrawFormHandler
         return $this;
     }
 
-    public function withExpiration($expirationDate): self
+    public function withExpiration(string $expirationDate): self
     {
         $this->expirationDate = $expirationDate;
 
@@ -74,21 +68,21 @@ class DrawFormHandler
         $draw = $this->createDraw();
 
         try {
-            $this->solveExclusions($draw);
+            $this->solveExclusions();
 
             DrawHandler::solve($draw);
 
             DB::commit();
 
             return $draw;
-        } catch (Throwable $e) {
+        } catch (Throwable $throwable) {
             DB::rollBack();
 
-            throw $e;
+            throw $throwable;
         }
     }
 
-    protected function createDraw(): Draw
+    private function createDraw(): Draw
     {
         $draw = new Draw;
         $draw->expires_at = $this->expirationDate;
@@ -112,16 +106,14 @@ class DrawFormHandler
         return $draw;
     }
 
-    protected function solveExclusions(Draw $draw): void
+    private function solveExclusions(): void
     {
         $participants = $this->participants;
         for ($i = 0; $i < count($participants); $i++) {
             $participant = $participants[$i];
 
             $participant['model']->exclusions()->attach(
-                array_map(function ($participantId) use ($participants) {
-                    return $participants[intval($participantId)]['model']->id;
-                }, Arr::get($participant, 'exclusions', []))
+                array_map(fn ($participantId) => $participants[intval($participantId)]['model']->id, Arr::get($participant, 'exclusions', []))
             );
         }
     }

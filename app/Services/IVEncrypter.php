@@ -9,19 +9,16 @@ use RuntimeException;
 
 use function openssl_encrypt;
 
-class IVEncrypter extends BaseEncrypter
+final class IVEncrypter extends BaseEncrypter
 {
     /**
      * The initialization vector.
-     *
-     * @var string
      */
-    protected $iv;
+    private string $iv;
 
     /**
      * Create a new encrypter instance.
      *
-     * @return void
      *
      * @throws RuntimeException
      */
@@ -33,14 +30,22 @@ class IVEncrypter extends BaseEncrypter
     }
 
     /**
+     * Determine if the given iv and cipher combination is valid.
+     */
+    public static function supportedIV(string $iv, string $cipher): bool
+    {
+        return mb_strlen($iv, '8bit') === openssl_cipher_iv_length($cipher);
+    }
+
+    /**
      * Override the initialization vector.
      */
     public function setIV(string $iv): void
     {
-        if (static::supportedIV($iv, $this->cipher)) {
+        if (self::supportedIV($iv, $this->cipher)) {
             $this->iv = $iv;
         } else {
-            throw new RuntimeException('The IV\'s length does not match the expected one by the cipher.');
+            throw new RuntimeException("The IV's length does not match the expected one by the cipher.");
         }
     }
 
@@ -50,14 +55,6 @@ class IVEncrypter extends BaseEncrypter
     public function getIV(): string
     {
         return $this->iv;
-    }
-
-    /**
-     * Determine if the given iv and cipher combination is valid.
-     */
-    public static function supportedIV(string $iv, string $cipher): bool
-    {
-        return mb_strlen($iv, '8bit') === openssl_cipher_iv_length($cipher);
     }
 
     /**
@@ -77,20 +74,16 @@ class IVEncrypter extends BaseEncrypter
             $this->cipher, $this->key, 0, $this->iv
         );
 
-        if ($value === false) {
-            throw new EncryptException('Could not encrypt the data.');
-        }
+        throw_if($value === false, EncryptException::class, 'Could not encrypt the data.');
 
         // Once we get the encrypted value we'll go ahead and base64_encode the input
         // vector and create the MAC for the encrypted value so we can then verify
         // its authenticity. Then, we'll JSON the data into the "payload" array.
         $mac = $this->hash(base64_encode($this->iv), $value, $this->key);
 
-        $json = json_encode(compact('value', 'mac'), JSON_UNESCAPED_SLASHES);
+        $json = json_encode(['value' => $value, 'mac' => $mac], JSON_UNESCAPED_SLASHES);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new EncryptException('Could not encrypt the data.');
-        }
+        throw_if(json_last_error() !== JSON_ERROR_NONE, EncryptException::class, 'Could not encrypt the data.');
 
         return base64_encode($json);
     }
@@ -110,13 +103,9 @@ class IVEncrypter extends BaseEncrypter
         // If the payload is not valid JSON or does not have the proper keys set we will
         // assume it is invalid and bail out of the routine since we will not be able
         // to decrypt the given value. We'll also check the MAC for this encryption.
-        if (! $this->validPayload($payload)) {
-            throw new DecryptException('The payload is invalid.');
-        }
+        throw_unless($this->validPayload($payload), DecryptException::class, 'The payload is invalid.');
 
-        if (! $this->validMac($payload)) {
-            throw new DecryptException('The MAC is invalid.');
-        }
+        throw_unless($this->validMac($payload), DecryptException::class, 'The MAC is invalid.');
 
         return $payload;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
 * File:     imap.php
 * Category: config

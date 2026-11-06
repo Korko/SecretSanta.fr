@@ -3,52 +3,20 @@
 namespace App\Models;
 
 use App\Casts\EncryptedString;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class DearSanta extends Model
+#[Fillable(['mail_body', 'sender_id'])]
+#[WithoutTimestamps]
+final class DearSanta extends Model
 {
+    use HasFactory;
     use HashId;
 
     protected $hashConnection = 'dearSanta';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
-    protected $fillable = ['mail_body', 'sender_id'];
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'mail_body' => EncryptedString::class,
-        ];
-    }
-
-    protected static function booted()
-    {
-        parent::boot();
-
-        static::created(function ($dearSanta) {
-            $dearSanta->mail()->save(new Mail);
-        });
-
-        static::deleting(function ($dearSanta) {
-            $dearSanta->mail()->delete();
-        });
-    }
 
     public function sender(): BelongsTo
     {
@@ -60,8 +28,33 @@ class DearSanta extends Model
         return $this->morphOne(Mail::class, 'mailable');
     }
 
-    public function getDrawAttribute()
+    protected static function booted(): void
     {
-        return $this->sender->draw;
+        parent::boot();
+
+        self::created(function ($dearSanta): void {
+            $dearSanta->mail()->save(new Mail);
+        });
+
+        self::deleting(function ($dearSanta): void {
+            $dearSanta->mail()->delete();
+        });
+    }
+
+    protected function draw(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->sender->draw);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'mail_body' => EncryptedString::class,
+        ];
     }
 }

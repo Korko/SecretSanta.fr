@@ -22,20 +22,18 @@ trait ParsesDrawUrl
     {
         $url = $url ?: text(
             label: 'What is the URL?',
-            hint: 'This URL was received by one of the participants to write to their santa or is the link to the organizer panel',
             placeholder: config('app.url'),
-            required: true
+            required: true,
+            hint: 'This URL was received by one of the participants to write to their santa or is the link to the organizer panel'
         );
 
         $this->setCryptIVFromUrl($url);
 
         $participant = URLParser::parseByName('dearSanta', $url)->participant;
         if ($participant) {
-            $draw = $participant->draw;
-        } else {
-            $draw = URLParser::parseByName('organizerPanel', $url)->draw;
+            return $participant->draw;
         }
 
-        return $draw;
+        return URLParser::parseByName('organizerPanel', $url)->draw;
     }
 }

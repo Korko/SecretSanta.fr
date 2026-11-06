@@ -1,11 +1,16 @@
 <?php
 
 use App\Models\Draw;
-use App\Models\Participant;
 use App\Services\DrawFormHandler;
+use DG\BypassFinals;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\TestCase;
 
+// Allows Mockery to mock our final classes
+BypassFinals::enable();
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 */
 
 uses(Tests\TestCase::class)->in('Feature');
-uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundation\Testing\DatabaseTransactions::class)->in('Feature');
+uses(DatabaseMigrations::class, DatabaseTransactions::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -49,9 +54,9 @@ uses(Illuminate\Foundation\Testing\DatabaseMigrations::class, Illuminate\Foundat
 
 function assertHasMailPushed($class, $recipient = null, ?Closure $callback = null): void
 {
-    Mail::assertSent($class, function ($mail) use ($recipient, $callback) {
+    Mail::assertSent($class, function ($mail) use ($recipient, $callback): bool {
         if ($recipient === null || $mail->hasTo($recipient)) {
-            if ($callback !== null) {
+            if ($callback instanceof Closure) {
                 $callback($mail);
             }
 
@@ -64,7 +69,7 @@ function assertHasMailPushed($class, $recipient = null, ?Closure $callback = nul
 
 function prepareAjax($headers = []): TestCase
 {
-    $headers = $headers + [
+    $headers += [
         'Accept' => 'application/json',
         'X-Requested-With' => 'XMLHttpRequest',
         'X-HASH-IV' => base64_encode(DrawCrypt::getIV()),
@@ -103,8 +108,8 @@ function generateParticipants(int $totalParticipants, bool $withExclusions = tru
     $participants = [];
     for ($i = 0; $i < $totalParticipants; $i++) {
         $participants[] = [
-            'name' => fake()->unique()->name,
-            'email' => fake()->unique()->safeEmail,
+            'name' => fake()->unique()->name(),
+            'email' => fake()->unique()->safeEmail(),
             'target' => ($i === 0) ? $totalParticipants - 1 : $i - 1,
         ];
     }
@@ -135,12 +140,12 @@ function generateParticipants(int $totalParticipants, bool $withExclusions = tru
  */
 function formatParticipants($participants): array
 {
-    $participants = array_map(function ($idx) use ($participants) {
+    return array_map(function (int|string $idx) use ($participants) {
         if (isset($participants[$idx]['target'])) {
             $participants[$idx] += [
                 // Remove the keys and cast as string to simulate an html form submission
                 'exclusions' => array_values(
-                    array_map('strval',
+                    array_map(strval(...),
                         // Get all the participants idx but the current one and the target
                         // (this participant will only draw their target and nobody else)
                         array_diff(array_keys($participants), [$idx], [$participants[$idx]['target']])
@@ -151,8 +156,6 @@ function formatParticipants($participants): array
 
         return $participants[$idx];
     }, array_keys($participants));
-
-    return $participants;
 }
 
 pest()->extend(Tests\TestCase::class)->in('Browser');

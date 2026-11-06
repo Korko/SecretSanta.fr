@@ -4,25 +4,17 @@ namespace App\Console\Commands;
 
 use App\Notifications\DearSanta;
 use App\Notifications\TargetWithdrawn;
+use Exception;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
+
 use function Laravel\Prompts\error;
 
-class WithdrawParticipant extends Command
+#[Description('Withdraw a participant and inform their santa')]
+#[Signature('secretsanta:withdraw-participant {url : The URL received by one of the participants to write to their santa} {id : The participant id}')]
+final class WithdrawParticipant extends Command
 {
     use ParsesDrawUrl;
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'secretsanta:withdraw-participant {url : The URL received by one of the participants to write to their santa} {id : The participant id}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Withdraw a participant and inform their santa';
 
     /**
      * Execute the console command.
@@ -31,9 +23,10 @@ class WithdrawParticipant extends Command
     {
         try {
             $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
-        } catch(\Exception $e) {
-            error('Draw not found - ' . $e->getMessage());
-            report($e);
+        } catch (Exception $exception) {
+            error('Draw not found - '.$exception->getMessage());
+            report($exception);
+
             return;
         }
 
@@ -42,16 +35,14 @@ class WithdrawParticipant extends Command
         $santa = $participant->santa;
         $target = $participant->target;
 
-        if ($santa->is($target)) {
-            // Limit case
-            throw new \Exception('Cannot withdraw participant: their target is also their santa');
-        }
+        // Limit case
+        throw_if($santa->is($target), Exception::class, 'Cannot withdraw participant: their target is also their santa');
 
         // A -> B -> C => A -> C
         $santa->target()->save($target);
 
         $santa->notify(new TargetWithdrawn);
-        $target->dearSantas->each(function ($dearSanta) use ($santa) {
+        $target->dearSantas->each(function ($dearSanta) use ($santa): void {
             $santa->notify(new DearSanta($dearSanta));
         });
         $this->info('Santa informed');

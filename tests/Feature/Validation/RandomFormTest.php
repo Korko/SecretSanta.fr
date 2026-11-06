@@ -1,6 +1,8 @@
 <?php
 
-it('fails if nothing sent', function () {
+declare(strict_types=1);
+
+it('fails if nothing sent', function (): void {
     ajaxPost('/', ['a' => 'b'])
         ->assertStatus(422)
         ->assertJsonValidationErrors([
@@ -8,7 +10,7 @@ it('fails if nothing sent', function () {
         ]);
 });
 
-it('needs at least three names', function () {
+it('needs at least three names', function (): void {
     ajaxPost('/', ['participants' => [
         ['name' => 'toto'],
     ]])
@@ -29,7 +31,7 @@ it('needs at least three names', function () {
         ]);
 });
 
-it('fails if names are duplicates', function () {
+it('fails if names are duplicates', function (): void {
     ajaxPost('/', ['participants' => [
         ['name' => 'toto'],
         ['name' => 'toto'],
@@ -43,7 +45,7 @@ it('fails if names are duplicates', function () {
         ]);
 });
 
-it('requires emails', function () {
+it('requires emails', function (): void {
     ajaxPost('/', ['participants' => [
         ['name' => 'toto'],
         ['name' => 'tata'],
@@ -69,7 +71,7 @@ it('requires emails', function () {
         ]);
 });
 
-it('needs valid email format', function () {
+it('needs valid email format', function (): void {
     ajaxPost('/', ['participants' => [
         ['name' => 'toto', 'email' => 'invalidformat'],
         ['name' => 'tata', 'email' => 'test@test.com'],
@@ -83,7 +85,7 @@ it('needs valid email format', function () {
         ]);
 });
 
-it('needs email body', function () {
+it('needs email body', function (): void {
     ajaxPost('/', ['participants' => [
         ['name' => 'toto', 'email' => 'test@est.com'],
         ['name' => 'tata', 'email' => 'test@test.com'],
@@ -95,7 +97,7 @@ it('needs email body', function () {
         ]);
 });
 
-it('fails if exclusion does not exist', function () {
+it('fails if exclusion does not exist', function (): void {
     ajaxPost('/', ['participants' => [
         ['name' => 'toto', 'exclusions' => ['87']],
         ['name' => 'tata'],
@@ -110,7 +112,7 @@ it('fails if exclusion does not exist', function () {
         ]);
 });
 
-it('works with valid exclusion', function () {
+it('works with valid exclusion', function (): void {
     ajaxPost('/', ['participants' => [
         ['name' => 'toto', 'exclusions' => ['1']],
         ['name' => 'tata'],
@@ -126,7 +128,7 @@ it('works with valid exclusion', function () {
         ]);
 });
 
-it('needs a date in specific format', function () {
+it('needs a date in specific format', function (): void {
     ajaxPost('/', ['participants' => [
         ['name' => 'toto', 'email' => 'test@test.com'],
         ['name' => 'tata', 'email' => 'test@test.com'],
@@ -136,7 +138,7 @@ it('needs a date in specific format', function () {
         ->assertJsonValidationErrors(['title', 'content-email', 'data-expiration']);
 });
 
-it('fails if the expiration is past', function () {
+it('fails if the expiration is past', function (): void {
     ajaxPost('/', ['participants' => [
         ['name' => 'toto', 'email' => 'test@test.com'],
         ['name' => 'tata', 'email' => 'test@test.com'],
@@ -146,7 +148,7 @@ it('fails if the expiration is past', function () {
         ->assertJsonValidationErrors(['title', 'content-email', 'data-expiration']);
 });
 
-it('fails if the expiration is too soon', function () {
+it('fails if the expiration is too soon', function (): void {
     ajaxPost('/', ['participants' => [
         ['name' => 'toto', 'email' => 'test@test.com'],
         ['name' => 'tata', 'email' => 'test@test.com'],
@@ -156,7 +158,7 @@ it('fails if the expiration is too soon', function () {
         ->assertJsonValidationErrors(['title', 'content-email', 'data-expiration']);
 });
 
-it('works if the expiration is far enough', function () {
+it('works if the expiration is far enough', function (): void {
     ajaxPost('/', ['participants' => [
         ['name' => 'toto', 'email' => 'test@test.com'],
         ['name' => 'tata', 'email' => 'test@test.com'],

@@ -2,14 +2,9 @@
 
 namespace Tests\Browser\Components;
 
-class ExclusionPicker extends BaseComponent
+final class ExclusionPicker extends BaseComponent
 {
-    protected $root;
-
-    public function __construct($root = '')
-    {
-        $this->root = $root;
-    }
+    public function __construct(protected $root = '') {}
 
     /**
      * Get the root selector for the component.

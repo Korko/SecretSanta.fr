@@ -1,17 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Http\Middleware\HandleEncryptionIV;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\HandleEncryptionIV;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Korko\Validator\ValidatorServiceProvider;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withProviders([
-        \Korko\Validator\ValidatorServiceProvider::class,
+        ValidatorServiceProvider::class,
     ])
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -20,7 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware) {
+    ->withMiddleware(function (Middleware $middleware): void {
         // $middleware->throttleApi();
 
         $middleware->alias([
@@ -28,10 +35,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->web(remove: [
-            \Illuminate\Cookie\Middleware\EncryptCookies::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class,
+            EncryptCookies::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            PreventRequestForgery::class,
         ]);
 
         $middleware->priority([
@@ -39,22 +46,18 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleEncryptionIV::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->context(fn () => [
+    ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->context(fn (): array => [
             'url' => Request::url(),
             'input' => Request::all(),
         ]);
 
-        $exceptions->render(function (ValidationException $e, $request) {
-            return response()->json([
-                'message' => trans('error.validation'),
-                'errors' => $e->errors(),
-            ], 422);
-        });
+        $exceptions->render(fn (ValidationException $e, $request) => response()->json([
+            'message' => trans('error.validation'),
+            'errors' => $e->errors(),
+        ], 422));
 
-        $exceptions->render(function (InvalidSignatureException $e, $request) {
-            return response()->json([
-                'message' => trans('error.signature'),
-            ], 500);
-        });
+        $exceptions->render(fn (InvalidSignatureException $e, $request) => response()->json([
+            'message' => trans('error.signature'),
+        ], 500));
     })->create();

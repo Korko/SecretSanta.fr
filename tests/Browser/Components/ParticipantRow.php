@@ -2,14 +2,9 @@
 
 namespace Tests\Browser\Components;
 
-class ParticipantRow extends BaseComponent
+final class ParticipantRow extends BaseComponent
 {
-    protected $idx;
-
-    public function __construct($idx)
-    {
-        $this->idx = $idx;
-    }
+    public function __construct(protected $idx) {}
 
     /**
      * Get the root selector for the component.

@@ -3,28 +3,23 @@
 namespace App\Console\Commands;
 
 use DrawCrypt;
-use function Laravel\Prompts\{error, info, note, table};
+use Exception;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
 
-class ShowDraw extends Command
+use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\note;
+use function Laravel\Prompts\table;
+
+#[Description('Show draw')]
+#[Signature('secretsanta:show-draw {url? : The URL received by one of the participants to write to their santa or the link to the organizer panel}')]
+final class ShowDraw extends Command
 {
     use ParsesDrawUrl;
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'secretsanta:show-draw {url? : The URL received by one of the participants to write to their santa or the link to the organizer panel}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Show draw';
 
     /**
      * Execute the console command.
@@ -33,9 +28,10 @@ class ShowDraw extends Command
     {
         try {
             $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
-        } catch(\Exception $e) {
-            error('Draw not found - ' . $e->getMessage());
-            report($e);
+        } catch (Exception $exception) {
+            error('Draw not found - '.$exception->getMessage());
+            report($exception);
+
             return;
         }
 
@@ -49,8 +45,8 @@ class ShowDraw extends Command
             $draw->participants()
                 ->with(['mail', 'target'])
                 ->get()
-                ->map(fn ($col) => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status'), 'target' => $col->target->id.' ('.$col->target->name.')', 'dearsantas_s' => $col->dearsantas->count(), 'dearsantas_r' => $col->target->dearsantas->count()])
-                ->toArray()
+                ->map(fn ($col): array => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status'), 'target' => $col->target->id.' ('.$col->target->name.')', 'dearsantas_s' => $col->dearsantas->count(), 'dearsantas_r' => $col->target->dearsantas->count()])
+                ->all()
         );
         $this->newLine();
 

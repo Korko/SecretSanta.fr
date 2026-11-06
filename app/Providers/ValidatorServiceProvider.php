@@ -6,24 +6,18 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
-class ValidatorServiceProvider extends ServiceProvider
+final class ValidatorServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
         // Laravel 11+ ships its own array "contains" rule, which shadows korko/validator's string one
-        Validator::extend('contains_text', function ($attribute, $value, $parameters) {
-            return is_string($value) && collect($parameters)->every(fn ($find) => str_contains($value, $find));
-        });
+        Validator::extend('contains_text', fn ($attribute, $value, $parameters): bool => is_string($value) && collect($parameters)->every(fn ($find): bool => str_contains($value, $find)));
 
-        Validator::extend('in_keys', function ($attribute, $value, $parameters, $validator) {
-            return collect($parameters)->contains(function ($parameter) use ($value, $validator) {
-                return array_key_exists($value, Arr::get($validator->getData(), $parameter));
-            });
-        });
+        Validator::extend('in_keys', fn ($attribute, $value, $parameters, $validator) => collect($parameters)->contains(fn ($parameter): bool => array_key_exists($value, Arr::get($validator->getData(), $parameter))));
 
         // If any of the given data exists, the attribute we validate is required
         // e.g. ['content' => 'required_with_any:users.*.name']
-        Validator::extendImplicit('required_with_any', function ($attribute, $value, $parameters, $validator) {
+        Validator::extendImplicit('required_with_any', function ($attribute, $value, $parameters, $validator): bool {
             $rawData = $validator->getData();
 
             // Only considere the first parameter

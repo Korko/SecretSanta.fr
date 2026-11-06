@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Queue\Console\RetryCommand as BaseRetryCommand;
 
-class RetryCommand extends BaseRetryCommand
+final class RetryCommand extends BaseRetryCommand
 {
     /**
      * Retry the queue job.
@@ -14,8 +14,8 @@ class RetryCommand extends BaseRetryCommand
     {
         try {
             parent::retryJob($job);
-        } catch (ModelNotFoundException $e) {
-            $this->laravel['queue.failer']->forget($job->id);
+        } catch (ModelNotFoundException) {
+            $this->laravel->make('queue.failer')->forget($job->id);
         }
     }
 }

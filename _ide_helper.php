@@ -24763,6 +24763,16 @@ namespace App\Facades {
      */
     class DrawCrypt {
         /**
+         * Determine if the given iv and cipher combination is valid.
+         *
+         * @static
+         */
+        public static function supportedIV($iv, $cipher)
+        {
+            return \App\Services\IVEncrypter::supportedIV($iv, $cipher);
+        }
+
+        /**
          * Override the initialization vector.
          *
          * @static
@@ -24782,16 +24792,6 @@ namespace App\Facades {
         {
             /** @var \App\Services\IVEncrypter $instance */
             return $instance->getIV();
-        }
-
-        /**
-         * Determine if the given iv and cipher combination is valid.
-         *
-         * @static
-         */
-        public static function supportedIV($iv, $cipher)
-        {
-            return \App\Services\IVEncrypter::supportedIV($iv, $cipher);
         }
 
         /**

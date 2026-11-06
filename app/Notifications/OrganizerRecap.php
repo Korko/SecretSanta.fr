@@ -12,41 +12,22 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Queue\Attributes\Backoff;
+use Illuminate\Queue\Attributes\MaxExceptions;
+use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 
-class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQueue
+#[Backoff(30)]
+#[MaxExceptions(10)]
+#[Tries(20)]
+final class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
-    /**
-     * The number of times the job may be attempted.
-     *
-     * @var int
-     */
-    public $tries = 20;
-
-    /**
-     * The maximum number of unhandled exceptions to allow before failing.
-     *
-     * @var int
-     */
-    public $maxExceptions = 10;
-
-    /**
-     * The number of seconds to wait before retrying the job.
-     *
-     * @var int
-     */
-    public $backoff = 30;
-
-    protected $draw;
-
-    public function __construct(Draw $draw)
-    {
-        $this->draw = $draw;
-    }
+    public function __construct(private Draw $draw) {}
 
     /**
      * Get the notification's delivery channels.

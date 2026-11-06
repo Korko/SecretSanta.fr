@@ -2,14 +2,12 @@
 
 namespace App\Channels;
 
-use Closure;
 use Facades\App\Services\MailTracker;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Channels\MailChannel;
+use Illuminate\Notifications\Notification;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
-class TrackedMailChannel extends MailChannel
+final class TrackedMailChannel extends MailChannel
 {
     /**
      * Send the given notification.
@@ -26,9 +24,9 @@ class TrackedMailChannel extends MailChannel
             parent::send($notifiable, $notification);
 
             $mail->markAsSent();
-        } catch (TransportExceptionInterface $exception) {
+        } catch (TransportExceptionInterface $transportException) {
             $mail->markAsError();
-            throw $exception;
+            throw $transportException;
         }
     }
 
@@ -41,7 +39,7 @@ class TrackedMailChannel extends MailChannel
     {
         $mail = $notification->getMailableModel($notifiable)->mail;
 
-        $message->withSymfonyMessage(function ($message) use ($mail) {
+        $message->withSymfonyMessage(function ($message) use ($mail): void {
             // In case of Bounce
             $message->getHeaders()->addPathHeader('Return-Path', MailTracker::getBounceReturnPath($mail));
 

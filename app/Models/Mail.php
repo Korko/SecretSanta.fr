@@ -3,15 +3,24 @@
 namespace App\Models;
 
 use App\Events\MailStatusUpdated;
-use Exception;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
 
-class Mail extends Model
+final class Mail extends Model
 {
     use HasFactory;
+
+    public const string CREATED = 'created';
+
+    public const string SENDING = 'sending';
+
+    public const string SENT = 'sent';
+
+    public const string ERROR = 'error';
+
+    public const string RECEIVED = 'received';
 
     /**
      * Indicates if the model's ID is auto-incrementing.
@@ -19,6 +28,14 @@ class Mail extends Model
      * @var bool
      */
     public $incrementing = true;
+
+    public static $deliveryStatuses = [
+        self::CREATED,
+        self::SENDING,
+        self::SENT,
+        self::ERROR,
+        self::RECEIVED,
+    ];
 
     /**
      * The model's default values for attributes.
@@ -29,66 +46,48 @@ class Mail extends Model
         'delivery_status' => self::CREATED,
     ];
 
-    public const CREATED = 'created';
-
-    public const SENDING = 'sending';
-
-    public const SENT = 'sent';
-
-    public const ERROR = 'error';
-
-    public const RECEIVED = 'received';
-
-    public static $deliveryStatuses = [
-        self::CREATED,
-        self::SENDING,
-        self::SENT,
-        self::ERROR,
-        self::RECEIVED,
-    ];
-
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
-        static::creating(function ($mail) {
+        self::creating(function ($mail): void {
             $mail->notification = Str::uuid();
         });
     }
 
-    public function markAsCreated()
+    public function markAsCreated(): void
     {
         $this->updateDeliveryStatus(self::CREATED);
     }
 
-    public function markAsSending()
+    public function markAsSending(): void
     {
         $this->updateDeliveryStatus(self::SENDING);
     }
 
-    public function markAsSent()
+    public function markAsSent(): void
     {
         $this->updateDeliveryStatus(self::SENT);
     }
 
-    public function markAsError()
+    public function markAsError(): void
     {
         $this->updateDeliveryStatus(self::ERROR);
     }
 
-    public function markAsReceived()
+    public function markAsReceived(): void
     {
         $this->updateDeliveryStatus(self::RECEIVED);
     }
 
-    public function updateDeliveryStatus($status)
+    public function updateDeliveryStatus($status): void
     {
         $this->delivery_status = $status;
         $this->save();
 
         try {
-            MailStatusUpdated::dispatch($this);
-        } catch (BroadcastException $e) {
+            event(new MailStatusUpdated($this));
+        } catch (BroadcastException) {
             // Ignore exception
         }
     }

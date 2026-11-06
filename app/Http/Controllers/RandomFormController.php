@@ -11,7 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Notification;
 
-class RandomFormController extends Controller
+final class RandomFormController extends Controller
 {
     public function view(): Response
     {
@@ -46,7 +46,7 @@ class RandomFormController extends Controller
             return response()->json([
                 'message' => trans('message.sent'),
             ]);
-        } catch (SolverException $e) {
+        } catch (SolverException) {
             return response()->json([
                 'message' => trans('error.solution'),
             ], 422);

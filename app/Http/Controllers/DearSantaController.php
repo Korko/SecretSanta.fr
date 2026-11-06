@@ -6,17 +6,17 @@ use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
-class DearSantaController extends Controller
+final class DearSantaController extends Controller
 {
-    protected $dearSantaPublicFields = ['id', 'mail_body', 'mail', 'created_at', 'updated_at'];
+    private array $dearSantaPublicFields = ['id', 'mail_body', 'mail', 'created_at', 'updated_at'];
 
     public function view(Participant $participant): Response
     {
@@ -35,18 +35,14 @@ class DearSantaController extends Controller
             'targetDearSantaLastUpdate' => $participant->target->dearSantas->load('mail')->max('mail.updated_at'),
             'draw' => $participant->draw->hash,
             'organizer' => $participant->draw->organizer_name,
-            'emails' => $participant->dearSantas->mapWithKeys(function ($email) {
-                return [
-                    $email->mail->id => $email->only($this->dearSantaPublicFields),
-                ];
-            }),
-            'resendEmailUrls' => $participant->dearSantas->mapWithKeys(function ($dearSanta) use ($participant) {
-                return [
-                    $dearSanta->mail->id => URL::signedRoute('dearSanta.resend', [
-                        'participant' => $participant, 'dearSanta' => $dearSanta,
-                    ]),
-                ];
-            }),
+            'emails' => $participant->dearSantas->mapWithKeys(fn ($email): array => [
+                $email->mail->id => $email->only($this->dearSantaPublicFields),
+            ]),
+            'resendEmailUrls' => $participant->dearSantas->mapWithKeys(fn ($dearSanta): array => [
+                $dearSanta->mail->id => URL::signedRoute('dearSanta.resend', [
+                    'participant' => $participant, 'dearSanta' => $dearSanta,
+                ]),
+            ]),
             'resendTargetEmailsUrl' => URL::signedRoute('dearSanta.resend_target', [
                 'participant' => $participant,
             ]),
@@ -56,17 +52,15 @@ class DearSantaController extends Controller
     public function fetchState(Participant $participant): JsonResponse
     {
         return response()->json([
-            'emails' => $participant->dearSantas->mapWithKeys(function ($dearSanta) {
-                return [
-                    $dearSanta->mail->id => $dearSanta->only($this->dearSantaPublicFields),
-                ];
-            }),
+            'emails' => $participant->dearSantas->mapWithKeys(fn ($dearSanta): array => [
+                $dearSanta->mail->id => $dearSanta->only($this->dearSantaPublicFields),
+            ]),
         ]);
     }
 
     public function resend(Participant $participant, DearSanta $dearSanta, Request $request)
     {
-        abort_unless($dearSanta->mail->updated_at->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
+        abort_unless($dearSanta->mail->updated_at->diffInSeconds(Date::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
         $dearSanta->mail->markAsCreated();
 
@@ -83,7 +77,7 @@ class DearSantaController extends Controller
                     'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
                 ]) :
                 redirect('/dearSanta/'.$participant->hash)->with('message', $message);
-        } catch (Exception $e) {
+        } catch (Exception) {
             $error = trans('error.email');
 
             return $request->ajax() ?
@@ -99,9 +93,9 @@ class DearSantaController extends Controller
     {
         $dearSantas = $participant->dearSantas->load('mail');
         $max = $dearSantas->max('mail.updated_at');
-        abort_unless($max !== null && $max->diffInSeconds(Carbon::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
+        abort_unless($max !== null && $max->diffInSeconds(Date::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
-        $dearSantas->each(function ($dearSanta) use ($participant) {
+        $dearSantas->each(function ($dearSanta) use ($participant): void {
             $participant->notify(new DearSantaNotification($dearSanta));
         });
 
@@ -130,7 +124,7 @@ class DearSantaController extends Controller
         return $request->ajax() ?
             response()->json([
                 'message' => $message,
-                'email' => DearSanta::find($dearSanta->id)->only($this->dearSantaPublicFields),
+                'email' => DearSanta::query()->find($dearSanta->id)->only($this->dearSantaPublicFields),
             ]) :
             redirect('/dearSanta/'.$participant->hash)->with('message', $message);
     }

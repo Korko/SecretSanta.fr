@@ -7,14 +7,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Language
+final readonly class Language
 {
-    private $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
+    public function __construct(private Application $app) {}
 
     /**
      * Handle an incoming request.

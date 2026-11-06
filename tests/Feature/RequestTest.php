@@ -4,9 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\Draw;
 use DrawCrypt;
-use function PHPUnit\Framework\{assertNotEquals};
 
-it('stores database crypted entries', function () {
+use function PHPUnit\Framework\assertNotEquals;
+
+it('stores database crypted entries', function (): void {
     $draw = Draw::factory()
         ->hasParticipants(3)
         ->create();

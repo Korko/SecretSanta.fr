@@ -4,25 +4,17 @@ namespace App\Console\Commands;
 
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
+use Exception;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
+
 use function Laravel\Prompts\error;
 
-class FixParticipant extends Command
+#[Description('Fix a participant email and send them again their target')]
+#[Signature('secretsanta:fix-participant {url : The URL received by one of the participants to write to their santa} {id : The participant id} {email? : The correct email of the participant}')]
+final class FixParticipant extends Command
 {
     use ParsesDrawUrl;
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'secretsanta:fix-participant {url : The URL received by one of the participants to write to their santa} {id : The participant id} {email? : The correct email of the participant}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Fix a participant email and send them again their target';
 
     /**
      * Execute the console command.
@@ -31,9 +23,10 @@ class FixParticipant extends Command
     {
         try {
             $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
-        } catch(\Exception $e) {
-            error('Draw not found - ' . $e->getMessage());
-            report($e);
+        } catch (Exception $exception) {
+            error('Draw not found - '.$exception->getMessage());
+            report($exception);
+
             return;
         }
 
@@ -47,7 +40,7 @@ class FixParticipant extends Command
         $participant->notifyNow(new TargetDrawn);
         $this->info('Participant mail sent');
 
-        $participant->target->dearSantas->each(function ($dearSanta) use ($participant) {
+        $participant->target->dearSantas->each(function ($dearSanta) use ($participant): void {
             $participant->notify(new DearSanta($dearSanta));
             $this->info('DearSanta mail sent');
         });

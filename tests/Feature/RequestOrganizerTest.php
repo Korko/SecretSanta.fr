@@ -4,9 +4,14 @@ use App\Models\Draw;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
-use function PHPUnit\Framework\{assertEquals, assertNotEquals, assertNull};
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
 
-test('the organizer can send again the target drawn email', function () {
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNotEquals;
+use function PHPUnit\Framework\assertNull;
+
+test('the organizer can send again the target drawn email', function (): void {
     Notification::fake();
 
     $draw = Draw::factory()
@@ -26,7 +31,7 @@ test('the organizer can send again the target drawn email', function () {
     Notification::assertSentTo($participant, TargetDrawn::class);
 });
 
-test('the organizer can change a participant\'s email', function () {
+test("the organizer can change a participant's email", function (): void {
     Notification::fake();
 
     $draw = Draw::factory()
@@ -54,7 +59,7 @@ test('the organizer can change a participant\'s email', function () {
     Notification::assertSentTo($participant, TargetDrawn::class);
 });
 
-test('the organizer can withdraw a participant', function () {
+test('the organizer can withdraw a participant', function (): void {
     Notification::fake();
 
     // With 5 participants, at least one is in a cycle of 3+ (a 2-cycle can't be withdrawn)
@@ -92,7 +97,7 @@ test('the organizer can withdraw a participant', function () {
     Notification::assertSentTo($santa, DearSanta::class);
 });
 
-test('the organizer can download initial data', function () {
+test('the organizer can download initial data', function (): void {
     $draw = Draw::factory()
         ->hasParticipants(3)
         ->create();
@@ -106,7 +111,7 @@ test('the organizer can download initial data', function () {
         ->assertSuccessful();
 });
 
-test('the organizer cannot download total data if the draw is not expired', function () {
+test('the organizer cannot download total data if the draw is not expired', function (): void {
     $draw = Draw::factory()
         ->hasParticipants(3)
         ->create();
@@ -118,7 +123,7 @@ test('the organizer cannot download total data if the draw is not expired', func
     ajaxGet($path)->assertStatus(403);
 });
 
-test('the organizer can download total data if the draw is expired', function () {
+test('the organizer can download total data if the draw is expired', function (): void {
     $draw = Draw::factory()
         ->hasParticipants(3)
         ->expired()
@@ -133,7 +138,7 @@ test('the organizer can download total data if the draw is expired', function ()
         ->assertSuccessful();
 });
 
-test('the organizer can delete all data before expiration', function () {
+test('the organizer can delete all data before expiration', function (): void {
     $draw = Draw::factory()
         ->hasParticipants(3)
         ->create();
@@ -149,7 +154,7 @@ test('the organizer can delete all data before expiration', function () {
     assertNull($draw->fresh());
 });
 
-test('the organizer can delete all data after expiration', function () {
+test('the organizer can delete all data after expiration', function (): void {
     $draw = Draw::factory()
         ->hasParticipants(3)
         ->expired()

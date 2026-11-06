@@ -4,21 +4,21 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Browser\Components\ExclusionPicker;
 use Tests\Browser\Pages\RandomFormPage;
 
-uses(withFaker::class);
+uses(WithFaker::class);
 
-test('duplicate name', function () {
+test('duplicate name', function (): void {
     $name = $this->faker->name();
 
     $browser = visit(new RandomFormPage)
         ->type('participants[0][name]', $name)
         ->type('participants[1][name]', $name)
-        ->assertPresent('input[name=\'participants[0][name]\'].is-invalid')
+        ->assertPresent("input[name='participants[0][name]'].is-invalid")
         ->scrollIntoView('#randomForm button[type=submit]')
         ->click('#randomForm button[type=submit]')
-        ->assertPresent('input[name=\'participants[1][name]\'].is-invalid');
+        ->assertPresent("input[name='participants[1][name]'].is-invalid");
 });
 
-test('no result', function () {
+test('no result', function (): void {
     $name1 = $this->faker->name();
     $name2 = $this->faker->name();
     $name3 = $this->faker->name();
@@ -30,11 +30,11 @@ test('no result', function () {
         ->type('participants[0][email]', $this->faker->email())
         ->type('participants[1][email]', $this->faker->email())
         ->type('participants[2][email]', $this->faker->email())
-        ->within(new ExclusionPicker('tr[dusk=participant0]'), function ($browser) use ($name2, $name3) {
+        ->within(new ExclusionPicker('tr[dusk=participant0]'), function ($browser) use ($name2, $name3): void {
             $browser->selectParticipant($name2)
                 ->selectParticipant($name3);
         })
-        ->within(new ExclusionPicker('tr[dusk=participant2]'), function ($browser) use ($name1) {
+        ->within(new ExclusionPicker('tr[dusk=participant2]'), function ($browser) use ($name1): void {
             $browser->selectParticipant($name1);
         })
         ->type('title', $this->faker->sentence())
@@ -43,5 +43,5 @@ test('no result', function () {
         ->type('data-expiration', $this->faker->dateTimeBetween('+1 day', '+30 days')->format('m/d/Y'))
         ->scrollIntoView('#randomForm button[type=submit]')
         ->click('#randomForm button[type=submit]')
-        ->waitForText('Les exclusions que vous avez choisies ne permettent pas d\'attribuer une cible par participant.');
+        ->waitForText("Les exclusions que vous avez choisies ne permettent pas d'attribuer une cible par participant.");
 });

@@ -5,25 +5,17 @@ namespace App\Console\Commands;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
+use Exception;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
+
 use function Laravel\Prompts\error;
 
-class ChangeParticipant extends Command
+#[Description('Change a participant name and email, send them their target and inform their santa')]
+#[Signature('secretsanta:change-participant {url : The URL received by one of the participants to write to their santa} {id : The participant id} {name : The new name of the participant} {email : The new email of the participant}')]
+final class ChangeParticipant extends Command
 {
     use ParsesDrawUrl;
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'secretsanta:change-participant {url : The URL received by one of the participants to write to their santa} {id : The participant id} {name : The new name of the participant} {email : The new email of the participant}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Change a participant name and email, send them their target and inform their santa';
 
     /**
      * Execute the console command.
@@ -32,9 +24,10 @@ class ChangeParticipant extends Command
     {
         try {
             $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
-        } catch(\Exception $e) {
-            error('Draw not found - ' . $e->getMessage());
-            report($e);
+        } catch (Exception $exception) {
+            error('Draw not found - '.$exception->getMessage());
+            report($exception);
+
             return;
         }
 
@@ -49,7 +42,7 @@ class ChangeParticipant extends Command
         $participant->notifyNow(new TargetDrawn);
         $this->info('Participant mail sent');
 
-        $participant->target->dearSantas->each(function ($dearSanta) use ($participant) {
+        $participant->target->dearSantas->each(function ($dearSanta) use ($participant): void {
             $participant->notify(new DearSanta($dearSanta));
         });
 

@@ -5,13 +5,17 @@ use App\Models\Participant;
 use App\Notifications\OrganizerRecap as OrganizerRecapNotif;
 use App\Notifications\TargetDrawn;
 use Illuminate\Notifications\AnonymousNotifiable;
-use function PHPUnit\Framework\{assertCount, assertEquals, assertNotEquals};
+use Illuminate\Support\Facades\Notification;
 
-it('sends no notifications in case of error', function ($participants) {
+use function PHPUnit\Framework\assertCount;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNotEquals;
+
+it('sends no notifications in case of error', function ($participants): void {
     Notification::fake();
 
-    assertEquals(0, Draw::count());
-    assertEquals(0, Participant::count());
+    assertEquals(0, Draw::query()->count());
+    assertEquals(0, Participant::query()->count());
 
     ajaxPost('/', [
         'participant-organizer' => '1',
@@ -23,15 +27,15 @@ it('sends no notifications in case of error', function ($participants) {
         ->assertStatus(422)
         ->assertJsonStructure(['message']);
 
-    assertEquals(0, Draw::count());
-    assertEquals(0, Participant::count());
+    assertEquals(0, Draw::query()->count());
+    assertEquals(0, Participant::query()->count());
 
     Notification::assertNothingSent();
 })->with('invalid participants list');
 
-it('can create draws', function () {
-    assertEquals(0, Draw::count());
-    assertEquals(0, Participant::count());
+it('can create draws', function (): void {
+    assertEquals(0, Draw::query()->count());
+    assertEquals(0, Participant::query()->count());
 
     $participants = generateParticipants(3);
 
@@ -45,11 +49,11 @@ it('can create draws', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    assertEquals(1, Draw::count());
-    assertEquals(3, Participant::count());
+    assertEquals(1, Draw::query()->count());
+    assertEquals(3, Participant::query()->count());
 });
 
-it('sends notifications in case of success', function () {
+it('sends notifications in case of success', function (): void {
     Notification::fake();
 
     ajaxPost('/', [
@@ -62,16 +66,14 @@ it('sends notifications in case of success', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    $draw = Draw::find(1);
+    $draw = Draw::query()->find(1);
 
     // Ensure Organizer receives his recap
     Notification::assertSentTimes(OrganizerRecapNotif::class, 1);
     Notification::assertSentTo(
         new AnonymousNotifiable,
         OrganizerRecapNotif::class,
-        function ($notification, $channels, $notifiable) use ($draw) {
-            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
-        }
+        fn ($notification, $channels, $notifiable): bool => $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name]
     );
 
     // Ensure Participants receive their own recap
@@ -81,7 +83,7 @@ it('sends notifications in case of success', function () {
     }
 });
 
-it('can create draws with a non participant organizer', function () {
+it('can create draws with a non participant organizer', function (): void {
     Notification::fake();
 
     $participants = generateParticipants(3);
@@ -97,7 +99,7 @@ it('can create draws with a non participant organizer', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    $draw = Draw::find(1);
+    $draw = Draw::query()->find(1);
     assertEquals('foo', $draw->organizer_name);
     assertEquals('foo@foobar.com', $draw->organizer_email);
 
@@ -106,9 +108,7 @@ it('can create draws with a non participant organizer', function () {
     Notification::assertSentTo(
         new AnonymousNotifiable,
         OrganizerRecapNotif::class,
-        function ($notification, $channels, $notifiable) use ($draw) {
-            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
-        }
+        fn ($notification, $channels, $notifiable): bool => $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name]
     );
 
     // Ensure Participants receive their own recap
@@ -119,7 +119,7 @@ it('can create draws with a non participant organizer', function () {
     }
 });
 
-it('sends to the organizer the link to their panel', function () {
+it('sends to the organizer the link to their panel', function (): void {
     Notification::fake();
 
     ajaxPost('/', [
@@ -132,13 +132,13 @@ it('sends to the organizer the link to their panel', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    $draw = Draw::find(1);
+    $draw = Draw::query()->find(1);
 
     // Ensure Organizer receives his recap
     Notification::assertSentTo(
         new AnonymousNotifiable,
         OrganizerRecapNotif::class,
-        function ($notification, $channels, $notifiable) use ($draw) {
+        function ($notification, $channels, $notifiable) use ($draw): bool {
             $link = $notification->toMail($notifiable)->data()['panelLink'];
 
             // Check the recap link is valid
@@ -152,7 +152,7 @@ it('sends to the organizer the link to their panel', function () {
     );
 });
 
-it('sends to the organizer the initial recap', function () {
+it('sends to the organizer the initial recap', function (): void {
     Notification::fake();
 
     ajaxPost('/', [
@@ -165,13 +165,13 @@ it('sends to the organizer the initial recap', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    $draw = Draw::find(1);
+    $draw = Draw::query()->find(1);
 
     // Ensure Organizer receives his recap
     Notification::assertSentTo(
         new AnonymousNotifiable,
         OrganizerRecapNotif::class,
-        function ($notification, $channels, $notifiable) use ($draw) {
+        function ($notification, $channels, $notifiable) use ($draw): true {
             $attachments = $notification->toMail($notifiable)->rawAttachments;
 
             assertCount(1, $attachments);
@@ -180,8 +180,8 @@ it('sends to the organizer the initial recap', function () {
             // CSV have a BOM at start, remove it to parse, then check the amount of lines not starting with '#' (comments in CSV)
             $attachments[0]['data'] = str_replace("\xEF\xBB\xBF", '', $attachments[0]['data']);
             assertCount($draw->participants()->count(), collect(explode("\n", $attachments[0]['data']))
-                ->map(fn ($line) => str_getcsv($line))
-                ->filter(fn ($data) => $data[0][0] !== '#')
+                ->map(fn ($line): array => str_getcsv($line, escape: '\\'))
+                ->filter(fn ($data): bool => $data[0][0] !== '#')
             );
 
             return true;
@@ -189,9 +189,9 @@ it('sends to the organizer the initial recap', function () {
     );
 });
 
-it('can deal with thousands of participants', function () {
-    assertEquals(0, Draw::count());
-    assertEquals(0, Participant::count());
+it('can deal with thousands of participants', function (): void {
+    assertEquals(0, Draw::query()->count());
+    assertEquals(0, Participant::query()->count());
 
     $totalParticipants = 400;
     $participants = generateParticipants($totalParticipants, false);
@@ -206,7 +206,7 @@ it('can deal with thousands of participants', function () {
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    assertEquals(1, Draw::count());
-    assertEquals($participants[0]['name'], Draw::find(1)->organizer_name);
-    assertEquals($totalParticipants, Participant::count());
+    assertEquals(1, Draw::query()->count());
+    assertEquals($participants[0]['name'], Draw::query()->find(1)->organizer_name);
+    assertEquals($totalParticipants, Participant::query()->count());
 })->group('massive');

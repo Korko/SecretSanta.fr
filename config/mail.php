@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     // When DKIM is fully configured, mails go through the "dkim" mailer, which signs then delegates to MAIL_MAILER

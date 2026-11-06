@@ -14,16 +14,12 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
-class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueue
+final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
-    protected $dearSanta;
-
-    public function __construct(DearSantaModel $dearSanta)
-    {
-        $this->dearSanta = $dearSanta;
-    }
+    public function __construct(private DearSantaModel $dearSanta) {}
 
     /**
      * Get the notification's delivery channels.
@@ -33,7 +29,7 @@ class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueue
         return [TrackedMailChannel::class];
     }
 
-    public function getMailableModel(Participant $santa)
+    public function getMailableModel(Participant $santa): DearSantaModel
     {
         return $this->dearSanta;
     }

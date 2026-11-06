@@ -6,7 +6,7 @@ use App\Models\Draw;
 use App\Services\DrawHandler;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class DrawFactory extends Factory
+final class DrawFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,11 +14,11 @@ class DrawFactory extends Factory
     public function definition(): array
     {
         return [
-            'mail_title' => $this->faker->sentence(),
-            'mail_body' => $this->faker->text(),
-            'expires_at' => $this->faker->dateTimeBetween('+1 day', '+1 month'),
-            'organizer_name' => $this->faker->name(),
-            'organizer_email' => $this->faker->email(),
+            'mail_title' => fake()->sentence(),
+            'mail_body' => fake()->text(),
+            'expires_at' => fake()->dateTimeBetween('+1 day', '+1 month'),
+            'organizer_name' => fake()->name(),
+            'organizer_email' => fake()->email(),
         ];
     }
 
@@ -27,7 +27,7 @@ class DrawFactory extends Factory
      */
     public function configure(): static
     {
-        return $this->afterCreating(function (Draw $draw) {
+        return $this->afterCreating(function (Draw $draw): void {
             if ($draw->participants->count() > 0) {
                 DrawHandler::solve($draw, $draw->participants);
             }
@@ -39,10 +39,8 @@ class DrawFactory extends Factory
      */
     public function expired(): Factory
     {
-        return $this->state(function () {
-            return [
-                'expires_at' => $this->faker->dateTime('-1 hour'),
-            ];
-        });
+        return $this->state(fn (): array => [
+            'expires_at' => fake()->dateTime('-1 hour'),
+        ]);
     }
 }

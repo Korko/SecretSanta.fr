@@ -2,25 +2,36 @@
 
 namespace App\Services;
 
-class CsvGenerator
+use Stringable;
+
+final class CsvGenerator implements Stringable
 {
-    public $data;
+    public function __construct(
+        /**
+         * @var mixed[]
+         */
+        public array $data,
+        public $delimiter = ',',
+        public $enclosure = '"',
+        public $escapeChar = '\\'
+    ) {}
 
-    public $delimiter;
-
-    public $enclosure;
-
-    public $escapeChar;
-
-    public function __construct(array $data, $delimiter = ',', $enclosure = '"', $escapeChar = '\\')
+    public function __toString(): string
     {
-        $this->data = $data;
-        $this->delimiter = $delimiter;
-        $this->enclosure = $enclosure;
-        $this->escapeChar = $escapeChar;
+        $fileHandler = fopen('php://memory', 'r+');
+        foreach ($this->data as $fields) {
+            if (fputcsv($fileHandler, $fields, $this->delimiter, $this->enclosure, $this->escapeChar) === false) {
+                return '';
+            }
+        }
+
+        rewind($fileHandler);
+        $csvLine = stream_get_contents($fileHandler);
+
+        return rtrim($csvLine);
     }
 
-    public function prepend(array $data)
+    public function prepend(array $data): self
     {
         $this->data = array_merge(
             $data,
@@ -30,7 +41,7 @@ class CsvGenerator
         return $this;
     }
 
-    public function append(array $data)
+    public function append(array $data): self
     {
         $this->data = array_merge(
             $this->data,
@@ -40,22 +51,8 @@ class CsvGenerator
         return $this;
     }
 
-    public function format()
+    public function format(): string
     {
         return (string) $this;
-    }
-
-    public function __toString()
-    {
-        $fileHandler = fopen('php://memory', 'r+');
-        foreach ($this->data as $fields) {
-            if (fputcsv($fileHandler, $fields, $this->delimiter, $this->enclosure, $this->escapeChar) === false) {
-                return '';
-            }
-        }
-        rewind($fileHandler);
-        $csvLine = stream_get_contents($fileHandler);
-
-        return rtrim($csvLine);
     }
 }

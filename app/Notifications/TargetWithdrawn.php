@@ -8,25 +8,15 @@ use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Queue\Attributes\Backoff;
+use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Support\Facades\Lang;
 
-class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
+#[Backoff(30)]
+#[Tries(10)]
+final class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
 {
     use Queueable;
-
-    /**
-     * The number of times the job may be attempted.
-     *
-     * @var int
-     */
-    public $tries = 10;
-
-    /**
-     * The number of seconds to wait before retrying the job.
-     *
-     * @var int
-     */
-    public $backoff = 30;
 
     /**
      * Get the notification's delivery channels.
@@ -36,7 +26,7 @@ class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQ
         return ['mail'];
     }
 
-    public function getMailableModel(Participant $santa)
+    public function getMailableModel(Participant $santa): Participant
     {
         return $santa;
     }

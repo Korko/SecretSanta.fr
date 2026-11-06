@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mails', function (Blueprint $table) {
+        Schema::create('mails', function (Blueprint $table): void {
             $table->id();
             $table->uuid('notification')->unique();
             $table->morphs('mailable');

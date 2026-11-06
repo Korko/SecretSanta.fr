@@ -5,7 +5,10 @@ namespace Database\Factories;
 use App\Models\Mail as MailModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class MailFactory extends Factory
+/**
+ * @extends Factory<\App\Models\Mail>
+ */
+final class MailFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
@@ -20,7 +23,7 @@ class MailFactory extends Factory
     public function definition(): array
     {
         return [
-            'notification' => $this->faker->uuid(),
+            'notification' => fake()->uuid(),
             'delivery_status' => MailModel::CREATED,
         ];
     }
@@ -30,10 +33,8 @@ class MailFactory extends Factory
      */
     public function failed(): Factory
     {
-        return $this->state(function () {
-            return [
-                'delivery_status' => MailModel::ERROR,
-            ];
-        });
+        return $this->state(fn (): array => [
+            'delivery_status' => MailModel::ERROR,
+        ]);
     }
 }

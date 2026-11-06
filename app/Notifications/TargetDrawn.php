@@ -11,33 +11,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Queue\Attributes\Backoff;
+use Illuminate\Queue\Attributes\MaxExceptions;
+use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
-class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
+#[Backoff(30)]
+#[MaxExceptions(10)]
+#[Tries(10)]
+final class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
 {
     use Queueable;
-
-    /**
-     * The number of times the job may be attempted.
-     *
-     * @var int
-     */
-    public $tries = 10;
-
-    /**
-     * The maximum number of unhandled exceptions to allow before failing.
-     *
-     * @var int
-     */
-    public $maxExceptions = 10;
-
-    /**
-     * The number of seconds to wait before retrying the job.
-     *
-     * @var int
-     */
-    public $backoff = 30;
 
     /**
      * Get the notification's delivery channels.
@@ -47,7 +32,7 @@ class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
         return [TrackedMailChannel::class];
     }
 
-    public function getMailableModel(Participant $santa)
+    public function getMailableModel(Participant $santa): Participant
     {
         return $santa;
     }
@@ -74,7 +59,7 @@ class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
             ]);
     }
 
-    protected function parseKeywords($str, Participant $santa)
+    private function parseKeywords($str, Participant $santa): string|array
     {
         return str_ireplace(['{SANTA}', '{TARGET}'], [$santa->name, $santa->target->name], $str);
     }

@@ -7,23 +7,23 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Webklex\PHPIMAP\Message as EmailMessage;
 
-class MailTracker
+final class MailTracker
 {
-    protected const BOUNCE = 'bounce';
+    private const string BOUNCE = 'bounce';
 
-    protected const CONFIRM = 'confirm';
+    private const string CONFIRM = 'confirm';
 
-    public function getBounceReturnPath($mail)
+    public function getBounceReturnPath($mail): string|array
     {
         return str_replace('*', self::BOUNCE.'-'.$mail->notification, config('mail.return_path'));
     }
 
-    public function getConfirmReturnPath($mail)
+    public function getConfirmReturnPath($mail): string|array
     {
         return str_replace('*', self::CONFIRM.'-'.$mail->notification, config('mail.return_path'));
     }
 
-    public function handle(EmailMessage $unseenMail)
+    public function handle(EmailMessage $unseenMail): void
     {
         $mail = $this->getMailFromEmail($unseenMail);
 
@@ -34,49 +34,46 @@ class MailTracker
         }
     }
 
-    protected function getMailFromEmail(EmailMessage $unseenMail)
-    {
-        $notificationId = $this->getNotificationId($unseenMail);
-
-        if (empty($notificationId)) {
-            throw new ModelNotFoundException;
-        }
-
-        return MailModel::where('notification', $notificationId)->firstOrFail();
-    }
-
-    public function isEmailReceived(EmailMessage $message)
+    public function isEmailReceived(EmailMessage $message): bool
     {
         $header = $message->getHeader();
         $autoSubmitted = (string) $header->get('auto_submitted');
 
-        return (
+        return
             $this->getNotificationType($message) === self::CONFIRM ||
             $header->has('x_autoreply') ||
             $header->has('x_autorespond') ||
             str_contains($autoSubmitted, 'auto-replied (vacation)') ||
-            str_contains($autoSubmitted, 'auto-replied (zimbra')
-        );
+            str_contains($autoSubmitted, 'auto-replied (zimbra');
     }
 
-    protected function getNotificationType(EmailMessage $message): ?string
+    private function getMailFromEmail(EmailMessage $unseenMail)
+    {
+        $notificationId = $this->getNotificationId($unseenMail);
+
+        throw_if(empty($notificationId), ModelNotFoundException::class);
+
+        return MailModel::query()->where('notification', $notificationId)->firstOrFail();
+    }
+
+    private function getNotificationType(EmailMessage $message): ?string
     {
         return Arr::get($this->parseRecipient($message), 0);
     }
 
-    protected function getNotificationId(EmailMessage $message): ?string
+    private function getNotificationId(EmailMessage $message): ?string
     {
         return Arr::get($this->parseRecipient($message), 1);
     }
 
-    protected function parseRecipient(EmailMessage $message): array
+    private function parseRecipient(EmailMessage $message): array
     {
         return $this->parseReturnPath(
             $this->getFirstRecipientAddress($message)
         );
     }
 
-    protected function getFirstRecipientAddress(EmailMessage $message): string
+    private function getFirstRecipientAddress(EmailMessage $message): string
     {
         $recipient = $message->getTo()[0];
 
@@ -92,7 +89,7 @@ class MailTracker
         return $address;
     }
 
-    protected function parseReturnPath($returnPath)
+    private function parseReturnPath(string $returnPath): array
     {
         return (array) sscanf(
             $returnPath,

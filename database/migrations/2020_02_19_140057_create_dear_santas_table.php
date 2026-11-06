@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dear_santas', function (Blueprint $table) {
+        Schema::create('dear_santas', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('sender_id')->constrained('participants')->cascadeOnDelete();
             $table->longText('mail_body');

@@ -6,7 +6,7 @@ use DrawCrypt;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class EncryptedString implements CastsAttributes
+final class EncryptedString implements CastsAttributes
 {
     /**
      * Cast the given value.

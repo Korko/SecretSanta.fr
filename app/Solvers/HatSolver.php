@@ -5,29 +5,26 @@ namespace App\Solvers;
 use App\Exceptions\SolverException;
 use Generator;
 use Illuminate\Support\Arr;
+use Random\Randomizer;
 
-class HatSolver implements SolverInterface
+final class HatSolver implements SolverInterface
 {
     public function one(array $participants, array $exclusions = []): array
     {
         $generator = $this->all($participants, $exclusions);
-        if (! $generator->valid()) {
-            throw new SolverException('Cannot solve');
-        }
+        throw_unless($generator->valid(), SolverException::class, 'Cannot solve');
 
         return $generator->current();
     }
 
     public function all(array $participants, array $exclusions = []): Generator
     {
-        if (count($participants) < 2) {
-            throw new SolverException('Not enough participants');
-        }
+        throw_if(count($participants) < 2, SolverException::class, 'Not enough participants');
 
         $hat = array_keys($participants);
-        shuffle($hat);
+        $hat = (new Randomizer)->shuffleArray($hat);
 
-        uksort($participants, function ($participantIdx1, $participantIdx2) use ($exclusions) {
+        uksort($participants, function ($participantIdx1, $participantIdx2) use ($exclusions): int {
             $count1 = count(Arr::get($exclusions, $participantIdx1, []));
             $count2 = count(Arr::get($exclusions, $participantIdx2, []));
 

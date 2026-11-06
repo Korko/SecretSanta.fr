@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use DrawCrypt;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
-class Model extends BaseModel
+abstract class Model extends BaseModel
 {
+    use HasFactory;
+
     public $iv;
 
     public function __serialize()

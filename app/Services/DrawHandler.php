@@ -8,9 +8,9 @@ use App\Models\Draw;
 use App\Notifications\TargetDrawn;
 use Solver;
 
-class DrawHandler
+final class DrawHandler
 {
-    public static function solve(Draw $draw, ?ParticipantsCollection $participants = null)
+    public static function solve(Draw $draw, ?ParticipantsCollection $participants = null): void
     {
         $hat = self::getHat($participants ?: $draw->participants);
 
@@ -22,7 +22,7 @@ class DrawHandler
         $draw->next_solvable = self::canRedraw($draw->participants->fresh());
         $draw->save();
 
-        $draw->participants->each(function ($participant) {
+        $draw->participants->each(function ($participant): void {
             $participant->notify(new TargetDrawn);
         });
     }
@@ -41,7 +41,7 @@ class DrawHandler
             self::getHat($participants->appendTargetToExclusions());
 
             return true;
-        } catch (SolverException $e) {
+        } catch (SolverException) {
             return false;
         }
     }

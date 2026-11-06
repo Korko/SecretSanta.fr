@@ -5,26 +5,18 @@ namespace App\Console\Commands;
 use App\Notifications\DearSanta;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
+use Exception;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Support\Facades\Notification;
+
 use function Laravel\Prompts\error;
 
-class FixOrganizer extends Command
+#[Description('Fix an organizer email and send them again the link to their panel')]
+#[Signature('secretsanta:fix-organizer {url? : The URL received by one of the participants to write to their santa} {email? : The correct email of the organizer}')]
+final class FixOrganizer extends Command
 {
     use ParsesDrawUrl;
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'secretsanta:fix-organizer {url? : The URL received by one of the participants to write to their santa} {email? : The correct email of the organizer}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Fix an organizer email and send them again the link to their panel';
 
     /**
      * Execute the console command.
@@ -33,9 +25,10 @@ class FixOrganizer extends Command
     {
         try {
             $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
-        } catch(\Exception $e) {
-            error('Draw not found - ' . $e->getMessage());
-            report($e);
+        } catch (Exception $exception) {
+            error('Draw not found - '.$exception->getMessage());
+            report($exception);
+
             return;
         }
 
@@ -63,7 +56,7 @@ class FixOrganizer extends Command
             $draw->organizer->notifyNow(new TargetDrawn);
             $this->info('Participant mail sent');
 
-            $draw->organizer->target->dearSantas->each(function ($dearSanta) use ($draw) {
+            $draw->organizer->target->dearSantas->each(function ($dearSanta) use ($draw): void {
                 $draw->organizer->notify(new DearSanta($dearSanta));
                 $this->info('DearSanta mail sent');
             });

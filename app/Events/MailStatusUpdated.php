@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Events;
 
 use App\Models\Mail as MailModel;
@@ -9,16 +11,13 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MailStatusUpdated implements ShouldBroadcast
+final class MailStatusUpdated implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
-    protected $mail;
-
-    public function __construct(MailModel $mail)
-    {
-        $this->mail = $mail;
-    }
+    public function __construct(private MailModel $mail) {}
 
     /**
      * Get the data to broadcast.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use Symfony\Component\Mailer\Envelope;
@@ -12,12 +14,17 @@ use Symfony\Component\Mime\RawMessage;
 /**
  * Signs every outgoing message with DKIM, then hands it to the real transport.
  */
-class DkimTransport implements TransportInterface
+final readonly class DkimTransport implements TransportInterface
 {
     public function __construct(
-        protected TransportInterface $transport,
-        protected DkimSigner $signer,
+        private TransportInterface $transport,
+        private DkimSigner $signer,
     ) {}
+
+    public function __toString(): string
+    {
+        return 'dkim+'.$this->transport;
+    }
 
     public function send(RawMessage $message, ?Envelope $envelope = null): ?SentMessage
     {
@@ -28,10 +35,5 @@ class DkimTransport implements TransportInterface
         }
 
         return $this->transport->send($message, $envelope);
-    }
-
-    public function __toString(): string
-    {
-        return 'dkim+'.$this->transport;
     }
 }

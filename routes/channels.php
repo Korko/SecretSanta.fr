@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use Illuminate\Support\Facades\Broadcast;
+
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -10,7 +14,4 @@
 | used to check if an authenticated user can listen to the channel.
 |
 */
-
-Broadcast::channel('draw.{draw:hash}', function () {
-    return true;
-});
+Broadcast::channel('draw.{draw:hash}', fn (): true => true);

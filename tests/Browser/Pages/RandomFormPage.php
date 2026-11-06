@@ -4,7 +4,7 @@ namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
-class RandomFormPage extends Page
+final class RandomFormPage extends Page
 {
     /**
      * Get the URL for the page.

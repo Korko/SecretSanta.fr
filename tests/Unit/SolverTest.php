@@ -8,13 +8,13 @@ use Tests\TestCase;
 
 final class SolverTest extends TestCase
 {
-    const LOOP_NUMBER = 100;
+    public const int LOOP_NUMBER = 100;
 
     public function assertCombination($expected, $combinations, $participants): void
     {
         $actual = [];
         foreach ($combinations as $combination) {
-            array_walk($combination, function (&$idx) use ($participants) {
+            array_walk($combination, function (&$idx) use ($participants): void {
                 $idx = $participants[$idx];
             });
 
@@ -65,7 +65,7 @@ final class SolverTest extends TestCase
 
     public function test_one(): void
     {
-        $this->assertTrue((function () {
+        $this->assertTrue((function (): bool {
             $solutions = [
                 [0 => 1, 1 => 2, 2 => 0],
                 [0 => 2, 1 => 0, 2 => 1],
@@ -75,7 +75,7 @@ final class SolverTest extends TestCase
             for ($i = 0; $i < self::LOOP_NUMBER; $i++) {
                 $solution = Solver::one(['A', 'B', 'C']);
 
-                $solutionIdx = array_search($solution, $solutions);
+                $solutionIdx = array_search($solution, $solutions, true);
                 $valid[$solutionIdx] = true;
 
                 if (count($valid) === count($solutions)) {
@@ -97,7 +97,7 @@ final class SolverTest extends TestCase
 
         try {
             $this->assertNotEquals(null, Solver::one($participants));
-        } catch (SolverException $e) {
+        } catch (SolverException) {
             $this->fail('No exception expected');
         }
     }

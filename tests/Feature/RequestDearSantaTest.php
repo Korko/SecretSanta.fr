@@ -3,10 +3,12 @@
 use App\Models\Draw;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
-use function PHPUnit\Framework\{assertEquals};
 
-it('send to each participant a link to write to their santa', function () {
+use function PHPUnit\Framework\assertEquals;
+
+it('send to each participant a link to write to their santa', function (): void {
     Notification::fake();
 
     $draw = Draw::factory()
@@ -14,7 +16,7 @@ it('send to each participant a link to write to their santa', function () {
         ->create();
 
     foreach ($draw->participants as $participant) {
-        Notification::assertSentTo($participant, function (TargetDrawn $notification) use ($participant) {
+        Notification::assertSentTo($participant, function (TargetDrawn $notification) use ($participant): true {
             $link = $notification->toMail($participant)->data()['dearSantaLink'];
 
             // Check the dearSanta link is valid
@@ -30,7 +32,7 @@ it('send to each participant a link to write to their santa', function () {
     }
 });
 
-it('lets each participant write to their santa', function () {
+it('lets each participant write to their santa', function (): void {
     Notification::fake();
 
     $draw = Draw::factory()
@@ -48,7 +50,7 @@ it('lets each participant write to their santa', function () {
     }
 });
 
-it('lets a participant resend the email to their santa in case of error', function () {
+it('lets a participant resend the email to their santa in case of error', function (): void {
     Notification::fake();
 
     $draw = Draw::factory()

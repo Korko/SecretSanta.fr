@@ -2,26 +2,16 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 
-class SendMailCommand extends Command
+#[Description('Send a Mail')]
+#[Signature('send:mail {to} {subject} {text}')]
+final class SendMailCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'send:mail {to} {subject} {text}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Send a Mail';
-
     /**
      * Execute the console command.
      */
@@ -33,10 +23,10 @@ class SendMailCommand extends Command
         $subject = $this->argument('subject');
         $body = $this->argument('text');
 
-        Mail::send([], [], function (Message $message) use ($recipient, $subject, $body) {
+        Mail::send([], [], function (Message $message) use ($recipient, $subject, $body): void {
             $message->to($recipient)
                 ->subject($subject)
-                ->setBody($body, 'text/html');
+                ->setBody($body);
         });
     }
 }

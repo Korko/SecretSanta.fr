@@ -7,24 +7,23 @@ use App\Solvers\HatSolver;
 use App\Solvers\SolverInterface;
 use DrawCrypt;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Symfony\Component\Mime\Crypto\DkimSigner;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\Mime\Crypto\DkimSigner;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * The path to your application's "home" route.
      *
      * Typically, users are redirected here after authentication.
-     *
-     * @var string
      */
-    public const HOME = '/home';
+    public const string HOME = '/home';
 
     /**
      * Register any application services.
@@ -50,13 +49,13 @@ class AppServiceProvider extends ServiceProvider
 
     public function bootMail(): void
     {
-        Mail::extend('dkim', function (array $config) {
+        Mail::extend('dkim', function (array $config): DkimTransport {
             $signer = new DkimSigner(
                 'file://'.config('mail.dkim_private_key'),
                 config('mail.dkim_domain'),
                 config('mail.dkim_selector'),
                 ['algorithm' => config('mail.dkim_algo')],
-                config('mail.dkim_passphrase') ?? '',
+                config('mail.dkim_passphrase', ''),
             );
 
             return new DkimTransport(
@@ -68,15 +67,13 @@ class AppServiceProvider extends ServiceProvider
 
     public function bootJobs(): void
     {
-        Queue::createPayloadUsing(function ($connection, $queue, $payload) {
-            return [
-                'data' => array_merge($payload['data'], [
-                    'iv' => base64_encode(DrawCrypt::getIV()),
-                ]),
-            ];
-        });
+        Queue::createPayloadUsing(fn ($connection, $queue, array $payload): array => [
+            'data' => array_merge($payload['data'], [
+                'iv' => base64_encode(DrawCrypt::getIV()),
+            ]),
+        ]);
 
-        $this->app['events']->listen(JobProcessing::class, function ($event) {
+        $this->app->make(Dispatcher::class)->listen(JobProcessing::class, function ($event): void {
             if (isset($event->job->payload()['data']['iv'])) {
                 DrawCrypt::setIV(base64_decode($event->job->payload()['data']['iv']));
             }
@@ -85,8 +82,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function bootRoute(): void
     {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
+        RateLimiter::for('api', fn (Request $request) => Limit::perMinute(60)->by($request->user()?->id ?: $request->ip()));
     }
 }

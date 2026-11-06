@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -15,49 +17,17 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use STS\Metrics\Facades\Metrics;
+use STS\Metrics\Metric;
 
-class Participant extends Model
+#[CollectedBy(ParticipantsCollection::class)]
+#[Fillable(['name', 'email'])]
+final class Participant extends Model
 {
     use HasFactory, HashId, Notifiable {
         resolveRouteBinding as public baseResolver;
     }
 
     protected $hashConnection = 'santa';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
-    protected $fillable = ['name', 'email'];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'name' => EncryptedString::class,
-            'email' => EncryptedString::class,
-        ];
-    }
-
-    protected static function booted()
-    {
-        parent::boot();
-
-        static::created(function ($participant) {
-            $participant->mail()->save(new Mail);
-        });
-
-        static::deleting(function ($participant) {
-            $participant->dearSantas()->lazy()->each->delete();
-            $participant->exclusions()->delete();
-            $participant->mail()->delete();
-        });
-    }
 
     public function draw(): BelongsTo
     {
@@ -86,19 +56,14 @@ class Participant extends Model
 
     public function exclusions(): BelongsToMany
     {
-        return $this->belongsToMany(Participant::class, 'exclusions', 'participant_id', 'exclusion_id');
-    }
-
-    public function getExclusionsNamesAttribute()
-    {
-        return $this->exclusions->pluck('name', 'id')->all();
+        return $this->belongsToMany(self::class, 'exclusions', 'participant_id', 'exclusion_id');
     }
 
     /**
      * Retrieve the model for a bound value.
      *
-     * @param  mixed   $value
-     * @param  ?string $field
+     * @param  mixed  $value
+     * @param  ?string  $field
      */
     public function resolveRouteBinding($value, $field = null): ?Model
     {
@@ -109,20 +74,7 @@ class Participant extends Model
         return $participant;
     }
 
-    /**
-     * Create a new Eloquent Collection instance.
-     */
-    public function newCollection(array $models = []): Collection
-    {
-        return new ParticipantsCollection($models);
-    }
-
-    public function getMetricIdAttribute()
-    {
-        return hash('xxh32', (string) $this->id, false, ['seed' => $this->draw->id]);
-    }
-
-    public function createMetric($name, $value = 1)
+    public function createMetric($name, $value = 1): Metric
     {
         return Metrics::create($name, $value)
             ->setTags([
@@ -136,8 +88,46 @@ class Participant extends Model
      *
      * @return array|string
      */
-    public function routeNotificationForMail(Notification $notification)
+    public function routeNotificationForMail(Notification $notification): array
     {
         return [$this->email => $this->name];
+    }
+
+    protected static function booted(): void
+    {
+        parent::boot();
+
+        self::created(function ($participant): void {
+            $participant->mail()->save(new Mail);
+        });
+
+        self::deleting(function ($participant): void {
+            $participant->dearSantas()->lazy()->each->delete();
+            $participant->exclusions()->delete();
+            $participant->mail()->delete();
+        });
+    }
+
+    protected function exclusionsNames(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->exclusions->pluck('name', 'id')->all());
+    }
+
+    protected function metricId(): Attribute
+    {
+        return Attribute::make(get: fn (): string => hash('xxh32', (string) $this->id, false, ['seed' => $this->draw->id]));
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'name' => EncryptedString::class,
+            'email' => EncryptedString::class,
+        ];
     }
 }
