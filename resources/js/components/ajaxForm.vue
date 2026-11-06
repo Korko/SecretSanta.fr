@@ -1,5 +1,4 @@
 <script>
-    import jQuery from 'jquery';
 
     import fetch from '../partials/fetch.js';
 
@@ -126,7 +125,7 @@
             },
             submit(postData, options) {
                 this.$emit('beforeSubmit');
-                postData = postData || jQuery(this.$el).serialize();
+                postData = postData || new URLSearchParams(new FormData(this.$el)).toString();
                 var ajax = this.call(this.action, Object.assign({ data: postData }, options));
                 this.$emit('afterSubmit');
                 return ajax;

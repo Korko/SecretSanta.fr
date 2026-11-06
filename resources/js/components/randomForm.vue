@@ -1,7 +1,5 @@
 <script>
     import useVuelidate from '@vuelidate/core';
-    import jQuery from 'jquery';
-    window.$ = window.jQuery = jQuery;
 
     import alertify from '../partials/alertify.js';
     import Toastify from '../partials/toastify.js';
@@ -110,14 +108,14 @@
             sent(newVal) {
                 // If sent is a success, scroll to the message
                 if (newVal) {
-                    jQuery.scrollTo('#form .row', 800, { offset: -120 });
+                    document.querySelector('#form .row').scrollIntoView();
                 }
             },
 
             errors(newVal) {
                 // If there's new errors, scroll to them
                 if (newVal.length) {
-                    jQuery.scrollTo('#form .row', 800, { offset: -120 });
+                    document.querySelector('#form .row').scrollIntoView();
                 }
             }
         },
@@ -126,12 +124,6 @@
             this.addParticipant();
             this.addParticipant();
             this.addParticipant();
-
-            this.$nextTick(() => {
-                if (!window.FileReader) {
-                    jQuery('.participants-imports').remove();
-                }
-            });
         },
 
         methods: {

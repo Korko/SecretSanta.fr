@@ -9,13 +9,18 @@
     background-attachment: fixed;
     background-repeat: no-repeat;
     position: relative;
+    /* Full screen, text centered 20px above the middle */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 #header .center {
     position: relative;
+    top: -20px;
     z-index: 1;
     color: white;
-    padding: 70px 0;
 }
 
 #header .bottom {
@@ -57,6 +62,17 @@
     color: whitesmoke;
     position: relative;
     top: -5px;
+    animation: scroll-down-arrow 0.4s linear infinite alternate;
+}
+
+@keyframes scroll-down-arrow {
+    to {
+        top: 5px;
+    }
+}
+
+#form .row {
+    scroll-margin-top: 120px;
 }
 
 .bg-overlay {

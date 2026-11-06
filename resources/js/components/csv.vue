@@ -1,6 +1,5 @@
 <script>
     import Modal from './modal.vue';
-    import jQuery from 'jquery';
 
     export default {
         components: { Modal },
@@ -25,7 +24,7 @@
                 }
             },
             emitSubmit: function() {
-                const file = jQuery('#uploadCsv input[type=file]')[0].files[0];
+                const file = this.$el.querySelector('#uploadCsv input[type=file]').files[0];
 
                 this.analyzing = true;
                 this.getEncoding(file).then(encoding => {
