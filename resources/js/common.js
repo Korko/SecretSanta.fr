@@ -1,6 +1,5 @@
 import jQuery from './jquery.js';
 
-import 'jquery.actual';
 import 'jquery.scrollto';
 
 
@@ -41,8 +40,7 @@ jQuery(document).ready(function() {
     function centerHomeBannerText() {
         var bannerText = jQuery('#header > .center');
         var bannerTextTop =
-            jQuery('#header').actual('height') / 2 - jQuery('#header > .center').actual('height') / 2 - 20;
-        // var bannerTextTop = Math.min(jQuery('#header').actual('height'), (jQuery('#header').actual('height')/2) - (jQuery('#header > .center').actual('height')/2) - 20 + jQuery('html').scrollTop());
+            jQuery('#header').height() / 2 - jQuery('#header > .center').height() / 2 - 20;
         bannerText.css('padding-top', bannerTextTop + 'px');
         bannerText.show();
     }
