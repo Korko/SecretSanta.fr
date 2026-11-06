@@ -1,7 +1,7 @@
 import jQuery from './jquery.js';
 
-import actual from 'jquery.actual'; // eslint-disable-line no-unused-vars
-import scrollTo from 'jquery.scrollto'; // eslint-disable-line no-unused-vars
+import 'jquery.actual';
+import 'jquery.scrollto';
 
 
 (function($, sr) {

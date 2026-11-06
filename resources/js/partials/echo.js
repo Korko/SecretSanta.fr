@@ -6,10 +6,11 @@ window.Pusher = Pusher;
 const noop = { channel: () => noop, listen: () => noop };
 
 export default window.global.pusher.key ? new Echo({
-    broadcaster: 'pusher',
+    broadcaster: 'reverb',
     key: window.global.pusher.key,
     wsHost: window.global.pusher.host,
-    wsPort: 443,
-    disableStats: true,
+    wsPort: window.global.pusher.port || 443,
+    wssPort: window.global.pusher.port || 443,
+    forceTLS: (window.global.pusher.scheme || 'https') === 'https',
     enabledTransports: ['ws', 'wss']
 }) : noop;
