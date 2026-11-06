@@ -30,7 +30,7 @@ final class CsvGenerator implements Stringable
         rewind($fileHandler);
         $csvLine = stream_get_contents($fileHandler);
 
-        return rtrim($csvLine);
+        return mb_rtrim($csvLine);
     }
 
     public function prepend(array $data): self

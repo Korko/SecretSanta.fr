@@ -7,7 +7,7 @@
     "rules": {
         "array_push": true,
         "backtick_to_shell_exec": true,
-        "date_time_immutable": false,
+        "date_time_immutable": true,
         "declare_strict_types": true,
         "lowercase_keywords": true,
         "lowercase_static_reference": true,
@@ -20,8 +20,8 @@
             "import_constants": true,
             "import_functions": true
         },
-        "mb_str_functions": false,
-        "modernize_types_casting": false,
+        "mb_str_functions": true,
+        "modernize_types_casting": true,
         "new_with_parentheses": false,
         "no_superfluous_elseif": true,
         "no_useless_else": true,
@@ -56,7 +56,7 @@
         "protected_to_private": true,
         "self_accessor": true,
         "self_static_accessor": true,
-        "strict_comparison": false,
+        "strict_comparison": true,
         "visibility_required": true
     }
 }

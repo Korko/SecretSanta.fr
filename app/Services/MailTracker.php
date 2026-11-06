@@ -84,7 +84,7 @@ final class MailTracker
             $address = $recipient->mailbox;
 
             if (str_contains($address, '@')) {
-                $address = stristr($recipient->mailbox, '@', true);
+                $address = mb_stristr($recipient->mailbox, '@', true);
             }
         }
 

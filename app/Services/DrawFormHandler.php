@@ -115,7 +115,7 @@ final class DrawFormHandler
             $participant = $participants[$i];
 
             $participant['model']->exclusions()->attach(
-                array_map(fn ($participantId) => $participants[intval($participantId)]['model']->id, Arr::get($participant, 'exclusions', []))
+                array_map(fn ($participantId) => $participants[(int) $participantId]['model']->id, Arr::get($participant, 'exclusions', []))
             );
         }
     }

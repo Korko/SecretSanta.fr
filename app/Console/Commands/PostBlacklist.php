@@ -56,8 +56,8 @@ final class PostBlacklist extends Command
 
         $participant = URLParser::parseByName('dearSanta', $url)->participant;
 
-        $domains = array_map(fn ($domain): string => '@'.ltrim(strtolower($domain), '@'), $this->argument('domains'));
-        if (! Str::endsWith(strtolower($participant->email), $domains)) {
+        $domains = array_map(fn ($domain): string => '@'.mb_ltrim(mb_strtolower($domain), '@'), $this->argument('domains'));
+        if (! Str::endsWith(mb_strtolower($participant->email), $domains)) {
             return false;
         }
 

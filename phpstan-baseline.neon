@@ -751,7 +751,7 @@ parameters:
 			path: app/Console/Commands/PostBlacklist.php
 
 		-
-			rawMessage: 'Parameter #1 $string of function strtolower expects string, mixed given.'
+			rawMessage: 'Parameter #1 $string of function mb_strtolower expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/PostBlacklist.php
@@ -2707,6 +2707,12 @@ parameters:
 			path: app/Services/DrawFormHandler.php
 
 		-
+			rawMessage: Cannot cast mixed to int.
+			identifier: cast.int
+			count: 1
+			path: app/Services/DrawFormHandler.php
+
+		-
 			rawMessage: 'Method App\Services\DrawFormHandler::withBody() has parameter $body with no type specified.'
 			identifier: missingType.parameter
 			count: 1
@@ -2746,12 +2752,6 @@ parameters:
 			rawMessage: 'Parameter #1 $array of static method Illuminate\Support\Arr::get() expects array|ArrayAccess, mixed given.'
 			identifier: argument.type
 			count: 2
-			path: app/Services/DrawFormHandler.php
-
-		-
-			rawMessage: 'Parameter #1 $value of function intval expects array|bool|float|GMP|int|resource|SimpleXMLElement|string|null, mixed given.'
-			identifier: argument.type
-			count: 1
 			path: app/Services/DrawFormHandler.php
 
 		-
@@ -3181,13 +3181,13 @@ parameters:
 			path: app/Services/MailTracker.php
 
 		-
-			rawMessage: 'Parameter #1 $haystack of function str_contains expects string, mixed given.'
+			rawMessage: 'Parameter #1 $haystack of function mb_stristr expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Services/MailTracker.php
 
 		-
-			rawMessage: 'Parameter #1 $haystack of function stristr expects string, mixed given.'
+			rawMessage: 'Parameter #1 $haystack of function str_contains expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Services/MailTracker.php
