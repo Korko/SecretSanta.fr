@@ -140,6 +140,8 @@ const BASE = 'http://127.0.0.1:8765';
     await step('organizer adds a participant', async () => {
       await page.fill('.participant-add-name', 'Dan'); await page.fill('.participant-add-email', 'dan@example.com');
       await page.locator('button.participant-add').click();
+      const w = await page.locator('.ajs-content:visible .alert-warning').innerText(); console.log('     warning:', w.trim());
+      if (!/il y a 0 jour/.test(w)) throw new Error('no warning');
       await ok();
       await page.waitForSelector('tbody td:text-is("Dan")', { timeout: 8000 });
       await ok();

@@ -263,6 +263,7 @@ export default {
                 }
             },
             "edit": {
+                "warning": "Ein zufällig ausgewählter Teilnehmer kann ein neues Ziel bekommen. Die Auslosung fand vor {days} Tag(en) statt: Je länger das her ist, desto unangenehmer für diese Person, die ihr Geschenk vielleicht schon gekauft hat.",
                 "add": "Hinzufügen",
                 "new": "neu",
                 "undo": "Rückgängig",

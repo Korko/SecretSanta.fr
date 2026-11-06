@@ -35,6 +35,7 @@
                 draw: this.data.draw,
                 expires_at: this.data.expires_at,
                 deleted_at: this.data.deleted_at,
+                drawn_at: this.data.drawn_at,
                 finalCsvAvailable: this.data.finalCsvAvailable,
                 changeEmailUrls: this.data.changeEmailUrls,
                 targetsRevealedAt: this.data.targetsRevealedAt,
@@ -53,6 +54,12 @@
             };
         },
         computed: {
+            // Adding or removing someone changes a random santa's target: the later, the more likely they already bought a gift
+            changeWarning() {
+                const days = Math.max(0, Moment().diff(Moment(this.drawn_at), 'days'));
+                return '<div class="alert alert-warning mt-2 mb-0"><i class="fas fa-exclamation-triangle"></i> '
+                    + this.$t('organizer.edit.warning', {days}) + '</div>';
+            },
             canEdit() {
                 return !this.expired;
             },
@@ -168,7 +175,7 @@
                 }
                 hardConfirm({
                     title: this.$t('organizer.withdraw.confirm.title', {deletion: this.deletionDateLong}),
-                    body: this.$t('organizer.withdraw.confirm.body', {name: this.participants[k].name}),
+                    body: this.$t('organizer.withdraw.confirm.body', {name: this.participants[k].name}) + this.changeWarning,
                     word: this.$t('organizer.withdraw.confirm.value'),
                     help: this.$t('organizer.withdraw.confirm.help'),
                     ok: this.$t('organizer.withdraw.confirm.ok'),
@@ -184,7 +191,7 @@
                 }
                 alertify.confirm(
                     this.$t('organizer.edit.confirm_add.title', {name: participant.name}),
-                    this.$t('organizer.edit.confirm_add.body', {name: participant.name}),
+                    this.$t('organizer.edit.confirm_add.body', {name: participant.name}) + this.changeWarning,
                     () => this.submitChanges([], [participant]).then(() => this.newParticipant = { name: '', email: '' }),
                     () => {}
                 );
@@ -197,7 +204,7 @@
             confirmMultiChanges() {
                 alertify.confirm(
                     this.$t('organizer.edit.confirm_multi.title'),
-                    this.$t('organizer.edit.confirm_multi.body', {add: this.pendingAdd.length, remove: this.pendingRemove.length}),
+                    this.$t('organizer.edit.confirm_multi.body', {add: this.pendingAdd.length, remove: this.pendingRemove.length}) + this.changeWarning,
                     () => this.submitChanges(this.pendingRemove, this.pendingAdd).then(this.toggleMultiMode),
                     () => {}
                 );

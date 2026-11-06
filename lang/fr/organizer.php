@@ -69,6 +69,7 @@ return [
         ],
     ],
     'edit' => [
+        'warning' => 'Un(e) participant(e) choisi(e) au hasard pourra voir sa cible changer. Le tirage a eu lieu il y a {days} jour(s) : plus il est ancien, plus c\'est gênant pour cette personne, qui a peut-être déjà acheté son cadeau.',
         'add' => 'Ajouter',
         'new' => 'nouveau',
         'undo' => 'Annuler',

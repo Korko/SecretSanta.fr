@@ -32,6 +32,7 @@ final class OrganizerController extends Controller
             'draw' => $draw->hash,
             'expires_at' => $draw->expires_at->toDateString(), // event day, whatever the browser timezone
             'deleted_at' => $draw->deleted_at,
+            'drawn_at' => $draw->created_at,
             'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [
                 $participant->hash => $participant->only([
                     'hash', 'name', 'email', 'mail',
