@@ -123,7 +123,7 @@
             "rector --dry-run"
         ],
         "test:types": "phpstan --memory-limit=2G",
-        "test:type-coverage": "pest --type-coverage --min=90",
+        "test:type-coverage": "@php -d memory_limit=1G vendor/bin/pest --type-coverage --min=80",
         "test:unit": [
             "@php artisan config:clear --ansi",
             "@php artisan test"

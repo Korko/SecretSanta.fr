@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\URL;
 
 final class DearSantaController extends Controller
 {
-    private array $dearSantaPublicFields = ['id', 'mail_body', 'mail', 'created_at', 'updated_at'];
+    // dear_santas has no timestamps: the dates shown come from the related mail
+    private array $dearSantaPublicFields = ['id', 'mail_body', 'mail'];
 
     public function view(Participant $participant): Response
     {
