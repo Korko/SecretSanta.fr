@@ -122,7 +122,7 @@ final class Participant extends Model
 
         self::deleting(function ($participant): void {
             $participant->dearSantas()->lazy()->each->delete();
-            $participant->exclusions()->delete();
+            $participant->exclusions()->detach(); // pivot rows only (delete() would remove the excluded participants)
             $participant->mail()->delete();
         });
     }
