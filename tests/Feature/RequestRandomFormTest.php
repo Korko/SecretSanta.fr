@@ -70,13 +70,15 @@ it('sends notifications in case of success', function (): void {
 
     $draw = Draw::query()->find(1);
 
-    // Ensure Organizer receives his recap
-    Notification::assertSentTimes(OrganizerRecapNotif::class, 1);
-    Notification::assertSentTo(
-        new AnonymousNotifiable,
-        OrganizerRecapNotif::class,
-        fn ($notification, $channels, $notifiable): bool => $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name]
-    );
+    // Taking part, the organizer gets the recap within their target email only
+    Notification::assertNothingSentTo(new AnonymousNotifiable, OrganizerRecapNotif::class);
+    Notification::assertSentTo($draw->participants->first(), TargetDrawn::class, function ($notification, $channels, $notifiable): bool {
+        $mail = $notification->toMail($notifiable);
+
+        return $mail->data()['organizer'] !== null && count($mail->rawAttachments) === 1;
+    });
+    Notification::assertSentTo($draw->participants->last(), TargetDrawn::class,
+        fn ($notification, $channels, $notifiable): bool => $notification->toMail($notifiable)->data()['organizer'] === null && $notification->toMail($notifiable)->rawAttachments === []);
 
     // Ensure Participants receive their own recap
     Notification::assertSentTimes(TargetDrawn::class, count($draw->participants));
@@ -125,7 +127,8 @@ it('sends to the organizer the link to their panel', function (): void {
     Notification::fake();
 
     ajaxPost('/', [
-        'participant-organizer' => '1',
+        'participant-organizer' => '0',
+        'organizer' => ['name' => 'foo', 'email' => 'foo@foobar.com'],
         'participants' => generateParticipants(3),
         'title' => 'this is a test',
         'content-email' => 'test mail {SANTA} => {TARGET}',
@@ -158,7 +161,8 @@ it('sends to the organizer the initial recap', function (): void {
     Notification::fake();
 
     ajaxPost('/', [
-        'participant-organizer' => '1',
+        'participant-organizer' => '0',
+        'organizer' => ['name' => 'foo', 'email' => 'foo@foobar.com'],
         'participants' => generateParticipants(3),
         'title' => 'this is a test',
         'content-email' => 'test mail {SANTA} => {TARGET}',

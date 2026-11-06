@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property-read Participant $sender
+ */
 #[Fillable(['mail_body', 'sender_id'])]
 #[WithoutTimestamps]
 final class DearSanta extends Model
@@ -20,6 +23,7 @@ final class DearSanta extends Model
 
     protected $hashConnection = 'dearSanta';
 
+    /** @return BelongsTo<Participant, $this> */
     public function sender(): BelongsTo
     {
         return $this->belongsTo(Participant::class, 'sender_id');

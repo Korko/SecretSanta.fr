@@ -53,12 +53,18 @@ final class TargetDrawn extends Notification implements ShouldBeEncrypted, Shoul
 
         $url = URL::signedRoute('dearSanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
 
-        return (new MailMessage)
+        $message = (new MailMessage)
             ->subject($title)
             ->view(['emails.target_drawn', 'emails.target_drawn_plain'], [
                 'content' => $content,
                 'dearSantaLink' => $url,
+                'organizer' => $santa->isOrganizer() ? OrganizerRecap::viewData($santa->draw) : null,
             ]);
+
+        // The organizer taking part gets a single email: their target + the organizer recap
+        return $santa->isOrganizer()
+            ? $message->attachData($santa->draw->initialCsv(), $santa->draw->initialCsvName(), ['mime' => 'text/csv'])
+            : $message;
     }
 
     private function parseKeywords($str, Participant $santa): string|array

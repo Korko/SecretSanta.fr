@@ -85,12 +85,6 @@ parameters:
 			path: app/Collections/ParticipantsCollection.php
 
 		-
-			rawMessage: 'Parameter #1 $item of method Illuminate\Support\Collection<int,Illuminate\Database\Eloquent\Model>::add() expects Illuminate\Database\Eloquent\Model, Illuminate\Database\Eloquent\Model|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Collections/ParticipantsCollection.php
-
-		-
 			rawMessage: Cannot access property $dearSantas on mixed.
 			identifier: property.nonObject
 			count: 1
@@ -271,7 +265,7 @@ parameters:
 			path: app/Console/Commands/ExportDraw.php
 
 		-
-			rawMessage: 'Parameter #2 $rows of function Laravel\Prompts\table expects array<int, array<int, string>>|Illuminate\Support\Collection<int, array<int, string>>|null, array<int, non-empty-array> given.'
+			rawMessage: 'Parameter #2 $rows of function Laravel\Prompts\table expects array<int, array<int, string>>|Illuminate\Support\Collection<int, array<int, string>>|null, array<non-empty-array> given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/ExportDraw.php
@@ -279,6 +273,12 @@ parameters:
 		-
 			rawMessage: 'Parameter $placeholder of function Laravel\Prompts\text expects string, mixed given.'
 			identifier: argument.type
+			count: 1
+			path: app/Console/Commands/ExportDraw.php
+
+		-
+			rawMessage: Relation 'mail' is not found in App\Models\Participant model.
+			identifier: larastan.relationExistence
 			count: 1
 			path: app/Console/Commands/ExportDraw.php
 
@@ -619,7 +619,7 @@ parameters:
 			path: app/Console/Commands/ListDraw.php
 
 		-
-			rawMessage: 'Parameter #2 $rows of function Laravel\Prompts\table expects array<int, array<int, string>>|Illuminate\Support\Collection<int, array<int, string>>|null, array<int, non-empty-array> given.'
+			rawMessage: 'Parameter #2 $rows of function Laravel\Prompts\table expects array<int, array<int, string>>|Illuminate\Support\Collection<int, array<int, string>>|null, array<non-empty-array> given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/ListDraw.php
@@ -627,6 +627,12 @@ parameters:
 		-
 			rawMessage: 'Parameter $placeholder of function Laravel\Prompts\text expects string, mixed given.'
 			identifier: argument.type
+			count: 1
+			path: app/Console/Commands/ListDraw.php
+
+		-
+			rawMessage: Relation 'mail' is not found in App\Models\Participant model.
+			identifier: larastan.relationExistence
 			count: 1
 			path: app/Console/Commands/ListDraw.php
 
@@ -859,7 +865,7 @@ parameters:
 			path: app/Console/Commands/ShowDraw.php
 
 		-
-			rawMessage: 'Parameter #2 $rows of function Laravel\Prompts\table expects array<int, array<int, string>>|Illuminate\Support\Collection<int, array<int, string>>|null, array<int, non-empty-array> given.'
+			rawMessage: 'Parameter #2 $rows of function Laravel\Prompts\table expects array<int, array<int, string>>|Illuminate\Support\Collection<int, array<int, string>>|null, array<non-empty-array> given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/ShowDraw.php
@@ -867,6 +873,12 @@ parameters:
 		-
 			rawMessage: 'Parameter $placeholder of function Laravel\Prompts\text expects string, mixed given.'
 			identifier: argument.type
+			count: 1
+			path: app/Console/Commands/ShowDraw.php
+
+		-
+			rawMessage: Relation 'mail' is not found in App\Models\Participant model.
+			identifier: larastan.relationExistence
 			count: 1
 			path: app/Console/Commands/ShowDraw.php
 
@@ -1047,7 +1059,7 @@ parameters:
 		-
 			rawMessage: Access to an undefined property App\Models\DearSanta::$mail.
 			identifier: property.notFound
-			count: 2
+			count: 5
 			path: app/Http/Controllers/DearSantaController.php
 
 		-
@@ -1057,45 +1069,15 @@ parameters:
 			path: app/Http/Controllers/DearSantaController.php
 
 		-
-			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$mail.
-			identifier: property.notFound
-			count: 3
-			path: app/Http/Controllers/DearSantaController.php
-
-		-
 			rawMessage: Binary operation "." between '/dearSanta/' and mixed results in an error.
 			identifier: binaryOp.invalid
 			count: 4
 			path: app/Http/Controllers/DearSantaController.php
 
 		-
-			rawMessage: Cannot access property $dearSantas on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/DearSantaController.php
-
-		-
-			rawMessage: Cannot access property $hash on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/DearSantaController.php
-
-		-
 			rawMessage: Cannot access property $id on mixed.
 			identifier: property.nonObject
 			count: 3
-			path: app/Http/Controllers/DearSantaController.php
-
-		-
-			rawMessage: Cannot access property $organizer_name on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/DearSantaController.php
-
-		-
-			rawMessage: Cannot access property $targets_revealed_at on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
 			path: app/Http/Controllers/DearSantaController.php
 
 		-
@@ -1111,12 +1093,6 @@ parameters:
 			path: app/Http/Controllers/DearSantaController.php
 
 		-
-			rawMessage: 'Cannot call method load() on mixed.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Http/Controllers/DearSantaController.php
-
-		-
 			rawMessage: 'Cannot call method markAsCreated() on mixed.'
 			identifier: method.nonObject
 			count: 1
@@ -1126,18 +1102,6 @@ parameters:
 			rawMessage: 'Cannot call method markAsReceived() on mixed.'
 			identifier: method.nonObject
 			count: 1
-			path: app/Http/Controllers/DearSantaController.php
-
-		-
-			rawMessage: 'Cannot call method max() on mixed.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Http/Controllers/DearSantaController.php
-
-		-
-			rawMessage: 'Cannot call method notify() on Illuminate\Database\Eloquent\Model|null.'
-			identifier: method.nonObject
-			count: 2
 			path: app/Http/Controllers/DearSantaController.php
 
 		-
@@ -1171,12 +1135,6 @@ parameters:
 			path: app/Http/Controllers/DearSantaController.php
 
 		-
-			rawMessage: 'Parameter #1 $dearSanta of class App\Notifications\DearSanta constructor expects App\Models\DearSanta, Illuminate\Database\Eloquent\Model given.'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/DearSantaController.php
-
-		-
 			rawMessage: Possibly invalid array key type mixed.
 			identifier: array.invalidKey
 			count: 3
@@ -1192,6 +1150,12 @@ parameters:
 			rawMessage: 'Property App\Models\DearSanta::$mail_body (string) does not accept mixed.'
 			identifier: assign.propertyType
 			count: 1
+			path: app/Http/Controllers/DearSantaController.php
+
+		-
+			rawMessage: Relation 'mail' is not found in App\Models\DearSanta model.
+			identifier: larastan.relationExistence
+			count: 2
 			path: app/Http/Controllers/DearSantaController.php
 
 		-
@@ -1327,33 +1291,15 @@ parameters:
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
-			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$name.
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
 			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$target.
 			identifier: property.notFound
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
-			rawMessage: Binary operation "." between '﻿' and mixed results in an error.
-			identifier: binaryOp.invalid
-			count: 1
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
 			rawMessage: Binary operation "." between non-falsy-string and mixed results in an error.
 			identifier: binaryOp.invalid
-			count: 4
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
-			rawMessage: 'Call to an undefined method Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model>::appendTargetToExclusions().'
-			identifier: method.notFound
-			count: 1
+			count: 2
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
@@ -1369,37 +1315,13 @@ parameters:
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
-			rawMessage: Cannot access property $dearSantas on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
 			rawMessage: Cannot access property $dearSantas on mixed.
 			identifier: property.nonObject
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
-			rawMessage: Cannot access property $exclusions on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
-			rawMessage: Cannot access property $id on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 2
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
 			rawMessage: 'Cannot call method each() on mixed.'
-			identifier: method.nonObject
-			count: 2
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
-			rawMessage: 'Cannot call method isNot() on Illuminate\Database\Eloquent\Model|null.'
 			identifier: method.nonObject
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
@@ -1411,37 +1333,7 @@ parameters:
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
-			rawMessage: 'Cannot call method modelKeys() on mixed.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
-			rawMessage: 'Cannot call method notify() on Illuminate\Database\Eloquent\Model|null.'
-			identifier: method.nonObject
-			count: 2
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
-			rawMessage: 'Cannot call method prepend() on mixed.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
 			rawMessage: 'Cannot call method save() on mixed.'
-			identifier: method.nonObject
-			count: 3
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
-			rawMessage: 'Cannot call method target() on Illuminate\Database\Eloquent\Model|null.'
-			identifier: method.nonObject
-			count: 2
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
-			rawMessage: 'Cannot call method toCsv() on mixed.'
 			identifier: method.nonObject
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
@@ -1453,7 +1345,7 @@ parameters:
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
-			rawMessage: 'Method App\Http\Controllers\OrganizerController::targets() should return array<string, string> but returns array.'
+			rawMessage: 'Method App\Http\Controllers\OrganizerController::targets() should return array<string, string> but returns array<string>.'
 			identifier: return.type
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
@@ -1465,13 +1357,13 @@ parameters:
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
-			rawMessage: 'Parameter #1 $callback of method Illuminate\Database\Eloquent\Collection<int,Illuminate\Database\Eloquent\Model>::mapWithKeys() expects callable(Illuminate\Database\Eloquent\Model, int): array, Closure(App\Models\Participant): non-empty-array given.'
+			rawMessage: 'Parameter #1 $callback of method Illuminate\Database\Eloquent\Collection<(int|string),Illuminate\Database\Eloquent\Model>::mapWithKeys() expects callable(Illuminate\Database\Eloquent\Model, int|string): array<string>, Closure(App\Models\Participant): non-empty-array<string> given.'
 			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
-			rawMessage: 'Parameter #1 $callback of method Illuminate\Support\Collection<int,Illuminate\Database\Eloquent\Model>::first() expects (callable(Illuminate\Database\Eloquent\Model, int): bool)|null, Closure(App\Models\Participant): bool given.'
+			rawMessage: 'Parameter #1 $callback of method Illuminate\Support\Collection<(int|string),Illuminate\Database\Eloquent\Model>::first() expects (callable(Illuminate\Database\Eloquent\Model, int|string): bool)|null, Closure(App\Models\Participant): bool given.'
 			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
@@ -1479,17 +1371,11 @@ parameters:
 		-
 			rawMessage: 'Parameter #1 $dearSanta of class App\Notifications\DearSanta constructor expects App\Models\DearSanta, mixed given.'
 			identifier: argument.type
-			count: 2
-			path: app/Http/Controllers/OrganizerController.php
-
-		-
-			rawMessage: 'Parameter #1 $key of method Illuminate\Database\Eloquent\Collection<int,Illuminate\Database\Eloquent\Model>::contains() expects (callable(Illuminate\Database\Eloquent\Model, int): bool)|Illuminate\Database\Eloquent\Model|int|string, Illuminate\Database\Eloquent\Model|null given.'
-			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
-			rawMessage: 'Parameter #2 $haystack of function in_array expects array, mixed given.'
+			rawMessage: 'Parameter #1 $model of method Illuminate\Database\Eloquent\Relations\HasOneOrMany<App\Models\Participant,App\Models\Participant,App\Models\Participant|null>::save() expects App\Models\Participant, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
@@ -1501,6 +1387,12 @@ parameters:
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
+			rawMessage: 'Property App\Models\Draw::$organizer_email (string) does not accept mixed.'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
 			rawMessage: 'Property App\Models\Draw::$targets_revealed_at (string|null) does not accept Carbon\CarbonImmutable.'
 			identifier: assign.propertyType
 			count: 1
@@ -1509,6 +1401,12 @@ parameters:
 		-
 			rawMessage: 'Property App\Models\Participant::$email (string) does not accept mixed.'
 			identifier: assign.propertyType
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
+			rawMessage: Using nullsafe property access on non-nullable type App\Models\Participant. Use -> instead.
+			identifier: nullsafe.neverNull
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
 
@@ -1663,12 +1561,6 @@ parameters:
 			path: app/Models/DearSanta.php
 
 		-
-			rawMessage: Cannot access property $draw on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Models/DearSanta.php
-
-		-
 			rawMessage: 'Cannot call method delete() on mixed.'
 			identifier: method.nonObject
 			count: 1
@@ -1747,12 +1639,6 @@ parameters:
 			path: app/Models/DearSanta.php
 
 		-
-			rawMessage: 'Method App\Models\DearSanta::sender() return type with generic class Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its types: TRelatedModel, TDeclaringModel'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/DearSanta.php
-
-		-
 			rawMessage: 'Parameter #1 $hash of method Hashids\Hashids::decode() expects string, mixed given.'
 			identifier: argument.type
 			count: 1
@@ -1777,9 +1663,9 @@ parameters:
 			path: app/Models/Draw.php
 
 		-
-			rawMessage: 'Call to an undefined method Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model>::redrawables().'
-			identifier: method.notFound
-			count: 1
+			rawMessage: Binary operation "." between non-falsy-string and mixed results in an error.
+			identifier: binaryOp.invalid
+			count: 2
 			path: app/Models/Draw.php
 
 		-
@@ -1795,12 +1681,6 @@ parameters:
 			path: app/Models/Draw.php
 
 		-
-			rawMessage: 'Cannot call method addWeeks() on string.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/Draw.php
-
-		-
 			rawMessage: 'Cannot call method delete() on mixed.'
 			identifier: method.nonObject
 			count: 1
@@ -1808,12 +1688,6 @@ parameters:
 
 		-
 			rawMessage: 'Cannot call method findOrFail() on mixed.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/Draw.php
-
-		-
-			rawMessage: 'Cannot call method isPast() on string.'
 			identifier: method.nonObject
 			count: 1
 			path: app/Models/Draw.php
@@ -1885,12 +1759,6 @@ parameters:
 			path: app/Models/Draw.php
 
 		-
-			rawMessage: 'Method App\Models\Draw::participants() return type with generic class Illuminate\Database\Eloquent\Relations\HasMany does not specify its types: TRelatedModel, TDeclaringModel'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Draw.php
-
-		-
 			rawMessage: 'Method App\Models\Draw::prunable() return type with generic class Illuminate\Database\Eloquent\Builder does not specify its types: TModel'
 			identifier: missingType.generics
 			count: 1
@@ -1945,20 +1813,14 @@ parameters:
 			path: app/Models/Draw.php
 
 		-
-			rawMessage: 'Parameter #1 $participants of static method App\Services\DrawHandler::canRedraw() expects App\Collections\ParticipantsCollection, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Models/Draw.php
-
-		-
-			rawMessage: 'Property App\Models\Draw::$expires_at (string) does not accept Carbon\CarbonImmutable|string.'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Models/Draw.php
-
-		-
 			rawMessage: Property App\Models\Draw::$hashConnection has no type specified.
 			identifier: missingType.property
+			count: 1
+			path: app/Models/Draw.php
+
+		-
+			rawMessage: Ternary operator condition is always true.
+			identifier: ternary.alwaysTrue
 			count: 1
 			path: app/Models/Draw.php
 
@@ -1989,12 +1851,6 @@ parameters:
 		-
 			rawMessage: 'Method App\Models\Mail::draw() has no return type specified.'
 			identifier: missingType.return
-			count: 1
-			path: app/Models/Mail.php
-
-		-
-			rawMessage: 'Method App\Models\Mail::mailable() return type with generic class Illuminate\Database\Eloquent\Relations\MorphTo does not specify its types: TRelatedModel, TDeclaringModel'
-			identifier: missingType.generics
 			count: 1
 			path: app/Models/Mail.php
 
@@ -2077,6 +1933,12 @@ parameters:
 			path: app/Models/Model.php
 
 		-
+			rawMessage: Access to an undefined property App\Models\Draw::$metricId.
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Participant.php
+
+		-
 			rawMessage: Access to an undefined property App\Models\Participant::$metricId.
 			identifier: property.notFound
 			count: 1
@@ -2102,18 +1964,6 @@ parameters:
 
 		-
 			rawMessage: Cannot access property $expired on mixed.
-			identifier: property.nonObject
-			count: 1
-			path: app/Models/Participant.php
-
-		-
-			rawMessage: Cannot access property $id on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Models/Participant.php
-
-		-
-			rawMessage: Cannot access property $metricId on Illuminate\Database\Eloquent\Model|null.
 			identifier: property.nonObject
 			count: 1
 			path: app/Models/Participant.php
@@ -2185,24 +2035,6 @@ parameters:
 			path: app/Models/Participant.php
 
 		-
-			rawMessage: 'Method App\Models\Participant::dearSantas() return type with generic class Illuminate\Database\Eloquent\Relations\HasMany does not specify its types: TRelatedModel, TDeclaringModel'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Participant.php
-
-		-
-			rawMessage: 'Method App\Models\Participant::draw() return type with generic class Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its types: TRelatedModel, TDeclaringModel'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Participant.php
-
-		-
-			rawMessage: 'Method App\Models\Participant::exclusions() return type with generic class Illuminate\Database\Eloquent\Relations\BelongsToMany does not specify its types: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor (2-4 required)'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Participant.php
-
-		-
 			rawMessage: 'Method App\Models\Participant::exclusionsNames() return type with generic class Illuminate\Database\Eloquent\Casts\Attribute does not specify its types: TGet, TSet'
 			identifier: missingType.generics
 			count: 1
@@ -2239,12 +2071,6 @@ parameters:
 			path: app/Models/Participant.php
 
 		-
-			rawMessage: 'Method App\Models\Participant::santa() return type with generic class Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its types: TRelatedModel, TDeclaringModel'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Participant.php
-
-		-
 			rawMessage: 'Method App\Models\Participant::scopeFindByHashOrFail() has no return type specified.'
 			identifier: missingType.return
 			count: 1
@@ -2259,12 +2085,6 @@ parameters:
 		-
 			rawMessage: 'Method App\Models\Participant::scopeFindByHashOrFail() has parameter $query with no type specified.'
 			identifier: missingType.parameter
-			count: 1
-			path: app/Models/Participant.php
-
-		-
-			rawMessage: 'Method App\Models\Participant::target() return type with generic class Illuminate\Database\Eloquent\Relations\HasOne does not specify its types: TRelatedModel, TDeclaringModel'
-			identifier: missingType.generics
 			count: 1
 			path: app/Models/Participant.php
 
@@ -2305,26 +2125,8 @@ parameters:
 			path: app/Models/Participant.php
 
 		-
-			rawMessage: Cannot access property $id on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/DearSanta.php
-
-		-
-			rawMessage: Cannot access property $name on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/DearSanta.php
-
-		-
 			rawMessage: 'Method App\Notifications\DearSanta::via() return type has no value type specified in iterable type array.'
 			identifier: missingType.iterableValue
-			count: 1
-			path: app/Notifications/DearSanta.php
-
-		-
-			rawMessage: 'Parameter #2 $replace of function __ expects array<string, bool|(Closure(string): string)|float|int|string|null>, array{draw: mixed} given.'
-			identifier: argument.type
 			count: 1
 			path: app/Notifications/DearSanta.php
 
@@ -2335,37 +2137,19 @@ parameters:
 			path: app/Notifications/OrganizerRecap.php
 
 		-
-			rawMessage: Binary operation "." between 'secretsanta_' and mixed results in an error.
-			identifier: binaryOp.invalid
+			rawMessage: 'Cannot call method isoFormat() on Carbon\CarbonImmutable|string.'
+			identifier: method.nonObject
 			count: 1
 			path: app/Notifications/OrganizerRecap.php
 
 		-
-			rawMessage: Binary operation "." between non-falsy-string and mixed results in an error.
-			identifier: binaryOp.invalid
-			count: 2
-			path: app/Notifications/OrganizerRecap.php
-
-		-
 			rawMessage: 'Cannot call method isoFormat() on mixed.'
-			identifier: method.nonObject
-			count: 2
-			path: app/Notifications/OrganizerRecap.php
-
-		-
-			rawMessage: 'Cannot call method isoFormat() on string.'
 			identifier: method.nonObject
 			count: 1
 			path: app/Notifications/OrganizerRecap.php
 
 		-
 			rawMessage: 'Cannot call method locale() on mixed.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Notifications/OrganizerRecap.php
-
-		-
-			rawMessage: 'Cannot call method locale() on string.'
 			identifier: method.nonObject
 			count: 1
 			path: app/Notifications/OrganizerRecap.php
@@ -2381,18 +2165,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: app/Notifications/OrganizerRecap.php
-
-		-
-			rawMessage: Cannot access property $name on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/SuggestRedraw.php
-
-		-
-			rawMessage: Cannot access property $organizer_name on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/SuggestRedraw.php
 
 		-
 			rawMessage: 'Method App\Notifications\SuggestRedraw::via() return type has no value type specified in iterable type array.'
@@ -2413,46 +2185,10 @@ parameters:
 			path: app/Notifications/SuggestRedraw.php
 
 		-
-			rawMessage: Cannot access property $id on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/TargetChanged.php
-
-		-
-			rawMessage: Cannot access property $name on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/TargetChanged.php
-
-		-
 			rawMessage: 'Method App\Notifications\TargetChanged::via() return type has no value type specified in iterable type array.'
 			identifier: missingType.iterableValue
 			count: 1
 			path: app/Notifications/TargetChanged.php
-
-		-
-			rawMessage: Cannot access property $id on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/TargetDrawn.php
-
-		-
-			rawMessage: Cannot access property $mail_body on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/TargetDrawn.php
-
-		-
-			rawMessage: Cannot access property $mail_title on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/TargetDrawn.php
-
-		-
-			rawMessage: Cannot access property $name on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/TargetDrawn.php
 
 		-
 			rawMessage: 'Method App\Notifications\TargetDrawn::parseKeywords() has parameter $str with no type specified.'
@@ -2485,28 +2221,10 @@ parameters:
 			path: app/Notifications/TargetDrawn.php
 
 		-
-			rawMessage: 'Parameter #2 $replace of function str_ireplace expects array<string>|string, array<int, mixed> given.'
-			identifier: argument.type
-			count: 1
-			path: app/Notifications/TargetDrawn.php
-
-		-
 			rawMessage: 'Parameter #3 $subject of function str_ireplace expects array<string>|string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Notifications/TargetDrawn.php
-
-		-
-			rawMessage: Cannot access property $id on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/TargetWithdrawn.php
-
-		-
-			rawMessage: Cannot access property $name on Illuminate\Database\Eloquent\Model|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/TargetWithdrawn.php
 
 		-
 			rawMessage: 'Method App\Notifications\TargetWithdrawn::via() return type has no value type specified in iterable type array.'
@@ -2869,6 +2587,12 @@ parameters:
 			path: app/Services/DrawFormHandler.php
 
 		-
+			rawMessage: 'Property App\Models\Draw::$expires_at (Carbon\CarbonImmutable) does not accept string.'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/DrawFormHandler.php
+
+		-
 			rawMessage: 'Property App\Models\Draw::$mail_body (string) does not accept mixed.'
 			identifier: assign.propertyType
 			count: 1
@@ -2955,18 +2679,6 @@ parameters:
 		-
 			rawMessage: 'Method App\Services\DrawHandler::getHat() return type has no value type specified in iterable type array.'
 			identifier: missingType.iterableValue
-			count: 1
-			path: app/Services/DrawHandler.php
-
-		-
-			rawMessage: 'Parameter #1 $participants of static method App\Services\DrawHandler::canRedraw() expects App\Collections\ParticipantsCollection, Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model> given.'
-			identifier: argument.type
-			count: 1
-			path: app/Services/DrawHandler.php
-
-		-
-			rawMessage: 'Parameter #1 $participants of static method App\Services\DrawHandler::getHat() expects App\Collections\ParticipantsCollection, Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model> given.'
-			identifier: argument.type
 			count: 1
 			path: app/Services/DrawHandler.php
 
@@ -3518,12 +3230,6 @@ parameters:
 
 		-
 			rawMessage: 'Parameter #1 $callback of method Illuminate\Database\Eloquent\Factories\Factory<Illuminate\Database\Eloquent\Model>::afterCreating() expects Closure(Illuminate\Database\Eloquent\Model): mixed, Closure(App\Models\Draw): void given.'
-			identifier: argument.type
-			count: 1
-			path: database/factories/DrawFactory.php
-
-		-
-			rawMessage: 'Parameter #2 $participants of static method App\Services\DrawHandler::solve() expects App\Collections\ParticipantsCollection|null, Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model> given.'
 			identifier: argument.type
 			count: 1
 			path: database/factories/DrawFactory.php

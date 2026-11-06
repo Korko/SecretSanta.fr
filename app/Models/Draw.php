@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Casts\EncryptedString;
+use App\Collections\ParticipantsCollection;
 use App\Services\DrawHandler;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -17,6 +19,10 @@ use Illuminate\Support\Facades\Date;
 use STS\Metrics\Facades\Metrics;
 use STS\Metrics\Metric;
 
+/**
+ * @property CarbonImmutable $expires_at
+ * @property-read ParticipantsCollection $participants
+ */
 #[Fillable(['mail_title', 'mail_body', 'expires_at', 'next_solvable', 'organizer_name', 'organizer_email'])]
 final class Draw extends Model
 {
@@ -45,6 +51,7 @@ final class Draw extends Model
         return self::query()->where('expires_at', '<=', Date::now()->subWeeks(self::WEEKS_BEFORE_DELETION));
     }
 
+    /** @return HasMany<Participant, $this> */
     public function participants(): HasMany
     {
         return $this->hasMany(Participant::class);
@@ -56,6 +63,23 @@ final class Draw extends Model
             ->setTags([
                 'draw' => $this->metricId,
             ]);
+    }
+
+    // Participants and exclusions, reusable to prefill the form next time (organizer panel + recap email)
+    public function initialCsv(): string
+    {
+        return "\xEF\xBB\xBF".// UTF-8 BOM
+            $this->participants
+                ->toCsv(['name', 'email', 'exclusionsNames'])
+                ->prepend([
+                    ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
+                    ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
+                ]);
+    }
+
+    public function initialCsvName(): string
+    {
+        return 'secretsanta_'.$this->expires_at->isoFormat('YYYY-MM-DD').'_init.csv';
     }
 
     /**

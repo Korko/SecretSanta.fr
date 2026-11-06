@@ -32,6 +32,22 @@ final class OrganizerRecap extends Notification implements ShouldBeEncrypted, Sh
     public function __construct(private Draw $draw) {}
 
     /**
+     * Also used by TargetDrawn when the organizer takes part in the draw
+     *
+     * @return array<string, mixed>
+     */
+    public static function viewData(Draw $draw): array
+    {
+        return [
+            'organizerName' => $draw->organizer_name,
+            'expirationDate' => $draw->expires_at->locale(App::getLocale())->isoFormat('LL'),
+            'deletionDate' => $draw->deleted_at->locale(App::getLocale())->isoFormat('LL'),
+            'nextSolvable' => $draw->next_solvable,
+            'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
+        ];
+    }
+
+    /**
      * Get the notification's delivery channels.
      *
      * @param  AnonymousNotifiable|Participant  $organizer
@@ -50,23 +66,7 @@ final class OrganizerRecap extends Notification implements ShouldBeEncrypted, Sh
     {
         return (new MailMessage)
             ->subject(__('emails.organizer_recap_title', ['draw' => $this->draw->id]))
-            ->view(['emails.organizer_recap', 'emails.organizer_recap_plain'], [
-                'organizerName' => $this->draw->organizer_name,
-                'expirationDate' => $this->draw->expires_at->locale(App::getLocale())->isoFormat('LL'),
-                'deletionDate' => $this->draw->deleted_at->locale(App::getLocale())->isoFormat('LL'),
-                'nextSolvable' => $this->draw->next_solvable,
-                'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $this->draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
-            ])
-            ->attachData(
-                "\xEF\xBB\xBF".// UTF-8 BOM
-                $this->draw->participants
-                    ->toCsv(['name', 'email', 'exclusionsNames'])
-                    ->prepend([
-                        ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
-                        ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
-                    ]),
-                'secretsanta_'.$this->draw->expires_at->isoFormat('YYYY-MM-DD').'_init.csv', [
-                    'mime' => 'text/csv',
-                ]);
+            ->view(['emails.organizer_recap', 'emails.organizer_recap_plain'], self::viewData($this->draw))
+            ->attachData($this->draw->initialCsv(), $this->draw->initialCsvName(), ['mime' => 'text/csv']);
     }
 }

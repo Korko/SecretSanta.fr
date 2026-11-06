@@ -97,6 +97,7 @@ final class Mail extends Model
     /**
      * Get the parent mailable model (dearSanta or participant).
      */
+    /** @return MorphTo<\Illuminate\Database\Eloquent\Model, $this> */
     public function mailable(): MorphTo
     {
         return $this->morphTo();

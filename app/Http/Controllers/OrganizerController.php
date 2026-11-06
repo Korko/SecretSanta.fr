@@ -83,6 +83,12 @@ final class OrganizerController extends Controller
 
             $participant->createMetric('resend_email');
         } else {
+            // The organizer fixing their own address: keep the draw in sync (recap in their target email, /fix)
+            if ($participant->isOrganizer()) {
+                $participant->draw->organizer_email = $request->input('email');
+                $participant->draw->save();
+            }
+
             $participant->email = $request->input('email');
             $participant->save();
 
@@ -146,13 +152,7 @@ final class OrganizerController extends Controller
         $draw->createMetric('csv_initial_download');
 
         return response(
-            "\xEF\xBB\xBF".// UTF-8 BOM
-            $draw->participants
-                ->toCsv(['name', 'email', 'exclusionsNames'])
-                ->prepend([
-                    ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
-                    ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
-                ]),
+            $draw->initialCsv(),
             200, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 

@@ -21,6 +21,11 @@ use Illuminate\Notifications\Notification;
 use STS\Metrics\Facades\Metrics;
 use STS\Metrics\Metric;
 
+/**
+ * @property-read Draw $draw
+ * @property-read Participant $target
+ * @property-read Participant $santa
+ */
 #[CollectedBy(ParticipantsCollection::class)]
 #[Fillable(['name', 'email'])]
 final class Participant extends Model
@@ -31,21 +36,32 @@ final class Participant extends Model
 
     protected $hashConnection = 'santa';
 
+    // When the organizer takes part, they are the first participant (see DrawFormHandler)
+    public function isOrganizer(): bool
+    {
+        return $this->draw->participants->first()?->is($this)
+            && $this->email === $this->draw->organizer_email;
+    }
+
+    /** @return BelongsTo<Draw, $this> */
     public function draw(): BelongsTo
     {
         return $this->belongsTo(Draw::class);
     }
 
+    /** @return HasOne<self, $this> */
     public function target(): HasOne
     {
         return $this->hasOne(self::class, 'target_id');
     }
 
+    /** @return BelongsTo<self, $this> */
     public function santa(): BelongsTo
     {
         return $this->belongsTo(self::class, 'target_id');
     }
 
+    /** @return HasMany<DearSanta, $this> */
     public function dearSantas(): HasMany
     {
         return $this->hasMany(DearSanta::class, 'sender_id')->with('mail');
@@ -56,6 +72,7 @@ final class Participant extends Model
         return $this->morphOne(Mail::class, 'mailable');
     }
 
+    /** @return BelongsToMany<self, $this> */
     public function exclusions(): BelongsToMany
     {
         return $this->belongsToMany(self::class, 'exclusions', 'participant_id', 'exclusion_id');

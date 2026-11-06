@@ -38,9 +38,12 @@ final class RandomFormController extends Controller
                 ->withExpiration($safe['data-expiration'])
                 ->save();
 
-            Notification::route('mail', [
-                $draw->organizer_email => $draw->organizer_name,
-            ])->notify(new OrganizerRecap($draw));
+            // Taking part, the organizer gets the recap within their own target email (TargetDrawn)
+            if (! Arr::get($safe, 'participant-organizer', false)) {
+                Notification::route('mail', [
+                    $draw->organizer_email => $draw->organizer_name,
+                ])->notify(new OrganizerRecap($draw));
+            }
 
             $draw->createMetric('new_draw')
                 ->addExtra('participants', count($draw->participants));
