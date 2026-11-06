@@ -306,6 +306,15 @@ test('a participant report shows on the organizer panel, and fixing the address 
     ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))
         ->assertJsonPath("participants.{$participant->hash}.report", 'not_me');
 
+    // The reported address stays refused in this draw: resent, given to someone else, or re-added after removal
+    $reported = $participant->email;
+    ajaxPost(URL::signedRoute('organizerPanel.changeEmail', ['draw' => $draw, 'participant' => $participant]), ['email' => mb_strtoupper($reported)])
+        ->assertStatus(422)->assertJsonValidationErrors('email');
+    ajaxPost(URL::signedRoute('organizerPanel.changeEmail', ['draw' => $draw, 'participant' => $draw->participants->last()]), ['email' => $reported])
+        ->assertStatus(422);
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), ['add' => [['name' => 'Back', 'email' => $reported]]])
+        ->assertStatus(422)->assertJsonValidationErrors('add.0.email');
+
     ajaxPost(URL::signedRoute('organizerPanel.changeEmail', ['draw' => $draw, 'participant' => $participant]), ['email' => 'fixed@example.com'])
         ->assertSuccessful();
     assertNull($participant->fresh()->report);

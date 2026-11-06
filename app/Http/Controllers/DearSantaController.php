@@ -63,6 +63,7 @@ final class DearSantaController extends Controller
 
         $participant->report = $request->enum('reason', ReportReason::class);
         $participant->save();
+        $participant->draw->refuseEmail($participant->email, $participant->report !== null);
 
         $participant->createMetric($participant->report ? 'report_'.$participant->report->value : 'report_cancelled');
 

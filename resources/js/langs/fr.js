@@ -273,6 +273,7 @@ export default {
                 }
             },
             "report": {
+                "refused_email": "Cette adresse a signalé ne pas participer à cet évènement : saisissez-en une autre.",
                 "not_me": "Mauvais destinataire",
                 "not_participating": "Ne participe pas",
                 "help": {

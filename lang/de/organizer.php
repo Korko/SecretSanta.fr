@@ -69,6 +69,7 @@ return [
         ],
     ],
     'report' => [
+        'refused_email' => 'Diese Adresse hat gemeldet, nicht an dieser Veranstaltung teilzunehmen: Geben Sie eine andere ein.',
         'not_me' => 'Falscher Empfänger',
         'not_participating' => 'Nimmt nicht teil',
         'help' => [

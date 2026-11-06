@@ -24,6 +24,7 @@ use STS\Metrics\Metric;
  * @property-read CarbonImmutable $deleted_at
  * @property-read bool $expired
  * @property-read ParticipantsCollection $participants
+ * @property list<string>|null $refused_emails
  */
 #[Fillable(['mail_title', 'mail_body', 'expires_at', 'next_solvable', 'organizer_name', 'organizer_email'])]
 final class Draw extends Model
@@ -84,6 +85,20 @@ final class Draw extends Model
         return 'secretsanta_'.$this->expires_at->isoFormat('YYYY-MM-DD').'_init.csv';
     }
 
+    // Addresses that reported the target email ("not me" / "not taking part") can't be used again in this draw,
+    // even after removing and re-adding the person: only an HMAC is kept, the address itself is purged with the participant
+    public function refusesEmail(string $email): bool
+    {
+        return in_array($this->emailFingerprint($email), $this->refused_emails ?? [], true);
+    }
+
+    public function refuseEmail(string $email, bool $refused = true): void
+    {
+        $fingerprints = array_diff($this->refused_emails ?? [], [$this->emailFingerprint($email)]);
+        $this->refused_emails = array_values($refused ? [...$fingerprints, $this->emailFingerprint($email)] : $fingerprints);
+        $this->save();
+    }
+
     /**
      * The attributes that should be mutated to dates.
      *
@@ -134,8 +149,14 @@ final class Draw extends Model
             'mail_title' => EncryptedString::class,
             'mail_body' => EncryptedString::class,
             'next_solvable' => 'boolean',
+            'refused_emails' => 'array',
             'organizer_name' => EncryptedString::class,
             'organizer_email' => EncryptedString::class,
         ];
+    }
+
+    private function emailFingerprint(string $email): string
+    {
+        return hash_hmac('sha256', mb_strtolower(mb_trim($email)), config()->string('app.key').$this->id);
     }
 }

@@ -273,6 +273,7 @@ export default {
                 }
             },
             "report": {
+                "refused_email": "This address reported not taking part in this event: enter another one.",
                 "not_me": "Wrong recipient",
                 "not_participating": "Not taking part",
                 "help": {

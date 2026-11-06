@@ -10,12 +10,14 @@ use App\Models\Participant;
 use App\Notifications\TargetDrawn;
 use App\Services\ParticipantsEditor;
 use Carbon\CarbonImmutable;
+use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 final class OrganizerController extends Controller
 {
@@ -97,6 +99,8 @@ final class OrganizerController extends Controller
 
     public function changeEmail(OrganizerChangeEmailRequest $request, Draw $draw, Participant $participant): JsonResponse
     {
+        throw_if($draw->refusesEmail($request->string('email')->toString()), ValidationException::withMessages(['email' => trans('organizer.report.refused_email')]));
+
         if ($participant->email === $request->input('email')) {
             $message = trans('message.sent');
 
@@ -138,7 +142,11 @@ final class OrganizerController extends Controller
             'remove.*' => ['distinct', Rule::in($hashes)],
             'add' => ['array'],
             'add.*.name' => ['required', 'string', 'distinct', Rule::notIn($names)],
-            'add.*.email' => ['required', 'email'],
+            'add.*.email' => ['required', 'email', function (string $attribute, mixed $value, Closure $fail) use ($draw): void {
+                if (is_string($value) && $draw->refusesEmail($value)) {
+                    $fail(trans('organizer.report.refused_email'));
+                }
+            }],
         ], [
             'add.*.name.required' => __('validation.custom.randomform.participant.name.required'),
             'add.*.name.distinct' => __('validation.custom.randomform.participant.name.distinct'),
