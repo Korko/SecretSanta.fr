@@ -1093,6 +1093,12 @@ parameters:
 			path: app/Http/Controllers/DearSantaController.php
 
 		-
+			rawMessage: Cannot access property $targets_revealed_at on Illuminate\Database\Eloquent\Model|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/DearSantaController.php
+
+		-
 			rawMessage: Cannot access property $updated_at on mixed.
 			identifier: property.nonObject
 			count: 1
@@ -1321,6 +1327,12 @@ parameters:
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$name.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
 			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$target.
 			identifier: property.notFound
 			count: 1
@@ -1441,7 +1453,19 @@ parameters:
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
+			rawMessage: 'Method App\Http\Controllers\OrganizerController::targets() should return array<string, string> but returns array.'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
 			rawMessage: 'Parameter #1 $boolean of function abort_unless expects bool, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
+			rawMessage: 'Parameter #1 $callback of method Illuminate\Database\Eloquent\Collection<int,Illuminate\Database\Eloquent\Model>::mapWithKeys() expects callable(Illuminate\Database\Eloquent\Model, int): array, Closure(App\Models\Participant): non-empty-array given.'
 			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
@@ -1473,7 +1497,13 @@ parameters:
 		-
 			rawMessage: Possibly invalid array key type mixed.
 			identifier: array.invalidKey
-			count: 4
+			count: 5
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
+			rawMessage: 'Property App\Models\Draw::$targets_revealed_at (string|null) does not accept Carbon\CarbonImmutable.'
+			identifier: assign.propertyType
+			count: 1
 			path: app/Http/Controllers/OrganizerController.php
 
 		-

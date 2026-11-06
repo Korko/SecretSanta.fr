@@ -38,6 +38,7 @@ final class DearSantaController extends Controller
             'targetDearSantaLastUpdate' => $participant->target->dearSantas->load('mail')->max('mail.updated_at'),
             'draw' => $participant->draw->hash,
             'organizer' => $participant->draw->organizer_name,
+            'targetsRevealed' => $participant->draw->targets_revealed_at !== null,
             'emails' => $participant->dearSantas->mapWithKeys(fn ($email): array => [
                 $email->mail->id => $email->only($this->dearSantaPublicFields),
             ]),

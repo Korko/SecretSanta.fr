@@ -85,6 +85,8 @@ Route::middleware('signed')->group(function (): void {
             ->name('organizerPanel.csvInit');
         Route::get('/draw/{draw}/csvFinal', [OrganizerController::class, 'csvFinal'])
             ->name('organizerPanel.csvFinal');
+        Route::post('/draw/{draw}/revealTargets', [OrganizerController::class, 'revealTargets'])
+            ->name('organizerPanel.revealTargets');
         Route::get('/org/{draw}/fetchState', [OrganizerController::class, 'fetchState'])
             ->name('organizerPanel.fetchState');
     });

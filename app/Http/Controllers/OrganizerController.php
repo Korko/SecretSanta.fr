@@ -48,6 +48,24 @@ final class OrganizerController extends Controller
                 ]),
             ]),
             'finalCsvAvailable' => $draw->next_solvable,
+            'targetsRevealedAt' => $draw->targets_revealed_at,
+            'targets' => $draw->targets_revealed_at ? $this->targets($draw) : null,
+        ]);
+    }
+
+    // Irreversible and visible to participants (see DearSantaController::fetch)
+    public function revealTargets(Draw $draw): JsonResponse
+    {
+        if ($draw->targets_revealed_at === null) {
+            $draw->targets_revealed_at = now();
+            $draw->save();
+
+            $draw->createMetric('targets_revealed');
+        }
+
+        return response()->json([
+            'targetsRevealedAt' => $draw->targets_revealed_at,
+            'targets' => $this->targets($draw),
         ]);
     }
 
@@ -166,5 +184,13 @@ final class OrganizerController extends Controller
         return response()->json([
             'message' => trans('organizer.deleted'),
         ]);
+    }
+
+    /** @return array<string, string> participant hash => target name */
+    private function targets(Draw $draw): array
+    {
+        return $draw->participants->load('target')->mapWithKeys(fn (Participant $participant): array => [
+            $participant->hash => $participant->target?->name,
+        ])->all();
     }
 }

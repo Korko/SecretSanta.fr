@@ -5,7 +5,18 @@ declare(strict_types=1);
 return [
     'url' => 'Link, den ein(e) Teilnehmer(in) per E-Mail erhalten hat',
     'fix' => 'Korrigieren',
+    'reveal' => [
+        'button' => 'Empfänger anzeigen',
+        'done' => 'Empfänger angezeigt am :date. Die Teilnehmer sehen, dass die Liste eingesehen wurde.',
+        'confirm' => [
+            'title' => 'Anzeigen, wer wen beschenkt?',
+            'body' => 'Sie sehen den Empfänger jedes Teilnehmers, nützlich bei Zustellproblemen oder für weitere Veranstaltungen. Das ist endgültig, und die Teilnehmer sehen auf ihrer Seite, dass die Liste dem Organisator angezeigt wurde.',
+            'ok' => 'Anzeigen',
+            'cancel' => 'Abbrechen',
+        ],
+    ],
     'list' => [
+        'target' => 'Empfänger',
         'name' => 'Name',
         'email' => 'E-Mail-Adresse',
         'status' => 'E-Mail-Versandstatus',

@@ -38,6 +38,8 @@
                 finalCsvAvailable: this.data.finalCsvAvailable,
                 changeEmailUrls: this.data.changeEmailUrls,
                 withdrawalUrls: this.data.withdrawalUrls,
+                targetsRevealedAt: this.data.targetsRevealedAt,
+                targets: this.data.targets,
                 validations: {
                     email: {
                         required,
@@ -113,6 +115,21 @@
                     email: email
                 });
             },
+            confirmRevealTargets() {
+                alertify.confirm(
+                    this.$t('organizer.reveal.confirm.title'),
+                    this.$t('organizer.reveal.confirm.body'),
+                    () => this.revealTargets(),
+                    () => {}
+                ).set('labels', { ok: this.$t('organizer.reveal.confirm.ok'), cancel: this.$t('organizer.reveal.confirm.cancel') });
+            },
+            revealTargets() {
+                return fetch(this.routes.revealTargetsUrl, 'POST')
+                    .then(data => {
+                        this.targetsRevealedAt = data.targetsRevealedAt;
+                        this.targets = data.targets;
+                    });
+            },
             // Same as each row's "redo" button, for every failed email at once
             resendFailed() {
                 this.failedKeys.forEach(k => this.updateEmail(k, this.participants[k].email));
@@ -168,6 +185,9 @@
                     <th style="width: 33%" scope="col">
                         {{ $t('organizer.list.email') }}
                     </th>
+                    <th v-if="targets" scope="col">
+                        {{ $t('organizer.list.target') }}
+                    </th>
                     <th :style="canWithdraw ? 'width: 30%' : 'width: 33%'" scope="col">
                         {{ $t('organizer.list.status') }}
                     </th>
@@ -192,6 +212,7 @@
                             </template>
                         </input-edit>
                     </td>
+                    <td v-if="targets" class="target">{{ targets[participant.hash] }}</td>
                     <td><email-status :delivery_status="participant.mail.delivery_status" :last_update="participant.mail.updated_at" :disabled="expired" @redo="updateEmail(k, participant.email)" /></td>
                     <td v-if="canWithdraw">
                         <button
@@ -209,6 +230,14 @@
             <i class="fas fa-redo" />
             {{ $t('organizer.list.resend_failed', { count: failedKeys.length }) }}
         </button>
+        <button v-if="!targets" type="button" class="btn btn-outline-secondary" @click="confirmRevealTargets">
+            <i class="fas fa-eye" />
+            {{ $t('organizer.reveal.button') }}
+        </button>
+        <p v-else class="text-muted small">
+            <i class="fas fa-eye" />
+            {{ $t('organizer.reveal.done', { date: new Date(targetsRevealedAt).toLocaleString('fr-FR') }) }}
+        </p>
         <button type="button" class="btn btn-danger" @click="confirmPurge">
             <i class="fas fa-trash" />
             {{ $t('organizer.purge.button') }}

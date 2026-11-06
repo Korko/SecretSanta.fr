@@ -31,6 +31,10 @@ export default {
         },
         "dearsanta": {
             "reminder": "Denken Sie daran, dass Ihr geheimer Weihnachtsmann oder Ihre geheime Weihnachtsfrau Ihnen nicht antworten kann! Geben sie ihm oder ihr so viele Informationen wie möglich zu geben.",
+            "targets": {
+                "revealed": "Der Organisator hat die Liste der Empfänger eingesehen",
+                "secret": "Der Organisator hat die Liste der Empfänger nicht eingesehen"
+            },
             "list": {
                 "date": "Versanddatum",
                 "body": "Nachrichtentext",
@@ -199,7 +203,18 @@ export default {
         "organizer": {
             "url": "Link, den ein(e) Teilnehmer(in) per E-Mail erhalten hat",
             "fix": "Korrigieren",
+            "reveal": {
+                "button": "Empfänger anzeigen",
+                "done": "Empfänger angezeigt am {date}. Die Teilnehmer sehen, dass die Liste eingesehen wurde.",
+                "confirm": {
+                    "title": "Anzeigen, wer wen beschenkt?",
+                    "body": "Sie sehen den Empfänger jedes Teilnehmers, nützlich bei Zustellproblemen oder für weitere Veranstaltungen. Das ist endgültig, und die Teilnehmer sehen auf ihrer Seite, dass die Liste dem Organisator angezeigt wurde.",
+                    "ok": "Anzeigen",
+                    "cancel": "Abbrechen"
+                }
+            },
             "list": {
+                "target": "Empfänger",
                 "name": "Name",
                 "email": "E-Mail-Adresse",
                 "status": "E-Mail-Versandstatus",
@@ -452,6 +467,10 @@ export default {
         },
         "dearsanta": {
             "reminder": "Rappelez vous que votre Père/Mère Noël secrêt ne pourra pas vous répondre ! Pensez bien à lui donner le maximum d'informations possibles.",
+            "targets": {
+                "revealed": "L'organisateur/organisatrice a consulté la liste des cibles",
+                "secret": "La liste des cibles n'a pas été consultée par l'organisateur/organisatrice"
+            },
             "list": {
                 "date": "Date d'envoi",
                 "body": "Corps du message",
@@ -488,7 +507,7 @@ export default {
                     "Est-il possible de parler à sa cible ?": "Pour le moment, ce n'est pas possible, pour des raisons d'anonymat. Seule la cible peut écrire à son/sa père/mère noël secret. Mais c'est en projet.",
                     "Quand sont supprimés mes données personnelles ?": "Toutes vos données d'un tirage sont supprimées 7 jours après la date d'expiration. Ce délai a été fixé afin d'envoyer à l'organisateur/organisatrice la liste des participants avec leur cible piochée par mail afin d'aider à l'organisation d'un secretsanta avec les mêmes personnes plus tard en évitant de retomber sur les mêmes cibles.",
                     "J'ai oublié un participant, comment je peux le rajouter ?": "Malheureusement, de par sa conception, SecretSanta.fr ne permet pas de rajouter quelqu'un une fois le tirage effectué. Il vous reste cependant une option, autre que relancer le tirage : vous pouvez attribuez à cette personne votre propre cible et offrir vous même un cadeau à ce nouveau participant.",
-                    "Qui peut savoir la liste des cibles ?": "Pour faire court : personne. Pour faire long : seul le développeur peut avoir cette information avec le lien de l'organisateur/organisatrice. Mais il est préférable d'éviter de briser ce secret autant que possible."
+                    "Qui peut savoir la liste des cibles ?": "Par défaut, personne : la liste est chiffrée et n'apparaît nulle part. L'organisateur/organisatrice peut toutefois la révéler depuis sa page d'organisation (problème de réception d'un email, autres évènements à organiser avec les mêmes paires...). C'est définitif, et chaque participant(e) voit sur sa page si la liste a été révélée ou non."
                 },
                 "technical": {
                     "Quelles données sont stockées et pourquoi ?": "Sont conservés pour chaque participant : nom et adresse email, pour chaque organisation, le titre et le contenu du mail envoyé ainsi que chaque message envoyé entre participant via le lien reçu par mail (appelé 'cher papa noël'). Elles sont conservées pour deux raisons : d'abord pour permettre cette dernière fonctionnalité qui permet d'écrire à son/sa père/mère noël secret. Ensuite pour permettre de réenvoyer les emails en cas d'erreur d'adresse.",
@@ -620,7 +639,18 @@ export default {
         "organizer": {
             "url": "Lien reçu par un participant par email",
             "fix": "Corriger",
+            "reveal": {
+                "button": "Révéler les cibles",
+                "done": "Cibles révélées le {date}. Les participant(e)s voient que la liste a été consultée.",
+                "confirm": {
+                    "title": "Révéler qui offre à qui ?",
+                    "body": "Vous verrez la cible de chaque participant(e), utile en cas de souci de réception ou pour organiser d'autres évènements. C'est définitif, et les participant(e)s verront sur leur page que la liste a été révélée à l'organisateur/organisatrice.",
+                    "ok": "Révéler",
+                    "cancel": "Annuler"
+                }
+            },
             "list": {
+                "target": "Cible",
                 "name": "Nom",
                 "email": "Adresse Email",
                 "status": "Status d'envoi de l'email",

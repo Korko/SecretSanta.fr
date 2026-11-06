@@ -40,6 +40,7 @@ namespace App\Models{use App\Collections\ParticipantsCollection;use Database\Fac
  * @property array $mail_title
  * @property array $mail_body
  * @property Carbon $expires_at
+ * @property \Carbon\CarbonImmutable|null $targets_revealed_at
  * @property bool $next_solvable
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at

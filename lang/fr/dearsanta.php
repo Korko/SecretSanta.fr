@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 return [
     'reminder' => "Rappelez vous que votre Père/Mère Noël secrêt ne pourra pas vous répondre ! Pensez bien à lui donner le maximum d'informations possibles.",
+    'targets' => [
+        'revealed' => 'L\'organisateur/organisatrice a consulté la liste des cibles',
+        'secret' => 'La liste des cibles n\'a pas été consultée par l\'organisateur/organisatrice',
+    ],
     'list' => [
         'date' => 'Date d\'envoi',
         'body' => 'Corps du message',

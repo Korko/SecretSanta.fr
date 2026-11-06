@@ -5,7 +5,18 @@ declare(strict_types=1);
 return [
     'url' => 'Lien reçu par un participant par email',
     'fix' => 'Corriger',
+    'reveal' => [
+        'button' => 'Révéler les cibles',
+        'done' => 'Cibles révélées le :date. Les participant(e)s voient que la liste a été consultée.',
+        'confirm' => [
+            'title' => 'Révéler qui offre à qui ?',
+            'body' => 'Vous verrez la cible de chaque participant(e), utile en cas de souci de réception ou pour organiser d\'autres évènements. C\'est définitif, et les participant(e)s verront sur leur page que la liste a été révélée à l\'organisateur/organisatrice.',
+            'ok' => 'Révéler',
+            'cancel' => 'Annuler',
+        ],
+    ],
     'list' => [
+        'target' => 'Cible',
         'name' => 'Nom',
         'email' => 'Adresse Email',
         'status' => 'Status d\'envoi de l\'email',

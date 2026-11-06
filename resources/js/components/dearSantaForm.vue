@@ -31,7 +31,8 @@
                 emails: this.data.emails,
                 resendEmailUrls: this.data.resendEmailUrls,
                 resendTargetEmailsUrl: this.data.resendTargetEmailsUrl,
-                targetDearSantaLastUpdate: this.data.targetDearSantaLastUpdate
+                targetDearSantaLastUpdate: this.data.targetDearSantaLastUpdate,
+                targetsRevealed: this.data.targetsRevealed
             };
         },
         computed: {
@@ -108,6 +109,11 @@
                     <div class="alert alert-info" role="alert">
                         {{  $t('dearsanta.reminder') }}
                     </div>
+                    <!-- Discreet on purpose: only matters to participants who care about the organizer seeing the pairs -->
+                    <p class="text-muted small text-right targets-revealed" :title="$t(targetsRevealed ? 'dearsanta.targets.revealed' : 'dearsanta.targets.secret')">
+                        <i :class="targetsRevealed ? 'fas fa-eye' : 'fas fa-eye-slash'" />
+                        {{ $t(targetsRevealed ? 'dearsanta.targets.revealed' : 'dearsanta.targets.secret') }}
+                    </p>
                     <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
                     <div class="input-group">
                         <textarea

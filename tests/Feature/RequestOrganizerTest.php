@@ -195,3 +195,28 @@ test('the organizer can delete all data after expiration', function (): void {
 
     assertNull($draw->fresh());
 });
+
+test('the organizer can reveal the targets, once, and participants see it', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+
+    $fetch = fn () => ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))->assertSuccessful();
+    $participantFetch = fn () => ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $participant]))->assertSuccessful();
+
+    expect($fetch()->json('targets'))->toBeNull()
+        ->and($participantFetch()->json('targetsRevealed'))->toBeFalse();
+
+    $response = ajaxPost(URL::signedRoute('organizerPanel.revealTargets', ['draw' => $draw]))->assertSuccessful();
+    $revealedAt = $draw->fresh()->targets_revealed_at;
+
+    expect($revealedAt)->not->toBeNull()
+        ->and($response->json('targets'))->toBe(
+            $draw->participants->mapWithKeys(fn ($p): array => [$p->hash => $p->target->name])->all()
+        );
+
+    // Revealing again keeps the first date
+    ajaxPost(URL::signedRoute('organizerPanel.revealTargets', ['draw' => $draw]))->assertSuccessful();
+    expect($draw->fresh()->targets_revealed_at->equalTo($revealedAt))->toBeTrue()
+        ->and($fetch()->json('targets'))->toHaveCount(3)
+        ->and($participantFetch()->json('targetsRevealed'))->toBeTrue();
+});

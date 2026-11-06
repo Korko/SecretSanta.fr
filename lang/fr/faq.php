@@ -27,7 +27,7 @@ return [
             // "Dans mon panneau d'organisateur/organisatrice, certains emails ne passent pas au status 'Lu' alors que la personne l'a bien lu. C'est un bug ?"
             'Quand sont supprimés mes données personnelles ?' => "Toutes vos données d'un tirage sont supprimées 7 jours après la date d'expiration. Ce délai a été fixé afin d'envoyer à l'organisateur/organisatrice la liste des participants avec leur cible piochée par mail afin d'aider à l'organisation d'un secretsanta avec les mêmes personnes plus tard en évitant de retomber sur les mêmes cibles.",
             "J'ai oublié un participant, comment je peux le rajouter ?" => "Malheureusement, de par sa conception, SecretSanta.fr ne permet pas de rajouter quelqu'un une fois le tirage effectué. Il vous reste cependant une option, autre que relancer le tirage : vous pouvez attribuez à cette personne votre propre cible et offrir vous même un cadeau à ce nouveau participant.",
-            'Qui peut savoir la liste des cibles ?' => 'Pour faire court : personne. Pour faire long : seul le développeur peut avoir cette information avec le lien de l\'organisateur/organisatrice. Mais il est préférable d\'éviter de briser ce secret autant que possible.',
+            'Qui peut savoir la liste des cibles ?' => 'Par défaut, personne : la liste est chiffrée et n\'apparaît nulle part. L\'organisateur/organisatrice peut toutefois la révéler depuis sa page d\'organisation (problème de réception d\'un email, autres évènements à organiser avec les mêmes paires...). C\'est définitif, et chaque participant(e) voit sur sa page si la liste a été révélée ou non.',
         ],
 
         'technical' => [
