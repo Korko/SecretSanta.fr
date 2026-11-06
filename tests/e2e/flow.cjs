@@ -6,8 +6,11 @@ const BASE = 'http://127.0.0.1:8765';
   const browser = await chromium.launch();
   const ctx = await browser.newContext(); await ctx.grantPermissions(['clipboard-read', 'clipboard-write']); const page = await ctx.newPage();
   const errors = [];
-  page.on('console', m => { if (['error', 'warning'].includes(m.type())) errors.push(m.type() + ': ' + m.text().slice(0, 300)); });
-  page.on('response', async r => { if (r.status() >= 400) errors.push(r.status() + ' ' + r.request().method() + ' ' + r.url() + ' ' + (await r.text().catch(() => '')).slice(0, 200)); });
+  // Errors the steps provoke on purpose (past date refused, 404 page)
+  const expected = [/^422 POST .*\/changeDate/, /^404 GET .*\/nope /];
+  const isExpected = line => expected.some(re => re.test(line));
+  page.on('console', m => { if (['error', 'warning'].includes(m.type()) && !(m.text().startsWith('Failed to load resource') && /\/changeDate|\/nope$/.test(m.location().url))) errors.push(m.type() + ': ' + m.text().slice(0, 300)); });
+  page.on('response', async r => { const line = r.status() + ' ' + r.request().method() + ' ' + r.url() + ' '; if (r.status() >= 400 && !isExpected(line)) errors.push(line + (await r.text().catch(() => '')).slice(0, 200)); });
   page.on('pageerror', e => errors.push('pageerror: ' + e.message));
   let failed = 0;
   const step = async (name, fn) => { try { await fn(); console.log('OK  ', name); } catch (e) { failed++; console.log('FAIL', name, '-', e.message.split('\n')[0]); } };
