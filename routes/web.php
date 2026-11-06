@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\FixOrganizerController;
 use App\Http\Controllers\OrganizerController;

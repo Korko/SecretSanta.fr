@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'validation' => 'Les données remplies ne sont pas valides',
     'solution' => 'Les exclusions que vous avez choisies ne permettent pas d\'attribuer une cible par participant.',

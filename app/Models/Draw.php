@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Casts\EncryptedString;
@@ -85,7 +87,7 @@ final class Draw extends Model
 
     protected function metricId(): Attribute
     {
-        return Attribute::make(get: fn (): string => hash('xxh32', $this->created_at, false, ['seed' => $this->id]));
+        return Attribute::make(get: fn (): string => hash('xxh32', (string) $this->created_at, false, ['seed' => $this->id]));
     }
 
     protected function canRedraw(): Attribute

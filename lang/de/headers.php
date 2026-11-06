@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'title' => 'SecretSanta.fr - Verschenken Sie Geschenke... geheim!',
     'description' => 'SecretSanta.fr ist ein einfaches, kostenloses und ohne Registrierung nutzbares Tool, das bei der Organisation eines geheimen Geschenkaustauschs unter Freunden oder Kollegen hilft (bekannt als Secret Santa).',

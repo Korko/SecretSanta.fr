@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Attributes\Description;
@@ -26,7 +28,7 @@ final class SendMailCommand extends Command
         Mail::send([], [], function (Message $message) use ($recipient, $subject, $body): void {
             $message->to($recipient)
                 ->subject($subject)
-                ->setBody($body);
+                ->text($body);
         });
     }
 }

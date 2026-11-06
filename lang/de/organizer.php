@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'url' => 'Link, den ein(e) Teilnehmer(in) per E-Mail erhalten hat',
     'fix' => 'Korrigieren',

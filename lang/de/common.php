@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'internal' => 'Ein Fehler ist aufgetreten',
     'success' => 'Erfolg',

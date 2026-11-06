@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'title' => 'SecretSanta.fr - Offrez-vous des cadeaux... secrètement !',
     'description' => 'SecretSanta.fr est un outil simple, gratuit et sans inscription pour aider à organiser une remise de cadeau en secret entre amis ou collègues (appelée secret santa).',

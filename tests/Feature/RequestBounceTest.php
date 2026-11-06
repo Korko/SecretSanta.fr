@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Jobs\ParseBounces;
 use App\Models\Draw;
 use App\Models\Mail as MailModel;

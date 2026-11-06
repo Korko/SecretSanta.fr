@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Browser\Components;
 
 final class ExclusionPicker extends BaseComponent

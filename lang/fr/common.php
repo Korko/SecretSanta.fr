@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'internal' => 'Une erreur est survenue',
     'success' => 'Succès',

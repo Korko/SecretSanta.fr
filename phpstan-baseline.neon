@@ -187,6 +187,12 @@ parameters:
 			path: app/Console/Commands/ChangeParticipant.php
 
 		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Console/Commands/ChangeParticipant.php
+
+		-
 			rawMessage: 'Method App\Console\Commands\ChangeParticipant::findOrAskDrawFromUrl() should return App\Models\Draw but returns mixed.'
 			identifier: return.type
 			count: 2
@@ -206,18 +212,6 @@ parameters:
 
 		-
 			rawMessage: 'Parameter #1 $dearSanta of class App\Notifications\DearSanta constructor expects App\Models\DearSanta, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/ChangeParticipant.php
-
-		-
-			rawMessage: 'Parameter #1 $string of function base64_decode expects string, string|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/ChangeParticipant.php
-
-		-
-			rawMessage: 'Parameter #2 $string of function explode expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/ChangeParticipant.php
@@ -253,6 +247,12 @@ parameters:
 			path: app/Console/Commands/ExportDraw.php
 
 		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Console/Commands/ExportDraw.php
+
+		-
 			rawMessage: 'Method App\Console\Commands\ExportDraw::findOrAskDrawFromUrl() should return App\Models\Draw but returns mixed.'
 			identifier: return.type
 			count: 2
@@ -271,19 +271,7 @@ parameters:
 			path: app/Console/Commands/ExportDraw.php
 
 		-
-			rawMessage: 'Parameter #1 $string of function base64_decode expects string, string|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/ExportDraw.php
-
-		-
 			rawMessage: 'Parameter #2 $rows of function Laravel\Prompts\table expects array<int, array<int, string>>|Illuminate\Support\Collection<int, array<int, string>>|null, array<int, non-empty-array> given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/ExportDraw.php
-
-		-
-			rawMessage: 'Parameter #2 $string of function explode expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/ExportDraw.php
@@ -343,6 +331,12 @@ parameters:
 			path: app/Console/Commands/FixDraw.php
 
 		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Console/Commands/FixDraw.php
+
+		-
 			rawMessage: 'Method App\Console\Commands\FixDraw::findOrAskDrawFromUrl() should return App\Models\Draw but returns mixed.'
 			identifier: return.type
 			count: 2
@@ -362,18 +356,6 @@ parameters:
 
 		-
 			rawMessage: 'Parameter #1 $dearSanta of class App\Notifications\DearSanta constructor expects App\Models\DearSanta, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/FixDraw.php
-
-		-
-			rawMessage: 'Parameter #1 $string of function base64_decode expects string, string|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/FixDraw.php
-
-		-
-			rawMessage: 'Parameter #2 $string of function explode expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/FixDraw.php
@@ -445,6 +427,12 @@ parameters:
 			path: app/Console/Commands/FixOrganizer.php
 
 		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Console/Commands/FixOrganizer.php
+
+		-
 			rawMessage: 'Method App\Console\Commands\FixOrganizer::findOrAskDrawFromUrl() should return App\Models\Draw but returns mixed.'
 			identifier: return.type
 			count: 2
@@ -464,18 +452,6 @@ parameters:
 
 		-
 			rawMessage: 'Parameter #1 $dearSanta of class App\Notifications\DearSanta constructor expects App\Models\DearSanta, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/FixOrganizer.php
-
-		-
-			rawMessage: 'Parameter #1 $string of function base64_decode expects string, string|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/FixOrganizer.php
-
-		-
-			rawMessage: 'Parameter #2 $string of function explode expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/FixOrganizer.php
@@ -541,6 +517,12 @@ parameters:
 			path: app/Console/Commands/FixParticipant.php
 
 		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Console/Commands/FixParticipant.php
+
+		-
 			rawMessage: 'Method App\Console\Commands\FixParticipant::findOrAskDrawFromUrl() should return App\Models\Draw but returns mixed.'
 			identifier: return.type
 			count: 2
@@ -560,18 +542,6 @@ parameters:
 
 		-
 			rawMessage: 'Parameter #1 $dearSanta of class App\Notifications\DearSanta constructor expects App\Models\DearSanta, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/FixParticipant.php
-
-		-
-			rawMessage: 'Parameter #1 $string of function base64_decode expects string, string|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/FixParticipant.php
-
-		-
-			rawMessage: 'Parameter #2 $string of function explode expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/FixParticipant.php
@@ -625,6 +595,12 @@ parameters:
 			path: app/Console/Commands/ListDraw.php
 
 		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Console/Commands/ListDraw.php
+
+		-
 			rawMessage: 'Method App\Console\Commands\ListDraw::findOrAskDrawFromUrl() should return App\Models\Draw but returns mixed.'
 			identifier: return.type
 			count: 2
@@ -643,19 +619,7 @@ parameters:
 			path: app/Console/Commands/ListDraw.php
 
 		-
-			rawMessage: 'Parameter #1 $string of function base64_decode expects string, string|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/ListDraw.php
-
-		-
 			rawMessage: 'Parameter #2 $rows of function Laravel\Prompts\table expects array<int, array<int, string>>|Illuminate\Support\Collection<int, array<int, string>>|null, array<int, non-empty-array> given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/ListDraw.php
-
-		-
-			rawMessage: 'Parameter #2 $string of function explode expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/ListDraw.php
@@ -745,6 +709,12 @@ parameters:
 			path: app/Console/Commands/PostBlacklist.php
 
 		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Console/Commands/PostBlacklist.php
+
+		-
 			rawMessage: 'Method App\Console\Commands\PostBlacklist::findOrAskDrawFromUrl() should return App\Models\Draw but returns mixed.'
 			identifier: return.type
 			count: 2
@@ -781,19 +751,7 @@ parameters:
 			path: app/Console/Commands/PostBlacklist.php
 
 		-
-			rawMessage: 'Parameter #1 $string of function base64_decode expects string, string|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/PostBlacklist.php
-
-		-
 			rawMessage: 'Parameter #1 $string of function strtolower expects string, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/PostBlacklist.php
-
-		-
-			rawMessage: 'Parameter #2 $string of function explode expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/PostBlacklist.php
@@ -815,12 +773,6 @@ parameters:
 			identifier: array.invalidKey
 			count: 1
 			path: app/Console/Commands/PostBlacklist.php
-
-		-
-			rawMessage: 'Parameter #1 $body of method Symfony\Component\Mime\Message::setBody() expects Symfony\Component\Mime\Part\AbstractPart|null, string given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/SendMailCommand.php
 
 		-
 			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$dearsantas.
@@ -883,6 +835,12 @@ parameters:
 			path: app/Console/Commands/ShowDraw.php
 
 		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Console/Commands/ShowDraw.php
+
+		-
 			rawMessage: 'Method App\Console\Commands\ShowDraw::findOrAskDrawFromUrl() should return App\Models\Draw but returns mixed.'
 			identifier: return.type
 			count: 2
@@ -901,19 +859,7 @@ parameters:
 			path: app/Console/Commands/ShowDraw.php
 
 		-
-			rawMessage: 'Parameter #1 $string of function base64_decode expects string, string|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/ShowDraw.php
-
-		-
 			rawMessage: 'Parameter #2 $rows of function Laravel\Prompts\table expects array<int, array<int, string>>|Illuminate\Support\Collection<int, array<int, string>>|null, array<int, non-empty-array> given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/ShowDraw.php
-
-		-
-			rawMessage: 'Parameter #2 $string of function explode expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/ShowDraw.php
@@ -991,6 +937,12 @@ parameters:
 			path: app/Console/Commands/WithdrawParticipant.php
 
 		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Console/Commands/WithdrawParticipant.php
+
+		-
 			rawMessage: 'Method App\Console\Commands\WithdrawParticipant::findOrAskDrawFromUrl() should return App\Models\Draw but returns mixed.'
 			identifier: return.type
 			count: 2
@@ -1010,18 +962,6 @@ parameters:
 
 		-
 			rawMessage: 'Parameter #1 $dearSanta of class App\Notifications\DearSanta constructor expects App\Models\DearSanta, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/WithdrawParticipant.php
-
-		-
-			rawMessage: 'Parameter #1 $string of function base64_decode expects string, string|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Console/Commands/WithdrawParticipant.php
-
-		-
-			rawMessage: 'Parameter #2 $string of function explode expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/WithdrawParticipant.php
@@ -1315,6 +1255,12 @@ parameters:
 			path: app/Http/Controllers/FixOrganizerController.php
 
 		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Http/Controllers/FixOrganizerController.php
+
+		-
 			rawMessage: Dead catch - Exception is never thrown in the try block.
 			identifier: catch.neverThrown
 			count: 1
@@ -1327,19 +1273,7 @@ parameters:
 			path: app/Http/Controllers/FixOrganizerController.php
 
 		-
-			rawMessage: 'Parameter #1 $string of function base64_decode expects string, string|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
 			rawMessage: 'Parameter #1 $string1 of function levenshtein expects string, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: 'Parameter #2 $string of function explode expects string, mixed given.'
 			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/FixOrganizerController.php
@@ -1927,8 +1861,8 @@ parameters:
 			path: app/Models/Draw.php
 
 		-
-			rawMessage: 'Parameter #2 $data of function hash expects string, Carbon\CarbonImmutable|null given.'
-			identifier: argument.type
+			rawMessage: 'Property App\Models\Draw::$expires_at (string) does not accept Carbon\CarbonImmutable|string.'
+			identifier: assign.propertyType
 			count: 1
 			path: app/Models/Draw.php
 
@@ -2635,21 +2569,9 @@ parameters:
 			path: app/Providers/ValidatorServiceProvider.php
 
 		-
-			rawMessage: 'Parameter #1 $key of function array_key_exists expects int|string, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Providers/ValidatorServiceProvider.php
-
-		-
 			rawMessage: 'Parameter #1 $value of function collect expects Illuminate\Contracts\Support\Arrayable<(int|string), mixed>|iterable<(int|string), mixed>|null, mixed given.'
 			identifier: argument.type
 			count: 2
-			path: app/Providers/ValidatorServiceProvider.php
-
-		-
-			rawMessage: 'Parameter #2 $array of function array_key_exists expects array, mixed given.'
-			identifier: argument.type
-			count: 1
 			path: app/Providers/ValidatorServiceProvider.php
 
 		-

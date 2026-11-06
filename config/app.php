@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Facades\DrawCrypt;
 use App\Facades\Solver;
 use App\Services\CsvGenerator;

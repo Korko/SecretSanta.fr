@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Models\Draw;
@@ -13,7 +15,7 @@ trait ParsesDrawUrl
 {
     protected function setCryptIVFromUrl($url)
     {
-        $hash = Arr::get(explode('#', $url, 2), 1);
+        $hash = Arr::get(explode('#', (string) $url, 2), 1, '');
         $key = base64_decode($hash);
         DrawCrypt::setIV($key);
     }

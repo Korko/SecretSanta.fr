@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'validation' => 'Die eingegebenen Daten sind ungültig.',
     'solution' => 'Die von Ihnen gewählten Ausschlüsse erlauben es nicht, jedem Teilnehmer ein Ziel zuzuweisen.',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'fork' => 'Quellcode verfügbar auf :git',
     'version' => 'Aktuelle Version: :version',

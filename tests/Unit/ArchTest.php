@@ -1,9 +1,9 @@
 <?php
 
-use App\Providers\ComposerServiceProvider;
+declare(strict_types=1);
 
 arch()->preset()->php();
-arch()->preset()->security()->ignoring(['assert', ComposerServiceProvider::class]); // fixed git commands for the footer version
+arch()->preset()->security()->ignoring(['assert', App\Providers\ComposerServiceProvider::class]); // fixed git commands for the footer version
 
-// ponytail: strict() and laravel() presets from the starter kit are not enabled yet:
-// they need strict_types everywhere and resource-style controllers (see pint.json disabled rules).
+// ponytail: kit presets not enabled: strict() forbids protected methods in final classes (Eloquent accessors),
+// laravel() needs resource-style controllers.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Facades\DrawCrypt;
@@ -26,7 +28,7 @@ final class FixOrganizerController extends Controller
 
     public function handle(FixOrganizerRequest $request): JsonResponse
     {
-        $hash = Arr::get(explode('#', $request->input('url'), 2), 1);
+        $hash = Arr::get(explode('#', (string) $request->input('url'), 2), 1, '');
         $key = base64_decode($hash);
         DrawCrypt::setIV($key);
 

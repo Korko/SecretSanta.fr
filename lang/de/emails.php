@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'organizer.content' => 'Um Ihr Organisationsschild bis zum :expiration einzusehen, können Sie folgende Seite aufrufen: :link',
     'organizer_recap_title' => 'SecretSanta #:draw - Zusammenfassung Organisator/in',

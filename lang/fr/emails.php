@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'organizer.content' => 'Pour consulter votre panneau d\'organisation, jusqu\'au :expiration, vous pouvez vous rendre sur la page suivante : :link',
     'organizer_recap_title' => 'SecretSanta #:draw - Récapitulatif organisateur/organisatrice',
