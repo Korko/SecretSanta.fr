@@ -67,7 +67,7 @@
                 return Object.values(this.participants).filter(p => p.mail.delivery_status === 'received').length;
             },
             failedKeys() {
-                return Object.keys(this.participants).filter(k => this.participants[k].mail.delivery_status === 'error');
+                return Object.keys(this.participants).filter(k => this.participants[k].mail.delivery_status === 'error' && !this.participants[k].report); // a reported address is refused, it needs fixing
             },
             checkUpdates() {
                 return !!Object.values(this.participants).find(

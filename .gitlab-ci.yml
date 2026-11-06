@@ -47,6 +47,7 @@ e2e:
   variables:
     COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer-cache"
     PLAYWRIGHT_BROWSERS_PATH: "$CI_PROJECT_DIR/.playwright"
+    DEBIAN_FRONTEND: noninteractive
   cache:
     key: e2e-$CI_COMMIT_REF_SLUG
     paths:
