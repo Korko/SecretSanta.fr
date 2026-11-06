@@ -1263,13 +1263,13 @@ parameters:
 		-
 			rawMessage: Access to an undefined property App\Models\Draw::$deleted_at.
 			identifier: property.notFound
-			count: 1
+			count: 2
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
 			rawMessage: Access to an undefined property App\Models\Draw::$expired.
 			identifier: property.notFound
-			count: 1
+			count: 2
 			path: app/Http/Controllers/OrganizerController.php
 
 		-
@@ -1347,6 +1347,12 @@ parameters:
 		-
 			rawMessage: 'Method App\Http\Controllers\OrganizerController::targets() should return array<string, string> but returns array<string>.'
 			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/OrganizerController.php
+
+		-
+			rawMessage: 'Parameter #1 $boolean of function abort_if expects bool, mixed given.'
+			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/OrganizerController.php
 

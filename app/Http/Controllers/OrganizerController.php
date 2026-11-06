@@ -11,6 +11,7 @@ use App\Notifications\DearSanta;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -83,7 +84,7 @@ final class OrganizerController extends Controller
             'expires_at.date_format' => __('validation.custom.randomform.expiration.format'),
         ]);
 
-        $draw->expires_at = $request->date('expires_at')?->toImmutable()->startOfDay();
+        $draw->expires_at = CarbonImmutable::parse($request->string('expires_at')->value());
         $draw->save();
 
         return response()->json([
