@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\DeliveryStatus;
 use App\Models\Draw;
 use App\Notifications\DearSanta;
 use App\Notifications\OrganizerRecap;
@@ -351,3 +352,15 @@ test('the organizer taking part cannot report themselves', function (): void {
         ->assertForbidden();
     assertNull($organizer->fresh()->report);
 });
+
+test('opening the panel proves the organizer taking part received their target email', function (bool $takesPart): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $organizer = $draw->participants->first();
+    if ($takesPart) {
+        $draw->update(['organizer_email' => $organizer->email]);
+    }
+
+    ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))->assertSuccessful();
+
+    expect($organizer->mail->fresh()->delivery_status === DeliveryStatus::Received)->toBe($takesPart);
+})->with([true, false]);

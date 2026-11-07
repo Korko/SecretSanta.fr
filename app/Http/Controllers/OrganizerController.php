@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\DeliveryStatus;
 use App\Http\Requests\OrganizerChangeEmailRequest;
 use App\Models\Draw;
 use App\Models\Participant;
@@ -33,6 +34,12 @@ final class OrganizerController extends Controller
         if ($draw->organizer_received_at === null) {
             $draw->organizer_received_at = now();
             $draw->save();
+        }
+
+        // Taking part, the organizer got the panel link in their target email: opening the panel proves they received it
+        $organizer = $draw->organizer;
+        if ($organizer?->isOrganizer() && $organizer->mail->delivery_status !== DeliveryStatus::Received) {
+            $organizer->mail->markAsReceived();
         }
 
         return response()->json([
