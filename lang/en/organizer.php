@@ -78,7 +78,7 @@ return [
         ],
     ],
     'edit' => [
-        'warning' => 'A randomly chosen participant may get a new target. The draw took place {days} day(s) ago: the older it is, the more inconvenient for that person, who may already have bought their gift.',
+        'warning' => 'A randomly chosen participant may get a new target. The draw took place {when}: the older it is, the more inconvenient for that person, who may already have bought their gift.',
         'add' => 'Add',
         'new' => 'new',
         'undo' => 'Undo',

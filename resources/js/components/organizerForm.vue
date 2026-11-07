@@ -56,9 +56,12 @@
         computed: {
             // Adding or removing someone changes a random santa's target: the later, the more likely they already bought a gift
             changeWarning() {
-                const days = Math.max(0, Math.floor((Date.now() - new Date(this.drawn_at)) / 864e5));
+                // Calendar days, so a draw made yesterday evening reads "yesterday" this morning
+                const midnight = d => new Date(d).setHours(0, 0, 0, 0);
+                const days = Math.max(0, Math.round((midnight(Date.now()) - midnight(this.drawn_at)) / 864e5));
+                const when = new Intl.RelativeTimeFormat(document.documentElement.lang, { numeric: 'auto' }).format(-days, 'day');
                 return '<div class="alert alert-warning mt-2 mb-0"><i class="fas fa-exclamation-triangle"></i> '
-                    + this.$t('organizer.edit.warning', {days}) + '</div>';
+                    + this.$t('organizer.edit.warning', {when}) + '</div>';
             },
             canEdit() {
                 return !this.expired;
