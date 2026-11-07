@@ -100,7 +100,7 @@ final class ParticipantsEditor
         $excluded = isset($participants[$santa]) ? $participants[$santa]->exclusions->modelKeys() : [];
         foreach ($this->targets as $other => $otherTarget) {
             if ($other !== $santa && ! in_array($otherTarget, $excluded, true)
-                && (! isset($participants[$other]) || ! $participants[$other]->exclusions->contains('id', $santa))) {
+                && (! isset($participants[$other]) || $participants[$other]->exclusions->doesntContain('id', $santa))) {
                 $this->targets[$santa] = $otherTarget;
                 $this->targets[$other] = $santa;
 
