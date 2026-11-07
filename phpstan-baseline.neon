@@ -283,25 +283,7 @@ parameters:
 			path: app/Console/Commands/FixDraw.php
 
 		-
-			rawMessage: Access to an undefined property App\Models\Draw::$organizer.
-			identifier: property.notFound
-			count: 6
-			path: app/Console/Commands/FixOrganizer.php
-
-		-
-			rawMessage: Cannot access property $dearSantas on mixed.
-			identifier: property.nonObject
-			count: 1
-			path: app/Console/Commands/FixOrganizer.php
-
-		-
 			rawMessage: Cannot access property $draw on mixed.
-			identifier: property.nonObject
-			count: 2
-			path: app/Console/Commands/FixOrganizer.php
-
-		-
-			rawMessage: Cannot access property $email on mixed.
 			identifier: property.nonObject
 			count: 2
 			path: app/Console/Commands/FixOrganizer.php
@@ -309,36 +291,6 @@ parameters:
 		-
 			rawMessage: Cannot access property $participant on mixed.
 			identifier: property.nonObject
-			count: 1
-			path: app/Console/Commands/FixOrganizer.php
-
-		-
-			rawMessage: Cannot access property $target on mixed.
-			identifier: property.nonObject
-			count: 1
-			path: app/Console/Commands/FixOrganizer.php
-
-		-
-			rawMessage: 'Cannot call method each() on mixed.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Console/Commands/FixOrganizer.php
-
-		-
-			rawMessage: 'Cannot call method notify() on mixed.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Console/Commands/FixOrganizer.php
-
-		-
-			rawMessage: 'Cannot call method notifyNow() on mixed.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Console/Commands/FixOrganizer.php
-
-		-
-			rawMessage: 'Cannot call method save() on mixed.'
-			identifier: method.nonObject
 			count: 1
 			path: app/Console/Commands/FixOrganizer.php
 
@@ -363,12 +315,6 @@ parameters:
 		-
 			rawMessage: 'Method App\Console\Commands\FixOrganizer::setCryptIVFromUrl() has parameter $url with no type specified.'
 			identifier: missingType.parameter
-			count: 1
-			path: app/Console/Commands/FixOrganizer.php
-
-		-
-			rawMessage: 'Parameter #1 $dearSanta of class App\Notifications\DearSanta constructor expects App\Models\DearSanta, mixed given.'
-			identifier: argument.type
 			count: 1
 			path: app/Console/Commands/FixOrganizer.php
 
@@ -907,63 +853,9 @@ parameters:
 			path: app/Http/Controllers/FixOrganizerController.php
 
 		-
-			rawMessage: Cannot access property $email on mixed.
-			identifier: property.nonObject
-			count: 2
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: Cannot access property $mail on mixed.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: Cannot access property $organizer on mixed.
-			identifier: property.nonObject
-			count: 5
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: Cannot access property $organizer_email on mixed.
-			identifier: property.nonObject
-			count: 4
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: Cannot access property $organizer_name on mixed.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
 			rawMessage: Cannot access property $participant on mixed.
 			identifier: property.nonObject
 			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: Cannot access property $updated_at on mixed.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: 'Cannot call method diffInSeconds() on mixed.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: 'Cannot call method notifyNow() on mixed.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: 'Cannot call method save() on mixed.'
-			identifier: method.nonObject
-			count: 2
 			path: app/Http/Controllers/FixOrganizerController.php
 
 		-
@@ -975,30 +867,6 @@ parameters:
 		-
 			rawMessage: Dead catch - Exception is never thrown in the try block.
 			identifier: catch.neverThrown
-			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: 'Parameter #1 $draw of class App\Notifications\OrganizerRecap constructor expects App\Models\Draw, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: 'Parameter #1 $string1 of function levenshtein expects string, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: 'Parameter #2 $string2 of function levenshtein expects string, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/FixOrganizerController.php
-
-		-
-			rawMessage: Possibly invalid array key type mixed.
-			identifier: array.invalidKey
 			count: 1
 			path: app/Http/Controllers/FixOrganizerController.php
 

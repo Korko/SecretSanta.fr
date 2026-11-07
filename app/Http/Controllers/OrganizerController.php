@@ -30,6 +30,11 @@ final class OrganizerController extends Controller
 
     public function fetch(Draw $draw): JsonResponse
     {
+        if ($draw->organizer_received_at === null) {
+            $draw->organizer_received_at = now();
+            $draw->save();
+        }
+
         return response()->json([
             'draw' => $draw->hash,
             'expires_at' => $draw->expires_at->toDateString(), // event day, whatever the browser timezone

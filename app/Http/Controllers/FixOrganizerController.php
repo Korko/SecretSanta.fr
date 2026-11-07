@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Facades\DrawCrypt;
 use App\Http\Requests\FixOrganizerRequest;
+use App\Models\Draw;
+use App\Notifications\OrganizerEmailChanged;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use Exception;
@@ -44,6 +46,7 @@ final class FixOrganizerController extends Controller
         }
 
         try {
+            /** @var Draw $draw */
             $draw = $participant->draw;
 
             // Access the email in a try/catch to handle invalid decrypt key
@@ -58,7 +61,19 @@ final class FixOrganizerController extends Controller
             ], 422);
         }
 
-        if (levenshtein($request->input('email'), $organizerEmail) > 3) {
+        // Only for an address that never worked: otherwise anyone with a dearSanta link could take the panel over
+        if ($draw->organizerReceived()) {
+            return response()->json([
+                'errors' => [
+                    'email' => [
+                        trans('error.fixOrganizer.alreadyReceived'),
+                    ],
+                ],
+            ], 422);
+        }
+
+        $email = $request->string('email')->toString();
+        if (levenshtein($email, $organizerEmail) > 3) {
             return response()->json([
                 'errors' => [
                     'email' => [
@@ -68,7 +83,7 @@ final class FixOrganizerController extends Controller
             ], 422);
         }
 
-        if ($draw->organizer->mail->updated_at->diffInSeconds(Date::now()) <= config('mail.resend_delay')) {
+        if (($draw->organizer->mail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) <= config('mail.resend_delay')) {
             return response()->json([
                 'errors' => [
                     'email' => [
@@ -83,7 +98,10 @@ final class FixOrganizerController extends Controller
             $participantOrganizer = true;
         }
 
-        $draw->organizer_email = $request->input('email');
+        Notification::route('mail', [$organizerEmail => $draw->organizer_name])
+            ->notify(new OrganizerEmailChanged($draw, $email));
+
+        $draw->organizer_email = $email;
         $draw->save();
 
         Notification::route('mail', [
@@ -91,10 +109,8 @@ final class FixOrganizerController extends Controller
         ])->notify(new OrganizerRecap($draw));
 
         if ($participantOrganizer) {
-            if ($request->input('email')) {
-                $draw->organizer->email = $request->input('email');
-                $draw->organizer->save();
-            }
+            $draw->organizer->email = $email;
+            $draw->organizer->save();
 
             $draw->organizer->notifyNow(new TargetDrawn);
         }

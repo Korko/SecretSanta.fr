@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
+use App\Enums\DeliveryStatus;
 use App\Services\DrawHandler;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -22,6 +23,8 @@ use STS\Metrics\Metric;
 /**
  * @property CarbonImmutable $expires_at
  * @property-read CarbonImmutable $deleted_at
+ * @property CarbonImmutable|null $organizer_received_at
+ * @property-read Participant $organizer
  * @property-read bool $expired
  * @property-read ParticipantsCollection $participants
  * @property list<string>|null $refused_emails
@@ -87,6 +90,13 @@ final class Draw extends Model
 
     // Addresses that reported the target email ("not me" / "not taking part") can't be used again in this draw,
     // even after removing and re-adding the person: only an HMAC is kept, the address itself is purged with the participant
+    // Like a participant opening their dearSanta page, opening the panel proves the organizer got their email
+    public function organizerReceived(): bool
+    {
+        return $this->organizer_received_at !== null
+            || ($this->organizer->email === $this->organizer_email && $this->organizer->mail->delivery_status === DeliveryStatus::Received);
+    }
+
     public function refusesEmail(string $email): bool
     {
         return in_array($this->emailFingerprint($email), $this->refused_emails ?? [], true);
@@ -146,6 +156,7 @@ final class Draw extends Model
         return [
             'expires_at' => 'datetime',
             'targets_revealed_at' => 'datetime',
+            'organizer_received_at' => 'datetime',
             'mail_title' => EncryptedString::class,
             'mail_body' => EncryptedString::class,
             'next_solvable' => 'boolean',

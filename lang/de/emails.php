@@ -10,4 +10,5 @@ return [
     'dear_santa.title' => 'SecretSanta #:draw - Nachricht des Empfängers Ihres Geschenks',
     'target_withdrawn.title' => 'SecretSanta #:draw - Rücktritt des Empfängers von Ihrem Geschenk',
     'target_changed.title' => 'SecretSanta #:draw - Änderung des Empfängers Ihres Geschenks',
+    'organizer_email_changed.title' => 'SecretSanta #:draw - Änderung der Adresse der Organisation',
 ];

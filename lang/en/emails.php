@@ -10,4 +10,5 @@ return [
     'dear_santa.title' => 'SecretSanta #:draw - Message from your gift recipient',
     'target_withdrawn.title' => 'SecretSanta #:draw - Your gift recipient withdrew',
     'target_changed.title' => 'SecretSanta #:draw - Your gift recipient has changed',
+    'organizer_email_changed.title' => 'SecretSanta #:draw - The organizer address has changed',
 ];
