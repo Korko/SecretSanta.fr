@@ -32,7 +32,7 @@ return [
             'What data is stored and why?' => "For each participant: name and email address; for each draw: the title and content of the email sent, as well as each message sent between participants through the link received by email (called 'dear santa'). They are kept for two reasons: first to allow that last feature, which lets you write to your secret santa. Then to allow resending emails in case of a wrong address.",
             'How is the data stored?' => 'Each item is encrypted with AES-256 using a unique key per draw. This key is not stored and is sent to each participant. The administrator can therefore never access the data without action on your part. Every time you perform an action, you automatically use this key, which is only lent to SecretSanta to perform the requested action without ever being saved.',
             'I would like to delete my data, how can I do it?' => 'Because of the way the data is stored, the administrator cannot know which data belongs to whom. Only the organizer can delete the data of all participants at once. Otherwise, the data is automatically deleted shortly after the end of the event.',
-            'I would like to check the source code myself, where can I find it?' => 'With pleasure! The source code is available at https://framagit.org/Korko/SecretSanta. You can also find the link at the top right of the main page, in the small red ribbon.',
+            'I would like to check the source code myself, where can I find it?' => 'With pleasure! The source code is available at https://framagit.org/Korko/SecretSanta. You will also find the link at the bottom of every page.',
         ],
     ],
 ];
