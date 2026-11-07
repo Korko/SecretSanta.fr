@@ -1,0 +1,1 @@
+import{t as e}from"./alertify-BXq4tt1x.js";document.addEventListener(`scroll`,()=>document.body.classList.toggle(`scrolled`,window.scrollY>200),{passive:!0}),window.global&&window.global.alert&&e.alert(window.global.alert),Array.prototype.remove=function(){for(var e,t=arguments,n=t.length,r;n&&this.length;)for(e=t[--n];(r=this.indexOf(e))!==-1;)this.splice(r,1);return this};
