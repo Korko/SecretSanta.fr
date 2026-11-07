@@ -29,3 +29,7 @@ $console = tap($app->make(Kernel::class))->bootstrap();
 foreach ($commands as $command) {
     $console->call($command);
 }
+
+// Booting the kernel here installs Laravel's error handlers before PHPUnit snapshots them,
+// so every test's teardown "removes" them and gets flagged risky: restore the originals
+Illuminate\Foundation\Bootstrap\HandleExceptions::flushState();
