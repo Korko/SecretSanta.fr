@@ -88,7 +88,7 @@ return [
         'done' => 'Changes saved, the participants concerned have been notified.',
         'confirm_add' => [
             'title' => 'Add {name} to the event?',
-            'body' => '{name} will receive their target by email, and another person will change target (they will be notified). This action cannot be undone.',
+            'body' => '{name} will receive their target by email, and another person will change target (they will be notified). {name} will have no exclusions. This action cannot be undone.',
         ],
         'confirm_multi' => [
             'title' => 'Confirm the changes?',
