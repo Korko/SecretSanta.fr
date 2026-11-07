@@ -92,7 +92,7 @@ final class DearSantaController extends Controller
 
         $dearSanta->mail->markAsCreated();
 
-        $participant->createMetric('resend_email');
+        $participant->createMetric('resend_email')->addTag('by', 'santa');
 
         try {
             $participant->santa->notify(new DearSantaNotification($dearSanta));

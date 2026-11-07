@@ -110,7 +110,7 @@ final class OrganizerController extends Controller
         if ($participant->email === $email) {
             $message = trans('message.sent');
 
-            $participant->createMetric('resend_email');
+            $participant->createMetric('resend_email')->addTag('by', 'organizer');
         } else {
             // The organizer fixing their own address: keep the draw in sync (recap in their target email, /fix)
             if ($participant->isOrganizer()) {

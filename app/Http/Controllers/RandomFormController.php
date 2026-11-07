@@ -11,6 +11,7 @@ use App\Services\DrawFormHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Notification;
+use STS\Metrics\Facades\Metrics;
 
 final class RandomFormController extends Controller
 {
@@ -52,6 +53,9 @@ final class RandomFormController extends Controller
                 'message' => trans('message.sent'),
             ]);
         } catch (SolverException) {
+            Metrics::create('solver_failed')
+                ->addExtra('participants', count($safe['participants']));
+
             return response()->json([
                 'message' => trans('error.solution'),
             ], 422);
