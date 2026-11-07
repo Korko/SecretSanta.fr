@@ -6,7 +6,6 @@ use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\FixOrganizerController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
-use App\Models\Participant;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Request;
@@ -53,26 +52,6 @@ Route::middleware('signed')->group(function (): void {
             ->name('dearSanta.resend');
         Route::get('/dearSanta/{participant}/resendTarget', [DearSantaController::class, 'resendTarget'])
             ->name('dearSanta.resend_target');
-
-        Route::post('/participant/{participant}/sub', function (Participant $participant, Request $request) {
-            $participant->updatePushSubscription(
-                $request->input('endpoint'),
-                $request->input('keys.p256dh'),
-                $request->input('keys.auth')
-            );
-
-            return response()->json([
-                'success' => true,
-            ]);
-        })->name('participant.sub');
-
-        Route::post('/participant/{participant}/unsub', function (Participant $participant, Request $request) {
-            $participant->deletePushSubscription($request->input('endpoint'));
-
-            return response()->json([
-                'success' => true,
-            ]);
-        })->name('participant.unsub');
     });
 
     Route::get('/org/{draw}', [OrganizerController::class, 'view'])->name('organizerPanel')
