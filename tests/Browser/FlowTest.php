@@ -191,6 +191,12 @@ test('the full flow: draw, dearSanta report, organizer panel', function (): void
 
 test('static pages and the fix form', function (): void {
     visit(['/faq', '/legal'])->assertNoJavaScriptErrors();
+
+    // Nothing covers the footer: its links get the clicks
+    foreach (['/', '/faq'] as $url) {
+        expect(visit($url)->script("(() => { const a = document.querySelector('footer a'); a.scrollIntoView({ behavior: 'instant' }); const r = a.getBoundingClientRect(); return document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2) === a; })()"))->toBeTrue();
+    }
+
     visit('/faq')->click('#question0')->assertVisible('#answer0')->assertNoJavaScriptErrors();
     visit('/nope')->assertPresent('h1.section-title');
     visit('/fix')->click('button[type=submit]')->assertPresent('.is-invalid')->assertNoJavaScriptErrors();

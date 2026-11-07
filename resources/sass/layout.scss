@@ -29,23 +29,16 @@ html {
     margin: auto;
 }
 
-/*
-Sticky Footer Solution
-by Steve Hatcher
-http://stever.ca
-http://www.cssstickyfooter.com
-*/
-
 * { margin: 0; padding: 0; }
 
-/* must declare 0 margins on everything, also for main layout components use padding, not
-vertical margins (top and bottom) to add spacing, else those margins get added to total height
-and your footer gets pushed down a bit more, creating vertical scroll bars in the browser */
+/* Sticky footer: the page grows to push the footer to the bottom of short pages */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
-html,
-body { height: 100%; }
-
-#wrap { min-height: 100%; }
+#wrap { flex: 1 0 auto; }
 
 input, button, textarea, select {
     font: inherit;
@@ -59,42 +52,16 @@ $footer-height: 90px !default;
 
 #main, #main:empty ~ noscript {
     isolation: isolate;
-    min-height: 100%;
-    padding-bottom: $footer-height + 10px;
-}  /* must be same height as the footer */
+}
 
 footer {
     position: relative;
-    margin-top: -$footer-height - 10px; /* negative value of footer height */
     height: $footer-height + 10px;
     font-size: 15px;
-    clear: both;
-    z-index: -1;
 }
 
 footer .inner { padding-bottom: 10px; }
 footer .row { height: $footer-height; }
-
-/* Opera Fix */
-body::before {/* thanks to Maleika (Kohoutec) */
-    content: "";
-    height: 100%;
-    float: left;
-    width: 0;
-    margin-top: -32767px;/* thank you Erik J - negate effect of float */
-}
-
-/* IMPORTANT
-
-You also need to include this conditional style in the <head> of your HTML file to feed this style to IE 6 and lower and 8 and higher.
-
-<!--[if !IE 7]>
-    <style type="text/css">
-        #wrap {display: table;height: 100%}
-    </style>
-<![endif]-->
-
-*/
 
 /*
 Theme Name: MeatKing
