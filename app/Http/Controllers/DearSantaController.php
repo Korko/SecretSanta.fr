@@ -38,6 +38,12 @@ final class DearSantaController extends Controller
         // The hash was validated in middleware so we can validate that the email was received
         $participant->mail->markAsReceived();
 
+        // Taking part, the organizer got the panel link in this same email
+        if ($participant->draw->organizer_received_at === null && $participant->isOrganizer()) {
+            $participant->draw->organizer_received_at = now();
+            $participant->draw->save();
+        }
+
         return response()->json([
             'participant' => $participant->only(['hash', 'name']),
             'targetDearSantaLastUpdate' => $participant->target->dearSantas->load('mail')->max('mail.updated_at'),

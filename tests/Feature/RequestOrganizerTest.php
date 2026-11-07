@@ -364,3 +364,29 @@ test('opening the panel proves the organizer taking part received their target e
 
     expect($organizer->mail->fresh()->delivery_status === DeliveryStatus::Received)->toBe($takesPart);
 })->with([true, false]);
+
+test('opening their dearSanta page proves the organizer taking part received the panel link', function (bool $takesPart): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $organizer = $draw->participants->first();
+    if ($takesPart) {
+        $draw->update(['organizer_email' => $organizer->email]);
+    }
+
+    ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $organizer]))->assertSuccessful();
+
+    expect($draw->fresh()->organizer_received_at !== null)->toBe($takesPart);
+})->with([true, false]);
+
+test('the organizer taking part whose target email was received is backfilled as having received the panel link', function (bool $takesPart): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $organizer = $draw->participants->first();
+    if ($takesPart) {
+        $draw->update(['organizer_email' => $organizer->email]);
+    }
+
+    $organizer->mail->markAsReceived();
+
+    (require database_path('migrations/2026_11_07_000003_backfill_organizer_received_at.php'))->up();
+
+    expect($draw->fresh()->organizer_received_at !== null)->toBe($takesPart);
+})->with([true, false]);
