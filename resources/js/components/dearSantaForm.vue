@@ -38,13 +38,11 @@
         },
         computed: {
             emailsByDate() {
+                // Copies: mutating reactive state in a computed re-triggers it forever
                 return Object.values(this.emails)
-                    .map(email => Object.assign(email, email.mail))
-                    .sort((email1, email2) => (new Date(email1.created_at) > new Date(email2.created_at) ? -1 : 1))
-                    .map(email => {
-                        email.created_at = new Date(email.created_at).toLocaleString('fr-FR');
-                        return email;
-                    }) || [];
+                    .map(email => ({ ...email, created_at: new Date(email.mail.created_at) }))
+                    .sort((email1, email2) => email2.created_at - email1.created_at)
+                    .map(email => ({ ...email, created_at: email.created_at.toLocaleString('fr-FR') }));
             },
             checkUpdates() {
                 return !!Object.values(this.emails).find(
@@ -74,7 +72,7 @@
                 if(!data.email.updated_at) {
                     data.email.updated_at = new Date();
                 }
-                this.emails[data.email.id] = data.email;
+                this.emails[data.email.mail.id] = data.email;
             },
             reset() {
                 this.content = '';
@@ -151,10 +149,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="email in emailsByDate" :key="email.id" class="email">
+                <tr v-for="email in emailsByDate" :key="email.mail.id" class="email">
                     <td>{{ email.created_at }}</td>
                     <td><p v-html="nl2br(e(email.mail_body))"></p></td>
-                    <td><email-status :delivery_status="email.mail.delivery_status" :last_update="email.mail.updated_at" @redo="resend(email.id)"/></td>
+                    <td><email-status :delivery_status="email.mail.delivery_status" :last_update="email.mail.updated_at" @redo="resend(email.mail.id)"/></td>
                 </tr>
                 <tr v-if="Object.keys(emails).length === 0" class="no-email">
                     <td colspan="3">
