@@ -7,6 +7,7 @@ use App\Services\DrawFormHandler;
 use DG\BypassFinals;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\TestCase;
@@ -160,4 +161,4 @@ function formatParticipants($participants): array
     }, array_keys($participants));
 }
 
-pest()->extend(Tests\TestCase::class)->in('Browser');
+pest()->extend(Tests\TestCase::class)->use(RefreshDatabase::class)->in('Browser');

@@ -2,7 +2,6 @@
     import useVuelidate from '@vuelidate/core';
 
     import alertify from '../partials/alertify.js';
-    import Toastify from '../partials/toastify.js';
 
     import { required, minLength, email, requiredIf } from '@vuelidate/validators';
 
@@ -11,7 +10,6 @@
 
     // Global (not scoped): these style elements rendered by child components / outside Vue
     import 'vue-multiselect/dist/vue-multiselect.css';
-    import 'toastify-js/src/toastify.css';
 
     import Csv from './csv.vue';
     import AjaxForm from './ajaxForm.vue';
@@ -192,19 +190,19 @@
                                 this.addParticipant();
                             }
                         }
-                        Toastify.success(this.$t('form.csv.importSuccess'));
+                        alertify.success(this.$t('form.csv.importSuccess'), 3);
                     }.bind(this)
                 });
             },
 
             appendSanta() {
                 navigator.clipboard.writeText("{SANTA}");
-                Toastify.success(this.$t('common.copied'));
+                alertify.success(this.$t('common.copied'), 3);
             },
 
             appendTarget() {
                 navigator.clipboard.writeText("{TARGET}");
-                Toastify.success(this.$t('common.copied'));
+                alertify.success(this.$t('common.copied'), 3);
             },
 
             // vuelidate 2 doesn't $touch child components: show participant errors on submit

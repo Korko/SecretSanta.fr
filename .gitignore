@@ -20,3 +20,4 @@ public/assets/*.map
 tests/Browser/console
 tests/Browser/Screenshots
 /storage/e2e.sqlite
+/tests/Browser/Screenshots
