@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Bootstrap\HandleExceptions;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -32,4 +33,4 @@ foreach ($commands as $command) {
 
 // Booting the kernel here installs Laravel's error handlers before PHPUnit snapshots them,
 // so every test's teardown "removes" them and gets flagged risky: restore the originals
-Illuminate\Foundation\Bootstrap\HandleExceptions::flushState();
+HandleExceptions::flushState();
