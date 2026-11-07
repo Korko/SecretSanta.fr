@@ -13,9 +13,11 @@ return [
 
     'timezone' => 'Europe/Paris',
 
+    'locale' => env('APP_LOCALE', 'fr'),
+
     'domains' => [
-        'fr' => 'secretsanta.fr',
-        'en' => 'secretsanta.io',
+        'fr' => env('APP_DOMAIN_FR'),
+        'en' => env('APP_DOMAIN_EN'),
     ],
 
     'challenge' => 'Ping?',

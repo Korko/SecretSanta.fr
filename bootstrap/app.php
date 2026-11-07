@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\HandleEncryptionIV;
+use App\Http\Middleware\Language;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -40,6 +41,8 @@ return Application::configure(basePath: dirname(__DIR__))
             ShareErrorsFromSession::class,
             PreventRequestForgery::class,
         ]);
+        // Locale from the domain (APP_DOMAIN_*), APP_LOCALE otherwise
+        $middleware->web(append: [Language::class]);
 
         $middleware->priority([
             SubstituteBindings::class,

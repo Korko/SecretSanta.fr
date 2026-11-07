@@ -7,8 +7,12 @@ alertify.defaults.theme.input = "form-control";
 
 alertify.defaults.notifier.position = 'top-right'
 
-const lang = document.documentElement.lang.substr(0, 2);
-import Locale from '@lang';
+import de from '../langs/de.js';
+import en from '../langs/en.js';
+import fr from '../langs/fr.js';
+
+const Locale = { ...de, ...en, ...fr };
+const lang = Locale[document.documentElement.lang.substr(0, 2)] ? document.documentElement.lang.substr(0, 2) : 'fr';
 
 // Extend existing 'alert' dialog
 if (!alertify.errorAlert) {

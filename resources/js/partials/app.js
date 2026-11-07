@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import { createI18n } from 'vue-i18n';
-import Locale from '@lang';
+import de from '../langs/de.js';
+import en from '../langs/en.js';
+import fr from '../langs/fr.js';
 
 // vue-i18n >= 9 parses "@" as a linked message and drops unknown {params}:
 // keep literal "@" (emails) and the {SANTA}/{TARGET} keywords
@@ -19,7 +21,8 @@ export default function mount(selector, options) {
     app.use(createI18n({
         legacy: true,
         locale: document.documentElement.lang.substr(0, 2),
-        messages: escape(Locale),
+        fallbackLocale: 'fr',
+        messages: escape({ ...de, ...en, ...fr }),
     }));
     window.app = app.mount(selector);
 }

@@ -16,11 +16,11 @@ final readonly class Language
     /** @param Closure(Request): Response $next */
     public function handle(Request $request, Closure $next): Response
     {
-        /** @var array<string, string> $handledDomains */
+        /** @var array<string, ?string> $handledDomains */
         $handledDomains = config()->array('app.domains');
         $currentDomain = $request->getHost();
 
-        foreach ($handledDomains as $locale => $domain) {
+        foreach (array_filter($handledDomains) as $locale => $domain) {
             if (preg_match('#'.preg_quote($domain, '#').'$#', $currentDomain)) {
                 $this->app->setLocale($locale);
             }

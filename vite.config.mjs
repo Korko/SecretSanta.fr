@@ -22,7 +22,6 @@ export default defineConfig(({ mode }) => ({
     resolve: {
         alias: [
             // Only bundle the translations of the site locale (APP_LOCALE)
-            { find: '@lang', replacement: `/resources/js/langs/${loadEnv(mode, process.cwd(), '').APP_LOCALE}.js` },
             // Webpack-style "~package" imports in scss
             { find: /^~(.+)/, replacement: '$1' },
             // In-DOM templates in blade need the template compiler

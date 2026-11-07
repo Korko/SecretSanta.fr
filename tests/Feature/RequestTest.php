@@ -21,3 +21,16 @@ it('stores database crypted entries', function (): void {
 
     assertNotEquals($draw->participants[0]->name, $decrypted);
 });
+
+it('picks the language from the domain', function (string $host, string $lang): void {
+    config(['app.domains' => ['fr' => 'example.fr', 'en' => 'example.com']]);
+
+    $this->get("https://{$host}/")
+        ->assertSuccessful()
+        ->assertSee('<html class="no-js" lang="'.$lang.'">', false);
+})->with([
+    ['example.fr', 'fr'],
+    ['www.example.fr', 'fr'],
+    ['example.com', 'en'],
+    ['localhost', 'fr'],
+]);
