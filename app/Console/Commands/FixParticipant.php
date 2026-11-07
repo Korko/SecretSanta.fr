@@ -24,7 +24,7 @@ final class FixParticipant extends Command
     public function handle(): void
     {
         try {
-            $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
+            $draw = $this->findOrAskDrawFromUrl($this->stringArgument('url'));
         } catch (Exception $exception) {
             error('Draw not found - '.$exception->getMessage());
             report($exception);
@@ -32,10 +32,11 @@ final class FixParticipant extends Command
             return;
         }
 
-        $participant = $draw->participants->find($this->argument('id'));
+        $participant = $this->findParticipant($draw, $this->argument('id'));
 
-        if ($this->argument('email')) {
-            $participant->email = $this->argument('email');
+        $email = $this->stringArgument('email');
+        if ($email !== null) {
+            $participant->email = $email;
             $participant->save();
         }
 

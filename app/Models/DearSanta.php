@@ -10,10 +10,13 @@ use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @property-read Participant $sender
  * @property-read Mail $mail
+ * @property-read Draw $draw
+ * @property string $mail_body
  */
 #[Fillable(['mail_body', 'sender_id'])]
 #[WithoutTimestamps]
@@ -22,15 +25,14 @@ final class DearSanta extends Model
     use HasFactory;
     use HashId;
 
-    protected $hashConnection = 'dearSanta';
-
     /** @return BelongsTo<Participant, $this> */
     public function sender(): BelongsTo
     {
         return $this->belongsTo(Participant::class, 'sender_id');
     }
 
-    public function mail()
+    /** @return MorphOne<Mail, $this> */
+    public function mail(): MorphOne
     {
         return $this->morphOne(Mail::class, 'mailable');
     }
@@ -39,18 +41,24 @@ final class DearSanta extends Model
     {
         parent::boot();
 
-        self::created(function ($dearSanta): void {
+        self::created(function (self $dearSanta): void {
             $dearSanta->mail()->save(new Mail);
         });
 
-        self::deleting(function ($dearSanta): void {
+        self::deleting(function (self $dearSanta): void {
             $dearSanta->mail()->delete();
         });
     }
 
+    protected function getHashConnection(): string
+    {
+        return 'dearSanta';
+    }
+
+    /** @return Attribute<Draw, never> */
     protected function draw(): Attribute
     {
-        return Attribute::make(get: fn () => $this->sender->draw);
+        return Attribute::make(get: fn (): Draw => $this->sender->draw);
     }
 
     /**

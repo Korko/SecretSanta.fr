@@ -16,7 +16,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
-final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueue
+final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueue, TrackedNotification
 {
     use Queueable;
     use SerializesModels;

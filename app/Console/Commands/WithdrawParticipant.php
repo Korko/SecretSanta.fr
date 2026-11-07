@@ -24,7 +24,7 @@ final class WithdrawParticipant extends Command
     public function handle(): void
     {
         try {
-            $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
+            $draw = $this->findOrAskDrawFromUrl($this->stringArgument('url'));
         } catch (Exception $exception) {
             error('Draw not found - '.$exception->getMessage());
             report($exception);
@@ -32,7 +32,7 @@ final class WithdrawParticipant extends Command
             return;
         }
 
-        $participant = $draw->participants->find($this->argument('id'));
+        $participant = $this->findParticipant($draw, $this->argument('id'));
 
         $santa = $participant->santa;
         $target = $participant->target;

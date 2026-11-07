@@ -7,9 +7,11 @@ use App\Jobs\ParseBounces;
 use App\Models\Draw;
 use App\Services\EmailClient;
 use App\Services\MailTracker;
+use Webklex\PHPIMAP\Address;
 use Webklex\PHPIMAP\Attribute;
 use Webklex\PHPIMAP\Header;
 use Webklex\PHPIMAP\Message;
+use Webklex\PHPIMAP\Support\MessageCollection;
 
 use function PHPUnit\Framework\assertEquals;
 
@@ -20,7 +22,7 @@ function fakeImapMessage(string $returnPath, array $headers = []): Message
     $header->shouldReceive('get')->andReturnUsing(fn ($name): Attribute => new Attribute($name, $headers[$name] ?? []));
 
     $message = Mockery::mock(Message::class);
-    $message->shouldReceive('getTo')->andReturn([(object) ['mailbox' => $returnPath]]);
+    $message->shouldReceive('getTo')->andReturn(new Attribute('to', [new Address((object) ['mailbox' => $returnPath])]));
     $message->shouldReceive('getHeader')->andReturn($header);
 
     return $message;
@@ -41,11 +43,11 @@ it('can handle bounced emails', function (): void {
     $tracker = resolve(MailTracker::class);
 
     $client = Mockery::mock(EmailClient::class);
-    $client->shouldReceive('getUnseenMails')->andReturn([
+    $client->shouldReceive('getUnseenMails')->andReturn(MessageCollection::make([
         fakeImapMessage($tracker->getBounceReturnPath($bounced->mail)),
         fakeImapMessage($tracker->getConfirmReturnPath($confirmed->mail)),
         fakeImapMessage($tracker->getBounceReturnPath($vacation->mail), ['auto_submitted' => 'auto-replied (vacation)']),
-    ]);
+    ]));
     $client->shouldReceive('delete', 'trash');
     app()->instance(EmailClient::class, $client);
 

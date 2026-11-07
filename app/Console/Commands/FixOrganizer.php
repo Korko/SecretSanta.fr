@@ -26,7 +26,7 @@ final class FixOrganizer extends Command
     public function handle(): void
     {
         try {
-            $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
+            $draw = $this->findOrAskDrawFromUrl($this->stringArgument('url'));
         } catch (Exception $exception) {
             error('Draw not found - '.$exception->getMessage());
             report($exception);
@@ -39,8 +39,9 @@ final class FixOrganizer extends Command
             $participantOrganizer = true;
         }
 
-        if ($this->argument('email')) {
-            $draw->organizer_email = $this->argument('email');
+        $email = $this->stringArgument('email');
+        if ($email !== null) {
+            $draw->organizer_email = $email;
             $draw->save();
         }
 
@@ -50,8 +51,8 @@ final class FixOrganizer extends Command
         $this->info('Organizer Recap sent');
 
         if ($participantOrganizer) {
-            if ($this->argument('email')) {
-                $draw->organizer->email = $this->argument('email');
+            if ($email !== null) {
+                $draw->organizer->email = $email;
                 $draw->organizer->save();
             }
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Hashids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Vinkla\Hashids\Facades\Hashids;
 
 trait HashId
 {
@@ -16,6 +16,8 @@ trait HashId
      * @var string[]
      */
     protected $append = ['hash'];
+
+    abstract protected function getHashConnection(): string;
 
     /**
      * Retrieve the model for a bound value.
@@ -27,7 +29,7 @@ trait HashId
     {
         $field = $field ?: $this->getRouteKeyName();
         $model = $field === 'hash' ?
-            $this->findByHashOrFail($value) :
+            static::query()->findOrFail($this->decodeHash($value)) :
             parent::resolveRouteBinding($value, $field);
 
         throw_if($model === null, ModelNotFoundException::class);
@@ -43,20 +45,13 @@ trait HashId
         return 'hash';
     }
 
-    protected function getHashAttribute()
+    protected function getHashAttribute(): string
     {
         return Hashids::connection($this->getHashConnection())->encode($this->id);
     }
 
-    protected function scopeFindByHashOrFail($query, $hash)
+    private function decodeHash(mixed $hash): int
     {
-        $ids = Hashids::connection($this->getHashConnection())->decode($hash);
-
-        return $query->findOrFail(collect((array) $ids)->first());
-    }
-
-    protected function getHashConnection()
-    {
-        return property_exists($this, 'hashConnection') ? $this->hashConnection : null;
+        return is_string($hash) ? Hashids::connection($this->getHashConnection())->decode($hash)[0] ?? 0 : 0;
     }
 }

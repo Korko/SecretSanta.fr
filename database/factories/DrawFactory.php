@@ -8,11 +8,13 @@ use App\Models\Draw;
 use App\Services\DrawHandler;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/** @extends Factory<Draw> */
 final class DrawFactory extends Factory
 {
     /**
      * Define the model's default state.
      */
+    /** @return array<string, mixed> */
     public function definition(): array
     {
         return [
@@ -39,7 +41,7 @@ final class DrawFactory extends Factory
     /**
      * Indicate that the draw is expired.
      */
-    public function expired(): Factory
+    public function expired(): self
     {
         return $this->state(fn (): array => [
             'expires_at' => fake()->dateTime('-1 hour'),

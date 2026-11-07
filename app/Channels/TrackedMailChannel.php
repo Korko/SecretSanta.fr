@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace App\Channels;
 
-use Facades\App\Services\MailTracker;
+use App\Models\Mail;
+use App\Models\Participant;
+use App\Notifications\TrackedNotification;
+use App\Services\MailTracker;
+use Closure;
 use Illuminate\Notifications\Channels\MailChannel;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use LogicException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mime\Email;
 
 final class TrackedMailChannel extends MailChannel
 {
@@ -18,7 +25,7 @@ final class TrackedMailChannel extends MailChannel
      */
     public function send($notifiable, Notification $notification): void
     {
-        $mail = $notification->getMailableModel($notifiable)->mail;
+        $mail = $this->mail($notifiable, $notification);
 
         try {
             $mail->markAsSending();
@@ -33,24 +40,32 @@ final class TrackedMailChannel extends MailChannel
     }
 
     /**
-     * Get the mailer Closure for the message.
-     *
      * @param  mixed  $notifiable
+     * @param  Notification  $notification
+     * @param  MailMessage  $message
      */
-    protected function messageBuilder($notifiable, $notification, $message)
+    protected function messageBuilder($notifiable, $notification, $message): Closure
     {
-        $mail = $notification->getMailableModel($notifiable)->mail;
+        $mail = $this->mail($notifiable, $notification);
+        $tracker = resolve(MailTracker::class);
 
-        $message->withSymfonyMessage(function ($message) use ($mail): void {
+        $message->withSymfonyMessage(function (Email $message) use ($mail, $tracker): void {
             // In case of Bounce
-            $message->getHeaders()->addPathHeader('Return-Path', MailTracker::getBounceReturnPath($mail));
+            $message->getHeaders()->addPathHeader('Return-Path', $tracker->getBounceReturnPath($mail));
 
             // To assert Reception
-            $message->getHeaders()->addPathHeader('X-Confirm-Reading-To', MailTracker::getConfirmReturnPath($mail));
-            $message->getHeaders()->addPathHeader('Return-Receipt-To', MailTracker::getConfirmReturnPath($mail));
-            $message->getHeaders()->addPathHeader('Disposition-Notification-To', MailTracker::getConfirmReturnPath($mail));
+            $message->getHeaders()->addPathHeader('X-Confirm-Reading-To', $tracker->getConfirmReturnPath($mail));
+            $message->getHeaders()->addPathHeader('Return-Receipt-To', $tracker->getConfirmReturnPath($mail));
+            $message->getHeaders()->addPathHeader('Disposition-Notification-To', $tracker->getConfirmReturnPath($mail));
         });
 
         return parent::messageBuilder($notifiable, $notification, $message);
+    }
+
+    private function mail(mixed $notifiable, Notification $notification): Mail
+    {
+        throw_unless($notifiable instanceof Participant && $notification instanceof TrackedNotification, LogicException::class, 'Only tracked notifications to participants go through this channel');
+
+        return $notification->getMailableModel($notifiable)->mail;
     }
 }

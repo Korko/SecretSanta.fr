@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use App\Enums\ReportReason;
+use Database\Factories\ParticipantFactory;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -30,16 +31,20 @@ use STS\Metrics\Metric;
  * @property-read Mail $mail
  * @property-read string $metricId
  * @property ReportReason|null $report
+ * @property string $name
+ * @property string $email
+ * @property int|null $target_id
+ * @property-read array<int, string> $exclusionsNames
+ * @property-read ParticipantsCollection $exclusions
  */
 #[CollectedBy(ParticipantsCollection::class)]
 #[Fillable(['name', 'email'])]
 final class Participant extends Model
 {
+    /** @use HasFactory<ParticipantFactory> */
     use HasFactory, HashId, Notifiable {
         resolveRouteBinding as public baseResolver;
     }
-
-    protected $hashConnection = 'santa';
 
     /** @var array<string, mixed> */
     protected $attributes = ['report' => null];
@@ -93,8 +98,9 @@ final class Participant extends Model
      * @param  mixed  $value
      * @param  ?string  $field
      */
-    public function resolveRouteBinding($value, $field = null): ?Model
+    public function resolveRouteBinding($value, $field = null): self
     {
+        /** @var self $participant */
         $participant = $this->baseResolver($value, $field);
 
         throw_if($participant->draw->expired, ModelNotFoundException::class);
@@ -102,7 +108,7 @@ final class Participant extends Model
         return $participant;
     }
 
-    public function createMetric($name, $value = 1): Metric
+    public function createMetric(string $name, int $value = 1): Metric
     {
         return Metrics::create($name, $value)
             ->setTags([
@@ -111,11 +117,7 @@ final class Participant extends Model
             ]);
     }
 
-    /**
-     * Route notifications for the mail channel.
-     *
-     * @return array|string
-     */
+    /** @return array<string, string> */
     public function routeNotificationForMail(Notification $notification): array
     {
         return [$this->email => $this->name];
@@ -125,22 +127,29 @@ final class Participant extends Model
     {
         parent::boot();
 
-        self::created(function ($participant): void {
+        self::created(function (self $participant): void {
             $participant->mail()->save(new Mail);
         });
 
         self::deleting(function (Participant $participant): void {
-            $participant->dearSantas()->lazy()->each->delete();
+            $participant->dearSantas()->lazy()->each(fn (DearSanta $dearSanta): ?bool => $dearSanta->delete());
             $participant->exclusions()->detach(); // pivot rows only (delete() would remove the excluded participants)
             $participant->mail()->delete();
         });
     }
 
-    protected function exclusionsNames(): Attribute
+    protected function getHashConnection(): string
     {
-        return Attribute::make(get: fn () => $this->exclusions->pluck('name', 'id')->all());
+        return 'santa';
     }
 
+    /** @return Attribute<array<int, string>, never> */
+    protected function exclusionsNames(): Attribute
+    {
+        return Attribute::make(get: fn (): array => $this->exclusions->pluck('name', 'id')->all());
+    }
+
+    /** @return Attribute<string, never> */
     protected function metricId(): Attribute
     {
         return Attribute::make(get: fn (): string => hash('xxh32', (string) $this->id, false, ['seed' => $this->draw->id]));

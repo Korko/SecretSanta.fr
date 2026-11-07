@@ -6,6 +6,7 @@ use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\OrganizerRecap as OrganizerRecapNotif;
 use App\Notifications\TargetDrawn;
+use App\Services\URLParser;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Notification;
 
@@ -150,7 +151,7 @@ it('sends to the organizer the link to their panel', function (): void {
             test()->get($link)->assertSuccessful();
 
             // Check link can be used for support
-            assertEquals($draw->id, URLParser::parseByName('organizerPanel', $link)->draw->id);
+            assertEquals($draw->id, resolve(URLParser::class)->draw($link)?->id);
 
             return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
         }

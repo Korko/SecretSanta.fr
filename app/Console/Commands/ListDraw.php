@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\Participant;
 use DrawCrypt;
 use Exception;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
-use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
 
 use function Laravel\Prompts\error;
@@ -29,7 +28,7 @@ final class ListDraw extends Command
     public function handle(): void
     {
         try {
-            $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
+            $draw = $this->findOrAskDrawFromUrl($this->stringArgument('url'));
         } catch (Exception $exception) {
             error('Draw not found - '.$exception->getMessage());
             report($exception);
@@ -47,7 +46,7 @@ final class ListDraw extends Command
             $draw->participants()
                 ->with(['mail', 'target'])
                 ->get()
-                ->map(fn ($col): array => Arr::only($col->toArray(), ['id', 'name', 'email']) + ['delivery_status' => Arr::get($col->toArray(), 'mail.delivery_status')] + ($this->option('targets') ? ['target' => $col->target->id.' ('.$col->target->name.')'] : []))
+                ->map(fn (Participant $col): array => [(string) $col->id, $col->name, $col->email, $col->mail->delivery_status->value, ...($this->option('targets') ? [$col->target->id.' ('.$col->target->name.')'] : [])])
                 ->all()
         );
     }

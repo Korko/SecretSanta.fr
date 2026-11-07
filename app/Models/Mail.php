@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\DeliveryStatus;
 use App\Events\MailStatusUpdated;
+use Carbon\CarbonImmutable;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -13,6 +14,8 @@ use Illuminate\Support\Str;
 
 /**
  * @property DeliveryStatus $delivery_status
+ * @property string $notification
+ * @property CarbonImmutable|null $updated_at
  */
 final class Mail extends Model
 {
@@ -25,11 +28,7 @@ final class Mail extends Model
      */
     public $incrementing = true;
 
-    /**
-     * The model's default values for attributes.
-     *
-     * @var array
-     */
+    /** @var array<string, mixed> */
     protected $attributes = [
         'delivery_status' => DeliveryStatus::Created,
     ];
@@ -38,8 +37,8 @@ final class Mail extends Model
     {
         parent::boot();
 
-        self::creating(function ($mail): void {
-            $mail->notification = Str::uuid();
+        self::creating(function (self $mail): void {
+            $mail->notification = Str::uuid()->toString();
         });
     }
 
@@ -80,18 +79,10 @@ final class Mail extends Model
         }
     }
 
-    /**
-     * Get the parent mailable model (dearSanta or participant).
-     */
-    /** @return MorphTo<\Illuminate\Database\Eloquent\Model, $this> */
+    /** @return MorphTo<\Illuminate\Database\Eloquent\Model, $this> dearSanta or participant */
     public function mailable(): MorphTo
     {
         return $this->morphTo();
-    }
-
-    public function draw()
-    {
-        return $this->mailable->draw();
     }
 
     /** @return array<string, string> */

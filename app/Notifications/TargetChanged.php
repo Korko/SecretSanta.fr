@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Lang;
 
 #[Backoff(30)]
 #[Tries(10)]
-final class TargetChanged extends Notification implements ShouldBeEncrypted, ShouldQueue
+final class TargetChanged extends Notification implements ShouldBeEncrypted, ShouldQueue, TrackedNotification
 {
     use Queueable;
 

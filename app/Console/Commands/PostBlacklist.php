@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\Participant;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use App\Services\EmailClient;
+use App\Services\URLParser;
 use Exception;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
-use URLParser;
+use Webklex\PHPIMAP\Attachment;
 
 #[Description('Read a folder of bounces and resend all emails from specific domains')]
 #[Signature('secretsanta:post-blacklist {folder : IMAP folder containing bounces to analyze} {domains* : email domains concerned about the blacklist}')]
@@ -25,16 +27,15 @@ final class PostBlacklist extends Command
      */
     public function handle(EmailClient $emailClient): void
     {
-        $mails = $emailClient->getMails($this->argument('folder'));
+        $mails = $emailClient->getMails((string) $this->stringArgument('folder'));
 
         foreach ($mails as $mail) {
             try {
-                $content = $mail->getAttachments()
-                    ->first(fn ($attachment): bool => $attachment->content_type === 'message/rfc822')
-                    ->content;
-                $content = str_replace("=\r\n", '', $content);
+                /** @var Attachment|null $attachment */
+                $attachment = $mail->getAttachments()->first(fn (mixed $attachment): bool => $attachment instanceof Attachment && $attachment->content_type === 'message/rfc822');
+                $content = str_replace("=\r\n", '', (string) $attachment?->content);
 
-                $pattern = '@'.preg_quote(config('app.url'), '@').'/dearSanta/\w+\?signature=\w+#[\w+=]+@';
+                $pattern = '@'.preg_quote(config()->string('app.url'), '@').'/dearSanta/\w+\?signature=\w+#[\w+=]+@';
                 if (! preg_match($pattern, $content, $match)) {
                     continue;
                 }
@@ -54,7 +55,10 @@ final class PostBlacklist extends Command
     {
         $this->setCryptIVFromUrl($url);
 
-        $participant = URLParser::parseByName('dearSanta', $url)->participant;
+        $participant = resolve(URLParser::class)->participant($url);
+        if (! $participant instanceof Participant) {
+            return false;
+        }
 
         $domains = array_map(fn ($domain): string => '@'.mb_ltrim(mb_strtolower($domain), '@'), $this->argument('domains'));
         if (! Str::endsWith(mb_strtolower($participant->email), $domains)) {

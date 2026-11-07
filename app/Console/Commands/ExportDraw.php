@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\Participant;
 use DrawCrypt;
 use Exception;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
-use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
 
 use function Laravel\Prompts\error;
@@ -29,7 +28,7 @@ final class ExportDraw extends Command
     public function handle(): void
     {
         try {
-            $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
+            $draw = $this->findOrAskDrawFromUrl($this->stringArgument('url'));
         } catch (Exception $exception) {
             error('Draw not found - '.$exception->getMessage());
             report($exception);
@@ -47,7 +46,7 @@ final class ExportDraw extends Command
             $draw->participants()
                 ->with(['mail', 'target'])
                 ->get()
-                ->map(fn ($col): array => Arr::only($col->toArray(), ['name']) + ['target' => $col->target->name])
+                ->map(fn (Participant $col): array => [$col->name, $col->target->name])
                 ->all()
         );
     }

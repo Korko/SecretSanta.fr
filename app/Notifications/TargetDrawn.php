@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\URL;
 #[Backoff(30)]
 #[MaxExceptions(10)]
 #[Tries(10)]
-final class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue
+final class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueue, TrackedNotification
 {
     use Queueable;
 

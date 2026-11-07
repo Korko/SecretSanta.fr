@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use Webklex\IMAP\Facades\Client;
+use RuntimeException;
+use Webklex\IMAP\Facades\Client as ClientManager;
+use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\Message;
+use Webklex\PHPIMAP\Query\WhereQuery;
+use Webklex\PHPIMAP\Support\MessageCollection;
 
-final class EmailClient
+final readonly class EmailClient
 {
-    private $delegate;
+    private Client $delegate;
 
-    public function __construct($connexion = 'default')
+    public function __construct(string $connexion = 'default')
     {
-        $this->delegate = Client::account($connexion);
+        $this->delegate = ClientManager::account($connexion);
         $this->delegate->connect();
     }
 
@@ -22,40 +26,33 @@ final class EmailClient
         $this->delegate->expunge();
     }
 
-    /**
-     * Proxies all methods to the delegate.
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        return call_user_func_array([$this->delegate, $method], $args);
-    }
-
-    public function getMails($folder, int $limit = 0): iterable
+    /** @return MessageCollection<int, Message> */
+    public function getMails(string $folder, int $limit = 0): MessageCollection
     {
         return $this->getFolderLimitQuery($folder, $limit)
             ->get();
     }
 
-    public function getUnseenMails(int $limit = 0, $folder = 'imap.folders.inbox'): iterable
+    /** @return MessageCollection<int, Message> */
+    public function getUnseenMails(int $limit = 0): MessageCollection
     {
-        return $this->getFolderLimitQuery(config($folder), $limit)
+        return $this->getFolderLimitQuery(config()->string('imap.folders.inbox'), $limit)
             ->whereUnseen()
             ->leaveUnread()
             ->get();
     }
 
-    public function getOldMails(int $age = 30, int $limit = 0, $folder = 'imap.folders.trash'): iterable
+    /** @return MessageCollection<int, Message> */
+    public function getOldMails(int $age = 30, int $limit = 0): MessageCollection
     {
-        return $this->getFolderLimitQuery(config($folder), $limit)
+        return $this->getFolderLimitQuery(config()->string('imap.folders.trash'), $limit)
             ->whereBefore('-'.$age.' days')
             ->get();
     }
 
     public function trash(Message $message): void
     {
-        $message->move(config('imap.folders.trash'));
+        $message->move(config()->string('imap.folders.trash'));
     }
 
     public function delete(Message $message): void
@@ -63,23 +60,10 @@ final class EmailClient
         $message->delete(false);
     }
 
-    private function getFolderQuery($folder)
+    private function getFolderLimitQuery(string $folder, int $limit = 0): WhereQuery
     {
-        $oFolder = $this->delegate->getFolder($folder);
+        $query = ($this->delegate->getFolder($folder) ?? throw new RuntimeException("Unknown IMAP folder {$folder}"))->query();
 
-        return $oFolder->query();
-    }
-
-    private function getFolderLimitQuery($folder, int $limit = 0)
-    {
-        $query = $this->getFolderQuery($folder);
-
-        if ($limit > 0) {
-            $query->limit($limit);
-        } else {
-            $query->all();
-        }
-
-        return $query;
+        return $limit > 0 ? $query->limit($limit) : $query->all();
     }
 }

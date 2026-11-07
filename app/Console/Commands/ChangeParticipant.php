@@ -25,7 +25,7 @@ final class ChangeParticipant extends Command
     public function handle(): void
     {
         try {
-            $draw = $this->findOrAskDrawFromUrl($this->argument('url'));
+            $draw = $this->findOrAskDrawFromUrl($this->stringArgument('url'));
         } catch (Exception $exception) {
             error('Draw not found - '.$exception->getMessage());
             report($exception);
@@ -33,12 +33,12 @@ final class ChangeParticipant extends Command
             return;
         }
 
-        $participant = $draw->participants->find($this->argument('id'));
+        $participant = $this->findParticipant($draw, $this->argument('id'));
 
         $participant->dearSantas()->lazy()->each->delete();
 
-        $participant->name = $this->argument('name');
-        $participant->email = $this->argument('email');
+        $participant->name = (string) $this->stringArgument('name');
+        $participant->email = (string) $this->stringArgument('email');
         $participant->save();
 
         $participant->notifyNow(new TargetDrawn);

@@ -7,17 +7,17 @@ namespace App\Http\Controllers;
 use App\Facades\DrawCrypt;
 use App\Http\Requests\FixOrganizerRequest;
 use App\Models\Draw;
+use App\Models\Participant;
 use App\Notifications\OrganizerEmailChanged;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
+use App\Services\URLParser;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
-use URLParser;
 
 final class FixOrganizerController extends Controller
 {
@@ -30,12 +30,11 @@ final class FixOrganizerController extends Controller
 
     public function handle(FixOrganizerRequest $request): JsonResponse
     {
-        $hash = Arr::get(explode('#', (string) $request->input('url'), 2), 1, '');
-        $key = base64_decode($hash);
-        DrawCrypt::setIV($key);
+        $url = $request->string('url')->toString();
+        DrawCrypt::setIV(base64_decode(explode('#', $url, 2)[1] ?? ''));
 
-        $participant = URLParser::parseByName('dearSanta', $request->input('url'))->participant;
-        if (! isset($participant)) {
+        $participant = resolve(URLParser::class)->participant($url);
+        if (! $participant instanceof Participant) {
             return response()->json([
                 'errors' => [
                     'url' => [

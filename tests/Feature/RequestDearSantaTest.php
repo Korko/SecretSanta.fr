@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Draw;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
+use App\Services\URLParser;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -26,7 +27,7 @@ it('send to each participant a link to write to their santa', function (): void 
 
             // Check link can be used for support
             $path = parse_url($link, PHP_URL_PATH);
-            $guessedParticipant = URLParser::parseByName('dearSanta', $path)->participant;
+            $guessedParticipant = resolve(URLParser::class)->participant((string) $path);
             assertEquals($participant->id, $guessedParticipant->id);
 
             return true;

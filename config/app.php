@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Facades\DrawCrypt;
 use App\Facades\Solver;
 use App\Services\CsvGenerator;
-use Facades\App\Services\URLParser;
 use Illuminate\Support\Facades\Facade;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -27,7 +26,6 @@ return [
         'DrawCrypt' => DrawCrypt::class,
         'Hashids' => Hashids::class,
         'Solver' => Solver::class,
-        'URLParser' => URLParser::class,
     ])->toArray(),
 
     'bmc' => env('BMC_ME'),
