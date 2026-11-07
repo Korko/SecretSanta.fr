@@ -21,7 +21,8 @@ final class EncryptionServiceProvider extends ServiceProvider
         $this->app->singleton('draw-encrypter', function ($app): IVEncrypter {
             $config = $app->make('config')->get('app');
 
-            return new IVEncrypter($this->parseKey($config), $config['cipher']);
+            return new IVEncrypter($this->parseKey($config), $config['cipher'])
+                ->previousKeys(array_map(fn ($key): string => $this->parseKey(['key' => $key]), config()->array('app.previous_keys')));
         });
     }
 }

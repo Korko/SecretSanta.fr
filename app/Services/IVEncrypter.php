@@ -105,9 +105,8 @@ final class IVEncrypter extends BaseEncrypter
         // If the payload is not valid JSON or does not have the proper keys set we will
         // assume it is invalid and bail out of the routine since we will not be able
         // to decrypt the given value. We'll also check the MAC for this encryption.
+        // The MAC is checked by decrypt(), against APP_KEY then APP_PREVIOUS_KEYS (key rotation)
         throw_unless($this->validPayload($payload), DecryptException::class, 'The payload is invalid.');
-
-        throw_unless($this->validMac($payload), DecryptException::class, 'The MAC is invalid.');
 
         return $payload;
     }

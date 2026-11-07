@@ -99,13 +99,13 @@ final class Draw extends Model
 
     public function refusesEmail(string $email): bool
     {
-        return in_array($this->emailFingerprint($email), $this->refused_emails ?? [], true);
+        return array_intersect($this->emailFingerprints($email), $this->refused_emails ?? []) !== [];
     }
 
     public function refuseEmail(string $email, bool $refused = true): void
     {
-        $fingerprints = array_diff($this->refused_emails ?? [], [$this->emailFingerprint($email)]);
-        $this->refused_emails = array_values($refused ? [...$fingerprints, $this->emailFingerprint($email)] : $fingerprints);
+        $fingerprints = array_diff($this->refused_emails ?? [], $this->emailFingerprints($email));
+        $this->refused_emails = array_values($refused ? [...$fingerprints, $this->emailFingerprints($email)[0]] : $fingerprints);
         $this->save();
     }
 
@@ -166,8 +166,12 @@ final class Draw extends Model
         ];
     }
 
-    private function emailFingerprint(string $email): string
+    // One per key, current first: an address refused before an APP_KEY rotation stays refused (APP_PREVIOUS_KEYS)
+    /** @return non-empty-list<string> */
+    private function emailFingerprints(string $email): array
     {
-        return hash_hmac('sha256', mb_strtolower(mb_trim($email)), config()->string('app.key').$this->id);
+        $keys = [config()->string('app.key'), ...array_filter(config()->array('app.previous_keys'), is_string(...))];
+
+        return array_values(array_map(fn (string $key): string => hash_hmac('sha256', mb_strtolower(mb_trim($email)), $key.$this->id), $keys));
     }
 }

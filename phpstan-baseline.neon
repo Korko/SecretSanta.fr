@@ -2305,12 +2305,6 @@ parameters:
 			path: app/Services/IVEncrypter.php
 
 		-
-			rawMessage: 'Parameter #1 $payload of method Illuminate\Encryption\Encrypter::validMac() expects array, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Services/IVEncrypter.php
-
-		-
 			rawMessage: 'Parameter #1 $string of function base64_encode expects string, string|false given.'
 			identifier: argument.type
 			count: 1
