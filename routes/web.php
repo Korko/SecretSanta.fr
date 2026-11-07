@@ -83,3 +83,5 @@ Route::middleware('signed')->group(function (): void {
 
 Route::get('/fix', [FixOrganizerController::class, 'view'])->name('fixOrganizer');
 Route::post('/fix', [FixOrganizerController::class, 'handle'])->name('fixOrganizer.handle');
+
+//Route::get( '/{status}', fn( int | null $status = null ) => Illuminate\Support\Facades\App::abort( $status ) )->where('status', '[0-9]{3}');
