@@ -53,7 +53,7 @@ final class AppServiceProvider extends ServiceProvider
                 config()->string('mail.dkim_domain'),
                 config()->string('mail.dkim_selector'),
                 ['algorithm' => config('mail.dkim_algo')],
-                config()->string('mail.dkim_passphrase', ''),
+                config()->string('mail.dkim_passphrase'),
             );
 
             return new DkimTransport(
