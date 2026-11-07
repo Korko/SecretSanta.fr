@@ -149,7 +149,7 @@
     ]
   },
   "resources/js/dearSanta.js": {
-    "file": "assets/dearSanta-BbHE1Rt_.js",
+    "file": "assets/dearSanta-BzGIB2wH.js",
     "name": "dearSanta",
     "src": "resources/js/dearSanta.js",
     "isEntry": true,
@@ -161,11 +161,11 @@
       "_form-C8s_mXbF.js"
     ],
     "css": [
-      "assets/dearSanta-DR52wJp2.css"
+      "assets/dearSanta-D1_iPc22.css"
     ]
   },
   "resources/js/faq.js": {
-    "file": "assets/faq-Cue-MtAW.js",
+    "file": "assets/faq-C-4nBptP.js",
     "name": "faq",
     "src": "resources/js/faq.js",
     "isEntry": true,
@@ -173,7 +173,7 @@
       "__plugin-vue_export-helper-C4qmmfkg.js"
     ],
     "css": [
-      "assets/faq-DX0y12ec.css"
+      "assets/faq-QuG1mctG.css"
     ]
   },
   "resources/js/fixOrganizer.js": {

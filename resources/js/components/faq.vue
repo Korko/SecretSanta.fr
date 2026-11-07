@@ -32,7 +32,7 @@ export default {
             </li>
         </ul>
         <div v-for="(question, i) in selectedQuestions" :key="`${selectedCategory}_${i}`" class="card">
-            <p :id="`question${i}`" class="card-header" :aria-expanded="showed[i]" :aria-controls="`answer${i}`" @click="$set(showed, i, !showed[i])">{{ question }}</p>
+            <p :id="`question${i}`" class="card-header" :aria-expanded="showed[i]" :aria-controls="`answer${i}`" @click="showed[i] = !showed[i]">{{ question }}</p>
 
             <transition name="fade">
                 <div v-show="showed[i]" :id="`answer${i}`" class="card-body">

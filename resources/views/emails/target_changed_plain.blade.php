@@ -6,8 +6,7 @@
 
 @section('content')
     Bonjour {{ $santaName }},
-    Malheureusement, un participant de votre évènement s'est désisté...
-    De plus, aucune résolution simple n'était possible et SecretSanta.fr a été contraint de t'attribuer une nouvelle cible...
+    La liste des participant(e)s de ton évènement a été modifiée, et il n'a pas été possible de l'ajuster sans changer ta cible.
     Tu vas devoir faire un cadeau à {{ $targetName }}, maintenant.
     Si cette personne avait envoyé des messages à son santa, tu les recevras prochainement.
 @endsection

@@ -101,8 +101,14 @@ test('the full flow: draw, dearSanta report, organizer panel', function (): void
         ->assertSeeIn('.targets-revealed', 'pas été consultée')
         ->click('button[type=submit]')
         ->assertPresent('textarea.is-invalid')
+        ->assertPresent('tr.no-email')
+        ->type('#mailContent', 'Une écharpe ?')
+        ->click('button[type=submit]')
+        ->assertSeeIn('tr.email', 'Une écharpe ?')
+        ->assertMissing('tr.no-email')
         ->click('.report-not-me')
-        ->assertPresent('.report-sent');
+        ->assertPresent('.report-sent')
+        ->assertNoJavaScriptErrors();
     $santa->refresh()->assertPresent('.report-sent');
 
     // Bob's address is now refused: the bulk resend only retries the other failed one
@@ -142,7 +148,7 @@ test('the full flow: draw, dearSanta report, organizer panel', function (): void
     // Add one, then two added and one removed at once
     $org->type('.participant-add-name', 'Dan')->type('.participant-add-email', 'dan@example.com')
         ->click('button.participant-add')
-        ->assertSeeIn('.ajs-content:visible .alert-warning', 'il y a 0 jour')
+        ->assertSeeIn('.ajs-content:visible .alert-warning', 'a eu lieu aujourd')
         ->wait(0.5)->click('.ajs-footer .btn-primary:visible >> nth=-1')
         ->assertSee('Dan')
         ->wait(0.5)->click('.ajs-footer .btn-primary:visible >> nth=-1')
@@ -185,6 +191,7 @@ test('the full flow: draw, dearSanta report, organizer panel', function (): void
 
 test('static pages and the fix form', function (): void {
     visit(['/faq', '/legal'])->assertNoJavaScriptErrors();
+    visit('/faq')->click('#question0')->assertVisible('#answer0')->assertNoJavaScriptErrors();
     visit('/nope')->assertPresent('h1.section-title');
     visit('/fix')->click('button[type=submit]')->assertPresent('.is-invalid')->assertNoJavaScriptErrors();
 });

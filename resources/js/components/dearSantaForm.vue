@@ -74,7 +74,7 @@
                 if(!data.email.updated_at) {
                     data.email.updated_at = new Date();
                 }
-                this.$set(this.emails, data.email.id, data.email);
+                this.emails[data.email.id] = data.email;
             },
             reset() {
                 this.content = '';
@@ -156,7 +156,7 @@
                     <td><p v-html="nl2br(e(email.mail_body))"></p></td>
                     <td><email-status :delivery_status="email.mail.delivery_status" :last_update="email.mail.updated_at" @redo="resend(email.id)"/></td>
                 </tr>
-                <tr v-if="emails.length === 0" class="no-email">
+                <tr v-if="Object.keys(emails).length === 0" class="no-email">
                     <td colspan="3">
                         {{ $t('dearsanta.list.empty') }}
                     </td>
