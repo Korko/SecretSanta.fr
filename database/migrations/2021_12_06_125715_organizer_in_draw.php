@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -21,11 +23,11 @@ return new class extends Migration
             });
 
             DB::table('draws')
-                ->join('participants as organizer', function ($join): void {
+                ->join('participants as organizer', function (JoinClause $join): void {
                     $join
                         ->on('draws.id', '=', 'organizer.draw_id')
-                        ->whereNotExists(function ($query): void {
-                            $query->selectRaw(1)
+                        ->whereNotExists(function (Builder $query): void {
+                            $query->selectRaw('1')
                                 ->from('participants')
                                 ->whereColumn('draws.id', '=', 'participants.draw_id')
                                 ->whereColumn('organizer.id', '>', 'participants.id');

@@ -30,9 +30,9 @@ Route::post('/', [RandomFormController::class, 'handle']);
 Route::get('/faq', [RandomFormController::class, 'faq'])->name('faq');
 Route::view('/legal', 'legal')->name('legal');
 
-Route::pattern('draw', '[0-9a-zA-Z]{'.config('hashids.connections.draw.length').',}');
-Route::pattern('participant', '[0-9a-zA-Z]{'.config('hashids.connections.santa.length').',}');
-Route::pattern('dearSanta', '[0-9a-zA-Z]{'.config('hashids.connections.dearSanta.length').',}');
+Route::pattern('draw', '[0-9a-zA-Z]{'.config()->integer('hashids.connections.draw.length').',}');
+Route::pattern('participant', '[0-9a-zA-Z]{'.config()->integer('hashids.connections.santa.length').',}');
+Route::pattern('dearSanta', '[0-9a-zA-Z]{'.config()->integer('hashids.connections.dearSanta.length').',}');
 
 Route::middleware('signed')->group(function (): void {
     Route::get('/dearSanta/{participant}', [DearSantaController::class, 'view'])

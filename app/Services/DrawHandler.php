@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Collections\ParticipantsCollection;
 use App\Exceptions\SolverException;
 use App\Models\Draw;
+use App\Models\Participant;
 use App\Notifications\TargetDrawn;
 use Solver;
 
@@ -16,25 +17,27 @@ final class DrawHandler
     {
         $hat = self::getHat($participants ?: $draw->participants);
 
-        $participants = $draw->participants->pluck(null, 'id');
+        $participants = $draw->participants->keyBy('id');
         foreach ($hat as $santaIdx => $targetIdx) {
-            $participants[$santaIdx]->target()->save($participants[$targetIdx]);
+            $santa = $participants->get($santaIdx) ?? throw new SolverException('Unknown santa');
+            $santa->target()->save($participants->get($targetIdx) ?? throw new SolverException('Unknown target'));
         }
 
         $draw->next_solvable = self::canRedraw($draw->participants->fresh());
         $draw->save();
 
-        $draw->participants->each(function ($participant): void {
+        $draw->participants->each(function (Participant $participant): void {
             $participant->notify(new TargetDrawn);
         });
     }
 
+    /** @return array<int, int> santa id => target id */
     public static function getHat(ParticipantsCollection $participants): array
     {
-        return Solver::one(
-            $participants->pluck(null, 'id')->toArray(),
-            $participants->pluck('exclusions.*.id', 'id')->toArray()
-        );
+        /** @var array<int, list<int>> $exclusions */
+        $exclusions = $participants->pluck('exclusions.*.id', 'id')->toArray();
+
+        return Solver::one($participants->keyBy('id')->all(), $exclusions);
     }
 
     public static function canRedraw(ParticipantsCollection $participants): bool

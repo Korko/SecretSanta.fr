@@ -18,11 +18,7 @@ final class EncryptionServiceProvider extends ServiceProvider
          * Register another singleton to differenciate app encrypter (using the app_key)
          * and the draw encrypter (using a custom generated key)
          */
-        $this->app->singleton('draw-encrypter', function ($app): IVEncrypter {
-            $config = $app->make('config')->get('app');
-
-            return new IVEncrypter($this->parseKey($config), $config['cipher'])
-                ->previousKeys(array_map(fn ($key): string => $this->parseKey(['key' => $key]), config()->array('app.previous_keys')));
-        });
+        $this->app->singleton('draw-encrypter', fn (): IVEncrypter => new IVEncrypter($this->parseKey(config()->array('app')), config()->string('app.cipher'))
+            ->previousKeys(array_map(fn (mixed $key): string => $this->parseKey(['key' => $key]), config()->array('app.previous_keys'))));
     }
 }

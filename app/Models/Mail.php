@@ -8,7 +8,6 @@ use App\Enums\DeliveryStatus;
 use App\Events\MailStatusUpdated;
 use Carbon\CarbonImmutable;
 use Illuminate\Broadcasting\BroadcastException;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
 
@@ -19,8 +18,6 @@ use Illuminate\Support\Str;
  */
 final class Mail extends Model
 {
-    use HasFactory;
-
     /**
      * Indicates if the model's ID is auto-incrementing.
      *

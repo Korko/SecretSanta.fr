@@ -10,7 +10,6 @@ use App\Notifications\OrganizerRecap;
 use App\Services\DrawFormHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Notification;
 
 final class RandomFormController extends Controller
@@ -22,12 +21,13 @@ final class RandomFormController extends Controller
 
     public function handle(RandomFormRequest $request): JsonResponse
     {
-        $safe = $request->safe();
+        /** @var array{participant-organizer?: bool, organizer: array{name: string, email: string}, participants: list<array{name: string, email: string, exclusions?: list<int|string>}>, title: string, content-email: string, data-expiration: string} $safe */
+        $safe = $request->validated();
 
         try {
             $drawForm = (new DrawFormHandler);
 
-            if (! Arr::get($safe, 'participant-organizer', false)) {
+            if (! ($safe['participant-organizer'] ?? false)) {
                 $drawForm->withOrganizer($safe['organizer']);
             }
 
@@ -39,7 +39,7 @@ final class RandomFormController extends Controller
                 ->save();
 
             // Taking part, the organizer gets the recap within their own target email (TargetDrawn)
-            if (! Arr::get($safe, 'participant-organizer', false)) {
+            if (! ($safe['participant-organizer'] ?? false)) {
                 Notification::route('mail', [
                     $draw->organizer_email => $draw->organizer_name,
                 ])->notify(new OrganizerRecap($draw));

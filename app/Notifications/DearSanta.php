@@ -26,6 +26,7 @@ final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQ
     /**
      * Get the notification's delivery channels.
      */
+    /** @return list<string> */
     public function via(Participant $santa): array
     {
         return [TrackedMailChannel::class];

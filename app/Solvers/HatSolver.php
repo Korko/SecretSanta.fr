@@ -6,11 +6,15 @@ namespace App\Solvers;
 
 use App\Exceptions\SolverException;
 use Generator;
-use Illuminate\Support\Arr;
 use Random\Randomizer;
 
 final class HatSolver implements SolverInterface
 {
+    /**
+     * @param  array<int, mixed>  $participants  indexed by participant id
+     * @param  array<int, list<int>>  $exclusions  participant id => excluded ids
+     * @return array<int, int> santa id => target id
+     */
     public function one(array $participants, array $exclusions = []): array
     {
         $generator = $this->all($participants, $exclusions);
@@ -19,6 +23,11 @@ final class HatSolver implements SolverInterface
         return $generator->current();
     }
 
+    /**
+     * @param  array<int, mixed>  $participants  indexed by participant id
+     * @param  array<int, list<int>>  $exclusions  participant id => excluded ids
+     * @return Generator<int, array<int, int>, mixed, void>
+     */
     public function all(array $participants, array $exclusions = []): Generator
     {
         throw_if(count($participants) < 2, SolverException::class, 'Not enough participants');
@@ -26,9 +35,9 @@ final class HatSolver implements SolverInterface
         $hat = array_keys($participants);
         $hat = (new Randomizer)->shuffleArray($hat);
 
-        uksort($participants, function ($participantIdx1, $participantIdx2) use ($exclusions): int {
-            $count1 = count(Arr::get($exclusions, $participantIdx1, []));
-            $count2 = count(Arr::get($exclusions, $participantIdx2, []));
+        uksort($participants, function (int $participantIdx1, int $participantIdx2) use ($exclusions): int {
+            $count1 = count($exclusions[$participantIdx1] ?? []);
+            $count2 = count($exclusions[$participantIdx2] ?? []);
 
             return $count1 > $count2 ? -1 : (
                 $count1 === $count2 ? 0 : 1
@@ -38,6 +47,13 @@ final class HatSolver implements SolverInterface
         return $this->solve(array_keys($participants), 0, [], $exclusions, $hat);
     }
 
+    /**
+     * @param  list<int>  $participantIds
+     * @param  array<int, int>  $combination
+     * @param  array<int, list<int>>  $allExclusions
+     * @param  array<int, int>  $currentHat
+     * @return Generator<int, array<int, int>, mixed, void>
+     */
     private function solve(array $participantIds, int $idx, array $combination, array $allExclusions, array $currentHat): Generator
     {
         // End of a loop, we've found a possible combination
@@ -52,7 +68,7 @@ final class HatSolver implements SolverInterface
 
         // Get the exclusions requested for that participant
         // And remove them from the hat (+ the current participant)
-        $exclusions = Arr::get($allExclusions, $participantIdx, []);
+        $exclusions = $allExclusions[$participantIdx] ?? [];
         $hat = array_diff($currentHat, $exclusions, [$participantIdx]);
 
         // If nothing available in the hat for that participant

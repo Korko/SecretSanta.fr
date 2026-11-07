@@ -50,6 +50,7 @@ final class FixOrganizerController extends Controller
 
             // Access the email in a try/catch to handle invalid decrypt key
             $organizerEmail = $draw->organizer_email;
+            // @phpstan-ignore catch.neverThrown (a wrong IV in the URL makes the decryption throw)
         } catch (Exception) {
             return response()->json([
                 'errors' => [

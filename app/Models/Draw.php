@@ -171,9 +171,9 @@ final class Draw extends Model
     protected function casts(): array
     {
         return [
-            'expires_at' => 'datetime',
-            'targets_revealed_at' => 'datetime',
-            'organizer_received_at' => 'datetime',
+            'expires_at' => 'immutable_datetime',
+            'targets_revealed_at' => 'immutable_datetime',
+            'organizer_received_at' => 'immutable_datetime',
             'mail_title' => EncryptedString::class,
             'mail_body' => EncryptedString::class,
             'next_solvable' => 'boolean',

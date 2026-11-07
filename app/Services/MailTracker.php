@@ -91,9 +91,9 @@ final class MailTracker
     /** @return array<int, mixed> */
     private function parseReturnPath(string $returnPath): array
     {
-        return (array) sscanf(
+        return array_values((array) sscanf(
             $returnPath,
             str_replace('*', '%[a-z]-%s', config()->string('mail.return_path'))
-        );
+        ));
     }
 }

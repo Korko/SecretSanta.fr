@@ -106,18 +106,19 @@ final class OrganizerController extends Controller
     {
         throw_if($draw->refusesEmail($request->string('email')->toString()), ValidationException::withMessages(['email' => trans('organizer.report.refused_email')]));
 
-        if ($participant->email === $request->input('email')) {
+        $email = $request->string('email')->toString();
+        if ($participant->email === $email) {
             $message = trans('message.sent');
 
             $participant->createMetric('resend_email');
         } else {
             // The organizer fixing their own address: keep the draw in sync (recap in their target email, /fix)
             if ($participant->isOrganizer()) {
-                $participant->draw->organizer_email = $request->input('email');
+                $participant->draw->organizer_email = $email;
                 $participant->draw->save();
             }
 
-            $participant->email = $request->input('email');
+            $participant->email = $email;
             $participant->report = null; // a fixed address answers a "not me" report
             $participant->save();
 
@@ -194,7 +195,7 @@ final class OrganizerController extends Controller
                 ->appendTargetToExclusions()
                 ->toCsv(['name', 'email', 'exclusionsNames'])
                 ->prepend([
-                    ['# Fichier généré le '.date('d-m-Y').' sur '.config('app.name').' ('.config('app.url').')'],
+                    ['# Fichier généré le '.date('d-m-Y').' sur '.config()->string('app.name').' ('.config()->string('app.url').')'],
                     ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
                 ]),
             200, ['Content-Type' => 'text/csv; charset=UTF-8']);
@@ -215,6 +216,7 @@ final class OrganizerController extends Controller
     private function targets(Draw $draw): array
     {
         return $draw->participants->load('target')->mapWithKeys(fn (Participant $participant): array => [
+            // @phpstan-ignore nullsafe.neverNull (no target yet while participants are being edited)
             $participant->hash => $participant->target?->name,
         ])->all();
     }

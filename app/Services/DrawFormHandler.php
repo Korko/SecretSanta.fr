@@ -6,19 +6,28 @@ namespace App\Services;
 
 use App\Models\Draw;
 use App\Models\Participant;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
+/**
+ * @phpstan-type Santa array{name: string, email: string, exclusions?: list<int|string>}
+ * @phpstan-type Organizer array{name: string, email: string}
+ */
 final class DrawFormHandler
 {
-    private $title = '';
+    private string $title = '';
 
-    private $body = '';
+    private string $body = '';
 
+    /** @var Organizer|null */
     private ?array $organizer = null;
 
+    /** @var list<Santa> */
     private array $participants = [];
+
+    /** @var list<Participant> */
+    private array $models = [];
 
     private string $expirationDate;
 
@@ -27,6 +36,7 @@ final class DrawFormHandler
         $this->expirationDate = date('Y-m-d', strtotime('+2 days'));
     }
 
+    /** @param Organizer $organizer */
     public function withOrganizer(array $organizer): self
     {
         $this->organizer = $organizer;
@@ -34,22 +44,23 @@ final class DrawFormHandler
         return $this;
     }
 
+    /** @param list<Santa> $participants */
     public function withParticipants(array $participants): self
     {
         $this->participants = $participants;
-        $this->organizer ??= reset($participants);
+        $this->organizer ??= ['name' => $participants[0]['name'] ?? '', 'email' => $participants[0]['email'] ?? ''];
 
         return $this;
     }
 
-    public function withTitle($title): self
+    public function withTitle(string $title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function withBody($body): self
+    public function withBody(string $body): self
     {
         $this->body = $body;
 
@@ -87,22 +98,21 @@ final class DrawFormHandler
     private function createDraw(): Draw
     {
         $draw = new Draw;
-        $draw->expires_at = $this->expirationDate;
+        $draw->expires_at = Date::parse($this->expirationDate)->toImmutable();
         $draw->mail_title = $this->title;
         $draw->mail_body = $this->body;
-        $draw->organizer_name = $this->organizer['name'];
-        $draw->organizer_email = $this->organizer['email'];
+        $draw->organizer_name = $this->organizer['name'] ?? '';
+        $draw->organizer_email = $this->organizer['email'] ?? '';
         $draw->save();
 
-        foreach ($this->participants as $idx => $santa) {
+        foreach ($this->participants as $santa) {
             $participant = new Participant;
             $participant->draw()->associate($draw);
             $participant->name = $santa['name'];
-            $participant->email = Arr::get($santa, 'email');
+            $participant->email = $santa['email'];
             $participant->save();
 
-            $this->participants[$idx]['model'] = $participant;
-            $draw->participants()->save($participant);
+            $this->models[] = $participant;
         }
 
         return $draw;
@@ -110,12 +120,9 @@ final class DrawFormHandler
 
     private function solveExclusions(): void
     {
-        $participants = $this->participants;
-        for ($i = 0; $i < count($participants); $i++) {
-            $participant = $participants[$i];
-
-            $participant['model']->exclusions()->attach(
-                array_map(fn ($participantId) => $participants[(int) $participantId]['model']->id, Arr::get($participant, 'exclusions', []))
+        foreach ($this->participants as $idx => $santa) {
+            $this->models[$idx]->exclusions()->attach(
+                array_map(fn (int|string $participantId): int => $this->models[(int) $participantId]->id, $santa['exclusions'] ?? [])
             );
         }
     }

@@ -8,7 +8,6 @@ use App\Casts\EncryptedString;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
@@ -22,7 +21,6 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 #[WithoutTimestamps]
 final class DearSanta extends Model
 {
-    use HasFactory;
     use HashId;
 
     /** @return BelongsTo<Participant, $this> */

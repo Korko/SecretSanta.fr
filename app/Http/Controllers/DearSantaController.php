@@ -9,8 +9,10 @@ use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
+use Carbon\CarbonImmutable;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Date;
@@ -21,6 +23,7 @@ use Illuminate\Validation\Rule;
 final class DearSantaController extends Controller
 {
     // dear_santas has no timestamps: the dates shown come from the related mail
+    /** @var list<string> */
     private array $dearSantaPublicFields = ['id', 'mail_body', 'mail'];
 
     public function view(Participant $participant): Response
@@ -30,7 +33,7 @@ final class DearSantaController extends Controller
         ]);
     }
 
-    public function fetch(Participant $participant)
+    public function fetch(Participant $participant): JsonResponse
     {
         // The hash was validated in middleware so we can validate that the email was received
         $participant->mail->markAsReceived();
@@ -83,7 +86,7 @@ final class DearSantaController extends Controller
         ]);
     }
 
-    public function resend(Participant $participant, DearSanta $dearSanta, Request $request)
+    public function resend(Participant $participant, DearSanta $dearSanta, Request $request): JsonResponse|RedirectResponse
     {
         abort_unless(($dearSanta->mail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
@@ -114,13 +117,13 @@ final class DearSantaController extends Controller
         }
     }
 
-    public function resendTarget(Participant $participant, Request $request)
+    public function resendTarget(Participant $participant, Request $request): JsonResponse|RedirectResponse
     {
         $dearSantas = $participant->dearSantas->load('mail');
         $max = $dearSantas->max('mail.updated_at');
-        abort_unless($max !== null && $max->diffInSeconds(Date::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
+        abort_unless($max instanceof CarbonImmutable && $max->diffInSeconds(Date::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
-        $dearSantas->each(function ($dearSanta) use ($participant): void {
+        $dearSantas->each(function (DearSanta $dearSanta) use ($participant): void {
             $participant->notify(new DearSantaNotification($dearSanta));
         });
 
@@ -133,11 +136,11 @@ final class DearSantaController extends Controller
             redirect('/dearSanta/'.$participant->hash)->with('message', $message);
     }
 
-    public function handle(Participant $participant, DearSantaRequest $request)
+    public function handle(Participant $participant, DearSantaRequest $request): JsonResponse|RedirectResponse
     {
         $dearSanta = new DearSanta;
         $dearSanta->sender()->associate($participant);
-        $dearSanta->mail_body = $request->input('content');
+        $dearSanta->mail_body = $request->string('content')->toString();
         $dearSanta->save();
 
         $participant->createMetric('dearSanta');
@@ -149,7 +152,7 @@ final class DearSantaController extends Controller
         return $request->ajax() ?
             response()->json([
                 'message' => $message,
-                'email' => DearSanta::query()->find($dearSanta->id)->only($this->dearSantaPublicFields),
+                'email' => $dearSanta->fresh()?->only($this->dearSantaPublicFields),
             ]) :
             redirect('/dearSanta/'.$participant->hash)->with('message', $message);
     }

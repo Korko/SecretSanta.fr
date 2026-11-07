@@ -9,6 +9,7 @@ use App\Models\Participant;
 use App\Notifications\TrackedNotification;
 use App\Services\MailTracker;
 use Closure;
+use Illuminate\Mail\SentMessage;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -23,16 +24,18 @@ final class TrackedMailChannel extends MailChannel
      *
      * @param  mixed  $notifiable
      */
-    public function send($notifiable, Notification $notification): void
+    public function send($notifiable, Notification $notification): ?SentMessage
     {
         $mail = $this->mail($notifiable, $notification);
 
         try {
             $mail->markAsSending();
 
-            parent::send($notifiable, $notification);
+            $sent = parent::send($notifiable, $notification);
 
             $mail->markAsSent();
+
+            return $sent;
         } catch (TransportExceptionInterface $transportException) {
             $mail->markAsError();
             throw $transportException;

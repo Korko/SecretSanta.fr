@@ -28,6 +28,7 @@ final class OrganizerEmailChanged extends Notification implements ShouldBeEncryp
      *
      * @return list<string>
      */
+    /** @return list<string> */
     public function via(object $notifiable): array
     {
         return ['mail'];

@@ -28,7 +28,7 @@ final class IVEncrypter extends BaseEncrypter
     {
         parent::__construct($key, $cipher);
 
-        $this->iv = random_bytes(openssl_cipher_iv_length($this->cipher));
+        $this->iv = random_bytes(max(1, (int) openssl_cipher_iv_length($this->cipher)));
     }
 
     /**
@@ -72,7 +72,7 @@ final class IVEncrypter extends BaseEncrypter
         // will proceed to calculating a MAC for the encrypted value so that this
         // value can be verified later as not having been changed by the users.
         $value = openssl_encrypt(
-            $serialize ? serialize($value) : $value,
+            $serialize ? serialize($value) : (is_string($value) ? $value : throw new EncryptException('Only strings can be encrypted unserialized.')),
             $this->cipher, $this->key, 0, $this->iv
         );
 
@@ -83,22 +83,21 @@ final class IVEncrypter extends BaseEncrypter
         // its authenticity. Then, we'll JSON the data into the "payload" array.
         $mac = $this->hash(base64_encode($this->iv), $value, $this->key);
 
-        $json = json_encode(['value' => $value, 'mac' => $mac], JSON_UNESCAPED_SLASHES);
-
-        throw_if(json_last_error() !== JSON_ERROR_NONE, EncryptException::class, 'Could not encrypt the data.');
-
-        return base64_encode($json);
+        return base64_encode(json_encode(['value' => $value, 'mac' => $mac], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));
     }
 
     /**
      * Get the JSON array from the given payload.
      *
+     * @param  string  $payload
+     * @return array<string, mixed>
      *
      * @throws DecryptException
      */
     protected function getJsonPayload($payload): array
     {
         $payload = json_decode(base64_decode($payload), true);
+        throw_unless(is_array($payload), DecryptException::class, 'The payload is invalid.');
 
         $payload['iv'] = base64_encode($this->iv);
 
@@ -108,6 +107,7 @@ final class IVEncrypter extends BaseEncrypter
         // The MAC is checked by decrypt(), against APP_KEY then APP_PREVIOUS_KEYS (key rotation)
         throw_unless($this->validPayload($payload), DecryptException::class, 'The payload is invalid.');
 
+        /** @var array<string, mixed> $payload */
         return $payload;
     }
 }

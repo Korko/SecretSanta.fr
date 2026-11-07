@@ -13,12 +13,11 @@ final readonly class Language
 {
     public function __construct(private Application $app) {}
 
-    /**
-     * Handle an incoming request.
-     */
+    /** @param Closure(Request): Response $next */
     public function handle(Request $request, Closure $next): Response
     {
-        $handledDomains = config('app.domains');
+        /** @var array<string, string> $handledDomains */
+        $handledDomains = config()->array('app.domains');
         $currentDomain = $request->getHost();
 
         foreach ($handledDomains as $locale => $domain) {

@@ -23,6 +23,7 @@ final class TargetChanged extends Notification implements ShouldBeEncrypted, Sho
     /**
      * Get the notification's delivery channels.
      */
+    /** @return list<string> */
     public function via(Participant $santa): array
     {
         return ['mail'];

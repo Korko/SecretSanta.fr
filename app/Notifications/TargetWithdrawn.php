@@ -23,6 +23,7 @@ final class TargetWithdrawn extends Notification implements ShouldBeEncrypted, S
     /**
      * Get the notification's delivery channels.
      */
+    /** @return list<string> */
     public function via(Participant $santa): array
     {
         return ['mail'];

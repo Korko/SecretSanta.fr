@@ -14,7 +14,7 @@ final class ComposerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('templates/layout', function ($view): void {
+        View::composer('templates/layout', function (\Illuminate\View\View $view): void {
             $view->with('version', exec('git describe --tags --always --abbrev=0'))
                 ->with('version_date', exec('git log -1 --format=%ai'));
         });

@@ -60,7 +60,9 @@ final class PostBlacklist extends Command
             return false;
         }
 
-        $domains = array_map(fn ($domain): string => '@'.mb_ltrim(mb_strtolower($domain), '@'), $this->argument('domains'));
+        /** @var list<string> $domains */
+        $domains = $this->argument('domains');
+        $domains = array_map(fn (string $domain): string => '@'.mb_ltrim(mb_strtolower($domain), '@'), $domains);
         if (! Str::endsWith(mb_strtolower($participant->email), $domains)) {
             return false;
         }

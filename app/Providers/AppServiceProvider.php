@@ -49,15 +49,15 @@ final class AppServiceProvider extends ServiceProvider
     {
         Mail::extend('dkim', function (array $config): DkimTransport {
             $signer = new DkimSigner(
-                'file://'.config('mail.dkim_private_key'),
-                config('mail.dkim_domain'),
-                config('mail.dkim_selector'),
+                'file://'.config()->string('mail.dkim_private_key'),
+                config()->string('mail.dkim_domain'),
+                config()->string('mail.dkim_selector'),
                 ['algorithm' => config('mail.dkim_algo')],
-                config('mail.dkim_passphrase', ''),
+                config()->string('mail.dkim_passphrase', ''),
             );
 
             return new DkimTransport(
-                Mail::createSymfonyTransport(config('mail.mailers.'.$config['mailer'])),
+                Mail::createSymfonyTransport(config()->array('mail.mailers.'.(is_string($config['mailer'] ?? null) ? $config['mailer'] : ''))),
                 $signer,
             );
         });
@@ -65,15 +65,16 @@ final class AppServiceProvider extends ServiceProvider
 
     public function bootJobs(): void
     {
-        Queue::createPayloadUsing(fn ($connection, $queue, array $payload): array => [
-            'data' => array_merge($payload['data'], [
+        Queue::createPayloadUsing(fn (?string $connection, ?string $queue, array $payload): array => [
+            'data' => array_merge(is_array($payload['data'] ?? null) ? $payload['data'] : [], [
                 'iv' => base64_encode(DrawCrypt::getIV()),
             ]),
         ]);
 
-        $this->app->make(Dispatcher::class)->listen(JobProcessing::class, function ($event): void {
-            if (isset($event->job->payload()['data']['iv'])) {
-                DrawCrypt::setIV(base64_decode($event->job->payload()['data']['iv']));
+        $this->app->make(Dispatcher::class)->listen(JobProcessing::class, function (JobProcessing $event): void {
+            $iv = data_get($event->job->payload(), 'data.iv');
+            if (is_string($iv)) {
+                DrawCrypt::setIV(base64_decode($iv));
             }
         });
     }

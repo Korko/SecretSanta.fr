@@ -8,24 +8,26 @@ use Closure;
 use DrawCrypt;
 use Exception;
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class HandleEncryptionIV
 {
-    /**
-     * Handle an incoming request.
-     */
-    public function handle(Request $request, Closure $next, $parameterToCheck, $fieldToCheck): Response
+    /** @param Closure(Request): Response $next */
+    public function handle(Request $request, Closure $next, string $parameterToCheck, string $fieldToCheck): Response
     {
-        $iv = base64_decode($request->input('iv') ?: $request->header('X-HASH-IV'));
+        $iv = base64_decode($request->string('iv')->toString() ?: (string) $request->header('X-HASH-IV'));
         if (! empty($iv)) {
             DrawCrypt::setIV($iv);
         }
 
         try {
             // Accessing the attribute is enough
-            $request->route()->parameters()[$parameterToCheck]->$fieldToCheck;
+            $model = $request->route($parameterToCheck);
+            if ($model instanceof Model) {
+                $model->getAttribute($fieldToCheck);
+            }
         } catch (DecryptException $e) {
             abort(500, 'Invalid encryption iv: '.$e->getMessage());
         } catch (Exception) {

@@ -10,7 +10,6 @@ use DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\Attributes\Backoff;
@@ -29,6 +28,7 @@ final class TargetDrawn extends Notification implements ShouldBeEncrypted, Shoul
     /**
      * Get the notification's delivery channels.
      */
+    /** @return list<string> */
     public function via(Participant $santa): array
     {
         return [TrackedMailChannel::class];
@@ -42,9 +42,9 @@ final class TargetDrawn extends Notification implements ShouldBeEncrypted, Shoul
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(Participant $santa): MailMessage|Mailable
+    public function toMail(Participant $santa): MailMessage
     {
-        $title = $this->parseKeywords(Lang::get('emails.target_draw.title', [
+        $title = $this->parseKeywords((string) Lang::get('emails.target_draw.title', [
             'draw' => $santa->draw->id,
             'subject' => $santa->draw->mail_title,
         ]), $santa);
@@ -67,7 +67,7 @@ final class TargetDrawn extends Notification implements ShouldBeEncrypted, Shoul
             : $message;
     }
 
-    private function parseKeywords($str, Participant $santa): string|array
+    private function parseKeywords(string $str, Participant $santa): string
     {
         return str_ireplace(['{SANTA}', '{TARGET}'], [$santa->name, $santa->target->name], $str);
     }

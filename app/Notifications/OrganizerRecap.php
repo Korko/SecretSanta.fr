@@ -10,7 +10,6 @@ use DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -18,7 +17,6 @@ use Illuminate\Queue\Attributes\Backoff;
 use Illuminate\Queue\Attributes\MaxExceptions;
 use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 
 #[Backoff(30)]
@@ -40,19 +38,15 @@ final class OrganizerRecap extends Notification implements ShouldBeEncrypted, Sh
     {
         return [
             'organizerName' => $draw->organizer_name,
-            'expirationDate' => $draw->expires_at->locale(App::getLocale())->isoFormat('LL'),
-            'deletionDate' => $draw->deleted_at->locale(App::getLocale())->isoFormat('LL'),
+            'expirationDate' => $draw->expires_at->isoFormat('LL'),
+            'deletionDate' => $draw->deleted_at->isoFormat('LL'),
             'nextSolvable' => $draw->next_solvable,
             'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
         ];
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  AnonymousNotifiable|Participant  $organizer
-     */
-    public function via($organizer): array
+    /** @return list<string> */
+    public function via(AnonymousNotifiable|Participant $organizer): array
     {
         return ['mail'];
     }
@@ -62,7 +56,7 @@ final class OrganizerRecap extends Notification implements ShouldBeEncrypted, Sh
      *
      * @param  AnonymousNotifiable|Participant  $organizer
      */
-    public function toMail($organizer): MailMessage|Mailable
+    public function toMail($organizer): MailMessage
     {
         return (new MailMessage)
             ->subject(__('emails.organizer_recap_title', ['draw' => $this->draw->id]))

@@ -9,8 +9,8 @@ use Generator;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static array one(array $participants, array $exclusions = [])
- * @method static Generator all(array $participants, array $exclusions = [])
+ * @method static array<int, int> one(array<int, mixed> $participants, array<int, list<int>> $exclusions = [])
+ * @method static Generator<int, array<int, int>, mixed, void> all(array<int, mixed> $participants, array<int, list<int>> $exclusions = [])
  *
  * @see SolverInterface
  */

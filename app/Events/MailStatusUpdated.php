@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Events;
 
+use App\Models\DearSanta;
+use App\Models\Draw;
 use App\Models\Mail as MailModel;
+use App\Models\Participant;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use LogicException;
 
 final class MailStatusUpdated implements ShouldBroadcast
 {
@@ -22,6 +26,7 @@ final class MailStatusUpdated implements ShouldBroadcast
     /**
      * Get the data to broadcast.
      */
+    /** @return array<string, mixed> */
     public function broadcastWith(): array
     {
         return [
@@ -42,12 +47,20 @@ final class MailStatusUpdated implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return list<Channel>
      */
     public function broadcastOn(): array
     {
         return [
-            new Channel('draw.'.$this->mail->mailable->draw->hash),
+            new Channel('draw.'.$this->draw()->hash),
         ];
+    }
+
+    private function draw(): Draw
+    {
+        $mailable = $this->mail->mailable;
+        throw_unless($mailable instanceof Participant || $mailable instanceof DearSanta, LogicException::class, 'Mail without a participant or dearSanta');
+
+        return $mailable->draw;
     }
 }
