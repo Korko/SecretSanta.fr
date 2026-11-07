@@ -88,7 +88,7 @@ return [
         'done' => 'Änderungen gespeichert, die betroffenen Teilnehmer wurden benachrichtigt.',
         'confirm_add' => [
             'title' => '{name} zur Veranstaltung hinzufügen?',
-            'body' => '{name} erhält das Ziel per E-Mail, und nur eine Person bekommt ein neues Ziel (sie wird benachrichtigt). Diese Aktion kann nicht rückgängig gemacht werden.',
+            'body' => '{name} erhält das Ziel per E-Mail, und eine andere Person bekommt ein neues Ziel (sie wird benachrichtigt). Diese Aktion kann nicht rückgängig gemacht werden.',
         ],
         'confirm_multi' => [
             'title' => 'Änderungen bestätigen?',

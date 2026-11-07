@@ -80,7 +80,7 @@ export default {
                     "Un des participants n'a pas reçu l'email, que faire ?": "Alors même que l'adresse renseignée est bonne, il arrive que l'email se perde, finisse en spam ou qu'un problème survienne faisant que l'email n'est pas arrivé. Depuis votre panneau d'organisateur/organisatrice, vous pouvez retrouver un bouton à côté du status de réception de l'email du participant pour pouvoir réenvoyer le-dit email. Comme ça, le participant pourra enfin savoir qui est sa cible et comment parler à son Santa.",
                     "Est-il possible de parler à sa cible ?": "Pour le moment, ce n'est pas possible, pour des raisons d'anonymat. Seule la cible peut écrire à son/sa père/mère noël secret. Mais c'est en projet.",
                     "Quand sont supprimés mes données personnelles ?": "Toutes vos données d'un tirage sont supprimées 3 semaines après la date de l'évènement. Ce délai permet à l'organisateur/organisatrice de télécharger depuis son panneau d'organisation la liste des participants avec leur cible piochée, afin d'organiser plus tard un secret santa avec les mêmes personnes en évitant de retomber sur les mêmes cibles.",
-                    "J'ai oublié un participant, comment je peux le rajouter ?": "Depuis votre panneau d'organisateur/organisatrice, vous pouvez ajouter un participant (ou en retirer un). Le nouveau participant reçoit sa cible par email. Pour lui faire une place, une seule autre personne change de cible, au hasard pour que personne ne puisse deviner qui offre à qui, et elle est prévenue par email. Si des exclusions empêchent cet ajustement, d'autres cibles peuvent changer, toujours avec un email aux personnes concernées.",
+                    "J'ai oublié un participant, comment je peux le rajouter ?": "Depuis votre panneau d'organisateur/organisatrice, vous pouvez ajouter un participant (ou en retirer un). Le nouveau participant reçoit sa cible par email. Pour lui faire une place, une autre personne change de cible, au hasard pour que personne ne puisse deviner qui offre à qui, et elle est prévenue par email. Si des exclusions empêchent cet ajustement, d'autres cibles peuvent changer, toujours avec un email aux personnes concernées.",
                     "Qui peut savoir la liste des cibles ?": "Par défaut, personne : la liste est chiffrée et n'apparaît nulle part. L'organisateur/organisatrice peut toutefois la révéler depuis sa page d'organisation (problème de réception d'un email, autres évènements à organiser avec les mêmes paires...). C'est définitif, et chaque participant(e) voit sur sa page si la liste a été révélée ou non."
                 },
                 "technical": {
@@ -292,7 +292,7 @@ export default {
                 "done": "Modifications enregistrées, les participant(e)s concerné(e)s ont été prévenu(e)s.",
                 "confirm_add": {
                     "title": "Ajouter {name} à l'évènement ?",
-                    "body": "{name} recevra sa cible par email, et une seule personne changera de cible (elle sera prévenue). Cette action ne peut être annulée."
+                    "body": "{name} recevra sa cible par email, et une autre personne changera de cible (elle sera prévenue). Cette action ne peut être annulée."
                 },
                 "confirm_multi": {
                     "title": "Valider les modifications ?",

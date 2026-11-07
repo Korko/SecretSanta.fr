@@ -88,7 +88,7 @@ return [
         'done' => 'Modifications enregistrées, les participant(e)s concerné(e)s ont été prévenu(e)s.',
         'confirm_add' => [
             'title' => 'Ajouter {name} à l\'évènement ?',
-            'body' => '{name} recevra sa cible par email, et une seule personne changera de cible (elle sera prévenue). Cette action ne peut être annulée.',
+            'body' => '{name} recevra sa cible par email, et une autre personne changera de cible (elle sera prévenue). Cette action ne peut être annulée.',
         ],
         'confirm_multi' => [
             'title' => 'Valider les modifications ?',

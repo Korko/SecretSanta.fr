@@ -80,7 +80,7 @@ export default {
                     "Ein Teilnehmer hat die E-Mail nicht erhalten, was tun?": "Auch wenn die angegebene Adresse korrekt ist, kann es passieren, dass die E-Mail verloren geht, im Spam-Ordner landet oder ein anderes Problem auftritt. Im Organisatorbereich können Sie einen Button neben dem Status der E-Mail-Zustellung finden, um die E-Mail erneut zu senden. So kann der Teilnehmer erfahren, wer sein Ziel ist und wie er mit seinem Santa kommuniziert.",
                     "Ist es möglich, mit seinem Ziel zu sprechen?": "Momentan ist das nicht möglich, aus Gründen der Anonymität. Nur das Ziel kann seinem/ihrem Secret Santa schreiben. Aber das ist in Planung.",
                     "Wann werden meine persönlichen Daten gelöscht?": "Alle Ihre Daten aus einer Ziehung werden 3 Wochen nach dem Datum des Ereignisses gelöscht. Diese Frist ermöglicht es dem Organisator, die Liste der Teilnehmer mit ihren gezogenen Zielen über sein Organisator-Panel herunterzuladen, um bei einer späteren Secret Santa-Veranstaltung mit denselben Personen zu verhindern, dass dieselben Ziele wiederholt werden.",
-                    "Ich habe einen Teilnehmer vergessen, wie kann ich ihn hinzufügen?": "Über Ihr Organisator-Panel können Sie einen Teilnehmer hinzufügen (oder entfernen). Der neue Teilnehmer erhält sein Ziel per E-Mail. Um Platz für ihn zu schaffen, bekommt nur eine andere Person ein neues Ziel, zufällig gewählt, damit niemand erraten kann, wer wen beschenkt, und sie wird per E-Mail benachrichtigt. Verhindern Ausschlüsse diese Anpassung, können sich weitere Ziele ändern, ebenfalls mit einer E-Mail an die Betroffenen.",
+                    "Ich habe einen Teilnehmer vergessen, wie kann ich ihn hinzufügen?": "Über Ihr Organisator-Panel können Sie einen Teilnehmer hinzufügen (oder entfernen). Der neue Teilnehmer erhält sein Ziel per E-Mail. Um Platz für ihn zu schaffen, bekommt eine andere Person ein neues Ziel, zufällig gewählt, damit niemand erraten kann, wer wen beschenkt, und sie wird per E-Mail benachrichtigt. Verhindern Ausschlüsse diese Anpassung, können sich weitere Ziele ändern, ebenfalls mit einer E-Mail an die Betroffenen.",
                     "Wer kann die Liste der Ziele einsehen?": "Kurz gesagt: Niemand. Lang gesagt: Nur der Entwickler kann diese Information mit dem Link des Organisators einsehen. Aber es ist besser, dieses Geheimnis so gut wie möglich zu wahren."
                 },
                 "technical": {
@@ -292,7 +292,7 @@ export default {
                 "done": "Änderungen gespeichert, die betroffenen Teilnehmer wurden benachrichtigt.",
                 "confirm_add": {
                     "title": "{name} zur Veranstaltung hinzufügen?",
-                    "body": "{name} erhält das Ziel per E-Mail, und nur eine Person bekommt ein neues Ziel (sie wird benachrichtigt). Diese Aktion kann nicht rückgängig gemacht werden."
+                    "body": "{name} erhält das Ziel per E-Mail, und eine andere Person bekommt ein neues Ziel (sie wird benachrichtigt). Diese Aktion kann nicht rückgängig gemacht werden."
                 },
                 "confirm_multi": {
                     "title": "Änderungen bestätigen?",
