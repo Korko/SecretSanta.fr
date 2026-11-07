@@ -5,7 +5,7 @@ alertify.defaults.theme.ok = "btn btn-primary";
 alertify.defaults.theme.cancel = "btn btn-danger";
 alertify.defaults.theme.input = "form-control";
 
-alertify.defaults.notifier.position = 'top-right'
+alertify.defaults.notifier.position = 'bottom-right'
 
 import de from '../langs/de.js';
 import en from '../langs/en.js';
