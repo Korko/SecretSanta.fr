@@ -8,13 +8,10 @@ use App\Mail\DkimTransport;
 use App\Solvers\HatSolver;
 use App\Solvers\SolverInterface;
 use DrawCrypt;
-use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Http\Request;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Mime\Crypto\DkimSigner;
 
@@ -45,7 +42,6 @@ final class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->bootJobs();
-        $this->bootRoute();
         $this->bootMail();
     }
 
@@ -80,10 +76,5 @@ final class AppServiceProvider extends ServiceProvider
                 DrawCrypt::setIV(base64_decode($event->job->payload()['data']['iv']));
             }
         });
-    }
-
-    public function bootRoute(): void
-    {
-        RateLimiter::for('api', fn (Request $request) => Limit::perMinute(60)->by($request->user()?->id ?: $request->ip()));
     }
 }

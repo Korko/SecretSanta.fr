@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property-read Participant $sender
+ * @property-read Mail $mail
  */
 #[Fillable(['mail_body', 'sender_id'])]
 #[WithoutTimestamps]

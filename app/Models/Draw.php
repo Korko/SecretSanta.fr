@@ -26,6 +26,7 @@ use STS\Metrics\Metric;
  * @property CarbonImmutable|null $organizer_received_at
  * @property-read Participant $organizer
  * @property-read bool $expired
+ * @property-read string $metricId
  * @property-read ParticipantsCollection $participants
  * @property list<string>|null $refused_emails
  */

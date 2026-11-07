@@ -28,6 +28,7 @@ use STS\Metrics\Metric;
  * @property-read Participant $target
  * @property-read Participant $santa
  * @property-read Mail $mail
+ * @property-read string $metricId
  * @property ReportReason|null $report
  */
 #[CollectedBy(ParticipantsCollection::class)]

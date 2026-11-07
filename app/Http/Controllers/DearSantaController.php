@@ -85,7 +85,7 @@ final class DearSantaController extends Controller
 
     public function resend(Participant $participant, DearSanta $dearSanta, Request $request)
     {
-        abort_unless($dearSanta->mail->updated_at->diffInSeconds(Date::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
+        abort_unless(($dearSanta->mail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
         $dearSanta->mail->markAsCreated();
 
