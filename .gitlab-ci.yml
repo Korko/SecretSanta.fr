@@ -43,26 +43,25 @@ assets:
 # Real browser flow (form, CSV import, organizer panel, dearSanta) on the committed public/build
 e2e:
   stage: test
-  image: php:8.4-cli
+  # Ships node and chromium with its system deps; keep the tag in sync with playwright in package-lock.json
+  image: mcr.microsoft.com/playwright:v1.61.1-noble
   variables:
     COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer-cache"
-    PLAYWRIGHT_BROWSERS_PATH: "$CI_PROJECT_DIR/.playwright"
     DEBIAN_FRONTEND: noninteractive
   cache:
     key: e2e-$CI_COMMIT_REF_SLUG
     paths:
       - .composer-cache/
       - .npm/
-      - .playwright/
   before_script:
-    - curl -fsSL https://deb.nodesource.com/setup_22.x | bash - > /dev/null # Debian ships node 20, vue-i18n needs 22 like the assets job
-    - apt-get update -qq && apt-get install -yqq --no-install-recommends git unzip libzip-dev libicu-dev libsqlite3-dev nodejs > /dev/null
-    - docker-php-ext-install -j"$(nproc)" zip intl bcmath sockets pdo_sqlite > /dev/null
+    # Prebuilt PHP 8.4 like prod, no extension compiling
+    - apt-get update -qq && apt-get install -yqq --no-install-recommends software-properties-common gpg-agent > /dev/null
+    - add-apt-repository -y ppa:ondrej/php > /dev/null
+    - apt-get install -yqq --no-install-recommends git unzip php8.4-cli php8.4-zip php8.4-intl php8.4-bcmath php8.4-sqlite3 php8.4-mbstring php8.4-xml php8.4-curl > /dev/null
     - curl -sS https://getcomposer.org/installer | php -- --quiet
     - php composer.phar install --no-interaction --no-progress
     - cp .env.example .env && php artisan key:generate
     - npm ci --cache .npm --prefer-offline --no-audit --no-fund
-    - npx playwright install --with-deps chromium > /dev/null
   script:
     - npm run e2e
   artifacts:
