@@ -78,3 +78,11 @@ export const px = value => {
 export const translate = (x, y) => {
   return `translate(${x}, ${y})`;
 };
+// Local YYYY-MM-DD (the 'sv' locale formats dates that way)
+export const ymd = (date = new Date()) => new Date(date).toLocaleDateString('sv');
+
+export const dateFromNow = (amount, unit) => {
+    const date = new Date();
+    unit === 'year' ? date.setFullYear(date.getFullYear() + amount) : date.setDate(date.getDate() + amount);
+    return ymd(date);
+};

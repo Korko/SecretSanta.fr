@@ -4,15 +4,7 @@
     import alertify from '../partials/alertify.js';
     import Toastify from '../partials/toastify.js';
 
-
-
     import { required, minLength, email, requiredIf } from '@vuelidate/validators';
-
-    // Still using CommonJS syntax
-
-    import Moment from 'moment';
-    import 'moment/locale/fr';
-    Moment.locale('fr');
 
     import Papa from 'papaparse';
     import suggestEmail from '../partials/emailSuggest.js';
@@ -27,7 +19,7 @@
     import Tooltip from './tooltip.vue';
     import Toggle from './toggle.vue';
 
-    const formatMoment = (amount, unit) => Moment(window.now).add(amount, unit).format('YYYY-MM-DD')
+    import { dateFromNow } from '../partials/helpers.js';
 
     export default {
         setup: () => ({ v$: useVuelidate() }),
@@ -98,8 +90,8 @@
                 expiration: {
                     required,
                     format: value => /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(value),
-                    minValue: value => Moment(value, 'YYYY-MM-DD').isSameOrAfter(formatMoment(1, 'day')),
-                    maxValue: value => Moment(value, 'YYYY-MM-DD').isSameOrBefore(formatMoment(1, 'year'))
+                    minValue: value => value >= dateFromNow(1, 'day'),
+                    maxValue: value => value <= dateFromNow(1, 'year')
                 }
             };
         },
@@ -143,7 +135,7 @@
             },
 
             moment(amount, unit) {
-                return formatMoment(amount, unit);
+                return dateFromNow(amount, unit);
             },
 
             resetParticipants() {

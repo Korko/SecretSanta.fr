@@ -5,7 +5,7 @@
 
     import { download } from '../partials/helpers.js';
 
-    import Moment from 'moment';
+    import { dateFromNow, ymd } from '../partials/helpers.js';
 
     import alertify, { hardConfirm } from '../partials/alertify.js';
     import fetch from '../partials/fetch.js';
@@ -56,7 +56,7 @@
         computed: {
             // Adding or removing someone changes a random santa's target: the later, the more likely they already bought a gift
             changeWarning() {
-                const days = Math.max(0, Moment().diff(Moment(this.drawn_at), 'days'));
+                const days = Math.max(0, Math.floor((Date.now() - new Date(this.drawn_at)) / 864e5));
                 return '<div class="alert alert-warning mt-2 mb-0"><i class="fas fa-exclamation-triangle"></i> '
                     + this.$t('organizer.edit.warning', {days}) + '</div>';
             },
@@ -75,13 +75,13 @@
                 );
             },
             expired() {
-                return Moment(this.expires_at).isBefore(Moment());
+                return new Date(this.expires_at) < new Date();
             },
             tomorrow() {
-                return Moment().add(1, 'day').format('YYYY-MM-DD');
+                return dateFromNow(1, 'day');
             },
             expirationDateShort() {
-                return Moment(this.expires_at).format('YYYY-MM-DD');
+                return ymd(this.expires_at);
             },
             expirationDateLong() {
                 return new Date(this.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
