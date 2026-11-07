@@ -183,7 +183,7 @@
             </button>
         </div>
         <!-- Wrong recipient or not taking part: the organizer sees it on their panel (they can't be emailed) -->
-        <div class="report text-center mt-4 small">
+        <div v-if="!data.isOrganizer" class="report text-center mt-4 small">
             <template v-if="report">
                 <p class="text-warning report-sent">
                     <i class="fas fa-flag" />

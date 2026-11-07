@@ -323,3 +323,13 @@ test('a participant report shows on the organizer panel, and fixing the address 
     ajaxPost(URL::signedRoute('dearSanta.report', ['participant' => $participant]), [])->assertJson(['report' => null]);
     assertNull($participant->fresh()->report);
 });
+
+test('the organizer taking part cannot report themselves', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $organizer = $draw->participants->first();
+    $draw->update(['organizer_email' => $organizer->email]);
+
+    ajaxPost(URL::signedRoute('dearSanta.report', ['participant' => $organizer]), ['reason' => 'not_me'])
+        ->assertForbidden();
+    assertNull($organizer->fresh()->report);
+});

@@ -42,6 +42,7 @@ final class DearSantaController extends Controller
             'organizer' => $participant->draw->organizer_name,
             'targetsRevealed' => $participant->draw->targets_revealed_at !== null,
             'report' => $participant->report,
+            'isOrganizer' => $participant->isOrganizer(),
             'emails' => $participant->dearSantas->mapWithKeys(fn ($email): array => [
                 $email->mail->id => $email->only($this->dearSantaPublicFields),
             ]),
@@ -59,6 +60,9 @@ final class DearSantaController extends Controller
     // "Not me" / "not taking part": shown to the organizer on their panel, null withdraws the report
     public function report(Request $request, Participant $participant): JsonResponse
     {
+        // The organizer has their panel (and can delete the draw), reporting to themselves makes no sense
+        abort_if($participant->isOrganizer(), 403);
+
         $request->validate(['reason' => ['nullable', Rule::enum(ReportReason::class)]]);
 
         $participant->report = $request->enum('reason', ReportReason::class);
