@@ -31,31 +31,4 @@ final class CsvGenerator implements Stringable
 
         return mb_rtrim((string) $csvLine);
     }
-
-    /** @param array<int, array<int|string, bool|float|int|string|null>> $data */
-    public function prepend(array $data): self
-    {
-        $this->data = array_merge(
-            $data,
-            $this->data
-        );
-
-        return $this;
-    }
-
-    /** @param array<int, array<int|string, bool|float|int|string|null>> $data */
-    public function append(array $data): self
-    {
-        $this->data = array_merge(
-            $this->data,
-            $data
-        );
-
-        return $this;
-    }
-
-    public function format(): string
-    {
-        return (string) $this;
-    }
 }

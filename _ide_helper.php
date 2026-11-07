@@ -24953,6 +24953,9 @@ namespace App\Facades {
      */
     class Solver {
         /**
+         * @param array<int, mixed> $participants indexed by participant id
+         * @param array<int, list<int>> $exclusions participant id => excluded ids
+         * @return array<int, int> santa id => target id
          * @static
          */
         public static function one($participants, $exclusions = [])
@@ -24962,6 +24965,9 @@ namespace App\Facades {
         }
 
         /**
+         * @param array<int, mixed> $participants indexed by participant id
+         * @param array<int, list<int>> $exclusions participant id => excluded ids
+         * @return Generator<int, array<int, int>, mixed, void>
          * @static
          */
         public static function all($participants, $exclusions = [])
@@ -25115,23 +25121,6 @@ namespace Vinkla\Hashids\Facades {
             //Method inherited from \GrahamCampbell\Manager\AbstractManager 
             /** @var \Vinkla\Hashids\HashidsManager $instance */
             return $instance->getConfig();
-        }
-
-            }
-    }
-
-namespace Facades\App\Services {
-    /**
-     * @mixin \App\Services\URLParser
-     */
-    class URLParser {
-        /**
-         * @static
-         */
-        public static function parseByName($routeName, $url)
-        {
-            /** @var \App\Services\URLParser $instance */
-            return $instance->parseByName($routeName, $url);
         }
 
             }
@@ -25952,16 +25941,6 @@ namespace Illuminate\Support {
             return \Illuminate\Support\Collection::debug();
         }
 
-        /**
-         * @see \App\Providers\CollectionMacroServiceProvider::boot()
-         * @param array $attributes
-         * @static
-         */
-        public static function toCsv($attributes)
-        {
-            return \Illuminate\Support\Collection::toCsv($attributes);
-        }
-
             }
     }
 
@@ -26032,16 +26011,6 @@ namespace Illuminate\Http {
             return \Illuminate\Http\Request::hasValidRelativeSignatureWhileIgnoring($ignoreQuery);
         }
 
-            }
-    }
-
-namespace Illuminate\Database\Eloquent {
-    /**
-     * @template TKey of array-key
-     * @template TModel of \Illuminate\Database\Eloquent\Model
-     * @extends \Illuminate\Support\Collection<TKey, TModel>
-     */
-    class Collection extends \Illuminate\Support\Collection {
             }
     }
 
@@ -31128,26 +31097,14 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
     class View extends \Illuminate\Support\Facades\View {}
     class Vite extends \Illuminate\Support\Facades\Vite {}
-    class Csv extends \App\Services\CsvGenerator {}
     class DrawCrypt extends \App\Facades\DrawCrypt {}
     class Hashids extends \Vinkla\Hashids\Facades\Hashids {}
     class Solver extends \App\Facades\Solver {}
-    class URLParser extends \Facades\App\Services\URLParser {}
     class Debugbar extends \Fruitcake\LaravelDebugbar\Facades\Debugbar {}
     class Client extends \Webklex\IMAP\Facades\Client {}
 }
 
 
-namespace Facades\App\Services {
-    /**
-     * @mixin \App\Services\URLParser     */
-    class URLParser extends \App\Services\URLParser {}
-}
-namespace Facades\App\Services {
-    /**
-     * @mixin \App\Services\MailTracker     */
-    class MailTracker extends \App\Services\MailTracker {}
-}
 
 
 

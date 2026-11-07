@@ -18,6 +18,7 @@ php:
     - php composer.phar install --no-interaction --no-progress
     - cp .env.example .env && php artisan key:generate
   script:
+    - php composer.phar audit --abandoned=ignore
     - php composer.phar test
   artifacts:
     paths:
@@ -37,6 +38,7 @@ assets:
   script:
     - cp .env.example .env
     - npm ci --cache .npm --prefer-offline --no-audit --no-fund
+    - npm audit --omit=dev
     - npm run build
     - git status --porcelain public/build
     - test -z "$(git status --porcelain public/build)" || (echo "public/build is outdated, run npm run build and commit" && exit 1)

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Facades\DrawCrypt;
 use App\Facades\Solver;
-use App\Services\CsvGenerator;
 use Illuminate\Support\Facades\Facade;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -22,7 +21,6 @@ return [
     'challenge' => 'Ping?',
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Csv' => CsvGenerator::class,
         'DrawCrypt' => DrawCrypt::class,
         'Hashids' => Hashids::class,
         'Solver' => Solver::class,

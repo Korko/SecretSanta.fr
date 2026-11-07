@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 use App\Models\Draw;
 use App\Notifications\DearSanta;
+use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -211,10 +213,26 @@ test('the organizer can download total data once targets are revealed', function
     $draw = Draw::factory()
         ->hasParticipants(3)
         ->create(['targets_revealed_at' => now()]);
+    $participant = $draw->participants->first();
 
-    ajaxGet(URL::signedRoute('organizerPanel.csvFinal', ['draw' => $draw]))
+    $csv = ajaxGet(URL::signedRoute('organizerPanel.csvFinal', ['draw' => $draw]))
         ->assertHeader('Content-Type', 'text/csv; charset=UTF-8')
-        ->assertSuccessful();
+        ->assertSuccessful()
+        ->getContent();
+
+    expect($csv)->toStartWith("\xEF\xBB\xBF")
+        ->and(array_map(str_getcsv(...), explode("\n", mb_substr((string) $csv, 1))))
+        ->toContain([$participant->name, $participant->email, $participant->target->name]);
+});
+
+test('the organizer recap dates follow the email locale', function (): void {
+    $draw = Draw::factory()->create(['expires_at' => '2026-12-24']);
+
+    App::setLocale('en');
+    expect(OrganizerRecap::viewData($draw)['expirationDate'])->toBe('December 24, 2026');
+
+    App::setLocale('fr');
+    expect(OrganizerRecap::viewData($draw)['expirationDate'])->toBe('24 décembre 2026');
 });
 
 test('the organizer can delete all data before expiration', function (): void {

@@ -86,13 +86,7 @@ final class Draw extends Model
     // Participants and exclusions, reusable to prefill the form next time (organizer panel + recap email)
     public function initialCsv(): string
     {
-        return "\xEF\xBB\xBF".// UTF-8 BOM
-            $this->participants
-                ->toCsv(['name', 'email', 'exclusionsNames'])
-                ->prepend([
-                    ['# Fichier généré le '.date('d-m-Y').' sur '.config()->string('app.name').' ('.config()->string('app.url').')'],
-                    ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
-                ]);
+        return $this->participants->toCsv();
     }
 
     public function initialCsvName(): string

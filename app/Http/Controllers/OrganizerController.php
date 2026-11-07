@@ -190,14 +190,7 @@ final class OrganizerController extends Controller
         $draw->createMetric('csv_final_download');
 
         return response(
-            "\xEF\xBB\xBF".// UTF-8 BOM
-            $draw->participants
-                ->appendTargetToExclusions()
-                ->toCsv(['name', 'email', 'exclusionsNames'])
-                ->prepend([
-                    ['# Fichier généré le '.date('d-m-Y').' sur '.config()->string('app.name').' ('.config()->string('app.url').')'],
-                    ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
-                ]),
+            $draw->participants->appendTargetToExclusions()->toCsv(),
             200, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
