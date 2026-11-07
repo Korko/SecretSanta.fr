@@ -63,6 +63,11 @@ final class SolverTest extends TestCase
         $participants = ['A', 'B', 'C'];
         $this->assertCombination([], Solver::all($participants, [0 => [1, 2]]), $participants);
         $this->assertCombination([], Solver::all($participants, [2 => [0, 1]]), $participants);
+
+        // Nobody can draw 0: fails fast instead of exploring the 11! combinations
+        $start = microtime(true);
+        $this->assertCombination([], Solver::all(range(0, 11), array_fill(1, 11, [0])), range(0, 11));
+        $this->assertLessThan(1, microtime(true) - $start);
     }
 
     public function test_one(): void

@@ -33,6 +33,17 @@ final class HatSolver implements SolverInterface
         throw_if(count($participants) < 2, SolverException::class, 'Not enough participants');
 
         $hat = array_keys($participants);
+
+        // Obvious dead ends (someone with nobody to draw, or that nobody can draw) would only be found
+        // after exploring every combination, which grows factorially with the number of participants
+        foreach ($hat as $id) {
+            $canDraw = array_diff($hat, [$id], $exclusions[$id] ?? []) !== [];
+            $canBeDrawn = array_any($hat, fn (int $santa): bool => $santa !== $id && ! in_array($id, $exclusions[$santa] ?? [], true));
+            if (! $canDraw || ! $canBeDrawn) {
+                return;
+            }
+        }
+
         $hat = (new Randomizer)->shuffleArray($hat);
 
         uksort($participants, function (int $participantIdx1, int $participantIdx2) use ($exclusions): int {
@@ -44,7 +55,7 @@ final class HatSolver implements SolverInterface
             );
         });
 
-        return $this->solve(array_keys($participants), 0, [], $exclusions, $hat);
+        yield from $this->solve(array_keys($participants), 0, [], $exclusions, $hat);
     }
 
     /**
