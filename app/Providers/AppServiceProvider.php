@@ -34,6 +34,11 @@ final class AppServiceProvider extends ServiceProvider
             HatSolver::class
         );
 
+        // Dates are written in the app timezone: the session must use the same one so that MySQL stores real UTC.
+        // The current offset (DST included), computed per request as the config may be cached
+        foreach (['mysql', 'mariadb'] as $connection) {
+            config(["database.connections.$connection.timezone" => date('P')]);
+        }
     }
 
     /**
