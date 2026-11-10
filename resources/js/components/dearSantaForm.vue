@@ -27,7 +27,7 @@
         data() {
             return {
                 content: '',
-                draw: this.data.draw,
+                channel: this.data.channel,
                 emails: this.data.emails,
                 resendEmailUrls: this.data.resendEmailUrls,
                 resendTargetEmailsUrl: this.data.resendTargetEmailsUrl,
@@ -54,7 +54,7 @@
             }
         },
         created() {
-            Echo.channel('draw.'+this.draw)
+            Echo.channel(this.channel)
                 .listen('.mail.update', data => {
                     if(this.emails[data.id]) {
                         this.emails[data.id].mail.delivery_status = data.delivery_status;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Events;
 
 use App\Models\DearSanta;
-use App\Models\Draw;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use Illuminate\Broadcasting\Channel;
@@ -51,16 +50,16 @@ final class MailStatusUpdated implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        return [
-            new Channel('draw.'.$this->draw()->hash),
-        ];
-    }
-
-    private function draw(): Draw
-    {
         $mailable = $this->mail->mailable;
-        throw_unless($mailable instanceof Participant || $mailable instanceof DearSanta, LogicException::class, 'Mail without a participant or dearSanta');
 
-        return $mailable->draw;
+        return [
+            new Channel(match (true) {
+                // The organizer panel follows the target emails
+                $mailable instanceof Participant => $mailable->draw->broadcastChannel(),
+                // A participant follows the messages they wrote to their santa
+                $mailable instanceof DearSanta => $mailable->sender->broadcastChannel(),
+                default => throw new LogicException('Mail without a participant or dearSanta'),
+            }),
+        ];
     }
 }

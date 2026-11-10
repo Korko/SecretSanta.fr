@@ -56,6 +56,12 @@ final class Participant extends Model
             && $this->email === $this->draw->organizer_email;
     }
 
+    // Public channel named after a secret (only given by the signed fetch route), not the hash participants can see
+    public function broadcastChannel(): string
+    {
+        return 'participant.'.hash_hmac('sha256', 'participant.'.$this->id, config()->string('app.key'));
+    }
+
     /** @return BelongsTo<Draw, $this> */
     public function draw(): BelongsTo
     {
