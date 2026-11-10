@@ -9,6 +9,7 @@ use Illuminate\Contracts\Encryption\Encrypter as EncrypterContract;
 use Illuminate\Contracts\Encryption\StringEncrypter;
 use Illuminate\Encryption\Encrypter;
 use RuntimeException;
+use SensitiveParameter;
 
 use function hash_hkdf;
 
@@ -66,12 +67,12 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
         return $this->secret;
     }
 
-    public function encrypt(#[\SensitiveParameter] $value, $serialize = true): string
+    public function encrypt(#[SensitiveParameter] $value, $serialize = true): string
     {
         return $this->encrypter()->encrypt($value, $serialize);
     }
 
-    public function encryptString(#[\SensitiveParameter] $value): string
+    public function encryptString(#[SensitiveParameter] $value): string
     {
         return $this->encrypt($value, false);
     }
