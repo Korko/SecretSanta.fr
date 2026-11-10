@@ -97,6 +97,7 @@ final class DrawFormHandler
         if ($this->expirationDate !== null) {
             $draw->expires_at = Date::parse($this->expirationDate)->toImmutable();
         }
+
         $draw->mail_title = $this->title;
         $draw->mail_body = $this->body;
         $draw->organizer_name = $this->organizer['name'] ?? '';

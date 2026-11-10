@@ -79,5 +79,5 @@ it('expires a week from today by default, like any draw', function (): void {
         ->withBody('{TARGET}')
         ->save();
 
-    assertEquals(now()->startOfDay()->addDays(7)->toDateString(), $draw->expires_at->toDateString());
+    assertEquals(today()->addDays(7)->toDateString(), $draw->expires_at->toDateString());
 });
