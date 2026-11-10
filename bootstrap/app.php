@@ -9,6 +9,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
@@ -61,7 +62,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ], 422));
 
         // Altered or truncated link: a client error, the "event probably over" page for a browser
-        $exceptions->render(fn (InvalidSignatureException $e, $request) => $request->expectsJson()
+        $exceptions->render(fn (InvalidSignatureException $e, HttpRequest $request) => $request->expectsJson()
             ? response()->json(['message' => trans('error.signature')], 403)
             : response()->view('missingDraw', [], 403));
     })->create();
