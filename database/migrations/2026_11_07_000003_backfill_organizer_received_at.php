@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
-    // A participating organizer is the first participant, with the same email: emails are encrypted with a fixed IV
-    // per draw, so the ciphertexts match. Their target email carries the panel link, its reception proves both
+    // A participating organizer is the first participant, with the same email: emails were encrypted with a fixed IV
+    // per draw (before DrawEncrypter), so the ciphertexts match. Their target email carries the panel link, its
+    // reception proves both. Only valid for data written in that legacy format, which is all this backfill targets
     public function up(): void
     {
         DB::update(

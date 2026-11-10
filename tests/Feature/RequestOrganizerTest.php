@@ -3,13 +3,16 @@
 declare(strict_types=1);
 
 use App\Enums\DeliveryStatus;
+use App\Facades\DrawCrypt;
 use App\Models\Draw;
 use App\Notifications\DearSanta;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
+use App\Services\LegacyDrawEncrypter;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -385,6 +388,13 @@ test('the organizer taking part whose target email was received is backfilled as
     }
 
     $organizer->mail->markAsReceived();
+
+    // The backfill only concerns draws written before DrawEncrypter, when a fixed IV per draw made equal emails
+    // give equal ciphertexts: store them in that legacy format
+    $legacy = new LegacyDrawEncrypter(base64_decode(mb_substr(config()->string('app.key'), 7)), config()->string('app.cipher'));
+    $legacy->setIV(DrawCrypt::getIV());
+    DB::table('participants')->where('id', $organizer->id)->update(['email' => $legacy->encrypt($organizer->email)]);
+    DB::table('draws')->where('id', $draw->id)->update(['organizer_email' => $legacy->encrypt($draw->fresh()->organizer_email)]);
 
     (require database_path('migrations/2026_11_07_000003_backfill_organizer_received_at.php'))->up();
 

@@ -18,6 +18,7 @@ test('the draw data cannot be decrypted with APP_KEY alone', function (): void {
     $secret = random_bytes(16);
     $encrypter = new DrawEncrypter(drawTestAppKey());
     $encrypter->setIV($secret);
+
     $payload = $encrypter->encrypt('a long enough secret santa message to span several AES blocks');
 
     // Bypass the MAC and try to decrypt the raw value with APP_KEY, as the previous scheme allowed
@@ -27,10 +28,12 @@ test('the draw data cannot be decrypted with APP_KEY alone', function (): void {
 
     $wrongSecret = new DrawEncrypter(drawTestAppKey());
     $wrongSecret->setIV(random_bytes(16));
-    expect(fn () => $wrongSecret->decrypt($payload))->toThrow(DecryptException::class);
+
+    expect(fn (): mixed => $wrongSecret->decrypt($payload))->toThrow(DecryptException::class);
 
     $rightSecret = new DrawEncrypter(drawTestAppKey());
     $rightSecret->setIV($secret);
+
     expect($rightSecret->decrypt($payload))->toBe('a long enough secret santa message to span several AES blocks');
 });
 

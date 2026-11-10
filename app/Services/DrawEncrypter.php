@@ -79,7 +79,7 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
 
     public function decrypt($payload, $unserialize = true): mixed
     {
-        if (self::isLegacyPayload($payload)) {
+        if ($this->isLegacyPayload($payload)) {
             return $this->legacy()->decrypt($payload, $unserialize);
         }
 
@@ -99,22 +99,22 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
         return $this->encrypter()->getKey();
     }
 
-    /** @return array<int, string> */
+    /** @return list<string> */
     public function getAllKeys(): array
     {
-        return $this->encrypter()->getAllKeys();
+        return array_values(array_filter($this->encrypter()->getAllKeys(), is_string(...)));
     }
 
-    /** @return array<int, string> */
+    /** @return list<string> */
     public function getPreviousKeys(): array
     {
-        return $this->encrypter()->getPreviousKeys();
+        return array_values(array_filter($this->encrypter()->getPreviousKeys(), is_string(...)));
     }
 
     /**
      * Payloads of the previous scheme have no "iv" entry (the IV was the draw secret).
      */
-    private static function isLegacyPayload(mixed $payload): bool
+    private function isLegacyPayload(mixed $payload): bool
     {
         $decoded = is_string($payload) ? json_decode(base64_decode($payload, true) ?: '', true) : null;
 
