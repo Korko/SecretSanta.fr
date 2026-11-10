@@ -81,7 +81,7 @@
                 this.emails[id].mail.delivery_status = 'created';
                 this.emails[id].mail.updated_at = new Date().getTime();
 
-                return fetch(this.resendEmailUrls[id]);
+                return fetch(this.resendEmailUrls[id], 'POST');
             },
             sendReport(reason) {
                 return fetch(this.routes.reportUrl, 'POST', reason ? { reason } : {})
@@ -90,7 +90,7 @@
             resend_target() {
                 this.targetDearSantaLastUpdate = new Date().getTime();
 
-                return fetch(this.resendTargetEmailsUrl);
+                return fetch(this.resendTargetEmailsUrl, 'POST');
             },
             nl2br(str) {
                 return str.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br />$2');

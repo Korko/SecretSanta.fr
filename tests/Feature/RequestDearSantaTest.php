@@ -71,7 +71,7 @@ it('lets a participant resend the email to their santa in case of error', functi
     Notification::assertSentToTimes($participant->santa, DearSanta::class, 1);
     $dearSanta = $participant->dearSantas->first();
 
-    ajaxGet(URL::signedRoute('dearSanta.resend', ['participant' => $participant, 'dearSanta' => $dearSanta]))
+    ajaxPost(URL::signedRoute('dearSanta.resend', ['participant' => $participant, 'dearSanta' => $dearSanta]))
         ->assertForbidden()
         ->assertJsonStructure(['message']);
 
@@ -81,9 +81,17 @@ it('lets a participant resend the email to their santa in case of error', functi
     $dearSanta->mail->updated_at = $dearSanta->mail->updated_at->subSeconds(config('mail.resend_delay'));
     $dearSanta->mail->save();
 
-    ajaxGet(URL::signedRoute('dearSanta.resend', ['participant' => $participant, 'dearSanta' => $dearSanta]))
+    ajaxPost(URL::signedRoute('dearSanta.resend', ['participant' => $participant, 'dearSanta' => $dearSanta]))
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
     Notification::assertSentToTimes($participant->santa, DearSanta::class, 2);
+});
+
+it('does not resend anything on a GET, like a link prefetch or an email scanner', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+
+    ajaxGet(URL::signedRoute('dearSanta.resend_target', ['participant' => $participant]))
+        ->assertStatus(405);
 });
