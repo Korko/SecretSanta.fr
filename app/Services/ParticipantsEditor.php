@@ -68,6 +68,11 @@ final class ParticipantsEditor
         });
 
         $this->draw->unsetRelation('participants');
+
+        // The final CSV (next year's exclusions) depends on the current pairs: computed on a fresh copy,
+        // canRedraw() adds each target to the loaded exclusions
+        $this->draw->next_solvable = DrawHandler::canRedraw($this->draw->participants()->with(['exclusions', 'target'])->get());
+        $this->draw->save();
         $removed = array_map(fn (Participant $participant): int => $participant->id, $remove);
         foreach ($this->targets as $santa => $target) {
             if (isset($created[$santa])) {

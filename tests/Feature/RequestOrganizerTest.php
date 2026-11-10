@@ -160,6 +160,19 @@ test('the organizer can add and remove several participants, each santa gets one
     }
 });
 
+test('adding or removing participants updates the final CSV availability', function (): void {
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    Notification::fake();
+    $draw->next_solvable = false;
+    $draw->save();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), [
+        'add' => [['name' => 'N1', 'email' => 'n1@example.com']],
+    ])->assertSuccessful()->assertJsonPath('finalCsvAvailable', true);
+
+    assertTrue($draw->fresh()->next_solvable);
+});
+
 test('the organizer cannot add a name already taken nor go under 3 participants', function (): void {
     $draw = Draw::factory()->hasParticipants(3)->create();
     $url = URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]);
