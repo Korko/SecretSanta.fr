@@ -6,9 +6,6 @@ use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\FixOrganizerController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,10 +19,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-RateLimiter::for('global', fn (Request $request) => Limit::perMinute(100)->by($request->ip())->response(fn () => abort(429)));
-
 Route::get('/', [RandomFormController::class, 'view']);
-Route::post('/', [RandomFormController::class, 'handle']);
+Route::post('/', [RandomFormController::class, 'handle'])->middleware('throttle:draw');
 
 Route::get('/faq', [RandomFormController::class, 'faq'])->name('faq');
 Route::view('/legal', 'legal')->name('legal');
@@ -43,15 +38,15 @@ Route::middleware('signed')->group(function (): void {
         Route::get('/participant/{participant}', [DearSantaController::class, 'fetch'])
             ->name('dearSanta.fetch');
         Route::post('/dearSanta/{participant}', [DearSantaController::class, 'handle'])
-            ->name('dearSanta.contact');
+            ->name('dearSanta.contact')->middleware('throttle:email');
         Route::post('/dearSanta/{participant}/report', [DearSantaController::class, 'report'])
             ->name('dearSanta.report');
         Route::get('/dearSanta/{participant}/fetchState', [DearSantaController::class, 'fetchState'])
             ->name('dearSanta.fetchState');
         Route::get('/dearSanta/{participant}/{dearSanta}/resend', [DearSantaController::class, 'resend'])
-            ->name('dearSanta.resend');
+            ->name('dearSanta.resend')->middleware('throttle:email');
         Route::get('/dearSanta/{participant}/resendTarget', [DearSantaController::class, 'resendTarget'])
-            ->name('dearSanta.resend_target');
+            ->name('dearSanta.resend_target')->middleware('throttle:email');
     });
 
     Route::get('/org/{draw}', [OrganizerController::class, 'view'])->name('organizerPanel')
@@ -69,7 +64,7 @@ Route::middleware('signed')->group(function (): void {
         Route::post('/draw/{draw}/revealTargets', [OrganizerController::class, 'revealTargets'])
             ->name('organizerPanel.revealTargets');
         Route::post('/draw/{draw}/participants', [OrganizerController::class, 'changeParticipants'])
-            ->name('organizerPanel.changeParticipants');
+            ->name('organizerPanel.changeParticipants')->middleware('throttle:email');
         Route::post('/draw/{draw}/changeDate', [OrganizerController::class, 'changeDate'])
             ->name('organizerPanel.changeDate');
         Route::get('/org/{draw}/fetchState', [OrganizerController::class, 'fetchState'])
@@ -77,11 +72,11 @@ Route::middleware('signed')->group(function (): void {
     });
     Route::middleware('decrypt.iv:participant,name')->group(function (): void {
         Route::post('/org/{draw}/{participant}/changeEmail', [OrganizerController::class, 'changeEmail'])
-            ->name('organizerPanel.changeEmail');
+            ->name('organizerPanel.changeEmail')->middleware('throttle:email');
     });
 });
 
 Route::get('/fix', [FixOrganizerController::class, 'view'])->name('fixOrganizer');
-Route::post('/fix', [FixOrganizerController::class, 'handle'])->name('fixOrganizer.handle');
+Route::post('/fix', [FixOrganizerController::class, 'handle'])->name('fixOrganizer.handle')->middleware('throttle:email');
 
 // Route::get( '/{status}', fn( int | null $status = null ) => Illuminate\Support\Facades\App::abort( $status ) )->where('status', '[0-9]{3}');

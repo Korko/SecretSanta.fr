@@ -217,3 +217,11 @@ it('can deal with thousands of participants', function (): void {
     assertEquals($participants[0]['name'], Draw::query()->find(1)->organizer_name);
     assertEquals($totalParticipants, Participant::query()->count());
 })->group('massive');
+
+it('limits the number of draws per hour from the same address', function (): void {
+    for ($i = 0; $i < 20; $i++) {
+        ajaxPost('/', [])->assertStatus(422);
+    }
+
+    ajaxPost('/', [])->assertStatus(429);
+});
