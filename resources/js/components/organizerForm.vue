@@ -138,12 +138,15 @@
                 });
             },
             confirmRevealTargets() {
-                alertify.confirm(
-                    this.$t('organizer.reveal.confirm.title'),
-                    this.$t('organizer.reveal.confirm.body'),
-                    () => this.revealTargets(),
-                    () => {}
-                ).set('labels', { ok: this.$t('organizer.reveal.confirm.ok'), cancel: this.$t('organizer.reveal.confirm.cancel') });
+                // Permanent and visible to every participant: typed, like a withdrawal
+                hardConfirm({
+                    title: this.$t('organizer.reveal.confirm.title'),
+                    body: this.$t('organizer.reveal.confirm.body'),
+                    word: this.$t('organizer.reveal.confirm.value'),
+                    help: this.$t('organizer.reveal.confirm.help'),
+                    ok: this.$t('organizer.reveal.confirm.ok'),
+                    cancel: this.$t('organizer.reveal.confirm.cancel')
+                }).then(() => this.revealTargets());
             },
             changeDate(event) {
                 const input = event.target;

@@ -172,6 +172,11 @@ test('the full flow: draw, dearSanta report, organizer panel', function (): void
     // Reveal, final CSV, participants see it
     $org->assertNotPresent('td.target')
         ->click('button:has-text("Révéler les cibles")')
+        // Permanent: needs the confirmation word too
+        ->click('.ajs-footer .btn-primary:visible')
+        ->assertVisible('.ajs-content:visible input')
+        ->assertNotPresent('td.target')
+        ->type('.ajs-content:visible input', 'Révéler les cibles')
         ->click('.ajs-footer .btn-primary:visible')
         ->assertCount('td.target', 5)
         ->assertEnabled('button.btn-primary:has(.fa-download) >> nth=-1');

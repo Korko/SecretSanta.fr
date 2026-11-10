@@ -17,6 +17,8 @@ return [
             'body' => 'Sie sehen den Empfänger jedes Teilnehmers, nützlich bei Zustellproblemen oder für weitere Veranstaltungen. Das ist endgültig, und die Teilnehmer sehen auf ihrer Seite, dass die Liste dem Organisator angezeigt wurde.',
             'ok' => 'Anzeigen',
             'cancel' => 'Abbrechen',
+            'value' => 'Ziele anzeigen',
+            'help' => 'Bitte geben Sie "[+!:verification]" unten ein, um zu bestätigen.',
         ],
     ],
     'list' => [

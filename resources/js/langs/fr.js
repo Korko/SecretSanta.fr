@@ -224,7 +224,9 @@ export default {
                     "title": "Révéler qui offre à qui ?",
                     "body": "Vous verrez la cible de chaque participant(e), utile en cas de souci de réception ou pour organiser d'autres évènements. C'est définitif, et les participant(e)s verront sur leur page que la liste a été révélée à l'organisateur/organisatrice.",
                     "ok": "Révéler",
-                    "cancel": "Annuler"
+                    "cancel": "Annuler",
+                    "value": "Révéler les cibles",
+                    "help": "Saisir \"[+:verification]\" en dessous pour confirmer."
                 }
             },
             "list": {
