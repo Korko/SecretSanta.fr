@@ -50,9 +50,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Only the field names: the values are names, emails and messages kept encrypted everywhere else
         $exceptions->context(fn (): array => [
             'url' => Request::url(),
-            'input' => Request::all(),
+            'input_keys' => array_keys(Request::all()),
         ]);
 
         $exceptions->render(fn (ValidationException $e, $request) => response()->json([
