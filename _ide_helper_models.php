@@ -44,7 +44,6 @@ namespace App\Models{use App\Collections\ParticipantsCollection;use Database\Fac
  * @property bool $next_solvable
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read mixed $can_redraw
  * @property-read mixed $deleted_at
  * @property-read mixed $expired
  * @property-read mixed $hash
@@ -132,7 +131,6 @@ namespace App\Models{use App\Collections\ParticipantsCollection;use Database\Fac
  * @property array $name
  * @property array $email
  * @property int|null $target_id
- * @property int $redraw
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection|DearSanta[] $dearSantas
@@ -161,7 +159,6 @@ namespace App\Models{use App\Collections\ParticipantsCollection;use Database\Fac
  * @method static Builder|Participant whereEmail($value)
  * @method static Builder|Participant whereId($value)
  * @method static Builder|Participant whereName($value)
- * @method static Builder|Participant whereRedraw($value)
  * @method static Builder|Participant whereTargetId($value)
  * @method static Builder|Participant whereUpdatedAt($value)
  */

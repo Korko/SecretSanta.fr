@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use App\Enums\DeliveryStatus;
-use App\Services\DrawHandler;
 use Carbon\CarbonImmutable;
 use Database\Factories\DrawFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -30,7 +29,6 @@ use STS\Metrics\Metric;
  * @property string $organizer_email
  * @property bool $next_solvable
  * @property CarbonImmutable|null $targets_revealed_at
- * @property-read bool $canRedraw
  * @property-read CarbonImmutable $deleted_at
  * @property CarbonImmutable|null $organizer_received_at
  * @property-read Participant $organizer
@@ -149,12 +147,6 @@ final class Draw extends Model
     protected function metricId(): Attribute
     {
         return Attribute::make(get: fn (): string => hash('xxh32', (string) $this->created_at, false, ['seed' => $this->id]));
-    }
-
-    /** @return Attribute<bool, never> */
-    protected function canRedraw(): Attribute
-    {
-        return Attribute::make(get: fn (): bool => DrawHandler::canRedraw($this->participants->redrawables()));
     }
 
     /**
