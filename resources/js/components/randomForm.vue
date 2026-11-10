@@ -229,7 +229,7 @@
         <div v-cloak class="row text-center form">
             <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :validator="v$" @reset="reset" @before-submit="touchParticipants" send-icon="dice">
                 <template #default="{ sending, sent, fieldError }">
-                    <div v-show="sent" id="success-wrapper" class="alert alert-success">
+                    <div v-show="sent" id="success-wrapper" class="alert alert-success" role="status">
                         {{ $t('form.success') }}
                     </div>
 

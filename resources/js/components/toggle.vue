@@ -37,10 +37,11 @@
 
 <template>
     <span>
-        <input type="checkbox" class="toggle" :id="id" :name="name" :checked="modelValue" value="1" @change="$emit('update:modelValue', $event.target.checked)" />
+        <input type="checkbox" role="switch" class="toggle" :id="id" :name="name" :checked="modelValue" :aria-checked="modelValue ? 'true' : 'false'" value="1" @change="$emit('update:modelValue', $event.target.checked)" />
         <label :for="id" :style="{'--backgroundNo': backgroundNo, '--backgroundYes': backgroundYes}">
-          <span class="on">{{ labelYes }}</span>
-          <span class="off">{{ labelNo }}</span>
+          <!-- Only the current state is read -->
+          <span class="on" :aria-hidden="modelValue ? 'false' : 'true'">{{ labelYes }}</span>
+          <span class="off" :aria-hidden="modelValue ? 'true' : 'false'">{{ labelNo }}</span>
         </label>
     </span>
 </template>
@@ -52,6 +53,12 @@
         opacity: 0;
         position: absolute;
         left: -99999px;
+
+        // Hidden checkbox: keyboard users need to see where the focus is
+        &:focus-visible + label {
+          outline: 3px solid #80bdff;
+          outline-offset: 2px;
+        }
 
         & + label {
           height: 40px;
