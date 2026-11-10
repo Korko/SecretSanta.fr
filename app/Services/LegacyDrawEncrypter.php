@@ -11,7 +11,13 @@ use RuntimeException;
 
 use function openssl_encrypt;
 
-final class IVEncrypter extends BaseEncrypter
+/**
+ * Pre-v2 draw encryption: APP_KEY as the AES key and the draw secret as a shared CBC IV.
+ * Only kept to read data written before DrawEncrypter; with CBC the IV only protects
+ * the first block, so this format must not be used to write new data.
+ * Can be removed once every draw written with it has expired.
+ */
+final class LegacyDrawEncrypter extends BaseEncrypter
 {
     /**
      * The initialization vector.
