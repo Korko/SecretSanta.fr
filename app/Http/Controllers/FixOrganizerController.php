@@ -83,7 +83,8 @@ final class FixOrganizerController extends Controller
             ], 422);
         }
 
-        if (($draw->organizer->mail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) <= config('mail.resend_delay')) {
+        // A non-participating organizer's recap isn't tracked: the first target email gives when the draw emails went out
+        if ((($draw->organizer ?? $draw->participants->first())?->mail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) <= config('mail.resend_delay')) {
             return response()->json([
                 'errors' => [
                     'email' => [
@@ -93,10 +94,7 @@ final class FixOrganizerController extends Controller
             ], 422);
         }
 
-        $participantOrganizer = false;
-        if ($draw->organizer->email === $draw->organizer_email) {
-            $participantOrganizer = true;
-        }
+        $organizer = $draw->organizer;
 
         Notification::route('mail', [$organizerEmail => $draw->organizer_name])
             ->notify(new OrganizerEmailChanged($draw, $email));
@@ -108,11 +106,11 @@ final class FixOrganizerController extends Controller
             $draw->organizer_email => $draw->organizer_name,
         ])->notify(new OrganizerRecap($draw));
 
-        if ($participantOrganizer) {
-            $draw->organizer->email = $email;
-            $draw->organizer->save();
+        if ($organizer !== null) {
+            $organizer->email = $email;
+            $organizer->save();
 
-            $draw->organizer->notifyNow(new TargetDrawn);
+            $organizer->notifyNow(new TargetDrawn);
         }
 
         return response()->json([

@@ -33,13 +33,14 @@ use STS\Metrics\Metric;
  * @property-read bool $canRedraw
  * @property-read CarbonImmutable $deleted_at
  * @property CarbonImmutable|null $organizer_received_at
- * @property-read Participant $organizer
+ * @property int|null $organizer_participant_id
+ * @property-read Participant|null $organizer
  * @property-read bool $expired
  * @property-read string $metricId
  * @property-read ParticipantsCollection $participants
  * @property list<string>|null $refused_emails
  */
-#[Fillable(['mail_title', 'mail_body', 'expires_at', 'next_solvable', 'organizer_name', 'organizer_email'])]
+#[Fillable(['mail_title', 'mail_body', 'expires_at', 'next_solvable', 'organizer_name', 'organizer_email', 'organizer_participant_id'])]
 final class Draw extends Model
 {
     /** @use HasFactory<DrawFactory> */
@@ -100,7 +101,7 @@ final class Draw extends Model
     public function organizerReceived(): bool
     {
         return $this->organizer_received_at !== null
-            || ($this->organizer->email === $this->organizer_email && $this->organizer->mail->delivery_status === DeliveryStatus::Received);
+            || $this->organizer?->mail->delivery_status === DeliveryStatus::Received;
     }
 
     public function refusesEmail(string $email): bool
@@ -127,10 +128,22 @@ final class Draw extends Model
         return 'draw';
     }
 
-    /** @return Attribute<Participant, never> */
+    // The participant who organized the draw, null when the organizer doesn't take part
+    // (still the first participant in the form and the panel, see DrawFormHandler)
+    /** @return Attribute<Participant|null, never> */
     protected function organizer(): Attribute
     {
-        return Attribute::make(get: fn (): ?Participant => $this->participants->first());
+        return Attribute::make(get: function (): ?Participant {
+            if ($this->organizer_participant_id !== null) {
+                return $this->participants->firstWhere('id', $this->organizer_participant_id);
+            }
+
+            // Draws made before organizer_participant_id: the first participant, with the organizer's email
+            // (can go once they are all pruned, a year and WEEKS_BEFORE_DELETION after the column was added)
+            $first = $this->participants->first();
+
+            return $first !== null && $first->email === $this->organizer_email ? $first : null;
+        });
     }
 
     /** @return Attribute<bool, never> */

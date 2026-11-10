@@ -49,11 +49,9 @@ final class Participant extends Model
     /** @var array<string, mixed> */
     protected $attributes = ['report' => null];
 
-    // When the organizer takes part, they are the first participant (see DrawFormHandler)
     public function isOrganizer(): bool
     {
-        return $this->draw->participants->first()?->is($this)
-            && $this->email === $this->draw->organizer_email;
+        return $this->draw->organizer?->is($this) ?? false;
     }
 
     /** @return BelongsTo<Draw, $this> */

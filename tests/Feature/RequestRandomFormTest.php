@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Notification;
 use function PHPUnit\Framework\assertCount;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
+use function PHPUnit\Framework\assertNull;
 
 it('sends no notifications in case of error', function ($participants): void {
     Notification::fake();
@@ -107,6 +108,8 @@ it('can create draws with a non participant organizer', function (): void {
     $draw = Draw::query()->find(1);
     assertEquals('foo', $draw->organizer_name);
     assertEquals('foo@foobar.com', $draw->organizer_email);
+    assertNull($draw->organizer_participant_id);
+    assertNull($draw->organizer);
 
     // Ensure Organizer receives his recap
     Notification::assertSentTimes(OrganizerRecapNotif::class, 1);
@@ -217,3 +220,26 @@ it('can deal with thousands of participants', function (): void {
     assertEquals($participants[0]['name'], Draw::query()->find(1)->organizer_name);
     assertEquals($totalParticipants, Participant::query()->count());
 })->group('massive');
+
+it('records the participating organizer explicitly', function (): void {
+    Notification::fake();
+
+    ajaxPost('/', [
+        'participant-organizer' => '1',
+        'participants' => generateParticipants(3),
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])->assertSuccessful();
+
+    $draw = Draw::query()->firstOrFail();
+    $first = $draw->participants->first();
+    assertEquals($first->id, $draw->organizer_participant_id);
+    expect($first->isOrganizer())->toBeTrue()
+        ->and($draw->participants->get(1)->isOrganizer())->toBeFalse();
+
+    // Still the organizer after changing their email, as the panel keeps it in sync
+    $first->email = 'other@example.com';
+    $first->save();
+    expect($first->fresh()->isOrganizer())->toBeTrue();
+});
