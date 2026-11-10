@@ -7,7 +7,7 @@ namespace App\Notifications;
 use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\Attributes\Backoff;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Lang;
 
 #[Backoff(30)]
 #[Tries(10)]
-final class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQueue, TrackedNotification
+final class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
 {
     use Queueable;
 
