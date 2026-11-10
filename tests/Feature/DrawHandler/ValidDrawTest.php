@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Draw;
 use App\Models\Exclusion;
 use App\Models\Participant;
+use App\Services\DrawFormHandler;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertTrue;
@@ -69,4 +70,14 @@ it('can handle several exclusions', function (): void {
     ];
 
     $this->assertNotEquals(null, createServiceDraw($participants));
+});
+
+it('expires a week from today by default, like any draw', function (): void {
+    $draw = (new DrawFormHandler)
+        ->withParticipants(generateParticipants(3, false))
+        ->withTitle('{TARGET}')
+        ->withBody('{TARGET}')
+        ->save();
+
+    assertEquals(now()->startOfDay()->addDays(7)->toDateString(), $draw->expires_at->toDateString());
 });

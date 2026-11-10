@@ -29,12 +29,8 @@ final class DrawFormHandler
     /** @var list<Participant> */
     private array $models = [];
 
-    private string $expirationDate;
-
-    public function __construct()
-    {
-        $this->expirationDate = date('Y-m-d', strtotime('+2 days'));
-    }
+    // Draw::save() sets the default one when none is given
+    private ?string $expirationDate = null;
 
     /** @param Organizer $organizer */
     public function withOrganizer(array $organizer): self
@@ -98,7 +94,9 @@ final class DrawFormHandler
     private function createDraw(): Draw
     {
         $draw = new Draw;
-        $draw->expires_at = Date::parse($this->expirationDate)->toImmutable();
+        if ($this->expirationDate !== null) {
+            $draw->expires_at = Date::parse($this->expirationDate)->toImmutable();
+        }
         $draw->mail_title = $this->title;
         $draw->mail_body = $this->body;
         $draw->organizer_name = $this->organizer['name'] ?? '';
