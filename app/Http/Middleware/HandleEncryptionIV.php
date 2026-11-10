@@ -10,6 +10,8 @@ use Exception;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 
 final class HandleEncryptionIV
@@ -19,7 +21,12 @@ final class HandleEncryptionIV
     {
         $iv = base64_decode($request->string('iv')->toString() ?: (string) $request->header('X-HASH-IV'));
         if (! empty($iv)) {
-            DrawCrypt::setIV($iv);
+            try {
+                DrawCrypt::setIV($iv);
+            } catch (RuntimeException) {
+                // Truncated link (the IV is the URL hash)
+                abort(403, Lang::get('error.signature'));
+            }
         }
 
         try {
@@ -28,8 +35,9 @@ final class HandleEncryptionIV
             if ($model instanceof Model) {
                 $model->getAttribute($fieldToCheck);
             }
-        } catch (DecryptException $e) {
-            abort(500, 'Invalid encryption iv: '.$e->getMessage());
+        } catch (DecryptException) {
+            // Wrong IV: the link was altered, nothing the server can fix
+            abort(403, Lang::get('error.signature'));
         } catch (Exception) {
             // Something may be wrong with the Controller parameters (missing the parameter to check?)
         }

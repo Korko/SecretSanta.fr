@@ -60,7 +60,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'errors' => $e->errors(),
         ], 422));
 
-        $exceptions->render(fn (InvalidSignatureException $e, $request) => response()->json([
-            'message' => trans('error.signature'),
-        ], 500));
+        // Altered or truncated link: a client error, the "event probably over" page for a browser
+        $exceptions->render(fn (InvalidSignatureException $e, $request) => $request->expectsJson()
+            ? response()->json(['message' => trans('error.signature')], 403)
+            : response()->view('missingDraw', [], 403));
     })->create();
