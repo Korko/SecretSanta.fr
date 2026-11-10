@@ -144,7 +144,8 @@
                 var n = this.participants.push({
                     name: name ? name.trim() : undefined,
                     email: email ? email.trim() : undefined,
-                    id: 'id' + this.participants.length + new Date().getTime()
+                    id: 'id' + this.participants.length + new Date().getTime(),
+                    oneWay: []
                 });
 
                 setTimeout(
@@ -159,6 +160,8 @@
                                 })
                                 .filter(p => !!p)
                         );
+                        // An imported file states each direction it wants (a final CSV excludes last year's target only)
+                        this.participants[n - 1].oneWay = this.participants[n - 1].exclusions.map(p => p.id);
                     },
                     0
                 );
@@ -330,6 +333,8 @@
                                         :name="participant.name"
                                         :email="participant.email"
                                         :exclusions="participant.exclusions"
+                                        :one-way="participant.oneWay"
+                                        :uid="participant.id"
                                         :all="participants"
                                         :required="idx < 3 && participants.length <= 3"
                                         :field-error="fieldError"
@@ -337,12 +342,14 @@
                                         @input:name="participant.name = $event"
                                         @input:email="participant.email = $event"
                                         @input:exclusions="participant.exclusions = $event"
-                                        @removeExclusion="participant.exclusions.remove($event)"
+                                        @removeExclusion="participant.exclusions.remove($event); participant.oneWay.remove($event.id)"
                                         @addExclusion="participant.exclusions.push($event)"
+                                        @toggleDirection="participant.oneWay.includes($event.id) ? participant.oneWay.remove($event.id) : participant.oneWay.push($event.id)"
                                         @delete="participants.splice(idx, 1)"
                                     />
                                 </transition-group>
                             </table>
+                            <p class="form-text text-muted exclusions-help">{{ $t('form.participant.exclusions.help') }}</p>
                             <button type="button" class="btn btn-outline-success participant-add" @click="addParticipant()">
                                 <i class="fas fa-plus" />
                                 {{ $t('form.participant.add') }}

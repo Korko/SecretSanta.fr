@@ -166,7 +166,12 @@ export default {
                     "label": "Ausschlüsse",
                     "placeholder": "Keine Ausschlüsse",
                     "noOptions": "Liste leer",
-                    "noResult": "Kein Ergebnis"
+                    "noResult": "Kein Ergebnis",
+                    "both": "In beide Richtungen: klicken, um es auf eine Richtung zu beschränken",
+                    "oneWay": "Nur in eine Richtung: klicken, um es in beide Richtungen anzuwenden",
+                    "derived": "Aus der Zeile von {name} übernommen",
+                    "remove": "Ausschluss {name} entfernen",
+                    "help": "Ein Ausschluss gilt in beide Richtungen: Mit dem Pfeil auf jedem Etikett lässt er sich auf eine Richtung beschränken (importierte behalten die Richtung der Datei)."
                 },
                 "remove": "Teilnehmer(in) entfernen",
                 "add": "Teilnehmer(in) hinzufügen"
