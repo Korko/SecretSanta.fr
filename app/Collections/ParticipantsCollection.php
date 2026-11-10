@@ -7,6 +7,7 @@ namespace App\Collections;
 use App\Models\Participant;
 use App\Services\CsvGenerator;
 use Illuminate\Database\Eloquent\Collection as BaseCollection;
+use Illuminate\Support\Facades\Date;
 
 /**
  * @extends BaseCollection<int, Participant>
@@ -29,8 +30,8 @@ final class ParticipantsCollection extends BaseCollection
     public function toCsv(): string
     {
         return "\xEF\xBB\xBF".new CsvGenerator([
-            ['# Fichier généré le '.date('d-m-Y').' sur '.config()->string('app.name').' ('.config()->string('app.url').')'],
-            ['# Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées'],
+            ['# '.trans('common.csv.generated', ['date' => Date::now()->isoFormat('L'), 'app' => config()->string('app.name'), 'url' => config()->string('app.url')])],
+            ['# '.trans('common.csv.usage')],
             ...$this->map(fn (Participant $participant): array => [
                 $participant->name,
                 $participant->email,

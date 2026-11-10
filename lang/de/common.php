@@ -35,4 +35,9 @@ return [
         ],
         'recent' => 'Sie können dieselbe E-Mail nicht zu schnell erneut versenden',
     ],
+
+    'csv' => [
+        'generated' => 'Datei erstellt am :date auf :app (:url)',
+        'usage' => 'Mit dieser Datei können die Teilnehmer und ihre Ausschlüsse vorausgefüllt werden',
+    ],
 ];

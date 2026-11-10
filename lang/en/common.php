@@ -35,4 +35,9 @@ return [
         ],
         'recent' => 'You cannot resend the same email so quickly',
     ],
+
+    'csv' => [
+        'generated' => 'File generated on :date on :app (:url)',
+        'usage' => 'This file can be used to prefill the participants and their exclusions',
+    ],
 ];

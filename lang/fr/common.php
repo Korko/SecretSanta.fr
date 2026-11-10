@@ -35,4 +35,9 @@ return [
         ],
         'recent' => 'Vous ne pouvez pas relancer un même email trop rapidement',
     ],
+
+    'csv' => [
+        'generated' => 'Fichier généré le :date sur :app (:url)',
+        'usage' => 'Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées',
+    ],
 ];
