@@ -24758,193 +24758,94 @@ namespace Illuminate\Support\Facades {
 
 namespace App\Facades {
     /**
-     * @method static void setKey(string $key)
-     * @see \App\Services\IVEncrypter
+     * @see \App\Services\DrawEncrypter
      */
     class DrawCrypt {
         /**
-         * Determine if the given iv and cipher combination is valid.
+         * Set the draw secret (taken from the link fragment).
          *
          * @static
          */
-        public static function supportedIV($iv, $cipher)
+        public static function setIV($secret)
         {
-            return \App\Services\IVEncrypter::supportedIV($iv, $cipher);
+            /** @var \App\Services\DrawEncrypter $instance */
+            return $instance->setIV($secret);
         }
 
         /**
-         * Override the initialization vector.
-         *
-         * @static
-         */
-        public static function setIV($iv)
-        {
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->setIV($iv);
-        }
-
-        /**
-         * Get the initialization vector.
+         * Get the draw secret (to put in the link fragment).
          *
          * @static
          */
         public static function getIV()
         {
-            /** @var \App\Services\IVEncrypter $instance */
+            /** @var \App\Services\DrawEncrypter $instance */
             return $instance->getIV();
         }
 
         /**
-         * Encrypt the given value.
-         *
-         * @param mixed $value
-         * @throws EncryptException
          * @static
          */
         public static function encrypt($value, $serialize = true)
         {
-            /** @var \App\Services\IVEncrypter $instance */
+            /** @var \App\Services\DrawEncrypter $instance */
             return $instance->encrypt($value, $serialize);
         }
 
         /**
-         * Determine if the given key and cipher combination is valid.
-         *
-         * @param string $key
-         * @param string $cipher
-         * @return bool
-         * @static
-         */
-        public static function supported($key, $cipher)
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            return \App\Services\IVEncrypter::supported($key, $cipher);
-        }
-
-        /**
-         * Create a new encryption key for the given cipher.
-         *
-         * @param string $cipher
-         * @return string
-         * @static
-         */
-        public static function generateKey($cipher)
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            return \App\Services\IVEncrypter::generateKey($cipher);
-        }
-
-        /**
-         * Encrypt a string without serialization.
-         *
-         * @param string $value
-         * @return string
-         * @throws \Illuminate\Contracts\Encryption\EncryptException
          * @static
          */
         public static function encryptString($value)
         {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
+            /** @var \App\Services\DrawEncrypter $instance */
             return $instance->encryptString($value);
         }
 
         /**
-         * Decrypt the given value.
-         *
-         * @param string $payload
-         * @param bool $unserialize
-         * @return mixed
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
          * @static
          */
         public static function decrypt($payload, $unserialize = true)
         {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
+            /** @var \App\Services\DrawEncrypter $instance */
             return $instance->decrypt($payload, $unserialize);
         }
 
         /**
-         * Decrypt the given string without unserialization.
-         *
-         * @param string $payload
-         * @return string
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
          * @static
          */
         public static function decryptString($payload)
         {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
+            /** @var \App\Services\DrawEncrypter $instance */
             return $instance->decryptString($payload);
         }
 
         /**
-         * Determine if the given value appears to be encrypted by this encrypter.
-         *
-         * @param mixed $value
-         * @return bool
-         * @static
-         */
-        public static function appearsEncrypted($value)
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            return \App\Services\IVEncrypter::appearsEncrypted($value);
-        }
-
-        /**
-         * Get the encryption key that the encrypter is currently using.
-         *
-         * @return string
          * @static
          */
         public static function getKey()
         {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
+            /** @var \App\Services\DrawEncrypter $instance */
             return $instance->getKey();
         }
 
         /**
-         * Get the current encryption key and all previous encryption keys.
-         *
-         * @return array
+         * @return list<string>
          * @static
          */
         public static function getAllKeys()
         {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
+            /** @var \App\Services\DrawEncrypter $instance */
             return $instance->getAllKeys();
         }
 
         /**
-         * Get the previous encryption keys.
-         *
-         * @return array
+         * @return list<string>
          * @static
          */
         public static function getPreviousKeys()
         {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
+            /** @var \App\Services\DrawEncrypter $instance */
             return $instance->getPreviousKeys();
-        }
-
-        /**
-         * Set the previous / legacy encryption keys that should be utilized if decryption fails.
-         *
-         * @param array $keys
-         * @return \App\Services\IVEncrypter
-         * @throws \RuntimeException
-         * @static
-         */
-        public static function previousKeys($keys)
-        {
-            //Method inherited from \Illuminate\Encryption\Encrypter 
-            /** @var \App\Services\IVEncrypter $instance */
-            return $instance->previousKeys($keys);
         }
 
             }
