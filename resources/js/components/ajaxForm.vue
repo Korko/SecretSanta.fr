@@ -103,11 +103,11 @@
                                 callback2();
                             }
 
-                            if(!callback && !callback2 && this.fieldErrors.length > 0) {
-                                alertify.errorAlert(this.$t('form.internalError'));
-                            } else if(response.message) {
-                                alertify.errorAlert(response.message);
-                            }
+                            // The server's own message (validation...); a network failure or an HTML error page
+                            // rejects with a JS Error whose message ("Failed to fetch", "Unexpected token <") means nothing to users
+                            alertify.errorAlert(response && response.message && !(response instanceof Error)
+                                ? response.message
+                                : this.$t('form.internalError'));
 
                             this.$emit('error');
                         });
