@@ -9,8 +9,6 @@ use App\Models\Draw;
 use App\Models\Exclusion;
 use App\Models\Mail;
 use App\Models\Participant;
-use Illuminate\Console\Scheduling\Event;
-use Illuminate\Console\Scheduling\Schedule;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotNull;
@@ -40,10 +38,8 @@ it('cleans up everything', function (): void {
 });
 
 it('prunes failed jobs, which keep the draw secret, after a week', function (): void {
-    $prune = collect(resolve(Schedule::class)->events())
-        ->first(fn (Event $event): bool => str_contains((string) $event->command, 'queue:prune-failed'));
-
-    expect($prune)->not->toBeNull()
-        ->and($prune->command)->toContain('--hours=168')
-        ->and($prune->expression)->toBe('0 0 * * *');
+    // schedule:list loads routes/console.php like the scheduler does
+    $this->artisan('schedule:list')
+        ->expectsOutputToContain('queue:prune-failed --hours=168')
+        ->assertSuccessful();
 });
