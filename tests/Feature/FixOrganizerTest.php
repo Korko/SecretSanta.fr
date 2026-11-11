@@ -44,3 +44,19 @@ test('a participating organizer whose email was received cannot be fixed', funct
 
     fixOrganizer($draw->fresh(), $organizer->email.'x')->assertStatus(422)->assertJsonValidationErrors('email');
 });
+
+test('the fix is locked for the first minutes after the draw, without telling when it opens', function (): void {
+    Notification::fake();
+    $draw = createServiceDraw(generateParticipants(3));
+    $draw->update(['organizer_name' => 'Orga', 'organizer_email' => 'orga@exampel.com']);
+    $tooEarly = trans('error.fixOrganizer.tooEarly', ['minutes' => 10]);
+
+    fixOrganizer($draw, 'orga@example.com')->assertStatus(422)->assertJsonPath('errors.email.0', $tooEarly);
+    $this->travel(9)->minutes();
+    fixOrganizer($draw, 'orga@example.com')->assertStatus(422)->assertJsonPath('errors.email.0', $tooEarly);
+    expect($draw->fresh()->organizer_email)->toBe('orga@exampel.com');
+
+    $this->travel(1)->minutes();
+    fixOrganizer($draw, 'orga@example.com')->assertSuccessful();
+    expect($draw->fresh()->organizer_email)->toBe('orga@example.com');
+});

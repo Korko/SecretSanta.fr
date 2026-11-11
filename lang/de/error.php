@@ -18,5 +18,6 @@ return [
         'distanceEmailTooBig' => 'Die eingegebene E-Mail-Adresse weicht zu stark von der ursprünglichen ab. Bitte kontaktieren Sie den Entwickler der Website.',
         'alreadyReceived' => 'Die Organisatorin/der Organisator hat die E-Mail bereits erhalten (Link zum Bereich geöffnet oder Lesebestätigung): Die Adresse wird in diesem Bereich geändert.',
         'resendDelayTooShort' => 'Sie haben diese E-Mail-Adresse kürzlich bereits geändert. Bitte warten Sie etwas länger.',
+        'tooEarly' => 'Aus Sicherheitsgründen ist dieser Vorgang in den ersten :minutes Minuten nach der Auslosung nicht verfügbar.',
     ],
 ];
