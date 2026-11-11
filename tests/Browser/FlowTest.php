@@ -201,3 +201,13 @@ test('static pages and the fix form', function (): void {
     visit('/nope')->assertPresent('h1.section-title');
     visit('/fix')->click('button[type=submit]')->assertPresent('.is-invalid')->assertNoJavaScriptErrors();
 });
+
+test('a refused copy says so instead of "copied"', function (): void {
+    $page = visit('/');
+    $page->script("Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: () => Promise.reject(new DOMException('Write permission denied.', 'NotAllowedError')) } })");
+
+    $page->click('a.link >> nth=-1')
+        ->assertSeeIn('.ajs-message.ajs-error', 'Copie impossible')
+        ->assertDontSee('Copié dans le presse papier')
+        ->assertNoJavaScriptErrors();
+});

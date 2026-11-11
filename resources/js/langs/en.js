@@ -3,6 +3,7 @@ export default {
         "common": {
             "internal": "An error occurred",
             "success": "Success",
+            "copy_failed": "Could not copy: copy {text} by hand",
             "copied": "Copied to clipboard",
             "fetcher": {
                 "load": "Load",

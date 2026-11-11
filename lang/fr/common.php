@@ -6,6 +6,7 @@ return [
     'internal' => 'Une erreur est survenue',
     'success' => 'Succès',
 
+    'copy_failed' => 'Copie impossible : copiez :text à la main',
     'copied' => 'Copié dans le presse papier',
 
     'fetcher' => [

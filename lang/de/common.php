@@ -6,6 +6,7 @@ return [
     'internal' => 'Ein Fehler ist aufgetreten',
     'success' => 'Erfolg',
 
+    'copy_failed' => 'Kopieren nicht möglich: Kopieren Sie :text von Hand',
     'copied' => 'In die Zwischenablage kopiert',
 
     'fetcher' => [
