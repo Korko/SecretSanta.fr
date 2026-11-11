@@ -201,3 +201,19 @@ test('static pages and the fix form', function (): void {
     visit('/nope')->assertPresent('h1.section-title');
     visit('/fix')->click('button[type=submit]')->assertPresent('.is-invalid')->assertNoJavaScriptErrors();
 });
+
+test('removing a row keeps the other rows validation state', function (): void {
+    $page = visit('/')->click('.participant-add');
+    $page->type('[name="participants[0][name]"]', 'Alice')->type('[name="participants[0][email]"]', 'alice@example.com')
+        ->type('[name="participants[1][name]"]', 'Bruno')->type('[name="participants[1][email]"]', 'pas-un-email')
+        ->script('document.activeElement.blur()');
+    $page->type('[name="participants[2][name]"]', 'Chloe')
+        ->assertPresent('[name="participants[1][email]"].is-invalid');
+
+    // Chloe moves up a row: she must not inherit Bruno's invalid email
+    $page->click('tr.participant:nth-child(2) .participant-remove')
+        ->wait(1.5)
+        ->assertValue('[name="participants[1][name]"]', 'Chloe')
+        ->assertNotPresent('[name="participants[1][email]"].is-invalid')
+        ->assertNoJavaScriptErrors();
+});

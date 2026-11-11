@@ -324,7 +324,7 @@
                                     <participant
                                         ref="participants"
                                         v-for="(participant, idx) in participants"
-                                        :key="idx"
+                                        :key="participant.id"
                                         :id="participant.id"
                                         :idx="idx"
                                         :name="participant.name"
