@@ -34,3 +34,12 @@ it('picks the language from the domain', function (string $host, string $lang): 
     ['example.com', 'en'],
     ['localhost', 'fr'],
 ]);
+
+it('sends the security headers', function (): void {
+    $this->get('/')
+        ->assertSuccessful()
+        ->assertHeader('Referrer-Policy', 'same-origin')
+        ->assertHeader('X-Frame-Options', 'DENY')
+        ->assertHeader('Content-Security-Policy', "frame-ancestors 'none'")
+        ->assertHeader('X-Content-Type-Options', 'nosniff');
+});
