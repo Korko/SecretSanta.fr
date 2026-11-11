@@ -140,7 +140,7 @@
     "src": "resources/images/user-icon.webp"
   },
   "resources/js/common.js": {
-    "file": "assets/common-CTuYHYA5.js",
+    "file": "assets/common-C_cl3qhl.js",
     "name": "common",
     "src": "resources/js/common.js",
     "isEntry": true,
@@ -210,7 +210,7 @@
     ]
   },
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm-96M53ECq.js",
+    "file": "assets/randomForm-5fS18ALM.js",
     "name": "randomForm",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
@@ -222,7 +222,7 @@
       "_tooltip-Bs76FmaX.js"
     ],
     "css": [
-      "assets/randomForm-TF8YHuiQ.css"
+      "assets/randomForm-B8-dMcrf.css"
     ],
     "assets": [
       "assets/srikanta-h-u-TrGVhbsUf40-unsplash-BLvCjRi5.webp"

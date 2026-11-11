@@ -136,6 +136,10 @@
                 return dateFromNow(amount, unit);
             },
 
+            removeExclusion(participant, exclusion) {
+                participant.exclusions = participant.exclusions.filter(other => other !== exclusion);
+            },
+
             resetParticipants() {
                 this.participants = [];
             },
@@ -337,7 +341,7 @@
                                         @input:name="participant.name = $event"
                                         @input:email="participant.email = $event"
                                         @input:exclusions="participant.exclusions = $event"
-                                        @removeExclusion="participant.exclusions.remove($event)"
+                                        @removeExclusion="removeExclusion(participant, $event)"
                                         @addExclusion="participant.exclusions.push($event)"
                                         @delete="participants.splice(idx, 1)"
                                     />
