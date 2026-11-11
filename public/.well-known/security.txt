@@ -1,3 +1,4 @@
 Contact: mailto:webmaster@secretsanta.fr
+Expires: 2027-10-31T23:00:00Z
 Preferred-Languages: fr,en
 Canonical: https://secretsanta.fr/.well-known/security.txt

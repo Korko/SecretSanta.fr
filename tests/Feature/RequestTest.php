@@ -6,6 +6,7 @@ namespace Tests\Feature;
 
 use App\Models\Draw;
 use DrawCrypt;
+use Illuminate\Support\Facades\Date;
 
 use function PHPUnit\Framework\assertNotEquals;
 
@@ -34,3 +35,12 @@ it('picks the language from the domain', function (string $host, string $lang): 
     ['example.com', 'en'],
     ['localhost', 'fr'],
 ]);
+
+it('keeps security.txt valid: its Expires field is due for renewal a month ahead', function (): void {
+    preg_match('/^Expires: (.+)$/m', (string) file_get_contents(public_path('.well-known/security.txt')), $match);
+
+    // RFC 9116: required, and less than a year ahead. This fails a month before it lapses, to renew it in time
+    expect($match[1] ?? null)->not->toBeNull()
+        ->and(Date::parse($match[1])->isAfter(now()->addMonth()))->toBeTrue()
+        ->and(Date::parse($match[1])->isBefore(now()->addYear()->addMonth()))->toBeTrue();
+});
