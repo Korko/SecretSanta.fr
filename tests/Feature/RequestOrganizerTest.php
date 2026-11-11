@@ -8,6 +8,7 @@ use App\Notifications\DearSanta;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetRenamed;
 use App\Notifications\TargetWithdrawn;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Notification;
@@ -390,3 +391,38 @@ test('the organizer taking part whose target email was received is backfilled as
 
     expect($draw->fresh()->organizer_received_at !== null)->toBe($takesPart);
 })->with([true, false]);
+
+test('the organizer can rename a participant, only their santa is told', function (): void {
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    Notification::fake();
+    $participant = $draw->participants->get(1);
+    $oldName = $participant->name;
+    $url = URL::signedRoute('organizerPanel.changeName', ['draw' => $draw, 'participant' => $participant]);
+
+    ajaxPost($url, ['name' => '  Bobby  '])->assertSuccessful()->assertJsonPath('participant.name', 'Bobby');
+
+    expect($participant->fresh()->name)->toBe('Bobby');
+    Notification::assertSentToTimes($participant->santa, TargetRenamed::class, 1);
+    Notification::assertCount(1);
+    Notification::assertSentTo($participant->santa, TargetRenamed::class, function (TargetRenamed $notification, array $channels, $santa) use ($oldName): bool {
+        $html = $notification->toMail($santa)->render();
+
+        return str_contains((string) $html, e($oldName)) && str_contains((string) $html, 'Bobby');
+    });
+
+    // Same name: nothing to tell; a name already taken: refused
+    ajaxPost($url, ['name' => 'Bobby'])->assertSuccessful();
+    ajaxPost($url, ['name' => $draw->participants->first()->name])->assertStatus(422)->assertJsonValidationErrors('name');
+    Notification::assertCount(1);
+});
+
+test('renaming the participating organizer keeps the draw organizer name in sync', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $organizer = $draw->participants->first();
+    $draw->update(['organizer_name' => $organizer->name, 'organizer_email' => $organizer->email]);
+    Notification::fake();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeName', ['draw' => $draw, 'participant' => $organizer]), ['name' => 'Orga'])->assertSuccessful();
+
+    expect($draw->fresh()->organizer_name)->toBe('Orga');
+});

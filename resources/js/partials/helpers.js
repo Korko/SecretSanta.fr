@@ -86,3 +86,6 @@ export const dateFromNow = (amount, unit) => {
     unit === 'year' ? date.setFullYear(date.getFullYear() + amount) : date.setDate(date.getDate() + amount);
     return ymd(date);
 };
+
+// For text going into HTML built by hand (alertify titles and messages)
+export const escapeHtml = text => String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);

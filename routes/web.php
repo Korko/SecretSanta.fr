@@ -78,6 +78,8 @@ Route::middleware('signed')->group(function (): void {
     Route::middleware('decrypt.iv:participant,name')->group(function (): void {
         Route::post('/org/{draw}/{participant}/changeEmail', [OrganizerController::class, 'changeEmail'])
             ->name('organizerPanel.changeEmail');
+        Route::post('/org/{draw}/{participant}/changeName', [OrganizerController::class, 'changeName'])
+            ->name('organizerPanel.changeName');
     });
 });
 

@@ -211,6 +211,14 @@ export default {
             "internalError": "Internal error"
         },
         "organizer": {
+            "rename": {
+                "button": "Change the name",
+                "title": "Rename {name}",
+                "body": "Their Santa will be told the new name by email. Targets do not change.",
+                "ok": "Rename",
+                "cancel": "Cancel",
+                "done": "Renamed to {name}"
+            },
             "url": "Link received by a participant by email",
             "fix": "Fix",
             "date": {

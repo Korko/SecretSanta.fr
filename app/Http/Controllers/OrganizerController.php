@@ -6,9 +6,11 @@ namespace App\Http\Controllers;
 
 use App\Enums\DeliveryStatus;
 use App\Http\Requests\OrganizerChangeEmailRequest;
+use App\Http\Requests\OrganizerChangeNameRequest;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetRenamed;
 use App\Services\ParticipantsEditor;
 use Carbon\CarbonImmutable;
 use Closure;
@@ -54,6 +56,11 @@ final class OrganizerController extends Controller
             ]),
             'changeEmailUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
                 $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [
+                    'draw' => $participant->draw, 'participant' => $participant,
+                ]),
+            ]),
+            'changeNameUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
+                $participant->hash => URL::signedRoute('organizerPanel.changeName', [
                     'draw' => $participant->draw, 'participant' => $participant,
                 ]),
             ]),
@@ -140,6 +147,38 @@ final class OrganizerController extends Controller
 
         return response()->json([
             'message' => $message, 'participant' => $participant->only(['hash', 'mail']),
+        ]);
+    }
+
+    // A typo or a nickname: same person, same pairs. Their santa is told the new name to look for
+    public function changeName(OrganizerChangeNameRequest $request, Draw $draw, Participant $participant): JsonResponse
+    {
+        abort_if($draw->expired, 403, Lang::get('error.expired'));
+
+        $name = mb_trim($request->string('name')->toString());
+        throw_if(
+            $draw->participants->contains(fn (Participant $other): bool => $other->isNot($participant) && $other->name === $name),
+            ValidationException::withMessages(['name' => trans('validation.custom.randomform.participant.name.distinct')])
+        );
+
+        $oldName = $participant->name;
+        if ($oldName !== $name) {
+            // The organizer taking part: keep the draw in sync (shown to participants, recap greeting)
+            if ($participant->isOrganizer()) {
+                $draw->organizer_name = $name;
+                $draw->save();
+            }
+
+            $participant->name = $name;
+            $participant->save();
+
+            $participant->santa->notify(new TargetRenamed($oldName, $name));
+            $participant->createMetric('change_name');
+        }
+
+        return response()->json([
+            'message' => trans('organizer.renamed'),
+            'participant' => $participant->only(['hash', 'name']),
         ]);
     }
 

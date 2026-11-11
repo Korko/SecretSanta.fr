@@ -211,6 +211,14 @@ export default {
             "internalError": "Interner Fehler"
         },
         "organizer": {
+            "rename": {
+                "button": "Namen ändern",
+                "title": "{name} umbenennen",
+                "body": "Ihr Santa wird per E-Mail über den neuen Namen informiert. Die Ziele ändern sich nicht.",
+                "ok": "Umbenennen",
+                "cancel": "Abbrechen",
+                "done": "Umbenannt in {name}"
+            },
             "url": "Link, den ein(e) Teilnehmer(in) per E-Mail erhalten hat",
             "fix": "Korrigieren",
             "date": {
