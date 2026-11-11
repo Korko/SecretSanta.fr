@@ -19,7 +19,7 @@ final class RandomFormRequest extends Request
             'organizer.name' => 'exclude_if:participant-organizer,true|required',
             'organizer.email' => 'exclude_if:participant-organizer,true|required|email',
 
-            'participants' => 'required|array|min:3',
+            'participants' => 'required|array|min:3|max:'.config()->integer('app.max_participants'),
 
             'participants.*.name' => 'required|distinct',
             'participants.*.email' => 'required|email',
@@ -44,6 +44,7 @@ final class RandomFormRequest extends Request
             'organizer.email.required' => __('validation.custom.randomform.organizer.email.required'),
             'organizer.email.email' => __('validation.custom.randomform.organizer.email.email'),
             'participants.min' => __('validation.custom.randomform.participants.length'),
+            'participants.max' => __('validation.custom.randomform.participants.max', ['max' => config()->integer('app.max_participants'), 'email' => config()->string('app.contact')]),
             'participants.*.name.required' => __('validation.custom.randomform.participant.name.required'),
             'participants.*.name.distinct' => __('validation.custom.randomform.participant.name.distinct'),
             'participants.*.email.required' => __('validation.custom.randomform.participant.email.required'),

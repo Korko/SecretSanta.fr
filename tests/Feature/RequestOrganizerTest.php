@@ -160,6 +160,19 @@ test('the organizer can add and remove several participants, each santa gets one
     }
 });
 
+test('the organizer cannot go over the participants limit', function (): void {
+    config(['app.max_participants' => 4]);
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    Notification::fake();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), [
+        'add' => [['name' => 'N1', 'email' => 'n1@example.com']],
+    ])->assertStatus(422)->assertJsonValidationErrors('participants');
+
+    assertEquals(4, $draw->fresh()->participants->count());
+    Notification::assertNothingSent();
+});
+
 test('the organizer cannot add a name already taken nor go under 3 participants', function (): void {
     $draw = Draw::factory()->hasParticipants(3)->create();
     $url = URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]);

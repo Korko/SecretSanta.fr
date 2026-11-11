@@ -491,7 +491,8 @@ export default {
                         "format": "The expiration date must use the year-month-day format, e.g. 2022-02-05."
                     },
                     "participants": {
-                        "length": "At least 3 participants are required"
+                        "length": "At least 3 participants are required",
+                        "max": "The number of participants is limited to {max}. For a bigger draw, contact the administrator: {email}"
                     },
                     "organizer": {
                         "name": {

@@ -400,7 +400,8 @@ export default {
                         "format": "La date d'expiration doit respecter le format année-mois-jour exemple: 2022-02-05."
                     },
                     "participants": {
-                        "length": "Il faut au moins 3 participant(e)s"
+                        "length": "Il faut au moins 3 participant(e)s",
+                        "max": "Le nombre de participant(e)s est limité à {max}. Pour un tirage plus grand, contactez l'administrateur : {email}"
                     },
                     "organizer": {
                         "name": {

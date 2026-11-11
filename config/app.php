@@ -30,4 +30,8 @@ return [
 
     'bmc' => env('BMC_ME'),
 
+    // Bigger draws (and more emails sent at once) go through the administrator: keeps the site from being a spam relay
+    'max_participants' => (int) env('MAX_PARTICIPANTS', 50),
+    'contact' => env('CONTACT_EMAIL', 'webmaster@secretsanta.fr'),
+
 ];

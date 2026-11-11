@@ -3,7 +3,7 @@
 
     import alertify from '../partials/alertify.js';
 
-    import { required, minLength, email, requiredIf } from '@vuelidate/validators';
+    import { required, minLength, maxLength, email, requiredIf } from '@vuelidate/validators';
 
     import Papa from 'papaparse';
     import suggestEmail from '../partials/emailSuggest.js';
@@ -57,6 +57,8 @@
                 content: '',
                 expiration: null,
                 now: window.now,
+                maxParticipants: window.global.maxParticipants || 50,
+                contact: window.global.contact,
                 showModal: false,
                 importing: false,
             };
@@ -76,7 +78,8 @@
                 // Each participant row validates itself (participant.vue), vuelidate collects child results
                 participants: {
                     required,
-                    minLength: minLength(3)
+                    minLength: minLength(3),
+                    maxLength: maxLength(this.maxParticipants)
                 },
                 title: {
                     required
@@ -343,7 +346,10 @@
                                     />
                                 </transition-group>
                             </table>
-                            <button type="button" class="btn btn-outline-success participant-add" @click="addParticipant()">
+                            <div v-if="participants.length >= maxParticipants" class="alert alert-warning participants-max" role="status">
+                                {{ $t('validation.custom.randomform.participants.max', { max: maxParticipants, email: contact }) }}
+                            </div>
+                            <button type="button" class="btn btn-outline-success participant-add" :disabled="participants.length >= maxParticipants" @click="addParticipant()">
                                 <i class="fas fa-plus" />
                                 {{ $t('form.participant.add') }}
                             </button>

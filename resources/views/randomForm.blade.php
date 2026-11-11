@@ -5,6 +5,8 @@
 
     @javascript([
         'alert' => session('message', ''),
+        'maxParticipants' => config()->integer('app.max_participants'),
+        'contact' => config()->string('app.contact'),
     ])
 @stop
 

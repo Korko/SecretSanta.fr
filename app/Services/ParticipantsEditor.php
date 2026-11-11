@@ -46,6 +46,9 @@ final class ParticipantsEditor
         }
 
         throw_if(count($this->targets) < 3, ValidationException::withMessages(['participants' => trans('error.withdraw')]));
+        throw_if(count($this->targets) > config()->integer('app.max_participants'), ValidationException::withMessages([
+            'participants' => trans('validation.custom.randomform.participants.max', ['max' => config()->integer('app.max_participants'), 'email' => config()->string('app.contact')]),
+        ]));
 
         $created = DB::transaction(function () use ($remove, $add, $participants): array {
             $created = [];

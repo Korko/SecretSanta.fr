@@ -400,7 +400,8 @@ export default {
                         "format": "Das Ablaufdatum muss dem Format Jahr-Monat-Tag entsprechen, z.B. 2022-02-05."
                     },
                     "participants": {
-                        "length": "Es müssen mindestens 3 Teilnehmer(innen) vorhanden sein."
+                        "length": "Es müssen mindestens 3 Teilnehmer(innen) vorhanden sein.",
+                        "max": "Die Teilnehmerzahl ist auf {max} begrenzt. Für eine größere Auslosung wenden Sie sich an den Administrator: {email}"
                     },
                     "organizer": {
                         "name": {
