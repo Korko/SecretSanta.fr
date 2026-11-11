@@ -87,10 +87,11 @@
                 return ymd(this.expires_at);
             },
             expirationDateLong() {
-                return new Date(this.expires_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+                // A bare day (YYYY-MM-DD, read as UTC midnight): shown in UTC, or it would be the day before west of UTC
+                return new Date(this.expires_at).toLocaleString(this.$i18n.locale, {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'});
             },
             deletionDateLong() {
-                return new Date(this.deleted_at).toLocaleString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+                return new Date(this.deleted_at).toLocaleString(this.$i18n.locale, {day: 'numeric', month: 'long', year: 'numeric'});
             }
         },
         created() {
@@ -366,7 +367,7 @@
         </button>
         <p v-else class="text-muted small">
             <i class="fas fa-eye" />
-            {{ $t('organizer.reveal.done', { date: new Date(targetsRevealedAt).toLocaleString('fr-FR') }) }}
+            {{ $t('organizer.reveal.done', { date: new Date(targetsRevealedAt).toLocaleString($i18n.locale) }) }}
         </p>
         <button type="button" class="btn btn-danger" @click="confirmPurge">
             <i class="fas fa-trash" />
