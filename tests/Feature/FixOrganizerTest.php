@@ -49,6 +49,7 @@ test('the fix is locked for the first minutes after the draw, without telling wh
     Notification::fake();
     $draw = createServiceDraw(generateParticipants(3));
     $draw->update(['organizer_name' => 'Orga', 'organizer_email' => 'orga@exampel.com']);
+
     $tooEarly = trans('error.fixOrganizer.tooEarly', ['minutes' => 10]);
 
     fixOrganizer($draw, 'orga@example.com')->assertStatus(422)->assertJsonPath('errors.email.0', $tooEarly);
