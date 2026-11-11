@@ -32,6 +32,8 @@ final class MailTracker
 
         if ($this->isEmailReceived($unseenMail)) {
             $mail->markAsReceived();
+        } elseif ($this->isDeliveryDelayed($unseenMail)) {
+            $mail->markAsDelayed();
         } else {
             $mail->markAsError();
         }
@@ -48,6 +50,15 @@ final class MailTracker
             $header?->has('x_autorespond') ||
             str_contains($autoSubmitted, 'auto-replied (vacation)') ||
             str_contains($autoSubmitted, 'auto-replied (zimbra');
+    }
+
+    // Delivery status notification (RFC 3464) saying the server keeps trying: "delayed", unless a recipient also "failed"
+    public function isDeliveryDelayed(EmailMessage $message): bool
+    {
+        $body = $message->getRawBody();
+
+        return preg_match('/^Action:\s*delayed\b/mi', $body) === 1
+            && preg_match('/^Action:\s*failed\b/mi', $body) !== 1;
     }
 
     private function getMailFromEmail(EmailMessage $unseenMail): MailModel

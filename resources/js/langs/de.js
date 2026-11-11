@@ -24,6 +24,7 @@ export default {
                     "sending": "Senden in Bearbeitung",
                     "sent": "Gesendet",
                     "error": "Fehler",
+                    "delayed": "Verzögert, neuer Versuch läuft",
                     "received": "Empfangen"
                 },
                 "recent": "Sie können dieselbe E-Mail nicht zu schnell erneut versenden"

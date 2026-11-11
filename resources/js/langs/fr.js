@@ -24,6 +24,7 @@ export default {
                     "sending": "Envoi en cours",
                     "sent": "Envoyé",
                     "error": "Erreur",
+                    "delayed": "Retardé, nouvel essai en cours",
                     "received": "Reçu"
                 },
                 "recent": "Vous ne pouvez pas relancer un même email trop rapidement"

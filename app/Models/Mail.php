@@ -59,6 +59,14 @@ final class Mail extends Model
         $this->updateDeliveryStatus(DeliveryStatus::Error);
     }
 
+    // Only news for a mail on its way: a later delay report neither cancels a reception nor an actual bounce
+    public function markAsDelayed(): void
+    {
+        if (! in_array($this->delivery_status, [DeliveryStatus::Received, DeliveryStatus::Error], true)) {
+            $this->updateDeliveryStatus(DeliveryStatus::Delayed);
+        }
+    }
+
     public function markAsReceived(): void
     {
         $this->updateDeliveryStatus(DeliveryStatus::Received);
