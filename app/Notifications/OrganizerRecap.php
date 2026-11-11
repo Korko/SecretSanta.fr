@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Channels\TrackedMailChannel;
 use App\Models\Draw;
-use App\Models\Participant;
 use DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\Attributes\Backoff;
@@ -45,18 +44,17 @@ final class OrganizerRecap extends Notification implements ShouldBeEncrypted, Sh
         ];
     }
 
+    // Tracked (return path, read receipt): a confirmed reception locks /fix, see Draw::organizerReceived()
     /** @return list<string> */
-    public function via(AnonymousNotifiable|Participant $organizer): array
+    public function via(Draw $draw): array
     {
-        return ['mail'];
+        return [TrackedMailChannel::class];
     }
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  AnonymousNotifiable|Participant  $organizer
      */
-    public function toMail($organizer): MailMessage
+    public function toMail(Draw $draw): MailMessage
     {
         return (new MailMessage)
             ->subject(__('emails.organizer_recap_title', ['draw' => $this->draw->id]))

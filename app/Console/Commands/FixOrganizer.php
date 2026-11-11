@@ -10,7 +10,6 @@ use App\Notifications\TargetDrawn;
 use Exception;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
-use Illuminate\Support\Facades\Notification;
 
 use function Laravel\Prompts\error;
 
@@ -45,9 +44,8 @@ final class FixOrganizer extends Command
             $draw->save();
         }
 
-        Notification::route('mail', [
-            $draw->organizer_email => $draw->organizer_name,
-        ])->notify(new OrganizerRecap($draw));
+        $draw->recapMail()->markAsCreated();
+        $draw->notify(new OrganizerRecap($draw));
         $this->info('Organizer Recap sent');
 
         if ($participantOrganizer) {

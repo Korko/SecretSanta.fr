@@ -59,7 +59,11 @@ final class MailStatusUpdated implements ShouldBroadcast
     private function draw(): Draw
     {
         $mailable = $this->mail->mailable;
-        throw_unless($mailable instanceof Participant || $mailable instanceof DearSanta, LogicException::class, 'Mail without a participant or dearSanta');
+        if ($mailable instanceof Draw) {
+            return $mailable; // the organizer recap
+        }
+
+        throw_unless($mailable instanceof Participant || $mailable instanceof DearSanta, LogicException::class, 'Mail without a participant, dearSanta or draw');
 
         return $mailable->draw;
     }

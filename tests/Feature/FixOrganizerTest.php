@@ -44,3 +44,15 @@ test('a participating organizer whose email was received cannot be fixed', funct
 
     fixOrganizer($draw->fresh(), $organizer->email.'x')->assertStatus(422)->assertJsonValidationErrors('email');
 });
+
+test('an organizer whose recap was confirmed received cannot be fixed either', function (): void {
+    Notification::fake();
+    $draw = createServiceDraw(generateParticipants(3));
+    $draw->update(['organizer_name' => 'Orga', 'organizer_email' => 'orga@exampel.com']);
+    // A read receipt or an auto-reply on the recap's tracked return path
+    $draw->recapMail()->markAsReceived();
+    $this->travel(10)->minutes();
+
+    fixOrganizer($draw->fresh(), 'orga@example.com')->assertStatus(422)->assertJsonValidationErrors('email');
+    expect($draw->fresh()->organizer_email)->toBe('orga@exampel.com');
+});

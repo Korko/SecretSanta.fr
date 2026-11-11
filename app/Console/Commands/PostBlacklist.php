@@ -12,7 +12,6 @@ use App\Services\URLParser;
 use Exception;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Webklex\PHPIMAP\Attachment;
 
@@ -68,9 +67,7 @@ final class PostBlacklist extends Command
         }
 
         if ($participant->draw->organizer->is($participant)) {
-            Notification::route('mail', [
-                $participant->email => $participant->name,
-            ])->notify(new OrganizerRecap($participant->draw));
+            $participant->draw->notify(new OrganizerRecap($participant->draw));
             $this->info('Organizer Recap sent');
         }
 

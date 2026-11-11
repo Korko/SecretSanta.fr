@@ -79,7 +79,7 @@ test('a non participating organizer gets a separate recap', function (): void {
     $page->type('[name="organizer[name]"]', 'Orga')->type('[name="organizer[email]"]', 'orga@example.com');
     submitDraw($page, ['gus', 'hugo', 'ines']);
 
-    Notification::assertSentOnDemandTimes(OrganizerRecap::class, 1);
+    Notification::assertSentTimes(OrganizerRecap::class, 1);
     Notification::assertCount(4);
 });
 
@@ -88,7 +88,7 @@ test('the full flow: draw, dearSanta report, organizer panel', function (): void
     submitDraw(visit('/'), ['alice', 'bob', 'chloe']);
 
     // A participating organizer only gets their target email (with the organizer block)
-    Notification::assertSentOnDemandTimes(OrganizerRecap::class, 0);
+    Notification::assertSentTimes(OrganizerRecap::class, 0);
     Notification::assertSentTimes(TargetDrawn::class, 3);
 
     $draw = Draw::query()->latest('id')->firstOrFail();

@@ -42,6 +42,11 @@ final class OrganizerController extends Controller
             $organizer->mail->markAsReceived();
         }
 
+        // Not taking part, they got the panel link in the recap: same proof for it
+        if (! $organizer->isOrganizer() && $draw->recapMail()->delivery_status !== DeliveryStatus::Received) {
+            $draw->recapMail()->markAsReceived();
+        }
+
         return response()->json([
             'draw' => $draw->hash,
             'expires_at' => $draw->expires_at->toDateString(), // event day, whatever the browser timezone
