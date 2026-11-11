@@ -96,4 +96,3 @@ it('tells a delayed delivery from a bounce', function (): void {
     assertEquals(DeliveryStatus::Received, $received->mail->fresh()->delivery_status);
     assertEquals(DeliveryStatus::Error, $bounced->mail->fresh()->delivery_status);
 });
-
