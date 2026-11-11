@@ -177,7 +177,8 @@ test('the full flow: draw, dearSanta report, organizer panel', function (): void
         ->assertVisible('.ajs-content:visible input')
         ->assertNotPresent('td.target')
         ->type('.ajs-content:visible input', 'Révéler les cibles')
-        ->click('.ajs-footer .btn-primary:visible')
+        // alertify ignores a second button click within 200 ms
+        ->wait(0.5)->click('.ajs-footer .btn-primary:visible')
         ->assertCount('td.target', 5)
         ->assertEnabled('button.btn-primary:has(.fa-download) >> nth=-1');
     visit($dearSanta)->assertSeeIn('.targets-revealed', 'a consulté');
