@@ -7,8 +7,10 @@
         <title>@yield('title')</title>
 
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+        <style>
+            /* Served by the site (public/fonts): no request to Google Fonts */
+            @font-face { font-family: 'Nunito'; src: url('/fonts/Nunito-latin-400.woff2') format('woff2'); font-display: swap; }
+        </style>
 
         <!-- Styles -->
         <style>

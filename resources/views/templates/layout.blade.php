@@ -101,7 +101,6 @@
     </footer>
 
     @section('script')
-        <script src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" data-auto-replace-svg="nest"></script>
     @show
 </body>
 </html>

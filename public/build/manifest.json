@@ -71,6 +71,10 @@
       "assets/vueFetcher-CFMKrWt2.css"
     ]
   },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-BUswJgRo.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
+  },
   "resources/fonts/Cookie-Regular.ttf": {
     "file": "assets/Cookie-Regular-DbKmepVV.ttf",
     "src": "resources/fonts/Cookie-Regular.ttf"
@@ -267,12 +271,15 @@
     ]
   },
   "resources/sass/vendor.scss": {
-    "file": "assets/vendor-BQ7QjVlq.css",
+    "file": "assets/vendor-BXpG1cmP.css",
     "name": "vendor",
     "names": [
       "vendor.css"
     ],
     "src": "resources/sass/vendor.scss",
-    "isEntry": true
+    "isEntry": true,
+    "assets": [
+      "assets/fa-solid-900-BUswJgRo.woff2"
+    ]
   }
 }
