@@ -18,5 +18,6 @@ return [
         'distanceEmailTooBig' => 'L\'adresse email entrée est trop différente de celle d\'origine, contactez le développeur du site.',
         'alreadyReceived' => 'L\'organisateur/organisatrice a déjà reçu son email (lien du panneau ouvert ou accusé de réception) : l\'adresse se modifie depuis ce panneau.',
         'resendDelayTooShort' => 'Vous avez déjà modifié cette adresse email il y a peu de temps. Merci de patienter un peu.',
+        'tooEarly' => 'Pour des raisons de sécurité, cette opération n\'est pas disponible dans les :minutes premières minutes après le tirage au sort.',
     ],
 ];

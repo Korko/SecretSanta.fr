@@ -18,5 +18,6 @@ return [
         'distanceEmailTooBig' => 'The email address entered is too different from the original one, please contact the site developer.',
         'alreadyReceived' => 'The organizer already received their email (panel link opened or read receipt): change the address from that panel.',
         'resendDelayTooShort' => 'You recently changed this email address already. Please wait a little.',
+        'tooEarly' => 'For security reasons, this operation is not available during the first :minutes minutes after the draw.',
     ],
 ];

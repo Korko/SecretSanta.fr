@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\URL;
 
 final class FixOrganizerController extends Controller
 {
+    public const int LOCK_MINUTES = 10;
+
     public function view(): Response
     {
         return response()->view('fixOrganizer', [
@@ -56,6 +58,18 @@ final class FixOrganizerController extends Controller
                 'errors' => [
                     'url' => [
                         trans('error.fixOrganizer.drawNotFoundOrExpired'),
+                    ],
+                ],
+            ], 422);
+        }
+
+        // Right after the draw, the organizer hasn't had time to open their email yet: a participant could redirect
+        // it before anything proves it works. The message gives no unlock time on purpose
+        if ($draw->created_at?->isAfter(Date::now()->subMinutes(self::LOCK_MINUTES)) ?? false) {
+            return response()->json([
+                'errors' => [
+                    'email' => [
+                        trans('error.fixOrganizer.tooEarly', ['minutes' => self::LOCK_MINUTES]),
                     ],
                 ],
             ], 422);
