@@ -15,8 +15,10 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Date;
+use LogicException;
 use STS\Metrics\Facades\Metrics;
 use STS\Metrics\Metric;
 
@@ -33,6 +35,7 @@ use STS\Metrics\Metric;
  * @property CarbonImmutable|null $organizer_received_at
  * @property int|null $organizer_participant_id
  * @property-read Participant|null $organizer
+ * @property-read Mail|null $mail organizer recap, tracked like the target emails
  * @property-read bool $expired
  * @property-read string $metricId
  * @property-read ParticipantsCollection $participants
@@ -80,6 +83,30 @@ final class Draw extends Model
         return 'draw.'.hash_hmac('sha256', 'draw.'.$this->id, config()->string('app.key'));
     }
 
+    // The organizer recap's delivery: without one (an organizer who doesn't take part), nothing told /fix it arrived
+    /** @return MorphOne<Mail, $this> */
+    public function mail(): MorphOne
+    {
+        return $this->morphOne(Mail::class, 'mailable');
+    }
+
+    // Draws made before the recap was tracked have no mail yet
+    public function recapMail(): Mail
+    {
+        if (! $this->mail instanceof Mail) {
+            $this->mail()->save(new Mail);
+            $this->load('mail');
+        }
+
+        return $this->mail ?? throw new LogicException('Recap mail not saved');
+    }
+
+    /** @return array<string, string> */
+    public function routeNotificationForMail(): array
+    {
+        return [$this->organizer_email => $this->organizer_name];
+    }
+
     public function createMetric(string $name): Metric
     {
         return Metrics::create($name)
@@ -105,6 +132,7 @@ final class Draw extends Model
     public function organizerReceived(): bool
     {
         return $this->organizer_received_at !== null
+            || $this->mail?->delivery_status === DeliveryStatus::Received
             || $this->organizer?->mail->delivery_status === DeliveryStatus::Received;
     }
 
@@ -122,8 +150,13 @@ final class Draw extends Model
 
     protected static function booted(): void
     {
+        self::created(function (self $draw): void {
+            $draw->mail()->save(new Mail);
+        });
+
         self::deleting(function (self $draw): void {
             $draw->participants()->lazy()->each(fn (Participant $participant): ?bool => $participant->delete());
+            $draw->mail()->delete();
         });
     }
 

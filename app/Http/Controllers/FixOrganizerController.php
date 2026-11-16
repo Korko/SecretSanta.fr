@@ -97,8 +97,9 @@ final class FixOrganizerController extends Controller
             ], 422);
         }
 
-        // A non-participating organizer's recap isn't tracked: the first target email gives when the draw emails went out
-        if ((($draw->organizer ?? $draw->participants->first())?->mail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) <= config('mail.resend_delay')) {
+        // The organizer's own email: their target email when taking part, else the recap
+        $organizerMail = $draw->organizer?->mail ?? $draw->recapMail();
+        if (($organizerMail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) <= config('mail.resend_delay')) {
             return response()->json([
                 'errors' => [
                     'email' => [
@@ -116,9 +117,8 @@ final class FixOrganizerController extends Controller
         $draw->organizer_email = $email;
         $draw->save();
 
-        Notification::route('mail', [
-            $draw->organizer_email => $draw->organizer_name,
-        ])->notify(new OrganizerRecap($draw));
+        $draw->recapMail()->markAsCreated();
+        $draw->notify(new OrganizerRecap($draw));
 
         if ($organizer !== null) {
             $organizer->email = $email;

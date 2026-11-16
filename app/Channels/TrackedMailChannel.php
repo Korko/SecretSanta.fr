@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Channels;
 
+use App\Models\Draw;
 use App\Models\Mail;
 use App\Models\Participant;
 use App\Notifications\TrackedNotification;
@@ -67,7 +68,12 @@ final class TrackedMailChannel extends MailChannel
 
     private function mail(mixed $notifiable, Notification $notification): Mail
     {
-        throw_unless($notifiable instanceof Participant && $notification instanceof TrackedNotification, LogicException::class, 'Only tracked notifications to participants go through this channel');
+        // The organizer recap, sent to the draw itself (its organizer address)
+        if ($notifiable instanceof Draw) {
+            return $notifiable->recapMail();
+        }
+
+        throw_unless($notifiable instanceof Participant && $notification instanceof TrackedNotification, LogicException::class, 'Only tracked notifications to participants or draws go through this channel');
 
         return $notification->getMailableModel($notifiable)->mail;
     }

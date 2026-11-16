@@ -10,7 +10,6 @@ use App\Notifications\OrganizerRecap;
 use App\Services\DrawFormHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Notification;
 use STS\Metrics\Facades\Metrics;
 
 final class RandomFormController extends Controller
@@ -41,9 +40,7 @@ final class RandomFormController extends Controller
 
             // Taking part, the organizer gets the recap within their own target email (TargetDrawn)
             if (! ($safe['participant-organizer'] ?? false)) {
-                Notification::route('mail', [
-                    $draw->organizer_email => $draw->organizer_name,
-                ])->notify(new OrganizerRecap($draw));
+                $draw->notify(new OrganizerRecap($draw));
             }
 
             $draw->createMetric('new_draw')
