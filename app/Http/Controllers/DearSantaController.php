@@ -47,7 +47,7 @@ final class DearSantaController extends Controller
         return response()->json([
             'participant' => $participant->only(['hash', 'name']),
             'targetDearSantaLastUpdate' => $participant->target->dearSantas->load('mail')->max('mail.updated_at'),
-            'draw' => $participant->draw->hash,
+            'channel' => $participant->broadcastChannel(),
             'organizer' => $participant->draw->organizer_name,
             'targetsRevealed' => $participant->draw->targets_revealed_at !== null,
             'report' => $participant->report,

@@ -33,6 +33,7 @@
             return {
                 participants: this.data.participants,
                 draw: this.data.draw,
+                channel: this.data.channel,
                 expires_at: this.data.expires_at,
                 deleted_at: this.data.deleted_at,
                 drawn_at: this.data.drawn_at,
@@ -94,7 +95,7 @@
             }
         },
         created() {
-            Echo.channel('draw.'+this.draw)
+            Echo.channel(this.channel)
                 .listen('.mail.update', data => {
                     var key = Object.keys(this.participants).find(key => this.participants[key].mail.id === data.id);
 

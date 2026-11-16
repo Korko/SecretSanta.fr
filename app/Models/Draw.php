@@ -75,6 +75,12 @@ final class Draw extends Model
         return $this->hasMany(Participant::class);
     }
 
+    // Public channel named after a secret (only given by the signed fetch route), not the hash participants can see
+    public function broadcastChannel(): string
+    {
+        return 'draw.'.hash_hmac('sha256', 'draw.'.$this->id, config()->string('app.key'));
+    }
+
     public function createMetric(string $name): Metric
     {
         return Metrics::create($name)
