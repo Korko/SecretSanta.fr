@@ -41,10 +41,14 @@ test('the draw form edits participants, imports a CSV and suggests email fixes',
 });
 
 test('the {TARGET} tip link copies the keyword', function (): void {
-    visit('/')
-        ->click('a.link >> nth=-1')
+    $page = visit('/');
+    // Headless Chromium may refuse clipboard writes (focus, permission): record what is copied instead
+    $page->script("Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: text => { window.copied = text; return Promise.resolve(); } } })");
+
+    $page->click('a.link >> nth=-1')
         ->assertSeeIn('.ajs-message.ajs-success', 'Copié')
         ->assertNoJavaScriptErrors();
+    expect($page->script('window.copied'))->toBe('{TARGET}');
 });
 
 test('the mail content textarea autosizes and the organizer toggle shows their fields', function (): void {
