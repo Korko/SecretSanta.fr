@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Events;
 
 use App\Models\DearSanta;
+use App\Models\Draw;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use Illuminate\Broadcasting\Channel;
@@ -56,9 +57,11 @@ final class MailStatusUpdated implements ShouldBroadcast
             new Channel(match (true) {
                 // The organizer panel follows the target emails
                 $mailable instanceof Participant => $mailable->draw->broadcastChannel(),
+                // The organizer panel follows the recap too, for an organizer who doesn't take part
+                $mailable instanceof Draw => $mailable->broadcastChannel(),
                 // A participant follows the messages they wrote to their santa
                 $mailable instanceof DearSanta => $mailable->sender->broadcastChannel(),
-                default => throw new LogicException('Mail without a participant or dearSanta'),
+                default => throw new LogicException('Mail without a participant, dearSanta or draw'),
             }),
         ];
     }

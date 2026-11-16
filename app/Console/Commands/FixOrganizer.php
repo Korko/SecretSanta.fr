@@ -10,7 +10,6 @@ use App\Notifications\TargetDrawn;
 use Exception;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
-use Illuminate\Support\Facades\Notification;
 
 use function Laravel\Prompts\error;
 
@@ -34,10 +33,8 @@ final class FixOrganizer extends Command
             return;
         }
 
-        $participantOrganizer = false;
-        if ($draw->organizer->email === $draw->organizer_email) {
-            $participantOrganizer = true;
-        }
+        // Before changing organizer_email, which the legacy organizer detection compares
+        $organizer = $draw->organizer;
 
         $email = $this->stringArgument('email');
         if ($email !== null) {
@@ -45,22 +42,21 @@ final class FixOrganizer extends Command
             $draw->save();
         }
 
-        Notification::route('mail', [
-            $draw->organizer_email => $draw->organizer_name,
-        ])->notify(new OrganizerRecap($draw));
+        $draw->recapMail()->markAsCreated();
+        $draw->notify(new OrganizerRecap($draw));
         $this->info('Organizer Recap sent');
 
-        if ($participantOrganizer) {
+        if ($organizer !== null) {
             if ($email !== null) {
-                $draw->organizer->email = $email;
-                $draw->organizer->save();
+                $organizer->email = $email;
+                $organizer->save();
             }
 
-            $draw->organizer->notifyNow(new TargetDrawn);
+            $organizer->notifyNow(new TargetDrawn);
             $this->info('Participant mail sent');
 
-            $draw->organizer->target->dearSantas->each(function ($dearSanta) use ($draw): void {
-                $draw->organizer->notify(new DearSanta($dearSanta));
+            $organizer->target->dearSantas->each(function ($dearSanta) use ($organizer): void {
+                $organizer->notify(new DearSanta($dearSanta));
                 $this->info('DearSanta mail sent');
             });
         }

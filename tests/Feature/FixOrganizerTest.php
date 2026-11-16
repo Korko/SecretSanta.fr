@@ -61,3 +61,15 @@ test('the fix is locked for the first minutes after the draw, without telling wh
     fixOrganizer($draw, 'orga@example.com')->assertSuccessful();
     expect($draw->fresh()->organizer_email)->toBe('orga@example.com');
 });
+
+test('an organizer whose recap was confirmed received cannot be fixed either', function (): void {
+    Notification::fake();
+    $draw = createServiceDraw(generateParticipants(3));
+    $draw->update(['organizer_name' => 'Orga', 'organizer_email' => 'orga@exampel.com']);
+    // A read receipt or an auto-reply on the recap's tracked return path
+    $draw->recapMail()->markAsReceived();
+    $this->travel(10)->minutes();
+
+    fixOrganizer($draw->fresh(), 'orga@example.com')->assertStatus(422)->assertJsonValidationErrors('email');
+    expect($draw->fresh()->organizer_email)->toBe('orga@exampel.com');
+});

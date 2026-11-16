@@ -7,6 +7,8 @@ namespace App\Notifications;
 use App\Channels\TrackedMailChannel;
 use App\Facades\DrawCrypt;
 use App\Models\DearSanta as DearSantaModel;
+use App\Models\Draw;
+use App\Models\Mail;
 use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
@@ -32,9 +34,9 @@ final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQ
         return [TrackedMailChannel::class];
     }
 
-    public function getMailableModel(Participant $santa): DearSantaModel
+    public function getTrackedMail(Participant|Draw $notifiable): Mail
     {
-        return $this->dearSanta;
+        return $this->dearSanta->mail;
     }
 
     /**

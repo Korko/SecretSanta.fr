@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\URL;
 final class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
 {
     use Queueable;
+    use TracksSantaMail;
 
     /**
      * Get the notification's delivery channels.
@@ -32,11 +33,6 @@ final class TargetDrawn extends Notification implements ShouldBeEncrypted, Shoul
     public function via(Participant $santa): array
     {
         return [TrackedMailChannel::class];
-    }
-
-    public function getMailableModel(Participant $santa): Participant
-    {
-        return $santa;
     }
 
     /**

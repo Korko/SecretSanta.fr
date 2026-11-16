@@ -7,12 +7,12 @@ use App\Models\Participant;
 use App\Notifications\OrganizerRecap as OrganizerRecapNotif;
 use App\Notifications\TargetDrawn;
 use App\Services\URLParser;
-use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Notification;
 
 use function PHPUnit\Framework\assertCount;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
+use function PHPUnit\Framework\assertNull;
 
 it('sends no notifications in case of error', function ($participants): void {
     Notification::fake();
@@ -72,7 +72,7 @@ it('sends notifications in case of success', function (): void {
     $draw = Draw::query()->find(1);
 
     // Taking part, the organizer gets the recap within their target email only
-    Notification::assertNothingSentTo(new AnonymousNotifiable, OrganizerRecapNotif::class);
+    Notification::assertNotSentTo(Draw::query()->firstOrFail(), OrganizerRecapNotif::class);
     Notification::assertSentTo($draw->participants->first(), TargetDrawn::class, function ($notification, $channels, $notifiable): bool {
         $mail = $notification->toMail($notifiable);
 
@@ -107,13 +107,15 @@ it('can create draws with a non participant organizer', function (): void {
     $draw = Draw::query()->find(1);
     assertEquals('foo', $draw->organizer_name);
     assertEquals('foo@foobar.com', $draw->organizer_email);
+    assertNull($draw->organizer_participant_id);
+    assertNull($draw->organizer);
 
     // Ensure Organizer receives his recap
     Notification::assertSentTimes(OrganizerRecapNotif::class, 1);
     Notification::assertSentTo(
-        new AnonymousNotifiable,
+        $draw,
         OrganizerRecapNotif::class,
-        fn ($notification, $channels, $notifiable): bool => $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name]
+        fn ($notification, $channels, $notifiable): bool => $notifiable->routeNotificationForMail() === [$draw->organizer_email => $draw->organizer_name]
     );
 
     // Ensure Participants receive their own recap
@@ -142,7 +144,7 @@ it('sends to the organizer the link to their panel', function (): void {
 
     // Ensure Organizer receives his recap
     Notification::assertSentTo(
-        new AnonymousNotifiable,
+        $draw,
         OrganizerRecapNotif::class,
         function ($notification, $channels, $notifiable) use ($draw): bool {
             $link = $notification->toMail($notifiable)->data()['panelLink'];
@@ -153,7 +155,7 @@ it('sends to the organizer the link to their panel', function (): void {
             // Check link can be used for support
             assertEquals($draw->id, resolve(URLParser::class)->draw($link)?->id);
 
-            return $notifiable->routes['mail'] === [$draw->organizer_email => $draw->organizer_name];
+            return $notifiable->routeNotificationForMail() === [$draw->organizer_email => $draw->organizer_name];
         }
     );
 });
@@ -176,7 +178,7 @@ it('sends to the organizer the initial recap', function (): void {
 
     // Ensure Organizer receives his recap
     Notification::assertSentTo(
-        new AnonymousNotifiable,
+        $draw,
         OrganizerRecapNotif::class,
         function ($notification, $channels, $notifiable) use ($draw): true {
             $attachments = $notification->toMail($notifiable)->rawAttachments;
@@ -217,3 +219,27 @@ it('can deal with thousands of participants', function (): void {
     assertEquals($participants[0]['name'], Draw::query()->find(1)->organizer_name);
     assertEquals($totalParticipants, Participant::query()->count());
 })->group('massive');
+
+it('records the participating organizer explicitly', function (): void {
+    Notification::fake();
+
+    ajaxPost('/', [
+        'participant-organizer' => '1',
+        'participants' => generateParticipants(3),
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])->assertSuccessful();
+
+    $draw = Draw::query()->firstOrFail();
+    $first = $draw->participants->first();
+    assertEquals($first->id, $draw->organizer_participant_id);
+    expect($first->isOrganizer())->toBeTrue()
+        ->and($draw->participants->get(1)->isOrganizer())->toBeFalse();
+
+    // Still the organizer after changing their email, as the panel keeps it in sync
+    $first->email = 'other@example.com';
+    $first->save();
+
+    expect($first->fresh()->isOrganizer())->toBeTrue();
+});

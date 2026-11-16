@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Lang;
 final class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
 {
     use Queueable;
+    use TracksSantaMail;
 
     /**
      * Get the notification's delivery channels.
@@ -27,11 +28,6 @@ final class TargetWithdrawn extends Notification implements ShouldBeEncrypted, S
     public function via(Participant $santa): array
     {
         return ['mail'];
-    }
-
-    public function getMailableModel(Participant $santa): Participant
-    {
-        return $santa;
     }
 
     /**

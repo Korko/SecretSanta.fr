@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
-use App\Models\DearSanta;
+use App\Models\Draw;
+use App\Models\Mail;
 use App\Models\Participant;
 
-// Notifications sent through TrackedMailChannel: their delivery status is stored on the returned model's mail
+// Notifications sent through TrackedMailChannel: each one says which mail stores its delivery status
 interface TrackedNotification
 {
-    public function getMailableModel(Participant $santa): Participant|DearSanta;
+    public function getTrackedMail(Participant|Draw $notifiable): Mail;
 }
