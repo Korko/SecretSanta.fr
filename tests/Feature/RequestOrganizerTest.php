@@ -183,6 +183,16 @@ test('the organizer can download initial data', function (): void {
         ->assertSuccessful();
 });
 
+test('the CSV comments follow the locale', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+
+    App::setLocale('en');
+    expect($draw->initialCsv())->toContain('# This file can be used to prefill the participants');
+
+    App::setLocale('fr');
+    expect($draw->initialCsv())->toContain('# Ce fichier peut être utilisé pour préremplir les participants');
+});
+
 test('the organizer cannot download total data if the draw is not expired', function (): void {
     $draw = Draw::factory()
         ->hasParticipants(3)
