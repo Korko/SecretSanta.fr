@@ -1,1 +1,1 @@
-<script>{!! $javaScript !!}</script>
+<script nonce="{{ Vite::cspNonce() }}">{!! $javaScript !!}</script>
