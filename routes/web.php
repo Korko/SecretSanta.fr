@@ -48,9 +48,9 @@ Route::middleware('signed')->group(function (): void {
             ->name('dearSanta.report');
         Route::get('/dearSanta/{participant}/fetchState', [DearSantaController::class, 'fetchState'])
             ->name('dearSanta.fetchState');
-        Route::get('/dearSanta/{participant}/{dearSanta}/resend', [DearSantaController::class, 'resend'])
+        Route::post('/dearSanta/{participant}/{dearSanta}/resend', [DearSantaController::class, 'resend'])
             ->name('dearSanta.resend');
-        Route::get('/dearSanta/{participant}/resendTarget', [DearSantaController::class, 'resendTarget'])
+        Route::post('/dearSanta/{participant}/resendTarget', [DearSantaController::class, 'resendTarget'])
             ->name('dearSanta.resend_target');
     });
 
