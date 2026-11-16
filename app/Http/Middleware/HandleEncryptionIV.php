@@ -17,7 +17,9 @@ final class HandleEncryptionIV
     /** @param Closure(Request): Response $next */
     public function handle(Request $request, Closure $next, string $parameterToCheck, string $fieldToCheck): Response
     {
-        $iv = base64_decode($request->string('iv')->toString() ?: (string) $request->header('X-HASH-IV'));
+        // Only from the header: the secret is the URL hash, never sent to the server, and must not end up
+        // in a query string (web server logs, history) through an ?iv= parameter
+        $iv = base64_decode((string) $request->header('X-HASH-IV'));
         if (! empty($iv)) {
             DrawCrypt::setIV($iv);
         }

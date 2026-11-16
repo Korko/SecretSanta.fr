@@ -390,3 +390,18 @@ test('the organizer taking part whose target email was received is backfilled as
 
     expect($draw->fresh()->organizer_received_at !== null)->toBe($takesPart);
 })->with([true, false]);
+
+test('the draw secret is only read from the header, never from the request input', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $url = URL::signedRoute('organizerPanel.revealTargets', ['draw' => $draw]);
+    $iv = base64_encode(DrawCrypt::getIV());
+
+    // The right secret as a parameter (it would end up in logs as ?iv=), a wrong one in the header: refused
+    $response = ajaxPost($url, ['iv' => $iv], ['X-HASH-IV' => base64_encode(random_bytes(16))]);
+    expect($response->isSuccessful())->toBeFalse()
+        ->and($draw->fresh()->targets_revealed_at)->toBeNull();
+
+    DrawCrypt::setIV(base64_decode($iv));
+    ajaxPost($url, [], ['X-HASH-IV' => $iv])->assertSuccessful();
+    expect($draw->fresh()->targets_revealed_at)->not->toBeNull();
+});
