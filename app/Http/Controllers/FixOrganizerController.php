@@ -98,7 +98,7 @@ final class FixOrganizerController extends Controller
         }
 
         // The organizer's own email: their target email when taking part, else the recap
-        $organizerMail = $draw->organizer?->mail ?? $draw->recapMail();
+        $organizerMail = $draw->organizer->mail ?? $draw->recapMail();
         if (($organizerMail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) <= config('mail.resend_delay')) {
             return response()->json([
                 'errors' => [
