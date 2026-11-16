@@ -7,6 +7,7 @@ namespace Tests\Feature;
 use App\Models\Draw;
 use DrawCrypt;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
 
 use function PHPUnit\Framework\assertNotEquals;
 
@@ -66,4 +67,17 @@ it('only lets the site scripts run, the inline one through its nonce', function 
     preg_match("/'nonce-([^']+)'/", $csp, $nonce);
     $response->assertSee('<script nonce="'.$nonce[1].'">', false);
     expect($this->get('/')->headers->get('Content-Security-Policy'))->not->toContain($nonce[1]);
+});
+
+it('answers an altered link with a client error, not a server one', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $panel = URL::signedRoute('organizerPanel', ['draw' => $draw]);
+    $fetch = URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]);
+
+    $this->get($panel.'x')->assertForbidden()->assertViewIs('missingDraw');
+    ajaxGet($fetch.'x')->assertForbidden()->assertJsonPath('message', trans('error.signature'));
+
+    // The IV is the URL hash: truncated or altered
+    ajaxGet($fetch, ['X-HASH-IV' => base64_encode('short')])->assertForbidden();
+    ajaxGet($fetch, ['X-HASH-IV' => base64_encode(random_bytes(mb_strlen(DrawCrypt::getIV(), '8bit')))])->assertForbidden();
 });
