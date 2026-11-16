@@ -68,13 +68,8 @@ final class TrackedMailChannel extends MailChannel
 
     private function mail(mixed $notifiable, Notification $notification): Mail
     {
-        // The organizer recap, sent to the draw itself (its organizer address)
-        if ($notifiable instanceof Draw) {
-            return $notifiable->recapMail();
-        }
+        throw_unless(($notifiable instanceof Participant || $notifiable instanceof Draw) && $notification instanceof TrackedNotification, LogicException::class, 'Only tracked notifications to participants or draws go through this channel');
 
-        throw_unless($notifiable instanceof Participant && $notification instanceof TrackedNotification, LogicException::class, 'Only tracked notifications to participants or draws go through this channel');
-
-        return $notification->getMailableModel($notifiable)->mail;
+        return $notification->getTrackedMail($notifiable);
     }
 }

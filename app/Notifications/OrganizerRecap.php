@@ -6,6 +6,8 @@ namespace App\Notifications;
 
 use App\Channels\TrackedMailChannel;
 use App\Models\Draw;
+use App\Models\Mail;
+use App\Models\Participant;
 use DrawCrypt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
@@ -21,7 +23,7 @@ use Illuminate\Support\Facades\URL;
 #[Backoff(30)]
 #[MaxExceptions(10)]
 #[Tries(20)]
-final class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit
+final class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
 {
     use Queueable;
     use SerializesModels;
@@ -49,6 +51,12 @@ final class OrganizerRecap extends Notification implements ShouldBeEncrypted, Sh
     public function via(Draw $draw): array
     {
         return [TrackedMailChannel::class];
+    }
+
+    // Draws made before the recap was tracked get their mail on the first send
+    public function getTrackedMail(Participant|Draw $notifiable): Mail
+    {
+        return $this->draw->recapMail();
     }
 
     /**
