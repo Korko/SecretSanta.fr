@@ -19,6 +19,7 @@
         "vite": "^8.3.6"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "5.15.4",
         "@vuelidate/core": "^2.0.3",
         "@vuelidate/validators": "^2.0.4",
         "alertifyjs": "^1.13.1",

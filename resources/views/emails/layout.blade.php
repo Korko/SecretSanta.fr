@@ -24,7 +24,11 @@
     </style>
     <![endif]-->
 
-    <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Kreon&display=swap" rel="stylesheet">
+    <style type="text/css">
+        /* Served by the site: the mail client asks our domain, not Google Fonts */
+        @font-face { font-family: 'Kreon'; src: url('{{ asset('fonts/Kreon-VariableFont_wght.ttf') }}') format('truetype'); }
+        @font-face { font-family: 'Caveat'; src: url('{{ asset('fonts/Caveat-latin-400.woff2') }}') format('woff2'); }
+    </style>
 
     <style type="text/css" media="screen">
         /* Linked Styles */
