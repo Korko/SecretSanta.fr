@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Middleware\HandleEncryptionIV;
 use App\Http\Middleware\Language;
+use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -42,7 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
             PreventRequestForgery::class,
         ]);
         // Locale from the domain (APP_DOMAIN_*), APP_LOCALE otherwise
-        $middleware->web(append: [Language::class]);
+        $middleware->web(append: [Language::class, SecurityHeaders::class]);
 
         $middleware->priority([
             SubstituteBindings::class,

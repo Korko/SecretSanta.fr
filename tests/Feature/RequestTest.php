@@ -45,3 +45,12 @@ it('translates the 404 page', function (string $lang, string $back): void {
     ['en', 'Back to the home page'],
     ['de', 'Zurück zur Startseite'],
 ]);
+
+it('sends the security headers', function (): void {
+    $this->get('/')
+        ->assertSuccessful()
+        ->assertHeader('Referrer-Policy', 'same-origin')
+        ->assertHeader('X-Frame-Options', 'DENY')
+        ->assertHeader('Content-Security-Policy', "frame-ancestors 'none'")
+        ->assertHeader('X-Content-Type-Options', 'nosniff');
+});
