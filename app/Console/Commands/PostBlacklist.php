@@ -67,7 +67,7 @@ final class PostBlacklist extends Command
             return false;
         }
 
-        if ($participant->draw->organizer->is($participant)) {
+        if ($participant->isOrganizer()) {
             Notification::route('mail', [
                 $participant->email => $participant->name,
             ])->notify(new OrganizerRecap($participant->draw));

@@ -38,7 +38,7 @@ final class OrganizerController extends Controller
 
         // Taking part, the organizer got the panel link in their target email: opening the panel proves they received it
         $organizer = $draw->organizer;
-        if ($organizer->isOrganizer() && $organizer->mail->delivery_status !== DeliveryStatus::Received) {
+        if ($organizer !== null && $organizer->mail->delivery_status !== DeliveryStatus::Received) {
             $organizer->mail->markAsReceived();
         }
 

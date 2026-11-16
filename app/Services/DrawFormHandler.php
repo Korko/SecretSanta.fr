@@ -23,6 +23,9 @@ final class DrawFormHandler
     /** @var Organizer|null */
     private ?array $organizer = null;
 
+    // Without an organizer given, they take part: the first participant
+    private bool $organizerParticipates = true;
+
     /** @var list<Santa> */
     private array $participants = [];
 
@@ -36,6 +39,7 @@ final class DrawFormHandler
     public function withOrganizer(array $organizer): self
     {
         $this->organizer = $organizer;
+        $this->organizerParticipates = false;
 
         return $this;
     }
@@ -112,6 +116,11 @@ final class DrawFormHandler
             $participant->save();
 
             $this->models[] = $participant;
+        }
+
+        if ($this->organizerParticipates && $this->models !== []) {
+            $draw->organizer_participant_id = $this->models[0]->id;
+            $draw->save();
         }
 
         return $draw;
