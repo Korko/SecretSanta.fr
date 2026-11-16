@@ -51,6 +51,19 @@ it('sends the security headers', function (): void {
         ->assertSuccessful()
         ->assertHeader('Referrer-Policy', 'same-origin')
         ->assertHeader('X-Frame-Options', 'DENY')
-        ->assertHeader('Content-Security-Policy', "frame-ancestors 'none'")
         ->assertHeader('X-Content-Type-Options', 'nosniff');
+});
+
+it('only lets the site scripts run, the inline one through its nonce', function (): void {
+    $response = $this->get('/')->assertSuccessful();
+
+    $csp = (string) $response->headers->get('Content-Security-Policy');
+    expect($csp)->toContain("frame-ancestors 'none'", "object-src 'none'", "base-uri 'self'")
+        ->and($csp)->toMatch("/script-src 'self' 'nonce-[^']+' 'unsafe-eval'/")
+        ->and($csp)->not->toContain('https:', '*');
+
+    // The @javascript block (window.global) carries the nonce of the header, a new one on each response
+    preg_match("/'nonce-([^']+)'/", $csp, $nonce);
+    $response->assertSee('<script nonce="'.$nonce[1].'">', false);
+    expect($this->get('/')->headers->get('Content-Security-Policy'))->not->toContain($nonce[1]);
 });
