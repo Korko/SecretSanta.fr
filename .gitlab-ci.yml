@@ -6,7 +6,8 @@ variables:
   # Bump the tag on any change of docker/ci/Dockerfile
   CI_IMAGE: $CI_REGISTRY_IMAGE/ci:playwright1.61.1-php8.4-1
 
-# Builds the CI image when its Dockerfile changes (needs the project's container registry)
+# Builds the CI image when its Dockerfile changes (needs the project's container registry),
+# or by hand from any pipeline (e.g. the registry was emptied)
 ci-image:
   stage: build
   image:
@@ -17,6 +18,8 @@ ci-image:
         paths:
           - docker/ci/Dockerfile
         compare_to: refs/heads/1.9.x
+    - when: manual
+      allow_failure: true
   script:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context "$CI_PROJECT_DIR/docker/ci" --dockerfile "$CI_PROJECT_DIR/docker/ci/Dockerfile" --destination "$CI_IMAGE"
