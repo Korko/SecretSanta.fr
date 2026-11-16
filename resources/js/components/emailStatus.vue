@@ -40,7 +40,8 @@
                     sending: "fas fa-spinner",
                     sent: "fas fa-check",
                     received: "fas fa-check",
-                    error: "fas fa-exclamation-triangle"
+                    error: "fas fa-exclamation-triangle",
+                    delayed: "fas fa-hourglass-half"
                 }[this.delivery_status];
             }
         },
@@ -104,6 +105,9 @@
     }
     .sent {
         color: orange;
+    }
+    .delayed {
+        color: #b35900;
     }
     .received {
         color: green;

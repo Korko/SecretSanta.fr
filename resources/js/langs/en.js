@@ -25,6 +25,7 @@ export default {
                     "sending": "Sending",
                     "sent": "Sent",
                     "error": "Error",
+                    "delayed": "Delayed, retrying",
                     "received": "Received"
                 },
                 "recent": "You cannot resend the same email so quickly"
