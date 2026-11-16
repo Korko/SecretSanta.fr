@@ -22,7 +22,7 @@
         <h1 class="section-title text-center">@lang('404.title')</h1>
         <p class="lead text-center">@lang('404.subtitle')</p>
 
-        <p class="back text-center"><a href="/" class="btn btn-primary">Revenir sur la page d'accueil</a></p>
+        <p class="back text-center"><a href="/" class="btn btn-primary">@lang('404.back')</a></p>
 
     </div>
 @stop
