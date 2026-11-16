@@ -92,7 +92,7 @@
                 return new Date(this.expires_at).toLocaleString(this.$i18n.locale, {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'});
             },
             deletionDateLong() {
-                return new Date(this.deleted_at).toLocaleString(this.$i18n.locale, {day: 'numeric', month: 'long', year: 'numeric'});
+                return new Date(this.deleted_at).toLocaleString(this.$i18n.locale, {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'});
             }
         },
         created() {

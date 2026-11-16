@@ -46,7 +46,7 @@ final class OrganizerController extends Controller
             'draw' => $draw->hash,
             'channel' => $draw->broadcastChannel(),
             'expires_at' => $draw->expires_at->toDateString(), // event day, whatever the browser timezone
-            'deleted_at' => $draw->deleted_at,
+            'deleted_at' => $draw->deleted_at->toDateString(),
             'drawn_at' => $draw->created_at,
             'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [
                 $participant->hash => $participant->only([
@@ -99,7 +99,7 @@ final class OrganizerController extends Controller
 
         return response()->json([
             'expires_at' => $draw->expires_at->toDateString(), // event day, whatever the browser timezone
-            'deleted_at' => $draw->deleted_at,
+            'deleted_at' => $draw->deleted_at->toDateString(),
         ]);
     }
 
