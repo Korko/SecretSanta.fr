@@ -1,6 +1,7 @@
 # CI image of the php and e2e jobs: Playwright (node, chromium and its system deps), PHP 8.4 like prod, Composer.
 # Built by the ci-image job. On any change here, bump CI_IMAGE in .gitlab-ci.yml, and keep the Playwright tag
 # in sync with playwright in package-lock.json.
+# Needs the project's container registry (Settings > General > Visibility, project features, permissions).
 FROM mcr.microsoft.com/playwright:v1.61.1-noble
 
 ENV DEBIAN_FRONTEND=noninteractive
