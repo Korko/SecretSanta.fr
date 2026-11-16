@@ -241,5 +241,6 @@ it('records the participating organizer explicitly', function (): void {
     // Still the organizer after changing their email, as the panel keeps it in sync
     $first->email = 'other@example.com';
     $first->save();
+
     expect($first->fresh()->isOrganizer())->toBeTrue();
 });
