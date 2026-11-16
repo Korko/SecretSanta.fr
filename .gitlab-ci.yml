@@ -7,8 +7,12 @@ php:
   image: php:8.4-cli
   variables:
     COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer-cache"
+  # Shared by all branches, renewed when the lock file changes
   cache:
-    key: composer-$CI_COMMIT_REF_SLUG
+    key:
+      prefix: composer
+      files:
+        - composer.lock
     paths:
       - .composer-cache/
   before_script:
@@ -32,7 +36,10 @@ assets:
   stage: test
   image: node:22
   cache:
-    key: npm-$CI_COMMIT_REF_SLUG
+    key:
+      prefix: npm
+      files:
+        - package-lock.json
     paths:
       - .npm/
   script:
@@ -52,10 +59,18 @@ e2e:
     COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer-cache"
     DEBIAN_FRONTEND: noninteractive
   cache:
-    key: e2e-$CI_COMMIT_REF_SLUG
-    paths:
-      - .composer-cache/
-      - .npm/
+    - key:
+        prefix: composer
+        files:
+          - composer.lock
+      paths:
+        - .composer-cache/
+    - key:
+        prefix: npm
+        files:
+          - package-lock.json
+      paths:
+        - .npm/
   before_script:
     # Prebuilt PHP 8.4 like prod, no extension compiling
     - apt-get update -qq && apt-get install -yqq --no-install-recommends software-properties-common gpg-agent > /dev/null
