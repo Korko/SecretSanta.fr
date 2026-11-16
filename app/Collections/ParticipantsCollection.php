@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\Date;
  */
 final class ParticipantsCollection extends BaseCollection
 {
-    public function redrawables(): self
-    {
-        return $this->filter(fn ($participant) => $participant->redraw);
-    }
-
     public function appendTargetToExclusions(): self
     {
         return (clone $this)->each(function (Participant $participant): void {
