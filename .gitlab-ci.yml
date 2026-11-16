@@ -1,10 +1,30 @@
 stages:
+  - build
   - test
+
+variables:
+  # Bump the tag on any change of docker/ci/Dockerfile
+  CI_IMAGE: $CI_REGISTRY_IMAGE/ci:playwright1.61.1-php8.4-1
+
+# Builds the CI image when its Dockerfile changes (needs the project's container registry)
+ci-image:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    entrypoint: [""]
+  rules:
+    - changes:
+        paths:
+          - docker/ci/Dockerfile
+        compare_to: refs/heads/1.9.x
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context "$CI_PROJECT_DIR/docker/ci" --dockerfile "$CI_PROJECT_DIR/docker/ci/Dockerfile" --destination "$CI_IMAGE"
 
 # Lint (Pint, Rector), PHPStan, type coverage and Pest, like `composer test` locally
 php:
   stage: test
-  image: php:8.4-cli
+  image: $CI_IMAGE
   variables:
     COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer-cache"
   # Shared by all branches, renewed when the lock file changes
@@ -16,14 +36,11 @@ php:
     paths:
       - .composer-cache/
   before_script:
-    - apt-get update -qq && apt-get install -yqq --no-install-recommends git unzip libzip-dev libicu-dev > /dev/null
-    - docker-php-ext-install -j"$(nproc)" zip intl bcmath sockets > /dev/null
-    - curl -sS https://getcomposer.org/installer | php -- --quiet
-    - php composer.phar install --no-interaction --no-progress
+    - composer install --no-interaction --no-progress
     - cp .env.example .env && php artisan key:generate
   script:
-    - php composer.phar audit --abandoned=ignore
-    - php composer.phar test
+    - composer audit --abandoned=ignore
+    - composer test
   artifacts:
     paths:
       - storage/logs
@@ -53,11 +70,10 @@ assets:
 # Pest browser tests (form, CSV import, organizer panel, dearSanta) on the committed public/build
 e2e:
   stage: test
-  # Ships node and chromium with its system deps; keep the tag in sync with playwright in package-lock.json
-  image: mcr.microsoft.com/playwright:v1.61.1-noble
+  # Playwright, PHP 8.4 and Composer preinstalled (docker/ci/Dockerfile)
+  image: $CI_IMAGE
   variables:
     COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer-cache"
-    DEBIAN_FRONTEND: noninteractive
   cache:
     - key:
         prefix: composer
@@ -72,12 +88,7 @@ e2e:
       paths:
         - .npm/
   before_script:
-    # Prebuilt PHP 8.4 like prod, no extension compiling
-    - apt-get update -qq && apt-get install -yqq --no-install-recommends software-properties-common gpg-agent > /dev/null
-    - add-apt-repository -y ppa:ondrej/php > /dev/null
-    - apt-get install -yqq --no-install-recommends git unzip php8.4-cli php8.4-zip php8.4-intl php8.4-bcmath php8.4-sqlite3 php8.4-mbstring php8.4-xml php8.4-curl > /dev/null
-    - curl -sS https://getcomposer.org/installer | php -- --quiet
-    - php composer.phar install --no-interaction --no-progress
+    - composer install --no-interaction --no-progress
     - cp .env.example .env && php artisan key:generate
     - npm ci --cache .npm --prefer-offline --no-audit --no-fund
   script:
