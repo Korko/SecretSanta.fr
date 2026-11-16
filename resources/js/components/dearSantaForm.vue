@@ -42,7 +42,7 @@
                 return Object.values(this.emails)
                     .map(email => ({ ...email, created_at: new Date(email.mail.created_at) }))
                     .sort((email1, email2) => email2.created_at - email1.created_at)
-                    .map(email => ({ ...email, created_at: email.created_at.toLocaleString('fr-FR') }));
+                    .map(email => ({ ...email, created_at: email.created_at.toLocaleString(this.$i18n.locale) }));
             },
             checkUpdates() {
                 return !!Object.values(this.emails).find(
