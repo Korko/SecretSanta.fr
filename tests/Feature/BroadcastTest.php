@@ -13,14 +13,14 @@ test('mail statuses are broadcast on channels the URL hashes do not give away', 
     $participant = $draw->participants->first();
 
     // Target emails: the organizer panel
-    $channel = (new MailStatusUpdated($participant->mail))->broadcastOn()[0]->name;
+    $channel = new MailStatusUpdated($participant->mail)->broadcastOn()[0]->name;
     expect($channel)->toBe($draw->broadcastChannel())->not->toContain($draw->hash);
     ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))->assertJsonPath('channel', $channel);
 
     // Dear Santa messages: only their sender
     ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), ['content' => 'Hello'])->assertSuccessful();
     $dearSanta = $participant->dearSantas()->firstOrFail();
-    expect((new MailStatusUpdated($dearSanta->mail))->broadcastOn()[0]->name)
+    expect(new MailStatusUpdated($dearSanta->mail)->broadcastOn()[0]->name)
         ->toBe($participant->broadcastChannel())
         ->not->toBe($participant->santa->broadcastChannel());
 
