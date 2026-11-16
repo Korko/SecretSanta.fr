@@ -195,14 +195,20 @@
                 });
             },
 
+            // "Copied" only once it is: the browser may refuse (permission, focus, no clipboard API outside https)
+            copy(text) {
+                return Promise.resolve()
+                    .then(() => navigator.clipboard.writeText(text))
+                    .then(() => alertify.success(this.$t('common.copied'), 3))
+                    .catch(() => alertify.error(this.$t('common.copy_failed', { text }), 6));
+            },
+
             appendSanta() {
-                navigator.clipboard.writeText("{SANTA}");
-                alertify.success(this.$t('common.copied'), 3);
+                return this.copy('{SANTA}');
             },
 
             appendTarget() {
-                navigator.clipboard.writeText("{TARGET}");
-                alertify.success(this.$t('common.copied'), 3);
+                return this.copy('{TARGET}');
             },
 
             // vuelidate 2 doesn't $touch child components: show participant errors on submit
