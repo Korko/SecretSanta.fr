@@ -17,6 +17,8 @@ return [
             'body' => 'You will see each participant\'s target, useful in case of delivery issues or to organize other events. This is permanent, and participants will see on their page that the list has been revealed to the organizer.',
             'ok' => 'Reveal',
             'cancel' => 'Cancel',
+            'value' => 'Reveal targets',
+            'help' => 'Type "[+!:verification]" below to confirm.',
         ],
     ],
     'list' => [
