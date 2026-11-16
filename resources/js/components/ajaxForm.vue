@@ -64,6 +64,7 @@
                     this.validator && this.validator.$touch();
 
                     if (this.validator && this.validator.$invalid) {
+                        this.showErrors();
                         return false;
                     }
 
@@ -88,8 +89,10 @@
                             }
                         })
                         .catch(response => {
-                            if (response && response.errors)
+                            if (response && response.errors) {
                                 this.fieldErrors = response.errors;
+                                this.showErrors();
+                            }
 
                             this.sending = false;
 
@@ -112,6 +115,27 @@
                             this.$emit('error');
                         });
                 }
+            },
+            // Screen readers: each invalid field is described by its error, and the first one gets the focus
+            showErrors() {
+                this.$nextTick(() => {
+                    this.$el.querySelectorAll('[data-error-described]').forEach(input => {
+                        input.removeAttribute('aria-describedby');
+                        input.removeAttribute('data-error-described');
+                    });
+
+                    const invalids = [...this.$el.querySelectorAll('.is-invalid')];
+                    invalids.forEach((input, i) => {
+                        const tooltip = input.parentElement.querySelector('.invalid-tooltip');
+                        if (tooltip) {
+                            tooltip.id ||= `${this.$el.id || 'form'}-error-${i}`;
+                            input.setAttribute('aria-describedby', tooltip.id);
+                            input.setAttribute('data-error-described', '');
+                        }
+                    });
+
+                    invalids[0]?.focus();
+                });
             },
             onSubmit() {
                 this.submit();

@@ -7,8 +7,8 @@
       "_fr-ClZPRzJk.js"
     ]
   },
-  "_ajaxForm-IWnROvF3.js": {
-    "file": "assets/ajaxForm-IWnROvF3.js",
+  "_ajaxForm-QiJPMdZB.js": {
+    "file": "assets/ajaxForm-QiJPMdZB.js",
     "name": "ajaxForm",
     "imports": [
       "_alertify-CvLzh_Kz.js",
@@ -23,11 +23,11 @@
       "_fr-ClZPRzJk.js"
     ]
   },
-  "_form-CVB8Mtz-.js": {
-    "file": "assets/form-CVB8Mtz-.js",
+  "_form-B3l3EtI3.js": {
+    "file": "assets/form-B3l3EtI3.js",
     "name": "form",
     "imports": [
-      "_ajaxForm-IWnROvF3.js",
+      "_ajaxForm-QiJPMdZB.js",
       "__plugin-vue_export-helper-Drrl7HBq.js"
     ]
   },
@@ -57,15 +57,15 @@
     "file": "assets/vueFetcher-CFMKrWt2.css",
     "src": "_vueFetcher-CFMKrWt2.css"
   },
-  "_vueFetcher-DL3KVwNr.js": {
-    "file": "assets/vueFetcher-DL3KVwNr.js",
+  "_vueFetcher-CbaQl0ic.js": {
+    "file": "assets/vueFetcher-CbaQl0ic.js",
     "name": "vueFetcher",
     "imports": [
       "_rolldown-runtime-XKyaHtl9.js",
       "__plugin-vue_export-helper-Drrl7HBq.js",
-      "_ajaxForm-IWnROvF3.js",
+      "_ajaxForm-QiJPMdZB.js",
       "_tooltip-BavFKTBD.js",
-      "_form-CVB8Mtz-.js"
+      "_form-B3l3EtI3.js"
     ],
     "css": [
       "assets/vueFetcher-CFMKrWt2.css"
@@ -153,16 +153,16 @@
     ]
   },
   "resources/js/dearSanta.js": {
-    "file": "assets/dearSanta-DYDclzjI.js",
+    "file": "assets/dearSanta-DLUygq9N.js",
     "name": "dearSanta",
     "src": "resources/js/dearSanta.js",
     "isEntry": true,
     "imports": [
       "__plugin-vue_export-helper-Drrl7HBq.js",
-      "_ajaxForm-IWnROvF3.js",
-      "_vueFetcher-DL3KVwNr.js",
+      "_ajaxForm-QiJPMdZB.js",
+      "_vueFetcher-CbaQl0ic.js",
       "_tooltip-BavFKTBD.js",
-      "_form-CVB8Mtz-.js"
+      "_form-B3l3EtI3.js"
     ],
     "css": [
       "assets/dearSanta-Cpp46ayF.css"
@@ -181,29 +181,29 @@
     ]
   },
   "resources/js/fixOrganizer.js": {
-    "file": "assets/fixOrganizer-DAOIM3yY.js",
+    "file": "assets/fixOrganizer-BxjoLG-v.js",
     "name": "fixOrganizer",
     "src": "resources/js/fixOrganizer.js",
     "isEntry": true,
     "imports": [
       "__plugin-vue_export-helper-Drrl7HBq.js",
-      "_ajaxForm-IWnROvF3.js",
+      "_ajaxForm-QiJPMdZB.js",
       "_alertify-CvLzh_Kz.js",
-      "_form-CVB8Mtz-.js"
+      "_form-B3l3EtI3.js"
     ]
   },
   "resources/js/organizer.js": {
-    "file": "assets/organizer-byyxgMNm.js",
+    "file": "assets/organizer-aXvKhco-.js",
     "name": "organizer",
     "src": "resources/js/organizer.js",
     "isEntry": true,
     "imports": [
       "__plugin-vue_export-helper-Drrl7HBq.js",
-      "_ajaxForm-IWnROvF3.js",
+      "_ajaxForm-QiJPMdZB.js",
       "_alertify-CvLzh_Kz.js",
-      "_vueFetcher-DL3KVwNr.js",
+      "_vueFetcher-CbaQl0ic.js",
       "_tooltip-BavFKTBD.js",
-      "_form-CVB8Mtz-.js"
+      "_form-B3l3EtI3.js"
     ],
     "css": [
       "assets/organizer-Dq6ELaXT.css"
@@ -214,19 +214,19 @@
     ]
   },
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm-BP5g2HvO.js",
+    "file": "assets/randomForm-DMs42UXa.js",
     "name": "randomForm",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-XKyaHtl9.js",
       "__plugin-vue_export-helper-Drrl7HBq.js",
-      "_ajaxForm-IWnROvF3.js",
+      "_ajaxForm-QiJPMdZB.js",
       "_alertify-CvLzh_Kz.js",
       "_tooltip-BavFKTBD.js"
     ],
     "css": [
-      "assets/randomForm-YSZ0z_dH.css"
+      "assets/randomForm-DfiMc4qG.css"
     ],
     "assets": [
       "assets/srikanta-h-u-TrGVhbsUf40-unsplash-BLvCjRi5.webp"
