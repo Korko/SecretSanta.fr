@@ -7,6 +7,7 @@ namespace Tests\Feature;
 use App\Models\Draw;
 use DrawCrypt;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\URL;
 
 use function PHPUnit\Framework\assertNotEquals;
@@ -80,4 +81,13 @@ it('answers an altered link with a client error, not a server one', function ():
     // The IV is the URL hash: truncated or altered
     ajaxGet($fetch, ['X-HASH-IV' => base64_encode('short')])->assertForbidden();
     ajaxGet($fetch, ['X-HASH-IV' => base64_encode(random_bytes(mb_strlen(DrawCrypt::getIV(), '8bit')))])->assertForbidden();
+});
+
+it('keeps security.txt valid: its Expires field is due for renewal a month ahead', function (): void {
+    preg_match('/^Expires: (.+)$/m', (string) file_get_contents(public_path('.well-known/security.txt')), $match);
+
+    // RFC 9116: required, and less than a year ahead. This fails a month before it lapses, to renew it in time
+    expect($match[1] ?? null)->not->toBeNull()
+        ->and(Date::parse($match[1])->isAfter(now()->addMonth()))->toBeTrue()
+        ->and(Date::parse($match[1])->isBefore(now()->addYear()->addMonth()))->toBeTrue();
 });
