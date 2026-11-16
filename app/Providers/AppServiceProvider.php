@@ -73,6 +73,8 @@ final class AppServiceProvider extends ServiceProvider
         Queue::createPayloadUsing(fn (?string $connection, ?string $queue, array $payload): array => [
             'data' => array_merge(is_array($payload['data'] ?? null) ? $payload['data'] : [], [
                 'iv' => base64_encode(DrawCrypt::getIV()),
+                // The worker renders the emails: in the language of the request (domain), not APP_LOCALE
+                'locale' => $this->app->getLocale(),
             ]),
         ]);
 
@@ -80,6 +82,11 @@ final class AppServiceProvider extends ServiceProvider
             $iv = data_get($event->job->payload(), 'data.iv');
             if (is_string($iv)) {
                 DrawCrypt::setIV(base64_decode($iv));
+            }
+
+            $locale = data_get($event->job->payload(), 'data.locale');
+            if (is_string($locale)) {
+                $this->app->setLocale($locale);
             }
         });
     }
