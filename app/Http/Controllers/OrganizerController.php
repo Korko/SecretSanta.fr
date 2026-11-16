@@ -44,6 +44,7 @@ final class OrganizerController extends Controller
 
         return response()->json([
             'draw' => $draw->hash,
+            'channel' => $draw->broadcastChannel(),
             'expires_at' => $draw->expires_at->toDateString(), // event day, whatever the browser timezone
             'deleted_at' => $draw->deleted_at,
             'drawn_at' => $draw->created_at,
