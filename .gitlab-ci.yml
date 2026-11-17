@@ -1,33 +1,22 @@
 stages:
-  - build
   - test
 
-variables:
-  # Bump the tag on any change of docker/ci/Dockerfile
-  CI_IMAGE: $CI_REGISTRY_IMAGE/ci:playwright1.61.1-php8.4-1
-
-# Builds the CI image when its Dockerfile changes (needs the project's container registry),
-# or by hand from any pipeline (e.g. the registry was emptied)
-ci-image:
-  stage: build
-  image:
-    name: gcr.io/kaniko-project/executor:v1.23.2-debug
-    entrypoint: [""]
-  rules:
-    - changes:
-        paths:
-          - docker/ci/Dockerfile
-        compare_to: refs/heads/1.9.x
-    - when: manual
-      allow_failure: true
-  script:
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context "$CI_PROJECT_DIR/docker/ci" --dockerfile "$CI_PROJECT_DIR/docker/ci/Dockerfile" --destination "$CI_IMAGE"
+# PHP 8.4 like prod, from the ondrej PPA, and Composer. The PPA key is in the repository (fingerprint
+# 14AA40EC0831756756D7F66C4F4EA0AAE5267A6C): no add-apt-repository, so no call to the Launchpad API,
+# which made every job fail while it was down. Fits the ubuntu:noble based images (php, e2e).
+.php84:
+  before_script:
+    - apt-get update -qq && apt-get install -yqq --no-install-recommends ca-certificates > /dev/null
+    - cp .gitlab/ondrej-php.gpg /usr/share/keyrings/ondrej-php.gpg
+    - echo "deb [signed-by=/usr/share/keyrings/ondrej-php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu noble main" > /etc/apt/sources.list.d/ondrej-php.list
+    - apt-get update -qq && apt-get install -yqq --no-install-recommends git unzip php8.4-cli php8.4-zip php8.4-intl php8.4-bcmath php8.4-sqlite3 php8.4-mbstring php8.4-xml php8.4-curl > /dev/null
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer && rm composer-setup.php
+    - composer install --no-interaction --no-progress
 
 # Lint (Pint, Rector), PHPStan, type coverage and Pest, like `composer test` locally
 php:
   stage: test
-  image: $CI_IMAGE
+  image: ubuntu:noble
   variables:
     COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer-cache"
   # Shared by all branches, renewed when the lock file changes
@@ -39,7 +28,7 @@ php:
     paths:
       - .composer-cache/
   before_script:
-    - composer install --no-interaction --no-progress
+    - !reference [.php84, before_script]
     - cp .env.example .env && php artisan key:generate
   script:
     - composer audit --abandoned=ignore
@@ -73,8 +62,8 @@ assets:
 # Pest browser tests (form, CSV import, organizer panel, dearSanta) on the committed public/build
 e2e:
   stage: test
-  # Playwright, PHP 8.4 and Composer preinstalled (docker/ci/Dockerfile)
-  image: $CI_IMAGE
+  # Ships node and chromium with its system deps; keep the tag in sync with playwright in package-lock.json
+  image: mcr.microsoft.com/playwright:v1.61.1-noble
   variables:
     COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer-cache"
   cache:
@@ -91,7 +80,7 @@ e2e:
       paths:
         - .npm/
   before_script:
-    - composer install --no-interaction --no-progress
+    - !reference [.php84, before_script]
     - cp .env.example .env && php artisan key:generate
     - npm ci --cache .npm --prefer-offline --no-audit --no-fund
   script:
