@@ -186,7 +186,8 @@ final class Participant extends Model
 
         self::deleting(function (Participant $participant): void {
             $participant->dearSantas()->lazy()->each(fn (DearSanta $dearSanta): ?bool => $dearSanta->delete());
-            $participant->sentSuggestions()->lazy()->each(fn (GiftSuggestion $suggestion): ?bool => $suggestion->delete());
+            // Their ideas stay useful to the santas who got them: kept, but no longer signed
+            $participant->sentSuggestions()->update(['sender_id' => null, 'signed' => false]);
             $participant->receivedSuggestions()->lazy()->each(fn (GiftSuggestion $suggestion): ?bool => $suggestion->delete());
             $participant->exclusions()->detach(); // pivot rows only (delete() would remove the excluded participants)
             $participant->mail()->delete();

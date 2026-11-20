@@ -41,7 +41,10 @@ final class MailStatusUpdated implements ShouldBroadcast
     // A gift idea's sender only learns whether it was sent (see DearSantaController::publicSuggestion)
     public function broadcastWhen(): bool
     {
-        return ! $this->mail->mailable instanceof GiftSuggestion || $this->mail->delivery_status !== DeliveryStatus::Received;
+        $mailable = $this->mail->mailable;
+
+        // Nobody to tell either once its sender left the draw
+        return ! $mailable instanceof GiftSuggestion || ($mailable->sender !== null && $this->mail->delivery_status !== DeliveryStatus::Received);
     }
 
     /**
@@ -70,7 +73,7 @@ final class MailStatusUpdated implements ShouldBroadcast
                 // A participant follows the messages they wrote to their santa
                 $mailable instanceof DearSanta => $mailable->sender->broadcastChannel(),
                 // And the gift ideas they gave
-                $mailable instanceof GiftSuggestion => $mailable->sender->broadcastChannel(),
+                $mailable instanceof GiftSuggestion && $mailable->sender instanceof Participant => $mailable->sender->broadcastChannel(),
                 default => throw new LogicException('Mail without a participant, dearSanta, gift suggestion or draw'),
             }),
         ];

@@ -363,7 +363,7 @@ final class DearSantaController extends Controller
             ->map(fn (GiftSuggestion $suggestion): array => [
                 'id' => $suggestion->mail->id,
                 'mail_body' => $suggestion->mail_body,
-                'sender' => $suggestion->signed ? $suggestion->sender->name : null,
+                'sender' => $suggestion->signed ? $suggestion->sender?->name : null,
                 'created_at' => $suggestion->mail->created_at,
             ])->values();
     }
