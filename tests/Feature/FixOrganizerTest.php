@@ -81,7 +81,7 @@ test('a link without its secret, of a removed participant or of a draw that ende
     $this->travel(10)->minutes();
 
     $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getIV());
-    $fix = fn (string $url) => ajaxPost(URL::route('fixOrganizer.handle'), ['url' => $url, 'email' => 'orga@example.com']);
+    $fix = fn (string $url): TestResponse => ajaxPost(URL::route('fixOrganizer.handle'), ['url' => $url, 'email' => 'orga@example.com']);
 
     // The part after # is the draw secret
     $fix(explode('#', $url, 2)[0])->assertStatus(422)->assertJsonValidationErrors('url');
