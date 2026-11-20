@@ -9,6 +9,7 @@ use App\Notifications\DearSanta;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetRenamed;
 use App\Notifications\TargetWithdrawn;
 use App\Services\LegacyDrawEncrypter;
 use Illuminate\Support\Facades\App;
@@ -20,7 +21,6 @@ use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
 use function PHPUnit\Framework\assertNull;
 use function PHPUnit\Framework\assertTrue;
-use App\Notifications\TargetRenamed;
 
 test('the organizer can send again the target drawn email', function (): void {
     Notification::fake();
