@@ -117,6 +117,15 @@
         },
 
         methods: {
+            addExclusion(participant, other) {
+                participant.exclusions.push(other);
+                // The other one already excludes this participant one way: this is the other direction, one way too,
+                // so both rows keep showing their own direction (together, both ways)
+                if (other.exclusions.includes(participant)) {
+                    participant.oneWay = [...participant.oneWay, other.id];
+                }
+            },
+
             suggestEmail,
             // Only way to have parameters parsing for vuejs events
             td(key, params) {
@@ -349,7 +358,7 @@
                                         @input:email="participant.email = $event"
                                         @input:exclusions="participant.exclusions = $event"
                                         @removeExclusion="participant.exclusions = participant.exclusions.filter(other => other !== $event); participant.oneWay = participant.oneWay.filter(id => id !== $event.id)"
-                                        @addExclusion="participant.exclusions.push($event)"
+                                        @addExclusion="addExclusion(participant, $event)"
                                         @toggleDirection="participant.oneWay = participant.oneWay.includes($event.id) ? participant.oneWay.filter(id => id !== $event.id) : [...participant.oneWay, $event.id]"
                                         @delete="participants.splice(idx, 1)"
                                     />

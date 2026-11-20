@@ -45,6 +45,13 @@ test('the draw form edits participants, imports a CSV and suggests email fixes',
         ->assertCount('tr.participant:nth-child(1) .exclusion-tag-derived', 0)
         ->assertCount('tr.participant:nth-child(1) select option', 0);
 
+    // Then the other direction added in the other row: one way too, each row shows its own
+    $page->click('tr.participant:nth-child(1) .multiselect')
+        ->click('tr.participant:nth-child(1) .multiselect__element:has-text("Max")')
+        ->assertCount('tr.participant:nth-child(1) .exclusion-tag-oneway', 1)
+        ->assertCount('tr.participant:nth-child(3) .exclusion-tag-oneway', 1)
+        ->assertCount('tr.participant:nth-child(1) select option', 1);
+
     $page->type('[name="participants[0][email]"]', 'zoe@gmial.com')
         ->click('.email-suggest a')
         ->assertValue('[name="participants[0][email]"]', 'zoe@gmail.com')
