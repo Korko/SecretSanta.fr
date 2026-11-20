@@ -474,3 +474,22 @@ test('a draw over the participants limit can still lose someone', function (): v
 
     assertEquals(5, $draw->fresh()->participants->count());
 });
+
+test('the administrator can raise the participants limit of an existing draw', function (): void {
+    config(['app.max_participants' => 4]);
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    Notification::fake();
+    $url = URL::signedRoute('organizerPanel', ['draw' => $draw]).'#'.base64_encode(DrawCrypt::getIV());
+
+    // The panel greys "add" out at the limit
+    expect(ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))->json('maxParticipants'))->toBe(4);
+
+    $this->artisan('secretsanta:allow-draw-participants', ['url' => $url, 'max' => 3])->assertFailed();
+    $this->artisan('secretsanta:allow-draw-participants', ['url' => $url, 'max' => 6])->assertSuccessful();
+
+    expect($draw->fresh()->max_participants)->toBe(6)
+        ->and(ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))->json('maxParticipants'))->toBe(6);
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), [
+        'add' => [['name' => 'N1', 'email' => 'n1@example.com']],
+    ])->assertSuccessful();
+});

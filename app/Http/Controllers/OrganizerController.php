@@ -64,6 +64,9 @@ final class OrganizerController extends Controller
                 ]),
             ]),
             'finalCsvAvailable' => $draw->next_solvable,
+            // The panel greys "add" out at the limit (the server refuses it anyway)
+            'maxParticipants' => $draw->maxParticipants(),
+            'contact' => config()->string('app.email'),
             'targetsRevealedAt' => $draw->targets_revealed_at,
             'targets' => $draw->targets_revealed_at ? $this->targets($draw) : null,
         ]);

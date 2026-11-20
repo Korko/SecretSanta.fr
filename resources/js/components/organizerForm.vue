@@ -51,7 +51,9 @@
                 multiMode: false,
                 pendingRemove: [],
                 pendingAdd: [],
-                newParticipant: { name: '', email: '' }
+                newParticipant: { name: '', email: '' },
+                maxParticipants: this.data.maxParticipants,
+                contact: this.data.contact
             };
         },
         computed: {
@@ -63,6 +65,10 @@
                 const when = new Intl.RelativeTimeFormat(document.documentElement.lang, { numeric: 'auto' }).format(-days, 'day');
                 return '<div class="alert alert-warning mt-2 mb-0"><i class="fas fa-exclamation-triangle"></i> '
                     + this.$t('organizer.edit.warning', {when}) + '</div>';
+            },
+            // Counting the changes waiting in the "several at once" mode
+            atLimit() {
+                return Object.keys(this.participants).length + this.pendingAdd.length - this.pendingRemove.length >= this.maxParticipants;
             },
             canEdit() {
                 return !this.expired;
@@ -338,10 +344,13 @@
                     <td><input v-model.trim="newParticipant.email" form="addParticipant" type="email" class="form-control participant-add-email" required :placeholder="$t('organizer.list.email')" /></td>
                     <td :colspan="targets ? 3 : 2">
                         <form id="addParticipant" @submit.prevent="addParticipant">
-                            <button type="submit" class="btn btn-outline-success participant-add">
+                            <button type="submit" class="btn btn-outline-success participant-add" :disabled="atLimit">
                                 <i class="fas fa-plus" /><span> {{ $t('organizer.edit.add') }}</span>
                             </button>
                         </form>
+                        <div v-if="atLimit" class="alert alert-warning participants-max mt-2 mb-0" role="status">
+                            {{ $t('validation.custom.randomform.participants.max', { max: maxParticipants, email: contact }) }}
+                        </div>
                     </td>
                 </tr>
             </tfoot>
