@@ -27,11 +27,30 @@ test('the draw form edits participants, imports a CSV and suggests email fixes',
         ->assertSeeIn('.ajs-message.ajs-success', 'effectué avec succès')
         ->assertValue('[name="participants[0][name]"]', 'Zoé')
         ->assertValue('[name="participants[1][name]"]', 'Cœur')
-        ->assertSeeIn('tr.participant:nth-child(2) .multiselect__tag', 'Zoé');
+        // An imported exclusion keeps the file's direction: one way
+        ->assertSeeIn('tr.participant:nth-child(2) .exclusion-tag-oneway', 'Zoé')
+        ->assertCount('tr.participant:nth-child(1) .exclusion-tag', 0);
 
+    // A typed one applies both ways: shown and sent in the other row too
     $page->click('tr.participant:nth-child(3) .multiselect')
         ->click('tr.participant:nth-child(3) .multiselect__element >> nth=0')
-        ->assertCount('tr.participant:nth-child(3) select option', 1);
+        ->assertCount('tr.participant:nth-child(3) select option', 1)
+        ->assertSeeIn('tr.participant:nth-child(1) .exclusion-tag-derived', 'Max')
+        ->assertCount('tr.participant:nth-child(1) select option', 1);
+
+    // One way only: the other row neither shows it nor sends it any more
+    $page->click('tr.participant:nth-child(3) .exclusion-tag-direction')
+        ->assertCount('tr.participant:nth-child(3) .exclusion-tag-oneway', 1)
+        ->assertCount('tr.participant:nth-child(3) select option', 1)
+        ->assertCount('tr.participant:nth-child(1) .exclusion-tag-derived', 0)
+        ->assertCount('tr.participant:nth-child(1) select option', 0);
+
+    // Then the other direction added in the other row: one way too, each row shows its own
+    $page->click('tr.participant:nth-child(1) .multiselect')
+        ->click('tr.participant:nth-child(1) .multiselect__element:has-text("Max")')
+        ->assertCount('tr.participant:nth-child(1) .exclusion-tag-oneway', 1)
+        ->assertCount('tr.participant:nth-child(3) .exclusion-tag-oneway', 1)
+        ->assertCount('tr.participant:nth-child(1) select option', 1);
 
     $page->type('[name="participants[0][email]"]', 'zoe@gmial.com')
         ->click('.email-suggest a')

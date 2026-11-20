@@ -117,6 +117,15 @@
         },
 
         methods: {
+            addExclusion(participant, other) {
+                participant.exclusions.push(other);
+                // The other one already excludes this participant one way: this is the other direction, one way too,
+                // so both rows keep showing their own direction (together, both ways)
+                if (other.exclusions.includes(participant)) {
+                    participant.oneWay = [...participant.oneWay, other.id];
+                }
+            },
+
             suggestEmail,
             // Only way to have parameters parsing for vuejs events
             td(key, params) {
@@ -136,6 +145,16 @@
                 return dateFromNow(amount, unit);
             },
 
+            toggleDirection(participant, exclusion) {
+                participant.oneWay = participant.oneWay.includes(exclusion.id)
+                    ? participant.oneWay.filter(id => id !== exclusion.id)
+                    : [...participant.oneWay, exclusion.id];
+            },
+            removeExclusion(participant, exclusion) {
+                participant.exclusions = participant.exclusions.filter(other => other !== exclusion);
+                participant.oneWay = participant.oneWay.filter(id => id !== exclusion.id);
+            },
+
             resetParticipants() {
                 this.participants = [];
             },
@@ -144,7 +163,8 @@
                 var n = this.participants.push({
                     name: name ? name.trim() : undefined,
                     email: email ? email.trim() : undefined,
-                    id: 'id' + this.participants.length + new Date().getTime()
+                    id: 'id' + this.participants.length + new Date().getTime(),
+                    oneWay: []
                 });
 
                 setTimeout(
@@ -159,6 +179,8 @@
                                 })
                                 .filter(p => !!p)
                         );
+                        // An imported file states each direction it wants (a final CSV excludes last year's target only)
+                        this.participants[n - 1].oneWay = this.participants[n - 1].exclusions.map(p => p.id);
                     },
                     0
                 );
@@ -336,6 +358,8 @@
                                         :name="participant.name"
                                         :email="participant.email"
                                         :exclusions="participant.exclusions"
+                                        :one-way="participant.oneWay"
+                                        :uid="participant.id"
                                         :all="participants"
                                         :required="idx < 3 && participants.length <= 3"
                                         :field-error="fieldError"
@@ -343,12 +367,14 @@
                                         @input:name="participant.name = $event"
                                         @input:email="participant.email = $event"
                                         @input:exclusions="participant.exclusions = $event"
-                                        @removeExclusion="participant.exclusions.remove($event)"
-                                        @addExclusion="participant.exclusions.push($event)"
+                                        @removeExclusion="removeExclusion(participant, $event)"
+                                        @addExclusion="addExclusion(participant, $event)"
+                                        @toggleDirection="toggleDirection(participant, $event)"
                                         @delete="participants.splice(idx, 1)"
                                     />
                                 </transition-group>
                             </table>
+                            <p class="form-text text-muted exclusions-help">{{ $t('form.participant.exclusions.help') }}</p>
                             <button type="button" class="btn btn-outline-success participant-add" @click="addParticipant()">
                                 <i class="fas fa-plus" />
                                 {{ $t('form.participant.add') }}

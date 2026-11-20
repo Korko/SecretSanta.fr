@@ -26,6 +26,15 @@
                 type: Array,
                 default: () => []
             },
+            // Ids of the exclusions that only apply in this direction (the others apply both ways)
+            oneWay: {
+                type: Array,
+                default: () => []
+            },
+            uid: {
+                type: String,
+                required: true
+            },
             all: {
                 type: Array,
                 required: true
@@ -60,7 +69,20 @@
             otherParticipants() {
                 var participants = this.all.map((participant, idx) => {participant.idx = idx; return participant;});
                 participants.splice(this.idx, 1);
-                return participants.filter(participant => !!participant.name);
+                return participants.filter(participant => !!participant.name && !this.derived.includes(participant));
+            },
+            // Excluded both ways from another row: shown here, not editable here
+            derived() {
+                return this.all.filter(participant => participant.id !== this.uid
+                    && (participant.exclusions || []).some(exclusion => exclusion.id === this.uid)
+                    && !(participant.oneWay || []).includes(this.uid)
+                    && !this.exclusions.some(exclusion => exclusion.id === participant.id));
+            },
+            // What the server gets: the reverse exclusions are sent as if typed in this row
+            sentExclusions() {
+                return [...this.exclusions, ...this.derived]
+                    .map(participant => this.all.indexOf(participant))
+                    .filter(idx => idx !== -1);
             }
         },
         created: function() {
@@ -77,6 +99,9 @@
             },
             changeExclusions(value) {
                 this.$emit('input:exclusions', value);
+            },
+            isOneWay(option) {
+                return this.oneWay.includes(option.id);
             }
         }
     };
@@ -134,7 +159,7 @@
                 label="name"
                 track-by="idx"
                 :model-value="exclusions"
-                :placeholder="$t('form.participant.exclusions.placeholder')"
+                :placeholder="derived.length ? '' : $t('form.participant.exclusions.placeholder')"
                 :multiple="true"
                 :hide-selected="true"
                 :preserve-search="true"
@@ -142,6 +167,48 @@
                 @select="$emit('addExclusion', $event)"
                 @remove="$emit('removeExclusion', $event)"
             >
+                <!-- The reverse exclusions from other rows show with this row's own ones -->
+                <template #selection="{ values, remove }">
+                    <div v-if="values.length || derived.length" class="multiselect__tags-wrap">
+                        <span
+                            v-for="other in derived"
+                            :key="'derived' + other.id"
+                            class="exclusion-tag exclusion-tag-derived"
+                            :title="$t('form.participant.exclusions.derived', { name: other.name })"
+                            @mousedown.prevent
+                        >
+                            <svg class="exclusion-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h12l-3-3M17 17H5l3 3" /></svg>
+                            {{ other.name }}
+                        </span>
+                        <span
+                            v-for="option in values"
+                            :key="option.id"
+                            class="exclusion-tag"
+                            :class="isOneWay(option) ? 'exclusion-tag-oneway' : 'exclusion-tag-both'"
+                            @mousedown.prevent
+                        >
+                            <button
+                                type="button"
+                                class="exclusion-tag-direction"
+                                :title="$t(isOneWay(option) ? 'form.participant.exclusions.oneWay' : 'form.participant.exclusions.both')"
+                                :aria-label="$t(isOneWay(option) ? 'form.participant.exclusions.oneWay' : 'form.participant.exclusions.both')"
+                                @mousedown.prevent.stop
+                                @click.stop="$emit('toggleDirection', option)"
+                            >
+                                <template v-if="isOneWay(option)"><svg class="exclusion-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14l-4-4M19 12l-4 4" /></svg></template>
+                                <template v-else><svg class="exclusion-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h12l-3-3M17 17H5l3 3" /></svg></template>
+                            </button>
+                            <span>{{ option.name }}</span>
+                            <button
+                                type="button"
+                                class="exclusion-tag-remove"
+                                :aria-label="$t('form.participant.exclusions.remove', { name: option.name })"
+                                @mousedown.prevent.stop
+                                @click.stop="remove(option)"
+                            >&times;</button>
+                        </span>
+                    </div>
+                </template>
                 <template #noOptions>
                     {{ $t('form.participant.exclusions.noOptions') }}
                 </template>
@@ -151,11 +218,11 @@
             </multiselect>
             <select style="display:none" :name="'participants[' + idx + '][exclusions][]'" multiple>
                 <option
-                    v-for="exclusion in exclusions"
-                    :key="exclusion.idx"
-                    :value="exclusion.idx"
+                    v-for="exclusionIdx in sentExclusions"
+                    :key="exclusionIdx"
+                    :value="exclusionIdx"
                     selected
-                >{{ exclusion.idx }}</option>
+                >{{ exclusionIdx }}</option>
             </select>
         </td>
         <td class="participant-remove-wrapper align-middle">
@@ -170,3 +237,57 @@
         </td>
     </tr>
 </template>
+
+<style lang="scss">
+    .exclusion-tag {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 6px 4px 0;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.4;
+        vertical-align: middle;
+
+        button {
+            background: transparent;
+            border: 0;
+            color: inherit;
+            cursor: pointer;
+            padding: 3px 6px;
+            line-height: 1;
+        }
+
+        &.exclusion-tag-both {
+            background: #276749;
+            color: #fff;
+        }
+
+        &.exclusion-tag-oneway {
+            background: #fff;
+            color: #276749;
+            border: 1px solid #276749;
+        }
+
+        &.exclusion-tag-derived {
+            background: #eef7f1;
+            color: #276749;
+            border: 1px dashed #4f8a63;
+            padding: 2px 8px;
+            gap: 4px;
+            cursor: default;
+        }
+
+        .exclusion-icon {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            vertical-align: -2px;
+        }
+    }
+</style>
+
