@@ -101,9 +101,10 @@ final class DearSantaController extends Controller
 
         $draw = $participant->draw;
         $name = $participant->name;
-        $participant->createMetric('withdraw')->addTag('by', 'participant');
-
         new ParticipantsEditor($draw)->apply([$participant], []);
+
+        // Counted once it went through: the deleted model still has its ids
+        $participant->createMetric('withdraw')->addTag('by', 'participant');
 
         $draw->notify(new ParticipantWithdrew($name));
 

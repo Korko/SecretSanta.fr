@@ -223,3 +223,25 @@ it('does not let the organizer withdraw from their participant page', function (
     ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $participant]))->assertForbidden();
     expect($participant->fresh())->not->toBeNull();
 });
+
+it('does not give a santa a target they excluded when theirs withdraws', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(5)->create();
+    // A -> B -> C, A and C exclude each other
+    $a = $draw->participants->first(fn ($p): bool => $p->target->target->isNot($p));
+    $b = $a->target;
+    $c = $b->target;
+    $a->exclusions()->attach($c);
+    $c->exclusions()->attach($a);
+
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $b]))->assertSuccessful();
+
+    $draw->refresh();
+    expect($a->fresh()->target->is($c))->toBeFalse()
+        ->and($draw->participants)->toHaveCount(4);
+    // Still everyone gives to someone else, and is given to once
+    $targets = $draw->participants->map(fn ($p) => $p->target->id);
+    expect($targets->unique())->toHaveCount(4)
+        ->and($draw->participants->every(fn ($p): bool => $p->target->isNot($p)))->toBeTrue();
+});
