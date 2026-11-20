@@ -337,3 +337,13 @@ it('lists the administrator links and revokes them', function (): void {
     $this->artisan('secretsanta:revoke-participant-limit', ['id' => $active])->assertFailed();
     assertEquals([$used], ParticipantLimit::query()->pluck('id')->all());
 });
+
+it('deletes a used administrator link with its draw', function (): void {
+    [$id] = ParticipantLimit::generate(80);
+    $draw = createServiceDraw(generateParticipants(3));
+    ParticipantLimit::query()->findOrFail($id)->consume($draw);
+
+    $draw->delete();
+
+    expect(ParticipantLimit::query()->find($id))->toBeNull();
+});

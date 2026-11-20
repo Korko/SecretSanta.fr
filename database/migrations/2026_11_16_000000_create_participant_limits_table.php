@@ -16,7 +16,8 @@ return new class extends Migration
             $table->char('code_hash', 64)->unique();
             $table->unsignedInteger('max');
             $table->timestamp('used_at')->nullable();
-            $table->foreignId('draw_id')->nullable()->constrained()->nullOnDelete();
+            // Gone with its draw: a used code can't be used again anyway (only its hash is kept)
+            $table->foreignId('draw_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
 

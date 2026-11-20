@@ -33,7 +33,7 @@ final class ListParticipantLimits extends Command
                 $limit->created_at?->toDateTimeString() ?? '',
                 $limit->used_at !== null ? 'used' : 'active',
                 $limit->used_at?->toDateTimeString() ?? '',
-                $limit->draw_id !== null ? (string) $limit->draw_id : ($limit->used_at !== null ? 'deleted' : ''),
+                $limit->draw_id !== null ? (string) $limit->draw_id : '',
             ])->all(),
         );
 
