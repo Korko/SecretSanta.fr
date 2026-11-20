@@ -57,5 +57,6 @@ return [
             'ok' => 'Abmelden',
             'cancel' => 'Abbrechen',
         ],
+        'blocked' => 'Ihre Abmeldung würde jemandem eine ausgeschlossene Person zuteilen. Bitten Sie :organizer, Sie über die Organisationsseite zu entfernen.',
     ],
 ];

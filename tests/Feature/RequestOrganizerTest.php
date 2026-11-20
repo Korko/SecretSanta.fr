@@ -571,3 +571,26 @@ test('renaming the participating organizer keeps the draw organizer name in sync
 
     expect($draw->fresh()->organizer_name)->toBe('Orga');
 });
+
+test('the organizer can force a removal that breaks an exclusion, a participant cannot', function (): void {
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    Notification::fake();
+    // A -> B -> C -> D -> A, and A excludes C and D: once B leaves, only an exclusion can be broken
+    [$a, $b, $c, $d] = $draw->participants->all();
+    foreach ([[$a, $b], [$b, $c], [$c, $d], [$d, $a]] as [$santa, $target]) {
+        $target->santa()->associate($santa)->save();
+    }
+
+    $a->exclusions()->attach([$c->id, $d->id]);
+
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $b]))
+        ->assertStatus(422)->assertJsonValidationErrors('exclusions');
+
+    $url = URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]);
+    ajaxPost($url, ['remove' => [$b->hash]])->assertStatus(422)->assertJsonValidationErrors('exclusions');
+    assertEquals(4, $draw->fresh()->participants->count());
+
+    ajaxPost($url, ['remove' => [$b->hash], 'force' => 1])->assertSuccessful();
+    expect($draw->fresh()->participants)->toHaveCount(3)
+        ->and($a->fresh()->target->is($c))->toBeTrue();
+});

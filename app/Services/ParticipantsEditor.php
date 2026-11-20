@@ -24,7 +24,8 @@ final class ParticipantsEditor
     /** @var array<int|string, int|string> santa id => target id (new participants have string keys) */
     private array $targets = [];
 
-    public function __construct(private readonly Draw $draw) {}
+    // ignoreExclusions: the organizer forcing a removal no santa could absorb without breaking an exclusion
+    public function __construct(private readonly Draw $draw, private readonly bool $ignoreExclusions = false) {}
 
     /**
      * @param  array<Participant>  $remove
@@ -133,7 +134,7 @@ final class ParticipantsEditor
                 }
             }
 
-            throw ValidationException::withMessages(['participants' => trans('organizer.cannot_withdraw', ['name' => $participant->name])]);
+            throw ValidationException::withMessages(['exclusions' => trans('organizer.cannot_withdraw', ['name' => $participant->name])]);
         }
 
         // A <-> B: splice A into another pair, C -> D => C -> A -> D
@@ -147,15 +148,16 @@ final class ParticipantsEditor
             }
         }
 
-        throw ValidationException::withMessages(['participants' => trans('organizer.cannot_withdraw', ['name' => $participant->name])]);
+        throw ValidationException::withMessages(['exclusions' => trans('organizer.cannot_withdraw', ['name' => $participant->name])]);
     }
 
-    // Whether santa may give to target (new participants have no exclusions)
+    // Whether santa may give to target (new participants have no exclusions). A refusal comes under the
+    // "exclusions" key: the organizer panel then offers to force the change (ignoreExclusions)
     /** @param  array<int, Participant>  $participants */
     private function allowed(int|string $santa, int|string $target, array $participants): bool
     {
         return $santa !== $target
-            && (! isset($participants[$santa]) || $participants[$santa]->exclusions->doesntContain('id', $target));
+            && ($this->ignoreExclusions || ! isset($participants[$santa]) || $participants[$santa]->exclusions->doesntContain('id', $target));
     }
 
     // A -> B => A -> new -> B, with a random A so the new participant's santa can't be guessed

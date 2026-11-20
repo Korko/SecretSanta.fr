@@ -85,7 +85,8 @@ export default {
                     "help": "Type \"[+:verification]\" below to confirm.",
                     "ok": "Withdraw",
                     "cancel": "Cancel"
-                }
+                },
+                "blocked": "Your withdrawal would give someone a person they excluded. Ask {organizer} to remove you from their organizer page."
             }
         },
         "faq": {
@@ -282,7 +283,7 @@ export default {
                 "received_count": "{received}/{total} participants confirmed receiving their email (reply, page visit or acknowledgement)"
             },
             "up_and_sent": "Successfully updated!",
-            "cannot_withdraw": "Unable to remove {name}",
+            "cannot_withdraw": "Unable to remove {name} without giving someone a person they excluded",
             "withdrawn": "{name} no longer takes part in the event.",
             "deleted": "All data has been deleted",
             "download": {
@@ -354,7 +355,11 @@ export default {
                     "cancel": "Cancel"
                 }
             },
-            "expired": "Your event is over ({expires_at}). Some actions are no longer available, such as resending the target name to a participant."
+            "expired": "Your event is over ({expires_at}). Some actions are no longer available, such as resending the target name to a participant.",
+            "force": {
+                "title": "Force the removal?",
+                "body": "You can force it: the exclusions will be ignored for this change, and a secret santa may get a person they had excluded."
+            }
         },
         "validation": {
             "accepted": "The {attribute} field must be accepted.",

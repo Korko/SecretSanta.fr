@@ -57,5 +57,6 @@ return [
             'ok' => 'Withdraw',
             'cancel' => 'Cancel',
         ],
+        'blocked' => 'Your withdrawal would give someone a person they excluded. Ask :organizer to remove you from their organizer page.',
     ],
 ];

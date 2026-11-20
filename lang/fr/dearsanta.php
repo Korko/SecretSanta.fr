@@ -57,5 +57,6 @@ return [
             'ok' => 'Me désister',
             'cancel' => 'Annuler',
         ],
+        'blocked' => 'Votre désistement donnerait à quelqu\'un une personne qu\'il ou elle a exclue. Demandez à :organizer de vous retirer depuis sa page d\'organisation.',
     ],
 ];

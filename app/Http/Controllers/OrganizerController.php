@@ -205,6 +205,7 @@ final class OrganizerController extends Controller
             'remove' => ['array'],
             'remove.*' => ['distinct', Rule::in($hashes)],
             'add' => ['array'],
+            'force' => ['boolean'],
             'add.*.name' => ['required', 'string', 'distinct', Rule::notIn($names)],
             'add.*.email' => ['required', 'email', function (string $attribute, mixed $value, Closure $fail) use ($draw): void {
                 if (is_string($value) && $draw->refusesEmail($value)) {
@@ -222,7 +223,7 @@ final class OrganizerController extends Controller
         $remove = $draw->participants->whereIn('hash', $request->array('remove'))->values()->all();
         /** @var list<array{name: string, email: string}> $add validated above */
         $add = array_values($request->array('add'));
-        new ParticipantsEditor($draw)->apply($remove, $add);
+        new ParticipantsEditor($draw, ignoreExclusions: $request->boolean('force'))->apply($remove, $add);
 
         $draw->createMetric('participants_changed')
             ->addExtra('added', count($add))
