@@ -329,10 +329,9 @@ it('lists the administrator links and revokes them', function (): void {
     [$used] = ParticipantLimit::generate(100);
     ParticipantLimit::query()->findOrFail($used)->consume(createServiceDraw(generateParticipants(3)));
 
-    $this->artisan('secretsanta:participant-limits')
-        ->expectsOutputToContain('active')
-        ->expectsOutputToContain('used')
-        ->assertSuccessful();
+    // One expectation per run: a matched output line is consumed, and the table is written at once
+    $this->artisan('secretsanta:participant-limits')->expectsOutputToContain('active')->assertSuccessful();
+    $this->artisan('secretsanta:participant-limits')->expectsOutputToContain('used')->assertSuccessful();
 
     $this->artisan('secretsanta:revoke-participant-limit', ['id' => $active])->assertSuccessful();
     $this->artisan('secretsanta:revoke-participant-limit', ['id' => $active])->assertFailed();
