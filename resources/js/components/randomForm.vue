@@ -348,9 +348,9 @@
                                         @input:name="participant.name = $event"
                                         @input:email="participant.email = $event"
                                         @input:exclusions="participant.exclusions = $event"
-                                        @removeExclusion="participant.exclusions.remove($event); participant.oneWay.remove($event.id)"
+                                        @removeExclusion="participant.exclusions = participant.exclusions.filter(other => other !== $event); participant.oneWay = participant.oneWay.filter(id => id !== $event.id)"
                                         @addExclusion="participant.exclusions.push($event)"
-                                        @toggleDirection="participant.oneWay.includes($event.id) ? participant.oneWay.remove($event.id) : participant.oneWay.push($event.id)"
+                                        @toggleDirection="participant.oneWay = participant.oneWay.includes($event.id) ? participant.oneWay.filter(id => id !== $event.id) : [...participant.oneWay, $event.id]"
                                         @delete="participants.splice(idx, 1)"
                                     />
                                 </transition-group>
