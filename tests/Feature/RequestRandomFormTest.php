@@ -243,3 +243,11 @@ it('records the participating organizer explicitly', function (): void {
 
     expect($first->fresh()->isOrganizer())->toBeTrue();
 });
+
+it('limits the number of draws per hour from the same address', function (): void {
+    for ($i = 0; $i < 20; $i++) {
+        ajaxPost('/', [])->assertStatus(422);
+    }
+
+    ajaxPost('/', [])->assertStatus(429);
+});

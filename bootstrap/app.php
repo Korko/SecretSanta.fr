@@ -13,6 +13,7 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\ValidationException;
@@ -44,7 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
             PreventRequestForgery::class,
         ]);
         // Locale from the domain (APP_DOMAIN_*), APP_LOCALE otherwise
-        $middleware->web(append: [Language::class, SecurityHeaders::class]);
+        $middleware->web(append: [Language::class, SecurityHeaders::class, ThrottleRequests::using('global')]);
 
         $middleware->priority([
             SubstituteBindings::class,
