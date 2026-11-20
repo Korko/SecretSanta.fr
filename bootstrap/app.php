@@ -10,9 +10,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\ValidationException;
@@ -44,7 +46,7 @@ return Application::configure(basePath: dirname(__DIR__))
             PreventRequestForgery::class,
         ]);
         // Locale from the domain (APP_DOMAIN_*), APP_LOCALE otherwise
-        $middleware->web(append: [Language::class, SecurityHeaders::class]);
+        $middleware->web(append: [Language::class, SecurityHeaders::class, ThrottleRequests::using('global')]);
 
         $middleware->priority([
             SubstituteBindings::class,
@@ -67,4 +69,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(fn (InvalidSignatureException $e, HttpRequest $request) => $request->expectsJson()
             ? response()->json(['message' => trans('error.signature')], 403)
             : response()->view('missingDraw', [], 403));
+
+        // Too many draws or emails: the form shows this message, not Laravel's "Too Many Attempts."
+        $exceptions->render(fn (ThrottleRequestsException $e, HttpRequest $request) => $request->expectsJson()
+            ? response()->json(['message' => trans('error.throttle')], 429, $e->getHeaders())
+            : null);
     })->create();

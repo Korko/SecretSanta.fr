@@ -20,4 +20,5 @@ return [
         'resendDelayTooShort' => 'Sie haben diese E-Mail-Adresse kürzlich bereits geändert. Bitte warten Sie etwas länger.',
         'tooEarly' => 'Aus Sicherheitsgründen ist dieser Vorgang in den ersten :minutes Minuten nach der Auslosung nicht verfügbar.',
     ],
+    'throttle' => 'Zu viele Anfragen von Ihrer Verbindung. Bitte versuchen Sie es etwas später erneut.',
 ];

@@ -20,4 +20,5 @@ return [
         'resendDelayTooShort' => 'Vous avez déjà modifié cette adresse email il y a peu de temps. Merci de patienter un peu.',
         'tooEarly' => 'Pour des raisons de sécurité, cette opération n\'est pas disponible dans les :minutes premières minutes après le tirage au sort.',
     ],
+    'throttle' => 'Trop de demandes depuis votre connexion. Veuillez réessayer un peu plus tard.',
 ];

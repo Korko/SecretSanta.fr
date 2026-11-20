@@ -8,11 +8,15 @@ use App\Mail\DkimTransport;
 use App\Solvers\HatSolver;
 use App\Solvers\SolverInterface;
 use DrawCrypt;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Http\Request;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Crypto\DkimSigner;
 
 final class AppServiceProvider extends ServiceProvider
@@ -48,6 +52,21 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->bootJobs();
         $this->bootMail();
+        $this->bootRateLimiters();
+    }
+
+    // Here and not in routes/web.php, which is not loaded once the routes are cached
+    public function bootRateLimiters(): void
+    {
+        // Every page and call (whole web group, see bootstrap/app.php)
+        RateLimiter::for('global', fn (Request $request): Limit => Limit::perMinute(100)->by((string) $request->ip()));
+
+        // Each of these sends emails, to any address for a new draw: keeps the domain reputation safe from spam.
+        // Only the requests that went through count: a refused form (no solution, typo) sends nothing
+        RateLimiter::for('draw', fn (Request $request): Limit => Limit::perHour(20)->by((string) $request->ip())
+            ->after(fn (Response $response): bool => $response->isSuccessful()));
+        RateLimiter::for('email', fn (Request $request): Limit => Limit::perHour(60)->by((string) $request->ip())
+            ->after(fn (Response $response): bool => $response->isSuccessful()));
     }
 
     public function bootMail(): void

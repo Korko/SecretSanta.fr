@@ -20,4 +20,5 @@ return [
         'resendDelayTooShort' => 'You recently changed this email address already. Please wait a little.',
         'tooEarly' => 'For security reasons, this operation is not available during the first :minutes minutes after the draw.',
     ],
+    'throttle' => 'Too many requests from your connection. Please try again a little later.',
 ];
