@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\ReportReason;
+use App\Events\ParticipantUpdated;
 use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
 use App\Models\GiftSuggestion;
@@ -23,6 +24,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Notification;
@@ -65,18 +67,8 @@ final class DearSantaController extends Controller
             'isOrganizer' => $participant->isOrganizer(),
             'email' => $participant->email,
             'suggestionRecipients' => $this->suggestionRecipients($participant)->mapWithKeys(fn (Participant $recipient): array => [$recipient->hash => $recipient->name]),
-            'suggestions' => $participant->sentSuggestions->load('recipient')->mapWithKeys(fn (GiftSuggestion $suggestion): array => [
-                $suggestion->mail->id => $this->publicSuggestion($suggestion),
-            ]),
-            // Ideas others gave for their target, like the target's own messages (they follow a change of target)
-            'receivedSuggestions' => $participant->target->receivedSuggestions->load('sender')
-                ->reject(fn (GiftSuggestion $suggestion): bool => $suggestion->sender_id === $participant->id)
-                ->map(fn (GiftSuggestion $suggestion): array => [
-                    'id' => $suggestion->mail->id,
-                    'mail_body' => $suggestion->mail_body,
-                    'sender' => $suggestion->signed ? $suggestion->sender->name : null,
-                    'created_at' => $suggestion->mail->created_at,
-                ])->values(),
+            'suggestions' => $this->sentSuggestions($participant),
+            'receivedSuggestions' => $this->receivedSuggestions($participant),
             'pendingEmail' => $this->pendingEmail($participant),
             'emails' => $participant->dearSantas->mapWithKeys(fn ($email): array => [
                 $email->mail->id => $email->only($this->dearSantaPublicFields),
@@ -137,6 +129,8 @@ final class DearSantaController extends Controller
         $participant->createMetric('gift_suggestion')->addTag('signed', $suggestion->signed ? 'yes' : 'no');
 
         $recipient->santa->notify(new GiftSuggestionNotification($suggestion));
+        event(new ParticipantUpdated($recipient->santa));
+        event(new ParticipantUpdated($participant));
 
         return response()->json([
             'message' => trans('message.sent'),
@@ -249,9 +243,12 @@ final class DearSantaController extends Controller
         ]);
     }
 
+    // What the page refetches on a participant.update event (ParticipantUpdated)
     public function fetchState(Participant $participant): JsonResponse
     {
         return response()->json([
+            'suggestions' => $this->sentSuggestions($participant),
+            'receivedSuggestions' => $this->receivedSuggestions($participant),
             'emails' => $participant->dearSantas->mapWithKeys(fn ($dearSanta): array => [
                 $dearSanta->mail->id => $dearSanta->only($this->dearSantaPublicFields),
             ]),
@@ -316,6 +313,7 @@ final class DearSantaController extends Controller
         $dearSanta->save();
 
         $participant->createMetric('dearSanta');
+        event(new ParticipantUpdated($participant)); // their other open tabs
 
         $participant->santa->notify(new DearSantaNotification($dearSanta));
 
@@ -347,6 +345,27 @@ final class DearSantaController extends Controller
         return $participant->draw->participants
             ->reject(fn (Participant $other): bool => $other->id === $participant->id || $other->id === $targetId)
             ->values();
+    }
+
+    /** @return SupportCollection<int, array{mail_body: string, signed: bool, recipient: string, mail: Mail}> */
+    private function sentSuggestions(Participant $participant): SupportCollection
+    {
+        return $participant->sentSuggestions()->with('recipient')->get()
+            ->mapWithKeys(fn (GiftSuggestion $suggestion): array => [$suggestion->mail->id => $this->publicSuggestion($suggestion)]);
+    }
+
+    // Ideas others gave for their target, like the target's own messages (they follow a change of target)
+    /** @return SupportCollection<int, array{id: int, mail_body: string, sender: string|null, created_at: mixed}> */
+    private function receivedSuggestions(Participant $participant): SupportCollection
+    {
+        return $participant->target->receivedSuggestions()->with('sender')->get()
+            ->reject(fn (GiftSuggestion $suggestion): bool => $suggestion->sender_id === $participant->id)
+            ->map(fn (GiftSuggestion $suggestion): array => [
+                'id' => $suggestion->mail->id,
+                'mail_body' => $suggestion->mail_body,
+                'sender' => $suggestion->signed ? $suggestion->sender->name : null,
+                'created_at' => $suggestion->mail->created_at,
+            ])->values();
     }
 
     /** @return array{mail_body: string, signed: bool, recipient: string, mail: Mail} */

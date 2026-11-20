@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Events\ParticipantUpdated;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\DearSanta;
@@ -105,6 +106,7 @@ final class ParticipantsEditor
                 // So do the gift ideas others gave for them, but their own
                 $santa->target->receivedSuggestions->where('sender_id', '!=', $santa->id)
                     ->each(fn ($suggestion) => $santa->notify(new GiftSuggestion($suggestion)));
+                event(new ParticipantUpdated($santa)); // an open page shows the new target's ideas
             }
         }
     }
