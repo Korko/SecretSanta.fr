@@ -105,7 +105,7 @@ final class ParticipantsEditor
                 $santa->target->dearSantas->each(fn ($dearSanta) => $santa->notify(new DearSanta($dearSanta)));
                 // So do the gift ideas others gave for them, but their own
                 $santa->target->receivedSuggestions->where('sender_id', '!=', $santa->id)
-                    ->each(fn ($suggestion) => $santa->notify(new GiftSuggestion($suggestion)));
+                    ->each(fn ($suggestion) => $santa->notify(new GiftSuggestion($suggestion, tracked: false)));
                 event(new ParticipantUpdated($santa)); // an open page shows the new target's ideas
             }
         }
