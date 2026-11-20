@@ -145,6 +145,11 @@
                 return dateFromNow(amount, unit);
             },
 
+            toggleDirection(participant, exclusion) {
+                participant.oneWay = participant.oneWay.includes(exclusion.id)
+                    ? participant.oneWay.filter(id => id !== exclusion.id)
+                    : [...participant.oneWay, exclusion.id];
+            },
             removeExclusion(participant, exclusion) {
                 participant.exclusions = participant.exclusions.filter(other => other !== exclusion);
                 participant.oneWay = participant.oneWay.filter(id => id !== exclusion.id);
@@ -364,7 +369,7 @@
                                         @input:exclusions="participant.exclusions = $event"
                                         @removeExclusion="removeExclusion(participant, $event)"
                                         @addExclusion="addExclusion(participant, $event)"
-                                        @toggleDirection="participant.oneWay = participant.oneWay.includes($event.id) ? participant.oneWay.filter(id => id !== $event.id) : [...participant.oneWay, $event.id]"
+                                        @toggleDirection="toggleDirection(participant, $event)"
                                         @delete="participants.splice(idx, 1)"
                                     />
                                 </transition-group>
