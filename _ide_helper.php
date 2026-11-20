@@ -24857,6 +24857,7 @@ namespace App\Facades {
          * @param array<int, mixed> $participants indexed by participant id
          * @param array<int, list<int>> $exclusions participant id => excluded ids
          * @return array<int, int> santa id => target id
+         * @throws SolverException when no draw is possible
          * @static
          */
         public static function one($participants, $exclusions = [])
@@ -24866,15 +24867,16 @@ namespace App\Facades {
         }
 
         /**
+         * Whether a draw is possible, without making one
+         *
          * @param array<int, mixed> $participants indexed by participant id
          * @param array<int, list<int>> $exclusions participant id => excluded ids
-         * @return Generator<int, array<int, int>, mixed, void>
          * @static
          */
-        public static function all($participants, $exclusions = [])
+        public static function solvable($participants, $exclusions = [])
         {
             /** @var \App\Solvers\HatSolver $instance */
-            return $instance->all($participants, $exclusions);
+            return $instance->solvable($participants, $exclusions);
         }
 
             }

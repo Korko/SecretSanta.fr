@@ -5,144 +5,176 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use App\Exceptions\SolverException;
+use App\Solvers\HatSolver;
+use Random\Engine\Mt19937;
+use Random\Randomizer;
 use Solver;
 use Tests\TestCase;
 
 final class SolverTest extends TestCase
 {
-    public const int LOOP_NUMBER = 100;
+    private HatSolver $solver;
 
-    public function assertCombination($expected, $combinations, $participants): void
+    protected function setUp(): void
     {
-        $actual = [];
-        foreach ($combinations as $combination) {
-            array_walk($combination, function (&$idx) use ($participants): void {
-                $idx = $participants[$idx];
-            });
+        parent::setUp();
 
-            $actual[] = implode('', $combination);
+        // Seeded: the draws, and so the statistics below, are the same on every run
+        $this->solver = new HatSolver(new Randomizer(new Mt19937(2026)));
+    }
+
+    public function test_two_participants_draw_each_other(): void
+    {
+        $this->assertSame([0 => 1, 1 => 0], $this->solver->one(['A', 'B']));
+    }
+
+    public function test_the_registered_solver_draws(): void
+    {
+        $this->assertDraw(Solver::one(['A', 'B', 'C']), 3);
+        $this->assertTrue(Solver::solvable(['A', 'B', 'C']));
+    }
+
+    public function test_draws_a_single_loop(): void
+    {
+        $seen = [];
+        for ($i = 0; $i < 100; $i++) {
+            $seen[implode('', $this->solver->one(['A', 'B', 'C']))] = true;
         }
 
-        sort($actual);
-        sort($expected);
+        ksort($seen);
+        $this->assertSame(['120', '201'], array_map(strval(...), array_keys($seen)));
 
-        $this->assertEquals(serialize($actual), serialize($expected));
+        for ($i = 0; $i < 200; $i++) {
+            $draw = $this->solver->one(range(0, 9));
+
+            $this->assertDraw($draw, 10);
+            $this->assertSame(1, $this->loops($draw));
+        }
     }
 
-    public function test_no_exclusion(): void
+    public function test_respects_exclusions(): void
     {
-        $participants = ['A', 'B'];
-        $this->assertCombination([
-            'BA',
-        ], Solver::all($participants), $participants);
+        // A cannot draw C: A -> B -> C -> A is the only draw left
+        for ($i = 0; $i < 20; $i++) {
+            $this->assertSame([0 => 1, 1 => 2, 2 => 0], $this->solver->one(['A', 'B', 'C'], [0 => [2]]));
+        }
 
-        $participants = ['A', 'B', 'C'];
-        $this->assertCombination([
-            'BCA', 'CAB',
-        ], Solver::all($participants), $participants);
+        // Five couples who don't draw each other
+        $couples = array_map(fn (int $id): array => [$id ^ 1], range(0, 9));
+        for ($i = 0; $i < 200; $i++) {
+            $draw = $this->solver->one(range(0, 9), $couples);
 
-        $participants = ['A', 'B', 'C', 'D'];
-        $this->assertCombination([
-            'BCDA', 'BDAC', 'BADC',
-            'CDAB', 'CADB', 'CDBA',
-            'DABC', 'DCBA', 'DCAB',
-        ], Solver::all($participants), $participants);
+            $this->assertDraw($draw, 10, $couples);
+            $this->assertSame(1, $this->loops($draw));
+        }
     }
 
-    public function test_simple_exclusion(): void
+    public function test_keeps_the_participant_ids(): void
     {
-        // A => C
-        $participants = ['A', 'B', 'C'];
-        $this->assertCombination([
-            'BCA',
-        ], Solver::all($participants, [0 => [2]]), $participants);
+        $draw = $this->solver->one([57 => 'A', 3 => 'B', 12 => 'C', 40 => 'D'], [3 => [12]]);
+
+        $this->assertSame([3, 12, 40, 57], array_keys($draw));
+        $this->assertEqualsCanonicalizing([3, 12, 40, 57], array_values($draw));
+        $this->assertNotSame(12, $draw[3]);
+        $this->assertSame(1, $this->loops($draw));
+    }
+
+    /**
+     * No draw is more likely than another, whatever the order of the participants in the form
+     */
+    public function test_every_loop_is_as_likely(): void
+    {
+        $draws = [];
+        $pairs = [];
+        for ($i = 0; $i < 24000; $i++) {
+            $draw = $this->solver->one(range(0, 4));
+
+            $key = implode('', $draw);
+            $draws[$key] = ($draws[$key] ?? 0) + 1;
+            foreach ($draw as $santa => $target) {
+                $pairs[$santa.$target] = ($pairs[$santa.$target] ?? 0) + 1;
+            }
+        }
+
+        // The 4! loops of 5 participants, 1000 times each on average
+        $this->assertCount(24, $draws);
+        $this->assertGreaterThan(880, min($draws));
+        $this->assertLessThan(1120, max($draws));
+
+        // Each santa draws each of the 4 others a quarter of the time
+        $this->assertCount(20, $pairs);
+        $this->assertGreaterThan(5700, min($pairs));
+        $this->assertLessThan(6300, max($pairs));
+    }
+
+    public function test_random(): void
+    {
+        $draws = [];
+        for ($i = 0; $i < 1000; $i++) {
+            $draws[implode(',', $this->solver->one(range('A', 'Z')))] = true;
+        }
+
+        $this->assertCount(1000, $draws);
     }
 
     public function test_impossible_solution(): void
     {
-        $participants = ['A', 'B', 'C'];
-        $this->assertCombination([], Solver::all($participants, [0 => [1, 2]]), $participants);
-        $this->assertCombination([], Solver::all($participants, [2 => [0, 1]]), $participants);
+        // A cannot draw anyone, nobody can draw C
+        $this->assertUnsolvable(['A', 'B', 'C'], [0 => [1, 2]]);
+        $this->assertUnsolvable(['A', 'B', 'C'], [0 => [2], 1 => [2]]);
+        $this->assertUnsolvable(['A']);
+    }
 
-        // Nobody can draw 0: fails fast instead of exploring the 11! combinations
+    /**
+     * Everyone can draw someone and be drawn by someone, yet 0 and 1 can only be drawn by 2:
+     * trying every combination would take hours from 15 participants on
+     */
+    public function test_impossible_solution_is_found_quickly(): void
+    {
+        $exclusions = array_map(fn (int $id): array => $id === 2 ? [] : [0, 1], range(0, 49));
+
         $start = microtime(true);
-        $this->assertCombination([], Solver::all(range(0, 11), array_fill(1, 11, [0])), range(0, 11));
+        $this->assertUnsolvable(range(0, 49), $exclusions);
         $this->assertLessThan(1, microtime(true) - $start);
     }
 
-    public function test_one(): void
+    /**
+     * Two teams drawing only in the other one: too few circles fit for the shuffles to find one
+     */
+    public function test_dense_exclusions_still_give_a_single_loop(): void
     {
-        $this->assertTrue((function (): bool {
-            $solutions = [
-                [0 => 1, 1 => 2, 2 => 0],
-                [0 => 2, 1 => 0, 2 => 1],
-            ];
-            $valid = [];
+        $teams = array_map(fn (int $id): array => $id < 10 ? range(0, 9) : range(10, 19), range(0, 19));
 
-            for ($i = 0; $i < self::LOOP_NUMBER; $i++) {
-                $solution = Solver::one(['A', 'B', 'C']);
+        for ($i = 0; $i < 20; $i++) {
+            $draw = $this->solver->one(range(0, 19), $teams);
 
-                $solutionIdx = array_search($solution, $solutions, true);
-                $valid[$solutionIdx] = true;
+            $this->assertDraw($draw, 20, $teams);
+            $this->assertSame(1, $this->loops($draw));
+        }
+    }
 
-                if (count($valid) === count($solutions)) {
-                    return true;
-                }
-            }
+    public function test_several_loops_when_the_exclusions_leave_no_single_one(): void
+    {
+        // A and B can only draw each other, and so do C and D
+        $exclusions = [0 => [2, 3], 1 => [2, 3], 2 => [0, 1], 3 => [0, 1]];
 
-            return false;
-        })());
+        $this->assertTrue($this->solver->solvable(range(0, 3), $exclusions));
+        $this->assertSame([0 => 1, 1 => 0, 2 => 3, 3 => 2], $this->solver->one(range(0, 3), $exclusions));
     }
 
     public function test_mass(): void
     {
-        // 702 characters from 'A' to 'ZZ'
+        // 702 participants, from 'A' to 'ZZ'
         $participants = [];
         for ($n = 'A'; $n !== 'AAA'; $n++) {
             $participants[] = $n;
         }
 
-        try {
-            $this->assertNotEquals(null, Solver::one($participants));
-        } catch (SolverException) {
-            $this->fail('No exception expected');
-        }
-    }
+        $draw = $this->solver->one($participants);
 
-    /**
-     * Test if the system is random enough
-     */
-    public function test_random(): void
-    {
-        // 26 characters from 'A' to 'Z'
-        $participants = range('A', 'Z');
-
-        // Let's run the algo N times
-        $solutions = [];
-        for ($i = 0; $i < 10000; $i++) {
-            try {
-                $solution = Solver::one($participants);
-                ksort($solution, SORT_NUMERIC);
-                $solutions[] = json_encode($solution);
-            } catch (SolverException) {
-                $this->fail('No exception expected');
-            }
-        }
-
-        // And now count how many times we had each solution
-        $solutionsAndCount = [];
-        foreach ($solutions as $solution) {
-            if (! isset($solutionsAndCount[$solution])) {
-                $solutionsAndCount[$solution] = 0;
-                foreach ($solutions as $solution2) {
-                    if ($solution === $solution2) {
-                        $solutionsAndCount[$solution]++;
-                    }
-                }
-            }
-        }
-
-        $this->assertTrue(count($solutionsAndCount) === count($solutions)); // We accept 1 redudency in solutions
+        $this->assertDraw($draw, 702);
+        $this->assertSame(1, $this->loops($draw));
+        $this->assertTrue($this->solver->solvable($participants));
     }
 
     /**
@@ -150,11 +182,65 @@ final class SolverTest extends TestCase
      */
     public function test_several_exclusions(): void
     {
-        $participants = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
-        try {
-            $this->assertNotEquals(null, Solver::one($participants, [0 => [7, 10, 4, 13], 1 => [10], 6 => [11, 10], 7 => [0], 8 => [9, 10, 7], 10 => [0, 6], 11 => [6], 14 => [0, 1, 2, 4, 5, 6, 8, 6, 9, 10, 11, 12, 13]]));
-        } catch (SolverException) {
-            $this->fail('No exception expected');
+        $exclusions = [0 => [7, 10, 4, 13], 1 => [10], 6 => [11, 10], 7 => [0], 8 => [9, 10, 7], 10 => [0, 6], 11 => [6], 14 => [0, 1, 2, 4, 5, 6, 8, 6, 9, 10, 11, 12, 13]];
+
+        for ($i = 0; $i < 50; $i++) {
+            $draw = $this->solver->one(range(0, 14), $exclusions);
+
+            $this->assertDraw($draw, 15, $exclusions);
+            $this->assertSame(1, $this->loops($draw));
         }
+    }
+
+    /**
+     * @param  array<int, int>  $draw
+     * @param  array<int, list<int>>  $exclusions
+     */
+    private function assertDraw(array $draw, int $count, array $exclusions = []): void
+    {
+        $this->assertSame(range(0, $count - 1), array_keys($draw));
+        $this->assertEqualsCanonicalizing(range(0, $count - 1), array_values($draw));
+
+        foreach ($draw as $santa => $target) {
+            $this->assertNotSame($santa, $target);
+            $this->assertNotContains($target, $exclusions[$santa] ?? []);
+        }
+    }
+
+    /**
+     * @param  array<int, string|int>  $participants
+     * @param  array<int, list<int>>  $exclusions
+     */
+    private function assertUnsolvable(array $participants, array $exclusions = []): void
+    {
+        $this->assertFalse($this->solver->solvable($participants, $exclusions));
+
+        try {
+            $this->solver->one($participants, $exclusions);
+            $this->fail('A draw was made');
+        } catch (SolverException) {
+            // Expected
+        }
+    }
+
+    /**
+     * @param  array<int, int>  $draw
+     */
+    private function loops(array $draw): int
+    {
+        $loops = 0;
+        $seen = [];
+        foreach (array_keys($draw) as $santa) {
+            if (isset($seen[$santa])) {
+                continue;
+            }
+
+            $loops++;
+            for ($current = $santa; ! isset($seen[$current]); $current = $draw[$current]) {
+                $seen[$current] = true;
+            }
+        }
+
+        return $loops;
     }
 }
