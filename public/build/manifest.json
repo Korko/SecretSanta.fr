@@ -214,7 +214,7 @@
     ]
   },
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm-sizCIJ7o.js",
+    "file": "assets/randomForm-B5X0BpZk.js",
     "name": "randomForm",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
@@ -226,7 +226,7 @@
       "_tooltip-B6d76z4L.js"
     ],
     "css": [
-      "assets/randomForm-DkkDFxwC.css"
+      "assets/randomForm-D7XLAjcJ.css"
     ],
     "assets": [
       "assets/srikanta-h-u-TrGVhbsUf40-unsplash-BLvCjRi5.webp"
@@ -271,7 +271,7 @@
     ]
   },
   "resources/sass/vendor.scss": {
-    "file": "assets/vendor-ZDhRcnVF.css",
+    "file": "assets/vendor-DuScWdF4.css",
     "name": "vendor",
     "names": [
       "vendor.css"
