@@ -17,4 +17,5 @@ return [
     'target_renamed.body' => 'L\'organisateur/organisatrice a changé le nom de votre cible de « :old » en « :new ».',
     'target_renamed.same' => 'C\'est toujours la même personne : vous lui faites toujours votre cadeau, rien d\'autre ne change.',
     'participant_email_code.title' => 'SecretSanta - Votre code de confirmation : :code',
+    'participant_withdrew.title' => 'SecretSanta #:draw - :name s\'est désisté(e)',
 ];

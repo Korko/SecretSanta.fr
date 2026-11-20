@@ -74,6 +74,18 @@ export default {
                 "wrong_code": "This code is not the right one.",
                 "expired": "This code is no longer valid, ask for a new one.",
                 "same": "This is already your address."
+            },
+            "withdraw": {
+                "button": "I no longer want to take part",
+                "done": "You no longer take part in this event. Your secret santa got a new target and the organizer has been told.",
+                "confirm": {
+                    "title": "Withdraw from the event?",
+                    "body": "You will leave the draw for good: your secret santa will get a new target, {organizer} will be told by email and this page will stop working. If this email was not meant for you or you never asked to take part, use the report instead.",
+                    "value": "Withdraw",
+                    "help": "Type \"[+:verification]\" below to confirm.",
+                    "ok": "Withdraw",
+                    "cancel": "Cancel"
+                }
             }
         },
         "faq": {

@@ -74,6 +74,18 @@ export default {
                 "wrong_code": "Dieser Code ist nicht richtig.",
                 "expired": "Dieser Code ist nicht mehr gültig, fordern Sie einen neuen an.",
                 "same": "Das ist bereits Ihre Adresse."
+            },
+            "withdraw": {
+                "button": "Ich möchte nicht mehr teilnehmen",
+                "done": "Sie nehmen nicht mehr an dieser Veranstaltung teil. Ihr geheimer Weihnachtsmann hat einen neuen Empfänger erhalten und die Organisation wurde benachrichtigt.",
+                "confirm": {
+                    "title": "Von der Veranstaltung abmelden?",
+                    "body": "Sie verlassen die Auslosung endgültig: Ihr geheimer Weihnachtsmann erhält einen neuen Empfänger, {organizer} wird per E-Mail benachrichtigt und diese Seite funktioniert nicht mehr. Wenn diese E-Mail nicht für Sie bestimmt war oder Sie nie teilnehmen wollten, nutzen Sie stattdessen die Meldung.",
+                    "value": "Abmelden",
+                    "help": "Geben Sie unten \"[+:verification]\" ein, um zu bestätigen.",
+                    "ok": "Abmelden",
+                    "cancel": "Abbrechen"
+                }
             }
         },
         "faq": {

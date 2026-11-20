@@ -3,7 +3,7 @@
 
     import { required } from '@vuelidate/validators'
 
-    import alertify from '../partials/alertify.js';
+    import alertify, { hardConfirm } from '../partials/alertify.js';
     import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
 
@@ -123,6 +123,22 @@
                         this.showEmailChange = false;
                         alertify.confirmAlert(data.message);
                     })
+                    .catch(this.alertError);
+            },
+            confirmWithdraw() {
+                // Permanent: typed, like the organizer removing someone
+                hardConfirm({
+                    title: this.$t('dearsanta.withdraw.confirm.title'),
+                    body: this.$t('dearsanta.withdraw.confirm.body', { organizer: this.data.organizer }),
+                    word: this.$t('dearsanta.withdraw.confirm.value'),
+                    help: this.$t('dearsanta.withdraw.confirm.help'),
+                    ok: this.$t('dearsanta.withdraw.confirm.ok'),
+                    cancel: this.$t('dearsanta.withdraw.confirm.cancel')
+                }).then(this.withdraw);
+            },
+            withdraw() {
+                return fetch(this.routes.withdrawUrl, 'POST')
+                    .then(data => alertify.confirmAlert(data.message, () => window.location.pathname = '/'))
                     .catch(this.alertError);
             },
             alertError(error) {
@@ -250,6 +266,10 @@
                 <button type="button" class="btn btn-link btn-sm report-not-me" @click="sendReport('not_me')">{{ $t('dearsanta.report.not_me') }}</button>
                 <button type="button" class="btn btn-link btn-sm report-not-participating" @click="sendReport('not_participating')">{{ $t('dearsanta.report.not_participating') }}</button>
             </template>
+            <!-- Signed up but changed their mind: they really leave the draw (a report only tells the organizer) -->
+            <div>
+                <button type="button" class="btn btn-link btn-sm text-danger withdraw" @click="confirmWithdraw">{{ $t('dearsanta.withdraw.button') }}</button>
+            </div>
         </div>
     </div>
 </template>

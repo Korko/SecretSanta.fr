@@ -17,4 +17,5 @@ return [
     'target_renamed.body' => 'The organizer changed your gift recipient\'s name from ":old" to ":new".',
     'target_renamed.same' => 'It is still the same person: you are still giving them your gift, nothing else changes.',
     'participant_email_code.title' => 'SecretSanta - Your confirmation code: :code',
+    'participant_withdrew.title' => 'SecretSanta #:draw - :name withdrew',
 ];

@@ -8,8 +8,10 @@ use App\Enums\ReportReason;
 use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
 use App\Models\Participant;
+use App\Services\ParticipantsEditor;
 use App\Notifications\DearSanta as DearSantaNotification;
 use App\Notifications\ParticipantEmailCode;
+use App\Notifications\ParticipantWithdrew;
 use App\Notifications\TargetDrawn;
 use Carbon\CarbonImmutable;
 use Exception;
@@ -88,6 +90,26 @@ final class DearSantaController extends Controller
         $participant->createMetric($participant->report ? 'report_'.$participant->report->value : 'report_cancelled');
 
         return response()->json(['report' => $participant->report]);
+    }
+
+    // "I signed up but changed my mind": unlike a report, they really leave. Their santa gets a new target
+    // and the organizer an email. Permanent: this page and its link stop working
+    public function withdraw(Participant $participant): JsonResponse
+    {
+        // The organizer has their panel to remove themselves, or to delete the draw
+        abort_if($participant->isOrganizer(), 403);
+
+        $draw = $participant->draw;
+        $name = $participant->name;
+        $participant->createMetric('withdraw')->addTag('by', 'participant');
+
+        new ParticipantsEditor($draw)->apply([$participant], []);
+
+        $draw->notify(new ParticipantWithdrew($name));
+
+        return response()->json([
+            'message' => trans('dearsanta.withdraw.done'),
+        ]);
     }
 
     // Another mailbox: a code is sent there first, the address only changes once it is typed back (changeEmail)

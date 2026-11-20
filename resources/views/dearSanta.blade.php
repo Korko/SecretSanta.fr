@@ -10,6 +10,7 @@
             'reportUrl' => URL::signedRoute('dearSanta.report', ['participant' => $participant]),
             'requestEmailChangeUrl' => URL::signedRoute('dearSanta.request_email_change', ['participant' => $participant]),
             'changeEmailUrl' => URL::signedRoute('dearSanta.change_email', ['participant' => $participant]),
+            'withdrawUrl' => URL::signedRoute('dearSanta.withdraw', ['participant' => $participant]),
         ],
         'pusher' => [
             'key' => config('broadcasting.connections.reverb.key'),
