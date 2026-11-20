@@ -130,7 +130,7 @@ final class DearSantaController extends Controller
 
         if (! $participant->checkEmailCode(preg_replace('/\D/', '', $request->string('code')->toString()) ?? '')) {
             // Six digits: a few tries for typos, then a new code is needed
-            ++$participant->pending_email_attempts;
+            $participant->pending_email_attempts++;
             if ($participant->pending_email_attempts >= self::EMAIL_CODE_ATTEMPTS) {
                 $participant->clearPendingEmail();
             }
