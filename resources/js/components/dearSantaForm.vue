@@ -40,6 +40,10 @@
                 email: this.data.email,
                 pendingEmail: this.data.pendingEmail,
                 showEmailChange: !!this.data.pendingEmail,
+                suggestionRecipients: this.data.suggestionRecipients || {},
+                suggestions: this.data.suggestions || {},
+                showSuggestion: false,
+                suggestion: { recipient: '', content: '', signed: false },
                 newEmail: '',
                 emailCode: ''
             };
@@ -64,6 +68,12 @@
             targetsStatus() {
                 return this.targetsRevealed ? 'revealed' : (this.ended ? 'ended' : 'secret');
             },
+            suggestionsList() {
+                return Object.values(this.suggestions)
+                    .map(suggestion => ({ ...suggestion, created_at: new Date(suggestion.mail.created_at) }))
+                    .sort((a, b) => b.created_at - a.created_at)
+                    .map(suggestion => ({ ...suggestion, created_at: suggestion.created_at.toLocaleString(this.$i18n.locale) }));
+            },
             recentTargetDearSanta() {
                 return (new Date()).getTime() - (new Date(this.targetDearSantaLastUpdate)).getTime() < 5*60*1000;
             }
@@ -73,9 +83,10 @@
 
             Echo.channel(this.channel)
                 .listen('.mail.update', data => {
-                    if(this.emails[data.id]) {
-                        this.emails[data.id].mail.delivery_status = data.delivery_status;
-                        this.emails[data.id].mail.updated_at = data.updated_at;
+                    const tracked = this.emails[data.id] || this.suggestions[data.id];
+                    if(tracked) {
+                        tracked.mail.delivery_status = data.delivery_status;
+                        tracked.mail.updated_at = data.updated_at;
                     }
                 });
         },
@@ -121,6 +132,16 @@
                         this.newEmail = '';
                         this.emailCode = '';
                         this.showEmailChange = false;
+                        alertify.confirmAlert(data.message);
+                    })
+                    .catch(this.alertError);
+            },
+            sendSuggestion() {
+                const { recipient, content, signed } = this.suggestion;
+                return fetch(this.routes.suggestUrl, 'POST', { recipient, content, signed: signed ? 1 : 0 })
+                    .then(data => {
+                        this.suggestions = { ...this.suggestions, [data.suggestion.mail.id]: data.suggestion };
+                        this.suggestion = { recipient: '', content: '', signed: false };
                         alertify.confirmAlert(data.message);
                     })
                     .catch(this.alertError);
@@ -236,6 +257,45 @@
                 <i class="fas fa-redo" />
                 {{ $t('dearsanta.resend.button') }}
             </button>
+        </div>
+        <!-- Gift ideas for someone else: emailed to their santa, whom the sender never learns -->
+        <div v-if="Object.keys(suggestionRecipients).length" class="suggestions mt-4">
+            <div class="text-center">
+                <button v-if="!showSuggestion" type="button" class="btn btn-outline-success suggestion-open" @click="showSuggestion = true">
+                    <i class="fas fa-lightbulb" />
+                    {{ $t('dearsanta.suggestion.open') }}
+                </button>
+            </div>
+            <form v-if="showSuggestion" class="suggestion-form" @submit.prevent="sendSuggestion">
+                <p class="text-muted small">{{ $t('dearsanta.suggestion.help') }}</p>
+                <div class="form-group">
+                    <label for="suggestionRecipient">{{ $t('dearsanta.suggestion.recipient') }}</label>
+                    <select id="suggestionRecipient" v-model="suggestion.recipient" required class="form-control">
+                        <option value="" disabled>{{ $t('dearsanta.suggestion.choose') }}</option>
+                        <option v-for="(name, hash) in suggestionRecipients" :key="hash" :value="hash">{{ name }}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="suggestionContent">{{ $t('dearsanta.suggestion.content') }}</label>
+                    <textarea id="suggestionContent" v-model="suggestion.content" required class="form-control" :placeholder="$t('dearsanta.suggestion.placeholder')" />
+                </div>
+                <div class="form-check mb-2">
+                    <input id="suggestionSigned" v-model="suggestion.signed" type="checkbox" class="form-check-input" />
+                    <label class="form-check-label" for="suggestionSigned">{{ $t('dearsanta.suggestion.signed') }}</label>
+                </div>
+                <button type="submit" class="btn btn-success suggestion-send">{{ $t('dearsanta.suggestion.send') }}</button>
+            </form>
+            <table v-if="suggestionsList.length" class="table table-sm mt-3 suggestions-sent">
+                <caption>{{ $t('dearsanta.suggestion.list') }}</caption>
+                <tbody>
+                    <tr v-for="sent in suggestionsList" :key="sent.mail.id" class="suggestion">
+                        <td>{{ sent.created_at }}</td>
+                        <td>{{ sent.recipient }}<span v-if="sent.signed" class="text-muted small"> ({{ $t('dearsanta.suggestion.signed_short') }})</span></td>
+                        <td><p v-html="nl2br(e(sent.mail_body))"></p></td>
+                        <td><email-status :delivery_status="sent.mail.delivery_status" :last_update="sent.mail.updated_at" :disabled="true" /></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <!-- Another mailbox: the new address gets a code first, typed back here to prove it is theirs -->
         <div class="email-change text-center mt-4 small">

@@ -87,6 +87,18 @@ export default {
                     "cancel": "Annuler"
                 },
                 "blocked": "Votre désistement donnerait à quelqu'un une personne qu'il ou elle a exclue. Demandez à {organizer} de vous retirer depuis sa page d'organisation."
+            },
+            "suggestion": {
+                "open": "Suggérer une idée cadeau pour quelqu'un d'autre",
+                "help": "Votre idée sera envoyée par email au père/mère noël secret de la personne choisie, sans que vous sachiez qui c'est.",
+                "recipient": "Pour qui ?",
+                "choose": "Choisir un(e) participant(e)",
+                "content": "Votre idée",
+                "placeholder": "Elle adore les jeux de société...",
+                "signed": "Signer avec mon nom (sinon, l'idée reste anonyme)",
+                "signed_short": "signée",
+                "send": "Envoyer l'idée",
+                "list": "Idées envoyées"
             }
         },
         "faq": {
@@ -482,6 +494,9 @@ export default {
                     },
                     "code": {
                         "required": "Le code est requis."
+                    },
+                    "recipient": {
+                        "required": "Choisissez la personne à qui l'idée est destinée."
                     }
                 },
                 "organizer": {

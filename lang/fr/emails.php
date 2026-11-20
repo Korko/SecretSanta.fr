@@ -52,4 +52,5 @@ return [
     'participant_withdrew.heading' => 'Désistement d\'un(e) participant(e)',
     'participant_withdrew.body' => ':name s\'est désisté(e) de votre évènement :app depuis sa page de participant(e).',
     'participant_withdrew.santa' => 'Son père/mère noël secret a reçu une nouvelle cible par email, personne d\'autre n\'a besoin de changer de cadeau. :name n\'apparaît plus sur votre panneau organisateur.',
+    'gift_suggestion.title' => 'SecretSanta #:draw - Une idée cadeau pour :name',
 ];

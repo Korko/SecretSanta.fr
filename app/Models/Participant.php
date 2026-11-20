@@ -12,6 +12,7 @@ use Database\Factories\ParticipantFactory;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -41,6 +42,8 @@ use STS\Metrics\Metric;
  * @property int $pending_email_attempts
  * @property-read array<int, string> $exclusionsNames
  * @property-read ParticipantsCollection $exclusions
+ * @property-read Collection<int, GiftSuggestion> $sentSuggestions
+ * @property-read Collection<int, GiftSuggestion> $receivedSuggestions
  */
 #[CollectedBy(ParticipantsCollection::class)]
 #[Fillable(['name', 'email'])]
@@ -116,6 +119,20 @@ final class Participant extends Model
         return $this->hasMany(DearSanta::class, 'sender_id')->with('mail');
     }
 
+    // Gift ideas this participant gave for others
+    /** @return HasMany<GiftSuggestion, $this> */
+    public function sentSuggestions(): HasMany
+    {
+        return $this->hasMany(GiftSuggestion::class, 'sender_id')->with('mail');
+    }
+
+    // Gift ideas others gave for this participant, for their santa
+    /** @return HasMany<GiftSuggestion, $this> */
+    public function receivedSuggestions(): HasMany
+    {
+        return $this->hasMany(GiftSuggestion::class, 'recipient_id')->with('mail');
+    }
+
     /** @return MorphOne<Mail, $this> */
     public function mail(): MorphOne
     {
@@ -169,6 +186,8 @@ final class Participant extends Model
 
         self::deleting(function (Participant $participant): void {
             $participant->dearSantas()->lazy()->each(fn (DearSanta $dearSanta): ?bool => $dearSanta->delete());
+            $participant->sentSuggestions()->lazy()->each(fn (GiftSuggestion $suggestion): ?bool => $suggestion->delete());
+            $participant->receivedSuggestions()->lazy()->each(fn (GiftSuggestion $suggestion): ?bool => $suggestion->delete());
             $participant->exclusions()->detach(); // pivot rows only (delete() would remove the excluded participants)
             $participant->mail()->delete();
         });

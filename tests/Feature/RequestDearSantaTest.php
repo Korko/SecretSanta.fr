@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\DearSanta;
+use App\Notifications\GiftSuggestion;
 use App\Notifications\ParticipantEmailCode;
 use App\Notifications\ParticipantWithdrew;
 use App\Notifications\TargetDrawn;
@@ -244,4 +245,68 @@ it('does not give a santa a target they excluded when theirs withdraws', functio
     $targets = $draw->participants->map(fn ($p) => $p->target->id);
     expect($targets->unique())->toHaveCount(4)
         ->and($draw->participants->every(fn ($p): bool => $p->target->isNot($p)))->toBeTrue();
+});
+
+it('lets a participant suggest a gift idea to the santa of someone else than their target', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    $sender = $draw->participants->first();
+    $recipient = $draw->participants->first(fn ($p): bool => ! $p->is($sender) && ! $p->is($sender->target));
+
+    $fetch = ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $sender]))->assertSuccessful();
+    expect(array_keys($fetch->json('suggestionRecipients')))
+        ->toHaveCount(2)
+        ->not->toContain($sender->hash)
+        ->not->toContain($sender->target->hash);
+
+    ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), [
+        'recipient' => $recipient->hash,
+        'content' => 'A board game',
+        'signed' => 1,
+    ])->assertSuccessful()->assertJsonPath('suggestion.recipient', $recipient->name);
+
+    Notification::assertSentTo($recipient->santa, GiftSuggestion::class, function (GiftSuggestion $notification) use ($recipient, $sender): bool {
+        $data = $notification->toMail($recipient->santa)->viewData;
+
+        return $data['content'] === 'A board game' && $data['targetName'] === $recipient->name && $data['senderName'] === $sender->name;
+    });
+
+    expect(ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $sender]))->json('suggestions'))->toHaveCount(1);
+});
+
+it('keeps a gift idea anonymous unless signed, and refuses one for oneself or one\'s own target', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    $sender = $draw->participants->first();
+    $recipient = $draw->participants->first(fn ($p): bool => ! $p->is($sender) && ! $p->is($sender->target));
+    $suggest = URL::signedRoute('dearSanta.suggest', ['participant' => $sender]);
+
+    ajaxPost($suggest, ['recipient' => $sender->target->hash, 'content' => 'Socks'])->assertStatus(422);
+    ajaxPost($suggest, ['recipient' => $sender->hash, 'content' => 'Socks'])->assertStatus(422);
+    ajaxPost($suggest, ['recipient' => $recipient->hash, 'content' => ''])->assertStatus(422);
+
+    ajaxPost($suggest, ['recipient' => $recipient->hash, 'content' => 'Socks'])->assertSuccessful();
+    Notification::assertSentTo($recipient->santa, GiftSuggestion::class, fn (GiftSuggestion $notification): bool => $notification->toMail($recipient->santa)->viewData['senderName'] === null);
+});
+
+it('forwards gift ideas to the new santa when the recipient changes santa', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(5)->create();
+    $sender = $draw->participants->first();
+    $recipient = $draw->participants->first(fn ($p): bool => ! $p->is($sender) && ! $p->is($sender->target) && ! $p->santa->is($sender->target));
+    ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), ['recipient' => $recipient->hash, 'content' => 'A book'])
+        ->assertSuccessful();
+
+    // Their santa leaves: the santa's own santa now gives to the recipient, and gets the idea
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $recipient->santa]))->assertSuccessful();
+
+    $newSanta = $recipient->fresh()->santa;
+    if ($newSanta->is($sender)) {
+        Notification::assertNotSentTo($newSanta, GiftSuggestion::class);
+    } else {
+        Notification::assertSentTo($newSanta, GiftSuggestion::class);
+    }
 });

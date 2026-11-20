@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\DearSanta;
+use App\Notifications\GiftSuggestion;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
@@ -97,10 +98,13 @@ final class ParticipantsEditor
             if (isset($created[$santa])) {
                 $created[$santa]->notify(new TargetDrawn);
             } elseif ($before[$santa] !== $target) {
-                $santa = $participants[$santa]->refresh()->load('target.dearSantas');
+                $santa = $participants[$santa]->refresh()->load('target.dearSantas', 'target.receivedSuggestions');
                 $santa->notify(in_array($before[$santa->id], $removed, true) ? new TargetWithdrawn : new TargetChanged);
                 // Messages the new target wrote to their santa now belong to this one
                 $santa->target->dearSantas->each(fn ($dearSanta) => $santa->notify(new DearSanta($dearSanta)));
+                // So do the gift ideas others gave for them, but their own
+                $santa->target->receivedSuggestions->where('sender_id', '!=', $santa->id)
+                    ->each(fn ($suggestion) => $santa->notify(new GiftSuggestion($suggestion)));
             }
         }
     }

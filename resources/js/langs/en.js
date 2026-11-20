@@ -87,6 +87,18 @@ export default {
                     "cancel": "Cancel"
                 },
                 "blocked": "Your withdrawal would give someone a person they excluded. Ask {organizer} to remove you from their organizer page."
+            },
+            "suggestion": {
+                "open": "Suggest a gift idea for someone else",
+                "help": "Your idea will be emailed to the secret santa of the person you choose, without you knowing who they are.",
+                "recipient": "For whom?",
+                "choose": "Choose a participant",
+                "content": "Your idea",
+                "placeholder": "She loves board games...",
+                "signed": "Sign with my name (otherwise, the idea stays anonymous)",
+                "signed_short": "signed",
+                "send": "Send the idea",
+                "list": "Ideas sent"
             }
         },
         "faq": {
@@ -573,6 +585,9 @@ export default {
                     },
                     "code": {
                         "required": "The code is required."
+                    },
+                    "recipient": {
+                        "required": "Choose who the idea is for."
                     }
                 },
                 "organizer": {

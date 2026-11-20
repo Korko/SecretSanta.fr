@@ -87,6 +87,18 @@ export default {
                     "cancel": "Abbrechen"
                 },
                 "blocked": "Ihre Abmeldung würde jemandem eine ausgeschlossene Person zuteilen. Bitten Sie {organizer}, Sie über die Organisationsseite zu entfernen."
+            },
+            "suggestion": {
+                "open": "Eine Geschenkidee für jemand anderen vorschlagen",
+                "help": "Ihre Idee wird per E-Mail an den geheimen Weihnachtsmann der gewählten Person gesendet, ohne dass Sie erfahren, wer das ist.",
+                "recipient": "Für wen?",
+                "choose": "Einen Teilnehmer wählen",
+                "content": "Ihre Idee",
+                "placeholder": "Sie liebt Brettspiele...",
+                "signed": "Mit meinem Namen unterschreiben (sonst bleibt die Idee anonym)",
+                "signed_short": "unterschrieben",
+                "send": "Idee senden",
+                "list": "Gesendete Ideen"
             }
         },
         "faq": {
@@ -482,6 +494,9 @@ export default {
                     },
                     "code": {
                         "required": "Der Code ist erforderlich."
+                    },
+                    "recipient": {
+                        "required": "Wählen Sie, für wen die Idee ist."
                     }
                 },
                 "organizer": {
