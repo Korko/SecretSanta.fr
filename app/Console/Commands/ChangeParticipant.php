@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetRenamed;
 use App\Notifications\TargetWithdrawn;
 use Exception;
 use Illuminate\Console\Attributes\Description;
@@ -37,6 +38,7 @@ final class ChangeParticipant extends Command
 
         $participant->dearSantas()->lazy()->each->delete();
 
+        $oldName = $participant->name;
         $participant->name = (string) $this->stringArgument('name');
         $participant->email = (string) $this->stringArgument('email');
         $participant->save();
@@ -48,7 +50,8 @@ final class ChangeParticipant extends Command
             $participant->notify(new DearSanta($dearSanta));
         });
 
-        $participant->santa->notify(new TargetWithdrawn);
+        // A new name: tell the santa who to look for now, rather than a withdrawal
+        $participant->santa->notify($participant->name !== $oldName ? new TargetRenamed($oldName, $participant->name) : new TargetWithdrawn);
         $this->info('Santa informed');
     }
 }
