@@ -271,7 +271,7 @@ it('limits the number of draws per hour from the same address, refused forms asi
 
 it('limits the number of participants and says who to contact', function (): void {
     Notification::fake();
-    config(['app.max_participants' => 4, 'app.contact' => 'admin@example.com']);
+    config(['app.max_participants' => 4, 'app.email' => 'admin@example.com']);
 
     ajaxPost('/', [
         'participant-organizer' => '1',
