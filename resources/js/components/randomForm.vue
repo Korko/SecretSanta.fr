@@ -102,20 +102,6 @@
 
         methods: {
             suggestEmail,
-            // Only way to have parameters parsing for vuejs events
-            td(key, params) {
-                var data = this.$t(key, params);
-                return {
-                    name: "dynamic-string",
-                    template: `<p>${data}</p>`
-                }
-            },
-
-            // Just because I couldn't handle too much depth with quotes
-            anchor(event) {
-                return `<a class="link" @click.prevent='\$emit("${event}")'>`;
-            },
-
             moment(amount, unit) {
                 return dateFromNow(amount, unit);
             },
@@ -395,7 +381,10 @@
                                     />
 
                                     <blockquote class="tips">
-                                        <component :is="td('form.mail.content.tip1', {target: anchor('target'), santa: anchor('santa'), close:'</a>'})" @santa="appendSanta" @target="appendTarget"></component>
+                                        <i18n-t keypath="form.mail.content.tip1" tag="p">
+                                            <template #santa><a class="link" href="#" @click.prevent="appendSanta">&#123;SANTA&#125;</a></template>
+                                            <template #target><a class="link" href="#" @click.prevent="appendTarget">&#123;TARGET&#125;</a></template>
+                                        </i18n-t>
                                         <p>{{ $t('form.mail.content.tip2') }}</p>
                                     </blockquote>
                                 </div>

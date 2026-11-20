@@ -117,7 +117,7 @@
             <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
             <p class="lead main text-center">@lang('form.section.go.subtitle')</p>
 <!--        <div class="alert alert-warning" role="alert"></div>-->
-            <random-form id="randomForm" action="/"></random-form>
+            <div id="random-form"></div>
         </div><!-- /.container -->
         <section class="ss-style-bottom"></section>
     </div>

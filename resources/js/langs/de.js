@@ -195,7 +195,7 @@ export default {
                 "content": {
                     "label": "Inhalt der E-Mail",
                     "placeholder": "z.B. Hallo {SANTA}, bei der Secret Santa Party ist dein Ziel {TARGET}. Denke daran, das Geschenk sollte 3 € kosten!",
-                    "tip1": "Verwende \"{santa}&#123;SANTA&#125;{close}\" für den Namen des Empfängers und \"{target}&#123;TARGET&#125;{close}\" für den Namen seiner Zielperson.",
+                    "tip1": "Verwende \"{santa}\" für den Namen des Empfängers und \"{target}\" für den Namen seiner Zielperson.",
                     "tip2": "Tipp: Denke daran, das Datum, den Ort und den Wert des Geschenks zu erwähnen."
                 },
                 "post": "----\nUm deinem Secret Santa zu schreiben, besuche folgende Seite: {link}\nvia SecretSanta.fr"

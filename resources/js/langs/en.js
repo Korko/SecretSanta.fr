@@ -195,7 +195,7 @@ export default {
                 "content": {
                     "label": "Email content",
                     "placeholder": "e.g. Hi {SANTA}, for the secret santa party, your target is {TARGET}. Reminder: the gift amount is $3!",
-                    "tip1": "Use \"{santa}&#123;SANTA&#125;{close}\" for the name of the email recipient and \"{target}&#123;TARGET&#125;{close}\" for the name of their target.",
+                    "tip1": "Use \"{santa}\" for the name of the email recipient and \"{target}\" for the name of their target.",
                     "tip2": "Tip: remember to mention the date, the place and the gift amount."
                 },
                 "post": "----\nTo write to your Secret Santa, go to the following page: {link}\nvia SecretSanta"

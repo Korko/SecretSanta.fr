@@ -31,12 +31,11 @@ final class SecurityHeaders
 
     /**
      * The organizer and dearSanta pages hold the draw secret in location.hash: only the site's own
-     * scripts may run, no third-party or injected one. 'unsafe-eval' stays as long as Vue compiles
-     * the in-DOM templates of the blade views at runtime.
+     * scripts may run, no third-party or injected one, and no eval: the Vue templates are all compiled at build time.
      */
     private function contentSecurityPolicy(string $nonce): string
     {
-        $scripts = ["'self'", "'nonce-{$nonce}'", "'unsafe-eval'"];
+        $scripts = ["'self'", "'nonce-{$nonce}'"];
         if (Vite::isRunningHot()) {
             $scripts[] = mb_trim((string) file_get_contents(Vite::hotFile()));
         }
