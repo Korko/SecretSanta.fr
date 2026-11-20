@@ -1,1 +1,0 @@
-import{t as e}from"./ajaxForm-D13LLkoa.js";import{F as t,j as n,r,y as i}from"./app-Cacg-liU.js";var a={components:{AjaxForm:e}};function o(e,r,a,o,s,c){let l=t(`ajax-form`);return n(),i(l)}var s=r(a,[[`render`,o]]);export{s as t};

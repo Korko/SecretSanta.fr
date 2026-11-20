@@ -3,70 +3,63 @@
     "file": "assets/fa-solid-900-BUswJgRo.woff2",
     "src": "../wt-mr5/node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
-  "_ajaxForm-D13LLkoa.js": {
-    "file": "assets/ajaxForm-D13LLkoa.js",
+  "_ajaxForm-CoaXPpOw.js": {
+    "file": "assets/ajaxForm-CoaXPpOw.js",
     "name": "ajaxForm",
     "imports": [
-      "_alertify-pqgdreJZ.js",
-      "_app-Cacg-liU.js"
+      "_alertify-CANg_1jz.js",
+      "_app-CTWn3NoT.js"
     ]
   },
-  "_alertify-pqgdreJZ.js": {
-    "file": "assets/alertify-pqgdreJZ.js",
-    "name": "alertify",
-    "imports": [
-      "_rolldown-runtime-WkwZ5CU-.js",
-      "_fr-DAxfOr_M.js"
-    ]
+  "_alertify-CANg_1jz.js": {
+    "file": "assets/alertify-CANg_1jz.js",
+    "name": "alertify"
   },
-  "_app-Cacg-liU.js": {
-    "file": "assets/app-Cacg-liU.js",
+  "_app-CTWn3NoT.js": {
+    "file": "assets/app-CTWn3NoT.js",
     "name": "app",
     "imports": [
-      "_fr-DAxfOr_M.js"
+      "_alertify-CANg_1jz.js"
+    ],
+    "dynamicImports": [
+      "resources/js/langs/de.js",
+      "resources/js/langs/en.js",
+      "resources/js/langs/fr.js"
     ]
   },
   "_emailStatus-4nNxrBcG.css": {
     "file": "assets/emailStatus-4nNxrBcG.css",
     "src": "_emailStatus-4nNxrBcG.css"
   },
-  "_emailStatus-_VSoYhno.js": {
-    "file": "assets/emailStatus-_VSoYhno.js",
+  "_emailStatus-Q8TrlU5i.js": {
+    "file": "assets/emailStatus-Q8TrlU5i.js",
     "name": "emailStatus",
     "imports": [
-      "_rolldown-runtime-WkwZ5CU-.js",
-      "_app-Cacg-liU.js",
-      "_tooltip-Dz8BdbFH.js"
+      "_alertify-CANg_1jz.js",
+      "_app-CTWn3NoT.js",
+      "_tooltip-CnnCyeIN.js"
     ],
     "css": [
       "assets/emailStatus-4nNxrBcG.css"
     ]
   },
-  "_form-DB7qZWs7.js": {
-    "file": "assets/form-DB7qZWs7.js",
+  "_form-D2ZaGFVH.js": {
+    "file": "assets/form-D2ZaGFVH.js",
     "name": "form",
     "imports": [
-      "_ajaxForm-D13LLkoa.js",
-      "_app-Cacg-liU.js"
+      "_ajaxForm-CoaXPpOw.js",
+      "_app-CTWn3NoT.js"
     ]
-  },
-  "_fr-DAxfOr_M.js": {
-    "file": "assets/fr-DAxfOr_M.js",
-    "name": "fr"
-  },
-  "_rolldown-runtime-WkwZ5CU-.js": {
-    "file": "assets/rolldown-runtime-WkwZ5CU-.js",
-    "name": "rolldown-runtime"
   },
   "_tooltip-CknrHklv.css": {
     "file": "assets/tooltip-CknrHklv.css",
     "src": "_tooltip-CknrHklv.css"
   },
-  "_tooltip-Dz8BdbFH.js": {
-    "file": "assets/tooltip-Dz8BdbFH.js",
+  "_tooltip-CnnCyeIN.js": {
+    "file": "assets/tooltip-CnnCyeIN.js",
     "name": "tooltip",
     "imports": [
-      "_app-Cacg-liU.js"
+      "_app-CTWn3NoT.js"
     ],
     "css": [
       "assets/tooltip-CknrHklv.css"
@@ -141,66 +134,84 @@
     "src": "resources/images/user-icon.webp"
   },
   "resources/js/common.js": {
-    "file": "assets/common-Cik6RHTq.js",
+    "file": "assets/common-Bmbmzvrr.js",
     "name": "common",
     "src": "resources/js/common.js",
     "isEntry": true,
     "imports": [
-      "_alertify-pqgdreJZ.js"
+      "_alertify-CANg_1jz.js"
     ]
   },
   "resources/js/dearSanta.js": {
-    "file": "assets/dearSanta-h1qL_P27.js",
+    "file": "assets/dearSanta-DdSM3z2m.js",
     "name": "dearSanta",
     "src": "resources/js/dearSanta.js",
     "isEntry": true,
     "imports": [
-      "_app-Cacg-liU.js",
-      "_ajaxForm-D13LLkoa.js",
-      "_emailStatus-_VSoYhno.js",
-      "_tooltip-Dz8BdbFH.js",
-      "_form-DB7qZWs7.js"
+      "_app-CTWn3NoT.js",
+      "_ajaxForm-CoaXPpOw.js",
+      "_emailStatus-Q8TrlU5i.js",
+      "_tooltip-CnnCyeIN.js",
+      "_form-D2ZaGFVH.js"
     ],
     "css": [
       "assets/dearSanta-aHuQVWtU.css"
     ]
   },
   "resources/js/faq.js": {
-    "file": "assets/faq-uX2X8DEu.js",
+    "file": "assets/faq-lv4WcJk8.js",
     "name": "faq",
     "src": "resources/js/faq.js",
     "isEntry": true,
     "imports": [
-      "_app-Cacg-liU.js"
+      "_app-CTWn3NoT.js"
     ],
     "css": [
       "assets/faq-QuG1mctG.css"
     ]
   },
   "resources/js/fixOrganizer.js": {
-    "file": "assets/fixOrganizer-B8ijOs-W.js",
+    "file": "assets/fixOrganizer-DnGLFxZd.js",
     "name": "fixOrganizer",
     "src": "resources/js/fixOrganizer.js",
     "isEntry": true,
     "imports": [
-      "_app-Cacg-liU.js",
-      "_ajaxForm-D13LLkoa.js",
-      "_alertify-pqgdreJZ.js",
-      "_form-DB7qZWs7.js"
+      "_app-CTWn3NoT.js",
+      "_ajaxForm-CoaXPpOw.js",
+      "_alertify-CANg_1jz.js",
+      "_form-D2ZaGFVH.js"
     ]
   },
+  "resources/js/langs/de.js": {
+    "file": "assets/de-BAEgEU9v.js",
+    "name": "de",
+    "src": "resources/js/langs/de.js",
+    "isDynamicEntry": true
+  },
+  "resources/js/langs/en.js": {
+    "file": "assets/en-Bxw1Y5_P.js",
+    "name": "en",
+    "src": "resources/js/langs/en.js",
+    "isDynamicEntry": true
+  },
+  "resources/js/langs/fr.js": {
+    "file": "assets/fr-CJi-j8eY.js",
+    "name": "fr",
+    "src": "resources/js/langs/fr.js",
+    "isDynamicEntry": true
+  },
   "resources/js/organizer.js": {
-    "file": "assets/organizer-Dv41FqTM.js",
+    "file": "assets/organizer-CfqDSN5V.js",
     "name": "organizer",
     "src": "resources/js/organizer.js",
     "isEntry": true,
     "imports": [
-      "_app-Cacg-liU.js",
-      "_ajaxForm-D13LLkoa.js",
-      "_alertify-pqgdreJZ.js",
-      "_emailStatus-_VSoYhno.js",
-      "_tooltip-Dz8BdbFH.js",
-      "_form-DB7qZWs7.js"
+      "_app-CTWn3NoT.js",
+      "_ajaxForm-CoaXPpOw.js",
+      "_alertify-CANg_1jz.js",
+      "_emailStatus-Q8TrlU5i.js",
+      "_tooltip-CnnCyeIN.js",
+      "_form-D2ZaGFVH.js"
     ],
     "css": [
       "assets/organizer-BrXBBlvT.css"
@@ -211,16 +222,15 @@
     ]
   },
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm-1CqJS5Cz.js",
+    "file": "assets/randomForm-CnBYWpYi.js",
     "name": "randomForm",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
     "imports": [
-      "_rolldown-runtime-WkwZ5CU-.js",
-      "_app-Cacg-liU.js",
-      "_ajaxForm-D13LLkoa.js",
-      "_alertify-pqgdreJZ.js",
-      "_tooltip-Dz8BdbFH.js"
+      "_app-CTWn3NoT.js",
+      "_ajaxForm-CoaXPpOw.js",
+      "_alertify-CANg_1jz.js",
+      "_tooltip-CnnCyeIN.js"
     ],
     "css": [
       "assets/randomForm-DggTvJqh.css"
