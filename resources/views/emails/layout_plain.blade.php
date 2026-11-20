@@ -1,9 +1,9 @@
->> Ceci est un message automatique, merci de ne pas y répondre. <<
+>> {{ __('emails.layout.automatic') }} <<
 
 @yield('content')
 
 ---
 
-Secrètement votre,
+{{ __('emails.layout.signature') }}
 
 {{ config('app.name') }} - {{ config('app.url') }}

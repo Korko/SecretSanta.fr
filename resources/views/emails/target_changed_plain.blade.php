@@ -1,12 +1,12 @@
 @extends('emails/layout_plain')
 
 @section('title')
-    Changement de cible
+    {{ __('emails.target_changed.heading') }}
 @endsection
 
 @section('content')
-    Bonjour {{ $santaName }},
-    La liste des participant(e)s de ton évènement a été modifiée, et il n'a pas été possible de l'ajuster sans changer ta cible.
-    Tu vas devoir faire un cadeau à {{ $targetName }}, maintenant.
-    Si cette personne avait envoyé des messages à son santa, tu les recevras prochainement.
+    {{ __('emails.hello', ['name' => $santaName]) }}
+    {{ __('emails.target_changed.body') }}
+    {{ __('emails.target.new', ['name' => $targetName]) }}
+    {{ __('emails.target.messages') }}
 @endsection

@@ -1,11 +1,11 @@
 @extends('emails/layout_plain')
 
 @section('title')
-    Désistement d'un(e) participant(e)
+    {{ __('emails.participant_withdrew.heading') }}
 @endsection
 
 @section('content')
-    Bonjour {{ $organizerName }},
-    {{ $name }} s'est désisté(e) de votre évènement SecretSanta.fr depuis sa page de participant(e).
-    Son père/mère noël secret a reçu une nouvelle cible par email, personne d'autre n'a besoin de changer de cadeau. {{ $name }} n'apparaît plus sur votre panneau organisateur.
+    {{ __('emails.hello', ['name' => $organizerName]) }}
+    {{ __('emails.participant_withdrew.body', ['name' => $name, 'app' => config('app.name')]) }}
+    {{ __('emails.participant_withdrew.santa', ['name' => $name]) }}
 @endsection
