@@ -129,7 +129,9 @@ final class ParticipantsEditor
         // A excluded C, or A <-> B (then C is A): A takes the target Y of another santa X, and X takes C.
         // A -> B -> C, X -> Y => A -> Y, X -> C; A <-> B, X -> Y => X -> A -> Y.
         // X is drawn at random, like in insert(): which santa changed must not be guessable
-        foreach (Arr::shuffle(array_keys($this->targets)) as $other) {
+        /** @var list<int|string> $santas */
+        $santas = Arr::shuffle(array_keys($this->targets));
+        foreach ($santas as $other) {
             $otherTarget = $this->targets[$other];
             if ($other !== $santa && $this->allowed($santa, $otherTarget, $participants) && $this->allowed($other, $target, $participants)) {
                 $this->targets[$santa] = $otherTarget;
