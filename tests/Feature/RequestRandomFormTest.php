@@ -293,7 +293,7 @@ it('lets an administrator link raise the limit for a single draw', function (): 
     Notification::fake();
     config(['app.max_participants' => 4]);
 
-    $code = ParticipantLimit::generate(6);
+    [, $code] = ParticipantLimit::generate(6);
     $draw = fn (): array => [
         'limit' => $code,
         'participant-organizer' => '1',
@@ -322,4 +322,19 @@ it('creates the administrator links from the command line', function (): void {
 
     $this->artisan('secretsanta:allow-participants', ['max' => 120])->assertSuccessful();
     assertEquals(120, ParticipantLimit::query()->sole()->max);
+});
+
+it('lists the administrator links and revokes them', function (): void {
+    [$active] = ParticipantLimit::generate(80);
+    [$used] = ParticipantLimit::generate(100);
+    ParticipantLimit::query()->findOrFail($used)->consume(createServiceDraw(generateParticipants(3)));
+
+    $this->artisan('secretsanta:participant-limits')
+        ->expectsOutputToContain('active')
+        ->expectsOutputToContain('used')
+        ->assertSuccessful();
+
+    $this->artisan('secretsanta:revoke-participant-limit', ['id' => $active])->assertSuccessful();
+    $this->artisan('secretsanta:revoke-participant-limit', ['id' => $active])->assertFailed();
+    assertEquals([$used], ParticipantLimit::query()->pluck('id')->all());
 });

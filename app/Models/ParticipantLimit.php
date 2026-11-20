@@ -24,8 +24,12 @@ final class ParticipantLimit extends Model
 {
     use Prunable;
 
-    /** Creates a limit and returns its code: only its hash is stored */
-    public static function generate(int $max): string
+    /**
+     * Creates a limit and returns its ID and code: only the hash of the code is stored
+     *
+     * @return array{int, string}
+     */
+    public static function generate(int $max): array
     {
         $code = Str::random(32);
 
@@ -34,7 +38,7 @@ final class ParticipantLimit extends Model
         $limit->max = $max;
         $limit->save();
 
-        return $code;
+        return [$limit->id, $code];
     }
 
     public static function findUsable(?string $code): ?self

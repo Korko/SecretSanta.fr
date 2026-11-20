@@ -25,9 +25,9 @@ final class AllowParticipants extends Command
             return self::FAILURE;
         }
 
-        $code = ParticipantLimit::generate($max);
+        [$id, $code] = ParticipantLimit::generate($max);
 
-        info('Link for one draw of up to '.$max.' participants:');
+        info('Link #'.$id.' for one draw of up to '.$max.' participants (shown only once, only its hash is kept):');
         note(url('/').'?limit='.$code);
 
         return self::SUCCESS;
