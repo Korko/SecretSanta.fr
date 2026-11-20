@@ -99,7 +99,7 @@ final class OrganizerController extends Controller
     // Organizers often mistype the date or the event moves: it drives expiration (final recap) and deletion
     public function changeDate(Request $request, Draw $draw): JsonResponse
     {
-        abort_if($draw->expired, 403, Lang::get('error.expired'));
+        $draw->abortIfExpired();
 
         $request->validate([
             'expires_at' => ['required', 'date_format:Y-m-d', 'after_or_equal:tomorrow', 'before:+1year'],
@@ -123,6 +123,8 @@ final class OrganizerController extends Controller
     public function fetchState(Draw $draw): JsonResponse
     {
         return response()->json([
+            'expired' => $draw->expired,
+            'targets' => $draw->targetsVisible() ? $this->targets($draw) : null,
             'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [$participant->hash => $participant->only(['hash', 'mail'])]),
         ]);
     }
@@ -195,7 +197,7 @@ final class OrganizerController extends Controller
     // One button (a single change) or the "several at once" mode: either way, each santa gets at most one email
     public function changeParticipants(Request $request, Draw $draw): JsonResponse
     {
-        abort_if($draw->expired, 403, Lang::get('error.expired'));
+        $draw->abortIfExpired();
 
         $names = $draw->participants->pluck('name')->all();
         $hashes = $draw->participants->pluck('hash')->all();

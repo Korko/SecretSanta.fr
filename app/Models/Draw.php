@@ -16,8 +16,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Lang;
 use LogicException;
 use STS\Metrics\Facades\Metrics;
 use STS\Metrics\Metric;
@@ -154,6 +156,15 @@ final class Draw extends Model
     public function maxParticipants(): int
     {
         return $this->max_participants ?? config()->integer('app.max_participants');
+    }
+
+    // Tells the page it is over (expired: true) so it switches without a reload, whatever the browser clock says
+    public function abortIfExpired(): void
+    {
+        throw_if($this->expired, HttpResponseException::class, response()->json([
+            'message' => Lang::get('error.ended'),
+            'expired' => true,
+        ], 403));
     }
 
     // Once the event is over the organizer sees every target, no need to reveal them

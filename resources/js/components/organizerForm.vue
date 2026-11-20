@@ -37,6 +37,7 @@
                 expires_at: this.data.expires_at,
                 ends_at: this.data.ends_at,
                 now: Date.now(),
+                endedByServer: false,
                 deleted_at: this.data.deleted_at,
                 drawn_at: this.data.drawn_at,
                 finalCsvAvailable: this.data.finalCsvAvailable,
@@ -87,9 +88,10 @@
                     participant => participant.mail.delivery_status !== 'error'
                 );
             },
-            // The server's instant (end of the event day, its timezone), not the browser's idea of the date
+            // The server's instant (end of the event day, its timezone), not the browser's idea of the date,
+            // or the server saying so (a browser clock running late)
             expired() {
-                return this.now >= new Date(this.ends_at).getTime();
+                return this.endedByServer || this.now >= new Date(this.ends_at).getTime();
             },
             tomorrow() {
                 return dateFromNow(1, 'day');
@@ -106,10 +108,10 @@
             }
         },
         watch: {
-            // A tab left open past the event: reload to get what the server now gives (targets, no more edits)
+            // A tab left open past the event: no more edits, and every target shows (nothing else on the page is lost)
             expired(now, before) {
-                if (now && !before) {
-                    window.location.reload();
+                if (now && !before && !this.targets) {
+                    fetch(this.routes.fetchStateUrl).then(data => this.targets = data.targets);
                 }
             }
         },
@@ -186,7 +188,7 @@
 
                 return fetch(this.changeEmailUrls[this.participants[k].hash], 'POST', {
                     email: email
-                });
+                }).catch(this.checkEnded);
             },
             confirmRevealTargets() {
                 // Permanent and visible to every participant: typed, like a withdrawal
@@ -210,7 +212,15 @@
                     .catch(error => {
                         input.value = this.expirationDateShort;
                         alertify.alert(error.errors?.expires_at?.[0] || error.message);
+                        this.checkEnded(error).catch(() => {});
                     });
+            },
+            // Any refused action may be the first sign the event is over
+            checkEnded(error) {
+                if (error?.expired) {
+                    this.endedByServer = true;
+                }
+                return Promise.reject(error);
             },
             revealTargets() {
                 return fetch(this.routes.revealTargetsUrl, 'POST')
@@ -283,7 +293,7 @@
                     })
                     .catch(error => {
                         alertify.errorAlert(Object.values(error.errors || {})[0]?.[0] || error.message);
-                        return Promise.reject(error);
+                        return this.checkEnded(error);
                     });
             },
             download() {

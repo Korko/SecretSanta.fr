@@ -12,6 +12,7 @@ return [
     'internal' => 'An internal error occurred. Please try again later.',
     'resend' => 'You must wait before resending this email.',
     'withdraw' => 'You cannot have fewer than 3 participants.',
+    'ended' => 'This event is over, it can no longer be changed.',
     'expired' => 'This event is not over yet',
     'solvable' => 'This event does not allow this generation',
     'fixOrganizer' => [

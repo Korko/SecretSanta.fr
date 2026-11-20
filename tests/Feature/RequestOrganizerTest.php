@@ -369,8 +369,13 @@ test('the draw stays open until the end of the event day', function (): void {
     $this->travelTo(today()->addDay());
     expect($draw->fresh()->expired)->toBeTrue();
 
+    // The panel switches to "over" from this answer, even with a browser clock running late
     ajaxPost(URL::signedRoute('organizerPanel.changeEmail', ['draw' => $draw, 'participant' => $participant]), ['email' => $participant->email])
-        ->assertNotFound();
+        ->assertForbidden()
+        ->assertJson(['expired' => true]);
+    ajaxPost(URL::signedRoute('organizerPanel.changeDate', ['draw' => $draw]), ['expires_at' => now()->addDays(5)->format('Y-m-d')])
+        ->assertForbidden()
+        ->assertJson(['expired' => true]);
 });
 
 test('the targets show on the organizer panel once the event is over, without revealing them', function (): void {
@@ -379,6 +384,11 @@ test('the targets show on the organizer panel once the event is over, without re
     expect(ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))->assertSuccessful()->json('targets'))
         ->toBe($draw->participants->mapWithKeys(fn ($p): array => [$p->hash => $p->target->name])->all())
         ->and($draw->fresh()->targets_revealed_at)->toBeNull();
+
+    // What a panel left open past the end fetches, without reloading
+    expect(ajaxGet(URL::signedRoute('organizerPanel.fetchState', ['draw' => $draw]))->assertSuccessful()->json())
+        ->toMatchArray(['expired' => true])
+        ->and(ajaxGet(URL::signedRoute('organizerPanel.fetchState', ['draw' => $draw]))->json('targets'))->toHaveCount(3);
 });
 
 test('a participant report shows on the organizer panel, and fixing the address clears it', function (): void {

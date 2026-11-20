@@ -50,6 +50,7 @@ final class DearSantaController extends Controller
             'channel' => $participant->broadcastChannel(),
             'organizer' => $participant->draw->organizer_name,
             'targetsRevealed' => $participant->draw->targets_revealed_at !== null,
+            'ends_at' => $participant->draw->ends_at, // after it, the organizer sees every target
             'report' => $participant->report,
             'isOrganizer' => $participant->isOrganizer(),
             'emails' => $participant->dearSantas->mapWithKeys(fn ($email): array => [
