@@ -126,8 +126,6 @@ final class Draw extends Model
         return 'secretsanta_'.$this->expires_at->isoFormat('YYYY-MM-DD').'_init.csv';
     }
 
-    // Addresses that reported the target email ("not me" / "not taking part") can't be used again in this draw,
-    // even after removing and re-adding the person: only an HMAC is kept, the address itself is purged with the participant
     // Like a participant opening their dearSanta page, opening the panel proves the organizer got their email
     public function organizerReceived(): bool
     {
@@ -136,6 +134,8 @@ final class Draw extends Model
             || $this->organizer?->mail->delivery_status === DeliveryStatus::Received;
     }
 
+    // Addresses that reported the target email ("not me" / "not taking part") can't be used again in this draw,
+    // even after removing and re-adding the person: only an HMAC is kept, the address itself is purged with the participant
     public function refusesEmail(string $email): bool
     {
         return array_intersect($this->emailFingerprints($email), $this->refused_emails ?? []) !== [];

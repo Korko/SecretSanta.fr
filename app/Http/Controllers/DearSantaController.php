@@ -11,7 +11,6 @@ use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Date;
@@ -92,7 +91,7 @@ final class DearSantaController extends Controller
         ]);
     }
 
-    public function resend(Participant $participant, DearSanta $dearSanta, Request $request): JsonResponse|RedirectResponse
+    public function resend(Participant $participant, DearSanta $dearSanta): JsonResponse
     {
         abort_unless(($dearSanta->mail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
 
@@ -102,25 +101,17 @@ final class DearSantaController extends Controller
 
         try {
             $participant->santa->notify(new DearSantaNotification($dearSanta));
-
-            $message = trans('message.sent');
-
-            return $request->ajax() ?
-                response()->json([
-                    'message' => $message,
-                    'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
-                ]) :
-                redirect('/dearSanta/'.$participant->hash)->with('message', $message);
         } catch (Exception) {
-            $error = trans('error.email');
-
-            return $request->ajax() ?
-                response()->json([
-                    'error' => $error,
-                    'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
-                ]) :
-                redirect('/dearSanta/'.$participant->hash)->with('error', $error);
+            return response()->json([
+                'error' => trans('error.email'),
+                'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
+            ]);
         }
+
+        return response()->json([
+            'message' => trans('message.sent'),
+            'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
+        ]);
     }
 
     // The messages their target wrote to them, again, in a single email: nothing changes on the target's page
@@ -136,7 +127,7 @@ final class DearSantaController extends Controller
         ]);
     }
 
-    public function handle(Participant $participant, DearSantaRequest $request): JsonResponse|RedirectResponse
+    public function handle(Participant $participant, DearSantaRequest $request): JsonResponse
     {
         $dearSanta = new DearSanta;
         $dearSanta->sender()->associate($participant);
@@ -147,13 +138,9 @@ final class DearSantaController extends Controller
 
         $participant->santa->notify(new DearSantaNotification($dearSanta));
 
-        $message = trans('message.sent');
-
-        return $request->ajax() ?
-            response()->json([
-                'message' => $message,
-                'email' => $dearSanta->fresh()?->only($this->dearSantaPublicFields),
-            ]) :
-            redirect('/dearSanta/'.$participant->hash)->with('message', $message);
+        return response()->json([
+            'message' => trans('message.sent'),
+            'email' => $dearSanta->fresh()?->only($this->dearSantaPublicFields),
+        ]);
     }
 }
