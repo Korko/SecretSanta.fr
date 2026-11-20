@@ -11,6 +11,7 @@ use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
 use App\Services\LegacyDrawEncrypter;
+use App\Services\ParticipantsEditor;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -102,6 +103,65 @@ test('the organizer can withdraw a participant', function (): void {
 
     Notification::assertSentTo($santa, TargetWithdrawn::class);
     Notification::assertSentTo($santa, DearSanta::class);
+});
+
+test('withdrawing a participant never gives their santa someone they excluded', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(5)->create();
+    [$a, $b, $c, $d, $e] = $draw->participants->all();
+    // A -> B -> C -> D -> E -> A, and A excluded C
+    foreach ([[$a, $b], [$b, $c], [$c, $d], [$d, $e], [$e, $a]] as [$santa, $target]) {
+        $target->santa()->associate($santa)->save();
+    }
+
+    $a->exclusions()->attach($c);
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), ['remove' => [$b->hash]])
+        ->assertSuccessful();
+
+    // A can't take C: A takes the target of a santa who can take C instead, the only one here being D
+    assertEquals($e->id, $a->fresh()->target->id);
+    assertEquals($c->id, $d->fresh()->target->id);
+    Notification::assertSentTo($a, TargetWithdrawn::class);
+    Notification::assertSentTo($d, TargetChanged::class);
+});
+
+test('the santa of a participant left alone in a 2-cycle is drawn at random', function (): void {
+    Notification::fake();
+
+    $santas = [];
+    for ($i = 0; $i < 20; $i++) {
+        $draw = Draw::factory()->hasParticipants(6)->create();
+        [$a, $b, $c, $d, $e, $f] = $draw->participants->all();
+        // A <-> B, C -> D -> E -> F -> C
+        foreach ([[$a, $b], [$b, $a], [$c, $d], [$d, $e], [$e, $f], [$f, $c]] as [$santa, $target]) {
+            $target->santa()->associate($santa)->save();
+        }
+
+        ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), ['remove' => [$b->hash]])
+            ->assertSuccessful();
+
+        $santas[] = array_search($a->fresh()->santa->id, [$c->id, $d->id, $e->id, $f->id], true);
+    }
+
+    // Before, always the santa of the first participant in the list
+    expect($santas)->not->toContain(false)
+        ->and(array_unique($santas))->not->toHaveCount(1);
+});
+
+test('removing a participant another change already removed is not an error', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(5)->create();
+    $participant = $draw->participants->first();
+    $url = URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]);
+
+    ajaxPost($url, ['remove' => [$participant->hash]])->assertSuccessful();
+    // The panel of a second tab, still showing them
+    new ParticipantsEditor($draw->fresh())->apply([$participant], []);
+
+    assertEquals(4, $draw->participants()->count());
 });
 
 test('the organizer can withdraw a participant in a 2-cycle', function (): void {
