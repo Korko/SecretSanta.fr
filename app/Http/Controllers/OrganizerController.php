@@ -63,12 +63,12 @@ final class OrganizerController extends Controller
             ]),
             'changeEmailUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
                 $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [
-                    'draw' => $participant->draw, 'participant' => $participant,
+                    'draw' => $draw, 'participant' => $participant,
                 ]),
             ]),
             'changeNameUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
                 $participant->hash => URL::signedRoute('organizerPanel.changeName', [
-                    'draw' => $participant->draw, 'participant' => $participant,
+                    'draw' => $draw, 'participant' => $participant,
                 ]),
             ]),
             'finalCsvAvailable' => $draw->next_solvable,

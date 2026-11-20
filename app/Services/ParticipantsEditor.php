@@ -13,6 +13,7 @@ use App\Notifications\TargetWithdrawn;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Random\Randomizer;
 
 /**
  * Adds and removes participants of an existing draw in one go, touching as few pairs as possible,
@@ -111,8 +112,7 @@ final class ParticipantsEditor
         unset($this->targets[$id]);
 
         // The other santas in a random order, as insert() does: who is picked must not tell anything
-        $others = array_keys($this->targets);
-        shuffle($others);
+        $others = new Randomizer()->shuffleArray(array_keys($this->targets));
 
         if ($santa !== $target) {
             // A -> B -> C => A -> C
