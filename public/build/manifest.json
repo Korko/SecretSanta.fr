@@ -1,8 +1,4 @@
 {
-  "../wt-mr5/node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
-    "file": "assets/fa-solid-900-BUswJgRo.woff2",
-    "src": "../wt-mr5/node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
-  },
   "_ajaxForm-CoaXPpOw.js": {
     "file": "assets/ajaxForm-CoaXPpOw.js",
     "name": "ajaxForm",
@@ -64,6 +60,10 @@
     "css": [
       "assets/tooltip-CknrHklv.css"
     ]
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-BUswJgRo.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
   "resources/fonts/Cookie-Regular.ttf": {
     "file": "assets/Cookie-Regular-DbKmepVV.ttf",
