@@ -199,6 +199,9 @@ it('sends to the organizer the initial recap', function (): void {
 });
 
 it('can deal with thousands of participants', function (): void {
+    // Above the default limit: an administrator can raise it (MAX_PARTICIPANTS)
+    config(['app.max_participants' => 400]);
+
     assertEquals(0, Draw::query()->count());
     assertEquals(0, Participant::query()->count());
 
@@ -264,4 +267,23 @@ it('limits the number of draws per hour from the same address, refused forms asi
     }
 
     ajaxPost('/', $draw())->assertStatus(429)->assertJson(['message' => trans('error.throttle')]);
+});
+
+it('limits the number of participants and says who to contact', function (): void {
+    Notification::fake();
+    config(['app.max_participants' => 4, 'app.contact' => 'admin@example.com']);
+
+    ajaxPost('/', [
+        'participant-organizer' => '1',
+        'participants' => generateParticipants(5, false),
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('participants')
+        ->assertJsonFragment(['participants' => [trans('validation.custom.randomform.participants.max', ['max' => 4, 'email' => 'admin@example.com'])]]);
+
+    assertEquals(0, Draw::query()->count());
+    Notification::assertNothingSent();
 });

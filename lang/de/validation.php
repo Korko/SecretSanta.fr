@@ -116,6 +116,7 @@ return [
             ],
             'participants' => [
                 'length' => 'Es müssen mindestens 3 Teilnehmer(innen) vorhanden sein.',
+                'max' => 'Die Teilnehmerzahl ist auf :max begrenzt. Für eine größere Auslosung wenden Sie sich an den Administrator: :email',
             ],
             'organizer' => [
                 'name' => [

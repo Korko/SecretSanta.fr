@@ -116,6 +116,7 @@ return [
             ],
             'participants' => [
                 'length' => 'Il faut au moins 3 participant(e)s',
+                'max' => 'Le nombre de participant(e)s est limité à :max. Pour un tirage plus grand, contactez l\'administrateur : :email',
             ],
             'organizer' => [
                 'name' => [

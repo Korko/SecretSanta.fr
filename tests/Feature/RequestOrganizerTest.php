@@ -438,3 +438,16 @@ test('the draw secret is only read from the header, never from the request input
     ajaxPost($url, [], ['X-HASH-IV' => $iv])->assertSuccessful();
     expect($draw->fresh()->targets_revealed_at)->not->toBeNull();
 });
+
+test('the organizer cannot go over the participants limit', function (): void {
+    config(['app.max_participants' => 4]);
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    Notification::fake();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), [
+        'add' => [['name' => 'N1', 'email' => 'n1@example.com']],
+    ])->assertStatus(422)->assertJsonValidationErrors('participants');
+
+    assertEquals(4, $draw->fresh()->participants->count());
+    Notification::assertNothingSent();
+});
