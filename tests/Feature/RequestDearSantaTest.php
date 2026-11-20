@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Events\MailStatusUpdated;
 use App\Models\Draw;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use App\Services\URLParser;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -94,4 +96,17 @@ it('does not resend anything on a GET, like a link prefetch or an email scanner'
 
     ajaxGet(URL::signedRoute('dearSanta.resend_target', ['participant' => $participant]))
         ->assertStatus(405);
+});
+
+it('confirms a reception once: reloading the page neither writes nor broadcasts it again', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+    Event::fake([MailStatusUpdated::class]);
+
+    ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $participant]))->assertSuccessful();
+    ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $participant]))->assertSuccessful();
+
+    Event::assertDispatchedTimes(MailStatusUpdated::class, 1);
 });

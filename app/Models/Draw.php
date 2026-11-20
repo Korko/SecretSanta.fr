@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Date;
 use LogicException;
@@ -48,6 +47,7 @@ final class Draw extends Model
     use HasFactory;
 
     use HashId;
+    use HasTrackedMail;
     use Notifiable;
     use Prunable;
 
@@ -83,13 +83,7 @@ final class Draw extends Model
         return 'draw.'.hash_hmac('sha256', 'draw.'.$this->id, config()->string('app.key'));
     }
 
-    // The organizer recap's delivery: without one (an organizer who doesn't take part), nothing told /fix it arrived
-    /** @return MorphOne<Mail, $this> */
-    public function mail(): MorphOne
-    {
-        return $this->morphOne(Mail::class, 'mailable');
-    }
-
+    // The organizer recap's delivery: without one (an organizer who doesn't take part), nothing tells /fix it arrived.
     // Draws made before the recap was tracked have no mail yet
     public function recapMail(): Mail
     {
@@ -150,13 +144,8 @@ final class Draw extends Model
 
     protected static function booted(): void
     {
-        self::created(function (self $draw): void {
-            $draw->mail()->save(new Mail);
-        });
-
         self::deleting(function (self $draw): void {
             $draw->participants()->lazy()->each(fn (Participant $participant): ?bool => $participant->delete());
-            $draw->mail()->delete();
         });
     }
 

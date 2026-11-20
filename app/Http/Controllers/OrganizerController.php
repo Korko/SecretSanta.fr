@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Enums\DeliveryStatus;
 use App\Http\Requests\OrganizerChangeEmailRequest;
 use App\Models\Draw;
 use App\Models\Participant;
@@ -36,16 +35,9 @@ final class OrganizerController extends Controller
             $draw->save();
         }
 
-        // Taking part, the organizer got the panel link in their target email: opening the panel proves they received it
-        $organizer = $draw->organizer;
-        if ($organizer !== null && $organizer->mail->delivery_status !== DeliveryStatus::Received) {
-            $organizer->mail->markAsReceived();
-        }
-
-        // Not taking part, they got the panel link in the recap: same proof for it
-        if ($organizer === null && $draw->recapMail()->delivery_status !== DeliveryStatus::Received) {
-            $draw->recapMail()->markAsReceived();
-        }
+        // The organizer got the panel link in their target email when taking part, in the recap otherwise:
+        // opening the panel proves they received it
+        ($draw->organizer->mail ?? $draw->recapMail())->markAsReceived();
 
         return response()->json([
             'draw' => $draw->hash,

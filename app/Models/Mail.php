@@ -67,9 +67,12 @@ final class Mail extends Model
         }
     }
 
+    // Already confirmed (a participant reloading their page, the organizer opening the panel): no write, no broadcast
     public function markAsReceived(): void
     {
-        $this->updateDeliveryStatus(DeliveryStatus::Received);
+        if ($this->delivery_status !== DeliveryStatus::Received) {
+            $this->updateDeliveryStatus(DeliveryStatus::Received);
+        }
     }
 
     public function updateDeliveryStatus(DeliveryStatus $status): void

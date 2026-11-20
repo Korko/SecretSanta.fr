@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use STS\Metrics\Facades\Metrics;
@@ -42,7 +41,7 @@ use STS\Metrics\Metric;
 final class Participant extends Model
 {
     /** @use HasFactory<ParticipantFactory> */
-    use HasFactory, HashId, Notifiable {
+    use HasFactory, HashId, HasTrackedMail, Notifiable {
         resolveRouteBinding as public baseResolver;
     }
 
@@ -84,12 +83,6 @@ final class Participant extends Model
         return $this->hasMany(DearSanta::class, 'sender_id')->with('mail');
     }
 
-    /** @return MorphOne<Mail, $this> */
-    public function mail(): MorphOne
-    {
-        return $this->morphOne(Mail::class, 'mailable');
-    }
-
     /** @return BelongsToMany<self, $this> */
     public function exclusions(): BelongsToMany
     {
@@ -129,16 +122,9 @@ final class Participant extends Model
 
     protected static function booted(): void
     {
-        parent::boot();
-
-        self::created(function (self $participant): void {
-            $participant->mail()->save(new Mail);
-        });
-
         self::deleting(function (Participant $participant): void {
             $participant->dearSantas()->lazy()->each(fn (DearSanta $dearSanta): ?bool => $dearSanta->delete());
             $participant->exclusions()->detach(); // pivot rows only (delete() would remove the excluded participants)
-            $participant->mail()->delete();
         });
     }
 
