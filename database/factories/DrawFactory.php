@@ -44,7 +44,7 @@ final class DrawFactory extends Factory
     public function expired(): self
     {
         return $this->state(fn (): array => [
-            'expires_at' => fake()->dateTime('-1 hour'),
+            'expires_at' => fake()->dateTime('-1 day')->setTime(0, 0),
         ]);
     }
 }

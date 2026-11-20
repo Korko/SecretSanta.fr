@@ -235,6 +235,7 @@ export default {
             "reveal": {
                 "button": "Empfänger anzeigen",
                 "done": "Empfänger angezeigt am {date}. Die Teilnehmer sehen, dass die Liste eingesehen wurde.",
+                "expired": "Die Veranstaltung ist vorbei: der Empfänger jedes Teilnehmers ist jetzt sichtbar.",
                 "confirm": {
                     "title": "Anzeigen, wer wen beschenkt?",
                     "body": "Sie sehen den Empfänger jedes Teilnehmers, nützlich bei Zustellproblemen oder für weitere Veranstaltungen. Das ist endgültig, und die Teilnehmer sehen auf ihrer Seite, dass die Liste dem Organisator angezeigt wurde.",

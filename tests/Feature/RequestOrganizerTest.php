@@ -352,6 +352,35 @@ test('the organizer cannot change the date of an expired draw', function (): voi
         ->assertForbidden();
 });
 
+test('the draw stays open until the end of the event day', function (): void {
+    Notification::fake();
+    $this->travelTo(now()->setTime(23, 30));
+
+    $draw = Draw::factory()->hasParticipants(3)->create(['expires_at' => today()]);
+    $participant = $draw->participants->first();
+
+    expect($draw->expired)->toBeFalse()
+        ->and(ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))->json('ends_at'))
+        ->toBe(today()->addDay()->toJSON());
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeEmail', ['draw' => $draw, 'participant' => $participant]), ['email' => $participant->email])
+        ->assertSuccessful();
+
+    $this->travelTo(today()->addDay());
+    expect($draw->fresh()->expired)->toBeTrue();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeEmail', ['draw' => $draw, 'participant' => $participant]), ['email' => $participant->email])
+        ->assertNotFound();
+});
+
+test('the targets show on the organizer panel once the event is over, without revealing them', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->expired()->create();
+
+    expect(ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))->assertSuccessful()->json('targets'))
+        ->toBe($draw->participants->mapWithKeys(fn ($p): array => [$p->hash => $p->target->name])->all())
+        ->and($draw->fresh()->targets_revealed_at)->toBeNull();
+});
+
 test('a participant report shows on the organizer panel, and fixing the address clears it', function (): void {
     $draw = Draw::factory()->hasParticipants(3)->create();
     $participant = $draw->participants->first();

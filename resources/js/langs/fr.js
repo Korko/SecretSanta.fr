@@ -235,6 +235,7 @@ export default {
             "reveal": {
                 "button": "Révéler les cibles",
                 "done": "Cibles révélées le {date}. Les participant(e)s voient que la liste a été consultée.",
+                "expired": "Évènement terminé : la cible de chaque participant(e) est maintenant visible.",
                 "confirm": {
                     "title": "Révéler qui offre à qui ?",
                     "body": "Vous verrez la cible de chaque participant(e), utile en cas de souci de réception ou pour organiser d'autres évènements. C'est définitif, et les participant(e)s verront sur leur page que la liste a été révélée à l'organisateur/organisatrice.",

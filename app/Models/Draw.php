@@ -37,6 +37,7 @@ use STS\Metrics\Metric;
  * @property-read Participant|null $organizer
  * @property-read Mail|null $mail organizer recap, tracked like the target emails
  * @property-read bool $expired
+ * @property-read CarbonImmutable $ends_at
  * @property-read string $metricId
  * @property-read ParticipantsCollection $participants
  * @property list<string>|null $refused_emails
@@ -155,6 +156,12 @@ final class Draw extends Model
         return $this->max_participants ?? config()->integer('app.max_participants');
     }
 
+    // Once the event is over the organizer sees every target, no need to reveal them
+    public function targetsVisible(): bool
+    {
+        return $this->expired || $this->targets_revealed_at !== null;
+    }
+
     protected static function booted(): void
     {
         self::created(function (self $draw): void {
@@ -190,10 +197,17 @@ final class Draw extends Model
         });
     }
 
+    // expires_at is the event day: the draw stays open all day long (late fixes) and ends the next midnight
+    /** @return Attribute<CarbonImmutable, never> */
+    protected function endsAt(): Attribute
+    {
+        return Attribute::make(get: fn (): CarbonImmutable => $this->expires_at->startOfDay()->addDay());
+    }
+
     /** @return Attribute<bool, never> */
     protected function expired(): Attribute
     {
-        return Attribute::make(get: fn (): bool => $this->expires_at->isPast());
+        return Attribute::make(get: fn (): bool => ! $this->ends_at->isFuture());
     }
 
     /** @return Attribute<CarbonImmutable, never> */

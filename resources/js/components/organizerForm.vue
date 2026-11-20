@@ -35,6 +35,8 @@
                 draw: this.data.draw,
                 channel: this.data.channel,
                 expires_at: this.data.expires_at,
+                ends_at: this.data.ends_at,
+                now: Date.now(),
                 deleted_at: this.data.deleted_at,
                 drawn_at: this.data.drawn_at,
                 finalCsvAvailable: this.data.finalCsvAvailable,
@@ -85,8 +87,9 @@
                     participant => participant.mail.delivery_status !== 'error'
                 );
             },
+            // The server's instant (end of the event day, its timezone), not the browser's idea of the date
             expired() {
-                return new Date(this.expires_at) < new Date();
+                return this.now >= new Date(this.ends_at).getTime();
             },
             tomorrow() {
                 return dateFromNow(1, 'day');
@@ -102,7 +105,17 @@
                 return new Date(this.deleted_at).toLocaleString(this.$i18n.locale, {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'});
             }
         },
+        watch: {
+            // A tab left open past the event: reload to get what the server now gives (targets, no more edits)
+            expired(now, before) {
+                if (now && !before) {
+                    window.location.reload();
+                }
+            }
+        },
         created() {
+            setInterval(() => this.now = Date.now(), 60e3);
+
             Echo.channel(this.channel)
                 .listen('.mail.update', data => {
                     var key = Object.keys(this.participants).find(key => this.participants[key].mail.id === data.id);
@@ -191,6 +204,7 @@
                 return fetch(this.routes.changeDateUrl, 'POST', { expires_at: input.value })
                     .then(data => {
                         this.expires_at = data.expires_at;
+                        this.ends_at = data.ends_at;
                         this.deleted_at = data.deleted_at;
                     })
                     .catch(error => {
@@ -417,9 +431,13 @@
             <i class="fas fa-eye" />
             {{ $t('organizer.reveal.button') }}
         </button>
-        <p v-else class="text-muted small">
+        <p v-else-if="targetsRevealedAt" class="text-muted small">
             <i class="fas fa-eye" />
             {{ $t('organizer.reveal.done', { date: new Date(targetsRevealedAt).toLocaleString($i18n.locale) }) }}
+        </p>
+        <p v-else class="text-muted small">
+            <i class="fas fa-eye" />
+            {{ $t('organizer.reveal.expired') }}
         </p>
         <button type="button" class="btn btn-danger" @click="confirmPurge">
             <i class="fas fa-trash" />

@@ -235,6 +235,7 @@ export default {
             "reveal": {
                 "button": "Reveal targets",
                 "done": "Targets revealed on {date}. Participants can see that the list has been viewed.",
+                "expired": "The event is over: every participant's target is now visible.",
                 "confirm": {
                     "title": "Reveal who gives to whom?",
                     "body": "You will see each participant's target, useful in case of delivery issues or to organize other events. This is permanent, and participants will see on their page that the list has been revealed to the organizer.",

@@ -19,7 +19,7 @@ final class ListDraws extends Command
      */
     public function handle(): void
     {
-        $draws = Draw::query()->where('expires_at', '>', now())->get();
+        $draws = Draw::query()->where('expires_at', '>=', now()->startOfDay())->get();
         foreach ($draws as $draw) {
             $this->info('Draw #'.$draw->id.' ('.$draw->created_at.' - '.$draw->expires_at.')');
             $this->table(
