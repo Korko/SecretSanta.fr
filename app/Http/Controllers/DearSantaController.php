@@ -103,11 +103,11 @@ final class DearSantaController extends Controller
         $name = $participant->name;
         try {
             new ParticipantsEditor($draw)->apply([$participant], []);
-        } catch (ValidationException $exception) {
+        } catch (ValidationException $validationException) {
             // Only the organizer may break an exclusion to let them go
-            throw array_key_exists('exclusions', $exception->errors())
+            throw array_key_exists('exclusions', $validationException->errors())
                 ? ValidationException::withMessages(['exclusions' => trans('dearsanta.withdraw.blocked', ['organizer' => $draw->organizer_name])])
-                : $exception;
+                : $validationException;
         }
 
         // Counted once it went through: the deleted model still has its ids
