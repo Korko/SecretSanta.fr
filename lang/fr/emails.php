@@ -53,4 +53,8 @@ return [
     'participant_withdrew.body' => ':name s\'est désisté(e) de votre évènement :app depuis sa page de participant(e).',
     'participant_withdrew.santa' => 'Son père/mère noël secret a reçu une nouvelle cible par email, personne d\'autre n\'a besoin de changer de cadeau. :name n\'apparaît plus sur votre panneau organisateur.',
     'gift_suggestion.title' => 'SecretSanta #:draw - Une idée cadeau pour :name',
+    'gift_suggestion.heading' => 'Une idée cadeau pour :name',
+    'gift_suggestion.from' => ':sender vous propose une idée de cadeau pour :name :',
+    'gift_suggestion.from_anonymous' => 'Un(e) autre participant(e) vous propose une idée de cadeau pour :name :',
+    'gift_suggestion.secret' => 'Cette personne ne sait pas que vous êtes le père/mère noël secret de :name. Votre page de participant(e) : :link',
 ];
