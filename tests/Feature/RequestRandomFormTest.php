@@ -263,5 +263,5 @@ it('limits the number of draws per hour from the same address, refused forms asi
         ajaxPost('/', $draw())->assertSuccessful();
     }
 
-    ajaxPost('/', $draw())->assertStatus(429);
+    ajaxPost('/', $draw())->assertStatus(429)->assertJson(['message' => trans('error.throttle')]);
 });
