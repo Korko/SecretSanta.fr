@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @property-read Mail $mail
  * @property string $mail_body
  * @property bool $signed
+ * @property int $sender_id
+ * @property int $recipient_id
  */
 #[Fillable(['mail_body', 'signed'])]
 #[WithoutTimestamps]

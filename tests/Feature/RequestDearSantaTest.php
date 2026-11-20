@@ -273,6 +273,11 @@ it('lets a participant suggest a gift idea to the santa of someone else than the
     });
 
     expect(ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $sender]))->json('suggestions'))->toHaveCount(1);
+
+    // Also on the santa's page, as a recap
+    $received = ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $recipient->santa]))->json('receivedSuggestions');
+    expect($received)->toHaveCount(1)
+        ->and($received[0])->toMatchArray(['mail_body' => 'A board game', 'sender' => $sender->name]);
 });
 
 it("keeps a gift idea anonymous unless signed, and refuses one for oneself or one's own target", function (): void {
@@ -289,6 +294,7 @@ it("keeps a gift idea anonymous unless signed, and refuses one for oneself or on
 
     ajaxPost($suggest, ['recipient' => $recipient->hash, 'content' => 'Socks'])->assertSuccessful();
     Notification::assertSentTo($recipient->santa, GiftSuggestion::class, fn (GiftSuggestion $notification): bool => $notification->toMail($recipient->santa)->viewData['senderName'] === null);
+    expect(ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $recipient->santa]))->json('receivedSuggestions.0.sender'))->toBeNull();
 });
 
 it('forwards gift ideas to the new santa when the recipient changes santa', function (): void {

@@ -42,6 +42,7 @@
                 showEmailChange: !!this.data.pendingEmail,
                 suggestionRecipients: this.data.suggestionRecipients || {},
                 suggestions: this.data.suggestions || {},
+                receivedSuggestions: this.data.receivedSuggestions || [],
                 showSuggestion: false,
                 suggestion: { recipient: '', content: '', signed: false },
                 newEmail: '',
@@ -73,6 +74,11 @@
                     .map(suggestion => ({ ...suggestion, created_at: new Date(suggestion.mail.created_at) }))
                     .sort((a, b) => b.created_at - a.created_at)
                     .map(suggestion => ({ ...suggestion, created_at: suggestion.created_at.toLocaleString(this.$i18n.locale) }));
+            },
+            receivedSuggestionsList() {
+                return [...this.receivedSuggestions]
+                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                    .map(suggestion => ({ ...suggestion, created_at: new Date(suggestion.created_at).toLocaleString(this.$i18n.locale) }));
             },
             recentTargetDearSanta() {
                 return (new Date()).getTime() - (new Date(this.targetDearSantaLastUpdate)).getTime() < 5*60*1000;
@@ -258,6 +264,25 @@
                 {{ $t('dearsanta.resend.button') }}
             </button>
         </div>
+        <!-- Ideas others gave for this participant's target (also emailed) -->
+        <table v-if="receivedSuggestionsList.length" class="table table-hover mt-4 suggestions-received">
+            <caption>{{ $t('dearsanta.suggestion.received.title') }}</caption>
+            <thead>
+                <tr class="table-active">
+                    <th scope="col" colspan="3">
+                        <i class="fas fa-lightbulb" />
+                        {{ $t('dearsanta.suggestion.received.title') }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="idea in receivedSuggestionsList" :key="idea.id" class="suggestion-received">
+                    <td>{{ idea.created_at }}</td>
+                    <td>{{ idea.sender || $t('dearsanta.suggestion.received.anonymous') }}</td>
+                    <td><p v-html="nl2br(e(idea.mail_body))"></p></td>
+                </tr>
+            </tbody>
+        </table>
         <!-- Gift ideas for someone else: emailed to their santa, whom the sender never learns -->
         <div v-if="Object.keys(suggestionRecipients).length" class="suggestions mt-4">
             <div class="text-center">

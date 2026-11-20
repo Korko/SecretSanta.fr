@@ -70,5 +70,9 @@ return [
         'signed_short' => 'signed',
         'send' => 'Send the idea',
         'list' => 'Ideas sent',
+        'received' => [
+            'title' => 'Gift ideas received for your target',
+            'anonymous' => 'Anonymous',
+        ],
     ],
 ];

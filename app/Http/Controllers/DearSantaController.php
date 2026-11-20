@@ -68,6 +68,15 @@ final class DearSantaController extends Controller
             'suggestions' => $participant->sentSuggestions->load('recipient')->mapWithKeys(fn (GiftSuggestion $suggestion): array => [
                 $suggestion->mail->id => $this->publicSuggestion($suggestion),
             ]),
+            // Ideas others gave for their target, like the target's own messages (they follow a change of target)
+            'receivedSuggestions' => $participant->target->receivedSuggestions->load('sender')
+                ->reject(fn (GiftSuggestion $suggestion): bool => $suggestion->sender_id === $participant->id)
+                ->map(fn (GiftSuggestion $suggestion): array => [
+                    'id' => $suggestion->mail->id,
+                    'mail_body' => $suggestion->mail_body,
+                    'sender' => $suggestion->signed ? $suggestion->sender->name : null,
+                    'created_at' => $suggestion->mail->created_at,
+                ])->values(),
             'pendingEmail' => $this->pendingEmail($participant),
             'emails' => $participant->dearSantas->mapWithKeys(fn ($email): array => [
                 $email->mail->id => $email->only($this->dearSantaPublicFields),

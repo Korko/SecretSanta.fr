@@ -70,5 +70,9 @@ return [
         'signed_short' => 'signée',
         'send' => 'Envoyer l\'idée',
         'list' => 'Idées envoyées',
+        'received' => [
+            'title' => 'Idées cadeaux reçues pour votre cible',
+            'anonymous' => 'Anonyme',
+        ],
     ],
 ];

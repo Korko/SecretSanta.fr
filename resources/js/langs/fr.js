@@ -98,7 +98,11 @@ export default {
                 "signed": "Signer avec mon nom (sinon, l'idée reste anonyme)",
                 "signed_short": "signée",
                 "send": "Envoyer l'idée",
-                "list": "Idées envoyées"
+                "list": "Idées envoyées",
+                "received": {
+                    "title": "Idées cadeaux reçues pour votre cible",
+                    "anonymous": "Anonyme"
+                }
             }
         },
         "faq": {
