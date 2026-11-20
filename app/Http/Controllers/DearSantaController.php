@@ -9,7 +9,6 @@ use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
-use Carbon\CarbonImmutable;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -17,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 
@@ -123,23 +123,17 @@ final class DearSantaController extends Controller
         }
     }
 
-    public function resendTarget(Participant $participant, Request $request): JsonResponse|RedirectResponse
+    // The messages their target wrote to them, again, in a single email: nothing changes on the target's page
+    public function resendTarget(Participant $participant): JsonResponse
     {
-        $dearSantas = $participant->dearSantas->load('mail');
-        $max = $dearSantas->max('mail.updated_at');
-        abort_unless($max instanceof CarbonImmutable && $max->diffInSeconds(Date::now()) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
+        $sent = RateLimiter::attempt('resend-target:'.$participant->id, 1, $participant->forwardTargetMessages(...), config()->integer('mail.resend_delay'));
+        abort_if($sent === false, 403, Lang::get('error.resend'));
 
-        $dearSantas->each(function (DearSanta $dearSanta) use ($participant): void {
-            $participant->notify(new DearSantaNotification($dearSanta));
-        });
+        $participant->createMetric('resend_target_messages');
 
-        $message = trans('message.sent');
-
-        return $request->ajax() ?
-            response()->json([
-                'message' => $message,
-            ]) :
-            redirect('/dearSanta/'.$participant->hash)->with('message', $message);
+        return response()->json([
+            'message' => trans('message.sent'),
+        ]);
     }
 
     public function handle(Participant $participant, DearSantaRequest $request): JsonResponse|RedirectResponse

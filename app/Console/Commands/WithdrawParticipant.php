@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Notifications\DearSanta;
 use App\Notifications\TargetWithdrawn;
 use Exception;
 use Illuminate\Console\Attributes\Description;
@@ -44,12 +43,12 @@ final class WithdrawParticipant extends Command
         $santa->target()->save($target);
 
         $santa->notify(new TargetWithdrawn);
-        $target->dearSantas->each(function ($dearSanta) use ($santa): void {
-            $santa->notify(new DearSanta($dearSanta));
-        });
         $this->info('Santa informed');
 
         $participant->delete();
         $this->info('Participant withdrawn');
+
+        // Once the participant is gone: until then, they are also a participant whose santa is $santa
+        $santa->forwardTargetMessages();
     }
 }

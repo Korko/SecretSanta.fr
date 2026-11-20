@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use App\Enums\ReportReason;
+use App\Notifications\TargetMessages;
 use Database\Factories\ParticipantFactory;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -110,6 +111,14 @@ final class Participant extends Model
         throw_if($participant->draw->expired, ModelNotFoundException::class);
 
         return $participant;
+    }
+
+    // Every message their target wrote to their santa, in a single email: for a new santa, a new address, or on request
+    public function forwardTargetMessages(): void
+    {
+        if ($this->target->dearSantas->isNotEmpty()) {
+            $this->notify(new TargetMessages);
+        }
     }
 
     public function createMetric(string $name, int $value = 1): Metric

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Draw;
 use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetMessages;
 use App\Services\URLParser;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
@@ -94,4 +95,37 @@ it('does not resend anything on a GET, like a link prefetch or an email scanner'
 
     ajaxGet(URL::signedRoute('dearSanta.resend_target', ['participant' => $participant]))
         ->assertStatus(405);
+});
+
+it('sends again, in a single email, every message the target wrote to their santa', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+    $target = $participant->target;
+
+    foreach (['first message', 'second message'] as $content) {
+        ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $target]), ['content' => $content])->assertSuccessful();
+    }
+
+    // What they wrote to their own santa is not part of it
+    ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), ['content' => 'my own message'])->assertSuccessful();
+
+    ajaxPost(URL::signedRoute('dearSanta.resend_target', ['participant' => $participant]))
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    Notification::assertSentToTimes($participant, TargetMessages::class, 1);
+    Notification::assertSentTo($participant, TargetMessages::class, function (TargetMessages $notification) use ($participant): bool {
+        $html = (string) $notification->toMail($participant)->render();
+
+        return str_contains($html, 'first message') && str_contains($html, 'second message') && ! str_contains($html, 'my own message');
+    });
+
+    // The messages themselves are not sent again: their status, on the target's page, stays as it was
+    Notification::assertSentToTimes($participant, DearSanta::class, 2);
+
+    // Once per resend delay
+    ajaxPost(URL::signedRoute('dearSanta.resend_target', ['participant' => $participant]))->assertForbidden();
+    Notification::assertSentToTimes($participant, TargetMessages::class, 1);
 });
