@@ -145,6 +145,11 @@
                 return dateFromNow(amount, unit);
             },
 
+            removeExclusion(participant, exclusion) {
+                participant.exclusions = participant.exclusions.filter(other => other !== exclusion);
+                participant.oneWay = participant.oneWay.filter(id => id !== exclusion.id);
+            },
+
             resetParticipants() {
                 this.participants = [];
             },
@@ -357,7 +362,7 @@
                                         @input:name="participant.name = $event"
                                         @input:email="participant.email = $event"
                                         @input:exclusions="participant.exclusions = $event"
-                                        @removeExclusion="participant.exclusions = participant.exclusions.filter(other => other !== $event); participant.oneWay = participant.oneWay.filter(id => id !== $event.id)"
+                                        @removeExclusion="removeExclusion(participant, $event)"
                                         @addExclusion="addExclusion(participant, $event)"
                                         @toggleDirection="participant.oneWay = participant.oneWay.includes($event.id) ? participant.oneWay.filter(id => id !== $event.id) : [...participant.oneWay, $event.id]"
                                         @delete="participants.splice(idx, 1)"
