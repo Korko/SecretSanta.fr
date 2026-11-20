@@ -73,19 +73,28 @@ final readonly class HatSolver implements SolverInterface
      */
     private function shuffledLoop(array $ids, array $forbidden): ?array
     {
-        $last = count($ids) - 1;
+        $count = count($ids);
 
         for ($shuffle = 0; $shuffle < self::MAX_SHUFFLES; $shuffle++) {
-            $circle = $this->randomizer->shuffleArray($ids);
+            // Fisher-Yates one place at a time, dropped as soon as a santa cannot give to the next one:
+            // the circles kept are the same as with a full shuffle, so each loop stays as likely
+            $circle = $ids;
+            for ($position = 0; $position < $count; $position++) {
+                $picked = $this->randomizer->getInt($position, $count - 1);
+                [$circle[$position], $circle[$picked]] = [$circle[$picked], $circle[$position]];
+
+                if ($position > 0 && isset($forbidden[$circle[$position - 1]][$circle[$position]])) {
+                    continue 2;
+                }
+            }
+
+            if (isset($forbidden[$circle[$count - 1]][$circle[0]])) {
+                continue;
+            }
 
             $draw = [];
             foreach ($circle as $position => $santa) {
-                $target = $circle[$position === $last ? 0 : $position + 1];
-                if (isset($forbidden[$santa][$target])) {
-                    continue 2;
-                }
-
-                $draw[$santa] = $target;
+                $draw[$santa] = $circle[($position + 1) % $count];
             }
 
             return $draw;
