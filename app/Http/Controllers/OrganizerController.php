@@ -162,8 +162,7 @@ final class OrganizerController extends Controller
     // A typo or a nickname: same person, same pairs. Their santa is told the new name to look for
     public function changeName(OrganizerChangeNameRequest $request, Draw $draw, Participant $participant): JsonResponse
     {
-        abort_if($draw->expired, 403, Lang::get('error.expired'));
-
+        // An ended draw never gets here: its participants can't be bound (see the route's missing())
         $name = mb_trim($request->string('name')->toString());
         throw_if(
             $draw->participants->contains(fn (Participant $other): bool => $other->isNot($participant) && $other->name === $name),
