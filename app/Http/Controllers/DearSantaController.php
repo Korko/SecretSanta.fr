@@ -128,16 +128,21 @@ final class DearSantaController extends Controller
         $email = $this->pendingEmail($participant);
         throw_if($email === null, ValidationException::withMessages(['code' => trans('dearsanta.email.expired')]));
 
+        // Counted before checking, in a single query: parallel requests can't try more codes than allowed
+        $counted = Participant::query()->whereKey($participant->id)
+            ->where('pending_email_attempts', '<', self::EMAIL_CODE_ATTEMPTS)
+            ->increment('pending_email_attempts');
+        throw_if($counted === 0, ValidationException::withMessages(['code' => trans('dearsanta.email.expired')]));
+
         if (! $participant->checkEmailCode(preg_replace('/\D/', '', $request->string('code')->toString()) ?? '')) {
             // Six digits: a few tries for typos, then a new code is needed
-            $participant->pending_email_attempts++;
-            if ($participant->pending_email_attempts >= self::EMAIL_CODE_ATTEMPTS) {
+            $last = $participant->pending_email_attempts + 1 >= self::EMAIL_CODE_ATTEMPTS;
+            if ($last) {
                 $participant->clearPendingEmail();
+                $participant->save();
             }
 
-            $participant->save();
-
-            throw ValidationException::withMessages(['code' => trans($participant->pending_email === null ? 'dearsanta.email.expired' : 'dearsanta.email.wrong_code')]);
+            throw ValidationException::withMessages(['code' => trans($last ? 'dearsanta.email.expired' : 'dearsanta.email.wrong_code')]);
         }
 
         // Refused in the meantime ("not me" from another participant using it)
