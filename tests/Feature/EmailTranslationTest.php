@@ -18,7 +18,7 @@ it('renders the emails in the language of the request', function (string $locale
     $draw = Draw::factory()->hasParticipants(3)->create();
     $participant = $draw->participants->first();
 
-    $html = (string) new TargetDrawn()->toMail($participant)->render()
+    $html = new TargetDrawn()->toMail($participant)->render()
         .new TargetWithdrawn()->toMail($participant->santa)->render()
         .new ParticipantEmailCode('Zoé', '012345')->toMail(new AnonymousNotifiable)->render();
 
