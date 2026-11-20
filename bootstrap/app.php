@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Exceptions\DrawEnded;
 use App\Http\Middleware\HandleEncryptionIV;
 use App\Http\Middleware\Language;
 use App\Http\Middleware\SecurityHeaders;
@@ -69,6 +70,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(fn (InvalidSignatureException $e, HttpRequest $request) => $request->expectsJson()
             ? response()->json(['message' => trans('error.signature')], 403)
             : response()->view('missingDraw', [], 403));
+
+        // An expected answer (the page switches to "over"), not an error to log
+        $exceptions->dontReport(DrawEnded::class);
 
         // Too many draws or emails: the form shows this message, not Laravel's "Too Many Attempts."
         $exceptions->render(fn (ThrottleRequestsException $e, HttpRequest $request) => $request->expectsJson()

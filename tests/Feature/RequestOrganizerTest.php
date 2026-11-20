@@ -376,6 +376,9 @@ test('the draw stays open until the end of the event day', function (): void {
     ajaxPost(URL::signedRoute('organizerPanel.changeDate', ['draw' => $draw]), ['expires_at' => now()->addDays(5)->format('Y-m-d')])
         ->assertForbidden()
         ->assertJson(['expired' => true]);
+    ajaxPost(URL::signedRoute('organizerPanel.changeName', ['draw' => $draw, 'participant' => $participant]), ['name' => 'Someone else'])
+        ->assertForbidden()
+        ->assertJson(['expired' => true]);
 });
 
 test('the targets show on the organizer panel once the event is over, without revealing them', function (): void {

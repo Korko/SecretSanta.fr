@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use App\Enums\DeliveryStatus;
+use App\Exceptions\DrawEnded;
 use Carbon\CarbonImmutable;
 use Database\Factories\DrawFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -16,10 +17,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Lang;
 use LogicException;
 use STS\Metrics\Facades\Metrics;
 use STS\Metrics\Metric;
@@ -158,13 +157,10 @@ final class Draw extends Model
         return $this->max_participants ?? config()->integer('app.max_participants');
     }
 
-    // Tells the page it is over (expired: true) so it switches without a reload, whatever the browser clock says
+    // Rendered as expired: true, for the page to switch to "over" (see DrawEnded)
     public function abortIfExpired(): void
     {
-        throw_if($this->expired, HttpResponseException::class, response()->json([
-            'message' => Lang::get('error.ended'),
-            'expired' => true,
-        ], 403));
+        throw_if($this->expired, DrawEnded::class);
     }
 
     // Once the event is over the organizer sees every target, no need to reveal them

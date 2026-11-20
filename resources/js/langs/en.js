@@ -275,7 +275,7 @@ export default {
                 "button_final-tooltip": {
                     "title": "Completed summary",
                     "explain": "The data is the same as in the initial summary, but the target each participant had during this event has been added to their exclusions. Unless this would make it impossible to find a target for every participant next time.",
-                    "limit": "Given the event date, this feature is only available from {expires_at} to {deleted_at}, or as soon as you have revealed the targets."
+                    "limit": "Given the event date, this feature is only available after {expires_at}, until {deleted_at}, or as soon as you have revealed the targets."
                 }
             },
             "purge": {
