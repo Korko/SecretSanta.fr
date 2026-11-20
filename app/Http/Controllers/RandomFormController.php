@@ -26,7 +26,7 @@ final class RandomFormController extends Controller
         $limit = ParticipantLimit::findUsable($code);
 
         return response()->view('randomForm', [
-            'maxParticipants' => $limit?->max ?? config()->integer('app.max_participants'),
+            'maxParticipants' => $limit->max ?? config()->integer('app.max_participants'),
             'limitCode' => $limit instanceof ParticipantLimit ? $code : null,
             'limitInvalid' => $code !== '' && ! $limit instanceof ParticipantLimit,
         ]);

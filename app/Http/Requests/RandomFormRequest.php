@@ -70,6 +70,6 @@ final class RandomFormRequest extends Request
 
     public function maxParticipants(): int
     {
-        return $this->participantLimit()?->max ?? config()->integer('app.max_participants');
+        return $this->participantLimit()->max ?? config()->integer('app.max_participants');
     }
 }
