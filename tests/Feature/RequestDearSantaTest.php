@@ -331,6 +331,7 @@ it('only tells a gift idea sender whether it was sent, not when it was read', fu
 
     $mail = $sender->sentSuggestions()->firstOrFail()->mail;
     $mail->markAsReceived();
+
     expect(new MailStatusUpdated($mail->fresh())->broadcastWhen())->toBeFalse();
 
     $suggestions = ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $sender]))->json('suggestions');

@@ -41,7 +41,7 @@ final class MailStatusUpdated implements ShouldBroadcast
     // A gift idea's sender only learns whether it was sent (see DearSantaController::publicSuggestion)
     public function broadcastWhen(): bool
     {
-        return ! ($this->mail->mailable instanceof GiftSuggestion && $this->mail->delivery_status === DeliveryStatus::Received);
+        return ! $this->mail->mailable instanceof GiftSuggestion || $this->mail->delivery_status !== DeliveryStatus::Received;
     }
 
     /**
