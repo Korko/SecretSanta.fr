@@ -463,3 +463,14 @@ test('the organizer cannot go over the participants limit', function (): void {
     assertEquals(4, $draw->fresh()->participants->count());
     Notification::assertNothingSent();
 });
+
+test('a draw over the participants limit can still lose someone', function (): void {
+    config(['app.max_participants' => 4]);
+    $draw = Draw::factory()->hasParticipants(6)->create();
+    Notification::fake();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), ['remove' => [$draw->participants->first()->hash]])
+        ->assertSuccessful();
+
+    assertEquals(5, $draw->fresh()->participants->count());
+});
