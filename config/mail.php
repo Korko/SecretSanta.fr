@@ -86,4 +86,11 @@ return [
 
     'resend_delay' => 5 * 60, // 5m delay,
 
+    // A participant moving to another address types back a code sent there (DearSantaController::changeEmail)
+    'email_change' => [
+        'code_ttl' => 60 * 60, // the code is valid for an hour
+        'code_attempts' => 5, // wrong codes before a new one is needed
+        'request_delay' => 60, // between two codes: a typo is fixed right away, not one email a second
+    ],
+
 ];

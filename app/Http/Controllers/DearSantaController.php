@@ -26,10 +26,6 @@ use Illuminate\Validation\ValidationException;
 
 final class DearSantaController extends Controller
 {
-    private const int EMAIL_CODE_TTL = 3600;
-
-    private const int EMAIL_CODE_ATTEMPTS = 5;
-
     // dear_santas has no timestamps: the dates shown come from the related mail
     /** @var list<string> */
     private array $dearSantaPublicFields = ['id', 'mail_body', 'mail'];
@@ -106,7 +102,7 @@ final class DearSantaController extends Controller
         throw_if(mb_strtolower($email) === mb_strtolower($participant->email), ValidationException::withMessages(['email' => trans('dearsanta.email.same')]));
         throw_if($participant->draw->refusesEmail($email), ValidationException::withMessages(['email' => trans('organizer.report.refused_email')]));
         // A typo can be fixed right away, but not one email a second to any address
-        abort_if($participant->pending_email_at !== null && $participant->pending_email_at->diffInSeconds(Date::now()) < 60, 403, Lang::get('error.resend'));
+        abort_if($participant->pending_email_at !== null && $participant->pending_email_at->diffInSeconds(Date::now()) < config()->integer('mail.email_change.request_delay'), 403, Lang::get('error.resend'));
 
         $code = $participant->requestEmailChange($email);
         Notification::route('mail', [$email => $participant->name])->notify(new ParticipantEmailCode($participant->name, $code));
@@ -130,13 +126,13 @@ final class DearSantaController extends Controller
 
         // Counted before checking, in a single query: parallel requests can't try more codes than allowed
         $counted = Participant::query()->whereKey($participant->id)
-            ->where('pending_email_attempts', '<', self::EMAIL_CODE_ATTEMPTS)
+            ->where('pending_email_attempts', '<', config()->integer('mail.email_change.code_attempts'))
             ->increment('pending_email_attempts');
         throw_if($counted === 0, ValidationException::withMessages(['code' => trans('dearsanta.email.expired')]));
 
         if (! $participant->checkEmailCode(preg_replace('/\D/', '', $request->string('code')->toString()) ?? '')) {
             // Six digits: a few tries for typos, then a new code is needed
-            $last = $participant->pending_email_attempts + 1 >= self::EMAIL_CODE_ATTEMPTS;
+            $last = $participant->pending_email_attempts + 1 >= config()->integer('mail.email_change.code_attempts');
             if ($last) {
                 $participant->clearPendingEmail();
                 $participant->save();
@@ -253,7 +249,7 @@ final class DearSantaController extends Controller
 
     private function pendingEmail(Participant $participant): ?string
     {
-        if ($participant->pending_email_at?->addSeconds(self::EMAIL_CODE_TTL)->isFuture() !== true) {
+        if ($participant->pending_email_at?->addSeconds(config()->integer('mail.email_change.code_ttl'))->isFuture() !== true) {
             return null;
         }
 

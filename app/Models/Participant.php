@@ -57,7 +57,7 @@ final class Participant extends Model
     // Typing it back on their page proves the participant owns the new address
     public function requestEmailChange(string $email): string
     {
-        $code = mb_str_pad((string) random_int(0, 999_999), 6, '0', STR_PAD_LEFT);
+        $code = self::newEmailCode();
 
         $this->pending_email = $email;
         $this->pending_email_code = $this->emailCodeHash($code);
@@ -205,6 +205,12 @@ final class Participant extends Model
             'pending_email_at' => 'immutable_datetime',
             'report' => ReportReason::class,
         ];
+    }
+
+    // Six digits, easy to type back from another mailbox
+    private static function newEmailCode(): string
+    {
+        return mb_str_pad((string) random_int(0, 999_999), 6, '0', STR_PAD_LEFT);
     }
 
     private function emailCodeHash(string $code): string
