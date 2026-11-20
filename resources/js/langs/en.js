@@ -218,6 +218,14 @@ export default {
             "internalError": "Internal error"
         },
         "organizer": {
+            "rename": {
+                "button": "Change the name",
+                "title": "Rename {name}",
+                "body": "Their Santa will be told the new name by email. Targets do not change.",
+                "ok": "Rename",
+                "cancel": "Cancel",
+                "done": "Renamed to {name}"
+            },
             "url": "Link received by a participant by email",
             "fix": "Fix",
             "date": {
@@ -500,7 +508,8 @@ export default {
                         "format": "The expiration date must use the year-month-day format, e.g. 2022-02-05."
                     },
                     "participants": {
-                        "length": "At least 3 participants are required"
+                        "length": "At least 3 participants are required",
+                        "max": "The number of participants is limited to {max}. For a bigger draw, contact the administrator: {email}"
                     },
                     "organizer": {
                         "name": {

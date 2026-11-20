@@ -5,7 +5,7 @@
 
     import { download } from '../partials/helpers.js';
 
-    import { dateFromNow, ymd } from '../partials/helpers.js';
+    import { dateFromNow, ymd, escapeHtml } from '../partials/helpers.js';
 
     import alertify, { hardConfirm } from '../partials/alertify.js';
     import fetch from '../partials/fetch.js';
@@ -39,6 +39,7 @@
                 drawn_at: this.data.drawn_at,
                 finalCsvAvailable: this.data.finalCsvAvailable,
                 changeEmailUrls: this.data.changeEmailUrls,
+                changeNameUrls: this.data.changeNameUrls,
                 targetsRevealedAt: this.data.targetsRevealedAt,
                 targets: this.data.targets,
                 validations: {
@@ -51,7 +52,9 @@
                 multiMode: false,
                 pendingRemove: [],
                 pendingAdd: [],
-                newParticipant: { name: '', email: '' }
+                newParticipant: { name: '', email: '' },
+                maxParticipants: this.data.maxParticipants,
+                contact: this.data.contact
             };
         },
         computed: {
@@ -63,6 +66,10 @@
                 const when = new Intl.RelativeTimeFormat(document.documentElement.lang, { numeric: 'auto' }).format(-days, 'day');
                 return '<div class="alert alert-warning mt-2 mb-0"><i class="fas fa-exclamation-triangle"></i> '
                     + this.$t('organizer.edit.warning', {when}) + '</div>';
+            },
+            // Counting the changes waiting in the "several at once" mode
+            atLimit() {
+                return Object.keys(this.participants).length + this.pendingAdd.length - this.pendingRemove.length >= this.maxParticipants;
             },
             canEdit() {
                 return !this.expired;
@@ -129,6 +136,35 @@
             purge() {
                 return fetch(this.routes.deleteUrl, 'DELETE')
                     .then(data => alertify.confirmAlert(data.message, () => window.location.pathname = '/'));
+            },
+            renameParticipant(k) {
+                const oldName = this.participants[k].name;
+                alertify.prompt(
+                    this.$t('organizer.rename.title', { name: escapeHtml(oldName) }),
+                    this.$t('organizer.rename.body'),
+                    oldName,
+                    (event, value) => {
+                        const name = value.trim();
+                        if (name && name !== oldName) {
+                            this.updateName(k, name)
+                                .then(() => alertify.success(this.$t('organizer.rename.done', { name: escapeHtml(name) })))
+                                .catch(error => alertify.errorAlert(escapeHtml(error.errors?.name?.[0] || error.message)));
+                        }
+                    },
+                    () => {}
+                ).set('labels', { ok: this.$t('organizer.rename.ok'), cancel: this.$t('organizer.rename.cancel') });
+            },
+            updateName(k, name) {
+                const oldName = this.participants[k].name;
+
+                return fetch(this.changeNameUrls[this.participants[k].hash], 'POST', { name })
+                    .then(data => {
+                        this.participants[k].name = data.participant.name;
+                        // Revealed targets show names too
+                        if (this.targets) {
+                            Object.keys(this.targets).forEach(hash => this.targets[hash] === oldName && (this.targets[hash] = data.participant.name));
+                        }
+                    });
             },
             updateEmail(k, email) {
                 this.participants[k].email = email;
@@ -227,6 +263,7 @@
                     .then(data => {
                         this.participants = data.participants;
                         this.changeEmailUrls = data.changeEmailUrls;
+                        this.changeNameUrls = data.changeNameUrls;
                         this.targets = data.targets;
                         alertify.confirmAlert(this.$t('organizer.edit.done'));
                     })
@@ -290,6 +327,14 @@
                 <tr v-for="(participant, k) in participants" :key="participant.hash" :class="{ 'pending-remove': pendingRemove.includes(participant.hash) }">
                     <td>
                         {{ participant.name }}
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-link participant-rename"
+                            :disabled="expired"
+                            :title="$t('organizer.rename.button')"
+                            :aria-label="$t('organizer.rename.button')"
+                            @click="renameParticipant(k)"
+                        ><i class="fas fa-pen" aria-hidden="true" /></button>
                         <span v-if="participant.report" class="badge badge-warning participant-report" :title="$t('organizer.report.help.' + participant.report)">
                             <i class="fas fa-flag" /> {{ $t('organizer.report.' + participant.report) }}
                         </span>
@@ -338,10 +383,13 @@
                     <td><input v-model.trim="newParticipant.email" form="addParticipant" type="email" class="form-control participant-add-email" required :placeholder="$t('organizer.list.email')" /></td>
                     <td :colspan="targets ? 3 : 2">
                         <form id="addParticipant" @submit.prevent="addParticipant">
-                            <button type="submit" class="btn btn-outline-success participant-add">
+                            <button type="submit" class="btn btn-outline-success participant-add" :disabled="atLimit">
                                 <i class="fas fa-plus" /><span> {{ $t('organizer.edit.add') }}</span>
                             </button>
                         </form>
+                        <div v-if="atLimit" class="alert alert-warning participants-max mt-2 mb-0" role="status">
+                            {{ $t('validation.custom.randomform.participants.max', { max: maxParticipants, email: contact }) }}
+                        </div>
                     </td>
                 </tr>
             </tfoot>

@@ -218,6 +218,14 @@ export default {
             "internalError": "Erreur interne"
         },
         "organizer": {
+            "rename": {
+                "button": "Modifier le nom",
+                "title": "Renommer {name}",
+                "body": "Son ou sa Santa sera prévenu(e) par e-mail du nouveau nom. Les cibles ne changent pas.",
+                "ok": "Renommer",
+                "cancel": "Annuler",
+                "done": "Renommé en {name}"
+            },
             "url": "Lien reçu par un participant par email",
             "fix": "Corriger",
             "date": {
@@ -409,7 +417,8 @@ export default {
                         "format": "La date d'expiration doit respecter le format année-mois-jour exemple: 2022-02-05."
                     },
                     "participants": {
-                        "length": "Il faut au moins 3 participant(e)s"
+                        "length": "Il faut au moins 3 participant(e)s",
+                        "max": "Le nombre de participant(e)s est limité à {max}. Pour un tirage plus grand, contactez l'administrateur : {email}"
                     },
                     "organizer": {
                         "name": {

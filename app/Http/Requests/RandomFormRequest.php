@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\ParticipantLimit;
+
 final class RandomFormRequest extends Request
 {
     /**
@@ -19,7 +21,8 @@ final class RandomFormRequest extends Request
             'organizer.name' => 'exclude_if:participant-organizer,true|required',
             'organizer.email' => 'exclude_if:participant-organizer,true|required|email',
 
-            'participants' => 'required|array|min:3',
+            'limit' => 'sometimes|nullable|string',
+            'participants' => 'required|array|min:3|max:'.$this->maxParticipants(),
 
             'participants.*.name' => 'required|distinct',
             'participants.*.email' => 'required|email',
@@ -44,6 +47,7 @@ final class RandomFormRequest extends Request
             'organizer.email.required' => __('validation.custom.randomform.organizer.email.required'),
             'organizer.email.email' => __('validation.custom.randomform.organizer.email.email'),
             'participants.min' => __('validation.custom.randomform.participants.length'),
+            'participants.max' => __('validation.custom.randomform.participants.max', ['max' => $this->maxParticipants(), 'email' => config()->string('app.email')]),
             'participants.*.name.required' => __('validation.custom.randomform.participant.name.required'),
             'participants.*.name.distinct' => __('validation.custom.randomform.participant.name.distinct'),
             'participants.*.email.required' => __('validation.custom.randomform.participant.email.required'),
@@ -56,5 +60,16 @@ final class RandomFormRequest extends Request
             'data-expiration.before' => __('validation.custom.randomform.expiration.max'),
             'data-expiration.date_format' => __('validation.custom.randomform.expiration.format'),
         ];
+    }
+
+    /** The single use administrator code given with the form (?limit=… on the home page), if still unused */
+    public function participantLimit(): ?ParticipantLimit
+    {
+        return once(fn (): ?ParticipantLimit => ParticipantLimit::findUsable($this->string('limit')->value()));
+    }
+
+    public function maxParticipants(): int
+    {
+        return $this->participantLimit()->max ?? config()->integer('app.max_participants');
     }
 }

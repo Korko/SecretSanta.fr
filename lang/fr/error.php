@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 return [
     'validation' => 'Les données remplies ne sont pas valides',
+    'participantLimit' => 'Ce lien pour un tirage plus grand a déjà été utilisé ou n\'est pas valide. La limite habituelle de participant(e)s s\'applique.',
     'solution' => 'Les exclusions que vous avez choisies ne permettent pas d\'attribuer une cible par participant.',
     'csrf' => 'Le formulaire a expiré pour cause d\'inactitivé. Veuillez recommencer.',
     'signature' => 'L\'action demandée n\'a pas pu être effectuée. Veuillez rafraichir la page avant de retenter.',

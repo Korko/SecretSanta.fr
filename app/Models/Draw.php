@@ -40,6 +40,7 @@ use STS\Metrics\Metric;
  * @property-read string $metricId
  * @property-read ParticipantsCollection $participants
  * @property list<string>|null $refused_emails
+ * @property int|null $max_participants
  */
 #[Fillable(['mail_title', 'mail_body', 'expires_at', 'next_solvable', 'organizer_name', 'organizer_email', 'organizer_participant_id'])]
 final class Draw extends Model
@@ -148,6 +149,12 @@ final class Draw extends Model
         $this->save();
     }
 
+    /** The default limit, unless the draw was created with an administrator link (ParticipantLimit) */
+    public function maxParticipants(): int
+    {
+        return $this->max_participants ?? config()->integer('app.max_participants');
+    }
+
     protected static function booted(): void
     {
         self::created(function (self $draw): void {
@@ -215,6 +222,7 @@ final class Draw extends Model
             'mail_title' => EncryptedString::class,
             'mail_body' => EncryptedString::class,
             'next_solvable' => 'boolean',
+            'max_participants' => 'integer',
             'refused_emails' => 'array',
             'organizer_name' => EncryptedString::class,
             'organizer_email' => EncryptedString::class,

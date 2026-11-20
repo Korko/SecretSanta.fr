@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Draw;
 use App\Models\Participant;
+use App\Models\ParticipantLimit;
 use App\Notifications\OrganizerRecap as OrganizerRecapNotif;
 use App\Notifications\TargetDrawn;
 use App\Services\URLParser;
@@ -199,6 +200,9 @@ it('sends to the organizer the initial recap', function (): void {
 });
 
 it('can deal with thousands of participants', function (): void {
+    // Above the default limit: an administrator can raise it (MAX_PARTICIPANTS)
+    config(['app.max_participants' => 400]);
+
     assertEquals(0, Draw::query()->count());
     assertEquals(0, Participant::query()->count());
 
@@ -264,4 +268,82 @@ it('limits the number of draws per hour from the same address, refused forms asi
     }
 
     ajaxPost('/', $draw())->assertStatus(429)->assertJson(['message' => trans('error.throttle')]);
+});
+
+it('limits the number of participants and says who to contact', function (): void {
+    Notification::fake();
+    config(['app.max_participants' => 4, 'app.email' => 'admin@example.com']);
+
+    ajaxPost('/', [
+        'participant-organizer' => '1',
+        'participants' => generateParticipants(5, false),
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('participants')
+        ->assertJsonFragment(['participants' => [trans('validation.custom.randomform.participants.max', ['max' => 4, 'email' => 'admin@example.com'])]]);
+
+    assertEquals(0, Draw::query()->count());
+    Notification::assertNothingSent();
+});
+
+it('lets an administrator link raise the limit for a single draw', function (): void {
+    Notification::fake();
+    config(['app.max_participants' => 4]);
+
+    [, $code] = ParticipantLimit::generate(6);
+    $draw = fn (): array => [
+        'limit' => $code,
+        'participant-organizer' => '1',
+        'participants' => generateParticipants(6, false),
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ];
+
+    $this->get('/?limit='.$code)->assertViewHas('maxParticipants', 6)->assertViewHas('limitCode', $code);
+
+    ajaxPost('/', $draw())->assertSuccessful();
+    assertEquals(6, Draw::query()->firstOrFail()->max_participants);
+
+    // Used: back to the usual limit, and the page says so
+    ajaxPost('/', $draw())->assertStatus(422)->assertJsonValidationErrors('participants');
+    $this->get('/?limit='.$code)->assertViewHas('maxParticipants', 4)->assertViewHas('limitCode', null)->assertViewHas('limitInvalid', true);
+    assertEquals(1, Draw::query()->count());
+});
+
+it('creates the administrator links from the command line', function (): void {
+    config(['app.max_participants' => 50]);
+
+    $this->artisan('secretsanta:allow-participants', ['max' => 50])->assertFailed();
+    assertEquals(0, ParticipantLimit::query()->count());
+
+    $this->artisan('secretsanta:allow-participants', ['max' => 120])->assertSuccessful();
+    assertEquals(120, ParticipantLimit::query()->sole()->max);
+});
+
+it('lists the administrator links and revokes them', function (): void {
+    [$active] = ParticipantLimit::generate(80);
+    [$used] = ParticipantLimit::generate(100);
+    ParticipantLimit::query()->findOrFail($used)->consume(createServiceDraw(generateParticipants(3)));
+
+    // One expectation per run: a matched output line is consumed, and the table is written at once
+    $this->artisan('secretsanta:participant-limits')->expectsOutputToContain('active')->assertSuccessful();
+    $this->artisan('secretsanta:participant-limits')->expectsOutputToContain('used')->assertSuccessful();
+
+    $this->artisan('secretsanta:revoke-participant-limit', ['id' => $active])->assertSuccessful();
+    $this->artisan('secretsanta:revoke-participant-limit', ['id' => $active])->assertFailed();
+    assertEquals([$used], ParticipantLimit::query()->pluck('id')->all());
+});
+
+it('deletes a used administrator link with its draw', function (): void {
+    [$id] = ParticipantLimit::generate(80);
+    $draw = createServiceDraw(generateParticipants(3));
+    ParticipantLimit::query()->findOrFail($id)->consume($draw);
+
+    $draw->delete();
+
+    expect(ParticipantLimit::query()->find($id))->toBeNull();
 });

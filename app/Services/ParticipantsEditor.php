@@ -46,6 +46,11 @@ final class ParticipantsEditor
         }
 
         throw_if(count($this->targets) < 3, ValidationException::withMessages(['participants' => trans('error.withdraw')]));
+        // Adding beyond the limit is refused, not removing: a bigger draw from before the limit (or a lowered
+        // MAX_PARTICIPANTS) can still lose someone
+        throw_if(count($this->targets) > max($this->draw->maxParticipants(), count($before)), ValidationException::withMessages([
+            'participants' => trans('validation.custom.randomform.participants.max', ['max' => $this->draw->maxParticipants(), 'email' => config()->string('app.email')]),
+        ]));
 
         $created = DB::transaction(function () use ($remove, $add, $participants): array {
             $created = [];

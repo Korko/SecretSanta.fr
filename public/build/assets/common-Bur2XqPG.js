@@ -1,1 +1,0 @@
-import{t as e}from"./alertify-tIhmwiTV.js";document.addEventListener(`scroll`,()=>document.body.classList.toggle(`scrolled`,window.scrollY>200),{passive:!0}),window.global&&window.global.alert&&e.alert(window.global.alert);

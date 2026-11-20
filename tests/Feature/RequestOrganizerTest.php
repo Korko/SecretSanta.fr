@@ -9,6 +9,7 @@ use App\Notifications\DearSanta;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetRenamed;
 use App\Notifications\TargetWithdrawn;
 use App\Services\LegacyDrawEncrypter;
 use Illuminate\Support\Facades\App;
@@ -174,6 +175,18 @@ test('adding or removing participants updates the final CSV availability', funct
     ])->assertSuccessful()->assertJsonPath('finalCsvAvailable', true);
 
     assertTrue($draw->fresh()->next_solvable);
+});
+
+test('a draw made with a raised limit keeps it in the panel', function (): void {
+    config(['app.max_participants' => 4]);
+    $draw = Draw::factory()->hasParticipants(4)->create(['max_participants' => 5]);
+    Notification::fake();
+
+    $url = URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]);
+    ajaxPost($url, ['add' => [['name' => 'N1', 'email' => 'n1@example.com']]])->assertSuccessful();
+    ajaxPost($url, ['add' => [['name' => 'N2', 'email' => 'n2@example.com']]])->assertStatus(422)->assertJsonValidationErrors('participants');
+
+    assertEquals(5, $draw->fresh()->participants->count());
 });
 
 test('the organizer cannot add a name already taken nor go under 3 participants', function (): void {
@@ -437,4 +450,82 @@ test('the draw secret is only read from the header, never from the request input
     DrawCrypt::setIV(base64_decode($iv));
     ajaxPost($url, [], ['X-HASH-IV' => $iv])->assertSuccessful();
     expect($draw->fresh()->targets_revealed_at)->not->toBeNull();
+});
+
+test('the organizer cannot go over the participants limit', function (): void {
+    config(['app.max_participants' => 4]);
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    Notification::fake();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), [
+        'add' => [['name' => 'N1', 'email' => 'n1@example.com']],
+    ])->assertStatus(422)->assertJsonValidationErrors('participants');
+
+    assertEquals(4, $draw->fresh()->participants->count());
+    Notification::assertNothingSent();
+});
+
+test('a draw over the participants limit can still lose someone', function (): void {
+    config(['app.max_participants' => 4]);
+    $draw = Draw::factory()->hasParticipants(6)->create();
+    Notification::fake();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), ['remove' => [$draw->participants->first()->hash]])
+        ->assertSuccessful();
+
+    assertEquals(5, $draw->fresh()->participants->count());
+});
+
+test('the administrator can raise the participants limit of an existing draw', function (): void {
+    config(['app.max_participants' => 4]);
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    Notification::fake();
+    $url = URL::signedRoute('organizerPanel', ['draw' => $draw]).'#'.base64_encode(DrawCrypt::getIV());
+
+    // The panel greys "add" out at the limit
+    expect(ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))->json('maxParticipants'))->toBe(4);
+
+    $this->artisan('secretsanta:allow-draw-participants', ['url' => $url, 'max' => 3])->assertFailed();
+    $this->artisan('secretsanta:allow-draw-participants', ['url' => $url, 'max' => 6])->assertSuccessful();
+
+    expect($draw->fresh()->max_participants)->toBe(6)
+        ->and(ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))->json('maxParticipants'))->toBe(6);
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), [
+        'add' => [['name' => 'N1', 'email' => 'n1@example.com']],
+    ])->assertSuccessful();
+});
+
+test('the organizer can rename a participant, only their santa is told', function (): void {
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    Notification::fake();
+    $participant = $draw->participants->get(1);
+    $oldName = $participant->name;
+    $url = URL::signedRoute('organizerPanel.changeName', ['draw' => $draw, 'participant' => $participant]);
+
+    ajaxPost($url, ['name' => '  Bobby  '])->assertSuccessful()->assertJsonPath('participant.name', 'Bobby');
+
+    expect($participant->fresh()->name)->toBe('Bobby');
+    Notification::assertSentToTimes($participant->santa, TargetRenamed::class, 1);
+    Notification::assertCount(1);
+    Notification::assertSentTo($participant->santa, TargetRenamed::class, function (TargetRenamed $notification, array $channels, $santa) use ($oldName): bool {
+        $html = $notification->toMail($santa)->render();
+
+        return str_contains((string) $html, e($oldName)) && str_contains((string) $html, 'Bobby');
+    });
+
+    // Same name: nothing to tell; a name already taken: refused
+    ajaxPost($url, ['name' => 'Bobby'])->assertSuccessful();
+    ajaxPost($url, ['name' => $draw->participants->first()->name])->assertStatus(422)->assertJsonValidationErrors('name');
+    Notification::assertCount(1);
+});
+
+test('renaming the participating organizer keeps the draw organizer name in sync', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $organizer = $draw->participants->first();
+    $draw->update(['organizer_name' => $organizer->name, 'organizer_email' => $organizer->email]);
+    Notification::fake();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeName', ['draw' => $draw, 'participant' => $organizer]), ['name' => 'Orga'])->assertSuccessful();
+
+    expect($draw->fresh()->organizer_name)->toBe('Orga');
 });

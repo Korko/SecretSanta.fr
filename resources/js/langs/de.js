@@ -218,6 +218,14 @@ export default {
             "internalError": "Interner Fehler"
         },
         "organizer": {
+            "rename": {
+                "button": "Namen ändern",
+                "title": "{name} umbenennen",
+                "body": "Ihr Santa wird per E-Mail über den neuen Namen informiert. Die Ziele ändern sich nicht.",
+                "ok": "Umbenennen",
+                "cancel": "Abbrechen",
+                "done": "Umbenannt in {name}"
+            },
             "url": "Link, den ein(e) Teilnehmer(in) per E-Mail erhalten hat",
             "fix": "Korrigieren",
             "date": {
@@ -409,7 +417,8 @@ export default {
                         "format": "Das Ablaufdatum muss dem Format Jahr-Monat-Tag entsprechen, z.B. 2022-02-05."
                     },
                     "participants": {
-                        "length": "Es müssen mindestens 3 Teilnehmer(innen) vorhanden sein."
+                        "length": "Es müssen mindestens 3 Teilnehmer(innen) vorhanden sein.",
+                        "max": "Die Teilnehmerzahl ist auf {max} begrenzt. Für eine größere Auslosung wenden Sie sich an den Administrator: {email}"
                     },
                     "organizer": {
                         "name": {
