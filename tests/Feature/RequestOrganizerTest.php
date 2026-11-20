@@ -176,6 +176,18 @@ test('adding or removing participants updates the final CSV availability', funct
     assertTrue($draw->fresh()->next_solvable);
 });
 
+test('a draw made with a raised limit keeps it in the panel', function (): void {
+    config(['app.max_participants' => 4]);
+    $draw = Draw::factory()->hasParticipants(4)->create(['max_participants' => 5]);
+    Notification::fake();
+
+    $url = URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]);
+    ajaxPost($url, ['add' => [['name' => 'N1', 'email' => 'n1@example.com']]])->assertSuccessful();
+    ajaxPost($url, ['add' => [['name' => 'N2', 'email' => 'n2@example.com']]])->assertStatus(422)->assertJsonValidationErrors('participants');
+
+    assertEquals(5, $draw->fresh()->participants->count());
+});
+
 test('the organizer cannot add a name already taken nor go under 3 participants', function (): void {
     $draw = Draw::factory()->hasParticipants(3)->create();
     $url = URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]);

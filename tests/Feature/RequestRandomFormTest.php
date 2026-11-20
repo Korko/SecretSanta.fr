@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Draw;
 use App\Models\Participant;
+use App\Models\ParticipantLimit;
 use App\Notifications\OrganizerRecap as OrganizerRecapNotif;
 use App\Notifications\TargetDrawn;
 use App\Services\URLParser;
@@ -286,4 +287,39 @@ it('limits the number of participants and says who to contact', function (): voi
 
     assertEquals(0, Draw::query()->count());
     Notification::assertNothingSent();
+});
+
+it('lets an administrator link raise the limit for a single draw', function (): void {
+    Notification::fake();
+    config(['app.max_participants' => 4]);
+
+    $code = ParticipantLimit::generate(6);
+    $draw = fn (): array => [
+        'limit' => $code,
+        'participant-organizer' => '1',
+        'participants' => generateParticipants(6, false),
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ];
+
+    $this->get('/?limit='.$code)->assertViewHas('maxParticipants', 6)->assertViewHas('limitCode', $code);
+
+    ajaxPost('/', $draw())->assertSuccessful();
+    assertEquals(6, Draw::query()->firstOrFail()->max_participants);
+
+    // Used: back to the usual limit, and the page says so
+    ajaxPost('/', $draw())->assertStatus(422)->assertJsonValidationErrors('participants');
+    $this->get('/?limit='.$code)->assertViewHas('maxParticipants', 4)->assertViewHas('limitCode', null)->assertViewHas('limitInvalid', true);
+    assertEquals(1, Draw::query()->count());
+});
+
+it('creates the administrator links from the command line', function (): void {
+    config(['app.max_participants' => 50]);
+
+    $this->artisan('secretsanta:allow-participants', ['max' => 50])->assertFailed();
+    assertEquals(0, ParticipantLimit::query()->count());
+
+    $this->artisan('secretsanta:allow-participants', ['max' => 120])->assertSuccessful();
+    assertEquals(120, ParticipantLimit::query()->sole()->max);
 });

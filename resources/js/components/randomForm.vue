@@ -59,6 +59,7 @@
                 now: window.now,
                 maxParticipants: window.global.maxParticipants || 50,
                 contact: window.global.contact,
+                limitCode: window.global.limitCode || null,
                 showModal: false,
                 importing: false,
             };
@@ -260,6 +261,7 @@
         <div v-cloak class="row text-center form">
             <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :validator="v$" @reset="reset" @before-submit="touchParticipants" send-icon="dice">
                 <template #default="{ sending, sent, fieldError }">
+                    <input v-if="limitCode" type="hidden" name="limit" :value="limitCode" />
                     <div v-show="sent" id="success-wrapper" class="alert alert-success" role="status">
                         {{ $t('form.success') }}
                     </div>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 return [
     'validation' => 'The submitted data is not valid',
+    'participantLimit' => 'This link for a bigger draw has already been used or is not valid. The usual participants limit applies.',
     'solution' => 'The exclusions you chose make it impossible to assign a target to every participant.',
     'csrf' => 'The form expired due to inactivity. Please try again.',
     'signature' => 'The requested action could not be performed. Please refresh the page before trying again.',

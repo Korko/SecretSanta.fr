@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 return [
     'validation' => 'Die eingegebenen Daten sind ungültig.',
+    'participantLimit' => 'Dieser Link für eine größere Auslosung wurde bereits verwendet oder ist ungültig. Es gilt die übliche Teilnehmergrenze.',
     'solution' => 'Die von Ihnen gewählten Ausschlüsse erlauben es nicht, jedem Teilnehmer ein Ziel zuzuweisen.',
     'csrf' => 'Das Formular ist aufgrund von Inaktivität abgelaufen. Bitte versuchen Sie es erneut.',
     'signature' => 'Die angeforderte Aktion konnte nicht ausgeführt werden. Bitte laden Sie die Seite neu und versuchen Sie es erneut.',

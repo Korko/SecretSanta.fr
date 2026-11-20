@@ -4,8 +4,9 @@
     @parent
 
     @javascript([
-        'alert' => session('message', ''),
-        'maxParticipants' => config()->integer('app.max_participants'),
+        'alert' => $limitInvalid ? __('error.participantLimit') : session('message', ''),
+        'maxParticipants' => $maxParticipants,
+        'limitCode' => $limitCode,
         'contact' => config()->string('app.email'),
     ])
 @stop
