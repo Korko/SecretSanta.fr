@@ -17,6 +17,7 @@ return [
     'targets' => [
         'revealed' => 'L\'organisateur/organisatrice a consulté la liste des cibles',
         'secret' => 'La liste des cibles n\'a pas été consultée par l\'organisateur/organisatrice',
+        'ended' => 'L\'évènement est terminé : la liste des cibles est maintenant visible par l\'organisateur/organisatrice',
     ],
     'list' => [
         'date' => 'Date d\'envoi',

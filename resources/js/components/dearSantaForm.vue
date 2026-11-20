@@ -33,6 +33,8 @@
                 resendTargetEmailsUrl: this.data.resendTargetEmailsUrl,
                 targetDearSantaLastUpdate: this.data.targetDearSantaLastUpdate,
                 targetsRevealed: this.data.targetsRevealed,
+                endsAt: this.data.ends_at,
+                now: Date.now(),
                 report: this.data.report
             };
         },
@@ -49,11 +51,20 @@
                     email => email.mail.delivery_status !== 'error'
                 );
             },
+            // Once the event is over the organizer sees every target, revealed or not
+            ended() {
+                return this.now >= new Date(this.endsAt).getTime();
+            },
+            targetsStatus() {
+                return this.targetsRevealed ? 'revealed' : (this.ended ? 'ended' : 'secret');
+            },
             recentTargetDearSanta() {
                 return (new Date()).getTime() - (new Date(this.targetDearSantaLastUpdate)).getTime() < 5*60*1000;
             }
         },
         created() {
+            setInterval(() => this.now = Date.now(), 60e3);
+
             Echo.channel(this.channel)
                 .listen('.mail.update', data => {
                     if(this.emails[data.id]) {
@@ -113,9 +124,9 @@
                         {{  $t('dearsanta.reminder') }}
                     </div>
                     <!-- Discreet on purpose: only matters to participants who care about the organizer seeing the pairs -->
-                    <p class="text-muted small text-right targets-revealed" :title="$t(targetsRevealed ? 'dearsanta.targets.revealed' : 'dearsanta.targets.secret')">
-                        <i :class="targetsRevealed ? 'fas fa-eye' : 'fas fa-eye-slash'" />
-                        {{ $t(targetsRevealed ? 'dearsanta.targets.revealed' : 'dearsanta.targets.secret') }}
+                    <p class="text-muted small text-right targets-revealed" :title="$t('dearsanta.targets.' + targetsStatus)">
+                        <i :class="targetsStatus === 'secret' ? 'fas fa-eye-slash' : 'fas fa-eye'" />
+                        {{ $t('dearsanta.targets.' + targetsStatus) }}
                     </p>
                     <label for="mailContent">{{ $t('dearsanta.content.label') }}</label>
                     <div class="input-group">

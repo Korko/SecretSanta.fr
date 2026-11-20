@@ -45,7 +45,8 @@ export default {
             },
             "targets": {
                 "revealed": "Der Organisator hat die Liste der Empfänger eingesehen",
-                "secret": "Der Organisator hat die Liste der Empfänger nicht eingesehen"
+                "secret": "Der Organisator hat die Liste der Empfänger nicht eingesehen",
+                "ended": "Die Veranstaltung ist vorbei: die Liste der Empfänger ist jetzt für den Organisator sichtbar"
             },
             "list": {
                 "date": "Versanddatum",
@@ -235,6 +236,7 @@ export default {
             "reveal": {
                 "button": "Empfänger anzeigen",
                 "done": "Empfänger angezeigt am {date}. Die Teilnehmer sehen, dass die Liste eingesehen wurde.",
+                "expired": "Die Veranstaltung ist vorbei: der Empfänger jedes Teilnehmers ist jetzt sichtbar.",
                 "confirm": {
                     "title": "Anzeigen, wer wen beschenkt?",
                     "body": "Sie sehen den Empfänger jedes Teilnehmers, nützlich bei Zustellproblemen oder für weitere Veranstaltungen. Das ist endgültig, und die Teilnehmer sehen auf ihrer Seite, dass die Liste dem Organisator angezeigt wurde.",
@@ -273,7 +275,7 @@ export default {
                 "button_final-tooltip": {
                     "title": "Vervollständigte Zusammenfassung",
                     "explain": "Die Daten sind die gleichen wie in der ursprünglichen Zusammenfassung, wurden jedoch mit den Ausschlüssen jedes Teilnehmers/Teilnehmerin ergänzt, sowie der Zielperson, die dieser Teilnehmer/diese Teilnehmerin während der Veranstaltung erhalten hat. Es sei denn, dies führt zu einer Blockierung, bei der keine Zielperson für jeden Teilnehmer/jede Teilnehmerin beim nächsten Mal mehr gefunden werden kann.",
-                    "limit": "Aufgrund des festgelegten Datums für die Veranstaltung ist diese Funktion nur vom {expires_at} bis zum {deleted_at} verfügbar, oder sobald Sie die Ziele aufgedeckt haben."
+                    "limit": "Aufgrund des festgelegten Datums für die Veranstaltung ist diese Funktion erst nach dem {expires_at} und bis zum {deleted_at} verfügbar, oder sobald Sie die Ziele aufgedeckt haben."
                 }
             },
             "purge": {

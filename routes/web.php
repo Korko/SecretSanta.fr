@@ -6,6 +6,7 @@ use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\FixOrganizerController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\RandomFormController;
+use App\Models\Draw;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,7 +71,15 @@ Route::middleware('signed')->group(function (): void {
         Route::get('/org/{draw}/fetchState', [OrganizerController::class, 'fetchState'])
             ->name('organizerPanel.fetchState');
     });
-    Route::middleware('decrypt.iv:participant,name')->group(function (): void {
+    // Participants of an ended draw can't be bound: say it is over rather than not found
+    Route::middleware('decrypt.iv:participant,name')->missing(function (): never {
+        $draw = request()->route('draw');
+        if ($draw instanceof Draw) {
+            $draw->abortIfExpired();
+        }
+
+        abort(404);
+    })->group(function (): void {
         Route::post('/org/{draw}/{participant}/changeEmail', [OrganizerController::class, 'changeEmail'])
             ->name('organizerPanel.changeEmail')->middleware('throttle:email');
         Route::post('/org/{draw}/{participant}/changeName', [OrganizerController::class, 'changeName'])

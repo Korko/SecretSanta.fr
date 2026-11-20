@@ -45,7 +45,8 @@ export default {
             },
             "targets": {
                 "revealed": "L'organisateur/organisatrice a consulté la liste des cibles",
-                "secret": "La liste des cibles n'a pas été consultée par l'organisateur/organisatrice"
+                "secret": "La liste des cibles n'a pas été consultée par l'organisateur/organisatrice",
+                "ended": "L'évènement est terminé : la liste des cibles est maintenant visible par l'organisateur/organisatrice"
             },
             "list": {
                 "date": "Date d'envoi",
@@ -235,6 +236,7 @@ export default {
             "reveal": {
                 "button": "Révéler les cibles",
                 "done": "Cibles révélées le {date}. Les participant(e)s voient que la liste a été consultée.",
+                "expired": "Évènement terminé : la cible de chaque participant(e) est maintenant visible.",
                 "confirm": {
                     "title": "Révéler qui offre à qui ?",
                     "body": "Vous verrez la cible de chaque participant(e), utile en cas de souci de réception ou pour organiser d'autres évènements. C'est définitif, et les participant(e)s verront sur leur page que la liste a été révélée à l'organisateur/organisatrice.",
@@ -273,7 +275,7 @@ export default {
                 "button_final-tooltip": {
                     "title": "Récapitulatif complété",
                     "explain": "Les données sont les mêmes que dans le récapitulatif initial mais ont été ajoutées aux exclusions de chaque participant(e) la cible qu'il a eu durant cet évènement. A moins que ceci amène à un blocage où on ne puisse plus trouver de cible à chaque participant(e) pour la prochaine fois.",
-                    "limit": "Compte tenu de la date de l'évènement définie, cette fonctionnalité n'est disponible que du {expires_at} au {deleted_at}, ou dès que vous avez révélé les cibles."
+                    "limit": "Compte tenu de la date de l'évènement définie, cette fonctionnalité n'est disponible qu'après le {expires_at}, jusqu'au {deleted_at}, ou dès que vous avez révélé les cibles."
                 }
             },
             "purge": {

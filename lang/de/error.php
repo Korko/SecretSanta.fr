@@ -12,6 +12,7 @@ return [
     'internal' => 'Es ist ein interner Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.',
     'resend' => 'Sie müssen warten, bevor Sie diese E-Mail erneut senden können.',
     'withdraw' => 'Es können nicht weniger als 3 Teilnehmer vorhanden sein.',
+    'ended' => 'Diese Veranstaltung ist vorbei und kann nicht mehr geändert werden.',
     'expired' => 'Diese Veranstaltung ist noch nicht beendet.',
     'solvable' => 'Diese Veranstaltung erlaubt diese Generierung nicht.',
     'fixOrganizer' => [

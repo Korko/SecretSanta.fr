@@ -12,6 +12,7 @@ return [
     'reveal' => [
         'button' => 'Reveal targets',
         'done' => 'Targets revealed on :date. Participants can see that the list has been viewed.',
+        'expired' => 'The event is over: every participant\'s target is now visible.',
         'confirm' => [
             'title' => 'Reveal who gives to whom?',
             'body' => 'You will see each participant\'s target, useful in case of delivery issues or to organize other events. This is permanent, and participants will see on their page that the list has been revealed to the organizer.',
@@ -59,7 +60,7 @@ return [
         'button_final-tooltip' => [
             'title' => 'Completed summary',
             'explain' => 'The data is the same as in the initial summary, but the target each participant had during this event has been added to their exclusions. Unless this would make it impossible to find a target for every participant next time.',
-            'limit' => 'Given the event date, this feature is only available from {expires_at} to {deleted_at}, or as soon as you have revealed the targets.',
+            'limit' => 'Given the event date, this feature is only available after {expires_at}, until {deleted_at}, or as soon as you have revealed the targets.',
         ],
     ],
     'purge' => [

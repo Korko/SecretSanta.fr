@@ -53,6 +53,7 @@ final class OrganizerController extends Controller
             'draw' => $draw->hash,
             'channel' => $draw->broadcastChannel(),
             'expires_at' => $draw->expires_at->toDateString(), // event day, whatever the browser timezone
+            'ends_at' => $draw->ends_at, // the instant it expires, so the browser agrees with the server
             'deleted_at' => $draw->deleted_at->toDateString(),
             'drawn_at' => $draw->created_at,
             'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [
@@ -75,7 +76,7 @@ final class OrganizerController extends Controller
             'maxParticipants' => $draw->maxParticipants(),
             'contact' => config()->string('app.email'),
             'targetsRevealedAt' => $draw->targets_revealed_at,
-            'targets' => $draw->targets_revealed_at ? $this->targets($draw) : null,
+            'targets' => $draw->targetsVisible() ? $this->targets($draw) : null,
         ]);
     }
 
@@ -98,7 +99,7 @@ final class OrganizerController extends Controller
     // Organizers often mistype the date or the event moves: it drives expiration (final recap) and deletion
     public function changeDate(Request $request, Draw $draw): JsonResponse
     {
-        abort_if($draw->expired, 403, Lang::get('error.expired'));
+        $draw->abortIfExpired();
 
         $request->validate([
             'expires_at' => ['required', 'date_format:Y-m-d', 'after_or_equal:tomorrow', 'before:+1year'],
@@ -114,6 +115,7 @@ final class OrganizerController extends Controller
 
         return response()->json([
             'expires_at' => $draw->expires_at->toDateString(), // event day, whatever the browser timezone
+            'ends_at' => $draw->ends_at,
             'deleted_at' => $draw->deleted_at->toDateString(),
         ]);
     }
@@ -121,6 +123,8 @@ final class OrganizerController extends Controller
     public function fetchState(Draw $draw): JsonResponse
     {
         return response()->json([
+            'expired' => $draw->expired,
+            'targets' => $draw->targetsVisible() ? $this->targets($draw) : null,
             'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [$participant->hash => $participant->only(['hash', 'mail'])]),
         ]);
     }
@@ -193,7 +197,7 @@ final class OrganizerController extends Controller
     // One button (a single change) or the "several at once" mode: either way, each santa gets at most one email
     public function changeParticipants(Request $request, Draw $draw): JsonResponse
     {
-        abort_if($draw->expired, 403, Lang::get('error.expired'));
+        $draw->abortIfExpired();
 
         $names = $draw->participants->pluck('name')->all();
         $hashes = $draw->participants->pluck('hash')->all();
@@ -238,7 +242,7 @@ final class OrganizerController extends Controller
 
     public function csvFinal(Draw $draw): Response
     {
-        abort_unless($draw->expired || $draw->targets_revealed_at !== null, 403, Lang::get('error.expired'));
+        abort_unless($draw->targetsVisible(), 403, Lang::get('error.expired'));
         abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
 
         $draw->createMetric('csv_final_download');

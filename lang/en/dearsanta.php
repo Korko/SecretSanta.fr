@@ -17,6 +17,7 @@ return [
     'targets' => [
         'revealed' => 'The organizer has viewed the list of targets',
         'secret' => 'The list of targets has not been viewed by the organizer',
+        'ended' => 'The event is over: the list of targets is now visible to the organizer',
     ],
     'list' => [
         'date' => 'Sent on',

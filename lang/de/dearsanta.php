@@ -17,6 +17,7 @@ return [
     'targets' => [
         'revealed' => 'Der Organisator hat die Liste der Empfänger eingesehen',
         'secret' => 'Der Organisator hat die Liste der Empfänger nicht eingesehen',
+        'ended' => 'Die Veranstaltung ist vorbei: die Liste der Empfänger ist jetzt für den Organisator sichtbar',
     ],
     'list' => [
         'date' => 'Versanddatum',
