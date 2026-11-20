@@ -232,6 +232,13 @@ return [
             'content' => [
                 'required' => 'The message content is required.',
             ],
+            'email' => [
+                'required' => 'The new address is required.',
+                'format' => 'The address format is not valid.',
+            ],
+            'code' => [
+                'required' => 'The code is required.',
+            ],
         ],
         'organizer' => [
             'email' => [

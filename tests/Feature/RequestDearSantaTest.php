@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 use App\Models\Draw;
+use App\Models\Participant;
 use App\Notifications\DearSanta;
+use App\Notifications\ParticipantEmailCode;
 use App\Notifications\TargetDrawn;
 use App\Services\URLParser;
 use Illuminate\Support\Facades\Notification;
@@ -94,4 +96,88 @@ it('does not resend anything on a GET, like a link prefetch or an email scanner'
 
     ajaxGet(URL::signedRoute('dearSanta.resend_target', ['participant' => $participant]))
         ->assertStatus(405);
+});
+
+// The code mailed to the new address, as the participant would read it
+function requestEmailChange(Participant $participant, string $email): string
+{
+    ajaxPost(URL::signedRoute('dearSanta.request_email_change', ['participant' => $participant]), ['email' => $email])
+        ->assertSuccessful()
+        ->assertJson(['pendingEmail' => $email]);
+
+    $code = null;
+    Notification::assertSentOnDemand(ParticipantEmailCode::class, function (ParticipantEmailCode $notification, array $channels, object $notifiable) use ($email, &$code): bool {
+        if (array_key_first($notifiable->routes['mail']) !== $email) {
+            return false;
+        }
+
+        $code = $notification->toMail($notifiable)->viewData['code'];
+
+        return true;
+    });
+
+    return (string) $code;
+}
+
+it('lets a participant move to another address once they typed the code sent there', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+    $previous = $participant->email;
+
+    $code = requestEmailChange($participant, 'new@example.com');
+    expect($participant->fresh()->email)->toBe($previous);
+
+    $confirm = URL::signedRoute('dearSanta.change_email', ['participant' => $participant]);
+    ajaxPost($confirm, ['code' => $code === '000000' ? '111111' : '000000'])->assertStatus(422);
+    expect($participant->fresh()->email)->toBe($previous);
+
+    ajaxPost($confirm, ['code' => $code])->assertSuccessful()->assertJson(['email' => 'new@example.com']);
+
+    $participant = $participant->fresh();
+    expect($participant->email)->toBe('new@example.com')
+        ->and($participant->pending_email)->toBeNull();
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 2);
+
+    // Used once
+    ajaxPost($confirm, ['code' => $code])->assertStatus(422);
+});
+
+it('drops an address change after too many wrong codes or an hour', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+    $confirm = URL::signedRoute('dearSanta.change_email', ['participant' => $participant]);
+
+    $code = requestEmailChange($participant, 'new@example.com');
+    $wrong = $code === '000000' ? '111111' : '000000';
+    foreach (range(1, 5) as $ignored) {
+        ajaxPost($confirm, ['code' => $wrong])->assertStatus(422);
+    }
+
+    ajaxPost($confirm, ['code' => $code])->assertStatus(422);
+
+    $this->travel(2)->minutes();
+    $code = requestEmailChange($participant, 'other@example.com');
+    $this->travel(61)->minutes();
+
+    ajaxPost($confirm, ['code' => $code])->assertStatus(422);
+    expect($participant->fresh()->email)->not->toBe('other@example.com');
+});
+
+it('refuses to move a participant to their own or a refused address', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+    $draw->refuseEmail('refused@example.com');
+    $request = URL::signedRoute('dearSanta.request_email_change', ['participant' => $participant]);
+
+    ajaxPost($request, ['email' => mb_strtoupper($participant->email)])->assertStatus(422);
+    ajaxPost($request, ['email' => 'refused@example.com'])->assertStatus(422);
+    ajaxPost($request, ['email' => 'not an email'])->assertStatus(422);
+
+    Notification::assertSentOnDemandTimes(ParticipantEmailCode::class, 0);
 });

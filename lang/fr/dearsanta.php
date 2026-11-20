@@ -33,4 +33,17 @@ return [
     'resend' => [
         'button' => 'Me ré-envoyer les mails que j\'ai reçu de ma cible',
     ],
+    'email' => [
+        'current' => 'Vos emails arrivent à :email.',
+        'open' => 'Changer d\'adresse',
+        'new' => 'Nouvelle adresse',
+        'send_code' => 'Recevoir un code',
+        'code' => 'Code reçu à :email :',
+        'confirm' => 'Confirmer',
+        'code_sent' => 'Un code vient d\'être envoyé à :email. Saisissez-le ici pour confirmer le changement.',
+        'changed' => 'Vos emails arriveront désormais à :email. Le nom de votre cible vient d\'y être renvoyé.',
+        'wrong_code' => 'Ce code n\'est pas le bon.',
+        'expired' => 'Ce code n\'est plus valable, demandez-en un nouveau.',
+        'same' => 'C\'est déjà votre adresse.',
+    ],
 ];

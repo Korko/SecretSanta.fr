@@ -3,6 +3,7 @@
 
     import { required } from '@vuelidate/validators'
 
+    import alertify from '../partials/alertify.js';
     import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
 
@@ -35,7 +36,12 @@
                 targetsRevealed: this.data.targetsRevealed,
                 endsAt: this.data.ends_at,
                 now: Date.now(),
-                report: this.data.report
+                report: this.data.report,
+                email: this.data.email,
+                pendingEmail: this.data.pendingEmail,
+                showEmailChange: !!this.data.pendingEmail,
+                newEmail: '',
+                emailCode: ''
             };
         },
         computed: {
@@ -97,6 +103,30 @@
             sendReport(reason) {
                 return fetch(this.routes.reportUrl, 'POST', reason ? { reason } : {})
                     .then(data => this.report = data.report);
+            },
+            requestEmailChange() {
+                return fetch(this.routes.requestEmailChangeUrl, 'POST', { email: this.newEmail })
+                    .then(data => {
+                        this.pendingEmail = data.pendingEmail;
+                        this.emailCode = '';
+                        alertify.confirmAlert(data.message);
+                    })
+                    .catch(this.alertError);
+            },
+            changeEmail() {
+                return fetch(this.routes.changeEmailUrl, 'POST', { code: this.emailCode })
+                    .then(data => {
+                        this.email = data.email;
+                        this.pendingEmail = null;
+                        this.newEmail = '';
+                        this.emailCode = '';
+                        this.showEmailChange = false;
+                        alertify.confirmAlert(data.message);
+                    })
+                    .catch(this.alertError);
+            },
+            alertError(error) {
+                alertify.errorAlert(Object.values(error.errors || {})[0]?.[0] || error.message);
             },
             resend_target() {
                 this.targetDearSantaLastUpdate = new Date().getTime();
@@ -190,6 +220,21 @@
                 <i class="fas fa-redo" />
                 {{ $t('dearsanta.resend.button') }}
             </button>
+        </div>
+        <!-- Another mailbox: the new address gets a code first, typed back here to prove it is theirs -->
+        <div class="email-change text-center mt-4 small">
+            <span class="text-muted">{{ $t('dearsanta.email.current', { email }) }}</span>
+            <button v-if="!showEmailChange" type="button" class="btn btn-link btn-sm email-change-open" @click="showEmailChange = true">{{ $t('dearsanta.email.open') }}</button>
+            <form v-if="showEmailChange" class="form-inline justify-content-center mt-2" @submit.prevent="requestEmailChange">
+                <label class="sr-only" for="newEmail">{{ $t('dearsanta.email.new') }}</label>
+                <input id="newEmail" v-model="newEmail" type="email" required class="form-control form-control-sm mr-2" :placeholder="$t('dearsanta.email.new')" />
+                <button type="submit" class="btn btn-outline-primary btn-sm email-change-request">{{ $t('dearsanta.email.send_code') }}</button>
+            </form>
+            <form v-if="showEmailChange && pendingEmail" class="form-inline justify-content-center mt-2" @submit.prevent="changeEmail">
+                <label class="mr-2" for="emailCode">{{ $t('dearsanta.email.code', { email: pendingEmail }) }}</label>
+                <input id="emailCode" v-model="emailCode" type="text" inputmode="numeric" autocomplete="one-time-code" required maxlength="7" class="form-control form-control-sm mr-2" />
+                <button type="submit" class="btn btn-primary btn-sm email-change-confirm">{{ $t('dearsanta.email.confirm') }}</button>
+            </form>
         </div>
         <!-- Wrong recipient or not taking part: the organizer sees it on their panel (they can't be emailed) -->
         <div v-if="!data.isOrganizer" class="report text-center mt-4 small">

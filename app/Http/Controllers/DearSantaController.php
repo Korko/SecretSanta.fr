@@ -9,6 +9,8 @@ use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
+use App\Notifications\ParticipantEmailCode;
+use App\Notifications\TargetDrawn;
 use Carbon\CarbonImmutable;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -17,11 +19,17 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 final class DearSantaController extends Controller
 {
+    private const int EMAIL_CODE_TTL = 3600;
+
+    private const int EMAIL_CODE_ATTEMPTS = 5;
+
     // dear_santas has no timestamps: the dates shown come from the related mail
     /** @var list<string> */
     private array $dearSantaPublicFields = ['id', 'mail_body', 'mail'];
@@ -53,6 +61,8 @@ final class DearSantaController extends Controller
             'ends_at' => $participant->draw->ends_at, // after it, the organizer sees every target
             'report' => $participant->report,
             'isOrganizer' => $participant->isOrganizer(),
+            'email' => $participant->email,
+            'pendingEmail' => $this->pendingEmail($participant),
             'emails' => $participant->dearSantas->mapWithKeys(fn ($email): array => [
                 $email->mail->id => $email->only($this->dearSantaPublicFields),
             ]),
@@ -82,6 +92,78 @@ final class DearSantaController extends Controller
         $participant->createMetric($participant->report ? 'report_'.$participant->report->value : 'report_cancelled');
 
         return response()->json(['report' => $participant->report]);
+    }
+
+    // Another mailbox: a code is sent there first, the address only changes once it is typed back (changeEmail)
+    public function requestEmailChange(Request $request, Participant $participant): JsonResponse
+    {
+        $request->validate(['email' => ['required', 'email']], [
+            'email.required' => __('validation.custom.dearSanta.email.required'),
+            'email.email' => __('validation.custom.dearSanta.email.format'),
+        ]);
+        $email = $request->string('email')->trim()->toString();
+
+        throw_if(mb_strtolower($email) === mb_strtolower($participant->email), ValidationException::withMessages(['email' => trans('dearsanta.email.same')]));
+        throw_if($participant->draw->refusesEmail($email), ValidationException::withMessages(['email' => trans('organizer.report.refused_email')]));
+        // A typo can be fixed right away, but not one email a second to any address
+        abort_if($participant->pending_email_at !== null && $participant->pending_email_at->diffInSeconds(Date::now()) < 60, 403, Lang::get('error.resend'));
+
+        $code = $participant->requestEmailChange($email);
+        Notification::route('mail', [$email => $participant->name])->notify(new ParticipantEmailCode($participant->name, $code));
+
+        $participant->createMetric('email_change_requested');
+
+        return response()->json([
+            'message' => trans('dearsanta.email.code_sent', ['email' => $email]),
+            'pendingEmail' => $email,
+        ]);
+    }
+
+    public function changeEmail(Request $request, Participant $participant): JsonResponse
+    {
+        $request->validate(['code' => ['required', 'string']], [
+            'code.required' => __('validation.custom.dearSanta.code.required'),
+        ]);
+
+        $email = $this->pendingEmail($participant);
+        throw_if($email === null, ValidationException::withMessages(['code' => trans('dearsanta.email.expired')]));
+
+        if (! $participant->checkEmailCode(preg_replace('/\D/', '', $request->string('code')->toString()) ?? '')) {
+            // Six digits: a few tries for typos, then a new code is needed
+            ++$participant->pending_email_attempts;
+            if ($participant->pending_email_attempts >= self::EMAIL_CODE_ATTEMPTS) {
+                $participant->clearPendingEmail();
+            }
+
+            $participant->save();
+
+            throw ValidationException::withMessages(['code' => trans($participant->pending_email === null ? 'dearsanta.email.expired' : 'dearsanta.email.wrong_code')]);
+        }
+
+        // Refused in the meantime ("not me" from another participant using it)
+        throw_if($participant->draw->refusesEmail($email), ValidationException::withMessages(['code' => trans('organizer.report.refused_email')]));
+
+        // The organizer moving their own address: keep the draw in sync (recap in their target email, /fix)
+        if ($participant->isOrganizer()) {
+            $participant->draw->organizer_email = $email;
+            $participant->draw->save();
+        }
+
+        $participant->email = $email;
+        $participant->report = null;
+        $participant->clearPendingEmail();
+        $participant->save();
+
+        $participant->createMetric('change_email')->addTag('by', 'participant');
+
+        // Their target email again, at the new address: the organizer panel tracks it like any resend
+        $participant->mail->markAsCreated();
+        $participant->notify(new TargetDrawn);
+
+        return response()->json([
+            'message' => trans('dearsanta.email.changed', ['email' => $email]),
+            'email' => $email,
+        ]);
     }
 
     public function fetchState(Participant $participant): JsonResponse
@@ -162,5 +244,14 @@ final class DearSantaController extends Controller
                 'email' => $dearSanta->fresh()?->only($this->dearSantaPublicFields),
             ]) :
             redirect('/dearSanta/'.$participant->hash)->with('message', $message);
+    }
+
+    private function pendingEmail(Participant $participant): ?string
+    {
+        if ($participant->pending_email_at?->addSeconds(self::EMAIL_CODE_TTL)->isFuture() !== true) {
+            return null;
+        }
+
+        return $participant->pending_email;
     }
 }

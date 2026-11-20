@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use App\Enums\ReportReason;
+use Carbon\CarbonImmutable;
 use Database\Factories\ParticipantFactory;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -34,6 +35,10 @@ use STS\Metrics\Metric;
  * @property string $name
  * @property string $email
  * @property int|null $target_id
+ * @property string|null $pending_email address waiting for its code (see DearSantaController::changeEmail)
+ * @property string|null $pending_email_code
+ * @property CarbonImmutable|null $pending_email_at
+ * @property int $pending_email_attempts
  * @property-read array<int, string> $exclusionsNames
  * @property-read ParticipantsCollection $exclusions
  */
@@ -48,6 +53,33 @@ final class Participant extends Model
 
     /** @var array<string, mixed> */
     protected $attributes = ['report' => null];
+
+    // Typing it back on their page proves the participant owns the new address
+    public function requestEmailChange(string $email): string
+    {
+        $code = mb_str_pad((string) random_int(0, 999_999), 6, '0', STR_PAD_LEFT);
+
+        $this->pending_email = $email;
+        $this->pending_email_code = $this->emailCodeHash($code);
+        $this->pending_email_at = CarbonImmutable::now();
+        $this->pending_email_attempts = 0;
+        $this->save();
+
+        return $code;
+    }
+
+    public function checkEmailCode(string $code): bool
+    {
+        return $this->pending_email_code !== null && hash_equals($this->pending_email_code, $this->emailCodeHash($code));
+    }
+
+    public function clearPendingEmail(): void
+    {
+        $this->pending_email = null;
+        $this->pending_email_code = null;
+        $this->pending_email_at = null;
+        $this->pending_email_attempts = 0;
+    }
 
     public function isOrganizer(): bool
     {
@@ -169,7 +201,14 @@ final class Participant extends Model
         return [
             'name' => EncryptedString::class,
             'email' => EncryptedString::class,
+            'pending_email' => EncryptedString::class,
+            'pending_email_at' => 'immutable_datetime',
             'report' => ReportReason::class,
         ];
+    }
+
+    private function emailCodeHash(string $code): string
+    {
+        return hash_hmac('sha256', $code, config()->string('app.key').$this->id);
     }
 }

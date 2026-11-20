@@ -142,6 +142,13 @@ return [
             'content' => [
                 'required' => 'Le contenu du message est requis.',
             ],
+            'email' => [
+                'required' => 'La nouvelle adresse est requise.',
+                'format' => 'Le format de l\'adresse n\'est pas valide.',
+            ],
+            'code' => [
+                'required' => 'Le code est requis.',
+            ],
         ],
         'organizer' => [
             'email' => [
