@@ -149,6 +149,12 @@ final class Draw extends Model
         $this->save();
     }
 
+    /** The default limit, unless the draw was created with an administrator link (ParticipantLimit) */
+    public function maxParticipants(): int
+    {
+        return $this->max_participants ?? config()->integer('app.max_participants');
+    }
+
     protected static function booted(): void
     {
         self::created(function (self $draw): void {
@@ -182,12 +188,6 @@ final class Draw extends Model
 
             return $first !== null && $first->email === $this->organizer_email ? $first : null;
         });
-    }
-
-    /** The default limit, unless the draw was created with an administrator link (ParticipantLimit) */
-    public function maxParticipants(): int
-    {
-        return $this->max_participants ?? config()->integer('app.max_participants');
     }
 
     /** @return Attribute<bool, never> */
