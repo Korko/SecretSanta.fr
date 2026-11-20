@@ -37,8 +37,8 @@ final class WithdrawParticipant extends Command
         // As from the organizer panel: exclusions respected, santa told, their new target's messages forwarded
         try {
             new ParticipantsEditor($draw)->apply([$participant], []);
-        } catch (ValidationException $exception) {
-            error($exception->getMessage());
+        } catch (ValidationException $validationException) {
+            error($validationException->getMessage());
 
             return;
         }
