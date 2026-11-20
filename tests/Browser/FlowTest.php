@@ -38,6 +38,13 @@ test('the draw form edits participants, imports a CSV and suggests email fixes',
         ->assertSeeIn('tr.participant:nth-child(1) .exclusion-tag-derived', 'Max')
         ->assertCount('tr.participant:nth-child(1) select option', 1);
 
+    // One way only: the other row neither shows it nor sends it any more
+    $page->click('tr.participant:nth-child(3) .exclusion-tag-direction')
+        ->assertCount('tr.participant:nth-child(3) .exclusion-tag-oneway', 1)
+        ->assertCount('tr.participant:nth-child(3) select option', 1)
+        ->assertCount('tr.participant:nth-child(1) .exclusion-tag-derived', 0)
+        ->assertCount('tr.participant:nth-child(1) select option', 0);
+
     $page->type('[name="participants[0][email]"]', 'zoe@gmial.com')
         ->click('.email-suggest a')
         ->assertValue('[name="participants[0][email]"]', 'zoe@gmail.com')
