@@ -33,6 +33,10 @@ final class OrganizerController extends Controller
 
     public function fetch(Draw $draw): JsonResponse
     {
+        // Loaded at once: right after a change of participants (changeParticipants), the draw's previous
+        // copies of them are gone and models are strict about lazy loading
+        $draw->load('participants.mail');
+
         if ($draw->organizer_received_at === null) {
             $draw->organizer_received_at = now();
             $draw->save();

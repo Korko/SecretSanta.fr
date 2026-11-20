@@ -13,6 +13,7 @@ use App\Notifications\TargetWithdrawn;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use LogicException;
 use Random\Randomizer;
 
 /**
@@ -109,6 +110,7 @@ final class ParticipantsEditor
     {
         $id = $participant->id;
         $santa = array_search($id, $this->targets, true);
+        throw_if($santa === false, LogicException::class, 'Participant without a santa');
         $target = $this->targets[$id];
         unset($this->targets[$id]);
 
