@@ -57,7 +57,7 @@ final class Participant extends Model
     // Typing it back on their page proves the participant owns the new address
     public function requestEmailChange(string $email): string
     {
-        $code = self::newEmailCode();
+        $code = $this->newEmailCode();
 
         $this->pending_email = $email;
         $this->pending_email_code = $this->emailCodeHash($code);
@@ -208,7 +208,7 @@ final class Participant extends Model
     }
 
     // Six digits, easy to type back from another mailbox
-    private static function newEmailCode(): string
+    private function newEmailCode(): string
     {
         return mb_str_pad((string) random_int(0, 999_999), 6, '0', STR_PAD_LEFT);
     }
