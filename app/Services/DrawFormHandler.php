@@ -8,7 +8,6 @@ use App\Models\Draw;
 use App\Models\Participant;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 /**
  * @phpstan-type Santa array{name: string, email: string, exclusions?: list<int|string>}
@@ -74,25 +73,17 @@ final class DrawFormHandler
         return $this;
     }
 
+    // All or nothing: a draw without a solution (or failing anywhere) leaves nothing behind
     public function save(): Draw
     {
-        DB::beginTransaction();
-
-        $draw = $this->createDraw();
-
-        try {
+        return DB::transaction(function (): Draw {
+            $draw = $this->createDraw();
             $this->solveExclusions();
 
             DrawHandler::solve($draw);
 
-            DB::commit();
-
             return $draw;
-        } catch (Throwable $throwable) {
-            DB::rollBack();
-
-            throw $throwable;
-        }
+        });
     }
 
     private function createDraw(): Draw
