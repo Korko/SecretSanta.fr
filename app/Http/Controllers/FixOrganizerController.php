@@ -75,8 +75,12 @@ final class FixOrganizerController extends Controller
             ], 422);
         }
 
+        $email = $request->string('email')->toString();
+        // The address already given: nothing to fix, the organizer only asks for their emails again
+        $sameEmail = $email === $organizerEmail;
+
         // Only for an address that never worked: otherwise anyone with a dearSanta link could take the panel over
-        if ($draw->organizerReceived()) {
+        if (! $sameEmail && $draw->organizerReceived()) {
             return response()->json([
                 'errors' => [
                     'email' => [
@@ -86,7 +90,6 @@ final class FixOrganizerController extends Controller
             ], 422);
         }
 
-        $email = $request->string('email')->toString();
         if (levenshtein($email, $organizerEmail) > 3) {
             return response()->json([
                 'errors' => [
@@ -111,24 +114,32 @@ final class FixOrganizerController extends Controller
 
         $organizer = $draw->organizer;
 
-        Notification::route('mail', [$organizerEmail => $draw->organizer_name])
-            ->notify(new OrganizerEmailChanged($draw, $email));
+        if ($sameEmail) {
+            // Sending again resets the delivery statuses: keep the proof of reception, it locks /fix
+            if ($draw->organizer_received_at === null && $draw->organizerReceived()) {
+                $draw->organizer_received_at = Date::now();
+                $draw->save();
+            }
+        } else {
+            Notification::route('mail', [$organizerEmail => $draw->organizer_name])
+                ->notify(new OrganizerEmailChanged($draw, $email));
 
-        $draw->organizer_email = $email;
-        $draw->save();
+            $draw->organizer_email = $email;
+            $draw->save();
+
+            if ($organizer !== null) {
+                $organizer->email = $email;
+                $organizer->save();
+            }
+        }
 
         $draw->recapMail()->markAsCreated();
         $draw->notify(new OrganizerRecap($draw));
 
-        if ($organizer !== null) {
-            $organizer->email = $email;
-            $organizer->save();
-
-            $organizer->notifyNow(new TargetDrawn);
-        }
+        $organizer?->notifyNow(new TargetDrawn);
 
         return response()->json([
-            'message' => trans('message.fixedOrganizer'),
+            'message' => trans($sameEmail ? 'message.resentOrganizer' : 'message.fixedOrganizer'),
         ]);
     }
 }
