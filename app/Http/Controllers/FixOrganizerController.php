@@ -37,7 +37,7 @@ final class FixOrganizerController extends Controller
 
         // A link without its secret (after #), unknown, removed, or of a draw that ended
         throw_unless($parser->setIVFromUrl($url), $notFound);
-        $draw = $parser->participant($url)?->draw ?? throw $notFound;
+        $draw = $parser->participant($url)->draw ?? throw $notFound;
 
         try {
             // A wrong secret in the link can't decrypt the draw
