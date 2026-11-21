@@ -8,6 +8,8 @@ use App\Exceptions\SolverException;
 use Generator;
 use Random\Randomizer;
 
+// Draws names from a hat one after the other: any combination, several loops (and reciprocal pairs) included.
+// The draws use CycleSolver (a single loop); kept for reference and comparison
 final class HatSolver implements SolverInterface
 {
     /**
@@ -21,6 +23,19 @@ final class HatSolver implements SolverInterface
         throw_unless($generator->valid(), SolverException::class, 'Cannot solve');
 
         return $generator->current();
+    }
+
+    /**
+     * @param  array<int, mixed>  $participants  indexed by participant id
+     * @param  array<int, list<int>>  $exclusions  participant id => excluded ids
+     */
+    public function solvable(array $participants, array $exclusions = []): bool
+    {
+        try {
+            return $this->all($participants, $exclusions)->valid();
+        } catch (SolverException) {
+            return false;
+        }
     }
 
     /**

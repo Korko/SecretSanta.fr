@@ -34,20 +34,23 @@ final class DrawHandler
     /** @return array<int, int> santa id => target id */
     public static function getHat(ParticipantsCollection $participants): array
     {
+        return Solver::one($participants->keyBy('id')->all(), self::exclusions($participants));
+    }
+
+    // Whether the same participants could be drawn again without anyone getting the same target
+    public static function canRedraw(ParticipantsCollection $participants): bool
+    {
+        $participants = $participants->appendTargetToExclusions();
+
+        return Solver::solvable($participants->keyBy('id')->all(), self::exclusions($participants));
+    }
+
+    /** @return array<int, list<int>> participant id => excluded ids */
+    private static function exclusions(ParticipantsCollection $participants): array
+    {
         /** @var array<int, list<int>> $exclusions */
         $exclusions = $participants->pluck('exclusions.*.id', 'id')->toArray();
 
-        return Solver::one($participants->keyBy('id')->all(), $exclusions);
-    }
-
-    public static function canRedraw(ParticipantsCollection $participants): bool
-    {
-        try {
-            self::getHat($participants->appendTargetToExclusions());
-
-            return true;
-        } catch (SolverException) {
-            return false;
-        }
+        return $exclusions;
     }
 }
