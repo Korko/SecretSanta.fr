@@ -1,68 +1,61 @@
 {
-  "_ajaxForm-C55cnMJx.js": {
-    "file": "assets/ajaxForm-C55cnMJx.js",
+  "_ajaxForm-6q1n8FwU.js": {
+    "file": "assets/ajaxForm-6q1n8FwU.js",
     "name": "ajaxForm",
     "imports": [
-      "_alertify-CTNTQ5RD.js",
-      "_app-DZOyAH5s.js"
+      "_alertify-CANg_1jz.js",
+      "_app-BSVtl0e3.js"
     ]
   },
-  "_alertify-CTNTQ5RD.js": {
-    "file": "assets/alertify-CTNTQ5RD.js",
-    "name": "alertify",
-    "imports": [
-      "_rolldown-runtime-WkwZ5CU-.js",
-      "_fr-w3iCEHsy.js"
-    ]
+  "_alertify-CANg_1jz.js": {
+    "file": "assets/alertify-CANg_1jz.js",
+    "name": "alertify"
   },
-  "_app-DZOyAH5s.js": {
-    "file": "assets/app-DZOyAH5s.js",
+  "_app-BSVtl0e3.js": {
+    "file": "assets/app-BSVtl0e3.js",
     "name": "app",
     "imports": [
-      "_fr-w3iCEHsy.js"
+      "_alertify-CANg_1jz.js"
+    ],
+    "dynamicImports": [
+      "resources/js/langs/de.js",
+      "resources/js/langs/en.js",
+      "resources/js/langs/fr.js"
     ]
   },
   "_emailStatus-4nNxrBcG.css": {
     "file": "assets/emailStatus-4nNxrBcG.css",
     "src": "_emailStatus-4nNxrBcG.css"
   },
-  "_emailStatus-BAF5fb0Q.js": {
-    "file": "assets/emailStatus-BAF5fb0Q.js",
+  "_emailStatus-CsiI6Aig.js": {
+    "file": "assets/emailStatus-CsiI6Aig.js",
     "name": "emailStatus",
     "imports": [
-      "_rolldown-runtime-WkwZ5CU-.js",
-      "_app-DZOyAH5s.js",
-      "_tooltip-d2lQgAcW.js"
+      "_alertify-CANg_1jz.js",
+      "_app-BSVtl0e3.js",
+      "_tooltip-lEMixR1A.js"
     ],
     "css": [
       "assets/emailStatus-4nNxrBcG.css"
     ]
   },
-  "_form-DDh54fQF.js": {
-    "file": "assets/form-DDh54fQF.js",
+  "_form-D72xG5ot.js": {
+    "file": "assets/form-D72xG5ot.js",
     "name": "form",
     "imports": [
-      "_ajaxForm-C55cnMJx.js",
-      "_app-DZOyAH5s.js"
+      "_ajaxForm-6q1n8FwU.js",
+      "_app-BSVtl0e3.js"
     ]
-  },
-  "_fr-w3iCEHsy.js": {
-    "file": "assets/fr-w3iCEHsy.js",
-    "name": "fr"
-  },
-  "_rolldown-runtime-WkwZ5CU-.js": {
-    "file": "assets/rolldown-runtime-WkwZ5CU-.js",
-    "name": "rolldown-runtime"
   },
   "_tooltip-CknrHklv.css": {
     "file": "assets/tooltip-CknrHklv.css",
     "src": "_tooltip-CknrHklv.css"
   },
-  "_tooltip-d2lQgAcW.js": {
-    "file": "assets/tooltip-d2lQgAcW.js",
+  "_tooltip-lEMixR1A.js": {
+    "file": "assets/tooltip-lEMixR1A.js",
     "name": "tooltip",
     "imports": [
-      "_app-DZOyAH5s.js"
+      "_app-BSVtl0e3.js"
     ],
     "css": [
       "assets/tooltip-CknrHklv.css"
@@ -141,67 +134,85 @@
     "src": "resources/images/user-icon.webp"
   },
   "resources/js/common.js": {
-    "file": "assets/common-DGgo2W8G.js",
+    "file": "assets/common-C4kCtbCn.js",
     "name": "common",
     "src": "resources/js/common.js",
     "isEntry": true,
     "imports": [
-      "_alertify-CTNTQ5RD.js"
+      "_alertify-CANg_1jz.js"
     ]
   },
   "resources/js/dearSanta.js": {
-    "file": "assets/dearSanta-BS-RERKi.js",
+    "file": "assets/dearSanta-B6uMMxZi.js",
     "name": "dearSanta",
     "src": "resources/js/dearSanta.js",
     "isEntry": true,
     "imports": [
-      "_app-DZOyAH5s.js",
-      "_ajaxForm-C55cnMJx.js",
-      "_alertify-CTNTQ5RD.js",
-      "_emailStatus-BAF5fb0Q.js",
-      "_tooltip-d2lQgAcW.js",
-      "_form-DDh54fQF.js"
+      "_app-BSVtl0e3.js",
+      "_ajaxForm-6q1n8FwU.js",
+      "_alertify-CANg_1jz.js",
+      "_emailStatus-CsiI6Aig.js",
+      "_tooltip-lEMixR1A.js",
+      "_form-D72xG5ot.js"
     ],
     "css": [
       "assets/dearSanta-DADU95hL.css"
     ]
   },
   "resources/js/faq.js": {
-    "file": "assets/faq-BTgxJ1h3.js",
+    "file": "assets/faq-CSj5Qj4Z.js",
     "name": "faq",
     "src": "resources/js/faq.js",
     "isEntry": true,
     "imports": [
-      "_app-DZOyAH5s.js"
+      "_app-BSVtl0e3.js"
     ],
     "css": [
       "assets/faq-QuG1mctG.css"
     ]
   },
   "resources/js/fixOrganizer.js": {
-    "file": "assets/fixOrganizer-ByXqN_Np.js",
+    "file": "assets/fixOrganizer-gTv5wkPq.js",
     "name": "fixOrganizer",
     "src": "resources/js/fixOrganizer.js",
     "isEntry": true,
     "imports": [
-      "_app-DZOyAH5s.js",
-      "_ajaxForm-C55cnMJx.js",
-      "_alertify-CTNTQ5RD.js",
-      "_form-DDh54fQF.js"
+      "_app-BSVtl0e3.js",
+      "_ajaxForm-6q1n8FwU.js",
+      "_alertify-CANg_1jz.js",
+      "_form-D72xG5ot.js"
     ]
   },
+  "resources/js/langs/de.js": {
+    "file": "assets/de-OBckIxld.js",
+    "name": "de",
+    "src": "resources/js/langs/de.js",
+    "isDynamicEntry": true
+  },
+  "resources/js/langs/en.js": {
+    "file": "assets/en-BowICQZ3.js",
+    "name": "en",
+    "src": "resources/js/langs/en.js",
+    "isDynamicEntry": true
+  },
+  "resources/js/langs/fr.js": {
+    "file": "assets/fr-s_0Nmg01.js",
+    "name": "fr",
+    "src": "resources/js/langs/fr.js",
+    "isDynamicEntry": true
+  },
   "resources/js/organizer.js": {
-    "file": "assets/organizer-DJGU5jr7.js",
+    "file": "assets/organizer-CewaFgOe.js",
     "name": "organizer",
     "src": "resources/js/organizer.js",
     "isEntry": true,
     "imports": [
-      "_app-DZOyAH5s.js",
-      "_ajaxForm-C55cnMJx.js",
-      "_alertify-CTNTQ5RD.js",
-      "_emailStatus-BAF5fb0Q.js",
-      "_tooltip-d2lQgAcW.js",
-      "_form-DDh54fQF.js"
+      "_app-BSVtl0e3.js",
+      "_ajaxForm-6q1n8FwU.js",
+      "_alertify-CANg_1jz.js",
+      "_emailStatus-CsiI6Aig.js",
+      "_tooltip-lEMixR1A.js",
+      "_form-D72xG5ot.js"
     ],
     "css": [
       "assets/organizer-DgIQXySt.css"
@@ -212,16 +223,15 @@
     ]
   },
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm-DqS6RN7_.js",
+    "file": "assets/randomForm-BbM3s1i_.js",
     "name": "randomForm",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
     "imports": [
-      "_rolldown-runtime-WkwZ5CU-.js",
-      "_app-DZOyAH5s.js",
-      "_ajaxForm-C55cnMJx.js",
-      "_alertify-CTNTQ5RD.js",
-      "_tooltip-d2lQgAcW.js"
+      "_app-BSVtl0e3.js",
+      "_ajaxForm-6q1n8FwU.js",
+      "_alertify-CANg_1jz.js",
+      "_tooltip-lEMixR1A.js"
     ],
     "css": [
       "assets/randomForm-AXgegaw_.css"
