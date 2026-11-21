@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use App\Exceptions\SolverException;
-use App\Solvers\HatSolver;
+use App\Solvers\CycleSolver;
 use Random\Engine\Mt19937;
 use Random\Randomizer;
 use Solver;
 use Tests\TestCase;
 
-final class SolverTest extends TestCase
+final class CycleSolverTest extends TestCase
 {
-    private HatSolver $solver;
+    private CycleSolver $solver;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         // Seeded: the draws, and so the statistics below, are the same on every run
-        $this->solver = new HatSolver(new Randomizer(new Mt19937(2026)));
+        $this->solver = new CycleSolver(new Randomizer(new Mt19937(2026)));
     }
 
     public function test_two_participants_draw_each_other(): void

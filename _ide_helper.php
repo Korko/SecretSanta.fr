@@ -24862,7 +24862,7 @@ namespace App\Facades {
          */
         public static function one($participants, $exclusions = [])
         {
-            /** @var \App\Solvers\HatSolver $instance */
+            /** @var \App\Solvers\CycleSolver $instance */
             return $instance->one($participants, $exclusions);
         }
 
@@ -24875,7 +24875,7 @@ namespace App\Facades {
          */
         public static function solvable($participants, $exclusions = [])
         {
-            /** @var \App\Solvers\HatSolver $instance */
+            /** @var \App\Solvers\CycleSolver $instance */
             return $instance->solvable($participants, $exclusions);
         }
 
