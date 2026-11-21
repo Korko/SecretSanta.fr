@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Notifications\DearSanta;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use Exception;
@@ -64,10 +63,8 @@ final class FixOrganizer extends Command
             $organizer->notifyNow(new TargetDrawn);
             $this->info('Participant mail sent');
 
-            $organizer->target->dearSantas->each(function ($dearSanta) use ($organizer): void {
-                $organizer->notify(new DearSanta($dearSanta));
-                $this->info('DearSanta mail sent');
-            });
+            $organizer->forwardTargetMessages();
+            $this->info('Target messages sent, if any');
         }
     }
 }

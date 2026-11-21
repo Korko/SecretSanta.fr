@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 /**
  * @property DeliveryStatus $delivery_status
  * @property string $notification
+ * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  */
 final class Mail extends Model
