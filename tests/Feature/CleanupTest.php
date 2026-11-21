@@ -14,9 +14,15 @@ use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotNull;
 use function PHPUnit\Framework\assertNull;
 
+// Pruned WEEKS_BEFORE_DELETION after the event: the expired() state is any date in the past, a few days ago included
+function drawToPrune(): Draw
+{
+    return Draw::factory()->create(['expires_at' => now()->subWeeks(Draw::WEEKS_BEFORE_DELETION)->subDay()]);
+}
+
 it('cleans up expired draws', function (): void {
     $drawNotExpired = Draw::factory()->create();
-    $drawExpired = Draw::factory()->expired()->create();
+    $drawExpired = drawToPrune();
 
     test()->artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
 
@@ -25,7 +31,7 @@ it('cleans up expired draws', function (): void {
 });
 
 it('cleans up everything', function (): void {
-    Draw::factory()->expired()->create();
+    drawToPrune();
     // TODO: need to create exclusions, dearSantas and mails
 
     test()->artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
