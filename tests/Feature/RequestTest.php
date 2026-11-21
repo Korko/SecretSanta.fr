@@ -61,7 +61,7 @@ it('only lets the site scripts run, the inline one through its nonce', function 
 
     $csp = (string) $response->headers->get('Content-Security-Policy');
     expect($csp)->toContain("frame-ancestors 'none'", "object-src 'none'", "base-uri 'self'")
-        ->and($csp)->toMatch("/script-src 'self' 'nonce-[^']+' 'unsafe-eval'/")
+        ->and($csp)->toMatch("/script-src 'self' 'nonce-[^']+'(;|$)/")
         ->and($csp)->not->toContain('https:', '*');
 
     // The @javascript block (window.global) carries the nonce of the header, a new one on each response

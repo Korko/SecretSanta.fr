@@ -17,5 +17,5 @@
 @stop
 
 @section('content')
-    <faq :questions="{{ Illuminate\Support\Js::from($questions) }}" />
+    <div id="faq" data-questions="{{ json_encode($questions) }}"></div>
 @stop
