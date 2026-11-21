@@ -142,6 +142,13 @@ return [
             'content' => [
                 'required' => 'Der Inhalt der Nachricht ist erforderlich.',
             ],
+            'email' => [
+                'required' => 'Die neue Adresse ist erforderlich.',
+                'format' => 'Das Adressformat ist ungültig.',
+            ],
+            'code' => [
+                'required' => 'Der Code ist erforderlich.',
+            ],
         ],
         'organizer' => [
             'email' => [

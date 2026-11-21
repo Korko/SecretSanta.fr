@@ -48,6 +48,11 @@ Route::middleware('signed')->group(function (): void {
             ->name('dearSanta.resend')->middleware('throttle:email');
         Route::post('/dearSanta/{participant}/resendTarget', [DearSantaController::class, 'resendTarget'])
             ->name('dearSanta.resend_target')->middleware('throttle:email');
+        // A code sent to any address, then the target email again: limited like the other emails
+        Route::post('/dearSanta/{participant}/email', [DearSantaController::class, 'requestEmailChange'])
+            ->name('dearSanta.request_email_change')->middleware('throttle:email');
+        Route::post('/dearSanta/{participant}/email/confirm', [DearSantaController::class, 'changeEmail'])
+            ->name('dearSanta.change_email')->middleware('throttle:email');
     });
 
     Route::get('/org/{draw}', [OrganizerController::class, 'view'])->name('organizerPanel')

@@ -16,4 +16,5 @@ return [
     'target_renamed.hello' => 'Hello :name,',
     'target_renamed.body' => 'The organizer changed your gift recipient\'s name from ":old" to ":new".',
     'target_renamed.same' => 'It is still the same person: you are still giving them your gift, nothing else changes.',
+    'participant_email_code.title' => 'SecretSanta - Your confirmation code: :code',
 ];

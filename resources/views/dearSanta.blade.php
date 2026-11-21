@@ -8,6 +8,8 @@
             'contactUrl' => URL::signedRoute('dearSanta.contact', ['participant' => $participant]),
             'fetchStateUrl' => URL::signedRoute('dearSanta.fetchState', ['participant' => $participant]),
             'reportUrl' => URL::signedRoute('dearSanta.report', ['participant' => $participant]),
+            'requestEmailChangeUrl' => URL::signedRoute('dearSanta.request_email_change', ['participant' => $participant]),
+            'changeEmailUrl' => URL::signedRoute('dearSanta.change_email', ['participant' => $participant]),
         ],
         'pusher' => [
             'key' => config('broadcasting.connections.reverb.key'),

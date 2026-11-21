@@ -61,6 +61,19 @@ export default {
             },
             "resend": {
                 "button": "Sende mir die E-Mails, die ich von meinem Empfänger erhalten habe, erneut."
+            },
+            "email": {
+                "current": "Ihre E-Mails gehen an {email}.",
+                "open": "Adresse ändern",
+                "new": "Neue Adresse",
+                "send_code": "Code erhalten",
+                "code": "An {email} gesendeter Code:",
+                "confirm": "Bestätigen",
+                "code_sent": "Ein Code wurde gerade an {email} gesendet. Geben Sie ihn hier ein, um die Änderung zu bestätigen.",
+                "changed": "Ihre E-Mails gehen ab jetzt an {email}. Der Name Ihres Empfängers wurde gerade dorthin erneut gesendet.",
+                "wrong_code": "Dieser Code ist nicht richtig.",
+                "expired": "Dieser Code ist nicht mehr gültig, fordern Sie einen neuen an.",
+                "same": "Das ist bereits Ihre Adresse."
             }
         },
         "faq": {
@@ -445,6 +458,13 @@ export default {
                 "dearSanta": {
                     "content": {
                         "required": "Der Inhalt der Nachricht ist erforderlich."
+                    },
+                    "email": {
+                        "required": "Die neue Adresse ist erforderlich.",
+                        "format": "Das Adressformat ist ungültig."
+                    },
+                    "code": {
+                        "required": "Der Code ist erforderlich."
                     }
                 },
                 "organizer": {
