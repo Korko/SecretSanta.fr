@@ -42,7 +42,7 @@ return [
         'cancel' => 'Cancel',
         'done' => 'Renamed to :name',
     ],
-    'cannot_withdraw' => 'Unable to remove :name',
+    'cannot_withdraw' => 'Unable to remove :name without giving someone a person they excluded',
     'withdrawn' => ':name no longer takes part in the event.',
     'deleted' => 'All data has been deleted',
     'download' => [
@@ -120,4 +120,8 @@ return [
         ],
     ],
     'expired' => 'Your event is over ({expires_at}). Some actions are no longer available, such as resending the target name to a participant.',
+    'force' => [
+        'title' => 'Force the removal?',
+        'body' => 'You can force it: the exclusions will be ignored for this change, and a secret santa may get a person they had excluded.',
+    ],
 ];

@@ -46,4 +46,17 @@ return [
         'expired' => 'Ce code n\'est plus valable, demandez-en un nouveau.',
         'same' => 'C\'est déjà votre adresse.',
     ],
+    'withdraw' => [
+        'button' => 'Je ne veux plus participer',
+        'done' => 'Vous ne participez plus à cet évènement. Votre père/mère noël secret a reçu une nouvelle cible et l\'organisateur/organisatrice a été prévenu(e).',
+        'confirm' => [
+            'title' => 'Se désister de l\'évènement ?',
+            'body' => 'Vous quitterez définitivement le tirage au sort : votre père/mère noël secret recevra une nouvelle cible, {organizer} sera prévenu(e) par email et cette page ne fonctionnera plus. Si cet email ne vous était pas destiné ou que vous n\'avez jamais demandé à participer, utilisez plutôt le signalement.',
+            'value' => 'Me désister',
+            'help' => 'Saisir "[+!:verification]" en dessous pour confirmer.',
+            'ok' => 'Me désister',
+            'cancel' => 'Annuler',
+        ],
+        'blocked' => 'Votre désistement donnerait à quelqu\'un une personne qu\'il ou elle a exclue. Demandez à :organizer de vous retirer depuis sa page d\'organisation.',
+    ],
 ];

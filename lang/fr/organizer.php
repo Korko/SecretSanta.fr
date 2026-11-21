@@ -42,7 +42,7 @@ return [
         'cancel' => 'Annuler',
         'done' => 'Renommé en :name',
     ],
-    'cannot_withdraw' => 'Impossible de supprimer :name',
+    'cannot_withdraw' => 'Impossible de retirer :name sans donner à quelqu\'un une personne qu\'il ou elle a exclue',
     'withdrawn' => ':name ne participe plus à l\'évènement.',
     'deleted' => 'Toutes les données ont été supprimées',
     'download' => [
@@ -120,4 +120,8 @@ return [
         ],
     ],
     'expired' => 'Votre évènement est passé ({expires_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un(e) participant(e).',
+    'force' => [
+        'title' => 'Forcer le retrait ?',
+        'body' => 'Vous pouvez le forcer : les exclusions seront ignorées pour ce changement, et un(e) père/mère noël pourra recevoir une personne qu\'il ou elle avait exclue.',
+    ],
 ];

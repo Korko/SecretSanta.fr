@@ -74,6 +74,19 @@ export default {
                 "wrong_code": "Ce code n'est pas le bon.",
                 "expired": "Ce code n'est plus valable, demandez-en un nouveau.",
                 "same": "C'est déjà votre adresse."
+            },
+            "withdraw": {
+                "button": "Je ne veux plus participer",
+                "done": "Vous ne participez plus à cet évènement. Votre père/mère noël secret a reçu une nouvelle cible et l'organisateur/organisatrice a été prévenu(e).",
+                "confirm": {
+                    "title": "Se désister de l'évènement ?",
+                    "body": "Vous quitterez définitivement le tirage au sort : votre père/mère noël secret recevra une nouvelle cible, {organizer} sera prévenu(e) par email et cette page ne fonctionnera plus. Si cet email ne vous était pas destiné ou que vous n'avez jamais demandé à participer, utilisez plutôt le signalement.",
+                    "value": "Me désister",
+                    "help": "Saisir \"[+:verification]\" en dessous pour confirmer.",
+                    "ok": "Me désister",
+                    "cancel": "Annuler"
+                },
+                "blocked": "Votre désistement donnerait à quelqu'un une personne qu'il ou elle a exclue. Demandez à {organizer} de vous retirer depuis sa page d'organisation."
             }
         },
         "faq": {
@@ -270,7 +283,7 @@ export default {
                 "received_count": "{received}/{total} participant(e)s ont bien reçu leur email (réponse, visite de leur page ou accusé de réception)"
             },
             "up_and_sent": "Modifié avec succès !",
-            "cannot_withdraw": "Impossible de supprimer {name}",
+            "cannot_withdraw": "Impossible de retirer {name} sans donner à quelqu'un une personne qu'il ou elle a exclue",
             "withdrawn": "{name} ne participe plus à l'évènement.",
             "deleted": "Toutes les données ont été supprimées",
             "download": {
@@ -342,7 +355,11 @@ export default {
                     "cancel": "Annuler"
                 }
             },
-            "expired": "Votre évènement est passé ({expires_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un(e) participant(e)."
+            "expired": "Votre évènement est passé ({expires_at}). Certaines actions ne sont plus disponibles, comme réenvoyer le nom de la cible à un(e) participant(e).",
+            "force": {
+                "title": "Forcer le retrait ?",
+                "body": "Vous pouvez le forcer : les exclusions seront ignorées pour ce changement, et un(e) père/mère noël pourra recevoir une personne qu'il ou elle avait exclue."
+            }
         },
         "validation": {
             "accepted": "Le champ {attribute} doit être accepté.",

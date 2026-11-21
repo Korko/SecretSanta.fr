@@ -6,7 +6,9 @@ use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\DearSanta;
 use App\Notifications\ParticipantEmailCode;
+use App\Notifications\ParticipantWithdrew;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetWithdrawn;
 use App\Services\URLParser;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
@@ -180,4 +182,66 @@ it('refuses to move a participant to their own or a refused address', function (
     ajaxPost($request, ['email' => 'not an email'])->assertStatus(422);
 
     Notification::assertSentOnDemandTimes(ParticipantEmailCode::class, 0);
+});
+
+it('lets a participant withdraw: their santa gets a new target and the organizer is told', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    $participant = $draw->participants->first();
+    $santa = $participant->santa;
+
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $participant]))
+        ->assertSuccessful()
+        ->assertJsonStructure(['message']);
+
+    expect($participant->fresh())->toBeNull()
+        ->and($draw->participants()->count())->toBe(3)
+        ->and($santa->fresh()->target->is($participant))->toBeFalse();
+    Notification::assertSentTo($santa, TargetWithdrawn::class);
+    Notification::assertSentTo($draw, ParticipantWithdrew::class, fn (ParticipantWithdrew $notification): bool => str_contains((string) $notification->toMail($draw)->subject, '#'.$draw->id));
+});
+
+it('keeps at least 3 participants when one withdraws', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $participant]))->assertStatus(422);
+
+    expect($draw->participants()->count())->toBe(3);
+    Notification::assertNotSentTo($draw, ParticipantWithdrew::class);
+});
+
+it('does not let the organizer withdraw from their participant page', function (): void {
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    $participant = $draw->participants->first();
+    $draw->organizer_participant_id = $participant->id;
+    $draw->save();
+
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $participant]))->assertForbidden();
+    expect($participant->fresh())->not->toBeNull();
+});
+
+it('does not give a santa a target they excluded when theirs withdraws', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(5)->create();
+    // A -> B -> C, A and C exclude each other
+    $a = $draw->participants->first(fn ($p): bool => $p->target->target->isNot($p));
+    $b = $a->target;
+    $c = $b->target;
+    $a->exclusions()->attach($c);
+    $c->exclusions()->attach($a);
+
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $b]))->assertSuccessful();
+
+    $draw->refresh();
+    expect($a->fresh()->target->is($c))->toBeFalse()
+        ->and($draw->participants)->toHaveCount(4);
+    // Still everyone gives to someone else, and is given to once
+    $targets = $draw->participants->map(fn ($p) => $p->target->id);
+    expect($targets->unique())->toHaveCount(4)
+        ->and($draw->participants->every(fn ($p): bool => $p->target->isNot($p)))->toBeTrue();
 });

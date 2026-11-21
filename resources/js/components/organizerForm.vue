@@ -277,11 +277,14 @@
                     () => {}
                 );
             },
-            submitChanges(remove, add) {
+            submitChanges(remove, add, force = false) {
                 // The fetch helper sends flat FormData: name the array entries like a form would
                 const data = {};
                 remove.forEach((hash, i) => data['remove['+i+']'] = hash);
                 add.forEach((p, i) => { data['add['+i+'][name]'] = p.name; data['add['+i+'][email]'] = p.email; });
+                if (force) {
+                    data.force = 1;
+                }
 
                 return fetch(this.routes.changeParticipantsUrl, 'POST', data)
                     .then(data => {
@@ -292,7 +295,16 @@
                         alertify.confirmAlert(this.$t('organizer.edit.done'));
                     })
                     .catch(error => {
-                        alertify.errorAlert(Object.values(error.errors || {})[0]?.[0] || error.message);
+                        // No santa can take the removed person's place without breaking an exclusion: the organizer may force it
+                        if (error.errors?.exclusions && !force) {
+                            return new Promise((resolve, reject) => alertify.confirm(
+                                this.$t('organizer.force.title'),
+                                escapeHtml(error.errors.exclusions[0]) + '<br><br>' + this.$t('organizer.force.body'),
+                                () => this.submitChanges(remove, add, true).then(resolve, reject),
+                                () => reject(error)
+                            ));
+                        }
+                        alertify.errorAlert(escapeHtml(Object.values(error.errors || {})[0]?.[0] || error.message));
                         return this.checkEnded(error);
                     });
             },

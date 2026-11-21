@@ -42,7 +42,7 @@ return [
         'cancel' => 'Abbrechen',
         'done' => 'Umbenannt in :name',
     ],
-    'cannot_withdraw' => ':name kann nicht entfernt werden',
+    'cannot_withdraw' => ':name kann nicht entfernt werden, ohne jemandem eine ausgeschlossene Person zuzuteilen',
     'withdrawn' => ':name nimmt nicht mehr an der Veranstaltung teil.',
     'deleted' => 'Alle Daten wurden gelöscht',
     'download' => [
@@ -120,4 +120,8 @@ return [
         ],
     ],
     'expired' => 'Ihre Veranstaltung ist abgelaufen ({expires_at}). Einige Aktionen sind nicht mehr verfügbar, wie z.B. das erneute Versenden des Namens der Zielperson an einen Teilnehmer/eine Teilnehmerin.',
+    'force' => [
+        'title' => 'Entfernen erzwingen?',
+        'body' => 'Sie können es erzwingen: die Ausschlüsse werden für diese Änderung ignoriert, und ein geheimer Weihnachtsmann kann eine Person erhalten, die er ausgeschlossen hatte.',
+    ],
 ];

@@ -17,4 +17,5 @@ return [
     'target_renamed.body' => 'Die Organisatorin/der Organisator hat den Namen Ihres Empfängers von „:old“ in „:new“ geändert.',
     'target_renamed.same' => 'Es ist weiterhin dieselbe Person: Sie beschenken sie weiterhin, sonst ändert sich nichts.',
     'participant_email_code.title' => 'SecretSanta - Ihr Bestätigungscode: :code',
+    'participant_withdrew.title' => 'SecretSanta #:draw - :name hat sich abgemeldet',
 ];

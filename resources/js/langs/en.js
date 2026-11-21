@@ -74,6 +74,19 @@ export default {
                 "wrong_code": "This code is not the right one.",
                 "expired": "This code is no longer valid, ask for a new one.",
                 "same": "This is already your address."
+            },
+            "withdraw": {
+                "button": "I no longer want to take part",
+                "done": "You no longer take part in this event. Your secret santa got a new target and the organizer has been told.",
+                "confirm": {
+                    "title": "Withdraw from the event?",
+                    "body": "You will leave the draw for good: your secret santa will get a new target, {organizer} will be told by email and this page will stop working. If this email was not meant for you or you never asked to take part, use the report instead.",
+                    "value": "Withdraw",
+                    "help": "Type \"[+:verification]\" below to confirm.",
+                    "ok": "Withdraw",
+                    "cancel": "Cancel"
+                },
+                "blocked": "Your withdrawal would give someone a person they excluded. Ask {organizer} to remove you from their organizer page."
             }
         },
         "faq": {
@@ -270,7 +283,7 @@ export default {
                 "received_count": "{received}/{total} participants confirmed receiving their email (reply, page visit or acknowledgement)"
             },
             "up_and_sent": "Successfully updated!",
-            "cannot_withdraw": "Unable to remove {name}",
+            "cannot_withdraw": "Unable to remove {name} without giving someone a person they excluded",
             "withdrawn": "{name} no longer takes part in the event.",
             "deleted": "All data has been deleted",
             "download": {
@@ -342,7 +355,11 @@ export default {
                     "cancel": "Cancel"
                 }
             },
-            "expired": "Your event is over ({expires_at}). Some actions are no longer available, such as resending the target name to a participant."
+            "expired": "Your event is over ({expires_at}). Some actions are no longer available, such as resending the target name to a participant.",
+            "force": {
+                "title": "Force the removal?",
+                "body": "You can force it: the exclusions will be ignored for this change, and a secret santa may get a person they had excluded."
+            }
         },
         "validation": {
             "accepted": "The {attribute} field must be accepted.",

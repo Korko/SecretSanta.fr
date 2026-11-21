@@ -10,8 +10,11 @@ use App\Notifications\DearSanta;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use LogicException;
+use Random\Randomizer;
 
 /**
  * Adds and removes participants of an existing draw in one go, touching as few pairs as possible,
@@ -22,7 +25,8 @@ final class ParticipantsEditor
     /** @var array<int|string, int|string> santa id => target id (new participants have string keys) */
     private array $targets = [];
 
-    public function __construct(private readonly Draw $draw) {}
+    // ignoreExclusions: the organizer forcing a removal no santa could absorb without breaking an exclusion
+    public function __construct(private readonly Draw $draw, private readonly bool $ignoreExclusions = false) {}
 
     /**
      * @param  array<Participant>  $remove
@@ -30,29 +34,38 @@ final class ParticipantsEditor
      */
     public function apply(array $remove, array $add): void
     {
-        $participants = $this->draw->participants->load('exclusions')->keyBy('id')->all();
-        foreach ($participants as $participant) {
-            $this->targets[$participant->target_id] = $participant->id; // target_id holds the santa
-        }
+        // One change at a time per draw (the organizer panel, participants withdrawing): the pairs are computed
+        // from the participants read once the draw is locked, not from a copy another change may have made stale
+        [$participants, $before, $created, $remove] = DB::transaction(function () use ($remove, $add): array {
+            Draw::query()->lockForUpdate()->findOrFail($this->draw->id);
 
-        $before = $this->targets;
+            $this->draw->unsetRelation('participants');
+            $participants = $this->draw->participants()->with('exclusions')->get()->keyBy('id')->all();
+            // Removed by another change in the meantime: nothing left to do for them
+            $remove = array_values(array_map(fn (Participant $participant): Participant => $participants[$participant->id] ?? throw new ModelNotFoundException, $remove));
 
-        foreach ($remove as $participant) {
-            $this->remove($participant, $participants);
-        }
+            $this->targets = [];
+            foreach ($participants as $participant) {
+                $this->targets[$participant->target_id] = $participant->id; // target_id holds the santa
+            }
 
-        foreach (array_keys($add) as $i) {
-            $this->insert('new'.$i);
-        }
+            $before = $this->targets;
 
-        throw_if(count($this->targets) < 3, ValidationException::withMessages(['participants' => trans('error.withdraw')]));
-        // Adding beyond the limit is refused, not removing: a bigger draw from before the limit (or a lowered
-        // MAX_PARTICIPANTS) can still lose someone
-        throw_if(count($this->targets) > max($this->draw->maxParticipants(), count($before)), ValidationException::withMessages([
-            'participants' => trans('validation.custom.randomform.participants.max', ['max' => $this->draw->maxParticipants(), 'email' => config()->string('app.email')]),
-        ]));
+            foreach ($remove as $participant) {
+                $this->remove($participant, $participants);
+            }
 
-        $created = DB::transaction(function () use ($remove, $add, $participants): array {
+            foreach (array_keys($add) as $i) {
+                $this->insert('new'.$i);
+            }
+
+            throw_if(count($this->targets) < 3, ValidationException::withMessages(['participants' => trans('error.withdraw')]));
+            // Adding beyond the limit is refused, not removing: a bigger draw from before the limit (or a lowered
+            // MAX_PARTICIPANTS) can still lose someone
+            throw_if(count($this->targets) > max($this->draw->maxParticipants(), count($before)), ValidationException::withMessages([
+                'participants' => trans('validation.custom.randomform.participants.max', ['max' => $this->draw->maxParticipants(), 'email' => config()->string('app.email')]),
+            ]));
+
             $created = [];
             foreach ($add as $i => $data) {
                 $participant = new Participant(['name' => $data['name'], 'email' => $data['email']]);
@@ -69,7 +82,7 @@ final class ParticipantsEditor
                 $model($target)->santa()->associate($model($santa))->save();
             }
 
-            return $created;
+            return [$participants, $before, $created, $remove];
         });
 
         $this->draw->unsetRelation('participants');
@@ -97,21 +110,39 @@ final class ParticipantsEditor
     {
         $id = $participant->id;
         $santa = array_search($id, $this->targets, true);
+        throw_if($santa === false, LogicException::class, 'Participant without a santa');
         $target = $this->targets[$id];
         unset($this->targets[$id]);
 
+        // The other santas in a random order, as insert() does: who is picked must not tell anything
+        $others = new Randomizer()->shuffleArray(array_keys($this->targets));
+
         if ($santa !== $target) {
             // A -> B -> C => A -> C
-            $this->targets[$santa] = $target;
+            if ($this->allowed($santa, $target, $participants)) {
+                $this->targets[$santa] = $target;
 
-            return;
+                return;
+            }
+
+            // Unless A excluded C: A takes the target Y of a santa X who can give to C (A -> Y, X -> C)
+            foreach ($others as $other) {
+                $otherTarget = $this->targets[$other];
+                if ($other !== $santa && $this->allowed($santa, $otherTarget, $participants) && $this->allowed($other, $target, $participants)) {
+                    $this->targets[$santa] = $otherTarget;
+                    $this->targets[$other] = $target;
+
+                    return;
+                }
+            }
+
+            throw ValidationException::withMessages(['exclusions' => trans('organizer.cannot_withdraw', ['name' => $participant->name])]);
         }
 
         // A <-> B: splice A into another pair, C -> D => C -> A -> D
-        $excluded = isset($participants[$santa]) ? $participants[$santa]->exclusions->modelKeys() : [];
-        foreach ($this->targets as $other => $otherTarget) {
-            if ($other !== $santa && ! in_array($otherTarget, $excluded, true)
-                && (! isset($participants[$other]) || $participants[$other]->exclusions->doesntContain('id', $santa))) {
+        foreach ($others as $other) {
+            $otherTarget = $this->targets[$other];
+            if ($other !== $santa && $this->allowed($santa, $otherTarget, $participants) && $this->allowed($other, $santa, $participants)) {
                 $this->targets[$santa] = $otherTarget;
                 $this->targets[$other] = $santa;
 
@@ -119,7 +150,16 @@ final class ParticipantsEditor
             }
         }
 
-        throw ValidationException::withMessages(['participants' => trans('organizer.cannot_withdraw', ['name' => $participant->name])]);
+        throw ValidationException::withMessages(['exclusions' => trans('organizer.cannot_withdraw', ['name' => $participant->name])]);
+    }
+
+    // Whether santa may give to target (new participants have no exclusions). A refusal comes under the
+    // "exclusions" key: the organizer panel then offers to force the change (ignoreExclusions)
+    /** @param  array<int, Participant>  $participants */
+    private function allowed(int|string $santa, int|string $target, array $participants): bool
+    {
+        return $santa !== $target
+            && ($this->ignoreExclusions || ! isset($participants[$santa]) || $participants[$santa]->exclusions->doesntContain('id', $target));
     }
 
     // A -> B => A -> new -> B, with a random A so the new participant's santa can't be guessed

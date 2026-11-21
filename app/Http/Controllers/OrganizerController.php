@@ -33,6 +33,10 @@ final class OrganizerController extends Controller
 
     public function fetch(Draw $draw): JsonResponse
     {
+        // Loaded at once: right after a change of participants (changeParticipants), the draw's previous
+        // copies of them are gone and models are strict about lazy loading
+        $draw->load('participants.mail');
+
         if ($draw->organizer_received_at === null) {
             $draw->organizer_received_at = now();
             $draw->save();
@@ -63,12 +67,12 @@ final class OrganizerController extends Controller
             ]),
             'changeEmailUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
                 $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [
-                    'draw' => $participant->draw, 'participant' => $participant,
+                    'draw' => $draw, 'participant' => $participant,
                 ]),
             ]),
             'changeNameUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
                 $participant->hash => URL::signedRoute('organizerPanel.changeName', [
-                    'draw' => $participant->draw, 'participant' => $participant,
+                    'draw' => $draw, 'participant' => $participant,
                 ]),
             ]),
             'finalCsvAvailable' => $draw->next_solvable,
@@ -205,6 +209,7 @@ final class OrganizerController extends Controller
             'remove' => ['array'],
             'remove.*' => ['distinct', Rule::in($hashes)],
             'add' => ['array'],
+            'force' => ['boolean'],
             'add.*.name' => ['required', 'string', 'distinct', Rule::notIn($names)],
             'add.*.email' => ['required', 'email', function (string $attribute, mixed $value, Closure $fail) use ($draw): void {
                 if (is_string($value) && $draw->refusesEmail($value)) {
@@ -222,7 +227,7 @@ final class OrganizerController extends Controller
         $remove = $draw->participants->whereIn('hash', $request->array('remove'))->values()->all();
         /** @var list<array{name: string, email: string}> $add validated above */
         $add = array_values($request->array('add'));
-        new ParticipantsEditor($draw)->apply($remove, $add);
+        new ParticipantsEditor($draw, ignoreExclusions: $request->boolean('force'))->apply($remove, $add);
 
         $draw->createMetric('participants_changed')
             ->addExtra('added', count($add))
