@@ -151,3 +151,32 @@ test('an unconfirmed address entered again as is is sent again, without the chan
     fixOrganizer($draw, 'orga@example.com')->assertSuccessful()->assertJsonPath('message', trans('message.fixedOrganizer'));
     expect($draw->fresh()->organizer_email)->toBe('orga@example.com');
 });
+
+test('the fix-organizer command asks for the organizer email when not given', function (): void {
+    Notification::fake();
+    $draw = createOrganizedDraw('orga@exampel.com');
+    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getIV());
+
+    $this->artisan('secretsanta:fix-organizer', ['url' => $url])
+        ->expectsQuestion('What is the correct email of the organizer?', 'orga@example.com')
+        ->assertSuccessful();
+
+    expect($draw->fresh()->organizer_email)->toBe('orga@example.com');
+    Notification::assertSentToTimes($draw, OrganizerRecap::class, 1);
+});
+
+test('keeping the current address in the fix-organizer command only sends the emails again', function (): void {
+    Notification::fake();
+    $draw = createServiceDraw(generateParticipants(3));
+    $organizer = $draw->participants->first();
+    $draw->update(['organizer_name' => $organizer->name, 'organizer_email' => $organizer->email, 'organizer_participant_id' => $organizer->id]);
+    // The participant changed their own address since: the organizer address isn't theirs to overwrite it
+    $organizer->update(['email' => 'new-'.$organizer->email]);
+    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getIV());
+
+    $this->artisan('secretsanta:fix-organizer', ['url' => $url, 'email' => $draw->organizer_email])->assertSuccessful();
+
+    expect($organizer->fresh()->email)->toBe('new-'.$draw->organizer_email);
+    Notification::assertSentToTimes($draw, OrganizerRecap::class, 1);
+    Notification::assertSentToTimes($organizer, TargetDrawn::class, 2);
+});
