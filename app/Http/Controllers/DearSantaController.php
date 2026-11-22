@@ -217,17 +217,17 @@ final class DearSantaController extends Controller
 
         try {
             $participant->santa->notify(new DearSantaNotification($dearSanta));
+
+            return response()->json([
+                'message' => trans('message.sent'),
+                'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
+            ]);
         } catch (Exception) {
             return response()->json([
                 'error' => trans('error.email'),
                 'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
             ]);
         }
-
-        return response()->json([
-            'message' => trans('message.sent'),
-            'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
-        ]);
     }
 
     // The messages their target wrote to them, again, in a single email: nothing changes on the target's page
