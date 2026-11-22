@@ -7,6 +7,7 @@ use App\Models\Draw;
 use App\Notifications\OrganizerEmailChanged;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetMessages;
 use App\Services\DrawFormHandler;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
@@ -116,11 +117,30 @@ test('a participating organizer who received their email gets their target email
     $this->travel(10)->minutes();
 
     fixOrganizer($draw->fresh(), $organizer->email)->assertSuccessful()->assertJsonPath('message', trans('message.resentOrganizer'));
-    // Once at the draw, once now
+    // Once at the draw, once now. With the recap inside, like at the draw: no separate one
     Notification::assertSentToTimes($organizer, TargetDrawn::class, 2);
-    Notification::assertSentToTimes($draw, OrganizerRecap::class, 1);
+    Notification::assertSentTo($organizer, TargetDrawn::class, fn (TargetDrawn $notification): bool => $notification->toMail($organizer)->data()['organizer'] !== null);
+    Notification::assertSentToTimes($draw, OrganizerRecap::class, 0);
     Notification::assertSentOnDemandTimes(OrganizerEmailChanged::class, 0);
     expect($organizer->fresh()->email)->toBe($organizer->email);
+});
+
+test('a participating organizer fixing their address gets their target email there, with what their target wrote', function (): void {
+    Notification::fake();
+    $draw = createServiceDraw(generateParticipants(3));
+    $organizer = $draw->organizer;
+    $organizer->target->dearSantas()->create(['mail_body' => 'Un pull ?']);
+    $mistyped = $organizer->email;
+    $this->travel(10)->minutes();
+
+    fixOrganizer($draw->fresh(), $mistyped.'x')->assertSuccessful()->assertJsonPath('message', trans('message.fixedOrganizer'));
+
+    expect($organizer->fresh()->email)->toBe($mistyped.'x')
+        ->and($draw->fresh()->organizer_email)->toBe($mistyped.'x');
+    Notification::assertSentToTimes($organizer, TargetDrawn::class, 2);
+    Notification::assertSentToTimes($draw, OrganizerRecap::class, 0);
+    // Like any other change of address: the new one never got the messages of their target
+    Notification::assertSentToTimes($organizer, TargetMessages::class, 1);
 });
 
 test('sending the email again keeps the received address locked', function (): void {
@@ -177,7 +197,8 @@ test('keeping the current address in the fix-organizer command only sends the em
     $this->artisan('secretsanta:fix-organizer', ['url' => $url, 'email' => $draw->organizer_email])->assertSuccessful();
 
     expect($organizer->fresh()->email)->toBe('new-'.$draw->organizer_email);
-    Notification::assertSentToTimes($draw, OrganizerRecap::class, 1);
+    // Their target email holds the recap: no separate one
+    Notification::assertSentToTimes($draw, OrganizerRecap::class, 0);
     Notification::assertSentToTimes($organizer, TargetDrawn::class, 2);
 });
 

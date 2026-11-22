@@ -50,21 +50,24 @@ final class FixOrganizer extends Command
             $draw->save();
         }
 
-        $draw->recapMail()->markAsCreated();
-        $draw->notify(new OrganizerRecap($draw));
-        $this->info('Organizer Recap sent');
+        // Like at the draw: taking part, the organizer gets the recap within their target email only
+        if ($organizer === null) {
+            $draw->recapMail()->markAsCreated();
+            $draw->notify(new OrganizerRecap($draw));
+            $this->info('Organizer Recap sent');
 
-        if ($organizer !== null) {
-            if ($changed) {
-                $organizer->email = $email;
-                $organizer->save();
-            }
-
-            $organizer->notifyNow(new TargetDrawn);
-            $this->info('Participant mail sent');
-
-            $organizer->forwardTargetMessages();
-            $this->info('Target messages sent, if any');
+            return;
         }
+
+        if ($changed) {
+            $organizer->email = $email;
+            $organizer->save();
+        }
+
+        $organizer->notifyNow(new TargetDrawn);
+        $this->info('Participant mail sent, with the organizer recap');
+
+        $organizer->forwardTargetMessages();
+        $this->info('Target messages sent, if any');
     }
 }

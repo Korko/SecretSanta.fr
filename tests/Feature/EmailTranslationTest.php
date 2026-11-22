@@ -33,3 +33,16 @@ it('renders the emails in the language of the request', function (string $locale
     'en' => ['en', ['You can write to your Secret Santa', 'Secretly yours', 'This code is valid for 60 minutes']],
     'de' => ['de', ['Sie können Ihrem geheimen Weihnachtsmann schreiben', 'Geheimnisvoll Ihr', 'Dieser Code ist 60 Minuten gültig']],
 ]);
+
+// The organizer's target email holds their recap: nobody to report to, their page has no such button
+it('does not ask the organizer to report to the organizer', function (): void {
+    Notification::fake();
+    $draw = createServiceDraw(generateParticipants(3));
+    [$organizer, $other] = $draw->participants;
+    $report = e(trans('emails.target_drawn.report'));
+
+    $organizerMail = new TargetDrawn()->toMail($organizer);
+    expect((string) $organizerMail->render())->not->toContain($report)
+        ->toContain(e(trans('emails.target_drawn.as_organizer')))
+        ->and((string) new TargetDrawn()->toMail($other)->render())->toContain($report);
+});
