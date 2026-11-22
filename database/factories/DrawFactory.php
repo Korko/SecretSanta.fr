@@ -47,4 +47,11 @@ final class DrawFactory extends Factory
             'expires_at' => fake()->dateTime('-1 day')->setTime(0, 0),
         ]);
     }
+
+    public function prunable(): self
+    {
+        return $this->state(fn (): array => [
+            'expires_at' => fake()->dateTime(-Draw::WEEKS_BEFORE_DELETION.' weeks')->setTime(0, 0),
+        ]);
+    }
 }
