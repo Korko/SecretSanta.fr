@@ -1,11 +1,11 @@
 @extends('emails/layout')
 
 @section('title')
-    Messages de {{ $targetName }}
+    {{ __('emails.target_messages.heading', ['name' => $targetName]) }}
 @endsection
 
 @section('content')
-    <p style="padding-bottom:10px !important">Voici tous les messages que {{ $targetName }} a écrits à son Père Noël Secret, c'est-à-dire à vous.</p>
+    <p style="padding-bottom:10px !important">{{ __('emails.target_messages.intro', ['name' => $targetName]) }}</p>
 
     {{-- Not $message: the layout embeds its images through the mail message of that name --}}
     @foreach ($messages as $targetMessage)
