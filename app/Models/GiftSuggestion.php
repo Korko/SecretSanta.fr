@@ -13,12 +13,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * A gift idea from a participant (sender) for another one (recipient), emailed to the recipient's santa:
  * the sender never learns who that santa is, and only shows their name if they chose to sign
  *
- * @property-read Participant $sender
+ * @property-read Participant|null $sender null once they left the draw (the idea stays, unsigned)
  * @property-read Participant $recipient
  * @property-read Mail $mail
  * @property string $mail_body
  * @property bool $signed
- * @property int $sender_id
+ * @property int|null $sender_id
  * @property int $recipient_id
  */
 #[Fillable(['mail_body', 'signed'])]

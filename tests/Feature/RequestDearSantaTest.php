@@ -399,3 +399,19 @@ it('only tells a gift idea sender whether it was sent, not when it was read', fu
     $suggestions = ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $sender]))->json('suggestions');
     expect(array_values($suggestions)[0]['mail']['delivery_status'])->toBe('sent');
 });
+
+it('keeps the gift ideas of a participant who withdraws, unsigned', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(5)->create();
+    $sender = $draw->participants->first();
+    $recipient = $draw->participants->first(fn ($p): bool => ! $p->is($sender) && ! $p->is($sender->target) && ! $p->santa->is($sender));
+    ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), ['recipient' => $recipient->hash, 'content' => 'A plant', 'signed' => 1])
+        ->assertSuccessful();
+
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $sender]))->assertSuccessful();
+
+    $received = ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $recipient->fresh()->santa]))->json('receivedSuggestions');
+    expect($received)->toHaveCount(1)
+        ->and($received[0])->toMatchArray(['mail_body' => 'A plant', 'sender' => null]);
+});
