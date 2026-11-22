@@ -12,12 +12,12 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 // Something new for a participant's page (a message or gift idea they sent from another tab, an idea received
 // for their target): no content on the socket, the page refetches it through its own secret link (fetchState)
-final class ParticipantUpdated implements ShouldBroadcast, ShouldDispatchAfterCommit
+final readonly class ParticipantUpdated implements ShouldBroadcast, ShouldDispatchAfterCommit
 {
     use Dispatchable;
 
     // The channel only: the participant may be gone (withdrawn) by the time the queue sends it
-    private readonly string $channel;
+    private string $channel;
 
     public function __construct(Participant $participant)
     {
