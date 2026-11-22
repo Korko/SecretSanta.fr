@@ -34,9 +34,38 @@ final class MailTracker
             $mail->markAsReceived();
         } elseif ($this->isDeliveryDelayed($unseenMail)) {
             $mail->markAsDelayed();
-        } else {
-            $mail->markAsError();
+        } elseif ($this->isBounce($unseenMail)) {
+            $mail->markAsError($this->getErrorCode($unseenMail));
         }
+
+        // Anything else at the return path (an anti-spam asking to prove we're human, someone replying to it)
+        // proves neither a reception nor a failure: the status stays
+    }
+
+    // A delivery status notification (RFC 3464), or an older style bounce: those still come from the mailer daemon
+    public function isBounce(EmailMessage $message): bool
+    {
+        if (preg_match('/^Content-Type:\s*message\/delivery-status\b/mi', $message->getRawBody()) === 1) {
+            return true;
+        }
+
+        $sender = $message->getFrom()->first();
+
+        return $sender instanceof Address && in_array(mb_strtolower($sender->mailbox), ['mailer-daemon', 'postmaster'], true);
+    }
+
+    // The enhanced status code of the failed delivery (RFC 3463, "5.1.1"): the Status field, or the one quoted in
+    // the Diagnostic-Code ("smtp; 550 5.1.1 ..."). Only the code: the rest quotes the address and the remote server
+    public function getErrorCode(EmailMessage $message): ?string
+    {
+        $body = $message->getRawBody();
+
+        if (preg_match('/^Status:\s*([45]\.\d{1,3}\.\d{1,3})\b/mi', $body, $matches) === 1
+            || preg_match('/^Diagnostic-Code:[^\r\n]*?\b([45]\.\d{1,3}\.\d{1,3})\b/mi', $body, $matches) === 1) {
+            return $matches[1];
+        }
+
+        return null;
     }
 
     public function isEmailReceived(EmailMessage $message): bool

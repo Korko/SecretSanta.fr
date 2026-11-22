@@ -145,15 +145,19 @@ test('the full flow: draw, dearSanta report, organizer panel', function (): void
         ->assertNoJavaScriptErrors();
     $santa->refresh()->assertPresent('.report-sent');
 
-    // Bob's address is now refused: the bulk resend only retries the other failed one
-    $draw->participants->take(-2)->each(fn ($p) => $p->mail->forceFill(['delivery_status' => 'error'])->save());
+    // Bob's address is now refused: the bulk resend only retries the other failed one. Both bounced as unknown
+    $draw->participants->take(-2)->each(fn ($p) => $p->mail->forceFill(['delivery_status' => 'error', 'error_code' => '5.1.1'])->save());
 
     $org = visit($panel)
         ->assertSee('Alice')
         ->assertCount('.participant-report', 1)
         ->assertSeeIn('.participant-report', 'Mauvais destinataire')
+        ->assertCount('.bounce-reason', 2)
+        ->assertSeeIn('.bounce-reason >> nth=0', 'Adresse inexistante')
         ->click('button.btn-warning:has(.fa-redo)')
-        ->assertButtonDisabled('button.btn-warning:has(.fa-redo)');
+        ->assertButtonDisabled('button.btn-warning:has(.fa-redo)')
+        // Sent again: no more reason for the one retried
+        ->assertCount('.bounce-reason', 1);
     Notification::assertSentTimes(TargetDrawn::class, 4);
 
     // Email edit: invalid blocks the submit, valid is saved

@@ -124,6 +124,7 @@
 
                     if(key) {
                         this.participants[key].mail.delivery_status = data.delivery_status;
+                        this.participants[key].mail.bounce_reason = data.bounce_reason;
                         this.participants[key].mail.updated_at = data.updated_at;
                     }
                 });
@@ -184,6 +185,7 @@
             updateEmail(k, email) {
                 this.participants[k].email = email;
                 this.participants[k].mail.delivery_status = 'created';
+                this.participants[k].mail.bounce_reason = null;
                 this.participants[k].mail.updated_at = new Date().getTime();
 
                 return fetch(this.changeEmailUrls[this.participants[k].hash], 'POST', {
@@ -389,7 +391,7 @@
                         </input-edit>
                     </td>
                     <td v-if="targets" class="target">{{ targets[participant.hash] }}</td>
-                    <td><email-status :delivery_status="participant.mail.delivery_status" :last_update="participant.mail.updated_at" :disabled="expired" @redo="updateEmail(k, participant.email)" /></td>
+                    <td><email-status :delivery_status="participant.mail.delivery_status" :bounce_reason="participant.mail.bounce_reason" :last_update="participant.mail.updated_at" :disabled="expired" @redo="updateEmail(k, participant.email)" /></td>
                     <td v-if="canEdit">
                         <button
                             type="button"
