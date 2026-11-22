@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @property-read Participant $sender
@@ -22,30 +21,12 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 final class DearSanta extends Model
 {
     use HashId;
+    use HasTrackedMail;
 
     /** @return BelongsTo<Participant, $this> */
     public function sender(): BelongsTo
     {
         return $this->belongsTo(Participant::class, 'sender_id');
-    }
-
-    /** @return MorphOne<Mail, $this> */
-    public function mail(): MorphOne
-    {
-        return $this->morphOne(Mail::class, 'mailable');
-    }
-
-    protected static function booted(): void
-    {
-        parent::boot();
-
-        self::created(function (self $dearSanta): void {
-            $dearSanta->mail()->save(new Mail);
-        });
-
-        self::deleting(function (self $dearSanta): void {
-            $dearSanta->mail()->delete();
-        });
     }
 
     protected function getHashConnection(): string

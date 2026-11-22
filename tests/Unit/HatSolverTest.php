@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use App\Exceptions\SolverException;
-use Solver;
+use App\Solvers\HatSolver;
 use Tests\TestCase;
 
-final class SolverTest extends TestCase
+final class HatSolverTest extends TestCase
 {
     public const int LOOP_NUMBER = 100;
 
@@ -34,19 +34,19 @@ final class SolverTest extends TestCase
         $participants = ['A', 'B'];
         $this->assertCombination([
             'BA',
-        ], Solver::all($participants), $participants);
+        ], new HatSolver()->all($participants), $participants);
 
         $participants = ['A', 'B', 'C'];
         $this->assertCombination([
             'BCA', 'CAB',
-        ], Solver::all($participants), $participants);
+        ], new HatSolver()->all($participants), $participants);
 
         $participants = ['A', 'B', 'C', 'D'];
         $this->assertCombination([
             'BCDA', 'BDAC', 'BADC',
             'CDAB', 'CADB', 'CDBA',
             'DABC', 'DCBA', 'DCAB',
-        ], Solver::all($participants), $participants);
+        ], new HatSolver()->all($participants), $participants);
     }
 
     public function test_simple_exclusion(): void
@@ -55,18 +55,18 @@ final class SolverTest extends TestCase
         $participants = ['A', 'B', 'C'];
         $this->assertCombination([
             'BCA',
-        ], Solver::all($participants, [0 => [2]]), $participants);
+        ], new HatSolver()->all($participants, [0 => [2]]), $participants);
     }
 
     public function test_impossible_solution(): void
     {
         $participants = ['A', 'B', 'C'];
-        $this->assertCombination([], Solver::all($participants, [0 => [1, 2]]), $participants);
-        $this->assertCombination([], Solver::all($participants, [2 => [0, 1]]), $participants);
+        $this->assertCombination([], new HatSolver()->all($participants, [0 => [1, 2]]), $participants);
+        $this->assertCombination([], new HatSolver()->all($participants, [2 => [0, 1]]), $participants);
 
         // Nobody can draw 0: fails fast instead of exploring the 11! combinations
         $start = microtime(true);
-        $this->assertCombination([], Solver::all(range(0, 11), array_fill(1, 11, [0])), range(0, 11));
+        $this->assertCombination([], new HatSolver()->all(range(0, 11), array_fill(1, 11, [0])), range(0, 11));
         $this->assertLessThan(1, microtime(true) - $start);
     }
 
@@ -80,7 +80,7 @@ final class SolverTest extends TestCase
             $valid = [];
 
             for ($i = 0; $i < self::LOOP_NUMBER; $i++) {
-                $solution = Solver::one(['A', 'B', 'C']);
+                $solution = new HatSolver()->one(['A', 'B', 'C']);
 
                 $solutionIdx = array_search($solution, $solutions, true);
                 $valid[$solutionIdx] = true;
@@ -103,7 +103,7 @@ final class SolverTest extends TestCase
         }
 
         try {
-            $this->assertNotEquals(null, Solver::one($participants));
+            $this->assertNotEquals(null, new HatSolver()->one($participants));
         } catch (SolverException) {
             $this->fail('No exception expected');
         }
@@ -121,7 +121,7 @@ final class SolverTest extends TestCase
         $solutions = [];
         for ($i = 0; $i < 10000; $i++) {
             try {
-                $solution = Solver::one($participants);
+                $solution = new HatSolver()->one($participants);
                 ksort($solution, SORT_NUMERIC);
                 $solutions[] = json_encode($solution);
             } catch (SolverException) {
@@ -152,7 +152,7 @@ final class SolverTest extends TestCase
     {
         $participants = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
         try {
-            $this->assertNotEquals(null, Solver::one($participants, [0 => [7, 10, 4, 13], 1 => [10], 6 => [11, 10], 7 => [0], 8 => [9, 10, 7], 10 => [0, 6], 11 => [6], 14 => [0, 1, 2, 4, 5, 6, 8, 6, 9, 10, 11, 12, 13]]));
+            $this->assertNotEquals(null, new HatSolver()->one($participants, [0 => [7, 10, 4, 13], 1 => [10], 6 => [11, 10], 7 => [0], 8 => [9, 10, 7], 10 => [0, 6], 11 => [6], 14 => [0, 1, 2, 4, 5, 6, 8, 6, 9, 10, 11, 12, 13]]));
         } catch (SolverException) {
             $this->fail('No exception expected');
         }

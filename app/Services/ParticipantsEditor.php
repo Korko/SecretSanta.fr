@@ -7,8 +7,6 @@ namespace App\Services;
 use App\Events\ParticipantUpdated;
 use App\Models\Draw;
 use App\Models\Participant;
-use App\Notifications\DearSanta;
-use App\Notifications\GiftSuggestion;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
@@ -98,14 +96,15 @@ final class ParticipantsEditor
         foreach ($this->targets as $santa => $target) {
             if (isset($created[$santa])) {
                 $created[$santa]->notify(new TargetDrawn);
+                // Their target may already have written to their previous santa, or got gift ideas from others
+                $created[$santa]->forwardTargetMessages();
+                $created[$santa]->forwardTargetSuggestions();
             } elseif ($before[$santa] !== $target) {
                 $santa = $participants[$santa]->refresh()->load('target.dearSantas', 'target.receivedSuggestions');
                 $santa->notify(in_array($before[$santa->id], $removed, true) ? new TargetWithdrawn : new TargetChanged);
-                // Messages the new target wrote to their santa now belong to this one
-                $santa->target->dearSantas->each(fn ($dearSanta) => $santa->notify(new DearSanta($dearSanta)));
-                // So do the gift ideas others gave for them, but their own
-                $santa->target->receivedSuggestions->where('sender_id', '!=', $santa->id)
-                    ->each(fn ($suggestion) => $santa->notify(new GiftSuggestion($suggestion, tracked: false)));
+                // Messages the new target wrote to their santa now belong to this one, so do the gift ideas others gave for them
+                $santa->forwardTargetMessages();
+                $santa->forwardTargetSuggestions();
                 event(new ParticipantUpdated($santa)); // an open page shows the new target's ideas
             }
         }

@@ -7,12 +7,11 @@ alertify.defaults.theme.input = "form-control";
 
 alertify.defaults.notifier.position = 'bottom-right'
 
-import de from '../langs/de.js';
-import en from '../langs/en.js';
-import fr from '../langs/fr.js';
-
-const Locale = { ...de, ...en, ...fr };
-const lang = Locale[document.documentElement.lang.substr(0, 2)] ? document.documentElement.lang.substr(0, 2) : 'fr';
+// The dialog headers, in the page's language: set by mount() (partials/app.js) once it is loaded
+const labels = { internal: '', success: '' };
+export function setLabels(common) {
+    Object.assign(labels, common);
+}
 
 // Extend existing 'alert' dialog
 if (!alertify.errorAlert) {
@@ -46,7 +45,7 @@ if (!alertify.errorAlert) {
             build() {
                 var errorHeader = '<span class="fa fa-times-circle fa-2x" '
                 +    'style="vertical-align:middle;color:#e10000;">'
-                + '</span> ' + Locale[lang].common.internal;
+                + '</span> ' + labels.internal;
                 this.setHeader(errorHeader);
             }
         };
@@ -85,7 +84,7 @@ if (!alertify.confirmAlert) {
             build() {
                 var successHeader = '<span class="fa fa-check fa-2x" '
                 +    'style="vertical-align:middle;color:#00e100;">'
-                + '</span> ' + Locale[lang].common.success;
+                + '</span> ' + labels.success;
                 this.setHeader(successHeader);
             }
         };

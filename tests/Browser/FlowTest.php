@@ -59,6 +59,17 @@ test('the draw form edits participants, imports a CSV and suggests email fixes',
         ->assertNoJavaScriptErrors();
 });
 
+test('a CSV with a single participant still leaves three rows to fill', function (): void {
+    visit('/')
+        ->click('.participants-import')
+        ->attach('#uploadCsv input[type=file]', __DIR__.'/one-participant.csv')
+        ->click('button:has-text("Importer") >> nth=-1')
+        ->assertSeeIn('.ajs-message.ajs-success', 'effectué avec succès')
+        ->assertValue('[name="participants[0][name]"]', 'Ana')
+        ->assertCount('tr.participant', 3)
+        ->assertNoJavaScriptErrors();
+});
+
 test('the {TARGET} tip link copies the keyword', function (): void {
     $page = visit('/');
     // Headless Chromium may refuse clipboard writes (focus, permission): record what is copied instead

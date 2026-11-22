@@ -98,22 +98,6 @@
             };
         },
 
-        watch: {
-            sent(newVal) {
-                // If sent is a success, scroll to the message
-                if (newVal) {
-                    document.querySelector('#form .row').scrollIntoView();
-                }
-            },
-
-            errors(newVal) {
-                // If there's new errors, scroll to them
-                if (newVal.length) {
-                    document.querySelector('#form .row').scrollIntoView();
-                }
-            }
-        },
-
         created: function() {
             this.addParticipant();
             this.addParticipant();
@@ -131,20 +115,6 @@
             },
 
             suggestEmail,
-            // Only way to have parameters parsing for vuejs events
-            td(key, params) {
-                var data = this.$t(key, params);
-                return {
-                    name: "dynamic-string",
-                    template: `<p>${data}</p>`
-                }
-            },
-
-            // Just because I couldn't handle too much depth with quotes
-            anchor(event) {
-                return `<a class="link" @click.prevent='\$emit("${event}")'>`;
-            },
-
             moment(amount, unit) {
                 return dateFromNow(amount, unit);
             },
@@ -163,62 +133,56 @@
                 this.participants = [];
             },
 
-            addParticipant(name, email, exclusions) {
-                var n = this.participants.push({
+            addParticipant(name, email) {
+                this.participants.push({
                     name: name ? name.trim() : undefined,
                     email: email ? email.trim() : undefined,
                     id: 'id' + this.participants.length + new Date().getTime(),
+                    exclusions: [],
                     oneWay: []
                 });
-
-                setTimeout(
-                    () => {
-                        this.participants[n - 1].exclusions = (
-                            (exclusions || '')
-                                .split(',')
-                                .map(s => s.trim())
-                                .map(exclusion => {
-                                    var idx = this.participants.findIndex(participant => (participant.name === exclusion));
-                                    return idx !== -1 ? this.participants[idx] : undefined;
-                                })
-                                .filter(p => !!p)
-                        );
-                        // An imported file states each direction it wants (a final CSV excludes last year's target only)
-                        this.participants[n - 1].oneWay = this.participants[n - 1].exclusions.map(p => p.id);
-                    },
-                    0
-                );
             },
 
+            // Arrow functions: Papa calls these as methods of its config, where "this" isn't the component
             importParticipants(file, encoding) {
                 this.importing = true;
                 Papa.parse(file, {
                     encoding,
-                    error: function() {
+                    error: () => {
                         this.importing = false;
                         alertify.errorAlert(this.$t('form.csv.importError'));
                     },
-                    complete: function(file) {
+                    complete: results => {
                         this.importing = false;
                         this.resetParticipants();
 
-                        // Set participants
-                        file.data.forEach(
-                            function(participant) {
-                                if (participant[0] !== '' && participant.length >= 2) {
-                                    this.addParticipant(participant[0], participant[1], participant[2]);
-                                }
-                            }.bind(this)
-                        );
+                        // Name, email, then the names this participant excludes
+                        const rows = results.data.filter(row => row[0] !== '' && row.length >= 2);
+                        rows.forEach(row => this.addParticipant(row[0], row[1]));
 
-                        if (this.participants.length < 3) {
-                            for (var i = 0; i < 3 - this.participants.length; i++) {
-                                this.addParticipant();
-                            }
+                        // Once every row is in: an exclusion may name someone further down the file
+                        rows.forEach((row, idx) => {
+                            this.participants[idx].exclusions = (row[2] || '')
+                                .split(',')
+                                .map(name => name.trim())
+                                .map(name => this.participants.find(participant => participant.name === name))
+                                .filter(participant => !!participant);
+                            // An imported file states each direction it wants (a final CSV excludes last year's target only)
+                            this.participants[idx].oneWay = this.participants[idx].exclusions.map(participant => participant.id);
+                        });
+
+                        while (this.participants.length < 3) {
+                            this.addParticipant();
                         }
+
                         alertify.success(this.$t('form.csv.importSuccess'), 3);
-                    }.bind(this)
+                    }
                 });
+            },
+
+            // The confirmation shows at the top of the form, possibly far above the submit button
+            scrollToSuccess() {
+                this.$nextTick(() => document.getElementById('success-wrapper').scrollIntoView());
             },
 
             // "Copied" only once it is: the browser may refuse (permission, focus, no clipboard API outside https)
@@ -259,7 +223,7 @@
 <template>
     <div>
         <div v-cloak class="row text-center form">
-            <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :validator="v$" @reset="reset" @before-submit="touchParticipants" send-icon="dice">
+            <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :validator="v$" @reset="reset" @before-submit="touchParticipants" @success="scrollToSuccess" send-icon="dice">
                 <template #default="{ sending, sent, fieldError }">
                     <input v-if="limitCode" type="hidden" name="limit" :value="limitCode" />
                     <div v-show="sent" id="success-wrapper" class="alert alert-success" role="status">
@@ -451,7 +415,10 @@
                                     />
 
                                     <blockquote class="tips">
-                                        <component :is="td('form.mail.content.tip1', {target: anchor('target'), santa: anchor('santa'), close:'</a>'})" @santa="appendSanta" @target="appendTarget"></component>
+                                        <i18n-t keypath="form.mail.content.tip1" tag="p">
+                                            <template #santa><a class="link" href="#" @click.prevent="appendSanta">&#123;SANTA&#125;</a></template>
+                                            <template #target><a class="link" href="#" @click.prevent="appendTarget">&#123;TARGET&#125;</a></template>
+                                        </i18n-t>
                                         <p>{{ $t('form.mail.content.tip2') }}</p>
                                     </blockquote>
                                 </div>

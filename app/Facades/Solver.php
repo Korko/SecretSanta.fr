@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Facades;
 
 use App\Solvers\SolverInterface;
-use Generator;
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array<int, int> one(array<int, mixed> $participants, array<int, list<int>> $exclusions = [])
- * @method static Generator<int, array<int, int>, mixed, void> all(array<int, mixed> $participants, array<int, list<int>> $exclusions = [])
+ * @method static bool solvable(array<int, mixed> $participants, array<int, list<int>> $exclusions = [])
  *
  * @see SolverInterface
  */

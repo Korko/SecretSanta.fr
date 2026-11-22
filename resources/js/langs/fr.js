@@ -29,6 +29,10 @@ export default {
                     "received": "Reçu"
                 },
                 "recent": "Vous ne pouvez pas relancer un même email trop rapidement"
+            },
+            "csv": {
+                "generated": "Fichier généré le {date} sur {app} ({url})",
+                "usage": "Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées"
             }
         },
         "dearsanta": {
@@ -126,11 +130,15 @@ export default {
                     "Est-il possible de parler à sa cible ?": "Pour le moment, ce n'est pas possible, pour des raisons d'anonymat. Seule la cible peut écrire à son/sa père/mère noël secret. Mais c'est en projet.",
                     "Quand sont supprimés mes données personnelles ?": "Toutes vos données d'un tirage sont supprimées 3 semaines après la date de l'évènement. Ce délai permet à l'organisateur/organisatrice de télécharger depuis son panneau d'organisation la liste des participants avec leur cible piochée, afin d'organiser plus tard un secret santa avec les mêmes personnes en évitant de retomber sur les mêmes cibles.",
                     "J'ai oublié un participant, comment je peux le rajouter ?": "Depuis votre panneau d'organisateur/organisatrice, vous pouvez ajouter un participant (ou en retirer un). Le nouveau participant reçoit sa cible par email. Pour lui faire une place, une autre personne change de cible, au hasard pour que personne ne puisse deviner qui offre à qui, et elle est prévenue par email. Pour simplifier l'ajout, le nouveau participant n'a aucune exclusion : il peut tirer n'importe qui et être tiré par n'importe qui.",
-                    "Qui peut savoir la liste des cibles ?": "Par défaut, personne : la liste est chiffrée et n'apparaît nulle part. L'organisateur/organisatrice peut toutefois la révéler depuis sa page d'organisation (problème de réception d'un email, autres évènements à organiser avec les mêmes paires...). C'est définitif, et chaque participant(e) voit sur sa page si la liste a été révélée ou non."
+                    "Pourquoi Alice et Bob ne se font-ils jamais de cadeau l'un à l'autre ?": "À partir de 3 participant(e)s, le tirage forme une seule grande boucle : chacun(e) offre au suivant, jusqu'à revenir au premier. Il n'y a donc plus de paires réciproques (A offre à B et B offre à A), ni de petits groupes qui s'offrent des cadeaux entre eux. Chaque boucle possible a autant de chances d'être tirée.",
+                    "Qui peut savoir la liste des cibles ?": "Par défaut, personne : la liste est chiffrée et n'apparaît nulle part. L'organisateur/organisatrice peut toutefois la révéler depuis sa page d'organisation (problème de réception d'un email, autres évènements à organiser avec les mêmes paires...). C'est définitif, et chaque participant(e) voit sur sa page si la liste a été révélée ou non. Une fois la journée de l'évènement terminée, la liste est de toute façon visible sur la page d'organisation."
                 },
                 "technical": {
                     "Quelles données sont stockées et pourquoi ?": "Sont conservés pour chaque participant : nom et adresse email, pour chaque organisation, le titre et le contenu du mail envoyé ainsi que chaque message envoyé entre participant via le lien reçu par mail (appelé 'cher papa noël'). Elles sont conservées pour deux raisons : d'abord pour permettre cette dernière fonctionnalité qui permet d'écrire à son/sa père/mère noël secret. Ensuite pour permettre de réenvoyer les emails en cas d'erreur d'adresse.",
-                    "Comment sont stockées les données ?": "Chaque élément est chiffré en AES-256 avec une clef unique par organisation. Cette clef n'est pas stockée et est envoyée à chaque participant. L'administrateur ne peut donc jamais accéder aux données sans action de votre part. Chaque fois que vous effectuez une action, vous utilisez automatiquement cette clef qui n'est que prêtée à SecretSanta pour faire l'action demandée sans jamais l'enregistrer.",
+                    "Comment sont stockées les données ?": "Chaque élément est chiffré en AES-256 avec une clef calculée à partir d'une clef du serveur et d'un secret unique par organisation. Ce secret n'est pas stocké et est envoyé à chaque participant dans son lien. Sans lui, même avec un accès complet au serveur, les données stockées sont illisibles : l'administrateur ne peut donc pas y accéder sans action de votre part. Une exception : le temps d'envoyer les emails, le secret est conservé avec chaque email en attente, de quelques minutes à 7 jours en cas d'échec. De même, un email revenu en erreur (adresse invalide), qui contient le lien, est gardé jusqu'à 7 jours. Chaque fois que vous effectuez une action, vous utilisez automatiquement ce secret, qui n'est que prêté à SecretSanta pour faire l'action demandée.",
+                    "Qu'est-ce que le chiffrement de bout en bout (E2E) ?": "Le chiffrement de bout en bout (« end-to-end encryption » ou E2E) désigne un chiffrement entre deux utilisateurs d'un service : le message est chiffré sur l'appareil de l'expéditeur et ne peut être déchiffré que sur celui du destinataire. Le service qui transporte le message ne voit jamais son contenu en clair, à aucun moment. C'est par exemple le cas de Signal. Malheureusement, le terme est souvent détourné pour désigner un simple chiffrement entre le client (votre navigateur) et le serveur, ce qui correspond en réalité à ce que fait le HTTPS sur n'importe quel site : dans ce cas, le serveur, lui, voit bien les données en clair.",
+                    "Qu'est-ce que le chiffrement « zero access » ?": "Le chiffrement « zero access » (accès zéro) signifie que les données sont chiffrées dès leur arrivée sur le serveur, avec une clef que le service ne conserve pas. Une fois stockées, le service ne peut plus les lire de lui-même. La différence avec le chiffrement de bout en bout : le serveur voit passer les données en clair, brièvement, au moment où il les reçoit ou les traite, alors qu'en E2E il ne les voit jamais. C'est par exemple le modèle utilisé par certaines messageries pour les emails reçus depuis l'extérieur.",
+                    "SecretSanta.fr utilise-t-il le chiffrement de bout en bout ?": "Non, et nous préférons être clairs plutôt que d'utiliser le terme à tort. SecretSanta.fr doit pouvoir lire vos données à certains moments, par exemple pour envoyer à chaque participant l'email avec sa cible, ce qui est incompatible avec un vrai chiffrement de bout en bout. Voici ce qui se passe réellement : vos données sont d'abord chiffrées entre votre navigateur et SecretSanta.fr grâce au HTTPS. Le serveur les chiffre ensuite immédiatement, avec un secret propre à votre organisation qu'il ne conserve pas, afin de ne garder aucune trace des données en clair. Elles ne sont déchiffrées que lorsqu'un utilisateur effectue une action (ouvrir sa page, écrire à son père/mère noël secret, réenvoyer un email...), grâce au secret contenu dans son lien, puis le secret est oublié. Ce fonctionnement se rapproche du chiffrement « zero access ».",
                     "Je voudrais supprimer mes données, comment faire ?": "De part la façon dont sont stockées les données, l'administrateur est dans l'incapacité de savoir quelle donnée appartient à qui. Seul l'organisateur/organisatrice est en capacité de supprimer les données de tous les participants d'un coup. Sinon, ces données sont automatiquement supprimées peu après la fin de l'évènement.",
                     "J'aimerais vérifier par moi même le code source, où puis-je le trouver ?": "Avec grand plaisir ! Le code source se trouve à l'adresse suivante : https://framagit.org/Korko/SecretSanta. Vous trouverez aussi le lien en bas de chaque page."
                 }
@@ -243,7 +251,7 @@ export default {
                 "content": {
                     "label": "Contenu du mail",
                     "placeholder": "ex : Salut {SANTA}, pour la soirée secret santa, ta cible c'est {TARGET}. Pour rappel, le montant du cadeau est de 3€ !",
-                    "tip1": "Utilisez \"{santa}&#123;SANTA&#125;{close}\" pour le nom de celui qui recevra le mail et \"{target}&#123;TARGET&#125;{close}\" pour le nom de sa cible.",
+                    "tip1": "Utilisez \"{santa}\" pour le nom de celui qui recevra le mail et \"{target}\" pour le nom de sa cible.",
                     "tip2": "Conseil : Pensez à rappeler la date, le lieu ainsi que le montant du cadeau."
                 },
                 "post": "----\nPour écrire à votre Secret Santa, allez sur la page suivante : {link}\nvia SecretSanta.fr"
@@ -261,14 +269,6 @@ export default {
             "internalError": "Erreur interne"
         },
         "organizer": {
-            "rename": {
-                "button": "Modifier le nom",
-                "title": "Renommer {name}",
-                "body": "Son ou sa Santa sera prévenu(e) par e-mail du nouveau nom. Les cibles ne changent pas.",
-                "ok": "Renommer",
-                "cancel": "Annuler",
-                "done": "Renommé en {name}"
-            },
             "url": "Lien reçu par un participant par email",
             "fix": "Corriger",
             "date": {
@@ -299,6 +299,15 @@ export default {
                 "received_count": "{received}/{total} participant(e)s ont bien reçu leur email (réponse, visite de leur page ou accusé de réception)"
             },
             "up_and_sent": "Modifié avec succès !",
+            "renamed": "Nom modifié, son ou sa Santa a été prévenu(e)",
+            "rename": {
+                "button": "Modifier le nom",
+                "title": "Renommer {name}",
+                "body": "Son ou sa Santa sera prévenu(e) par e-mail du nouveau nom. Les cibles ne changent pas.",
+                "ok": "Renommer",
+                "cancel": "Annuler",
+                "done": "Renommé en {name}"
+            },
             "cannot_withdraw": "Impossible de retirer {name} sans donner à quelqu'un une personne qu'il ou elle a exclue",
             "withdrawn": "{name} ne participe plus à l'évènement.",
             "deleted": "Toutes les données ont été supprimées",

@@ -33,6 +33,9 @@ php:
   script:
     - composer audit --abandoned=ignore
     - composer test
+    # resources/js/langs is generated from lang/*.php: fail if it wasn't regenerated (it drifted before)
+    - php artisan vue-i18n:generate --multi-locales
+    - git diff --exit-code resources/js/langs || (echo "resources/js/langs is outdated, run php artisan vue-i18n:generate --multi-locales and commit" && exit 1)
   artifacts:
     paths:
       - storage/logs

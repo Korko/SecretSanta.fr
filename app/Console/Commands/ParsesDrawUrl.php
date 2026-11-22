@@ -7,7 +7,6 @@ namespace App\Console\Commands;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Services\URLParser;
-use DrawCrypt;
 use RuntimeException;
 
 use function Laravel\Prompts\text;
@@ -16,7 +15,7 @@ trait ParsesDrawUrl
 {
     protected function setCryptIVFromUrl(string $url): void
     {
-        DrawCrypt::setIV(base64_decode(explode('#', $url, 2)[1] ?? ''));
+        throw_unless(resolve(URLParser::class)->setIVFromUrl($url), RuntimeException::class, 'No draw secret in this URL (the part after #)');
     }
 
     protected function findOrAskDrawFromUrl(?string $url): Draw

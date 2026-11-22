@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Notifications\DearSanta;
-use App\Notifications\TargetWithdrawn;
+use App\Services\ParticipantsEditor;
 use Exception;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
+use Illuminate\Validation\ValidationException;
 
 use function Laravel\Prompts\error;
 
@@ -34,22 +34,15 @@ final class WithdrawParticipant extends Command
 
         $participant = $this->findParticipant($draw, $this->argument('id'));
 
-        $santa = $participant->santa;
-        $target = $participant->target;
+        // As from the organizer panel: exclusions respected, santa told, their new target's messages forwarded
+        try {
+            new ParticipantsEditor($draw)->apply([$participant], []);
+        } catch (ValidationException $validationException) {
+            error($validationException->getMessage());
 
-        // Limit case
-        throw_if($santa->is($target), Exception::class, 'Cannot withdraw participant: their target is also their santa');
+            return;
+        }
 
-        // A -> B -> C => A -> C
-        $santa->target()->save($target);
-
-        $santa->notify(new TargetWithdrawn);
-        $target->dearSantas->each(function ($dearSanta) use ($santa): void {
-            $santa->notify(new DearSanta($dearSanta));
-        });
-        $this->info('Santa informed');
-
-        $participant->delete();
-        $this->info('Participant withdrawn');
+        $this->info('Participant withdrawn, their santa informed');
     }
 }

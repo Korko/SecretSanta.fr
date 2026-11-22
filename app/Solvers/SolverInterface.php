@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Solvers;
 
-use Generator;
+use App\Exceptions\SolverException;
 
 interface SolverInterface
 {
@@ -12,13 +12,16 @@ interface SolverInterface
      * @param  array<int, mixed>  $participants  indexed by participant id
      * @param  array<int, list<int>>  $exclusions  participant id => excluded ids
      * @return array<int, int> santa id => target id
+     *
+     * @throws SolverException when no draw is possible
      */
     public function one(array $participants, array $exclusions = []): array;
 
     /**
+     * Whether a draw is possible, without making one
+     *
      * @param  array<int, mixed>  $participants  indexed by participant id
      * @param  array<int, list<int>>  $exclusions  participant id => excluded ids
-     * @return Generator<int, array<int, int>, mixed, void>
      */
-    public function all(array $participants, array $exclusions = []): Generator;
+    public function solvable(array $participants, array $exclusions = []): bool;
 }

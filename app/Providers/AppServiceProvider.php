@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Mail\DkimTransport;
-use App\Solvers\HatSolver;
+use App\Solvers\CycleSolver;
 use App\Solvers\SolverInterface;
 use DrawCrypt;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -35,7 +35,7 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             SolverInterface::class,
-            HatSolver::class
+            CycleSolver::class
         );
 
         // Dates are written in the app timezone: the session must use the same one so that MySQL stores real UTC.

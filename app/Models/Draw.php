@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Date;
 use LogicException;
@@ -51,6 +50,7 @@ final class Draw extends Model
     use HasFactory;
 
     use HashId;
+    use HasTrackedMail;
     use Notifiable;
     use Prunable;
 
@@ -86,13 +86,7 @@ final class Draw extends Model
         return 'draw.'.hash_hmac('sha256', 'draw.'.$this->id, config()->string('app.key'));
     }
 
-    // The organizer recap's delivery: without one (an organizer who doesn't take part), nothing told /fix it arrived
-    /** @return MorphOne<Mail, $this> */
-    public function mail(): MorphOne
-    {
-        return $this->morphOne(Mail::class, 'mailable');
-    }
-
+    // The organizer recap's delivery: without one (an organizer who doesn't take part), nothing tells /fix it arrived.
     // Draws made before the recap was tracked have no mail yet
     public function recapMail(): Mail
     {
@@ -129,8 +123,6 @@ final class Draw extends Model
         return 'secretsanta_'.$this->expires_at->isoFormat('YYYY-MM-DD').'_init.csv';
     }
 
-    // Addresses that reported the target email ("not me" / "not taking part") can't be used again in this draw,
-    // even after removing and re-adding the person: only an HMAC is kept, the address itself is purged with the participant
     // Like a participant opening their dearSanta page, opening the panel proves the organizer got their email
     public function organizerReceived(): bool
     {
@@ -139,6 +131,8 @@ final class Draw extends Model
             || $this->organizer?->mail->delivery_status === DeliveryStatus::Received;
     }
 
+    // Addresses that reported the target email ("not me" / "not taking part") can't be used again in this draw,
+    // even after removing and re-adding the person: only an HMAC is kept, the address itself is purged with the participant
     public function refusesEmail(string $email): bool
     {
         return array_intersect($this->emailFingerprints($email), $this->refused_emails ?? []) !== [];
@@ -171,13 +165,8 @@ final class Draw extends Model
 
     protected static function booted(): void
     {
-        self::created(function (self $draw): void {
-            $draw->mail()->save(new Mail);
-        });
-
         self::deleting(function (self $draw): void {
             $draw->participants()->lazy()->each(fn (Participant $participant): ?bool => $participant->delete());
-            $draw->mail()->delete();
         });
     }
 

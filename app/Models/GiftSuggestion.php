@@ -8,7 +8,6 @@ use App\Casts\EncryptedString;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * A gift idea from a participant (sender) for another one (recipient), emailed to the recipient's santa:
@@ -26,6 +25,8 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 #[WithoutTimestamps]
 final class GiftSuggestion extends Model
 {
+    use HasTrackedMail;
+
     /** @return BelongsTo<Participant, $this> */
     public function sender(): BelongsTo
     {
@@ -36,23 +37,6 @@ final class GiftSuggestion extends Model
     public function recipient(): BelongsTo
     {
         return $this->belongsTo(Participant::class, 'recipient_id');
-    }
-
-    /** @return MorphOne<Mail, $this> */
-    public function mail(): MorphOne
-    {
-        return $this->morphOne(Mail::class, 'mailable');
-    }
-
-    protected static function booted(): void
-    {
-        self::created(function (self $suggestion): void {
-            $suggestion->mail()->save(new Mail);
-        });
-
-        self::deleting(function (self $suggestion): void {
-            $suggestion->mail()->delete();
-        });
     }
 
     /**

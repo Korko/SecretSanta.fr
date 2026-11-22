@@ -7,6 +7,8 @@ namespace App\Models;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use App\Enums\ReportReason;
+use App\Notifications\GiftSuggestion as GiftSuggestionNotification;
+use App\Notifications\TargetMessages;
 use Carbon\CarbonImmutable;
 use Database\Factories\ParticipantFactory;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
@@ -20,7 +22,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use STS\Metrics\Facades\Metrics;
@@ -50,7 +51,7 @@ use STS\Metrics\Metric;
 final class Participant extends Model
 {
     /** @use HasFactory<ParticipantFactory> */
-    use HasFactory, HashId, Notifiable {
+    use HasFactory, HashId, HasTrackedMail, Notifiable {
         resolveRouteBinding as public baseResolver;
     }
 
@@ -133,12 +134,6 @@ final class Participant extends Model
         return $this->hasMany(GiftSuggestion::class, 'recipient_id')->with('mail');
     }
 
-    /** @return MorphOne<Mail, $this> */
-    public function mail(): MorphOne
-    {
-        return $this->morphOne(Mail::class, 'mailable');
-    }
-
     /** @return BelongsToMany<self, $this> */
     public function exclusions(): BelongsToMany
     {
@@ -161,6 +156,21 @@ final class Participant extends Model
         return $participant;
     }
 
+    // Every message their target wrote to their santa, in a single email: for a new santa, a new address, or on request
+    public function forwardTargetMessages(): void
+    {
+        if ($this->target->dearSantas->isNotEmpty()) {
+            $this->notify(new TargetMessages);
+        }
+    }
+
+    // The gift ideas others gave for their target, but their own: for a new santa. Untracked (see GiftSuggestion)
+    public function forwardTargetSuggestions(): void
+    {
+        $this->target->receivedSuggestions->where('sender_id', '!=', $this->id)
+            ->each(fn (GiftSuggestion $suggestion) => $this->notify(new GiftSuggestionNotification($suggestion, tracked: false)));
+    }
+
     public function createMetric(string $name, int $value = 1): Metric
     {
         return Metrics::create($name, $value)
@@ -178,19 +188,12 @@ final class Participant extends Model
 
     protected static function booted(): void
     {
-        parent::boot();
-
-        self::created(function (self $participant): void {
-            $participant->mail()->save(new Mail);
-        });
-
         self::deleting(function (Participant $participant): void {
             $participant->dearSantas()->lazy()->each(fn (DearSanta $dearSanta): ?bool => $dearSanta->delete());
             // Their ideas stay useful to the santas who got them: kept, but no longer signed
             $participant->sentSuggestions()->update(['sender_id' => null, 'signed' => false]);
             $participant->receivedSuggestions()->lazy()->each(fn (GiftSuggestion $suggestion): ?bool => $suggestion->delete());
             $participant->exclusions()->detach(); // pivot rows only (delete() would remove the excluded participants)
-            $participant->mail()->delete();
         });
     }
 

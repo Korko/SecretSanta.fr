@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Notifications\DearSanta;
 use App\Notifications\TargetDrawn;
 use Exception;
 use Illuminate\Console\Attributes\Description;
@@ -43,9 +42,7 @@ final class FixParticipant extends Command
         $participant->notifyNow(new TargetDrawn);
         $this->info('Participant mail sent');
 
-        $participant->target->dearSantas->each(function ($dearSanta) use ($participant): void {
-            $participant->notify(new DearSanta($dearSanta));
-            $this->info('DearSanta mail sent');
-        });
+        $participant->forwardTargetMessages();
+        $this->info('Target messages sent, if any');
     }
 }
