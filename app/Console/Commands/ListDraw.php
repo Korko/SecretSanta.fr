@@ -21,7 +21,7 @@ use function Laravel\Prompts\table;
 #[Signature('secretsanta:list-draw
     {url? : The URL received by one of the participants to write to their santa or the link to the organizer panel}
     {--targets : Show the target of each participant}
-    {--messages : How many messages each participant wrote to their santa and received from their target}
+    {--messages : Show how many messages each participant wrote to their santa and received from their target}
     {--body : Show the body of the target email}')]
 final class ListDraw extends Command
 {
