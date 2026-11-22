@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Events;
 
+use App\Enums\DeliveryStatus;
 use App\Models\DearSanta;
 use App\Models\Draw;
+use App\Models\GiftSuggestion;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use Illuminate\Broadcasting\Channel;
@@ -36,6 +38,15 @@ final class MailStatusUpdated implements ShouldBroadcast
         ];
     }
 
+    // A gift idea's sender only learns whether it was sent (see DearSantaController::publicSuggestion)
+    public function broadcastWhen(): bool
+    {
+        $mailable = $this->mail->mailable;
+
+        // Nobody to tell either once its sender left the draw
+        return ! $mailable instanceof GiftSuggestion || ($mailable->sender !== null && $this->mail->delivery_status !== DeliveryStatus::Received);
+    }
+
     /**
      * The event's broadcast name.
      */
@@ -61,7 +72,9 @@ final class MailStatusUpdated implements ShouldBroadcast
                 $mailable instanceof Draw => $mailable->broadcastChannel(),
                 // A participant follows the messages they wrote to their santa
                 $mailable instanceof DearSanta => $mailable->sender->broadcastChannel(),
-                default => throw new LogicException('Mail without a participant, dearSanta or draw'),
+                // And the gift ideas they gave
+                $mailable instanceof GiftSuggestion && $mailable->sender instanceof Participant => $mailable->sender->broadcastChannel(),
+                default => throw new LogicException('Mail without a participant, dearSanta, gift suggestion or draw'),
             }),
         ];
     }

@@ -55,6 +55,8 @@ Route::middleware('signed')->group(function (): void {
             ->name('dearSanta.change_email')->middleware('throttle:email');
         Route::post('/dearSanta/{participant}/withdraw', [DearSantaController::class, 'withdraw'])
             ->name('dearSanta.withdraw')->middleware('throttle:email');
+        Route::post('/dearSanta/{participant}/suggest', [DearSantaController::class, 'suggest'])
+            ->name('dearSanta.suggest')->middleware('throttle:email');
     });
 
     Route::get('/org/{draw}', [OrganizerController::class, 'view'])->name('organizerPanel')

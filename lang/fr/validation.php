@@ -149,6 +149,9 @@ return [
             'code' => [
                 'required' => 'Le code est requis.',
             ],
+            'recipient' => [
+                'required' => 'Choisissez la personne à qui l\'idée est destinée.',
+            ],
         ],
         'organizer' => [
             'email' => [
