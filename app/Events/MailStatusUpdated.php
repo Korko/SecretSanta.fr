@@ -32,6 +32,7 @@ final class MailStatusUpdated implements ShouldBroadcast
         return [
             'id' => $this->mail->id,
             'delivery_status' => $this->mail->delivery_status,
+            'bounce_reason' => $this->mail->bounce_reason,
             'updated_at' => $this->mail->updated_at,
         ];
     }

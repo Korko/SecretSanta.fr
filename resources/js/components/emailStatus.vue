@@ -14,6 +14,11 @@
                 type: String,
                 required: true
             },
+            // Why it bounced, when the delivery report says: address, full or refused
+            bounce_reason: {
+                type: String,
+                default: null
+            },
             last_update: {
                 type: [String, Number],
                 default: null
@@ -73,6 +78,7 @@
 <template>
     <div>
         <span>{{ $t(`common.email.status.${delivery_status}`) }} <i :class="[icon, delivery_status]"></i></span>
+        <small v-if="delivery_status === 'error' && bounce_reason" class="d-block text-muted bounce-reason">{{ $t(`common.email.bounce.${bounce_reason}`) }}</small>
         <template v-if="can_redo || delivery_status === 'error'">
             <tooltip v-if="recent" direction="left">
                 <template #tooltip>

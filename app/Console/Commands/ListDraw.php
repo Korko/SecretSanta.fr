@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Enums\BounceReason;
+use App\Models\Mail;
 use App\Models\Participant;
 use DrawCrypt;
 use Exception;
@@ -59,7 +61,7 @@ final class ListDraw extends Command
                 ->with(['mail', 'target.dearSantas', 'dearSantas'])
                 ->get()
                 ->map(fn (Participant $participant): array => [
-                    (string) $participant->id, $participant->name, $participant->email, $participant->mail->delivery_status->value,
+                    (string) $participant->id, $participant->name, $participant->email, $this->deliveryStatus($participant->mail),
                     ...($targets ? [$participant->target->id.' ('.$participant->target->name.')'] : []),
                     ...($messages ? [(string) $participant->dearSantas->count(), (string) $participant->target->dearSantas->count()] : []),
                 ])
@@ -70,5 +72,15 @@ final class ListDraw extends Command
             $this->newLine();
             info('Body: '.$draw->mail_body);
         }
+    }
+
+    // A bounce with its code and what it means: "error (5.1.1, address)"
+    private function deliveryStatus(Mail $mail): string
+    {
+        if ($mail->error_code === null) {
+            return $mail->delivery_status->value;
+        }
+
+        return $mail->delivery_status->value.' ('.$mail->error_code.($mail->bounce_reason instanceof BounceReason ? ', '.$mail->bounce_reason->value : '').')';
     }
 }

@@ -4,19 +4,28 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\BounceReason;
 use App\Enums\DeliveryStatus;
 use App\Events\MailStatusUpdated;
 use Carbon\CarbonImmutable;
 use Illuminate\Broadcasting\BroadcastException;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
 
 /**
  * @property DeliveryStatus $delivery_status
+ * @property string|null $error_code enhanced status code of the bounce (RFC 3463), see BounceReason
+ * @property-read BounceReason|null $bounce_reason
  * @property string $notification
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  */
+// What the organizer panel gets of a bounce: the reason, not the code
+#[Appends(['bounce_reason'])]
+#[Hidden(['error_code'])]
 final class Mail extends Model
 {
     /**
@@ -55,8 +64,9 @@ final class Mail extends Model
         $this->updateDeliveryStatus(DeliveryStatus::Sent);
     }
 
-    public function markAsError(): void
+    public function markAsError(?string $code = null): void
     {
+        $this->error_code = $code;
         $this->updateDeliveryStatus(DeliveryStatus::Error);
     }
 
@@ -79,6 +89,11 @@ final class Mail extends Model
     public function updateDeliveryStatus(DeliveryStatus $status): void
     {
         $this->delivery_status = $status;
+        // Sent again, or received after all: the bounce no longer tells anything
+        if ($status !== DeliveryStatus::Error) {
+            $this->error_code = null;
+        }
+
         $this->save();
 
         try {
@@ -92,6 +107,12 @@ final class Mail extends Model
     public function mailable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /** @return Attribute<BounceReason|null, never> */
+    protected function bounceReason(): Attribute
+    {
+        return Attribute::make(get: fn (): ?BounceReason => $this->delivery_status === DeliveryStatus::Error ? BounceReason::fromCode($this->error_code) : null);
     }
 
     /** @return array<string, string> */

@@ -28,7 +28,12 @@ export default {
                     "delayed": "Delayed, retrying",
                     "received": "Received"
                 },
-                "recent": "You cannot resend the same email so quickly"
+                "recent": "You cannot resend the same email so quickly",
+                "bounce": {
+                    "address": "This address doesn't exist: fix it",
+                    "full": "Mailbox full: send it again later",
+                    "refused": "Refused by the recipient's server, the address isn't the problem"
+                }
             },
             "csv": {
                 "generated": "File generated on {date} on {app} ({url})",

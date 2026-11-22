@@ -33,8 +33,10 @@ final class ParseBounces implements ShouldQueue
             } catch (ModelNotFoundException) {
                 // The email was already changed or something
                 $emailClient->delete($unseenMail);
-            } catch (Exception) {
-                // Ignore that error
+            } catch (Exception $exception) {
+                // Unexpected (the mailbox, the database...): reported once, then left in the inbox to be looked at
+                report($exception);
+                rescue(fn () => $emailClient->markAsSeen($unseenMail));
             }
         }
     }
