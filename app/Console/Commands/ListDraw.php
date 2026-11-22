@@ -22,7 +22,7 @@ use function Laravel\Prompts\table;
     {url? : The URL received by one of the participants to write to their santa or the link to the organizer panel}
     {--targets : Show the target of each participant}
     {--messages : How many messages each participant wrote to their santa and received from their target}
-    {--body : The body of the target email}')]
+    {--body : Show the body of the target email}')]
 final class ListDraw extends Command
 {
     use ParsesDrawUrl;
