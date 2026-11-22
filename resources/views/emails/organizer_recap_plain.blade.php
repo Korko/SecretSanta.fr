@@ -1,14 +1,14 @@
 @extends('emails/layout_plain')
 
 @section('title')
-    Récapitulatif Organisateur
+    {{ __('emails.organizer_recap.heading') }}
 @endsection
 
 @section('content')
-    Bonjour {{ $organizerName }},
+    {{ __('emails.hello', ['name' => $organizerName]) }}
 
-    Merci d'avoir organisé votre évènement en utilisant {{ config('app.name') }}.
+    {{ __('emails.organizer_recap.thanks', ['app' => config('app.name')]) }}
 
 @include('emails/partials/organizer_plain', ['organizer' => get_defined_vars()])
-    Amusez-vous bien !
+    {{ __('emails.organizer_recap.enjoy') }}
 @endsection

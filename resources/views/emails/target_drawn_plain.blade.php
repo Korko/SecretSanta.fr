@@ -1,7 +1,7 @@
 @extends('emails/layout_plain')
 
 @section('title')
-    Message aux participants
+    {{ __('emails.target_drawn.heading') }}
 @endsection
 
 @section('content')
@@ -9,14 +9,14 @@
 
     ---
 
-    Vous pouvez écrire à votre Père Noël Secret ! Ca se passe ici : {{ $dearSantaLink }}
+    {{ __('emails.target_drawn.write', ['link' => $dearSantaLink]) }}
 
-    Cet email ne vous est pas destiné, ou vous ne participez pas ? Signalez-le à l'organisateur en bas de cette même page.
+    {{ __('emails.target_drawn.report') }}
 @if($organizer)
 
     ---
 
-    En tant qu'organisateur (ne transférez pas cet email, il contient votre lien d'administration) :
+    {{ __('emails.target_drawn.as_organizer') }} {{ __('emails.target_drawn.do_not_forward') }}
 
     @include('emails/partials/organizer_plain')
 @endif

@@ -131,11 +131,11 @@
                                                             <td style="text-align:center; font-style:italic; padding-bottom:15px;">
                                                                 @section('wrapper')
 
-                                                                    <p style="border:1px solid #000000;background-color:#dddddd;">Ceci est un message automatique, merci de ne pas y répondre.</p>
+                                                                    <p style="border:1px solid #000000;background-color:#dddddd;">{{ __('emails.layout.automatic') }}</p>
 
                                                                     @yield('content')
 
-                                                                    <p style="padding-bottom:10px !important">Secrètement votre,</p>
+                                                                    <p style="padding-bottom:10px !important">{{ __('emails.layout.signature') }}</p>
 
                                                                     <p><a href="{{ config('app.url') }}">{{ config('app.name') }}</a></p>
                                                                 @show

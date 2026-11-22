@@ -1,17 +1,17 @@
 @extends('emails/layout')
 
 @section('title')
-    Changement de cible
+    {{ __('emails.target_changed.heading') }}
 @endsection
 
 @section('content')
-    <p style="padding-bottom:10px !important">Bonjour {{ $santaName }},</p>
+    <p style="padding-bottom:10px !important">{{ __('emails.hello', ['name' => $santaName]) }}</p>
 
-    <p style="padding-bottom:10px !important">Malheureusement, la personne à qui vous deviez faire un petit cadeau s'est désistée...</p>
+    <p style="padding-bottom:10px !important">{{ __('emails.target_withdrawn.body') }}</p>
 
-    <p style="padding-bottom:10px !important">Mais pas d'inquiétude, SecretSanta.fr t'a attribué une nouvelle cible !</p>
+    <p style="padding-bottom:10px !important">{{ __('emails.target_withdrawn.reassured', ['app' => config('app.name')]) }}</p>
 
-    <p style="padding-bottom:10px !important">Tu vas devoir faire un cadeau à {{ $targetName }}, maintenant.</p>
+    <p style="padding-bottom:10px !important">{{ __('emails.target.new', ['name' => $targetName]) }}</p>
 
-    <p style="padding-bottom:10px !important">Si cette personne avait envoyé des messages à son santa, tu les recevras prochainement.</p>
+    <p style="padding-bottom:10px !important">{{ __('emails.target.messages') }}</p>
 @endsection

@@ -1,12 +1,12 @@
 @extends('emails/layout_plain')
 
 @section('title')
-    Confirmation de votre nouvelle adresse
+    {{ __('emails.participant_email_code.heading') }}
 @endsection
 
 @section('content')
-    Bonjour {{ $name }},
-    Pour recevoir désormais les emails de votre évènement SecretSanta.fr à cette adresse, saisissez ce code sur votre page de participant(e) :
+    {{ __('emails.hello', ['name' => $name]) }}
+    {{ __('emails.participant_email_code.body', ['app' => config('app.name')]) }}
     {{ $code }}
-    Ce code est valable une heure. Si vous n'êtes pas à l'origine de cette demande, ignorez simplement ce message : rien ne change.
+    {{ __('emails.participant_email_code.valid', ['minutes' => intdiv(config()->integer('mail.email_change.code_ttl'), 60)]) }}
 @endsection
