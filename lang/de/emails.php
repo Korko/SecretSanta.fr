@@ -54,4 +54,8 @@ return [
     'participant_withdrew.body' => ':name hat sich über die Teilnehmerseite von Ihrer :app-Veranstaltung abgemeldet.',
     'participant_withdrew.santa' => 'Der geheime Weihnachtsmann hat per E-Mail einen neuen Empfänger erhalten, sonst muss niemand sein Geschenk ändern. :name erscheint nicht mehr auf Ihrer Organisationsseite.',
     'gift_suggestion.title' => 'SecretSanta #:draw - Eine Geschenkidee für :name',
+    'gift_suggestion.heading' => 'Eine Geschenkidee für :name',
+    'gift_suggestion.from' => ':sender schlägt Ihnen eine Geschenkidee für :name vor:',
+    'gift_suggestion.from_anonymous' => 'Ein anderer Teilnehmer schlägt Ihnen eine Geschenkidee für :name vor:',
+    'gift_suggestion.secret' => 'Diese Person weiß nicht, dass Sie der geheime Weihnachtsmann von :name sind. Ihre Teilnehmerseite: :link',
 ];
