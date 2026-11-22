@@ -7,12 +7,14 @@ namespace App\Models;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use App\Enums\ReportReason;
+use App\Notifications\GiftSuggestion as GiftSuggestionNotification;
 use App\Notifications\TargetMessages;
 use Carbon\CarbonImmutable;
 use Database\Factories\ParticipantFactory;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -41,6 +43,8 @@ use STS\Metrics\Metric;
  * @property int $pending_email_attempts
  * @property-read array<int, string> $exclusionsNames
  * @property-read ParticipantsCollection $exclusions
+ * @property-read Collection<int, GiftSuggestion> $sentSuggestions
+ * @property-read Collection<int, GiftSuggestion> $receivedSuggestions
  */
 #[CollectedBy(ParticipantsCollection::class)]
 #[Fillable(['name', 'email'])]
@@ -116,6 +120,20 @@ final class Participant extends Model
         return $this->hasMany(DearSanta::class, 'sender_id')->with('mail');
     }
 
+    // Gift ideas this participant gave for others
+    /** @return HasMany<GiftSuggestion, $this> */
+    public function sentSuggestions(): HasMany
+    {
+        return $this->hasMany(GiftSuggestion::class, 'sender_id')->with('mail');
+    }
+
+    // Gift ideas others gave for this participant, for their santa
+    /** @return HasMany<GiftSuggestion, $this> */
+    public function receivedSuggestions(): HasMany
+    {
+        return $this->hasMany(GiftSuggestion::class, 'recipient_id')->with('mail');
+    }
+
     /** @return BelongsToMany<self, $this> */
     public function exclusions(): BelongsToMany
     {
@@ -138,12 +156,17 @@ final class Participant extends Model
         return $participant;
     }
 
-    // Every message their target wrote to their santa, in a single email: for a new santa, a new address, or on request
+    // Every message their target wrote to their santa, in a single email, and the gift ideas others gave for their
+    // target: for a new santa, a new address, or on request
     public function forwardTargetMessages(): void
     {
         if ($this->target->dearSantas->isNotEmpty()) {
             $this->notify(new TargetMessages);
         }
+
+        // But their own ideas
+        $this->target->receivedSuggestions->where('sender_id', '!=', $this->id)
+            ->each(fn (GiftSuggestion $suggestion) => $this->notify(new GiftSuggestionNotification($suggestion)));
     }
 
     public function createMetric(string $name, int $value = 1): Metric
@@ -165,6 +188,8 @@ final class Participant extends Model
     {
         self::deleting(function (Participant $participant): void {
             $participant->dearSantas()->lazy()->each(fn (DearSanta $dearSanta): ?bool => $dearSanta->delete());
+            $participant->sentSuggestions()->lazy()->each(fn (GiftSuggestion $suggestion): ?bool => $suggestion->delete());
+            $participant->receivedSuggestions()->lazy()->each(fn (GiftSuggestion $suggestion): ?bool => $suggestion->delete());
             $participant->exclusions()->detach(); // pivot rows only (delete() would remove the excluded participants)
         });
     }

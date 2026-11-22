@@ -6,6 +6,7 @@ namespace App\Events;
 
 use App\Models\DearSanta;
 use App\Models\Draw;
+use App\Models\GiftSuggestion;
 use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use Illuminate\Broadcasting\Channel;
@@ -61,7 +62,9 @@ final class MailStatusUpdated implements ShouldBroadcast
                 $mailable instanceof Draw => $mailable->broadcastChannel(),
                 // A participant follows the messages they wrote to their santa
                 $mailable instanceof DearSanta => $mailable->sender->broadcastChannel(),
-                default => throw new LogicException('Mail without a participant, dearSanta or draw'),
+                // And the gift ideas they gave
+                $mailable instanceof GiftSuggestion => $mailable->sender->broadcastChannel(),
+                default => throw new LogicException('Mail without a participant, dearSanta, gift suggestion or draw'),
             }),
         ];
     }

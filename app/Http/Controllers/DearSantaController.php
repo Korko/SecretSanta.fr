@@ -7,13 +7,17 @@ namespace App\Http\Controllers;
 use App\Enums\ReportReason;
 use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
+use App\Models\GiftSuggestion;
+use App\Models\Mail;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
+use App\Notifications\GiftSuggestion as GiftSuggestionNotification;
 use App\Notifications\ParticipantEmailCode;
 use App\Notifications\ParticipantWithdrew;
 use App\Notifications\TargetDrawn;
 use App\Services\ParticipantsEditor;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -59,6 +63,10 @@ final class DearSantaController extends Controller
             'report' => $participant->report,
             'isOrganizer' => $participant->isOrganizer(),
             'email' => $participant->email,
+            'suggestionRecipients' => $this->suggestionRecipients($participant)->mapWithKeys(fn (Participant $recipient): array => [$recipient->hash => $recipient->name]),
+            'suggestions' => $participant->sentSuggestions->load('recipient')->mapWithKeys(fn (GiftSuggestion $suggestion): array => [
+                $suggestion->mail->id => $this->publicSuggestion($suggestion),
+            ]),
             'pendingEmail' => $this->pendingEmail($participant),
             'emails' => $participant->dearSantas->mapWithKeys(fn ($email): array => [
                 $email->mail->id => $email->only($this->dearSantaPublicFields),
@@ -89,6 +97,41 @@ final class DearSantaController extends Controller
         $participant->createMetric($participant->report ? 'report_'.$participant->report->value : 'report_cancelled');
 
         return response()->json(['report' => $participant->report]);
+    }
+
+    // A gift idea for someone else than their own target, emailed to that person's santa (whom the sender doesn't know)
+    public function suggest(Request $request, Participant $participant): JsonResponse
+    {
+        $recipients = $this->suggestionRecipients($participant);
+        $request->validate([
+            'recipient' => ['required', Rule::in($recipients->pluck('hash')->all())],
+            'content' => ['required', 'string'],
+            'signed' => ['boolean'],
+        ], [
+            'recipient.required' => __('validation.custom.dearSanta.recipient.required'),
+            'recipient.in' => __('validation.custom.dearSanta.recipient.required'),
+            'content.required' => __('validation.custom.dearSanta.content.required'),
+        ]);
+
+        /** @var Participant $recipient validated above */
+        $recipient = $recipients->firstWhere('hash', $request->string('recipient')->toString());
+
+        $suggestion = new GiftSuggestion([
+            'mail_body' => $request->string('content')->toString(),
+            'signed' => $request->boolean('signed'),
+        ]);
+        $suggestion->sender()->associate($participant);
+        $suggestion->recipient()->associate($recipient);
+        $suggestion->save();
+
+        $participant->createMetric('gift_suggestion')->addTag('signed', $suggestion->signed ? 'yes' : 'no');
+
+        $recipient->santa->notify(new GiftSuggestionNotification($suggestion));
+
+        return response()->json([
+            'message' => trans('message.sent'),
+            'suggestion' => $this->publicSuggestion($suggestion->load('mail', 'recipient')),
+        ]);
     }
 
     // "I signed up but changed my mind": unlike a report, they really leave. Their santa gets a new target
@@ -267,5 +310,27 @@ final class DearSantaController extends Controller
         }
 
         return $participant->pending_email;
+    }
+
+    // Everyone but themselves and their own target (whom they already know, and give to)
+    /** @return Collection<int, Participant> */
+    private function suggestionRecipients(Participant $participant): Collection
+    {
+        $targetId = $participant->target->id;
+
+        return $participant->draw->participants
+            ->reject(fn (Participant $other): bool => $other->id === $participant->id || $other->id === $targetId)
+            ->values();
+    }
+
+    /** @return array{mail_body: string, signed: bool, recipient: string, mail: Mail} */
+    private function publicSuggestion(GiftSuggestion $suggestion): array
+    {
+        return [
+            'mail_body' => $suggestion->mail_body,
+            'signed' => $suggestion->signed,
+            'recipient' => $suggestion->recipient->name,
+            'mail' => $suggestion->mail,
+        ];
     }
 }

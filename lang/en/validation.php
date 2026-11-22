@@ -239,6 +239,9 @@ return [
             'code' => [
                 'required' => 'The code is required.',
             ],
+            'recipient' => [
+                'required' => 'Choose who the idea is for.',
+            ],
         ],
         'organizer' => [
             'email' => [

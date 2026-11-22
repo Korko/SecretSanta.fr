@@ -53,4 +53,5 @@ return [
     'participant_withdrew.heading' => 'A participant withdrew',
     'participant_withdrew.body' => ':name withdrew from your :app event from their participant page.',
     'participant_withdrew.santa' => 'Their secret santa got a new target by email, nobody else needs to change their gift. :name no longer shows on your organizer panel.',
+    'gift_suggestion.title' => 'SecretSanta #:draw - A gift idea for :name',
 ];

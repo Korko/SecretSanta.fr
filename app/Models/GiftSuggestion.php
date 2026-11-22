@@ -1,0 +1,52 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Models;
+
+use App\Casts\EncryptedString;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+/**
+ * A gift idea from a participant (sender) for another one (recipient), emailed to the recipient's santa:
+ * the sender never learns who that santa is, and only shows their name if they chose to sign
+ *
+ * @property-read Participant $sender
+ * @property-read Participant $recipient
+ * @property-read Mail $mail
+ * @property string $mail_body
+ * @property bool $signed
+ */
+#[Fillable(['mail_body', 'signed'])]
+#[WithoutTimestamps]
+final class GiftSuggestion extends Model
+{
+    use HasTrackedMail;
+
+    /** @return BelongsTo<Participant, $this> */
+    public function sender(): BelongsTo
+    {
+        return $this->belongsTo(Participant::class, 'sender_id');
+    }
+
+    /** @return BelongsTo<Participant, $this> */
+    public function recipient(): BelongsTo
+    {
+        return $this->belongsTo(Participant::class, 'recipient_id');
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'mail_body' => EncryptedString::class,
+            'signed' => 'boolean',
+        ];
+    }
+}

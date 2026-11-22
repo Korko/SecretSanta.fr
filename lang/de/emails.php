@@ -53,4 +53,5 @@ return [
     'participant_withdrew.heading' => 'Abmeldung eines Teilnehmers',
     'participant_withdrew.body' => ':name hat sich über die Teilnehmerseite von Ihrer :app-Veranstaltung abgemeldet.',
     'participant_withdrew.santa' => 'Der geheime Weihnachtsmann hat per E-Mail einen neuen Empfänger erhalten, sonst muss niemand sein Geschenk ändern. :name erscheint nicht mehr auf Ihrer Organisationsseite.',
+    'gift_suggestion.title' => 'SecretSanta #:draw - Eine Geschenkidee für :name',
 ];
