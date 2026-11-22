@@ -102,7 +102,11 @@ export default {
                 "signed": "Sign with my name (otherwise, the idea stays anonymous)",
                 "signed_short": "signed",
                 "send": "Send the idea",
-                "list": "Ideas sent"
+                "list": "Ideas sent",
+                "received": {
+                    "title": "Gift ideas received for your target",
+                    "anonymous": "Anonymous"
+                }
             }
         },
         "faq": {
