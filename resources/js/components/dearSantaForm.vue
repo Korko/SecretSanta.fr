@@ -94,7 +94,10 @@
                         tracked.mail.delivery_status = data.delivery_status;
                         tracked.mail.updated_at = data.updated_at;
                     }
-                });
+                })
+                // Something new (sent from another tab, an idea received for the target): the event carries
+                // no content, it is fetched through this page's own secret link
+                .listen('.participant.update', () => this.refresh());
         },
         validations: {
             content: {
@@ -120,6 +123,13 @@
             sendReport(reason) {
                 return fetch(this.routes.reportUrl, 'POST', reason ? { reason } : {})
                     .then(data => this.report = data.report);
+            },
+            refresh() {
+                return fetch(this.routes.fetchStateUrl).then(data => {
+                    this.emails = data.emails;
+                    this.suggestions = data.suggestions;
+                    this.receivedSuggestions = data.receivedSuggestions;
+                });
             },
             requestEmailChange() {
                 return fetch(this.routes.requestEmailChangeUrl, 'POST', { email: this.newEmail })

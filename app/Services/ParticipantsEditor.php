@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Events\ParticipantUpdated;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\TargetChanged;
@@ -102,6 +103,7 @@ final class ParticipantsEditor
                 $santa->notify(in_array($before[$santa->id], $removed, true) ? new TargetWithdrawn : new TargetChanged);
                 // Messages the new target wrote to their santa now belong to this one
                 $santa->forwardTargetMessages();
+                event(new ParticipantUpdated($santa)); // an open page shows the new target's ideas
             }
         }
     }
