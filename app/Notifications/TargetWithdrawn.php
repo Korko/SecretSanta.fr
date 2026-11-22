@@ -14,12 +14,13 @@ use Illuminate\Queue\Attributes\Backoff;
 use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Support\Facades\Lang;
 
+// Not tracked on purpose: the santa's row on the organizer panel would start over right after a change of
+// participants, and show who now gives to whom (the newcomer's santa, for one)
 #[Backoff(30)]
 #[Tries(10)]
-final class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
+final class TargetWithdrawn extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit
 {
     use Queueable;
-    use TracksSantaMail;
 
     /**
      * Get the notification's delivery channels.

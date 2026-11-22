@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Events\MailStatusUpdated;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\DearSanta;
@@ -11,6 +12,7 @@ use App\Notifications\TargetDrawn;
 use App\Notifications\TargetMessages;
 use App\Notifications\TargetWithdrawn;
 use App\Services\URLParser;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -292,4 +294,17 @@ it("sends the target's messages to the participant's new address too", function 
     ajaxPost(URL::signedRoute('dearSanta.change_email', ['participant' => $participant]), ['code' => $code])->assertSuccessful();
 
     Notification::assertSentToTimes($participant, TargetMessages::class, 1);
+});
+
+it('confirms a reception once: reloading the page neither writes nor broadcasts it again', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+    Event::fake([MailStatusUpdated::class]);
+
+    ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $participant]))->assertSuccessful();
+    ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $participant]))->assertSuccessful();
+
+    Event::assertDispatchedTimes(MailStatusUpdated::class, 1);
 });
