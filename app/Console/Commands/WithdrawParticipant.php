@@ -34,7 +34,6 @@ final class WithdrawParticipant extends Command
         }
 
         $participant = $this->findParticipant($draw, $this->argument('id'));
-
         if (! $this->confirmOrForce('Withdraw '.$participant->name.' (#'.$participant->id.') and email their santa their new target?')) {
             return;
         }
