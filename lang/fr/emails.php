@@ -29,6 +29,7 @@ return [
     'organizer.csv' => 'Le récapitulatif des participant(e)s et des exclusions que vous avez définies est joint à cet email, et téléchargeable depuis cette même interface. Il pourra être réutilisé sur :app pour gagner du temps lors de l\'organisation de votre prochain évènement.',
     'organizer.next' => 'Dès que vous aurez révélé les cibles, ou au lendemain du :date, un second récapitulatif y sera disponible : la cible tirée par chaque participant(e) y est ajoutée à ses exclusions, pour améliorer encore votre prochain évènement.',
     'organizer.deletion' => 'Toutes les informations relatives à cet évènement seront supprimées le :date. Cette interface ne sera alors plus disponible.',
+    'organizer.abuse' => 'Vous n\'êtes pas à l\'origine de cet évènement ? Vous pouvez le supprimer depuis cette même page (« :button »), et nous signaler l\'abus à :email.',
     'target_drawn.heading' => 'Message aux participants',
     'target_drawn.write' => 'Vous pouvez écrire à votre Père Noël Secret ! Ça se passe ici : :link',
     'target_drawn.report' => 'Cet email ne vous est pas destiné, ou vous ne participez pas ? Signalez-le à l\'organisateur en bas de cette même page.',

@@ -8,3 +8,4 @@
 
     {!! __('emails.organizer.deletion', ['date' => $organizer['deletionDate']]) !!}
 
+    {!! __('emails.organizer.abuse', ['button' => __('organizer.purge.button'), 'email' => config('app.email')]) !!}

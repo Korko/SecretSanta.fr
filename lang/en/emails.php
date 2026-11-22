@@ -29,6 +29,7 @@ return [
     'organizer.csv' => 'The summary of the participants and of the exclusions you set is attached to this email, and can be downloaded from that same page. It can be reused on :app to save time when organizing your next event.',
     'organizer.next' => 'As soon as you reveal the targets, or the day after :date, a second summary will be available there, with the target each participant drew added to their exclusions, making your next event even better.',
     'organizer.deletion' => 'All the information about this event will be deleted on :date. This page will then no longer be available.',
+    'organizer.abuse' => 'You did not set up this event? You can delete it from that same page (":button"), and report the abuse to us at :email.',
     'target_drawn.heading' => 'Message to the participants',
     'target_drawn.write' => 'You can write to your Secret Santa! It happens here: :link',
     'target_drawn.report' => 'This email is not for you, or you are not taking part? Tell the organizer at the bottom of that same page.',

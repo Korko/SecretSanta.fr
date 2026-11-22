@@ -29,6 +29,7 @@ return [
     'organizer.csv' => 'Die Zusammenfassung der Teilnehmer und der von Ihnen festgelegten Ausschlüsse ist dieser E-Mail beigefügt und kann auf derselben Seite heruntergeladen werden. Sie kann auf :app wiederverwendet werden, um bei der Organisation Ihrer nächsten Veranstaltung Zeit zu sparen.',
     'organizer.next' => 'Sobald Sie die Empfänger aufdecken, oder am Tag nach dem :date, steht dort eine zweite Zusammenfassung bereit, in der der Empfänger jedes Teilnehmers zu seinen Ausschlüssen hinzugefügt ist. Für eine noch bessere nächste Veranstaltung.',
     'organizer.deletion' => 'Alle Informationen zu dieser Veranstaltung werden am :date gelöscht. Diese Seite ist dann nicht mehr verfügbar.',
+    'organizer.abuse' => 'Sie haben diese Veranstaltung nicht angelegt? Sie können sie auf derselben Seite löschen („:button“) und uns den Missbrauch an :email melden.',
     'target_drawn.heading' => 'Nachricht an die Teilnehmer',
     'target_drawn.write' => 'Sie können Ihrem geheimen Weihnachtsmann schreiben! Hier geht es lang: :link',
     'target_drawn.report' => 'Diese E-Mail ist nicht für Sie bestimmt, oder Sie nehmen nicht teil? Melden Sie es der Organisation unten auf derselben Seite.',
