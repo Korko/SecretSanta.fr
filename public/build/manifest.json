@@ -1,18 +1,18 @@
 {
-  "_ajaxForm-BQ3t1b40.js": {
-    "file": "assets/ajaxForm-BQ3t1b40.js",
+  "_ajaxForm-_YdJuOvC.js": {
+    "file": "assets/ajaxForm-_YdJuOvC.js",
     "name": "ajaxForm",
     "imports": [
       "_alertify-CANg_1jz.js",
-      "_app-CnAMlGCv.js"
+      "_app-DQYszlsk.js"
     ]
   },
   "_alertify-CANg_1jz.js": {
     "file": "assets/alertify-CANg_1jz.js",
     "name": "alertify"
   },
-  "_app-CnAMlGCv.js": {
-    "file": "assets/app-CnAMlGCv.js",
+  "_app-DQYszlsk.js": {
+    "file": "assets/app-DQYszlsk.js",
     "name": "app",
     "imports": [
       "_alertify-CANg_1jz.js"
@@ -23,39 +23,39 @@
       "resources/js/langs/fr.js"
     ]
   },
-  "_emailStatus-4nNxrBcG.css": {
-    "file": "assets/emailStatus-4nNxrBcG.css",
-    "src": "_emailStatus-4nNxrBcG.css"
-  },
-  "_emailStatus-CJhbGJOM.js": {
-    "file": "assets/emailStatus-CJhbGJOM.js",
+  "_emailStatus-B7RLNlU2.js": {
+    "file": "assets/emailStatus-B7RLNlU2.js",
     "name": "emailStatus",
     "imports": [
       "_alertify-CANg_1jz.js",
-      "_app-CnAMlGCv.js",
-      "_tooltip-D3vTB4hL.js"
+      "_app-DQYszlsk.js",
+      "_tooltip-Cu6yuvOG.js"
     ],
     "css": [
-      "assets/emailStatus-4nNxrBcG.css"
+      "assets/emailStatus-DRnxcjiZ.css"
     ]
   },
-  "_form-MwFzm0Wr.js": {
-    "file": "assets/form-MwFzm0Wr.js",
+  "_emailStatus-DRnxcjiZ.css": {
+    "file": "assets/emailStatus-DRnxcjiZ.css",
+    "src": "_emailStatus-DRnxcjiZ.css"
+  },
+  "_form-CttM3LsH.js": {
+    "file": "assets/form-CttM3LsH.js",
     "name": "form",
     "imports": [
-      "_ajaxForm-BQ3t1b40.js",
-      "_app-CnAMlGCv.js"
+      "_ajaxForm-_YdJuOvC.js",
+      "_app-DQYszlsk.js"
     ]
   },
   "_tooltip-CknrHklv.css": {
     "file": "assets/tooltip-CknrHklv.css",
     "src": "_tooltip-CknrHklv.css"
   },
-  "_tooltip-D3vTB4hL.js": {
-    "file": "assets/tooltip-D3vTB4hL.js",
+  "_tooltip-Cu6yuvOG.js": {
+    "file": "assets/tooltip-Cu6yuvOG.js",
     "name": "tooltip",
     "imports": [
-      "_app-CnAMlGCv.js"
+      "_app-DQYszlsk.js"
     ],
     "css": [
       "assets/tooltip-CknrHklv.css"
@@ -143,79 +143,79 @@
     ]
   },
   "resources/js/dearSanta.js": {
-    "file": "assets/dearSanta-CUuaUw7q.js",
+    "file": "assets/dearSanta-DGFehb7s.js",
     "name": "dearSanta",
     "src": "resources/js/dearSanta.js",
     "isEntry": true,
     "imports": [
-      "_app-CnAMlGCv.js",
-      "_ajaxForm-BQ3t1b40.js",
+      "_app-DQYszlsk.js",
+      "_ajaxForm-_YdJuOvC.js",
       "_alertify-CANg_1jz.js",
-      "_emailStatus-CJhbGJOM.js",
-      "_tooltip-D3vTB4hL.js",
-      "_form-MwFzm0Wr.js"
+      "_emailStatus-B7RLNlU2.js",
+      "_tooltip-Cu6yuvOG.js",
+      "_form-CttM3LsH.js"
     ],
     "css": [
       "assets/dearSanta-BdbasSPh.css"
     ]
   },
   "resources/js/faq.js": {
-    "file": "assets/faq-V42lcTss.js",
+    "file": "assets/faq-B5fQYZk1.js",
     "name": "faq",
     "src": "resources/js/faq.js",
     "isEntry": true,
     "imports": [
-      "_app-CnAMlGCv.js"
+      "_app-DQYszlsk.js"
     ],
     "css": [
       "assets/faq-QuG1mctG.css"
     ]
   },
   "resources/js/fixOrganizer.js": {
-    "file": "assets/fixOrganizer-CDZ-h3_c.js",
+    "file": "assets/fixOrganizer-B66YBVwX.js",
     "name": "fixOrganizer",
     "src": "resources/js/fixOrganizer.js",
     "isEntry": true,
     "imports": [
-      "_app-CnAMlGCv.js",
-      "_ajaxForm-BQ3t1b40.js",
+      "_app-DQYszlsk.js",
+      "_ajaxForm-_YdJuOvC.js",
       "_alertify-CANg_1jz.js",
-      "_form-MwFzm0Wr.js"
+      "_form-CttM3LsH.js"
     ]
   },
   "resources/js/langs/de.js": {
-    "file": "assets/de-BpFfwzpB.js",
+    "file": "assets/de-B8skg3oN.js",
     "name": "de",
     "src": "resources/js/langs/de.js",
     "isDynamicEntry": true
   },
   "resources/js/langs/en.js": {
-    "file": "assets/en-CcIKYYwC.js",
+    "file": "assets/en-1XneFbro.js",
     "name": "en",
     "src": "resources/js/langs/en.js",
     "isDynamicEntry": true
   },
   "resources/js/langs/fr.js": {
-    "file": "assets/fr-B6E47Tv4.js",
+    "file": "assets/fr-Bcgs-XiH.js",
     "name": "fr",
     "src": "resources/js/langs/fr.js",
     "isDynamicEntry": true
   },
   "resources/js/organizer.js": {
-    "file": "assets/organizer-CKnsWZYE.js",
+    "file": "assets/organizer-BWNM7b1z.js",
     "name": "organizer",
     "src": "resources/js/organizer.js",
     "isEntry": true,
     "imports": [
-      "_app-CnAMlGCv.js",
-      "_ajaxForm-BQ3t1b40.js",
+      "_app-DQYszlsk.js",
+      "_ajaxForm-_YdJuOvC.js",
       "_alertify-CANg_1jz.js",
-      "_emailStatus-CJhbGJOM.js",
-      "_tooltip-D3vTB4hL.js",
-      "_form-MwFzm0Wr.js"
+      "_emailStatus-B7RLNlU2.js",
+      "_tooltip-Cu6yuvOG.js",
+      "_form-CttM3LsH.js"
     ],
     "css": [
-      "assets/organizer-DgIQXySt.css"
+      "assets/organizer-DwHgcRbY.css"
     ],
     "assets": [
       "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-NdXp0FSx.webp",
@@ -223,15 +223,15 @@
     ]
   },
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm-BMrujVFy.js",
+    "file": "assets/randomForm-zB1Zvfp_.js",
     "name": "randomForm",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
     "imports": [
-      "_app-CnAMlGCv.js",
-      "_ajaxForm-BQ3t1b40.js",
+      "_app-DQYszlsk.js",
+      "_ajaxForm-_YdJuOvC.js",
       "_alertify-CANg_1jz.js",
-      "_tooltip-D3vTB4hL.js"
+      "_tooltip-Cu6yuvOG.js"
     ],
     "css": [
       "assets/randomForm-AXgegaw_.css"
@@ -279,7 +279,7 @@
     ]
   },
   "resources/sass/vendor.scss": {
-    "file": "assets/vendor-CsiNpFGe.css",
+    "file": "assets/vendor-C7ktw87U.css",
     "name": "vendor",
     "names": [
       "vendor.css"
