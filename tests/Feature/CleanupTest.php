@@ -16,7 +16,7 @@ use function PHPUnit\Framework\assertNull;
 
 it('cleans up expired draws', function (): void {
     $drawNotExpired = Draw::factory()->create();
-    $drawExpired = Draw::factory()->expired()->create();
+    $drawExpired = Draw::factory()->prunable()->create();
 
     test()->artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
 
@@ -25,7 +25,7 @@ it('cleans up expired draws', function (): void {
 });
 
 it('cleans up everything', function (): void {
-    Draw::factory()->expired()->create();
+    Draw::factory()->prunable()->create();
     // TODO: need to create exclusions, dearSantas and mails
 
     test()->artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
