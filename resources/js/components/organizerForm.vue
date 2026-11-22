@@ -197,7 +197,19 @@
 
                 return fetch(this.changeEmailUrls[this.participants[k].hash], 'POST', {
                     email: email
+                }).then(data => {
+                    // A new address answers a report and cancels a withdrawal
+                    this.participants[k].report = data.participant.report;
+                    this.participants[k].withdraws_at = data.participant.withdraws_at;
+                    return data;
                 }).catch(this.checkEnded);
+            },
+            withdrawing(participant) {
+                const date = new Date(participant.withdraws_at);
+                // Past its date and still here: it couldn't be done (an exclusion), the organizer has to
+                return date.getTime() > this.now
+                    ? { badge: this.$t('organizer.withdrawing.badge', { date: date.toLocaleDateString(this.$i18n.locale) }), help: this.$t('organizer.withdrawing.help', { date: date.toLocaleString(this.$i18n.locale, { dateStyle: 'long', timeStyle: 'short' }) }) }
+                    : { badge: this.$t('organizer.withdrawing.stuck'), help: this.$t('organizer.withdrawing.stuck_help') };
             },
             confirmRevealTargets() {
                 // Permanent and visible to every participant: typed, like a withdrawal
@@ -387,6 +399,10 @@
                         ><i class="fas fa-pen" aria-hidden="true" /></button>
                         <span v-if="participant.report" class="badge badge-warning participant-report" :title="$t('organizer.report.help.' + participant.report)">
                             <i class="fas fa-flag" /> {{ $t('organizer.report.' + participant.report) }}
+                        </span>
+                        <!-- Asked to withdraw: fixing the address cancels it (someone else got their email) -->
+                        <span v-if="participant.withdraws_at" class="badge badge-danger participant-withdrawing" :title="withdrawing(participant).help">
+                            <i class="fas fa-door-open" /> {{ withdrawing(participant).badge }}
                         </span>
                     </td>
                     <td>

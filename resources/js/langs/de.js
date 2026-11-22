@@ -85,9 +85,11 @@ export default {
             "withdraw": {
                 "button": "Ich möchte nicht mehr teilnehmen",
                 "done": "Sie nehmen nicht mehr an dieser Veranstaltung teil. Ihr geheimer Weihnachtsmann hat einen neuen Empfänger erhalten und die Organisation wurde benachrichtigt.",
+                "pending": "Ihre Abmeldung wird am {date} wirksam. {organizer} wurde benachrichtigt: Bis dahin kann die Adresse noch korrigiert werden, falls es sich um eine falsche Adresse handelt.",
+                "notice": "Sie haben die Abmeldung beantragt: Sie wird am {date} wirksam. Ihr geheimer Weihnachtsmann erhält dann einen neuen Empfänger und diese Seite funktioniert nicht mehr.",
                 "confirm": {
                     "title": "Von der Veranstaltung abmelden?",
-                    "body": "Sie verlassen die Auslosung endgültig: Ihr geheimer Weihnachtsmann erhält einen neuen Empfänger, {organizer} wird per E-Mail benachrichtigt und diese Seite funktioniert nicht mehr. Wenn diese E-Mail nicht für Sie bestimmt war oder Sie nie teilnehmen wollten, nutzen Sie stattdessen die Meldung.",
+                    "body": "Sie verlassen die Auslosung in {hours} Stunden, spätestens am Morgen der Veranstaltung: Ihr geheimer Weihnachtsmann erhält dann einen neuen Empfänger und diese Seite funktioniert nicht mehr. {organizer} wird sofort per E-Mail benachrichtigt. Wenn diese E-Mail nicht für Sie bestimmt war oder Sie nie teilnehmen wollten, nutzen Sie stattdessen die Meldung.",
                     "help": "Geben Sie unten Ihren Namen „{name}“ ein, um zu bestätigen.",
                     "ok": "Abmelden",
                     "cancel": "Abbrechen"
@@ -374,6 +376,12 @@ export default {
                     "title": "Änderungen bestätigen?",
                     "body": "{add} hinzugefügt und {remove} entfernt. Jede Person, deren Ziel sich ändert, erhält nur eine E-Mail. Diese Aktion kann nicht rückgängig gemacht werden."
                 }
+            },
+            "withdrawing": {
+                "badge": "Abmeldung am {date}",
+                "help": "Diese Person hat die Abmeldung beantragt, sie wird am {date} wirksam. Falls jemand anderes die E-Mail erhalten hat, korrigieren Sie die Adresse vorher: Die Abmeldung wird aufgehoben und die richtige Person erhält ihren Empfänger.",
+                "stuck": "Abmeldung abzuschließen",
+                "stuck_help": "Die Abmeldung war nicht möglich, ohne jemandem eine ausgeschlossene Person zuzuteilen: Entfernen Sie die Person selbst, notfalls erzwungen, oder korrigieren Sie die Adresse, um sie aufzuheben."
             },
             "withdraw": {
                 "button": "Entfernen",

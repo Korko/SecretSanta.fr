@@ -43,6 +43,7 @@ use STS\Metrics\Metric;
  * @property string|null $pending_email_code
  * @property CarbonImmutable|null $pending_email_at
  * @property int $pending_email_attempts
+ * @property CarbonImmutable|null $withdraws_at when their withdrawal takes effect (see ApplyWithdrawal)
  * @property-read array<int, string> $exclusionsNames
  * @property-read ParticipantsCollection $exclusions
  * @property-read Collection<int, GiftSuggestion> $sentSuggestions
@@ -90,6 +91,15 @@ final class Participant extends Model
     public function isOrganizer(): bool
     {
         return $this->draw->organizer?->is($this) ?? false;
+    }
+
+    // When a withdrawal asked now takes effect: after a delay, for the organizer to fix their address if someone else
+    // got their email, but no later than the morning of the event, their santa needs a new target before it
+    public function withdrawalDate(): CarbonImmutable
+    {
+        $now = CarbonImmutable::now();
+
+        return $now->addHours(config()->integer('app.withdraw_delay'))->min($this->draw->expires_at->startOfDay())->max($now);
     }
 
     // The link to their page in their emails, with the draw secret. Taking part, the organizer has a single page:
@@ -237,6 +247,7 @@ final class Participant extends Model
             'email' => EncryptedString::class,
             'pending_email' => EncryptedString::class,
             'pending_email_at' => 'immutable_datetime',
+            'withdraws_at' => 'immutable_datetime',
             'report' => ReportReason::class,
         ];
     }

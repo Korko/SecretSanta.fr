@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Events\MailStatusUpdated;
+use App\Jobs\ApplyWithdrawal;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\DearSanta;
@@ -13,9 +14,11 @@ use App\Notifications\TargetDrawn;
 use App\Notifications\TargetMessages;
 use App\Notifications\TargetWithdrawn;
 use App\Services\URLParser;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Testing\TestResponse;
 
 use function PHPUnit\Framework\assertEquals;
 
@@ -188,6 +191,17 @@ it('refuses to move a participant to their own or a refused address', function (
     Notification::assertSentOnDemandTimes(ParticipantEmailCode::class, 0);
 });
 
+// A withdrawal takes effect after a delay: there, what the queued ApplyWithdrawal does then
+function withdrawAndWait(Participant $participant): TestResponse
+{
+    $response = ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $participant]))->assertSuccessful();
+
+    test()->travelTo($participant->fresh()->withdraws_at);
+    new ApplyWithdrawal($participant->fresh())->handle();
+
+    return $response;
+}
+
 it('lets a participant withdraw: their santa gets a new target and the organizer is told', function (): void {
     Notification::fake();
 
@@ -195,9 +209,7 @@ it('lets a participant withdraw: their santa gets a new target and the organizer
     $participant = $draw->participants->first();
     $santa = $participant->santa;
 
-    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $participant]))
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+    withdrawAndWait($participant)->assertJsonStructure(['message', 'withdrawsAt']);
 
     expect($participant->fresh())->toBeNull()
         ->and($draw->participants()->count())->toBe(3)
@@ -228,6 +240,102 @@ it('does not let the organizer withdraw from their participant page', function (
     expect($participant->fresh())->not->toBeNull();
 });
 
+it('waits before a withdrawal takes effect, and tells the organizer when', function (): void {
+    Notification::fake();
+    Bus::fake([ApplyWithdrawal::class]);
+    $this->freezeSecond();
+
+    $draw = Draw::factory()->hasParticipants(4)->create(['expires_at' => now()->addDays(10)]);
+    $participant = $draw->participants->first();
+    $santa = $participant->santa;
+
+    $at = ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $participant]))->assertSuccessful()->json('withdrawsAt');
+
+    // Still there for now, the same pairs: the organizer can still fix the address
+    $participant->refresh();
+    expect($participant->withdraws_at->equalTo(now()->addHours(config()->integer('app.withdraw_delay'))))->toBeTrue()
+        ->and($at)->not->toBeNull()
+        ->and($santa->fresh()->target->is($participant))->toBeTrue();
+    Bus::assertDispatched(ApplyWithdrawal::class, fn (ApplyWithdrawal $job): bool => $job->participant->is($participant) && $participant->withdraws_at->equalTo($job->delay));
+    Notification::assertNotSentTo($santa, TargetWithdrawn::class);
+
+    // The organizer knows when, and how to cancel it
+    Notification::assertSentTo($draw, ParticipantWithdrew::class, function (ParticipantWithdrew $notification) use ($draw, $participant): bool {
+        $html = (string) $notification->toMail($draw)->render();
+
+        return str_contains($html, e($participant->withdraws_at->isoFormat('LLL'))) && str_contains($html, '/org/'.$draw->hash);
+    });
+    ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))
+        ->assertJsonPath("participants.{$participant->hash}.withdraws_at", $participant->withdraws_at->toJSON());
+    ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $participant]))->assertJsonPath('withdrawsAt', $participant->withdraws_at->toJSON());
+
+    // Before its time, the job leaves them be
+    new ApplyWithdrawal($participant)->handle();
+    expect($participant->fresh())->not->toBeNull();
+});
+
+it('cancels a withdrawal when the organizer fixes the address: someone else got the email', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(4)->create(['expires_at' => now()->addDays(10)]);
+    $participant = $draw->participants->first();
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $participant]))->assertSuccessful();
+
+    // Sending again to the same address cancels nothing
+    ajaxPost(URL::signedRoute('organizerPanel.changeEmail', ['draw' => $draw, 'participant' => $participant]), ['email' => $participant->email])->assertSuccessful();
+
+    expect($participant->fresh()->withdraws_at)->not->toBeNull();
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeEmail', ['draw' => $draw, 'participant' => $participant]), ['email' => 'right@example.com'])
+        ->assertSuccessful()
+        ->assertJsonPath('participant.withdraws_at', null);
+    expect($participant->fresh()->withdraws_at)->toBeNull();
+    Notification::assertSentTo($participant, TargetDrawn::class, fn ($n, $c, $notifiable): bool => $notifiable->email === 'right@example.com');
+
+    // The job queued then finds nothing to do
+    $this->travel(config()->integer('app.withdraw_delay') + 1)->hours();
+    new ApplyWithdrawal($participant->fresh())->handle();
+    expect($participant->fresh())->not->toBeNull()
+        ->and($draw->participants()->count())->toBe(4);
+});
+
+it('makes a withdrawal take effect the morning of the event at the latest, right away on the day', function (): void {
+    Notification::fake();
+    Bus::fake([ApplyWithdrawal::class]);
+
+    $draw = Draw::factory()->hasParticipants(5)->create(['expires_at' => now()->addDay()->startOfDay()]);
+    [$tomorrow, $today] = $draw->participants;
+
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $tomorrow]))->assertSuccessful();
+    expect($tomorrow->fresh()->withdraws_at->equalTo($draw->expires_at->startOfDay()))->toBeTrue();
+
+    // On the event day, nothing to wait for: the organizer is told it is done
+    $this->travelTo($draw->expires_at->setTime(10, 0));
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $today]))
+        ->assertSuccessful()
+        ->assertJsonPath('withdrawsAt', null)
+        ->assertJsonPath('message', trans('dearsanta.withdraw.done'));
+    Notification::assertSentTo($draw, ParticipantWithdrew::class, fn (ParticipantWithdrew $notification): bool => str_contains((string) $notification->toMail($draw)->render(), e(trans('emails.participant_withdrew.body', ['name' => $today->name, 'app' => config('app.name')]))));
+});
+
+it('leaves a withdrawal the draw can no longer absorb to the organizer', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(4)->create(['expires_at' => now()->addDays(10)]);
+    $participant = $draw->participants->first();
+    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $participant]))->assertSuccessful();
+
+    // Another one left in the meantime: three would be too few
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), ['remove' => [$draw->participants->last()->hash]])->assertSuccessful();
+
+    $this->travelTo($participant->fresh()->withdraws_at);
+    new ApplyWithdrawal($participant->fresh())->handle();
+
+    // Still shown as leaving on the panel, for the organizer to settle
+    expect($participant->fresh()->withdraws_at)->not->toBeNull()
+        ->and($draw->participants()->count())->toBe(3);
+});
+
 it('does not give a santa a target they excluded when theirs withdraws', function (): void {
     Notification::fake();
 
@@ -239,7 +347,7 @@ it('does not give a santa a target they excluded when theirs withdraws', functio
     $a->exclusions()->attach($c);
     $c->exclusions()->attach($a);
 
-    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $b]))->assertSuccessful();
+    withdrawAndWait($b);
 
     $draw->refresh();
     expect($a->fresh()->target->is($c))->toBeFalse()
@@ -446,7 +554,7 @@ it('keeps the gift ideas of a participant who withdraws, unsigned', function ():
     ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), ['recipient' => $recipient->hash, 'content' => 'A plant', 'signed' => 1])
         ->assertSuccessful();
 
-    ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $sender]))->assertSuccessful();
+    withdrawAndWait($sender);
 
     $received = ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $recipient->fresh()->santa]))->json('receivedSuggestions');
     expect($received)->toHaveCount(1)

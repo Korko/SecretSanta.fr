@@ -33,4 +33,8 @@ return [
     // Bigger draws (and more emails sent at once) go through the administrator: keeps the site from being a spam relay
     'max_participants' => (int) env('MAX_PARTICIPANTS', 50),
 
+    // A participant's withdrawal takes effect after this many hours (at the latest the morning of the event): the
+    // organizer can still fix their address meanwhile, when someone else got their email and withdrew in their place
+    'withdraw_delay' => (int) env('WITHDRAW_DELAY', 48),
+
 ];

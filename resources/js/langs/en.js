@@ -85,9 +85,11 @@ export default {
             "withdraw": {
                 "button": "I no longer want to take part",
                 "done": "You no longer take part in this event. Your secret santa got a new target and the organizer has been told.",
+                "pending": "Your withdrawal takes effect on {date}. {organizer} has been told: until then, if it is a wrong address, the address can still be fixed.",
+                "notice": "You asked to withdraw: it takes effect on {date}. Your secret santa will then get a new target and this page will stop working.",
                 "confirm": {
                     "title": "Withdraw from the event?",
-                    "body": "You will leave the draw for good: your secret santa will get a new target, {organizer} will be told by email and this page will stop working. If this email was not meant for you or you never asked to take part, use the report instead.",
+                    "body": "You will leave the draw in {hours} hours, at the latest the morning of the event: your secret santa will then get a new target and this page will stop working. {organizer} will be told by email right away. If this email was not meant for you or you never asked to take part, use the report instead.",
                     "help": "Type your name, \"{name}\", below to confirm.",
                     "ok": "Withdraw",
                     "cancel": "Cancel"
@@ -374,6 +376,12 @@ export default {
                     "title": "Confirm the changes?",
                     "body": "{add} added and {remove} removed. Each person whose target changes will receive a single email. This action cannot be undone."
                 }
+            },
+            "withdrawing": {
+                "badge": "Withdraws on {date}",
+                "help": "This person asked to withdraw, it takes effect on {date}. If someone else got their email, fix their address before: the withdrawal will be cancelled and the right person will get their target.",
+                "stuck": "Withdrawal to finish",
+                "stuck_help": "Their withdrawal could not happen without giving someone a person they excluded: remove them yourself, forcing it if needed, or fix their address to cancel it."
             },
             "withdraw": {
                 "button": "Remove",

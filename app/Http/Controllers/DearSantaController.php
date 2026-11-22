@@ -8,6 +8,7 @@ use App\Enums\DeliveryStatus;
 use App\Enums\ReportReason;
 use App\Events\ParticipantUpdated;
 use App\Http\Requests\DearSantaRequest;
+use App\Jobs\ApplyWithdrawal;
 use App\Models\DearSanta;
 use App\Models\GiftSuggestion;
 use App\Models\Participant;
@@ -89,6 +90,9 @@ final class DearSantaController extends Controller
             'targetsRevealed' => $participant->draw->targets_revealed_at !== null,
             'ends_at' => $participant->draw->ends_at, // after it, the organizer sees every target
             'report' => $participant->report,
+            // Leaving: when it takes effect, and how long a withdrawal waits (told before they confirm)
+            'withdrawsAt' => $participant->withdraws_at,
+            'withdrawDelay' => config()->integer('app.withdraw_delay'),
             'isOrganizer' => $participant->isOrganizer(),
             'email' => $participant->email,
             'suggestionRecipients' => $this->suggestionRecipients($participant)->mapWithKeys(fn (Participant $recipient): array => [$recipient->hash => $recipient->name]),
@@ -170,17 +174,18 @@ final class DearSantaController extends Controller
         ]);
     }
 
-    // "I signed up but changed my mind": unlike a report, they really leave. Their santa gets a new target
-    // and the organizer an email. Permanent: this page and its link stop working
+    // "I signed up but changed my mind": unlike a report, they really leave the draw, after a delay (withdraws_at) during
+    // which the organizer, emailed right away, can fix their address if someone else got their email. Their santa then
+    // gets a new target and this page stops working
     public function withdraw(Participant $participant): JsonResponse
     {
         // The organizer has their panel to remove themselves, or to delete the draw
         abort_if($participant->isOrganizer(), 403);
 
         $draw = $participant->draw;
-        $name = $participant->name;
         try {
-            new ParticipantsEditor($draw)->apply([$participant], []);
+            // Refused now, as when it was immediate, rather than when it takes effect
+            new ParticipantsEditor($draw)->check([$participant], []);
         } catch (ValidationException $validationException) {
             // Only the organizer may break an exclusion to let them go
             throw array_key_exists('exclusions', $validationException->errors())
@@ -188,13 +193,23 @@ final class DearSantaController extends Controller
                 : $validationException;
         }
 
-        // Counted once it went through: the deleted model still has its ids
-        $participant->createMetric('withdraw')->addTag('by', 'participant');
+        $name = $participant->name;
+        $at = $participant->withdrawalDate();
+        // Nothing to wait for on the event day itself
+        $pending = $at->isFuture();
 
-        $draw->notify(new ParticipantWithdrew($name));
+        $participant->withdraws_at = $at;
+        $participant->save();
+        $participant->createMetric('withdraw_requested');
+
+        $draw->notify(new ParticipantWithdrew($name, $pending ? $at : null));
+        dispatch(new ApplyWithdrawal($participant))->delay($at);
 
         return response()->json([
-            'message' => trans('dearsanta.withdraw.done'),
+            'message' => $pending
+                ? trans('dearsanta.withdraw.pending', ['date' => $at->isoFormat('LLL'), 'organizer' => $draw->organizer_name])
+                : trans('dearsanta.withdraw.done'),
+            'withdrawsAt' => $pending ? $at : null,
         ]);
     }
 
@@ -260,6 +275,8 @@ final class DearSantaController extends Controller
 
         $participant->email = $email;
         $participant->report = null;
+        // Still taking part, at an address of their own
+        $participant->withdraws_at = null;
         $participant->clearPendingEmail();
         $participant->save();
 

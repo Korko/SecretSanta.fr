@@ -112,6 +112,13 @@ return [
             'body' => '{add} added and {remove} removed. Each person whose target changes will receive a single email. This action cannot be undone.',
         ],
     ],
+    // A participant who asked to withdraw, until it takes effect (see ApplyWithdrawal)
+    'withdrawing' => [
+        'badge' => 'Withdraws on {date}',
+        'help' => 'This person asked to withdraw, it takes effect on {date}. If someone else got their email, fix their address before: the withdrawal will be cancelled and the right person will get their target.',
+        'stuck' => 'Withdrawal to finish',
+        'stuck_help' => 'Their withdrawal could not happen without giving someone a person they excluded: remove them yourself, forcing it if needed, or fix their address to cancel it.',
+    ],
     'withdraw' => [
         'button' => 'Remove',
         'confirm' => [

@@ -57,7 +57,7 @@ final class OrganizerController extends Controller
             'drawn_at' => $draw->created_at,
             'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [
                 $participant->hash => $participant->only([
-                    'hash', 'name', 'email', 'mail', 'report',
+                    'hash', 'name', 'email', 'mail', 'report', 'withdraws_at',
                 ]),
             ]),
             'changeEmailUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
@@ -146,6 +146,8 @@ final class OrganizerController extends Controller
 
             $participant->email = $email;
             $participant->report = null; // a fixed address answers a "not me" report
+            // and cancels a withdrawal: someone else got their email and withdrew in their place
+            $participant->withdraws_at = null;
             $participant->save();
 
             $participant->createMetric('change_email');
@@ -163,7 +165,7 @@ final class OrganizerController extends Controller
         }
 
         return response()->json([
-            'message' => $message, 'participant' => $participant->only(['hash', 'mail']),
+            'message' => $message, 'participant' => $participant->only(['hash', 'mail', 'report', 'withdraws_at']),
         ]);
     }
 

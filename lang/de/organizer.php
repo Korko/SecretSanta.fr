@@ -112,6 +112,13 @@ return [
             'body' => '{add} hinzugefügt und {remove} entfernt. Jede Person, deren Ziel sich ändert, erhält nur eine E-Mail. Diese Aktion kann nicht rückgängig gemacht werden.',
         ],
     ],
+    // A participant who asked to withdraw, until it takes effect (see ApplyWithdrawal)
+    'withdrawing' => [
+        'badge' => 'Abmeldung am {date}',
+        'help' => 'Diese Person hat die Abmeldung beantragt, sie wird am {date} wirksam. Falls jemand anderes die E-Mail erhalten hat, korrigieren Sie die Adresse vorher: Die Abmeldung wird aufgehoben und die richtige Person erhält ihren Empfänger.',
+        'stuck' => 'Abmeldung abzuschließen',
+        'stuck_help' => 'Die Abmeldung war nicht möglich, ohne jemandem eine ausgeschlossene Person zuzuteilen: Entfernen Sie die Person selbst, notfalls erzwungen, oder korrigieren Sie die Adresse, um sie aufzuheben.',
+    ],
     'withdraw' => [
         'button' => 'Entfernen',
         'confirm' => [

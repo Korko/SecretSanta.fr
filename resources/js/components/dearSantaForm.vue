@@ -38,6 +38,8 @@
                 endsAt: this.data.ends_at,
                 now: Date.now(),
                 report: this.data.report,
+                // Asked to withdraw: when it takes effect
+                withdrawsAt: this.data.withdrawsAt,
                 email: this.data.email,
                 pendingEmail: this.data.pendingEmail,
                 showEmailChange: !!this.data.pendingEmail,
@@ -174,7 +176,7 @@
                 const name = this.data.participant.name;
                 hardConfirm({
                     title: this.$t('dearsanta.withdraw.confirm.title'),
-                    body: this.$t('dearsanta.withdraw.confirm.body', { organizer: escapeHtml(this.data.organizer) }),
+                    body: this.$t('dearsanta.withdraw.confirm.body', { organizer: escapeHtml(this.data.organizer), hours: this.data.withdrawDelay }),
                     word: name,
                     help: this.$t('dearsanta.withdraw.confirm.help', { name: escapeHtml(name) }),
                     ok: this.$t('dearsanta.withdraw.confirm.ok'),
@@ -183,7 +185,12 @@
             },
             withdraw() {
                 return fetch(this.routes.withdrawUrl, 'POST')
-                    .then(data => alertify.confirmAlert(data.message, () => window.location.pathname = '/'))
+                    .then(data => {
+                        this.problem = null;
+                        // Taking effect later: the page stays, saying when. Right away on the event day
+                        this.withdrawsAt = data.withdrawsAt;
+                        alertify.confirmAlert(data.message, data.withdrawsAt ? () => {} : () => window.location.pathname = '/');
+                    })
                     .catch(this.alertError);
             },
             alertError(error) {
@@ -343,7 +350,7 @@
         </div>
         <!-- Another mailbox: the new address gets a code first, typed back here to prove it is theirs.
              The organizer changes theirs in the participants list of their panel, where this page sits for them -->
-        <div v-if="!data.isOrganizer" class="email-change text-center mt-4 small">
+        <div v-if="!data.isOrganizer && !withdrawsAt" class="email-change text-center mt-4 small">
             <span class="text-muted">{{ $t('dearsanta.email.current', { email }) }}</span>
             <button v-if="!showEmailChange" type="button" class="btn btn-link btn-sm email-change-open" @click="showEmailChange = true">{{ $t('dearsanta.email.open') }}</button>
             <form v-if="showEmailChange" class="form-inline justify-content-center mt-2" @submit.prevent="requestEmailChange">
@@ -358,7 +365,11 @@
             </form>
         </div>
         <!-- Wrong recipient or not taking part: the organizer is told by email and sees it on their panel -->
-        <div v-if="!data.isOrganizer" class="report text-center mt-4 small">
+        <div v-if="withdrawsAt" class="alert alert-warning text-center mt-4 withdrawing" role="status">
+            <i class="fas fa-door-open" />
+            {{ $t('dearsanta.withdraw.notice', { date: new Date(withdrawsAt).toLocaleString($i18n.locale, { dateStyle: 'long', timeStyle: 'short' }) }) }}
+        </div>
+        <div v-else-if="!data.isOrganizer" class="report text-center mt-4 small">
             <template v-if="report">
                 <p class="text-warning report-sent">
                     <i class="fas fa-flag" />

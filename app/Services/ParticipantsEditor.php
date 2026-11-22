@@ -41,30 +41,7 @@ final class ParticipantsEditor
 
             $this->draw->unsetRelation('participants');
             $participants = $this->draw->participants()->with('exclusions')->get()->keyBy('id')->all();
-            // Removed by another change in the meantime: nothing left to do for them
-            $remove = array_values(array_map(fn (Participant $participant): Participant => $participants[$participant->id] ?? throw new ModelNotFoundException, $remove));
-
-            $this->targets = [];
-            foreach ($participants as $participant) {
-                $this->targets[$participant->target_id] = $participant->id; // target_id holds the santa
-            }
-
-            $before = $this->targets;
-
-            foreach ($remove as $participant) {
-                $this->remove($participant, $participants);
-            }
-
-            foreach (array_keys($add) as $i) {
-                $this->insert('new'.$i);
-            }
-
-            throw_if(count($this->targets) < 3, ValidationException::withMessages(['participants' => trans('error.withdraw')]));
-            // Adding beyond the limit is refused, not removing: a bigger draw from before the limit (or a lowered
-            // MAX_PARTICIPANTS) can still lose someone
-            throw_if(count($this->targets) > max($this->draw->maxParticipants(), count($before)), ValidationException::withMessages([
-                'participants' => trans('validation.custom.randomform.participants.max', ['max' => $this->draw->maxParticipants(), 'email' => config()->string('app.email')]),
-            ]));
+            [$before, $remove] = $this->plan($participants, $remove, $add);
 
             $created = [];
             foreach ($add as $i => $data) {
@@ -106,6 +83,57 @@ final class ParticipantsEditor
                 event(new ParticipantUpdated($santa)); // an open page shows the new target's ideas
             }
         }
+    }
+
+    /**
+     * Whether apply() would go through as things are now, changing nothing: throws its ValidationException otherwise
+     * (a withdrawal taking effect later is refused right away, see DearSantaController::withdraw)
+     *
+     * @param  array<Participant>  $remove
+     * @param  list<array{name: string, email: string}>  $add
+     */
+    public function check(array $remove, array $add): void
+    {
+        $this->draw->unsetRelation('participants');
+        $this->plan($this->draw->participants()->with('exclusions')->get()->keyBy('id')->all(), $remove, $add);
+    }
+
+    /**
+     * The new pairs in $this->targets, or the reason they can't be made
+     *
+     * @param  array<int, Participant>  $participants
+     * @param  array<Participant>  $remove
+     * @param  list<array{name: string, email: string}>  $add
+     * @return array{array<int|string, int|string>, list<Participant>} the pairs before, the participants to remove
+     */
+    private function plan(array $participants, array $remove, array $add): array
+    {
+        // Removed by another change in the meantime: nothing left to do for them
+        $remove = array_values(array_map(fn (Participant $participant): Participant => $participants[$participant->id] ?? throw new ModelNotFoundException, $remove));
+
+        $this->targets = [];
+        foreach ($participants as $participant) {
+            $this->targets[$participant->target_id] = $participant->id; // target_id holds the santa
+        }
+
+        $before = $this->targets;
+
+        foreach ($remove as $participant) {
+            $this->remove($participant, $participants);
+        }
+
+        foreach (array_keys($add) as $i) {
+            $this->insert('new'.$i);
+        }
+
+        throw_if(count($this->targets) < 3, ValidationException::withMessages(['participants' => trans('error.withdraw')]));
+        // Adding beyond the limit is refused, not removing: a bigger draw from before the limit (or a lowered
+        // MAX_PARTICIPANTS) can still lose someone
+        throw_if(count($this->targets) > max($this->draw->maxParticipants(), count($before)), ValidationException::withMessages([
+            'participants' => trans('validation.custom.randomform.participants.max', ['max' => $this->draw->maxParticipants(), 'email' => config()->string('app.email')]),
+        ]));
+
+        return [$before, $remove];
     }
 
     /** @param  array<int, Participant>  $participants */

@@ -112,6 +112,13 @@ return [
             'body' => '{add} ajout(s) et {remove} retrait(s). Chaque personne dont la cible change recevra un seul email. Cette action ne peut être annulée.',
         ],
     ],
+    // A participant who asked to withdraw, until it takes effect (see ApplyWithdrawal)
+    'withdrawing' => [
+        'badge' => 'Se désiste le {date}',
+        'help' => 'Cette personne a demandé à se désister, ce sera effectif le {date}. Si quelqu\'un d\'autre a reçu son email, corrigez son adresse avant : le désistement sera annulé et la bonne personne recevra sa cible.',
+        'stuck' => 'Désistement à terminer',
+        'stuck_help' => 'Son désistement n\'a pas pu se faire sans donner à quelqu\'un une personne exclue : retirez cette personne vous-même, en forçant si besoin, ou corrigez son adresse pour l\'annuler.',
+    ],
     'withdraw' => [
         'button' => 'Retirer',
         'confirm' => [

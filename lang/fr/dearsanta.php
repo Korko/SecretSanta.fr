@@ -52,9 +52,11 @@ return [
     'withdraw' => [
         'button' => 'Je ne veux plus participer',
         'done' => 'Vous ne participez plus à cet évènement. Votre père/mère noël secret a reçu une nouvelle cible et l\'organisateur/organisatrice a été prévenu(e).',
+        'pending' => 'Votre désistement sera effectif le :date. :organizer est prévenu(e) : d\'ici là, s\'il s\'agit d\'une erreur d\'adresse, l\'adresse peut encore être corrigée.',
+        'notice' => 'Vous avez demandé à vous désister : ce sera effectif le {date}. Votre père/mère noël secret recevra alors une nouvelle cible et cette page ne fonctionnera plus.',
         'confirm' => [
             'title' => 'Se désister de l\'évènement ?',
-            'body' => 'Vous quitterez définitivement le tirage au sort : votre père/mère noël secret recevra une nouvelle cible, {organizer} sera prévenu(e) par email et cette page ne fonctionnera plus. Si cet email ne vous était pas destiné ou que vous n\'avez jamais demandé à participer, utilisez plutôt le signalement.',
+            'body' => 'Vous quitterez le tirage au sort dans {hours} heures, au plus tard le matin de l\'évènement : votre père/mère noël secret recevra alors une nouvelle cible et cette page ne fonctionnera plus. {organizer} sera prévenu(e) par email dès maintenant. Si cet email ne vous était pas destiné ou que vous n\'avez jamais demandé à participer, utilisez plutôt le signalement.',
             'help' => 'Saisir votre nom, « {name} », en dessous pour confirmer.',
             'ok' => 'Me désister',
             'cancel' => 'Annuler',
