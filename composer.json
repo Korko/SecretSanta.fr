@@ -55,7 +55,7 @@
             "php-http/discovery": false
         },
         "platform": {
-            "php": "8.4.27"
+            "php": "8.4.28"
         }
     },
     "extra": {
