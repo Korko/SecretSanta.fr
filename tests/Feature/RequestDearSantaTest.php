@@ -380,6 +380,43 @@ it('forwards gift ideas to the new santa when the recipient changes santa', func
     }
 });
 
+it('sends a participant added to the draw the gift ideas already given for their target, untracked', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    foreach ($draw->participants as $recipient) {
+        $sender = $draw->participants->firstOrFail(fn ($p): bool => ! $p->is($recipient) && ! $p->is($recipient->santa));
+        ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), ['recipient' => $recipient->hash, 'content' => 'idea for '.$recipient->name])
+            ->assertSuccessful();
+    }
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), [
+        'add' => [['name' => 'Newcomer', 'email' => 'newcomer@example.com']],
+    ])->assertSuccessful();
+
+    $newcomer = $draw->participants()->get()->firstOrFail(fn ($participant): bool => $participant->name === 'Newcomer');
+    Notification::assertSentTo($newcomer, GiftSuggestion::class, fn (GiftSuggestion $notification): bool => $notification->via($newcomer) === ['mail']
+        && $notification->toMail($newcomer)->viewData['content'] === 'idea for '.$newcomer->target->name);
+});
+
+it("sends the gift ideas given for their target to the participant's new address too, untracked", function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    $participant = $draw->participants->first();
+    $sender = $draw->participants->firstOrFail(fn ($p): bool => ! $p->is($participant) && ! $p->is($participant->target));
+    ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), ['recipient' => $participant->target->hash, 'content' => 'A scarf'])
+        ->assertSuccessful();
+
+    $code = requestEmailChange($participant, 'new@example.com');
+    ajaxPost(URL::signedRoute('dearSanta.change_email', ['participant' => $participant]), ['code' => $code])->assertSuccessful();
+
+    // Once tracked when given, once untracked to the new address
+    Notification::assertSentToTimes($participant, GiftSuggestion::class, 2);
+    Notification::assertSentTo($participant, GiftSuggestion::class, fn (GiftSuggestion $notification): bool => $notification->via($participant) === ['mail']
+        && $notification->toMail($participant)->viewData['content'] === 'A scarf');
+});
+
 it('only tells a gift idea sender whether it was sent, not when it was read', function (): void {
     Notification::fake();
 
