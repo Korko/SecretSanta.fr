@@ -5,6 +5,11 @@ declare(strict_types=1);
 return [
     'url' => 'Link, den ein(e) Teilnehmer(in) per E-Mail erhalten hat',
     'fix' => 'Korrigieren',
+    // Taking part, the organizer's panel also holds their participant page
+    'sections' => [
+        'participation' => 'Ihre Teilnahme',
+        'organization' => 'Organisation der Veranstaltung',
+    ],
     'date' => [
         'label' => 'Datum der Veranstaltung',
         'help' => 'Die Daten der Veranstaltung werden am {deleted_at} gelöscht.',

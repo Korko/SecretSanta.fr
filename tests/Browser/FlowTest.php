@@ -117,7 +117,7 @@ test('a non participating organizer gets a separate recap', function (): void {
     Notification::assertCount(4);
 });
 
-test('the full flow: draw, dearSanta report, organizer panel', function (): void {
+test('the full flow: draw, dearSanta report, organizer panel with their participant part', function (): void {
     Notification::fake();
     submitDraw(visit('/'), ['alice', 'bob', 'chloe']);
 
@@ -129,7 +129,7 @@ test('the full flow: draw, dearSanta report, organizer panel', function (): void
     [$alice, $bob] = $draw->participants;
     $iv = '#'.base64_encode(DrawCrypt::getIV());
     $dearSanta = URL::signedRoute('dearSanta', ['participant' => $bob->hash]).$iv;
-    $panel = URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).$iv;
+    $aliceDearSanta = URL::signedRoute('dearSanta', ['participant' => $alice->hash]).$iv;
 
     $santa = visit($dearSanta)
         ->assertSeeIn('.targets-revealed', 'pas été consultée')
@@ -148,7 +148,17 @@ test('the full flow: draw, dearSanta report, organizer panel', function (): void
     // Bob's address is now refused: the bulk resend only retries the other failed one
     $draw->participants->take(-2)->each(fn ($p) => $p->mail->forceFill(['delivery_status' => 'error'])->save());
 
-    $org = visit($panel)
+    // Alice organizes and takes part: a single page, her panel, holds her participant part too (her
+    // participant link from earlier emails leads there). Nothing there she can't use as the organizer
+    $org = visit($aliceDearSanta)
+        ->assertPathBeginsWith('/org/')
+        ->assertPresent('.organizer-participation #mailContent')
+        ->assertNotPresent('.organizer-participation .targets-revealed')
+        ->assertNotPresent('.organizer-participation .email-change')
+        ->assertNotPresent('.organizer-participation .report')
+        ->type('#mailContent', 'Des chaussettes ?')
+        ->click('.organizer-participation button[type=submit]')
+        ->assertSeeIn('.organizer-participation tr.email', 'Des chaussettes ?')
         ->assertSee('Alice')
         ->assertCount('.participant-report', 1)
         ->assertSeeIn('.participant-report', 'Mauvais destinataire')
@@ -200,7 +210,7 @@ test('the full flow: draw, dearSanta report, organizer panel', function (): void
         ->wait(0.5)->click('.ajs-footer .btn-primary:visible >> nth=-1')
         ->assertSee('Fred')
         ->wait(0.5)->click('.ajs-footer .btn-primary:visible >> nth=-1')
-        ->assertCount('tbody tr:not(.pending-add)', 5)
+        ->assertCount('tbody tr:not(.pending-add):not(.organizer-participation *)', 5)
         ->assertDontSee('Dan');
 
     // Reveal, final CSV, participants see it

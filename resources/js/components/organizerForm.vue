@@ -11,13 +11,17 @@
     import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
 
+    import { markRaw } from 'vue';
+
     import InputEdit from './inputEdit.vue';
     import EmailStatus from './emailStatus.vue';
     import Tooltip from './tooltip.vue';
     import DefaultForm from './form.vue';
+    import Fetched from './fetched.vue';
+    import DearSantaForm from './dearSantaForm.vue';
 
     export default {
-        components: { InputEdit, EmailStatus, Tooltip },
+        components: { InputEdit, EmailStatus, Tooltip, Fetched },
         extends: DefaultForm,
         props: {
             data: {
@@ -57,7 +61,8 @@
                 pendingAdd: [],
                 newParticipant: { name: '', email: '' },
                 maxParticipants: this.data.maxParticipants,
-                contact: this.data.contact
+                contact: this.data.contact,
+                participantForm: markRaw(DearSantaForm)
             };
         },
         computed: {
@@ -76,6 +81,10 @@
             },
             canEdit() {
                 return !this.expired;
+            },
+            // Taking part, the organizer's participant page is on their panel: gone with the event, or if they removed themselves
+            participation() {
+                return this.routes.participant && !this.expired && this.participants[this.routes.participant.hash] ? this.routes.participant : null;
             },
             receivedCount() {
                 return Object.values(this.participants).filter(p => p.mail.delivery_status === 'received').length;
@@ -326,6 +335,11 @@
 
 <template>
     <div>
+        <section v-if="participation" class="organizer-participation mb-5">
+            <h2 class="h4 mb-3">{{ $t('organizer.sections.participation') }}</h2>
+            <fetched :form="participantForm" :url="participation.fetchUrl" :routes="participation" />
+        </section>
+        <h2 v-if="participation" class="h4 mb-3">{{ $t('organizer.sections.organization') }}</h2>
         <div v-if="expired" class="alert alert-warning" role="alert">
             {{ $t('organizer.expired', {expires_at: expirationDateLong}) }}
         </div>

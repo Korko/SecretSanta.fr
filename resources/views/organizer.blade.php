@@ -12,6 +12,8 @@
             'changeParticipantsUrl' => URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]),
             'changeDateUrl' => URL::signedRoute('organizerPanel.changeDate', ['draw' => $draw]),
             'revealTargetsUrl' => URL::signedRoute('organizerPanel.revealTargets', ['draw' => $draw]),
+            // Their own participant part, when the organizer takes part
+            'participant' => $participantRoutes,
         ],
         'pusher' => [
             'key' => config('broadcasting.connections.reverb.key'),

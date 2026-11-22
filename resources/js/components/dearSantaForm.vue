@@ -206,8 +206,9 @@
                     <div class="alert alert-info" role="alert">
                         {{  $t('dearsanta.reminder') }}
                     </div>
-                    <!-- Discreet on purpose: only matters to participants who care about the organizer seeing the pairs -->
-                    <p class="text-muted small text-right targets-revealed" :title="$t('dearsanta.targets.' + targetsStatus)">
+                    <!-- Discreet on purpose: only matters to participants who care about the organizer seeing the pairs.
+                         The organizer's panel, where this page sits for them, says it already -->
+                    <p v-if="!data.isOrganizer" class="text-muted small text-right targets-revealed" :title="$t('dearsanta.targets.' + targetsStatus)">
                         <i :class="targetsStatus === 'secret' ? 'fas fa-eye-slash' : 'fas fa-eye'" />
                         {{ $t('dearsanta.targets.' + targetsStatus) }}
                     </p>
@@ -332,8 +333,9 @@
                 </tbody>
             </table>
         </div>
-        <!-- Another mailbox: the new address gets a code first, typed back here to prove it is theirs -->
-        <div class="email-change text-center mt-4 small">
+        <!-- Another mailbox: the new address gets a code first, typed back here to prove it is theirs.
+             The organizer changes theirs in the participants list of their panel, where this page sits for them -->
+        <div v-if="!data.isOrganizer" class="email-change text-center mt-4 small">
             <span class="text-muted">{{ $t('dearsanta.email.current', { email }) }}</span>
             <button v-if="!showEmailChange" type="button" class="btn btn-link btn-sm email-change-open" @click="showEmailChange = true">{{ $t('dearsanta.email.open') }}</button>
             <form v-if="showEmailChange" class="form-inline justify-content-center mt-2" @submit.prevent="requestEmailChange">
