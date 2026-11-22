@@ -338,7 +338,7 @@ it('lets a participant suggest a gift idea to the santa of someone else than the
     expect(ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $sender]))->json('suggestions'))->toHaveCount(1);
 });
 
-it('keeps a gift idea anonymous unless signed, and refuses one for oneself or one\'s own target', function (): void {
+it("keeps a gift idea anonymous unless signed, and refuses one for oneself or one's own target", function (): void {
     Notification::fake();
 
     $draw = Draw::factory()->hasParticipants(4)->create();
