@@ -16,9 +16,10 @@ use Illuminate\Support\Str;
 use Webklex\PHPIMAP\Attachment;
 
 #[Description('Read a folder of bounces and resend all emails from specific domains')]
-#[Signature('secretsanta:post-blacklist {folder : IMAP folder containing bounces to analyze} {domains* : email domains concerned about the blacklist}')]
+#[Signature('secretsanta:post-blacklist {folder : IMAP folder containing bounces to analyze} {domains* : email domains concerned about the blacklist} {--force : Do not ask for confirmation}')]
 final class PostBlacklist extends Command
 {
+    use ConfirmsChanges;
     use ParsesDrawUrl;
 
     /**
@@ -26,7 +27,15 @@ final class PostBlacklist extends Command
      */
     public function handle(EmailClient $emailClient): void
     {
-        $mails = $emailClient->getMails((string) $this->stringArgument('folder'));
+        /** @var list<string> $domains */
+        $domains = $this->argument('domains');
+        $folder = (string) $this->stringArgument('folder');
+
+        if (! $this->confirmOrForce('Send their emails again to the participants on '.implode(', ', $domains).' bounced in '.$folder.', and delete those bounces?')) {
+            return;
+        }
+
+        $mails = $emailClient->getMails($folder);
 
         foreach ($mails as $mail) {
             try {

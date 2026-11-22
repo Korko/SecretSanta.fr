@@ -159,10 +159,28 @@ test('the fix-organizer command asks for the organizer email when not given', fu
 
     $this->artisan('secretsanta:fix-organizer', ['url' => $url])
         ->expectsQuestion('What is the correct email of the organizer?', 'orga@example.com')
+        ->expectsConfirmation('Change the organizer email from orga@exampel.com to orga@example.com and send their emails again?', 'yes')
         ->assertSuccessful();
 
     expect($draw->fresh()->organizer_email)->toBe('orga@example.com');
     Notification::assertSentToTimes($draw, OrganizerRecap::class, 1);
+});
+
+test('the fix-organizer command changes nothing and sends nothing when not confirmed', function (): void {
+    Notification::fake();
+    $draw = createOrganizedDraw('orga@exampel.com');
+    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getIV());
+    Notification::fake(); // Only what the command sends from here
+
+    $this->artisan('secretsanta:fix-organizer', ['url' => $url, 'email' => 'orga@example.com'])
+        ->expectsConfirmation('Change the organizer email from orga@exampel.com to orga@example.com and send their emails again?', 'no')
+        ->assertSuccessful();
+    $this->artisan('secretsanta:fix-organizer', ['url' => $url, 'email' => 'orga@exampel.com'])
+        ->expectsConfirmation('Send the organizer their emails again, to orga@exampel.com?', 'no')
+        ->assertSuccessful();
+
+    expect($draw->fresh()->organizer_email)->toBe('orga@exampel.com');
+    Notification::assertNothingSent();
 });
 
 test('keeping the current address in the fix-organizer command only sends the emails again', function (): void {
@@ -174,7 +192,7 @@ test('keeping the current address in the fix-organizer command only sends the em
     $organizer->update(['email' => 'new-'.$organizer->email]);
     $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getIV());
 
-    $this->artisan('secretsanta:fix-organizer', ['url' => $url, 'email' => $draw->organizer_email])->assertSuccessful();
+    $this->artisan('secretsanta:fix-organizer', ['url' => $url, 'email' => $draw->organizer_email, '--force' => true])->assertSuccessful();
 
     expect($organizer->fresh()->email)->toBe('new-'.$draw->organizer_email);
     Notification::assertSentToTimes($draw, OrganizerRecap::class, 1);
