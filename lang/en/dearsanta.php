@@ -6,12 +6,15 @@ return [
     'reminder' => 'Remember that your Secret Santa cannot reply to you! Make sure to give them as much information as possible.',
     'report' => [
         'question' => 'A problem?',
-        'not_me' => 'This email isn\'t for me',
-        'not_participating' => 'I\'m not taking part',
+        'identity' => 'Are you {name}?',
+        'not_me' => 'No, this email isn\'t for me',
+        'its_me' => 'Yes, it\'s me',
+        'not_participating' => 'I never asked to take part',
         'cancel' => 'Cancel the report',
+        'back' => 'Back',
         'sent' => [
-            'not_me' => '{organizer} will see on their page that this email wasn\'t for you.',
-            'not_participating' => '{organizer} will see on their page that you are not taking part.',
+            'not_me' => '{organizer} was told by email that this email wasn\'t for you, to fix the address.',
+            'not_participating' => '{organizer} was told by email that you are not taking part.',
         ],
     ],
     'targets' => [
@@ -52,8 +55,7 @@ return [
         'confirm' => [
             'title' => 'Withdraw from the event?',
             'body' => 'You will leave the draw for good: your secret santa will get a new target, {organizer} will be told by email and this page will stop working. If this email was not meant for you or you never asked to take part, use the report instead.',
-            'value' => 'Withdraw',
-            'help' => 'Type "[+!:verification]" below to confirm.',
+            'help' => 'Type your name, "{name}", below to confirm.',
             'ok' => 'Withdraw',
             'cancel' => 'Cancel',
         ],
