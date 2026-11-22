@@ -9,6 +9,7 @@ use App\Notifications\DearSanta;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
+use App\Notifications\TargetMessages;
 use App\Notifications\TargetRenamed;
 use App\Notifications\TargetWithdrawn;
 use App\Services\LegacyDrawEncrypter;
@@ -79,16 +80,17 @@ test('the organizer can withdraw a participant', function (): void {
         ->create();
     $participant = $draw->participants->first(fn ($participant) => $participant->santa->isNot($participant->target));
 
-    ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), [
+    $santa = $participant->santa;
+    $target = $participant->target;
+
+    // The target writes to their santa: the participant about to leave
+    ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $target]), [
         'content' => 'test dearSanta mail content',
     ])
         ->assertSuccessful()
         ->assertJsonStructure(['message']);
 
-    Notification::assertSentTo($participant->santa, DearSanta::class);
-
-    $santa = $participant->santa;
-    $target = $participant->target;
+    Notification::assertSentTo($participant, DearSanta::class);
 
     ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), ['remove' => [$participant->hash]])
         ->assertSuccessful()
@@ -102,7 +104,46 @@ test('the organizer can withdraw a participant', function (): void {
     assertEquals($target->santa->id, $santa->id);
 
     Notification::assertSentTo($santa, TargetWithdrawn::class);
-    Notification::assertSentTo($santa, DearSanta::class);
+    // Their new target's messages, in a single email that leaves the target's page as it was
+    Notification::assertSentTo($santa, TargetMessages::class, fn (TargetMessages $notification): bool => str_contains((string) $notification->toMail($santa)->render(), 'test dearSanta mail content'));
+    Notification::assertNotSentTo($santa, DearSanta::class);
+});
+
+test('a participant added to the draw gets the messages their target already wrote, in a single email', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    foreach ($draw->participants as $participant) {
+        ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), ['content' => 'from '.$participant->name])
+            ->assertSuccessful();
+    }
+
+    ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), [
+        'add' => [['name' => 'Newcomer', 'email' => 'newcomer@example.com']],
+    ])->assertSuccessful();
+
+    $newcomer = $draw->participants()->get()->firstOrFail(fn ($participant): bool => $participant->name === 'Newcomer');
+    Notification::assertSentTo($newcomer, TargetDrawn::class);
+    Notification::assertSentTo($newcomer, TargetMessages::class, fn (TargetMessages $notification): bool => str_contains((string) $notification->toMail($newcomer)->render(), e('from '.$newcomer->target->name)));
+    Notification::assertNotSentTo($newcomer, DearSanta::class);
+});
+
+test("a participant moved to a new address gets their target's messages there", function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+    ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant->target]), ['content' => 'lost message'])
+        ->assertSuccessful();
+
+    $url = URL::signedRoute('organizerPanel.changeEmail', ['draw' => $draw, 'participant' => $participant]);
+
+    // Same address: only the target email again
+    ajaxPost($url, ['email' => $participant->email])->assertSuccessful();
+    Notification::assertNotSentTo($participant, TargetMessages::class);
+
+    ajaxPost($url, ['email' => 'moved@example.com'])->assertSuccessful();
+    Notification::assertSentToTimes($participant, TargetMessages::class, 1);
 });
 
 test('the organizer can withdraw a participant in a 2-cycle', function (): void {

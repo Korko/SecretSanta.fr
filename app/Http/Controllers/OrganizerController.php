@@ -162,6 +162,11 @@ final class OrganizerController extends Controller
 
         $participant->notify(new TargetDrawn);
 
+        // A new address never got the messages their target wrote to them
+        if ($participant->wasChanged('email')) {
+            $participant->forwardTargetMessages();
+        }
+
         return response()->json([
             'message' => $message, 'participant' => $participant->only(['hash', 'mail']),
         ]);
