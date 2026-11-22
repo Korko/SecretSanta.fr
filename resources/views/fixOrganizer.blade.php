@@ -16,5 +16,5 @@
 @stop
 
 @section('content')
-    <fix-organizer-form action="{{ route('fixOrganizer.handle') }}" />
+    <div id="fix-organizer" data-action="{{ route('fixOrganizer.handle') }}"></div>
 @stop

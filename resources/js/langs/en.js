@@ -29,6 +29,10 @@ export default {
                     "received": "Received"
                 },
                 "recent": "You cannot resend the same email so quickly"
+            },
+            "csv": {
+                "generated": "File generated on {date} on {app} ({url})",
+                "usage": "This file can be used to prefill the participants and their exclusions"
             }
         },
         "dearsanta": {
@@ -110,11 +114,14 @@ export default {
                     "Is it possible to talk to your target?": "Not for now, for anonymity reasons. Only the target can write to their secret santa. But it is planned.",
                     "When is my personal data deleted?": "All the data of a draw is deleted 3 weeks after the event date. This delay lets the organizer download, from their organizer panel, the list of participants with their drawn target, to help organize a future secret santa with the same people while avoiding the same targets.",
                     "I forgot a participant, how can I add them?": "From your organizer panel, you can add a participant (or remove one). The new participant gets their target by email. To make room for them, another person gets a new target, picked at random so no one can guess who gives to whom, and they are notified by email. To keep adding simple, the new participant has no exclusions: they can draw anyone and be drawn by anyone.",
-                    "Who can know the list of targets?": "By default, nobody: the list is encrypted and appears nowhere. The organizer can however reveal it from their organizer page (email delivery issue, other events to organize with the same pairs...). This is permanent, and each participant sees on their page whether the list has been revealed."
+                    "Who can know the list of targets?": "By default, nobody: the list is encrypted and appears nowhere. The organizer can however reveal it from their organizer page (email delivery issue, other events to organize with the same pairs...). This is permanent, and each participant sees on their page whether the list has been revealed. Once the event day is over, the list is shown on the organizer page anyway."
                 },
                 "technical": {
                     "What data is stored and why?": "For each participant: name and email address; for each draw: the title and content of the email sent, as well as each message sent between participants through the link received by email (called 'dear santa'). They are kept for two reasons: first to allow that last feature, which lets you write to your secret santa. Then to allow resending emails in case of a wrong address.",
-                    "How is the data stored?": "Each item is encrypted with AES-256 using a unique key per draw. This key is not stored and is sent to each participant. The administrator can therefore never access the data without action on your part. Every time you perform an action, you automatically use this key, which is only lent to SecretSanta to perform the requested action without ever being saved.",
+                    "How is the data stored?": "Each item is encrypted with AES-256 using a key computed from a server key and a unique secret per draw. This secret is not stored and is sent to each participant in their link. Without it, even with full access to the server, the stored data is unreadable: the administrator therefore cannot access it without action on your part. One exception: while the emails are being sent, the secret is kept with each pending email, from a few minutes up to 7 days if sending fails. Likewise, a bounced email (invalid address), which contains the link, is kept for up to 7 days. Every time you perform an action, you automatically use this secret, which is only lent to SecretSanta to perform the requested action.",
+                    "What is end-to-end encryption (E2E)?": "End-to-end encryption (E2E) means encryption between two users of a service: the message is encrypted on the sender's device and can only be decrypted on the recipient's device. The service carrying the message never sees its content in clear, at any time. Signal is an example. Unfortunately, the term is often misused to describe simple encryption between the client (your browser) and the server, which is actually what HTTPS does on any website: in that case, the server does see the data in clear.",
+                    "What is \"zero access\" encryption?": "Zero access encryption means that data is encrypted as soon as it reaches the server, with a key the service does not keep. Once stored, the service can no longer read it on its own. The difference with end-to-end encryption: the server briefly sees the data in clear when it receives or processes it, whereas with E2E it never does. This is for example the model used by some email providers for emails received from outside.",
+                    "Does SecretSanta use end-to-end encryption?": "No, and we prefer to be clear rather than misuse the term. SecretSanta needs to read your data at certain times, for example to send each participant the email with their target, which is incompatible with true end-to-end encryption. Here is what actually happens: your data is first encrypted between your browser and SecretSanta thanks to HTTPS. The server then immediately encrypts it, with a secret specific to your draw that it does not keep, so that no trace of the data remains in clear. It is only decrypted when a user performs an action (opening their page, writing to their secret santa, resending an email...), using the secret contained in their link, and the secret is then forgotten. This approach is close to zero access encryption.",
                     "I would like to delete my data, how can I do it?": "Because of the way the data is stored, the administrator cannot know which data belongs to whom. Only the organizer can delete the data of all participants at once. Otherwise, the data is automatically deleted shortly after the end of the event.",
                     "I would like to check the source code myself, where can I find it?": "With pleasure! The source code is available at https://framagit.org/Korko/SecretSanta. You will also find the link at the bottom of every page."
                 }
@@ -227,7 +234,7 @@ export default {
                 "content": {
                     "label": "Email content",
                     "placeholder": "e.g. Hi {SANTA}, for the secret santa party, your target is {TARGET}. Reminder: the gift amount is $3!",
-                    "tip1": "Use \"{santa}&#123;SANTA&#125;{close}\" for the name of the email recipient and \"{target}&#123;TARGET&#125;{close}\" for the name of their target.",
+                    "tip1": "Use \"{santa}\" for the name of the email recipient and \"{target}\" for the name of their target.",
                     "tip2": "Tip: remember to mention the date, the place and the gift amount."
                 },
                 "post": "----\nTo write to your Secret Santa, go to the following page: {link}\nvia SecretSanta"
@@ -245,14 +252,6 @@ export default {
             "internalError": "Internal error"
         },
         "organizer": {
-            "rename": {
-                "button": "Change the name",
-                "title": "Rename {name}",
-                "body": "Their Santa will be told the new name by email. Targets do not change.",
-                "ok": "Rename",
-                "cancel": "Cancel",
-                "done": "Renamed to {name}"
-            },
             "url": "Link received by a participant by email",
             "fix": "Fix",
             "date": {
@@ -283,6 +282,15 @@ export default {
                 "received_count": "{received}/{total} participants confirmed receiving their email (reply, page visit or acknowledgement)"
             },
             "up_and_sent": "Successfully updated!",
+            "renamed": "Name changed, their Santa was told",
+            "rename": {
+                "button": "Change the name",
+                "title": "Rename {name}",
+                "body": "Their Santa will be told the new name by email. Targets do not change.",
+                "ok": "Rename",
+                "cancel": "Cancel",
+                "done": "Renamed to {name}"
+            },
             "cannot_withdraw": "Unable to remove {name} without giving someone a person they excluded",
             "withdrawn": "{name} no longer takes part in the event.",
             "deleted": "All data has been deleted",

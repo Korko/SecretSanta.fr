@@ -29,6 +29,10 @@ export default {
                     "received": "Empfangen"
                 },
                 "recent": "Sie können dieselbe E-Mail nicht zu schnell erneut versenden"
+            },
+            "csv": {
+                "generated": "Datei erstellt am {date} auf {app} ({url})",
+                "usage": "Mit dieser Datei können die Teilnehmer und ihre Ausschlüsse vorausgefüllt werden"
             }
         },
         "dearsanta": {
@@ -114,7 +118,10 @@ export default {
                 },
                 "technical": {
                     "Welche Daten werden gespeichert und warum?": "Für jeden Teilnehmer werden der Name und die E-Mail-Adresse gespeichert, sowie für jede Organisation der Titel und Inhalt der gesendeten E-Mail und jede Nachricht, die zwischen den Teilnehmern über den per E-Mail erhaltenen Link (genannt 'Lieber Weihnachtsmann') gesendet wurde. Sie werden aus zwei Gründen gespeichert: Erstens, um diese Funktion zu ermöglichen, mit der man seinem/ihrem Secret Santa schreiben kann. Zweitens, um E-Mails im Falle eines Adressfehlers erneut zu versenden.",
-                    "Wie werden die Daten gespeichert?": "Jedes Element wird mit AES-256 verschlüsselt und erhält einen einzigartigen Schlüssel pro Organisation. Dieser Schlüssel wird nicht gespeichert und wird an jeden Teilnehmer gesendet. Der Administrator kann also niemals auf die Daten zugreifen, ohne dass Sie aktiv handeln. Jedes Mal, wenn Sie eine Aktion durchführen, verwenden Sie automatisch diesen Schlüssel, der nur für die angeforderte Aktion an SecretSanta überlassen wird, ohne dass er gespeichert wird.",
+                    "Wie werden die Daten gespeichert?": "Jedes Element wird mit AES-256 verschlüsselt, mit einem Schlüssel, der aus einem Serverschlüssel und einem einzigartigen Geheimnis pro Organisation berechnet wird. Dieses Geheimnis wird nicht gespeichert und wird jedem Teilnehmer in seinem Link gesendet. Ohne es sind die gespeicherten Daten selbst bei vollem Zugriff auf den Server unlesbar: Der Administrator kann also nicht darauf zugreifen, ohne dass Sie aktiv handeln. Eine Ausnahme: Während die E-Mails versendet werden, wird das Geheimnis mit jeder ausstehenden E-Mail aufbewahrt, von einigen Minuten bis zu 7 Tagen, falls der Versand fehlschlägt. Ebenso wird eine unzustellbare E-Mail (ungültige Adresse), die den Link enthält, bis zu 7 Tage aufbewahrt. Jedes Mal, wenn Sie eine Aktion durchführen, verwenden Sie automatisch dieses Geheimnis, das SecretSanta nur für die angeforderte Aktion überlassen wird.",
+                    "Was ist Ende-zu-Ende-Verschlüsselung (E2E)?": "Ende-zu-Ende-Verschlüsselung (E2E) bezeichnet eine Verschlüsselung zwischen zwei Nutzern eines Dienstes: Die Nachricht wird auf dem Gerät des Absenders verschlüsselt und kann nur auf dem Gerät des Empfängers entschlüsselt werden. Der Dienst, der die Nachricht überträgt, sieht ihren Inhalt zu keinem Zeitpunkt im Klartext. Signal ist ein Beispiel dafür. Leider wird der Begriff oft missbraucht, um eine einfache Verschlüsselung zwischen dem Client (Ihrem Browser) und dem Server zu bezeichnen, was eigentlich das ist, was HTTPS auf jeder Website tut: In diesem Fall sieht der Server die Daten sehr wohl im Klartext.",
+                    "Was ist „Zero Access“-Verschlüsselung?": "„Zero Access“-Verschlüsselung bedeutet, dass die Daten verschlüsselt werden, sobald sie auf dem Server ankommen, mit einem Schlüssel, den der Dienst nicht aufbewahrt. Einmal gespeichert, kann der Dienst sie nicht mehr selbst lesen. Der Unterschied zur Ende-zu-Ende-Verschlüsselung: Der Server sieht die Daten kurz im Klartext, wenn er sie empfängt oder verarbeitet, während er sie bei E2E nie sieht. Dieses Modell nutzen zum Beispiel einige E-Mail-Anbieter für von außen empfangene E-Mails.",
+                    "Verwendet SecretSanta.fr Ende-zu-Ende-Verschlüsselung?": "Nein, und wir möchten lieber ehrlich sein, als den Begriff falsch zu verwenden. SecretSanta.fr muss Ihre Daten zu bestimmten Zeitpunkten lesen können, zum Beispiel um jedem Teilnehmer die E-Mail mit seinem Ziel zu senden, was mit echter Ende-zu-Ende-Verschlüsselung unvereinbar ist. Tatsächlich passiert Folgendes: Ihre Daten werden zunächst dank HTTPS zwischen Ihrem Browser und SecretSanta.fr verschlüsselt. Der Server verschlüsselt sie dann sofort mit einem Geheimnis, das Ihrer Organisation eigen ist und das er nicht aufbewahrt, sodass keine Spur der Daten im Klartext bleibt. Sie werden nur entschlüsselt, wenn ein Nutzer eine Aktion durchführt (seine Seite öffnen, seinem Secret Santa schreiben, eine E-Mail erneut senden...), mithilfe des Geheimnisses in seinem Link, und das Geheimnis wird danach vergessen. Diese Funktionsweise kommt der „Zero Access“-Verschlüsselung nahe.",
                     "Ich möchte meine Daten löschen, wie kann ich das tun?": "Wegen der Art, wie die Daten gespeichert sind, kann der Administrator nicht wissen, welche Daten zu wem gehören. Nur der Organisator kann die Daten aller Teilnehmer auf einmal löschen. Andernfalls werden diese Daten automatisch kurz nach dem Ende der Veranstaltung gelöscht.",
                     "Ich möchte den Quellcode selbst überprüfen, wo finde ich ihn?": "Sehr gerne! Der Quellcode ist unter folgender Adresse zu finden: https://framagit.org/Korko/SecretSanta. Den Link finden Sie auch unten auf jeder Seite."
                 }
@@ -227,7 +234,7 @@ export default {
                 "content": {
                     "label": "Inhalt der E-Mail",
                     "placeholder": "z.B. Hallo {SANTA}, bei der Secret Santa Party ist dein Ziel {TARGET}. Denke daran, das Geschenk sollte 3 € kosten!",
-                    "tip1": "Verwende \"{santa}&#123;SANTA&#125;{close}\" für den Namen des Empfängers und \"{target}&#123;TARGET&#125;{close}\" für den Namen seiner Zielperson.",
+                    "tip1": "Verwende \"{santa}\" für den Namen des Empfängers und \"{target}\" für den Namen seiner Zielperson.",
                     "tip2": "Tipp: Denke daran, das Datum, den Ort und den Wert des Geschenks zu erwähnen."
                 },
                 "post": "----\nUm deinem Secret Santa zu schreiben, besuche folgende Seite: {link}\nvia SecretSanta.fr"
@@ -245,14 +252,6 @@ export default {
             "internalError": "Interner Fehler"
         },
         "organizer": {
-            "rename": {
-                "button": "Namen ändern",
-                "title": "{name} umbenennen",
-                "body": "Ihr Santa wird per E-Mail über den neuen Namen informiert. Die Ziele ändern sich nicht.",
-                "ok": "Umbenennen",
-                "cancel": "Abbrechen",
-                "done": "Umbenannt in {name}"
-            },
             "url": "Link, den ein(e) Teilnehmer(in) per E-Mail erhalten hat",
             "fix": "Korrigieren",
             "date": {
@@ -283,6 +282,15 @@ export default {
                 "received_count": "{received}/{total} Teilnehmer haben den Empfang ihrer E-Mail bestätigt (Antwort, Seitenbesuch oder Empfangsbestätigung)"
             },
             "up_and_sent": "Erfolgreich geändert!",
+            "renamed": "Name geändert, ihr Santa wurde informiert",
+            "rename": {
+                "button": "Namen ändern",
+                "title": "{name} umbenennen",
+                "body": "Ihr Santa wird per E-Mail über den neuen Namen informiert. Die Ziele ändern sich nicht.",
+                "ok": "Umbenennen",
+                "cancel": "Abbrechen",
+                "done": "Umbenannt in {name}"
+            },
             "cannot_withdraw": "{name} kann nicht entfernt werden, ohne jemandem eine ausgeschlossene Person zuzuteilen",
             "withdrawn": "{name} nimmt nicht mehr an der Veranstaltung teil.",
             "deleted": "Alle Daten wurden gelöscht",

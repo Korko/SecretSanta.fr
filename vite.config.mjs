@@ -24,8 +24,6 @@ export default defineConfig(({ mode }) => ({
             // Only bundle the translations of the site locale (APP_LOCALE)
             // Webpack-style "~package" imports in scss
             { find: /^~(.+)/, replacement: '$1' },
-            // In-DOM templates in blade need the template compiler
-            { find: /^vue$/, replacement: 'vue/dist/vue.esm-bundler.js' },
         ],
     },
 }));
