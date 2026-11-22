@@ -379,3 +379,22 @@ it('forwards gift ideas to the new santa when the recipient changes santa', func
         Notification::assertSentTo($newSanta, GiftSuggestion::class);
     }
 });
+
+it('only tells a gift idea sender whether it was sent, not when it was read', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    $sender = $draw->participants->first();
+    $recipient = $draw->participants->first(fn ($p): bool => ! $p->is($sender) && ! $p->is($sender->target));
+    $suggest = URL::signedRoute('dearSanta.suggest', ['participant' => $sender]);
+
+    ajaxPost($suggest, ['recipient' => $recipient->hash, 'content' => str_repeat('a', 2001)])->assertStatus(422);
+    ajaxPost($suggest, ['recipient' => $recipient->hash, 'content' => 'A mug'])->assertSuccessful();
+
+    $mail = $sender->sentSuggestions()->firstOrFail()->mail;
+    $mail->markAsReceived();
+    expect(new MailStatusUpdated($mail->fresh())->broadcastWhen())->toBeFalse();
+
+    $suggestions = ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $sender]))->json('suggestions');
+    expect(array_values($suggestions)[0]['mail']['delivery_status'])->toBe('sent');
+});

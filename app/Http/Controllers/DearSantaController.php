@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\DeliveryStatus;
 use App\Enums\ReportReason;
 use App\Events\ParticipantUpdated;
 use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
 use App\Models\GiftSuggestion;
-use App\Models\Mail;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
 use App\Notifications\GiftSuggestion as GiftSuggestionNotification;
@@ -106,7 +106,7 @@ final class DearSantaController extends Controller
         $recipients = $this->suggestionRecipients($participant);
         $request->validate([
             'recipient' => ['required', Rule::in($recipients->pluck('hash')->all())],
-            'content' => ['required', 'string'],
+            'content' => ['required', 'string', 'max:2000'],
             'signed' => ['boolean'],
         ], [
             'recipient.required' => __('validation.custom.dearSanta.recipient.required'),
@@ -330,7 +330,7 @@ final class DearSantaController extends Controller
             ->values();
     }
 
-    /** @return SupportCollection<int, array{mail_body: string, signed: bool, recipient: string, mail: Mail}> */
+    /** @return SupportCollection<int, array{mail_body: string, signed: bool, recipient: string, mail: array{id: int, delivery_status: DeliveryStatus, created_at: mixed, updated_at: mixed}}> */
     private function sentSuggestions(Participant $participant): SupportCollection
     {
         return $participant->sentSuggestions()->with('recipient')->get()
@@ -351,14 +351,23 @@ final class DearSantaController extends Controller
             ])->values();
     }
 
-    /** @return array{mail_body: string, signed: bool, recipient: string, mail: Mail} */
+    // Sent or not, never when it was read: seeing someone else's santa open their email would tell who they are
+    /** @return array{mail_body: string, signed: bool, recipient: string, mail: array{id: int, delivery_status: DeliveryStatus, created_at: mixed, updated_at: mixed}} */
     private function publicSuggestion(GiftSuggestion $suggestion): array
     {
+        $mail = $suggestion->mail;
+        $received = $mail->delivery_status === DeliveryStatus::Received;
+
         return [
             'mail_body' => $suggestion->mail_body,
             'signed' => $suggestion->signed,
             'recipient' => $suggestion->recipient->name,
-            'mail' => $suggestion->mail,
+            'mail' => [
+                'id' => $mail->id,
+                'delivery_status' => $received ? DeliveryStatus::Sent : $mail->delivery_status,
+                'created_at' => $mail->created_at,
+                'updated_at' => $received ? $mail->created_at : $mail->updated_at,
+            ],
         ];
     }
 }

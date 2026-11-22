@@ -24,12 +24,13 @@ final class GiftSuggestion extends Notification implements ShouldBeEncrypted, Sh
     use Queueable;
     use SerializesModels;
 
-    public function __construct(private GiftSuggestionModel $suggestion) {}
+    // Resent to a new santa untracked: a status starting over on the sender's page would tell them that santa changed
+    public function __construct(private GiftSuggestionModel $suggestion, private bool $tracked = true) {}
 
     /** @return list<string> */
     public function via(Participant $santa): array
     {
-        return [TrackedMailChannel::class];
+        return [$this->tracked ? TrackedMailChannel::class : 'mail'];
     }
 
     public function getTrackedMail(Participant|Draw $notifiable): Mail

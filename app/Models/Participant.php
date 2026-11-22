@@ -164,9 +164,9 @@ final class Participant extends Model
             $this->notify(new TargetMessages);
         }
 
-        // But their own ideas
+        // But their own ideas. Untracked (see GiftSuggestionNotification)
         $this->target->receivedSuggestions->where('sender_id', '!=', $this->id)
-            ->each(fn (GiftSuggestion $suggestion) => $this->notify(new GiftSuggestionNotification($suggestion)));
+            ->each(fn (GiftSuggestion $suggestion) => $this->notify(new GiftSuggestionNotification($suggestion, tracked: false)));
     }
 
     public function createMetric(string $name, int $value = 1): Metric

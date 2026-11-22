@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Events;
 
+use App\Enums\DeliveryStatus;
 use App\Models\DearSanta;
 use App\Models\Draw;
 use App\Models\GiftSuggestion;
@@ -35,6 +36,12 @@ final class MailStatusUpdated implements ShouldBroadcast
             'delivery_status' => $this->mail->delivery_status,
             'updated_at' => $this->mail->updated_at,
         ];
+    }
+
+    // A gift idea's sender only learns whether it was sent (see DearSantaController::publicSuggestion)
+    public function broadcastWhen(): bool
+    {
+        return ! ($this->mail->mailable instanceof GiftSuggestion && $this->mail->delivery_status === DeliveryStatus::Received);
     }
 
     /**
