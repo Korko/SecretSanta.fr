@@ -33,7 +33,8 @@ final class PostBlacklist extends Command
                 $attachment = $mail->getAttachments()->first(fn (mixed $attachment): bool => $attachment instanceof Attachment && $attachment->content_type === 'message/rfc822');
                 $content = str_replace("=\r\n", '', (string) $attachment?->content);
 
-                $pattern = '@'.preg_quote(config()->string('app.url'), '@').'/dearSanta/\w+\?signature=\w+#[\w+=]+@';
+                // A participant's page, or the panel in the organizer's email when they take part (Participant::pageUrl)
+                $pattern = '@'.preg_quote(config()->string('app.url'), '@').'/(?:dearSanta|org)/\w+\?signature=\w+#[\w+=]+@';
                 if (! preg_match($pattern, $content, $match)) {
                     continue;
                 }
@@ -53,7 +54,9 @@ final class PostBlacklist extends Command
     {
         $this->setCryptIVFromUrl($url);
 
-        $participant = resolve(URLParser::class)->participant($url);
+        $parser = resolve(URLParser::class);
+        // A panel link: the recap of an organizer who doesn't take part is not sent again here
+        $participant = $parser->participant($url) ?? $parser->draw($url)?->organizer;
         if (! $participant instanceof Participant) {
             return false;
         }

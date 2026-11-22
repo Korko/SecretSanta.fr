@@ -26,6 +26,7 @@ return [
     'organizer_recap.thanks' => 'Merci d\'avoir organisé votre évènement en utilisant :app.',
     'organizer_recap.enjoy' => 'Amusez-vous bien !',
     'organizer.panel' => 'Afin de surveiller si tous les participants ont bien reçu leur email ou modifier une adresse en cas d\'erreur, rendez-vous sur votre interface personnalisée : :link',
+    'organizer.panel_same_page' => 'C\'est aussi sur cette page que vous pourrez surveiller si tous les participants ont bien reçu leur email, ou modifier une adresse en cas d\'erreur.',
     'organizer.csv' => 'Le récapitulatif des participant(e)s et des exclusions que vous avez définies est joint à cet email, et téléchargeable depuis cette même interface. Il pourra être réutilisé sur :app pour gagner du temps lors de l\'organisation de votre prochain évènement.',
     'organizer.next' => 'Dès que vous aurez révélé les cibles, ou au lendemain du :date, un second récapitulatif y sera disponible : la cible tirée par chaque participant(e) y est ajoutée à ses exclusions, pour améliorer encore votre prochain évènement.',
     'organizer.deletion' => 'Toutes les informations relatives à cet évènement seront supprimées le :date. Cette interface ne sera alors plus disponible.',

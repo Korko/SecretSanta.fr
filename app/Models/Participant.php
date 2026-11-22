@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use App\Enums\ReportReason;
+use App\Facades\DrawCrypt;
 use App\Notifications\GiftSuggestion as GiftSuggestionNotification;
 use App\Notifications\TargetMessages;
 use Carbon\CarbonImmutable;
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 use STS\Metrics\Facades\Metrics;
 use STS\Metrics\Metric;
 
@@ -88,6 +90,17 @@ final class Participant extends Model
     public function isOrganizer(): bool
     {
         return $this->draw->organizer?->is($this) ?? false;
+    }
+
+    // The link to their page in their emails, with the draw secret. Taking part, the organizer has a single page:
+    // their panel, which holds their participant part too (their dearSanta link leads there)
+    public function pageUrl(): string
+    {
+        $url = $this->isOrganizer()
+            ? URL::signedRoute('organizerPanel', ['draw' => $this->draw->hash])
+            : URL::signedRoute('dearSanta', ['participant' => $this->hash]);
+
+        return $url.'#'.base64_encode(DrawCrypt::getIV());
     }
 
     // Public channel named after a secret (only given by the signed fetch route), not the hash participants can see

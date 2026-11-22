@@ -1,4 +1,8 @@
+@if($organizer['samePage'] ?? false)
+    {!! __('emails.organizer.panel_same_page') !!}
+@else
     {!! __('emails.organizer.panel', ['link' => $organizer['panelLink']]) !!}
+@endif
 
     {!! __('emails.organizer.csv', ['app' => config('app.name')]) !!}
 @if($organizer['nextSolvable'])

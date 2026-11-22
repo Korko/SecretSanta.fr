@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use App\Models\Draw;
+use App\Models\GiftSuggestion as GiftSuggestionModel;
+use App\Notifications\GiftSuggestion;
+use App\Notifications\TargetDrawn;
 use App\Services\DrawFormHandler;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
@@ -55,4 +58,29 @@ test('the panel holds no participant page for an organizer who does not take par
     $ended = createServiceDraw(generateParticipants(3));
     $this->travelTo($ended->ends_at);
     $this->get(organizerPanelUrl($ended))->assertOk()->assertViewHas('participantRoutes', null);
+});
+
+test('the emails give the organizer a single link, to their panel', function (): void {
+    Notification::fake();
+    $draw = createServiceDraw(generateParticipants(3));
+    [$organizer, $other] = $draw->participants;
+    $panel = organizerPanelUrl($draw).'#'.base64_encode(DrawCrypt::getIV());
+
+    // Their target email: the link to write to their santa is the panel, the organizer block doesn't repeat it
+    $mail = new TargetDrawn()->toMail($organizer);
+    $text = view($mail->view[1], $mail->data())->render();
+    expect(mb_substr_count($text, $panel))->toBe(1)
+        ->and($text)->not->toContain('/dearSanta/')
+        ->toContain(trans('emails.organizer.panel_same_page'))
+        ->and((string) $mail->render())->not->toContain('/dearSanta/');
+
+    // The other participants keep their own page
+    expect(new TargetDrawn()->toMail($other)->data()['dearSantaLink'])->toContain('/dearSanta/'.$other->hash);
+
+    // A gift idea for the organizer's target
+    $suggestion = new GiftSuggestionModel(['mail_body' => 'Un livre', 'signed' => false]);
+    $suggestion->sender()->associate($other);
+    $suggestion->recipient()->associate($organizer->target);
+    $suggestion->save();
+    expect(new GiftSuggestion($suggestion)->toMail($organizer)->data()['dearSantaLink'])->toBe($panel);
 });
