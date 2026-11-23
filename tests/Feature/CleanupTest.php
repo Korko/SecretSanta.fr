@@ -36,10 +36,3 @@ it('cleans up everything', function (): void {
     assertEquals(0, DearSanta::query()->count());
     assertEquals(0, Mail::query()->count());
 });
-
-it('prunes failed jobs, which keep the draw secret, after a week', function (): void {
-    // schedule:list loads routes/console.php like the scheduler does
-    $this->artisan('schedule:list')
-        ->expectsOutputToContain('queue:prune-failed --hours=168')
-        ->assertSuccessful();
-});

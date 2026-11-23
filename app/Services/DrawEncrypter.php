@@ -32,9 +32,9 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
 
     private string $secret;
 
-    private ?Encrypter $encrypter = null;
+    private ?Encrypter $encrypter;
 
-    private ?LegacyDrawEncrypter $legacy = null;
+    private ?LegacyDrawEncrypter $legacy;
 
     /** @param list<string> $previousKeys */
     public function __construct(
@@ -44,7 +44,15 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
     ) {
         throw_unless(Encrypter::supported($appKey, $cipher), RuntimeException::class, 'Unsupported cipher or incorrect key length.');
 
-        $this->secret = random_bytes(self::SECRET_LENGTH);
+        $this->setIV($this->generateIV());
+    }
+
+    /**
+     * Generate a new secret
+     */
+    public function generateIV(): string
+    {
+        return random_bytes(self::SECRET_LENGTH);
     }
 
     /**

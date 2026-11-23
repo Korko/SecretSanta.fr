@@ -98,10 +98,10 @@ final class AppServiceProvider extends ServiceProvider
         ]);
 
         $this->app->make(Dispatcher::class)->listen(JobProcessing::class, function (JobProcessing $event): void {
+            // A job without secret gets a new one, like a new draw, not the one of the previous job:
+            // it would encrypt with it and send it in its links. Decrypting existing data then fails
             $iv = data_get($event->job->payload(), 'data.iv');
-            if (is_string($iv)) {
-                DrawCrypt::setIV(base64_decode($iv));
-            }
+            DrawCrypt::setIV(is_string($iv) ? base64_decode($iv) : DrawCrypt::generateIV());
 
             $locale = data_get($event->job->payload(), 'data.locale');
             if (is_string($locale)) {
