@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\Participant;
-use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use App\Services\EmailClient;
 use App\Services\URLParser;
@@ -66,11 +65,7 @@ final class PostBlacklist extends Command
             return false;
         }
 
-        if ($participant->isOrganizer()) {
-            $participant->draw->notify(new OrganizerRecap($participant->draw));
-            $this->info('Organizer Recap sent');
-        }
-
+        // The organizer's comes with their recap: no separate one, like at the draw
         $participant->notifyNow(new TargetDrawn);
         $this->info('Participant mail sent');
 

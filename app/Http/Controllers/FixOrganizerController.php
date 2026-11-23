@@ -91,10 +91,19 @@ final class FixOrganizerController extends Controller
                 }
             }
 
-            $draw->recapMail()->markAsCreated();
-            $draw->notify(new OrganizerRecap($draw));
+            // Like at the draw: taking part, the organizer gets the recap within their target email only
+            if ($organizer !== null) {
+                $organizer->mail->markAsCreated();
+                $organizer->notify(new TargetDrawn);
 
-            $organizer?->notify(new TargetDrawn);
+                // A new address never got the messages their target wrote to them
+                if (! $sameEmail) {
+                    $organizer->forwardTargetMessages();
+                }
+            } else {
+                $draw->recapMail()->markAsCreated();
+                $draw->notify(new OrganizerRecap($draw));
+            }
         });
 
         return response()->json([

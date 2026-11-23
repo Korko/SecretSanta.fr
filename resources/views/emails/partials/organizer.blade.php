@@ -6,3 +6,5 @@
 
     <p style="padding-bottom:10px !important">{{ __('emails.organizer.deletion', ['date' => $organizer['deletionDate']]) }}</p>
 
+    {{-- Someone else may have used this address to send a draw, as spam: what the participants' report line is for them --}}
+    <p style="padding-bottom:10px !important"><small>{!! __('emails.organizer.abuse', ['button' => e(__('organizer.purge.button')), 'email' => '<a href="mailto:'.e(config('app.email')).'">'.e(config('app.email')).'</a>']) !!}</small></p>
