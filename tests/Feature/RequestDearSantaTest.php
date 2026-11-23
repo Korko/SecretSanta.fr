@@ -9,6 +9,7 @@ use App\Notifications\DearSanta;
 use App\Notifications\GiftSuggestion;
 use App\Notifications\ParticipantEmailCode;
 use App\Notifications\ParticipantWithdrew;
+use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetMessages;
 use App\Notifications\TargetWithdrawn;
@@ -250,15 +251,20 @@ it('does not give a santa a target they excluded when theirs withdraws', functio
         ->and($draw->participants->every(fn ($p): bool => $p->target->isNot($p)))->toBeTrue();
 });
 
-it('sends again, in a single email, every message the target wrote to their santa', function (): void {
+it('sends again, in a single email, every message the target wrote to their santa and the gift ideas given for them', function (): void {
     Notification::fake();
 
-    $draw = Draw::factory()->hasParticipants(3)->create();
+    $draw = Draw::factory()->hasParticipants(4)->create();
     $participant = $draw->participants->first();
     $target = $participant->target;
 
     foreach (['first message', 'second message'] as $content) {
         ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $target]), ['content' => $content])->assertSuccessful();
+    }
+
+    $sender = $draw->participants->firstOrFail(fn ($p): bool => ! $p->is($participant) && ! $p->is($target));
+    foreach (['first idea', 'second idea'] as $content) {
+        ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), ['recipient' => $target->hash, 'content' => $content])->assertSuccessful();
     }
 
     // What they wrote to their own santa is not part of it
@@ -272,18 +278,20 @@ it('sends again, in a single email, every message the target wrote to their sant
     Notification::assertSentTo($participant, TargetMessages::class, function (TargetMessages $notification) use ($participant): bool {
         $html = (string) $notification->toMail($participant)->render();
 
-        return str_contains($html, 'first message') && str_contains($html, 'second message') && ! str_contains($html, 'my own message');
+        return str_contains($html, 'first message') && str_contains($html, 'second message') && ! str_contains($html, 'my own message')
+            && str_contains($html, 'first idea') && str_contains($html, 'second idea');
     });
 
-    // The messages themselves are not sent again: their status, on the target's page, stays as it was
+    // The messages and ideas themselves are not sent again: their status, on their senders' pages, stays as it was
     Notification::assertSentToTimes($participant, DearSanta::class, 2);
+    Notification::assertSentToTimes($participant, GiftSuggestion::class, 2);
 
     // Once per resend delay
     ajaxPost(URL::signedRoute('dearSanta.resend_target', ['participant' => $participant]))->assertForbidden();
     Notification::assertSentToTimes($participant, TargetMessages::class, 1);
 });
 
-it("sends the target's messages to the participant's new address too", function (): void {
+it("sends the target's messages to the participant's new address too, in their target email", function (): void {
     Notification::fake();
 
     $draw = Draw::factory()->hasParticipants(3)->create();
@@ -292,9 +300,13 @@ it("sends the target's messages to the participant's new address too", function 
         ->assertSuccessful();
 
     $code = requestEmailChange($participant, 'new@example.com');
+    Notification::fake(); // only what the change of address sends
     ajaxPost(URL::signedRoute('dearSanta.change_email', ['participant' => $participant]), ['code' => $code])->assertSuccessful();
 
-    Notification::assertSentToTimes($participant, TargetMessages::class, 1);
+    // A single email: their target and what they wrote
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
+    Notification::assertSentTo($participant, TargetDrawn::class, fn (TargetDrawn $notification): bool => str_contains((string) $notification->toMail($participant)->render(), 'lost message'));
+    Notification::assertNotSentTo($participant, TargetMessages::class);
 });
 
 it('confirms a reception once: reloading the page neither writes nor broadcasts it again', function (): void {
@@ -372,15 +384,15 @@ it('forwards gift ideas to the new santa when the recipient changes santa', func
     // Their santa leaves: the santa's own santa now gives to the recipient, and gets the idea
     ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $recipient->santa]))->assertSuccessful();
 
+    // In the email telling them about their new target, unless it is their own idea
     $newSanta = $recipient->fresh()->santa;
-    if ($newSanta->is($sender)) {
-        Notification::assertNotSentTo($newSanta, GiftSuggestion::class);
-    } else {
-        Notification::assertSentTo($newSanta, GiftSuggestion::class);
-    }
+    $emails = Notification::sent($newSanta, TargetWithdrawn::class)->merge(Notification::sent($newSanta, TargetChanged::class));
+    expect($emails)->toHaveCount(1)
+        ->and(str_contains((string) $emails->first()->toMail($newSanta)->render(), 'A book'))->toBe(! $newSanta->is($sender));
+    Notification::assertNotSentTo($newSanta, GiftSuggestion::class);
 });
 
-it('sends a participant added to the draw the gift ideas already given for their target, untracked', function (): void {
+it('sends a participant added to the draw the gift ideas already given for their target, in their target email', function (): void {
     Notification::fake();
 
     $draw = Draw::factory()->hasParticipants(4)->create();
@@ -395,11 +407,12 @@ it('sends a participant added to the draw the gift ideas already given for their
     ])->assertSuccessful();
 
     $newcomer = $draw->participants()->get()->firstOrFail(fn ($participant): bool => $participant->name === 'Newcomer');
-    Notification::assertSentTo($newcomer, GiftSuggestion::class, fn (GiftSuggestion $notification): bool => $notification->via($newcomer) === ['mail']
-        && $notification->toMail($newcomer)->viewData['content'] === 'idea for '.$newcomer->target->name);
+    Notification::assertSentToTimes($newcomer, TargetDrawn::class, 1);
+    Notification::assertSentTo($newcomer, TargetDrawn::class, fn (TargetDrawn $notification): bool => str_contains((string) $notification->toMail($newcomer)->render(), e('idea for '.$newcomer->target->name)));
+    Notification::assertNotSentTo($newcomer, GiftSuggestion::class);
 });
 
-it("sends the gift ideas given for their target to the participant's new address too, untracked", function (): void {
+it("sends the gift ideas given for their target to the participant's new address too, in their target email", function (): void {
     Notification::fake();
 
     $draw = Draw::factory()->hasParticipants(4)->create();
@@ -409,12 +422,13 @@ it("sends the gift ideas given for their target to the participant's new address
         ->assertSuccessful();
 
     $code = requestEmailChange($participant, 'new@example.com');
+    Notification::fake(); // only what the change of address sends
     ajaxPost(URL::signedRoute('dearSanta.change_email', ['participant' => $participant]), ['code' => $code])->assertSuccessful();
 
-    // Once tracked when given, once untracked to the new address
-    Notification::assertSentToTimes($participant, GiftSuggestion::class, 2);
-    Notification::assertSentTo($participant, GiftSuggestion::class, fn (GiftSuggestion $notification): bool => $notification->via($participant) === ['mail']
-        && $notification->toMail($participant)->viewData['content'] === 'A scarf');
+    // Not on its own again: within the target email, at the new address
+    Notification::assertNotSentTo($participant, GiftSuggestion::class);
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
+    Notification::assertSentTo($participant, TargetDrawn::class, fn (TargetDrawn $notification): bool => str_contains((string) $notification->toMail($participant)->render(), 'A scarf'));
 });
 
 it('only tells a gift idea sender whether it was sent, not when it was read', function (): void {

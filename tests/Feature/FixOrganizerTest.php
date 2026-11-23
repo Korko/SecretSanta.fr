@@ -137,10 +137,11 @@ test('a participating organizer fixing their address gets their target email the
 
     expect($organizer->fresh()->email)->toBe($mistyped.'x')
         ->and($draw->fresh()->organizer_email)->toBe($mistyped.'x');
-    Notification::assertSentToTimes($organizer, TargetDrawn::class, 2);
     Notification::assertSentToTimes($draw, OrganizerRecap::class, 0);
-    // Like any other change of address: the new one never got the messages of their target
-    Notification::assertSentToTimes($organizer, TargetMessages::class, 1);
+    // Like any other change of address: the new one never got the messages of their target, they come in that email
+    Notification::assertSentToTimes($organizer, TargetDrawn::class, 2);
+    Notification::assertSentTo($organizer, TargetDrawn::class, fn (TargetDrawn $notification): bool => str_contains((string) $notification->toMail($organizer)->render(), 'Un pull ?'));
+    Notification::assertNotSentTo($organizer, TargetMessages::class);
 });
 
 test('sending the email again keeps the received address locked', function (): void {

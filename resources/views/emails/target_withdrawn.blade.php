@@ -12,6 +12,10 @@
     <p style="padding-bottom:10px !important">{{ __('emails.target_withdrawn.reassured', ['app' => config('app.name')]) }}</p>
 
     <p style="padding-bottom:10px !important">{{ __('emails.target.new', ['name' => $targetName]) }}</p>
+@if($targetMessages || $giftSuggestions)
 
-    <p style="padding-bottom:10px !important">{{ __('emails.target.messages') }}</p>
+    <hr/>
+
+    @include('emails/partials/target_messages')
+@endif
 @endsection

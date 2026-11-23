@@ -21,4 +21,10 @@
 @else
     {!! __('emails.target_drawn.report') !!}
 @endif
+@if($targetMessages || $giftSuggestions)
+
+    ---
+
+    @include('emails/partials/target_messages_plain')
+@endif
 @endsection

@@ -34,7 +34,7 @@ final class WithdrawParticipant extends Command
 
         $participant = $this->findParticipant($draw, $this->argument('id'));
 
-        // As from the organizer panel: exclusions respected, santa told, their new target's messages forwarded
+        // As from the organizer panel: exclusions respected, santa told in one email with their new target's messages
         try {
             new ParticipantsEditor($draw)->apply([$participant], []);
         } catch (ValidationException $validationException) {

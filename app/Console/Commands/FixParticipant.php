@@ -40,9 +40,6 @@ final class FixParticipant extends Command
         }
 
         $participant->notifyNow(new TargetDrawn);
-        $this->info('Participant mail sent');
-
-        $participant->forwardTargetMessages();
-        $this->info('Target messages sent, if any');
+        $this->info('Participant mail sent, with their target messages');
     }
 }

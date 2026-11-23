@@ -6,6 +6,7 @@ use App\Enums\DeliveryStatus;
 use App\Facades\DrawCrypt;
 use App\Models\Draw;
 use App\Notifications\DearSanta;
+use App\Notifications\GiftSuggestion;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
@@ -103,13 +104,14 @@ test('the organizer can withdraw a participant', function (): void {
     assertEquals($santa->target->id, $target->id);
     assertEquals($target->santa->id, $santa->id);
 
-    Notification::assertSentTo($santa, TargetWithdrawn::class);
-    // Their new target's messages, in a single email that leaves the target's page as it was
-    Notification::assertSentTo($santa, TargetMessages::class, fn (TargetMessages $notification): bool => str_contains((string) $notification->toMail($santa)->render(), 'test dearSanta mail content'));
+    // Their new target's messages come in that same email, which leaves the target's page as it was
+    Notification::assertSentToTimes($santa, TargetWithdrawn::class, 1);
+    Notification::assertSentTo($santa, TargetWithdrawn::class, fn (TargetWithdrawn $notification): bool => str_contains((string) $notification->toMail($santa)->render(), 'test dearSanta mail content'));
+    Notification::assertNotSentTo($santa, TargetMessages::class);
     Notification::assertNotSentTo($santa, DearSanta::class);
 });
 
-test('a participant added to the draw gets the messages their target already wrote, in a single email', function (): void {
+test('a participant added to the draw gets the messages their target already wrote, in their target email', function (): void {
     Notification::fake();
 
     $draw = Draw::factory()->hasParticipants(3)->create();
@@ -123,12 +125,13 @@ test('a participant added to the draw gets the messages their target already wro
     ])->assertSuccessful();
 
     $newcomer = $draw->participants()->get()->firstOrFail(fn ($participant): bool => $participant->name === 'Newcomer');
-    Notification::assertSentTo($newcomer, TargetDrawn::class);
-    Notification::assertSentTo($newcomer, TargetMessages::class, fn (TargetMessages $notification): bool => str_contains((string) $notification->toMail($newcomer)->render(), e('from '.$newcomer->target->name)));
+    Notification::assertSentToTimes($newcomer, TargetDrawn::class, 1);
+    Notification::assertSentTo($newcomer, TargetDrawn::class, fn (TargetDrawn $notification): bool => str_contains((string) $notification->toMail($newcomer)->render(), e('from '.$newcomer->target->name)));
+    Notification::assertNotSentTo($newcomer, TargetMessages::class);
     Notification::assertNotSentTo($newcomer, DearSanta::class);
 });
 
-test("a participant moved to a new address gets their target's messages there", function (): void {
+test("a participant moved to a new address gets their target's messages there, in their target email", function (): void {
     Notification::fake();
 
     $draw = Draw::factory()->hasParticipants(3)->create();
@@ -137,13 +140,16 @@ test("a participant moved to a new address gets their target's messages there", 
         ->assertSuccessful();
 
     $url = URL::signedRoute('organizerPanel.changeEmail', ['draw' => $draw, 'participant' => $participant]);
+    Notification::fake(); // only what the panel sends
 
-    // Same address: only the target email again
+    // Same address or a new one: a single email each time, the messages along with the target
     ajaxPost($url, ['email' => $participant->email])->assertSuccessful();
-    Notification::assertNotSentTo($participant, TargetMessages::class);
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 1);
 
     ajaxPost($url, ['email' => 'moved@example.com'])->assertSuccessful();
-    Notification::assertSentToTimes($participant, TargetMessages::class, 1);
+    Notification::assertSentToTimes($participant, TargetDrawn::class, 2);
+    Notification::assertSentTo($participant, TargetDrawn::class, fn (TargetDrawn $notification): bool => str_contains((string) $notification->toMail($participant)->render(), 'lost message'));
+    Notification::assertNotSentTo($participant, TargetMessages::class);
 });
 
 test('the organizer can withdraw a participant in a 2-cycle', function (): void {
@@ -188,6 +194,17 @@ test('the organizer can add and remove several participants, each santa gets one
     $draw = Draw::factory()->hasParticipants(6)->create();
     Notification::fake();
     [$a, $b] = $draw->participants->all();
+    // Everyone wrote to their santa, and got a gift idea: a santa with a new target gets them in that same email
+    foreach ($draw->participants as $participant) {
+        ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), ['content' => 'from '.$participant->name])
+            ->assertSuccessful();
+        $sender = $draw->participants->firstOrFail(fn ($other): bool => ! $other->is($participant) && ! $other->is($participant->santa));
+        ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), ['recipient' => $participant->hash, 'content' => 'idea for '.$participant->name])
+            ->assertSuccessful();
+    }
+
+    // Only what the change sends
+    Notification::fake();
 
     ajaxPost(URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]), [
         'remove' => [$a->hash, $b->hash],
@@ -199,8 +216,9 @@ test('the organizer can add and remove several participants, each santa gets one
     assertEquals(7, $draw->participants->pluck('target_id')->filter()->unique()->count());
     Notification::assertSentTimes(TargetDrawn::class, 3);
     foreach ($draw->participants as $participant) {
-        // At most one email per santa, whatever the number of changes
-        $emails = Notification::sent($participant, TargetChanged::class)->count() + Notification::sent($participant, TargetWithdrawn::class)->count();
+        // At most one email per santa, whatever the number of changes: their new target's messages and ideas included
+        $emails = collect([TargetDrawn::class, TargetChanged::class, TargetWithdrawn::class, TargetMessages::class, DearSanta::class, GiftSuggestion::class])
+            ->sum(fn (string $notification): int => Notification::sent($participant, $notification)->count());
         assertTrue($emails <= 1, "{$participant->name} got {$emails} emails");
     }
 });
