@@ -54,8 +54,7 @@ test('without a draw secret nothing is encrypted nor decrypted', function (): vo
 
     $encrypter->setIV(null);
 
-    expect($encrypter->hasIV())->toBeFalse()
-        ->and(fn (): string => $encrypter->getIV())->toThrow(RuntimeException::class, 'No draw secret')
+    expect(fn (): string => $encrypter->getIV())->toThrow(RuntimeException::class, 'No draw secret')
         ->and(fn (): string => $encrypter->encrypt('secret santa message'))->toThrow(RuntimeException::class, 'No draw secret')
         ->and(fn (): mixed => $encrypter->decrypt($payload))->toThrow(RuntimeException::class, 'No draw secret');
 });

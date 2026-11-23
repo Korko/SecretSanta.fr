@@ -24,29 +24,25 @@ test('a failed job does not keep the draw secret', function (): void {
         ->and((string) $failed->exception)->toContain('Mail server down');
 });
 
-test('a retried failed job runs without any draw secret, not even the one left by the previous job', function (): void {
+test('a retried failed job fails right away, without running nor using its tries', function (): void {
     dispatch(function (): void {
-        if (! Cache::has('failed-once')) {
-            Cache::put('failed-once', true);
-            throw new RuntimeException('Mail server down');
-        }
-
-        Cache::put('job-has-secret', DrawCrypt::hasIV());
+        Cache::increment('runs');
+        throw new RuntimeException('Mail server down');
     })->onConnection('database');
 
     Artisan::call('queue:work', ['connection' => 'database', '--once' => true]);
     Artisan::call('queue:retry', ['id' => ['all']]);
-    // Same worker: it still holds the secret of the first attempt
-    Artisan::call('queue:work', ['connection' => 'database', '--once' => true]);
+    // Same worker, which still holds the secret of the first attempt, and tries left
+    Artisan::call('queue:work', ['connection' => 'database', '--once' => true, '--tries' => 3]);
 
-    expect(Cache::get('job-has-secret'))->toBeFalse();
+    expect(Cache::get('runs'))->toBe(1)
+        ->and(DB::table('jobs')->count())->toBe(0)
+        ->and((string) DB::table('failed_jobs')->value('exception'))->toContain('No draw secret');
 });
 
-test('a job dispatched without a draw secret does not get one', function (): void {
+test('a job cannot be dispatched without a draw secret', function (): void {
     DrawCrypt::setIV(null);
-    dispatch(function (): void {})->onConnection('database');
 
-    $payload = json_decode((string) DB::table('jobs')->value('payload'), true);
-    expect(data_get($payload, 'data.iv'))->toBeNull()
-        ->and(data_get($payload, 'data.locale'))->toBe(app()->getLocale());
+    expect(fn () => dispatch(function (): void {})->onConnection('database'))->toThrow(RuntimeException::class, 'No draw secret')
+        ->and(DB::table('jobs')->count())->toBe(0);
 });

@@ -70,11 +70,6 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
         return $this->secret ?? throw new RuntimeException('No draw secret.');
     }
 
-    public function hasIV(): bool
-    {
-        return $this->secret !== null;
-    }
-
     public function encrypt(#[SensitiveParameter] $value, $serialize = true): string
     {
         return $this->encrypter()->encrypt($value, $serialize);

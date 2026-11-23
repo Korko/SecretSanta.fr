@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Crypto\DkimSigner;
 
@@ -93,8 +94,7 @@ final class AppServiceProvider extends ServiceProvider
     {
         Queue::createPayloadUsing(fn (?string $connection, ?string $queue, array $payload): array => [
             'data' => array_merge(is_array($payload['data'] ?? null) ? $payload['data'] : [], [
-                // None when dispatched from a job retried without one
-                'iv' => DrawCrypt::hasIV() ? base64_encode(DrawCrypt::getIV()) : null,
+                'iv' => base64_encode(DrawCrypt::getIV()),
                 // The worker renders the emails: in the language of the request (domain), not APP_LOCALE
                 'locale' => $this->app->getLocale(),
             ]),
@@ -107,6 +107,13 @@ final class AppServiceProvider extends ServiceProvider
             // A job without secret (a failed one retried) gets none, not the secret of the previous job
             $iv = data_get($event->job->payload(), 'data.iv');
             DrawCrypt::setIV(is_string($iv) ? base64_decode($iv) : null);
+
+            // It would only fail at its first decryption, after its tries: failed right away, it is not run
+            if (! is_string($iv)) {
+                $event->job->fail(new RuntimeException('No draw secret: not kept once a job failed, resend the email from the organizer panel.'));
+
+                return;
+            }
 
             $locale = data_get($event->job->payload(), 'data.locale');
             if (is_string($locale)) {
