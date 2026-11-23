@@ -24,15 +24,14 @@ test('a failed job does not keep the draw secret', function (): void {
         ->and((string) $failed->exception)->toContain('Mail server down');
 });
 
-test('a retried failed job runs without the draw secret, not even the one left by the previous job', function (): void {
-    $secret = base64_encode(DrawCrypt::getIV());
+test('a retried failed job runs without any draw secret, not even the one left by the previous job', function (): void {
     dispatch(function (): void {
         if (! Cache::has('failed-once')) {
             Cache::put('failed-once', true);
             throw new RuntimeException('Mail server down');
         }
 
-        Cache::put('job-secret', base64_encode(DrawCrypt::getIV()));
+        Cache::put('job-has-secret', DrawCrypt::hasIV());
     })->onConnection('database');
 
     Artisan::call('queue:work', ['connection' => 'database', '--once' => true]);
@@ -40,5 +39,14 @@ test('a retried failed job runs without the draw secret, not even the one left b
     // Same worker: it still holds the secret of the first attempt
     Artisan::call('queue:work', ['connection' => 'database', '--once' => true]);
 
-    expect(Cache::get('job-secret'))->toBeString()->not->toBe($secret);
+    expect(Cache::get('job-has-secret'))->toBeFalse();
+});
+
+test('a job dispatched without a draw secret does not get one', function (): void {
+    DrawCrypt::setIV(null);
+    dispatch(function (): void {})->onConnection('database');
+
+    $payload = json_decode((string) DB::table('jobs')->value('payload'), true);
+    expect(data_get($payload, 'data.iv'))->toBeNull()
+        ->and(data_get($payload, 'data.locale'))->toBe(app()->getLocale());
 });

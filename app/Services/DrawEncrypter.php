@@ -22,6 +22,9 @@ use function hash_hkdf;
  *
  * Data written by the previous scheme (LegacyDrawEncrypter) is still readable and
  * gets rewritten in this format the next time it is saved.
+ *
+ * A new draw gets a random secret. A job retried after failing has none (it was not kept): nothing
+ * can then be encrypted nor decrypted, rather than written with a key nobody has.
  */
 final class DrawEncrypter implements EncrypterContract, StringEncrypter
 {
@@ -30,7 +33,7 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
 
     private const string HKDF_INFO = 'secretsanta:draw:v2';
 
-    private string $secret;
+    private ?string $secret;
 
     private ?Encrypter $encrypter = null;
 
@@ -48,11 +51,11 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
     }
 
     /**
-     * Set the draw secret (taken from the link fragment).
+     * Set the draw secret (taken from the link fragment), null when there is none.
      */
-    public function setIV(string $secret): void
+    public function setIV(?string $secret): void
     {
-        throw_unless(mb_strlen($secret, '8bit') === self::SECRET_LENGTH, RuntimeException::class, "The draw secret's length does not match the expected one.");
+        throw_if($secret !== null && mb_strlen($secret, '8bit') !== self::SECRET_LENGTH, RuntimeException::class, "The draw secret's length does not match the expected one.");
 
         $this->secret = $secret;
         $this->encrypter = null;
@@ -64,7 +67,12 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
      */
     public function getIV(): string
     {
-        return $this->secret;
+        return $this->secret ?? throw new RuntimeException('No draw secret.');
+    }
+
+    public function hasIV(): bool
+    {
+        return $this->secret !== null;
     }
 
     public function encrypt(#[SensitiveParameter] $value, $serialize = true): string
@@ -123,7 +131,7 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
 
     private function deriveKey(string $appKey): string
     {
-        return hash_hkdf('sha256', $appKey, mb_strlen($appKey, '8bit'), self::HKDF_INFO, $this->secret);
+        return hash_hkdf('sha256', $appKey, mb_strlen($appKey, '8bit'), self::HKDF_INFO, $this->getIV());
     }
 
     private function encrypter(): Encrypter
@@ -136,7 +144,7 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
     {
         if (! $this->legacy instanceof LegacyDrawEncrypter) {
             $this->legacy = new LegacyDrawEncrypter($this->appKey, $this->cipher)->previousKeys($this->previousKeys);
-            $this->legacy->setIV($this->secret);
+            $this->legacy->setIV($this->getIV());
         }
 
         return $this->legacy;
