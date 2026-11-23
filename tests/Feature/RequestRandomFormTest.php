@@ -333,8 +333,8 @@ it('lists the administrator links and revokes them', function (): void {
     $this->artisan('secretsanta:participant-limits')->expectsOutputToContain('active')->assertSuccessful();
     $this->artisan('secretsanta:participant-limits')->expectsOutputToContain('used')->assertSuccessful();
 
-    $this->artisan('secretsanta:revoke-participant-limit', ['id' => $active])->assertSuccessful();
-    $this->artisan('secretsanta:revoke-participant-limit', ['id' => $active])->assertFailed();
+    $this->artisan('secretsanta:revoke-participant-limit', ['id' => $active, '--force' => true])->assertSuccessful();
+    $this->artisan('secretsanta:revoke-participant-limit', ['id' => $active, '--force' => true])->assertFailed();
     assertEquals([$used], ParticipantLimit::query()->pluck('id')->all());
 });
 

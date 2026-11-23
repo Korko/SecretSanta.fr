@@ -14,9 +14,10 @@ use function Laravel\Prompts\error;
 use function Laravel\Prompts\text;
 
 #[Description('Fix an organizer email and send them again the link to their panel')]
-#[Signature('secretsanta:fix-organizer {url? : The URL received by one of the participants to write to their santa} {email? : The correct email of the organizer}')]
+#[Signature('secretsanta:fix-organizer {url? : The URL received by one of the participants to write to their santa} {email? : The correct email of the organizer} {--force : Do not ask for confirmation}')]
 final class FixOrganizer extends Command
 {
+    use ConfirmsChanges;
     use ParsesDrawUrl;
 
     /**
@@ -45,6 +46,13 @@ final class FixOrganizer extends Command
         );
 
         $changed = $email !== $draw->organizer_email;
+        $question = $changed
+            ? 'Change the organizer email from '.$draw->organizer_email.' to '.$email.' and send their emails again?'
+            : 'Send the organizer their emails again, to '.$email.'?';
+        if (! $this->confirmOrForce($question)) {
+            return;
+        }
+
         if ($changed) {
             $draw->organizer_email = $email;
             $draw->save();

@@ -9,9 +9,10 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 
 #[Description('Send all participants emails again')]
-#[Signature('secretsanta:fix-draw {url : The URL received by one of the participants to write to their santa}')]
+#[Signature('secretsanta:fix-draw {url : The URL received by one of the participants to write to their santa} {--force : Do not ask for confirmation}')]
 final class FixDraw extends Command
 {
+    use ConfirmsChanges;
     use ParsesDrawUrl;
 
     /**
@@ -20,6 +21,10 @@ final class FixDraw extends Command
     public function handle(): void
     {
         $draw = $this->findOrAskDrawFromUrl($this->stringArgument('url'));
+
+        if (! $this->confirmOrForce('Send their target again to the '.$draw->participants->count().' participants of draw #'.$draw->id.'?')) {
+            return;
+        }
 
         $draw->participants->each(function ($participant): void {
             $participant->notifyNow(new TargetDrawn);
