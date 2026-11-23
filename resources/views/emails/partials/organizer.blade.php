@@ -1,4 +1,8 @@
+@if($organizer['samePage'] ?? false)
+    <p style="padding-bottom:10px !important">{{ __('emails.organizer.panel_same_page') }}</p>
+@else
     <p style="padding-bottom:10px !important">{!! __('emails.organizer.panel', ['link' => '<a href="'.e($organizer['panelLink']).'">'.e($organizer['panelLink']).'</a>']) !!}</p>
+@endif
 
     <p style="padding-bottom:10px !important">{{ __('emails.organizer.csv', ['app' => config('app.name')]) }}</p>
 

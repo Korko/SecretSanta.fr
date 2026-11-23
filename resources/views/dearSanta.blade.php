@@ -1,18 +1,10 @@
-@extends('templates/fetcher', ['fetchUrl' => URL::signedRoute('dearSanta.fetch', ['participant' => $participant])])
+@extends('templates/fetcher', ['fetchUrl' => $routes['fetchUrl']])
 
 @section('script')
     @parent
 
     @javascript([
-        'routes' => [
-            'contactUrl' => URL::signedRoute('dearSanta.contact', ['participant' => $participant]),
-            'fetchStateUrl' => URL::signedRoute('dearSanta.fetchState', ['participant' => $participant]),
-            'reportUrl' => URL::signedRoute('dearSanta.report', ['participant' => $participant]),
-            'requestEmailChangeUrl' => URL::signedRoute('dearSanta.request_email_change', ['participant' => $participant]),
-            'changeEmailUrl' => URL::signedRoute('dearSanta.change_email', ['participant' => $participant]),
-            'withdrawUrl' => URL::signedRoute('dearSanta.withdraw', ['participant' => $participant]),
-            'suggestUrl' => URL::signedRoute('dearSanta.suggest', ['participant' => $participant]),
-        ],
+        'routes' => $routes,
         'pusher' => [
             'key' => config('broadcasting.connections.reverb.key'),
             'host' => config('broadcasting.connections.reverb.options.host'),

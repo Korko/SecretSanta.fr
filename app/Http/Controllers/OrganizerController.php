@@ -27,6 +27,9 @@ final class OrganizerController extends Controller
     {
         return response()->view('organizer', [
             'draw' => $draw->hash,
+            // Taking part, the organizer's participant page is part of their panel, until the event is over
+            // like the participant pages (see Participant::resolveRouteBinding)
+            'participantRoutes' => $draw->organizer instanceof Participant && ! $draw->expired ? DearSantaController::routes($draw->organizer) : null,
         ]);
     }
 

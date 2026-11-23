@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Channels\TrackedMailChannel;
-use App\Facades\DrawCrypt;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Draw;
 use App\Models\Mail;
@@ -16,7 +15,6 @@ use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\URL;
 
 final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
 {
@@ -44,7 +42,7 @@ final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQ
      */
     public function toMail(Participant $santa): MailMessage
     {
-        $url = URL::signedRoute('dearSanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
+        $url = $santa->pageUrl();
 
         return (new MailMessage)
             ->subject(__('emails.dear_santa.title', ['draw' => $santa->draw->id]))

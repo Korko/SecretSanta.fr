@@ -26,6 +26,7 @@ return [
     'organizer_recap.thanks' => 'Thank you for organizing your event with :app.',
     'organizer_recap.enjoy' => 'Have fun!',
     'organizer.panel' => 'To check that every participant received their email, or to fix an address, go to your personal page: :link',
+    'organizer.panel_same_page' => 'That same page also lets you check that every participant received their email, or fix an address.',
     'organizer.csv' => 'The summary of the participants and of the exclusions you set is attached to this email, and can be downloaded from that same page. It can be reused on :app to save time when organizing your next event.',
     'organizer.next' => 'As soon as you reveal the targets, or the day after :date, a second summary will be available there, with the target each participant drew added to their exclusions, making your next event even better.',
     'organizer.deletion' => 'All the information about this event will be deleted on :date. This page will then no longer be available.',

@@ -271,6 +271,10 @@ export default {
         "organizer": {
             "url": "Link, den ein(e) Teilnehmer(in) per E-Mail erhalten hat",
             "fix": "Korrigieren",
+            "sections": {
+                "participation": "Ihre Teilnahme",
+                "organization": "Organisation der Veranstaltung"
+            },
             "date": {
                 "label": "Datum der Veranstaltung",
                 "help": "Die Daten der Veranstaltung werden am {deleted_at} gelöscht."

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Channels\TrackedMailChannel;
-use App\Facades\DrawCrypt;
 use App\Models\Draw;
 use App\Models\GiftSuggestion as GiftSuggestionModel;
 use App\Models\Mail;
@@ -16,7 +15,6 @@ use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\URL;
 
 // To the santa of the person the idea is for (see GiftSuggestionModel)
 final class GiftSuggestion extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
@@ -40,7 +38,7 @@ final class GiftSuggestion extends Notification implements ShouldBeEncrypted, Sh
 
     public function toMail(Participant $santa): MailMessage
     {
-        $url = URL::signedRoute('dearSanta', ['participant' => $santa->hash]).'#'.base64_encode(DrawCrypt::getIV());
+        $url = $santa->pageUrl();
 
         return (new MailMessage)
             ->subject(__('emails.gift_suggestion.title', ['draw' => $santa->draw->id, 'name' => $this->suggestion->recipient->name]))

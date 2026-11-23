@@ -20,6 +20,7 @@ use App\Services\ParticipantsEditor;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection as SupportCollection;
@@ -37,10 +38,34 @@ final class DearSantaController extends Controller
     /** @var list<string> */
     private array $dearSantaPublicFields = ['id', 'mail_body', 'mail'];
 
-    public function view(Participant $participant): Response
+    // What the participant page calls, also on the organizer's panel for their own participant part
+    /** @return array<string, string> */
+    public static function routes(Participant $participant): array
     {
+        $routes = collect([
+            'fetchUrl' => 'dearSanta.fetch',
+            'contactUrl' => 'dearSanta.contact',
+            'fetchStateUrl' => 'dearSanta.fetchState',
+            'reportUrl' => 'dearSanta.report',
+            'requestEmailChangeUrl' => 'dearSanta.request_email_change',
+            'changeEmailUrl' => 'dearSanta.change_email',
+            'withdrawUrl' => 'dearSanta.withdraw',
+            'suggestUrl' => 'dearSanta.suggest',
+        ])->map(fn (string $route): string => URL::signedRoute($route, ['participant' => $participant]));
+
+        return ['hash' => $participant->hash, ...$routes->all()];
+    }
+
+    public function view(Participant $participant): Response|RedirectResponse
+    {
+        // Taking part, the organizer has a single page: their panel, with their participant part in it.
+        // Their earlier emails link here: the browser keeps the #secret through the redirect
+        if ($participant->isOrganizer()) {
+            return redirect()->to(URL::signedRoute('organizerPanel', ['draw' => $participant->draw->hash]));
+        }
+
         return response()->view('dearSanta', [
-            'participant' => $participant->hash,
+            'routes' => self::routes($participant),
         ]);
     }
 
