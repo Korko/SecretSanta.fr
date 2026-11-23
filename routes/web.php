@@ -40,8 +40,9 @@ Route::middleware('signed')->group(function (): void {
             ->name('dearSanta.fetch');
         Route::post('/dearSanta/{participant}', [DearSantaController::class, 'handle'])
             ->name('dearSanta.contact')->middleware('throttle:email');
+        // Emails the organizer: limited like the other emails
         Route::post('/dearSanta/{participant}/report', [DearSantaController::class, 'report'])
-            ->name('dearSanta.report');
+            ->name('dearSanta.report')->middleware('throttle:email');
         Route::get('/dearSanta/{participant}/fetchState', [DearSantaController::class, 'fetchState'])
             ->name('dearSanta.fetchState');
         Route::post('/dearSanta/{participant}/{dearSanta}/resend', [DearSantaController::class, 'resend'])

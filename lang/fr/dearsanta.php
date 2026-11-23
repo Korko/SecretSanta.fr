@@ -6,12 +6,15 @@ return [
     'reminder' => "Rappelez vous que votre Père/Mère Noël secrêt ne pourra pas vous répondre ! Pensez bien à lui donner le maximum d'informations possibles.",
     'report' => [
         'question' => 'Un problème ?',
-        'not_me' => 'Cet email ne m\'est pas destiné',
-        'not_participating' => 'Je ne participe pas',
+        'identity' => 'Êtes-vous bien {name} ?',
+        'not_me' => 'Non, cet email ne m\'est pas destiné',
+        'its_me' => 'Oui, c\'est moi',
+        'not_participating' => 'Je n\'ai jamais demandé à participer',
         'cancel' => 'Annuler le signalement',
+        'back' => 'Retour',
         'sent' => [
-            'not_me' => '{organizer} verra sur sa page que cet email ne vous était pas destiné.',
-            'not_participating' => '{organizer} verra sur sa page que vous ne participez pas.',
+            'not_me' => '{organizer} a été prévenu(e) par email que cet email ne vous était pas destiné, pour corriger l\'adresse.',
+            'not_participating' => '{organizer} a été prévenu(e) par email que vous ne participez pas.',
         ],
     ],
     'targets' => [
@@ -52,8 +55,7 @@ return [
         'confirm' => [
             'title' => 'Se désister de l\'évènement ?',
             'body' => 'Vous quitterez définitivement le tirage au sort : votre père/mère noël secret recevra une nouvelle cible, {organizer} sera prévenu(e) par email et cette page ne fonctionnera plus. Si cet email ne vous était pas destiné ou que vous n\'avez jamais demandé à participer, utilisez plutôt le signalement.',
-            'value' => 'Me désister',
-            'help' => 'Saisir "[+!:verification]" en dessous pour confirmer.',
+            'help' => 'Saisir votre nom, « {name} », en dessous pour confirmer.',
             'ok' => 'Me désister',
             'cancel' => 'Annuler',
         ],

@@ -140,6 +140,10 @@ test('the full flow: draw, dearSanta report, organizer panel with their particip
         ->click('button[type=submit]')
         ->assertSeeIn('tr.email', 'Une écharpe ?')
         ->assertMissing('tr.no-email')
+        // Who they are first: a wrong recipient reports, only the right person may withdraw
+        ->assertNotPresent('.withdraw')
+        ->click('.report-open')
+        ->assertSeeIn('.report-identity', 'Bob')
         ->click('.report-not-me')
         ->assertPresent('.report-sent')
         ->assertNoJavaScriptErrors();
@@ -237,6 +241,32 @@ test('the full flow: draw, dearSanta report, organizer panel with their particip
         ->click('.ajs-footer .btn-primary:visible')
         ->assertPresent('.ajs-header:has(.fa-check)')
         ->assertNoJavaScriptErrors();
+});
+
+test('withdrawing takes saying who you are, then typing your own name', function (): void {
+    Notification::fake();
+    // No exclusions: nothing keeps them from leaving
+    $draw = createServiceDraw(generateParticipants(4, withExclusions: false));
+    $participant = $draw->participants->last();
+    $iv = '#'.base64_encode(DrawCrypt::getIV());
+
+    $page = visit(URL::signedRoute('dearSanta', ['participant' => $participant->hash]).$iv)
+        ->click('.report-open')
+        ->click('.report-its-me')
+        ->click('.withdraw')
+        ->assertSeeIn('.ajs-content:visible', $participant->name);
+
+    // Another word doesn't do
+    $page->type('.ajs-content:visible input', 'Me désister')
+        ->click('.ajs-footer .btn-primary:visible')
+        ->assertVisible('.ajs-content:visible input');
+    expect($participant->fresh())->not->toBeNull();
+
+    $page->type('.ajs-content:visible input', $participant->name)
+        ->wait(0.5)->click('.ajs-footer .btn-primary:visible')
+        ->assertPresent('.ajs-header:has(.fa-check)')
+        ->assertNoJavaScriptErrors();
+    expect($participant->fresh())->toBeNull();
 });
 
 test('static pages and the fix form', function (): void {
