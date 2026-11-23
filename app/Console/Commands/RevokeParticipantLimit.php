@@ -13,9 +13,11 @@ use function Laravel\Prompts\info;
 use function Laravel\Prompts\warning;
 
 #[Description('Delete a link for a bigger draw, by its ID (secretsanta:participant-limits)')]
-#[Signature('secretsanta:revoke-participant-limit {id : The ID shown by secretsanta:participant-limits}')]
+#[Signature('secretsanta:revoke-participant-limit {id : The ID shown by secretsanta:participant-limits} {--force : Do not ask for confirmation}')]
 final class RevokeParticipantLimit extends Command
 {
+    use ConfirmsChanges;
+
     public function handle(): int
     {
         $limit = ParticipantLimit::query()->find($this->argument('id'));
@@ -23,6 +25,10 @@ final class RevokeParticipantLimit extends Command
             error('No link with this ID');
 
             return self::FAILURE;
+        }
+
+        if (! $this->confirmOrForce('Delete link #'.$limit->id.' (up to '.$limit->max.' participants, '.($limit->used_at !== null ? 'used' : 'active').')?')) {
+            return self::SUCCESS;
         }
 
         $limit->delete();
