@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Draw;
+use App\Models\GiftSuggestion;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\ParticipantEmailCode;
 use App\Notifications\TargetDrawn;
@@ -19,6 +20,11 @@ it('renders the emails in the language of the request', function (string $locale
 
     $draw = Draw::factory()->hasParticipants(3)->create();
     $participant = $draw->participants->first();
+    // Their target wrote to them and got a gift idea: both are part of the emails
+    $participant->target->dearSantas()->create(['mail_body' => 'Hello']);
+    $suggestion = new GiftSuggestion(['mail_body' => 'A book', 'signed' => true]);
+    $suggestion->sender()->associate($participant->santa);
+    $suggestion->recipient()->associate($participant->target)->save();
 
     $html = new TargetDrawn()->toMail($participant)->render()
         .new TargetWithdrawn()->toMail($participant->santa)->render()
@@ -32,9 +38,9 @@ it('renders the emails in the language of the request', function (string $locale
     // No key left untranslated
     expect($html)->not->toContain('emails.');
 })->with([
-    'fr' => ['fr', ['Vous pouvez écrire à votre Père Noël Secret', 'Secrètement votre', 'Ce code est valable 60 minutes', 'Voici tous les messages que']],
-    'en' => ['en', ['You can write to your Secret Santa', 'Secretly yours', 'This code is valid for 60 minutes', 'Here are all the messages']],
-    'de' => ['de', ['Sie können Ihrem geheimen Weihnachtsmann schreiben', 'Geheimnisvoll Ihr', 'Dieser Code ist 60 Minuten gültig', 'Hier sind alle Nachrichten']],
+    'fr' => ['fr', ['Vous pouvez écrire à votre Père Noël Secret', 'Secrètement votre', 'Ce code est valable 60 minutes', 'Voici tous les messages que', 'idées cadeaux que d']],
+    'en' => ['en', ['You can write to your Secret Santa', 'Secretly yours', 'This code is valid for 60 minutes', 'Here are all the messages', 'gift ideas other participants']],
+    'de' => ['de', ['Sie können Ihrem geheimen Weihnachtsmann schreiben', 'Geheimnisvoll Ihr', 'Dieser Code ist 60 Minuten gültig', 'Hier sind alle Nachrichten', 'Geschenkideen, die andere']],
 ]);
 
 // The organizer's target email holds their recap: nobody to report to, their page has no such button

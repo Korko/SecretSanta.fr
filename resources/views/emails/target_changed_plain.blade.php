@@ -8,5 +8,10 @@
     {!! __('emails.hello', ['name' => $santaName]) !!}
     {!! __('emails.target_changed.body') !!}
     {!! __('emails.target.new', ['name' => $targetName]) !!}
-    {!! __('emails.target.messages') !!}
+@if($targetMessages || $giftSuggestions)
+
+    ---
+
+    @include('emails/partials/target_messages_plain')
+@endif
 @endsection

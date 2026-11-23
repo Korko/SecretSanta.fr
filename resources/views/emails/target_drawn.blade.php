@@ -22,4 +22,10 @@
     {{-- Not to the organizer: no one to report to, and their page has no such button --}}
     <p style="padding-bottom:10px !important"><small>{{ __('emails.target_drawn.report') }}</small></p>
 @endif
+@if($targetMessages || $giftSuggestions)
+
+    <hr/>
+
+    @include('emails/partials/target_messages')
+@endif
 @endsection

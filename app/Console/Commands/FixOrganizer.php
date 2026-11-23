@@ -73,9 +73,6 @@ final class FixOrganizer extends Command
         }
 
         $organizer->notifyNow(new TargetDrawn);
-        $this->info('Participant mail sent, with the organizer recap');
-
-        $organizer->forwardTargetMessages();
-        $this->info('Target messages sent, if any');
+        $this->info('Participant mail sent, with the organizer recap and their target messages');
     }
 }

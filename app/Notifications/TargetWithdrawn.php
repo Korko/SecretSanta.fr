@@ -44,7 +44,8 @@ final class TargetWithdrawn extends Notification implements ShouldBeEncrypted, S
             ->subject($title)
             ->view(['emails.target_withdrawn', 'emails.target_withdrawn_plain'], [
                 'santaName' => $santa->name,
-                'targetName' => $santa->target->name,
+                // The new target, what they wrote to their santa and the ideas given for them, in this single email
+                ...TargetMessages::viewData($santa),
             ]);
     }
 }

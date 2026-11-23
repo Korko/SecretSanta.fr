@@ -18,7 +18,7 @@ use Random\Randomizer;
 
 /**
  * Adds and removes participants of an existing draw in one go, touching as few pairs as possible,
- * then sends a single email to each santa whose target changed.
+ * then sends a single email to each santa whose target changed: their new target and their recap (TargetMessages).
  */
 final class ParticipantsEditor
 {
@@ -93,16 +93,14 @@ final class ParticipantsEditor
         $this->draw->save();
 
         $removed = array_map(fn (Participant $participant): int => $participant->id, $remove);
+        // What the target already wrote to their previous santa, and the ideas given for them, now belong to this one:
+        // they come in that same email
         foreach ($this->targets as $santa => $target) {
             if (isset($created[$santa])) {
                 $created[$santa]->notify(new TargetDrawn);
-                // Their target may already have written to their previous santa
-                $created[$santa]->forwardTargetMessages();
             } elseif ($before[$santa] !== $target) {
-                $santa = $participants[$santa]->refresh()->load('target.dearSantas', 'target.receivedSuggestions');
+                $santa = $participants[$santa]->refresh();
                 $santa->notify(in_array($before[$santa->id], $removed, true) ? new TargetWithdrawn : new TargetChanged);
-                // Messages the new target wrote to their santa now belong to this one
-                $santa->forwardTargetMessages();
                 event(new ParticipantUpdated($santa)); // an open page shows the new target's ideas
             }
         }

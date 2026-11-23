@@ -8,7 +8,6 @@ use App\Casts\EncryptedString;
 use App\Collections\ParticipantsCollection;
 use App\Enums\ReportReason;
 use App\Facades\DrawCrypt;
-use App\Notifications\GiftSuggestion as GiftSuggestionNotification;
 use App\Notifications\TargetMessages;
 use Carbon\CarbonImmutable;
 use Database\Factories\ParticipantFactory;
@@ -169,17 +168,13 @@ final class Participant extends Model
         return $participant;
     }
 
-    // Every message their target wrote to their santa, in a single email, and the gift ideas others gave for their
-    // target: for a new santa, a new address, or on request
+    // Every message their target wrote to their santa and the gift ideas others gave for their target, in a single
+    // email, on request from their page. A new santa or a new address gets them in the target email itself
     public function forwardTargetMessages(): void
     {
-        if ($this->target->dearSantas->isNotEmpty()) {
+        if (! TargetMessages::isEmpty($this)) {
             $this->notify(new TargetMessages);
         }
-
-        // But their own ideas. Untracked (see GiftSuggestionNotification)
-        $this->target->receivedSuggestions->where('sender_id', '!=', $this->id)
-            ->each(fn (GiftSuggestion $suggestion) => $this->notify(new GiftSuggestionNotification($suggestion, tracked: false)));
     }
 
     public function createMetric(string $name, int $value = 1): Metric

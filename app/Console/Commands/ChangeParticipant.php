@@ -49,9 +49,7 @@ final class ChangeParticipant extends Command
         $participant->save();
 
         $participant->notifyNow(new TargetDrawn);
-        $this->info('Participant mail sent');
-
-        $participant->forwardTargetMessages();
+        $this->info('Participant mail sent, with their target messages');
 
         $participant->santa->notify(new TargetWithdrawn);
         $this->info('Santa informed');

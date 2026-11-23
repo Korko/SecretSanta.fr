@@ -44,7 +44,8 @@ final class TargetChanged extends Notification implements ShouldBeEncrypted, Sho
             ->subject($title)
             ->view(['emails.target_changed', 'emails.target_changed_plain'], [
                 'santaName' => $santa->name,
-                'targetName' => $santa->target->name,
+                // The new target, what they wrote to their santa and the ideas given for them, in this single email
+                ...TargetMessages::viewData($santa),
             ]);
     }
 }

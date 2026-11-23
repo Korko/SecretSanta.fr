@@ -1,15 +1,9 @@
 @extends('emails/layout')
 
 @section('title')
-    {{ __('emails.target_messages.heading', ['name' => $targetName]) }}
+    {{ __('emails.target_messages.heading') }}
 @endsection
 
 @section('content')
-    <p style="padding-bottom:10px !important">{{ __('emails.target_messages.intro', ['name' => $targetName]) }}</p>
-
-    {{-- Not $message: the layout embeds its images through the mail message of that name --}}
-    @foreach ($messages as $targetMessage)
-        <p style="padding-bottom:5px !important"><em>{{ $targetMessage['date'] }}</em></p>
-        <blockquote>{!! nl2br(e($targetMessage['content'])) !!}</blockquote>
-    @endforeach
+    @include('emails/partials/target_messages')
 @endsection

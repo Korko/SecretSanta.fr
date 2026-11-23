@@ -257,11 +257,10 @@ final class DearSantaController extends Controller
 
         $participant->createMetric('change_email')->addTag('by', 'participant');
 
-        // Their target email again, at the new address: the organizer panel tracks it like any resend
+        // Their target email again, at the new address: the organizer panel tracks it like any resend.
+        // Nor did the new address get what their target wrote or was given: it comes in that same email
         $participant->mail->markAsCreated();
         $participant->notify(new TargetDrawn);
-        // Nor did the new address get the messages their target wrote to them
-        $participant->forwardTargetMessages();
 
         return response()->json([
             'message' => trans('dearsanta.email.changed', ['email' => $email]),
@@ -304,7 +303,8 @@ final class DearSantaController extends Controller
         }
     }
 
-    // The messages their target wrote to them, again, in a single email: nothing changes on the target's page
+    // Their recap again, in a single email: the messages their target wrote to them and the gift ideas given for
+    // that target. Nothing changes on their senders' pages
     public function resendTarget(Participant $participant): JsonResponse
     {
         $sent = RateLimiter::attempt('resend-target:'.$participant->id, 1, $participant->forwardTargetMessages(...), config()->integer('mail.resend_delay'));

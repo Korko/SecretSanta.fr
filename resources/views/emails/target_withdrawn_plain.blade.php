@@ -9,5 +9,10 @@
     {!! __('emails.target_withdrawn.body') !!}
     {!! __('emails.target_withdrawn.reassured', ['app' => config('app.name')]) !!}
     {!! __('emails.target.new', ['name' => $targetName]) !!}
-    {!! __('emails.target.messages') !!}
+@if($targetMessages || $giftSuggestions)
+
+    ---
+
+    @include('emails/partials/target_messages_plain')
+@endif
 @endsection

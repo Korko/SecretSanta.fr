@@ -28,10 +28,7 @@ final class FixDraw extends Command
 
         $draw->participants->each(function ($participant): void {
             $participant->notifyNow(new TargetDrawn);
-            $this->info('Participant mail sent');
-
-            $participant->forwardTargetMessages();
-            $this->info('Target messages sent, if any');
+            $this->info('Participant mail sent, with their target messages');
         });
     }
 }
