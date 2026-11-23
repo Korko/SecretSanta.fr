@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Mail\DkimTransport;
 use App\Queue\FailedJobProviderWithoutSecret;
+use App\Services\DrawEncrypter;
 use App\Solvers\CycleSolver;
 use App\Solvers\SolverInterface;
 use DrawCrypt;
@@ -18,7 +19,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Crypto\DkimSigner;
 
@@ -104,16 +104,10 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->extend('queue.failer', fn (FailedJobProviderInterface $failer): FailedJobProviderInterface => new FailedJobProviderWithoutSecret($failer));
 
         $this->app->make(Dispatcher::class)->listen(JobProcessing::class, function (JobProcessing $event): void {
-            // A job without secret (a failed one retried) gets none, not the secret of the previous job
+            // A job without secret (a failed one retried) gets a new one, like a new draw, not the one of the previous
+            // job: it would encrypt with it and send it in its links. Decrypting existing data then fails
             $iv = data_get($event->job->payload(), 'data.iv');
-            DrawCrypt::setIV(is_string($iv) ? base64_decode($iv) : null);
-
-            // It would only fail at its first decryption, after its tries: failed right away, it is not run
-            if (! is_string($iv)) {
-                $event->job->fail(new RuntimeException('No draw secret: not kept once a job failed, resend the email from the organizer panel.'));
-
-                return;
-            }
+            DrawCrypt::setIV(is_string($iv) ? base64_decode($iv) : random_bytes(DrawEncrypter::SECRET_LENGTH));
 
             $locale = data_get($event->job->payload(), 'data.locale');
             if (is_string($locale)) {

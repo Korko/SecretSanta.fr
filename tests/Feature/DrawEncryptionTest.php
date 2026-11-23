@@ -48,17 +48,6 @@ test('the draw secret keeps its length so existing links stay valid', function (
         ->and(fn () => new DrawEncrypter(drawTestAppKey())->setIV(random_bytes(32)))->toThrow(RuntimeException::class);
 });
 
-test('without a draw secret nothing is encrypted nor decrypted', function (): void {
-    $encrypter = new DrawEncrypter(drawTestAppKey());
-    $payload = $encrypter->encrypt('secret santa message');
-
-    $encrypter->setIV(null);
-
-    expect(fn (): string => $encrypter->getIV())->toThrow(RuntimeException::class, 'No draw secret')
-        ->and(fn (): string => $encrypter->encrypt('secret santa message'))->toThrow(RuntimeException::class, 'No draw secret')
-        ->and(fn (): mixed => $encrypter->decrypt($payload))->toThrow(RuntimeException::class, 'No draw secret');
-});
-
 test('data written by the previous scheme is still readable and upgraded on save', function (): void {
     $draw = createServiceDraw(generateParticipants(3));
     $participant = $draw->participants->first();

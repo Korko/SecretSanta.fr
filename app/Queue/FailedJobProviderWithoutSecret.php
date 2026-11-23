@@ -13,8 +13,8 @@ use Illuminate\Queue\Failed\PrunableFailedJobProvider;
  * Stores the failed jobs without the draw secret their payload carries in clear (data.iv, see
  * AppServiceProvider::bootJobs): it is only lent for the time of the sending, not for as long as a failed job is kept.
  *
- * Such a job can't decrypt its draw anymore, so retrying it fails right away, without running: the email
- * is resent from the organizer panel instead, with the secret of its link.
+ * Such a job can't decrypt its draw anymore, so retrying it fails again: the email is resent from the
+ * organizer panel instead, with the secret of its link.
  */
 final readonly class FailedJobProviderWithoutSecret implements CountableFailedJobProvider, FailedJobProviderInterface, PrunableFailedJobProvider
 {
