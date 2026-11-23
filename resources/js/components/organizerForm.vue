@@ -36,6 +36,8 @@
         data() {
             return {
                 participants: this.data.participants,
+                // Withdrew from their page: can be brought back
+                withdrawn: this.data.withdrawn || [],
                 draw: this.data.draw,
                 channel: this.data.channel,
                 expires_at: this.data.expires_at,
@@ -297,10 +299,7 @@
 
                 return fetch(this.routes.changeParticipantsUrl, 'POST', data)
                     .then(data => {
-                        this.participants = data.participants;
-                        this.changeEmailUrls = data.changeEmailUrls;
-                        this.changeNameUrls = data.changeNameUrls;
-                        this.targets = data.targets;
+                        this.refreshParticipants(data);
                         alertify.confirmAlert(this.$t('organizer.edit.done'));
                     })
                     .catch(error => {
@@ -315,6 +314,45 @@
                         }
                         alertify.errorAlert(escapeHtml(Object.values(error.errors || {})[0]?.[0] || error.message));
                         return this.checkEnded(error);
+                    });
+            },
+            // What the server answers after a change of participants: the whole panel data
+            refreshParticipants(data) {
+                this.participants = data.participants;
+                this.withdrawn = data.withdrawn;
+                this.changeEmailUrls = data.changeEmailUrls;
+                this.changeNameUrls = data.changeNameUrls;
+                this.targets = data.targets;
+            },
+            // Someone else may have got their email and withdrawn in their place: back, at an address to check
+            confirmRestore(participant) {
+                const name = escapeHtml(participant.name);
+                alertify.prompt(
+                    this.$t('organizer.withdrawn.prompt_title', { name }),
+                    this.$t('organizer.withdrawn.prompt_body', { name }) + this.changeWarning,
+                    participant.email,
+                    (event, value) => this.restore(participant, value.trim()),
+                    () => {}
+                ).set('labels', { ok: this.$t('organizer.withdrawn.ok'), cancel: this.$t('organizer.withdrawn.cancel') });
+            },
+            restore(participant, email, force = false) {
+                return fetch(this.routes.restoreUrl, 'POST', { participant: participant.hash, email, ...(force ? { force: 1 } : {}) })
+                    .then(data => {
+                        this.refreshParticipants(data);
+                        alertify.success(this.$t('organizer.withdrawn.done', { name: escapeHtml(participant.name) }));
+                    })
+                    .catch(error => {
+                        // Their exclusions leave no place for them: the organizer may force it, as for a removal
+                        if (error.errors?.exclusions && !force) {
+                            return alertify.confirm(
+                                this.$t('organizer.force.title'),
+                                escapeHtml(error.errors.exclusions[0]) + '<br><br>' + this.$t('organizer.force.body'),
+                                () => this.restore(participant, email, true),
+                                () => {}
+                            );
+                        }
+                        alertify.errorAlert(escapeHtml(Object.values(error.errors || {})[0]?.[0] || error.message));
+                        return this.checkEnded(error).catch(() => {});
                     });
             },
             download() {
@@ -458,6 +496,19 @@
                 <i class="fas fa-tasks" />
                 {{ $t('organizer.edit.multi') }}
             </button>
+        </div>
+        <div v-if="withdrawn.length" class="withdrawn mb-3">
+            <h3 class="h6">{{ $t('organizer.withdrawn.title') }}</h3>
+            <p class="text-muted small">{{ $t('organizer.withdrawn.help') }}</p>
+            <ul class="list-unstyled">
+                <li v-for="participant in withdrawn" :key="participant.hash" class="withdrawn-participant mb-1">
+                    {{ participant.name }}
+                    <span class="text-muted small">{{ participant.email }} · {{ $t('organizer.withdrawn.date', { date: new Date(participant.withdrawn_at).toLocaleDateString($i18n.locale) }) }}</span>
+                    <button v-if="canEdit" type="button" class="btn btn-sm btn-outline-success participant-restore ml-2" @click="confirmRestore(participant)">
+                        <i class="fas fa-undo" /> {{ $t('organizer.withdrawn.button') }}
+                    </button>
+                </li>
+            </ul>
         </div>
         <button type="button" class="btn btn-warning" :disabled="expired || !failedKeys.length" @click="resendFailed">
             <i class="fas fa-redo" />

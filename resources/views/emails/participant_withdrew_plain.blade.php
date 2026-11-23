@@ -8,4 +8,5 @@
     {!! __('emails.hello', ['name' => $organizerName]) !!}
     {!! __('emails.participant_withdrew.body', ['name' => $name, 'app' => config('app.name')]) !!}
     {!! __('emails.participant_withdrew.santa', ['name' => $name]) !!}
+    {!! __('emails.participant_withdrew.restore', ['name' => $name, 'link' => $panelLink]) !!}
 @endsection

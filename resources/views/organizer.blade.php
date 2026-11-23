@@ -10,6 +10,7 @@
             'deleteUrl' => URL::temporarySignedRoute('organizerPanel.delete', 3600, ['draw' => $draw]), // 1h validity
             'fetchStateUrl' => URL::signedRoute('organizerPanel.fetchState', ['draw' => $draw]),
             'changeParticipantsUrl' => URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]),
+            'restoreUrl' => URL::signedRoute('organizerPanel.restore', ['draw' => $draw]),
             'changeDateUrl' => URL::signedRoute('organizerPanel.changeDate', ['draw' => $draw]),
             'revealTargetsUrl' => URL::signedRoute('organizerPanel.revealTargets', ['draw' => $draw]),
             // Their own participant part, when the organizer takes part

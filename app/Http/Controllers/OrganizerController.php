@@ -16,6 +16,7 @@ use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
@@ -70,6 +71,8 @@ final class OrganizerController extends Controller
                     'draw' => $draw, 'participant' => $participant,
                 ]),
             ]),
+            // Withdrew from their page: the organizer can bring them back (restore)
+            'withdrawn' => $draw->withdrawnParticipants->map(fn (Participant $participant): array => $participant->only(['hash', 'name', 'email', 'withdrawn_at']))->values(),
             'finalCsvAvailable' => $draw->next_solvable,
             // The panel greys "add" out at the limit (the server refuses it anyway)
             'maxParticipants' => $draw->maxParticipants(),
@@ -228,6 +231,47 @@ final class OrganizerController extends Controller
         $draw->createMetric('participants_changed')
             ->addExtra('added', count($add))
             ->addExtra('removed', count($remove));
+
+        return $this->fetch($draw->refresh());
+    }
+
+    // Someone who withdrew from their page, back in the draw: at a fixed address when someone else had got their
+    // email and withdrawn in their place. Like an addition: a santa changes target, they get theirs by email
+    public function restore(Request $request, Draw $draw): JsonResponse
+    {
+        $draw->abortIfExpired();
+
+        $request->validate([
+            'participant' => ['required', Rule::in($draw->withdrawnParticipants->pluck('hash')->all())],
+            'email' => ['required', 'email', function (string $attribute, mixed $value, Closure $fail) use ($draw): void {
+                if (is_string($value) && $draw->refusesEmail($value)) {
+                    $fail(trans('organizer.report.refused_email'));
+                }
+            }],
+            'force' => ['boolean'],
+        ], [
+            'email.required' => __('validation.custom.organizer.email.required'),
+            'email.email' => __('validation.custom.organizer.email.format'),
+        ]);
+
+        /** @var Participant $participant validated above */
+        $participant = $draw->withdrawnParticipants->firstWhere('hash', $request->string('participant')->toString());
+        // Someone with the same name may have been added since
+        throw_if(
+            $draw->participants->contains(fn (Participant $other): bool => $other->name === $participant->name),
+            ValidationException::withMessages(['participant' => trans('validation.custom.randomform.participant.name.distinct')])
+        );
+
+        DB::transaction(function () use ($request, $draw, $participant): void {
+            $participant->email = $request->string('email')->trim()->toString();
+            $participant->report = null;
+            $participant->save();
+            $participant->mail->markAsCreated();
+
+            new ParticipantsEditor($draw, ignoreExclusions: $request->boolean('force'))->apply([], [], [$participant]);
+        });
+
+        $participant->createMetric('restore');
 
         return $this->fetch($draw->refresh());
     }

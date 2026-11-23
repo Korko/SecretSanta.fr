@@ -40,6 +40,7 @@ use STS\Metrics\Metric;
  * @property-read CarbonImmutable $ends_at
  * @property-read string $metricId
  * @property-read ParticipantsCollection $participants
+ * @property-read ParticipantsCollection $withdrawnParticipants
  * @property list<string>|null $refused_emails
  * @property int|null $max_participants
  */
@@ -74,10 +75,18 @@ final class Draw extends Model
         return self::query()->where('expires_at', '<=', Date::now()->subWeeks(self::WEEKS_BEFORE_DELETION));
     }
 
+    // Those taking part: the ones who withdrew are kept aside (withdrawnParticipants)
     /** @return HasMany<Participant, $this> */
     public function participants(): HasMany
     {
-        return $this->hasMany(Participant::class);
+        return $this->hasMany(Participant::class)->whereNull('withdrawn_at');
+    }
+
+    // Withdrew from their page: out of the pairs, kept for the organizer to bring them back (see ParticipantsEditor)
+    /** @return HasMany<Participant, $this> */
+    public function withdrawnParticipants(): HasMany
+    {
+        return $this->hasMany(Participant::class)->whereNotNull('withdrawn_at');
     }
 
     // Public channel named after a secret (only given by the signed fetch route), not the hash participants can see
@@ -166,7 +175,8 @@ final class Draw extends Model
     protected static function booted(): void
     {
         self::deleting(function (self $draw): void {
-            $draw->participants()->lazy()->each(fn (Participant $participant): ?bool => $participant->delete());
+            // Including the ones who withdrew
+            $draw->hasMany(Participant::class)->lazy()->each(fn (Participant $participant): ?bool => $participant->delete());
         });
     }
 

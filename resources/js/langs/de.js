@@ -87,7 +87,7 @@ export default {
                 "done": "Sie nehmen nicht mehr an dieser Veranstaltung teil. Ihr geheimer Weihnachtsmann hat einen neuen Empfänger erhalten und die Organisation wurde benachrichtigt.",
                 "confirm": {
                     "title": "Von der Veranstaltung abmelden?",
-                    "body": "Sie verlassen die Auslosung endgültig: Ihr geheimer Weihnachtsmann erhält einen neuen Empfänger, {organizer} wird per E-Mail benachrichtigt und diese Seite funktioniert nicht mehr. Wenn diese E-Mail nicht für Sie bestimmt war oder Sie nie teilnehmen wollten, nutzen Sie stattdessen die Meldung.",
+                    "body": "Sie verlassen die Auslosung: Ihr geheimer Weihnachtsmann erhält einen neuen Empfänger, {organizer} wird per E-Mail benachrichtigt und diese Seite funktioniert nicht mehr. Nur {organizer} kann Sie wieder aufnehmen. Wenn diese E-Mail nicht für Sie bestimmt war oder Sie nie teilnehmen wollten, nutzen Sie stattdessen die Meldung.",
                     "help": "Geben Sie unten Ihren Namen „{name}“ ein, um zu bestätigen.",
                     "ok": "Abmelden",
                     "cancel": "Abbrechen"
@@ -315,7 +315,18 @@ export default {
                 "done": "Umbenannt in {name}"
             },
             "cannot_withdraw": "{name} kann nicht entfernt werden, ohne jemandem eine ausgeschlossene Person zuzuteilen",
-            "withdrawn": "{name} nimmt nicht mehr an der Veranstaltung teil.",
+            "cannot_restore": "{name} kann nicht wieder aufgenommen werden, ohne jemandem eine ausgeschlossene Person zuzuteilen",
+            "withdrawn": {
+                "title": "Abmeldungen",
+                "help": "Diese Personen haben sich über ihre Seite abgemeldet. Falls jemand anderes ihre E-Mail erhalten hatte, nehmen Sie sie mit der richtigen Adresse wieder auf: Sie erhalten ihren Empfänger.",
+                "date": "Am {date}",
+                "button": "Wieder aufnehmen",
+                "prompt_title": "{name} wieder aufnehmen?",
+                "prompt_body": "{name} kommt mit den eigenen Ausschlüssen zurück in die Auslosung und erhält den Empfänger an dieser Adresse (korrigieren Sie sie, falls jemand anderes die E-Mail erhalten hatte). Eine andere Person bekommt einen neuen Empfänger.",
+                "ok": "Wieder aufnehmen",
+                "cancel": "Abbrechen",
+                "done": "{name} nimmt wieder teil"
+            },
             "deleted": "Alle Daten wurden gelöscht",
             "download": {
                 "button": "Zusammenfassung herunterladen",

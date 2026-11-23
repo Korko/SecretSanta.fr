@@ -54,7 +54,7 @@ return [
         'done' => 'Sie nehmen nicht mehr an dieser Veranstaltung teil. Ihr geheimer Weihnachtsmann hat einen neuen Empfänger erhalten und die Organisation wurde benachrichtigt.',
         'confirm' => [
             'title' => 'Von der Veranstaltung abmelden?',
-            'body' => 'Sie verlassen die Auslosung endgültig: Ihr geheimer Weihnachtsmann erhält einen neuen Empfänger, {organizer} wird per E-Mail benachrichtigt und diese Seite funktioniert nicht mehr. Wenn diese E-Mail nicht für Sie bestimmt war oder Sie nie teilnehmen wollten, nutzen Sie stattdessen die Meldung.',
+            'body' => 'Sie verlassen die Auslosung: Ihr geheimer Weihnachtsmann erhält einen neuen Empfänger, {organizer} wird per E-Mail benachrichtigt und diese Seite funktioniert nicht mehr. Nur {organizer} kann Sie wieder aufnehmen. Wenn diese E-Mail nicht für Sie bestimmt war oder Sie nie teilnehmen wollten, nutzen Sie stattdessen die Meldung.',
             'help' => 'Geben Sie unten Ihren Namen „{name}“ ein, um zu bestätigen.',
             'ok' => 'Abmelden',
             'cancel' => 'Abbrechen',

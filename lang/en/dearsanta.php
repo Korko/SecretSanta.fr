@@ -54,7 +54,7 @@ return [
         'done' => 'You no longer take part in this event. Your secret santa got a new target and the organizer has been told.',
         'confirm' => [
             'title' => 'Withdraw from the event?',
-            'body' => 'You will leave the draw for good: your secret santa will get a new target, {organizer} will be told by email and this page will stop working. If this email was not meant for you or you never asked to take part, use the report instead.',
+            'body' => 'You will leave the draw: your secret santa will get a new target, {organizer} will be told by email and this page will stop working. Only {organizer} will be able to bring you back. If this email was not meant for you or you never asked to take part, use the report instead.',
             'help' => 'Type your name, "{name}", below to confirm.',
             'ok' => 'Withdraw',
             'cancel' => 'Cancel',

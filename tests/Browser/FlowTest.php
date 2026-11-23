@@ -243,7 +243,7 @@ test('the full flow: draw, dearSanta report, organizer panel with their particip
         ->assertNoJavaScriptErrors();
 });
 
-test('withdrawing takes saying who you are, then typing your own name', function (): void {
+test('withdrawing takes saying who you are, then typing your own name, and the organizer can bring them back', function (): void {
     Notification::fake();
     // No exclusions: nothing keeps them from leaving
     $draw = createServiceDraw(generateParticipants(4, withExclusions: false));
@@ -266,7 +266,19 @@ test('withdrawing takes saying who you are, then typing your own name', function
         ->wait(0.5)->click('.ajs-footer .btn-primary:visible')
         ->assertPresent('.ajs-header:has(.fa-check)')
         ->assertNoJavaScriptErrors();
-    expect($participant->fresh())->toBeNull();
+    expect($participant->fresh()->withdrawn_at)->not->toBeNull();
+
+    // Someone else had got the email: the organizer brings them back, at the right address
+    visit(URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).$iv)
+        ->assertCount('tbody tr:not(.organizer-participation *)', 3)
+        ->assertSeeIn('.withdrawn-participant', $participant->name)
+        ->click('.participant-restore')
+        ->type('.ajs-content:visible input', 'right@example.com')
+        ->wait(0.5)->click('.ajs-footer .btn-primary:visible')
+        ->assertNotPresent('.withdrawn-participant')
+        ->assertCount('tbody tr:not(.organizer-participation *)', 4)
+        ->assertNoJavaScriptErrors();
+    expect($participant->fresh())->withdrawn_at->toBeNull()->email->toBe('right@example.com');
 });
 
 test('static pages and the fix form', function (): void {
