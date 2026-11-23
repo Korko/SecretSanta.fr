@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Mail\DkimTransport;
+use App\Queue\FailedJobProviderWithoutSecret;
+use App\Services\DrawEncrypter;
 use App\Solvers\CycleSolver;
 use App\Solvers\SolverInterface;
 use DrawCrypt;
@@ -12,6 +14,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Queue\Failed\FailedJobProviderInterface;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
@@ -97,11 +100,13 @@ final class AppServiceProvider extends ServiceProvider
             ]),
         ]);
 
+        // The secret is only lent for the time of the sending: a failed job is stored without it
+        $this->app->extend('queue.failer', fn (FailedJobProviderInterface $failer): FailedJobProviderInterface => new FailedJobProviderWithoutSecret($failer));
+
         $this->app->make(Dispatcher::class)->listen(JobProcessing::class, function (JobProcessing $event): void {
+            // A job without secret (a failed one retried) gets a random one, not the secret of the previous job
             $iv = data_get($event->job->payload(), 'data.iv');
-            if (is_string($iv)) {
-                DrawCrypt::setIV(base64_decode($iv));
-            }
+            DrawCrypt::setIV(is_string($iv) ? base64_decode($iv) : random_bytes(DrawEncrypter::SECRET_LENGTH));
 
             $locale = data_get($event->job->payload(), 'data.locale');
             if (is_string($locale)) {

@@ -32,8 +32,8 @@ Schedule::command('secretsanta:clean-bounces')
     ->daily()
     ->environments(['prod']);
 
-// A failed job keeps the draw secret in clear in its payload (data.iv, next to the encrypted command): a week
-// leaves time to retry after a mail outage (secretsanta retry), then it goes, the organizer can resend from the panel
+// Failed jobs are stored without the draw secret (FailedJobProviderWithoutSecret), so they can't be retried:
+// kept a week to look into the error, the organizer resends the emails from the panel
 Schedule::command('queue:prune-failed --hours=168')
     ->daily()
     ->environments(['prod']);
