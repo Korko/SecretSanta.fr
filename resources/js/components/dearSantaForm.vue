@@ -4,6 +4,7 @@
     import { required } from '@vuelidate/validators'
 
     import alertify, { hardConfirm } from '../partials/alertify.js';
+    import { escapeHtml } from '../partials/helpers.js';
     import fetch from '../partials/fetch.js';
     import Echo from '../partials/echo.js';
 
@@ -43,6 +44,8 @@
                 suggestionRecipients: this.data.suggestionRecipients || {},
                 suggestions: this.data.suggestions || {},
                 receivedSuggestions: this.data.receivedSuggestions || [],
+                // "A problem?": who they are first ('identity'), then what is wrong when it is them ('self')
+                problem: null,
                 showSuggestion: false,
                 suggestion: { recipient: '', content: '', signed: false },
                 newEmail: '',
@@ -122,7 +125,11 @@
             },
             sendReport(reason) {
                 return fetch(this.routes.reportUrl, 'POST', reason ? { reason } : {})
-                    .then(data => this.report = data.report);
+                    .then(data => {
+                        this.report = data.report;
+                        this.problem = null;
+                    })
+                    .catch(this.alertError);
             },
             refresh() {
                 return fetch(this.routes.fetchStateUrl).then(data => {
@@ -163,12 +170,13 @@
                     .catch(this.alertError);
             },
             confirmWithdraw() {
-                // Permanent: typed, like the organizer removing someone
+                // Permanent: their own name typed, which someone who got another person's email won't do without noticing
+                const name = this.data.participant.name;
                 hardConfirm({
                     title: this.$t('dearsanta.withdraw.confirm.title'),
-                    body: this.$t('dearsanta.withdraw.confirm.body', { organizer: this.data.organizer }),
-                    word: this.$t('dearsanta.withdraw.confirm.value'),
-                    help: this.$t('dearsanta.withdraw.confirm.help'),
+                    body: this.$t('dearsanta.withdraw.confirm.body', { organizer: escapeHtml(this.data.organizer) }),
+                    word: name,
+                    help: this.$t('dearsanta.withdraw.confirm.help', { name: escapeHtml(name) }),
                     ok: this.$t('dearsanta.withdraw.confirm.ok'),
                     cancel: this.$t('dearsanta.withdraw.confirm.cancel')
                 }).then(this.withdraw);
@@ -349,7 +357,7 @@
                 <button type="submit" class="btn btn-primary btn-sm email-change-confirm">{{ $t('dearsanta.email.confirm') }}</button>
             </form>
         </div>
-        <!-- Wrong recipient or not taking part: the organizer sees it on their panel (they can't be emailed) -->
+        <!-- Wrong recipient or not taking part: the organizer is told by email and sees it on their panel -->
         <div v-if="!data.isOrganizer" class="report text-center mt-4 small">
             <template v-if="report">
                 <p class="text-warning report-sent">
@@ -358,14 +366,21 @@
                 </p>
                 <button type="button" class="btn btn-link btn-sm report-cancel" @click="sendReport(null)">{{ $t('dearsanta.report.cancel') }}</button>
             </template>
-            <template v-else>
-                <span class="text-muted">{{ $t('dearsanta.report.question') }}</span>
+            <button v-else-if="!problem" type="button" class="btn btn-link btn-sm text-muted report-open" @click="problem = 'identity'">{{ $t('dearsanta.report.question') }}</button>
+            <!-- Who they are first: someone who got the email of another (a mistyped address) must not withdraw
+                 in their place, the right person may want to take part. A report can be undone, a withdrawal not -->
+            <template v-else-if="problem === 'identity'">
+                <span class="report-identity">{{ $t('dearsanta.report.identity', { name: data.participant.name }) }}</span>
                 <button type="button" class="btn btn-link btn-sm report-not-me" @click="sendReport('not_me')">{{ $t('dearsanta.report.not_me') }}</button>
-                <button type="button" class="btn btn-link btn-sm report-not-participating" @click="sendReport('not_participating')">{{ $t('dearsanta.report.not_participating') }}</button>
+                <button type="button" class="btn btn-link btn-sm report-its-me" @click="problem = 'self'">{{ $t('dearsanta.report.its_me') }}</button>
             </template>
-            <!-- Signed up but changed their mind: they really leave the draw (a report only tells the organizer) -->
-            <div>
+            <template v-else>
+                <button type="button" class="btn btn-link btn-sm report-not-participating" @click="sendReport('not_participating')">{{ $t('dearsanta.report.not_participating') }}</button>
+                <!-- Signed up but changed their mind: they really leave the draw (a report only tells the organizer) -->
                 <button type="button" class="btn btn-link btn-sm text-danger withdraw" @click="confirmWithdraw">{{ $t('dearsanta.withdraw.button') }}</button>
+            </template>
+            <div v-if="problem && !report">
+                <button type="button" class="btn btn-link btn-sm text-muted report-back" @click="problem = null">{{ $t('dearsanta.report.back') }}</button>
             </div>
         </div>
     </div>

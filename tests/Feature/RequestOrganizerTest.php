@@ -8,6 +8,7 @@ use App\Models\Draw;
 use App\Notifications\DearSanta;
 use App\Notifications\GiftSuggestion;
 use App\Notifications\OrganizerRecap;
+use App\Notifications\ParticipantReported;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetMessages;
@@ -481,6 +482,30 @@ test('a participant report shows on the organizer panel, and fixing the address 
     ajaxPost(URL::signedRoute('dearSanta.report', ['participant' => $participant]), ['reason' => 'not_participating']);
     ajaxPost(URL::signedRoute('dearSanta.report', ['participant' => $participant]), [])->assertJson(['report' => null]);
     assertNull($participant->fresh()->report);
+});
+
+test('a participant report is emailed to the organizer, once per reason', function (): void {
+    Notification::fake();
+    $draw = createServiceDraw(generateParticipants(3));
+    $participant = $draw->participants->last();
+    $report = fn (?string $reason) => ajaxPost(URL::signedRoute('dearSanta.report', ['participant' => $participant]), $reason ? ['reason' => $reason] : [])->assertSuccessful();
+
+    $report('not_me');
+    // The same again: nothing new to tell
+    $report('not_me');
+    Notification::assertSentToTimes($draw, ParticipantReported::class, 1);
+    // The address to fix, and the panel to fix it
+    Notification::assertSentTo($draw, ParticipantReported::class, function (ParticipantReported $notification) use ($draw, $participant): bool {
+        $html = (string) $notification->toMail($draw)->render();
+
+        return str_contains($html, e($participant->email)) && str_contains($html, '/org/'.$draw->hash);
+    });
+
+    // A cancellation tells nothing, another reason does
+    $report(null);
+    Notification::assertSentToTimes($draw, ParticipantReported::class, 1);
+    $report('not_participating');
+    Notification::assertSentToTimes($draw, ParticipantReported::class, 2);
 });
 
 test('the organizer taking part cannot report themselves', function (): void {

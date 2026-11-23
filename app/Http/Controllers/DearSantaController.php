@@ -14,6 +14,7 @@ use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
 use App\Notifications\GiftSuggestion as GiftSuggestionNotification;
 use App\Notifications\ParticipantEmailCode;
+use App\Notifications\ParticipantReported;
 use App\Notifications\ParticipantWithdrew;
 use App\Notifications\TargetDrawn;
 use App\Services\ParticipantsEditor;
@@ -108,7 +109,7 @@ final class DearSantaController extends Controller
         ]);
     }
 
-    // "Not me" / "not taking part": shown to the organizer on their panel, null withdraws the report
+    // "Not me" / "not taking part": emailed to the organizer and shown on their panel, null withdraws the report
     public function report(Request $request, Participant $participant): JsonResponse
     {
         // The organizer has their panel (and can delete the draw), reporting to themselves makes no sense
@@ -116,11 +117,18 @@ final class DearSantaController extends Controller
 
         $request->validate(['reason' => ['nullable', Rule::enum(ReportReason::class)]]);
 
+        $previous = $participant->report;
         $participant->report = $request->enum('reason', ReportReason::class);
         $participant->save();
         $participant->draw->refuseEmail($participant->email, $participant->report !== null);
 
         $participant->createMetric($participant->report ? 'report_'.$participant->report->value : 'report_cancelled');
+
+        // A mistyped address is best fixed before the right person thinks they were forgotten: the organizer is
+        // told right away, once per reason (not on a cancellation, nor again for the same one)
+        if ($participant->report !== null && $participant->report !== $previous) {
+            $participant->draw->notify(new ParticipantReported($participant->name, $participant->email, $participant->report));
+        }
 
         return response()->json(['report' => $participant->report]);
     }

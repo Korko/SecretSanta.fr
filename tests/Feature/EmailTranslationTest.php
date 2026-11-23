@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Enums\ReportReason;
 use App\Models\Draw;
 use App\Models\GiftSuggestion;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\ParticipantEmailCode;
+use App\Notifications\ParticipantReported;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetMessages;
 use App\Notifications\TargetWithdrawn;
@@ -29,6 +31,8 @@ it('renders the emails in the language of the request', function (string $locale
     $html = new TargetDrawn()->toMail($participant)->render()
         .new TargetWithdrawn()->toMail($participant->santa)->render()
         .new TargetMessages()->toMail($participant)->render()
+        .new ParticipantReported('Zoé', 'zoe@example.com', ReportReason::NotMe)->toMail($draw)->render()
+        .new ParticipantReported('Zoé', 'zoe@example.com', ReportReason::NotParticipating)->toMail($draw)->render()
         .new ParticipantEmailCode('Zoé', '012345')->toMail(new AnonymousNotifiable)->render();
 
     foreach ($expected as $text) {

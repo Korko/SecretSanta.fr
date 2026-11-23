@@ -6,12 +6,15 @@ return [
     'reminder' => 'Denken Sie daran, dass Ihr geheimer Weihnachtsmann oder Ihre geheime Weihnachtsfrau Ihnen nicht antworten kann! Geben sie ihm oder ihr so viele Informationen wie möglich zu geben.',
     'report' => [
         'question' => 'Ein Problem?',
-        'not_me' => 'Diese E-Mail ist nicht für mich',
-        'not_participating' => 'Ich nehme nicht teil',
+        'identity' => 'Sind Sie {name}?',
+        'not_me' => 'Nein, diese E-Mail ist nicht für mich',
+        'its_me' => 'Ja, das bin ich',
+        'not_participating' => 'Ich wollte nie teilnehmen',
         'cancel' => 'Meldung zurückziehen',
+        'back' => 'Zurück',
         'sent' => [
-            'not_me' => '{organizer} sieht auf der eigenen Seite, dass diese E-Mail nicht für Sie war.',
-            'not_participating' => '{organizer} sieht auf der eigenen Seite, dass Sie nicht teilnehmen.',
+            'not_me' => '{organizer} wurde per E-Mail benachrichtigt, dass diese E-Mail nicht für Sie war, um die Adresse zu korrigieren.',
+            'not_participating' => '{organizer} wurde per E-Mail benachrichtigt, dass Sie nicht teilnehmen.',
         ],
     ],
     'targets' => [
@@ -52,8 +55,7 @@ return [
         'confirm' => [
             'title' => 'Von der Veranstaltung abmelden?',
             'body' => 'Sie verlassen die Auslosung endgültig: Ihr geheimer Weihnachtsmann erhält einen neuen Empfänger, {organizer} wird per E-Mail benachrichtigt und diese Seite funktioniert nicht mehr. Wenn diese E-Mail nicht für Sie bestimmt war oder Sie nie teilnehmen wollten, nutzen Sie stattdessen die Meldung.',
-            'value' => 'Abmelden',
-            'help' => 'Geben Sie unten "[+!:verification]" ein, um zu bestätigen.',
+            'help' => 'Geben Sie unten Ihren Namen „{name}“ ein, um zu bestätigen.',
             'ok' => 'Abmelden',
             'cancel' => 'Abbrechen',
         ],
