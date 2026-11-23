@@ -28,7 +28,12 @@ export default {
                     "delayed": "Verzögert, neuer Versuch läuft",
                     "received": "Empfangen"
                 },
-                "recent": "Sie können dieselbe E-Mail nicht zu schnell erneut versenden"
+                "recent": "Sie können dieselbe E-Mail nicht zu schnell erneut versenden",
+                "bounce": {
+                    "address": "Diese Adresse existiert nicht: bitte korrigieren",
+                    "full": "Postfach voll: später erneut senden",
+                    "refused": "Vom Server des Empfängers abgelehnt, die Adresse ist nicht das Problem"
+                }
             },
             "csv": {
                 "generated": "Datei erstellt am {date} auf {app} ({url})",

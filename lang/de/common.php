@@ -36,6 +36,12 @@ return [
             'received' => 'Empfangen',
         ],
         'recent' => 'Sie können dieselbe E-Mail nicht zu schnell erneut versenden',
+        // Why it bounced, when the delivery report says (BounceReason)
+        'bounce' => [
+            'address' => 'Diese Adresse existiert nicht: bitte korrigieren',
+            'full' => 'Postfach voll: später erneut senden',
+            'refused' => 'Vom Server des Empfängers abgelehnt, die Adresse ist nicht das Problem',
+        ],
     ],
 
     'csv' => [
