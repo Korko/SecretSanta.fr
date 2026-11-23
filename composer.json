@@ -33,6 +33,7 @@
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^3.14",
         "laravel/pail": "^1.2.2",
+        "laravel/pao": "^1.1",
         "laravel/pint": "^1.32",
         "librenms/laravel-vue-i18n-generator": "dev-master",
         "mockery/mockery": "^1.6",
@@ -54,7 +55,7 @@
             "php-http/discovery": false
         },
         "platform": {
-            "php": "8.4.27"
+            "php": "8.4.28"
         }
     },
     "extra": {
