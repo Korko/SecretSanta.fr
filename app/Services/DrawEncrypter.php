@@ -44,13 +44,13 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
     ) {
         throw_unless(Encrypter::supported($appKey, $cipher), RuntimeException::class, 'Unsupported cipher or incorrect key length.');
 
-        $this->setIV(self::generateIV());
+        $this->setIV($this->generateIV());
     }
 
     /**
      * Generate a new secret
      */
-    public static function generateIV(): string
+    public function generateIV(): string
     {
         return random_bytes(self::SECRET_LENGTH);
     }

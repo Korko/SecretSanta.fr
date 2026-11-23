@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Mail\DkimTransport;
-use App\Services\DrawEncrypter;
 use App\Solvers\CycleSolver;
 use App\Solvers\SolverInterface;
 use DrawCrypt;
@@ -102,7 +101,7 @@ final class AppServiceProvider extends ServiceProvider
             // A job without secret gets a new one, like a new draw, not the one of the previous job:
             // it would encrypt with it and send it in its links. Decrypting existing data then fails
             $iv = data_get($event->job->payload(), 'data.iv');
-            DrawCrypt::setIV(is_string($iv) ? base64_decode($iv) : DrawEncrypter::generateIV());
+            DrawCrypt::setIV(is_string($iv) ? base64_decode($iv) : DrawCrypt::generateIV());
 
             $locale = data_get($event->job->payload(), 'data.locale');
             if (is_string($locale)) {

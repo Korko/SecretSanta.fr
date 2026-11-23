@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string getKey()
  * @method static void setIV(string $secret)
  * @method static string getIV()
+ * @method static string generateIV()
  *
  * @see \App\Services\DrawEncrypter
  */
