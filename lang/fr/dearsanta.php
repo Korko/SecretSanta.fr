@@ -54,7 +54,7 @@ return [
         'done' => 'Vous ne participez plus à cet évènement. Votre père/mère noël secret a reçu une nouvelle cible et l\'organisateur/organisatrice a été prévenu(e).',
         'confirm' => [
             'title' => 'Se désister de l\'évènement ?',
-            'body' => 'Vous quitterez définitivement le tirage au sort : votre père/mère noël secret recevra une nouvelle cible, {organizer} sera prévenu(e) par email et cette page ne fonctionnera plus. Si cet email ne vous était pas destiné ou que vous n\'avez jamais demandé à participer, utilisez plutôt le signalement.',
+            'body' => 'Vous quitterez le tirage au sort : votre père/mère noël secret recevra une nouvelle cible, {organizer} sera prévenu(e) par email et cette page ne fonctionnera plus. Seul(e) {organizer} pourra vous réintégrer. Si cet email ne vous était pas destiné ou que vous n\'avez jamais demandé à participer, utilisez plutôt le signalement.',
             'help' => 'Saisir votre nom, « {name} », en dessous pour confirmer.',
             'ok' => 'Me désister',
             'cancel' => 'Annuler',

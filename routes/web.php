@@ -76,6 +76,8 @@ Route::middleware('signed')->group(function (): void {
             ->name('organizerPanel.revealTargets');
         Route::post('/draw/{draw}/participants', [OrganizerController::class, 'changeParticipants'])
             ->name('organizerPanel.changeParticipants')->middleware('throttle:email');
+        Route::post('/draw/{draw}/restore', [OrganizerController::class, 'restore'])
+            ->name('organizerPanel.restore')->middleware('throttle:email');
         Route::post('/draw/{draw}/changeDate', [OrganizerController::class, 'changeDate'])
             ->name('organizerPanel.changeDate');
         Route::get('/org/{draw}/fetchState', [OrganizerController::class, 'fetchState'])

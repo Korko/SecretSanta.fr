@@ -87,7 +87,7 @@ export default {
                 "done": "Vous ne participez plus à cet évènement. Votre père/mère noël secret a reçu une nouvelle cible et l'organisateur/organisatrice a été prévenu(e).",
                 "confirm": {
                     "title": "Se désister de l'évènement ?",
-                    "body": "Vous quitterez définitivement le tirage au sort : votre père/mère noël secret recevra une nouvelle cible, {organizer} sera prévenu(e) par email et cette page ne fonctionnera plus. Si cet email ne vous était pas destiné ou que vous n'avez jamais demandé à participer, utilisez plutôt le signalement.",
+                    "body": "Vous quitterez le tirage au sort : votre père/mère noël secret recevra une nouvelle cible, {organizer} sera prévenu(e) par email et cette page ne fonctionnera plus. Seul(e) {organizer} pourra vous réintégrer. Si cet email ne vous était pas destiné ou que vous n'avez jamais demandé à participer, utilisez plutôt le signalement.",
                     "help": "Saisir votre nom, « {name} », en dessous pour confirmer.",
                     "ok": "Me désister",
                     "cancel": "Annuler"
@@ -315,7 +315,18 @@ export default {
                 "done": "Renommé en {name}"
             },
             "cannot_withdraw": "Impossible de retirer {name} sans donner à quelqu'un une personne qu'il ou elle a exclue",
-            "withdrawn": "{name} ne participe plus à l'évènement.",
+            "cannot_restore": "Impossible de réintégrer {name} sans donner à quelqu'un une personne qu'il ou elle a exclue",
+            "withdrawn": {
+                "title": "Désistements",
+                "help": "Ces personnes se sont désistées depuis leur page. Si quelqu'un d'autre avait reçu leur email, réintégrez-les avec la bonne adresse : elles recevront leur cible.",
+                "date": "Le {date}",
+                "button": "Réintégrer",
+                "prompt_title": "Réintégrer {name} ?",
+                "prompt_body": "{name} reviendra dans le tirage avec ses exclusions et recevra sa cible à cette adresse (corrigez-la si quelqu'un d'autre avait reçu son email). Une autre personne changera de cible.",
+                "ok": "Réintégrer",
+                "cancel": "Annuler",
+                "done": "{name} participe de nouveau"
+            },
             "deleted": "Toutes les données ont été supprimées",
             "download": {
                 "button": "Télécharger le récapitulatif",

@@ -49,7 +49,7 @@ final class GiftSuggestion extends Notification implements ShouldBeEncrypted, Sh
             ->view(['emails.gift_suggestion', 'emails.gift_suggestion_plain'], [
                 'content' => $this->suggestion->mail_body,
                 'targetName' => $this->suggestion->recipient->name,
-                'senderName' => $this->suggestion->signed ? $this->suggestion->sender?->name : null,
+                'senderName' => $this->suggestion->signature(),
                 'dearSantaLink' => $url,
             ]);
     }

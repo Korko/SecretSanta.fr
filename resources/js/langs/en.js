@@ -87,7 +87,7 @@ export default {
                 "done": "You no longer take part in this event. Your secret santa got a new target and the organizer has been told.",
                 "confirm": {
                     "title": "Withdraw from the event?",
-                    "body": "You will leave the draw for good: your secret santa will get a new target, {organizer} will be told by email and this page will stop working. If this email was not meant for you or you never asked to take part, use the report instead.",
+                    "body": "You will leave the draw: your secret santa will get a new target, {organizer} will be told by email and this page will stop working. Only {organizer} will be able to bring you back. If this email was not meant for you or you never asked to take part, use the report instead.",
                     "help": "Type your name, \"{name}\", below to confirm.",
                     "ok": "Withdraw",
                     "cancel": "Cancel"
@@ -315,7 +315,18 @@ export default {
                 "done": "Renamed to {name}"
             },
             "cannot_withdraw": "Unable to remove {name} without giving someone a person they excluded",
-            "withdrawn": "{name} no longer takes part in the event.",
+            "cannot_restore": "Unable to bring {name} back without giving someone a person they excluded",
+            "withdrawn": {
+                "title": "Withdrawals",
+                "help": "These people withdrew from their page. If someone else had got their email, bring them back with the right address: they will get their target.",
+                "date": "On {date}",
+                "button": "Bring back",
+                "prompt_title": "Bring {name} back?",
+                "prompt_body": "{name} will be back in the draw with their exclusions and get their target at this address (fix it if someone else had got their email). Another person will change target.",
+                "ok": "Bring back",
+                "cancel": "Cancel",
+                "done": "{name} takes part again"
+            },
             "deleted": "All data has been deleted",
             "download": {
                 "button": "Download the summary",

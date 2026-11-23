@@ -48,6 +48,7 @@ return [
         'done' => 'Renamed to :name',
     ],
     'cannot_withdraw' => 'Unable to remove :name without giving someone a person they excluded',
+    'cannot_restore' => 'Unable to bring :name back without giving someone a person they excluded',
     'withdrawn' => ':name no longer takes part in the event.',
     'deleted' => 'All data has been deleted',
     'download' => [
@@ -111,6 +112,18 @@ return [
             'title' => 'Confirm the changes?',
             'body' => '{add} added and {remove} removed. Each person whose target changes will receive a single email. This action cannot be undone.',
         ],
+    ],
+    // Withdrew from their page, kept aside: the organizer can bring them back
+    'withdrawn' => [
+        'title' => 'Withdrawals',
+        'help' => 'These people withdrew from their page. If someone else had got their email, bring them back with the right address: they will get their target.',
+        'date' => 'On {date}',
+        'button' => 'Bring back',
+        'prompt_title' => 'Bring {name} back?',
+        'prompt_body' => '{name} will be back in the draw with their exclusions and get their target at this address (fix it if someone else had got their email). Another person will change target.',
+        'ok' => 'Bring back',
+        'cancel' => 'Cancel',
+        'done' => '{name} takes part again',
     ],
     'withdraw' => [
         'button' => 'Remove',

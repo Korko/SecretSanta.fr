@@ -33,6 +33,12 @@ final class GiftSuggestion extends Model
         return $this->belongsTo(Participant::class, 'sender_id');
     }
 
+    // The sender's name when they signed it and still take part: not once they left (withdrew, or were removed)
+    public function signature(): ?string
+    {
+        return $this->signed && $this->sender?->withdrawn_at === null ? $this->sender?->name : null;
+    }
+
     /** @return BelongsTo<Participant, $this> */
     public function recipient(): BelongsTo
     {

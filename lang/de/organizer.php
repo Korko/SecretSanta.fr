@@ -48,6 +48,7 @@ return [
         'done' => 'Umbenannt in :name',
     ],
     'cannot_withdraw' => ':name kann nicht entfernt werden, ohne jemandem eine ausgeschlossene Person zuzuteilen',
+    'cannot_restore' => ':name kann nicht wieder aufgenommen werden, ohne jemandem eine ausgeschlossene Person zuzuteilen',
     'withdrawn' => ':name nimmt nicht mehr an der Veranstaltung teil.',
     'deleted' => 'Alle Daten wurden gelöscht',
     'download' => [
@@ -111,6 +112,18 @@ return [
             'title' => 'Änderungen bestätigen?',
             'body' => '{add} hinzugefügt und {remove} entfernt. Jede Person, deren Ziel sich ändert, erhält nur eine E-Mail. Diese Aktion kann nicht rückgängig gemacht werden.',
         ],
+    ],
+    // Withdrew from their page, kept aside: the organizer can bring them back
+    'withdrawn' => [
+        'title' => 'Abmeldungen',
+        'help' => 'Diese Personen haben sich über ihre Seite abgemeldet. Falls jemand anderes ihre E-Mail erhalten hatte, nehmen Sie sie mit der richtigen Adresse wieder auf: Sie erhalten ihren Empfänger.',
+        'date' => 'Am {date}',
+        'button' => 'Wieder aufnehmen',
+        'prompt_title' => '{name} wieder aufnehmen?',
+        'prompt_body' => '{name} kommt mit den eigenen Ausschlüssen zurück in die Auslosung und erhält den Empfänger an dieser Adresse (korrigieren Sie sie, falls jemand anderes die E-Mail erhalten hatte). Eine andere Person bekommt einen neuen Empfänger.',
+        'ok' => 'Wieder aufnehmen',
+        'cancel' => 'Abbrechen',
+        'done' => '{name} nimmt wieder teil',
     ],
     'withdraw' => [
         'button' => 'Entfernen',

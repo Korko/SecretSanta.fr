@@ -48,6 +48,7 @@ return [
         'done' => 'Renommé en :name',
     ],
     'cannot_withdraw' => 'Impossible de retirer :name sans donner à quelqu\'un une personne qu\'il ou elle a exclue',
+    'cannot_restore' => 'Impossible de réintégrer :name sans donner à quelqu\'un une personne qu\'il ou elle a exclue',
     'withdrawn' => ':name ne participe plus à l\'évènement.',
     'deleted' => 'Toutes les données ont été supprimées',
     'download' => [
@@ -111,6 +112,18 @@ return [
             'title' => 'Valider les modifications ?',
             'body' => '{add} ajout(s) et {remove} retrait(s). Chaque personne dont la cible change recevra un seul email. Cette action ne peut être annulée.',
         ],
+    ],
+    // Withdrew from their page, kept aside: the organizer can bring them back
+    'withdrawn' => [
+        'title' => 'Désistements',
+        'help' => 'Ces personnes se sont désistées depuis leur page. Si quelqu\'un d\'autre avait reçu leur email, réintégrez-les avec la bonne adresse : elles recevront leur cible.',
+        'date' => 'Le {date}',
+        'button' => 'Réintégrer',
+        'prompt_title' => 'Réintégrer {name} ?',
+        'prompt_body' => '{name} reviendra dans le tirage avec ses exclusions et recevra sa cible à cette adresse (corrigez-la si quelqu\'un d\'autre avait reçu son email). Une autre personne changera de cible.',
+        'ok' => 'Réintégrer',
+        'cancel' => 'Annuler',
+        'done' => '{name} participe de nouveau',
     ],
     'withdraw' => [
         'button' => 'Retirer',

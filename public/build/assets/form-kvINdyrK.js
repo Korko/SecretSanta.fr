@@ -1,1 +1,0 @@
-import{t as e}from"./ajaxForm-BYugMysc.js";import{C as t,F as n,i as r,z as i}from"./app-B_bBflow.js";var a={components:{AjaxForm:e}};function o(e,r,a,o,s,c){let l=i(`ajax-form`);return n(),t(l)}var s=r(a,[[`render`,o]]);export{s as t};

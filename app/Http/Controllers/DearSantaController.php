@@ -171,7 +171,8 @@ final class DearSantaController extends Controller
     }
 
     // "I signed up but changed my mind": unlike a report, they really leave. Their santa gets a new target
-    // and the organizer an email. Permanent: this page and its link stop working
+    // and the organizer an email. This page and its link stop working, but the organizer can bring them back:
+    // someone else may have got their email and withdrawn in their place (see ParticipantsEditor::withdraw)
     public function withdraw(Participant $participant): JsonResponse
     {
         // The organizer has their panel to remove themselves, or to delete the draw
@@ -180,7 +181,7 @@ final class DearSantaController extends Controller
         $draw = $participant->draw;
         $name = $participant->name;
         try {
-            new ParticipantsEditor($draw)->apply([$participant], []);
+            new ParticipantsEditor($draw)->withdraw($participant);
         } catch (ValidationException $validationException) {
             // Only the organizer may break an exclusion to let them go
             throw array_key_exists('exclusions', $validationException->errors())
@@ -188,7 +189,7 @@ final class DearSantaController extends Controller
                 : $validationException;
         }
 
-        // Counted once it went through: the deleted model still has its ids
+        // Counted once it went through
         $participant->createMetric('withdraw')->addTag('by', 'participant');
 
         $draw->notify(new ParticipantWithdrew($name));
@@ -379,7 +380,7 @@ final class DearSantaController extends Controller
             ->map(fn (GiftSuggestion $suggestion): array => [
                 'id' => $suggestion->mail->id,
                 'mail_body' => $suggestion->mail_body,
-                'sender' => $suggestion->signed ? $suggestion->sender?->name : null,
+                'sender' => $suggestion->signature(),
                 'created_at' => $suggestion->mail->created_at,
             ])->values();
     }

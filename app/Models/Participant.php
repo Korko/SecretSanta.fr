@@ -42,6 +42,7 @@ use STS\Metrics\Metric;
  * @property string|null $pending_email_code
  * @property CarbonImmutable|null $pending_email_at
  * @property int $pending_email_attempts
+ * @property CarbonImmutable|null $withdrawn_at withdrew from their page, kept aside (see ParticipantsEditor::withdraw)
  * @property-read array<int, string> $exclusionsNames
  * @property-read ParticipantsCollection $exclusions
  * @property-read Collection<int, GiftSuggestion> $sentSuggestions
@@ -149,7 +150,8 @@ final class Participant extends Model
     /** @return BelongsToMany<self, $this> */
     public function exclusions(): BelongsToMany
     {
-        return $this->belongsToMany(self::class, 'exclusions', 'participant_id', 'exclusion_id');
+        // Not the ones who withdrew: out of the pairs and of the CSV, back with their exclusions if brought back
+        return $this->belongsToMany(self::class, 'exclusions', 'participant_id', 'exclusion_id')->whereNull('participants.withdrawn_at');
     }
 
     /**
@@ -163,7 +165,8 @@ final class Participant extends Model
         /** @var self $participant */
         $participant = $this->baseResolver($value, $field);
 
-        throw_if($participant->draw->expired, ModelNotFoundException::class);
+        // Their page stops working once they withdrew, like for one removed
+        throw_if($participant->draw->expired || $participant->withdrawn_at !== null, ModelNotFoundException::class);
 
         return $participant;
     }
@@ -232,6 +235,7 @@ final class Participant extends Model
             'email' => EncryptedString::class,
             'pending_email' => EncryptedString::class,
             'pending_email_at' => 'immutable_datetime',
+            'withdrawn_at' => 'immutable_datetime',
             'report' => ReportReason::class,
         ];
     }

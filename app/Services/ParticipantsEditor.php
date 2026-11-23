@@ -10,6 +10,7 @@ use App\Models\Participant;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -25,18 +26,31 @@ final class ParticipantsEditor
     /** @var array<int|string, int|string> santa id => target id (new participants have string keys) */
     private array $targets = [];
 
+    // The removed participants are kept aside instead of deleted (a withdrawal, see withdraw())
+    private bool $keepRemoved = false;
+
     // ignoreExclusions: the organizer forcing a removal no santa could absorb without breaking an exclusion
     public function __construct(private readonly Draw $draw, private readonly bool $ignoreExclusions = false) {}
+
+    // A participant leaving from their own page: out of the pairs like a removal, but kept aside (withdrawn_at),
+    // with their messages, ideas and exclusions, for the organizer to bring them back with apply([], [], [$them]):
+    // someone else may have got their email and withdrawn in their place
+    public function withdraw(Participant $participant): void
+    {
+        $this->keepRemoved = true;
+        $this->apply([$participant], []);
+    }
 
     /**
      * @param  array<Participant>  $remove
      * @param  list<array{name: string, email: string}>  $add
+     * @param  array<Participant>  $restore  participants who withdrew, back in the draw (their address set beforehand)
      */
-    public function apply(array $remove, array $add): void
+    public function apply(array $remove, array $add, array $restore = []): void
     {
         // One change at a time per draw (the organizer panel, participants withdrawing): the pairs are computed
         // from the participants read once the draw is locked, not from a copy another change may have made stale
-        [$participants, $before, $created, $remove] = DB::transaction(function () use ($remove, $add): array {
+        [$participants, $before, $created, $remove] = DB::transaction(function () use ($remove, $add, $restore): array {
             Draw::query()->lockForUpdate()->findOrFail($this->draw->id);
 
             $this->draw->unsetRelation('participants');
@@ -60,6 +74,13 @@ final class ParticipantsEditor
                 $this->insert('new'.$i);
             }
 
+            // Back from a withdrawal: with their exclusions, which the pairs must respect
+            $restored = [];
+            foreach ($restore as $participant) {
+                $restored[$participant->id] = $participants[$participant->id] = $this->draw->withdrawnParticipants()->with('exclusions')->findOrFail($participant->id);
+                $this->insertExisting($restored[$participant->id], $participants);
+            }
+
             throw_if(count($this->targets) < 3, ValidationException::withMessages(['participants' => trans('error.withdraw')]));
             // Adding beyond the limit is refused, not removing: a bigger draw from before the limit (or a lowered
             // MAX_PARTICIPANTS) can still lose someone
@@ -75,7 +96,20 @@ final class ParticipantsEditor
             }
 
             foreach ($remove as $participant) {
-                $participant->delete();
+                if ($this->keepRemoved) {
+                    $participant->withdrawn_at = CarbonImmutable::now();
+                    $participant->target_id = null; // no santa anymore
+                    $participant->save();
+                } else {
+                    $participant->delete();
+                }
+            }
+
+            foreach ($restored as $id => $participant) {
+                $participant->withdrawn_at = null;
+                $participant->save();
+                // Their target email again, like a new participant (see below)
+                $created[$id] = $participant;
             }
 
             $model = fn (int|string $id): Participant => $created[$id] ?? $participants[$id];
@@ -162,6 +196,24 @@ final class ParticipantsEditor
     {
         return $santa !== $target
             && ($this->ignoreExclusions || ! isset($participants[$santa]) || $participants[$santa]->exclusions->doesntContain('id', $target));
+    }
+
+    // A -> B => A -> back -> B, like insert(), with an A who may give to them and a B they may give to
+    /** @param  array<int, Participant>  $participants */
+    private function insertExisting(Participant $participant, array $participants): void
+    {
+        $id = $participant->id;
+        foreach (new Randomizer()->shuffleArray(array_keys($this->targets)) as $santa) {
+            $target = $this->targets[$santa];
+            if ($this->allowed($santa, $id, $participants) && $this->allowed($id, $target, $participants)) {
+                $this->targets[$id] = $target;
+                $this->targets[$santa] = $id;
+
+                return;
+            }
+        }
+
+        throw ValidationException::withMessages(['exclusions' => trans('organizer.cannot_restore', ['name' => $participant->name])]);
     }
 
     // A -> B => A -> new -> B, with a random A so the new participant's santa can't be guessed
