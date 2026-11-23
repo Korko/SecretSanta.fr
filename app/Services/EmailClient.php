@@ -60,6 +60,12 @@ final readonly class EmailClient
         $message->delete(false);
     }
 
+    // Left in the inbox, but no longer fetched as unseen
+    public function markAsSeen(Message $message): void
+    {
+        $message->setFlag('Seen');
+    }
+
     private function getFolderLimitQuery(string $folder, int $limit = 0): WhereQuery
     {
         $query = ($this->delegate->getFolder($folder) ?? throw new RuntimeException("Unknown IMAP folder {$folder}"))->query();

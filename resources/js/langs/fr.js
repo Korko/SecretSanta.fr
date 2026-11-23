@@ -28,7 +28,12 @@ export default {
                     "delayed": "Retardé, nouvel essai en cours",
                     "received": "Reçu"
                 },
-                "recent": "Vous ne pouvez pas relancer un même email trop rapidement"
+                "recent": "Vous ne pouvez pas relancer un même email trop rapidement",
+                "bounce": {
+                    "address": "Adresse inexistante : à corriger",
+                    "full": "Boîte de réception pleine : à renvoyer plus tard",
+                    "refused": "Refusé par le serveur du destinataire, l'adresse n'est pas en cause"
+                }
             },
             "csv": {
                 "generated": "Fichier généré le {date} sur {app} ({url})",
