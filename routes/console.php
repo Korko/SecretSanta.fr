@@ -31,9 +31,3 @@ Schedule::command('secretsanta:parse-bounces')
 Schedule::command('secretsanta:clean-bounces')
     ->daily()
     ->environments(['prod']);
-
-// Failed jobs are stored without the draw secret (FailedJobProviderWithoutSecret), so they can't be retried:
-// kept a week to look into the error, the organizer resends the emails from the panel
-Schedule::command('queue:prune-failed --hours=168')
-    ->daily()
-    ->environments(['prod']);

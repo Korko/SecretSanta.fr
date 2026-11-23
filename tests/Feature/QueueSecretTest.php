@@ -5,8 +5,9 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-test('a failed job does not keep the draw secret', function (): void {
+test('a failed job is not stored, nor its draw secret', function (): void {
     $secret = base64_encode(DrawCrypt::getIV());
     dispatch(function (): void {
         throw new RuntimeException('Mail server down');
@@ -18,26 +19,22 @@ test('a failed job does not keep the draw secret', function (): void {
 
     Artisan::call('queue:work', ['connection' => 'database', '--once' => true]);
 
-    $failed = DB::table('failed_jobs')->first();
-    expect($failed)->not->toBeNull()
-        ->and(json_decode((string) $failed->payload, true))->not->toHaveKey('data.iv')->toHaveKey('data.command')
-        ->and((string) $failed->exception)->toContain('Mail server down');
+    expect(DB::table('jobs')->count())->toBe(0)
+        ->and(resolve('queue.failer')->all())->toBe([])
+        ->and(Schema::hasTable('failed_jobs'))->toBeFalse();
 });
 
-test('a retried failed job runs with a new secret, not the one left by the previous job', function (): void {
+test('a job without the draw secret runs with a new one, not the one left by the previous job', function (): void {
     $secret = base64_encode(DrawCrypt::getIV());
     dispatch(function (): void {
-        if (! Cache::has('failed-once')) {
-            Cache::put('failed-once', true);
-            throw new RuntimeException('Mail server down');
-        }
-
         Cache::put('job-secret', base64_encode(DrawCrypt::getIV()));
     })->onConnection('database');
 
-    Artisan::call('queue:work', ['connection' => 'database', '--once' => true]);
-    Artisan::call('queue:retry', ['id' => ['all']]);
-    // Same worker: it still holds the secret of the first attempt
+    $payload = json_decode((string) DB::table('jobs')->value('payload'), true);
+    unset($payload['data']['iv']);
+    DB::table('jobs')->update(['payload' => json_encode($payload)]);
+
+    // Same process: the worker still holds the secret of the request that dispatched the job
     Artisan::call('queue:work', ['connection' => 'database', '--once' => true]);
 
     expect(Cache::get('job-secret'))->toBeString()->not->toBe($secret);

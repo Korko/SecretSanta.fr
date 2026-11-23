@@ -9,7 +9,6 @@ use App\Models\Draw;
 use App\Models\Exclusion;
 use App\Models\Mail;
 use App\Models\Participant;
-use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotNull;
@@ -36,22 +35,4 @@ it('cleans up everything', function (): void {
     assertEquals(0, Exclusion::query()->count());
     assertEquals(0, DearSanta::query()->count());
     assertEquals(0, Mail::query()->count());
-});
-
-it('prunes failed jobs after a week', function (): void {
-    // schedule:list loads routes/console.php like the scheduler does
-    $this->artisan('schedule:list')
-        ->expectsOutputToContain('queue:prune-failed --hours=168')
-        ->assertSuccessful();
-
-    foreach (['old' => now()->subDays(8), 'recent' => now()->subDays(6)] as $uuid => $failedAt) {
-        DB::table('failed_jobs')->insert([
-            'uuid' => $uuid, 'connection' => 'database', 'queue' => 'default',
-            'payload' => '{}', 'exception' => 'Mail server down', 'failed_at' => $failedAt,
-        ]);
-    }
-
-    $this->artisan('queue:prune-failed', ['--hours' => 168])->assertSuccessful();
-
-    assertEquals(['recent'], DB::table('failed_jobs')->pluck('uuid')->all());
 });

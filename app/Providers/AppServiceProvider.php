@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Mail\DkimTransport;
-use App\Queue\FailedJobProviderWithoutSecret;
 use App\Services\DrawEncrypter;
 use App\Solvers\CycleSolver;
 use App\Solvers\SolverInterface;
@@ -14,7 +13,6 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Queue\Failed\FailedJobProviderInterface;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
@@ -100,12 +98,9 @@ final class AppServiceProvider extends ServiceProvider
             ]),
         ]);
 
-        // The secret is only lent for the time of the sending: a failed job is stored without it
-        $this->app->extend('queue.failer', fn (FailedJobProviderInterface $failer): FailedJobProviderInterface => new FailedJobProviderWithoutSecret($failer));
-
         $this->app->make(Dispatcher::class)->listen(JobProcessing::class, function (JobProcessing $event): void {
-            // A job without secret (a failed one retried) gets a new one, like a new draw, not the one of the previous
-            // job: it would encrypt with it and send it in its links. Decrypting existing data then fails
+            // A job without secret gets a new one, like a new draw, not the one of the previous job:
+            // it would encrypt with it and send it in its links. Decrypting existing data then fails
             $iv = data_get($event->job->payload(), 'data.iv');
             DrawCrypt::setIV(is_string($iv) ? base64_decode($iv) : random_bytes(DrawEncrypter::SECRET_LENGTH));
 
