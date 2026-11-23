@@ -14,8 +14,12 @@ use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Queue\Attributes\Backoff;
+use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Queue\SerializesModels;
 
+#[Backoff(30)]
+#[Tries(10)]
 final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
 {
     use Queueable;
