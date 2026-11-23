@@ -46,7 +46,8 @@ final class ParticipantsEditor
 
             $this->targets = [];
             foreach ($participants as $participant) {
-                $this->targets[$participant->target_id] = $participant->id; // target_id holds the santa
+                // target_id holds the santa, set for everyone once drawn
+                $this->targets[$participant->target_id ?? throw new LogicException('Participant without a santa')] = $participant->id;
             }
 
             $before = $this->targets;
