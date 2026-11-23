@@ -1,14 +1,15 @@
 stages:
   - test
 
-# PHP 8.4 like prod, from the ondrej PPA, and Composer. The PPA key is in the repository (fingerprint
-# 14AA40EC0831756756D7F66C4F4EA0AAE5267A6C): no add-apt-repository, so no call to the Launchpad API,
-# which made every job fail while it was down. Fits the ubuntu:noble based images (php, e2e).
+# PHP 8.4 like prod, from Ondřej Surý's repository (packages.sury.org, which replaced his Launchpad PPA), and
+# Composer. The repository key is in the repository: nothing to download before trusting it (DEB.SURY.ORG
+# Automatic Signing Key, fingerprint 15058500A0235D97F5D10063B188E2B695BD4743, expires 2028-02-04: renew
+# .gitlab/sury-php.gpg from https://packages.sury.org/php/apt.gpg by then). Fits the ubuntu:noble based images (php, e2e).
 .php84:
   before_script:
     - apt-get update -qq && apt-get install -yqq --no-install-recommends ca-certificates > /dev/null
-    - cp .gitlab/ondrej-php.gpg /usr/share/keyrings/ondrej-php.gpg
-    - echo "deb [signed-by=/usr/share/keyrings/ondrej-php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu noble main" > /etc/apt/sources.list.d/ondrej-php.list
+    - cp .gitlab/sury-php.gpg /usr/share/keyrings/sury-php.gpg
+    - echo "deb [signed-by=/usr/share/keyrings/sury-php.gpg] https://packages.sury.org/php/ noble main" > /etc/apt/sources.list.d/sury-php.list
     - apt-get update -qq && apt-get install -yqq --no-install-recommends git unzip php8.4-cli php8.4-zip php8.4-intl php8.4-bcmath php8.4-sqlite3 php8.4-mbstring php8.4-xml php8.4-curl > /dev/null
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer && rm composer-setup.php
     - composer install --no-interaction --no-progress
