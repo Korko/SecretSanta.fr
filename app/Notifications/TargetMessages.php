@@ -48,7 +48,7 @@ final class TargetMessages extends Notification implements ShouldBeEncrypted, Sh
                 ->map(fn (GiftSuggestionModel $suggestion): array => [
                     'date' => $suggestion->mail->created_at?->isoFormat('LLL') ?? '',
                     'content' => $suggestion->mail_body,
-                    'sender' => $suggestion->signed ? $suggestion->sender?->name : null,
+                    'sender' => $suggestion->signature(),
                 ])->all()),
         ];
     }
