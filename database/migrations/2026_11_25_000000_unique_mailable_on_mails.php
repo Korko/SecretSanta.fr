@@ -22,12 +22,4 @@ return new class extends Migration
             $table->dropIndex(['mailable_type', 'mailable_id']);
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('mails', function (Blueprint $table): void {
-            $table->index(['mailable_type', 'mailable_id']);
-            $table->dropUnique(['mailable_type', 'mailable_id']);
-        });
-    }
 };
