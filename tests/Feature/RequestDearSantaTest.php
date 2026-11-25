@@ -71,7 +71,8 @@ it('refuses a message to the santa longer than 2000 characters', function (): vo
         'content' => str_repeat('a', 2001),
     ])->assertStatus(422)->assertJsonValidationErrors('content');
 
-    Notification::assertNothingSent();
+    // The draw itself sent the target emails: only the message must not have gone
+    Notification::assertNotSentTo($participant->santa, DearSanta::class);
 });
 
 it('lets a participant resend the email to their santa in case of error', function (): void {
