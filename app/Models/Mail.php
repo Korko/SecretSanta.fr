@@ -84,12 +84,17 @@ final class Mail extends Model
         $this->transition(DeliveryStatus::Received, except: [DeliveryStatus::Received]);
     }
 
+    // Nothing new (the same bounce reported twice, a mail created again as is): no write, no broadcast
     public function updateDeliveryStatus(DeliveryStatus $status): void
     {
         $this->delivery_status = $status;
         // Sent again, or received after all: the bounce no longer tells anything
         if ($status !== DeliveryStatus::Error) {
             $this->error_code = null;
+        }
+
+        if (! $this->isDirty()) {
+            return;
         }
 
         $this->save();

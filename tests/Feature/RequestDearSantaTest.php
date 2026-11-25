@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\DeliveryStatus;
 use App\Events\MailStatusUpdated;
 use App\Models\Draw;
 use App\Models\Participant;
@@ -16,6 +17,7 @@ use App\Notifications\TargetWithdrawn;
 use App\Services\URLParser;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
 use function PHPUnit\Framework\assertEquals;
@@ -75,39 +77,28 @@ it('refuses a message to the santa longer than 2000 characters', function (): vo
     Notification::assertNotSentTo($participant->santa, DearSanta::class);
 });
 
-it('lets a participant resend the email to their santa in case of error', function (): void {
+it('only tells a message sender whether it was sent, never whether it was read or bounced', function (DeliveryStatus $status): void {
     Notification::fake();
 
-    $draw = Draw::factory()
-        ->hasParticipants(3)
-        ->create();
-
+    $draw = Draw::factory()->hasParticipants(3)->create();
     $participant = $draw->participants->first();
 
     ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), [
         'content' => 'test dearSanta mail content',
-    ])
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
+    ])->assertSuccessful();
 
-    Notification::assertSentToTimes($participant->santa, DearSanta::class, 1);
-    $dearSanta = $participant->dearSantas->first();
+    $mail = $participant->dearSantas()->firstOrFail()->mail;
+    $mail->updateDeliveryStatus($status);
 
-    ajaxPost(URL::signedRoute('dearSanta.resend', ['participant' => $participant, 'dearSanta' => $dearSanta]))
-        ->assertForbidden()
-        ->assertJsonStructure(['message']);
+    expect(new MailStatusUpdated($mail->fresh())->broadcastWhen())->toBeFalse();
 
-    // Nothing new, still the same notification
-    Notification::assertSentToTimes($participant->santa, DearSanta::class, 1);
+    $emails = ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $participant]))->json('emails');
+    expect(array_values($emails)[0]['mail'])->toMatchArray(['delivery_status' => 'sent'])
+        ->not->toHaveKey('error_code');
+})->with([DeliveryStatus::Received, DeliveryStatus::Error, DeliveryStatus::Delayed]);
 
-    $dearSanta->mail->updated_at = $dearSanta->mail->updated_at->subSeconds(config('mail.resend_delay'));
-    $dearSanta->mail->save();
-
-    ajaxPost(URL::signedRoute('dearSanta.resend', ['participant' => $participant, 'dearSanta' => $dearSanta]))
-        ->assertSuccessful()
-        ->assertJsonStructure(['message']);
-
-    Notification::assertSentToTimes($participant->santa, DearSanta::class, 2);
+it('leaves resending a message to the organizer', function (): void {
+    expect(Route::has('dearSanta.resend'))->toBeFalse();
 });
 
 it('does not resend anything on a GET, like a link prefetch or an email scanner', function (): void {
