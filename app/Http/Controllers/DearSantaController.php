@@ -248,7 +248,7 @@ final class DearSantaController extends Controller
         if (! $participant->checkEmailCode(preg_replace('/\D/', '', $request->string('code')->toString()) ?? '')) {
             // Six digits: a few tries for typos, then a new code is needed. Read back after the increment: a parallel
             // wrong code may have used the last try
-            $attempts = (int) Participant::query()->whereKey($participant->id)->value('pending_email_attempts');
+            $attempts = Participant::query()->findOrFail($participant->id, ['id', 'pending_email_attempts'])->pending_email_attempts;
             $participant->pending_email_attempts = $attempts;
             $participant->syncOriginalAttribute('pending_email_attempts');
             $last = $attempts >= config()->integer('mail.email_change.code_attempts');
