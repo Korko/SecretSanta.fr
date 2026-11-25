@@ -115,10 +115,10 @@ it('asks before replacing a participant', function (): void {
 });
 
 it('replaces a participant without touching the pairs', function (): void {
-    Notification::fake();
     $draw = Draw::factory()->hasParticipants(4)->create();
     $pairs = $draw->participants->pluck('target_id', 'id')->all();
     $participant = $draw->participants->last();
+    Notification::fake();
 
     new ParticipantsEditor($draw)->replace($participant, 'Someone else', 'else@example.com');
 
