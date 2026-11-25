@@ -18,12 +18,4 @@ return new class extends Migration
             $table->foreignId('exclusion_id')->constrained('participants')->cascadeOnDelete();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('exclusions');
-    }
 };

@@ -15,12 +15,4 @@ return new class extends Migration
             DB::statement("ALTER TABLE mails MODIFY delivery_status ENUM('created','sending','sent','error','delayed','received') NOT NULL");
         }
     }
-
-    public function down(): void
-    {
-        if (in_array(DB::getDriverName(), ['mysql', 'mariadb'], true)) {
-            DB::table('mails')->where('delivery_status', 'delayed')->update(['delivery_status' => 'sent']);
-            DB::statement("ALTER TABLE mails MODIFY delivery_status ENUM('created','sending','sent','error','received') NOT NULL");
-        }
-    }
 };

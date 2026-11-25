@@ -16,11 +16,4 @@ return new class extends Migration
             $table->foreignId('organizer_participant_id')->nullable()->constrained('participants')->nullOnDelete();
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('draws', function (Blueprint $table): void {
-            $table->dropConstrainedForeignId('organizer_participant_id');
-        });
-    }
 };

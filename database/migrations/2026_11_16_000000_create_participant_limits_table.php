@@ -26,13 +26,4 @@ return new class extends Migration
             $table->unsignedInteger('max_participants')->nullable();
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('draws', function (Blueprint $table): void {
-            $table->dropColumn('max_participants');
-        });
-
-        Schema::dropIfExists('participant_limits');
-    }
 };

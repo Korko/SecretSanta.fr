@@ -14,11 +14,4 @@ return new class extends Migration
             $table->string('report')->nullable();
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('participants', function (Blueprint $table): void {
-            $table->dropColumn('report');
-        });
-    }
 };

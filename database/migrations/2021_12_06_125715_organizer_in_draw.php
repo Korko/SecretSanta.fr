@@ -46,19 +46,4 @@ return new class extends Migration
             });
         }
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        // Make separate calls for SQLite
-        Schema::table('draws', function (Blueprint $table): void {
-            $table->dropColumn('organizer_name');
-        });
-
-        Schema::table('draws', function (Blueprint $table): void {
-            $table->dropColumn('organizer_email');
-        });
-    }
 };

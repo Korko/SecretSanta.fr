@@ -14,11 +14,4 @@ return new class extends Migration
             $table->timestamp('organizer_received_at')->nullable();
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('draws', function (Blueprint $table): void {
-            $table->dropColumn('organizer_received_at');
-        });
-    }
 };

@@ -24,7 +24,4 @@ return new class extends Migration
             $table->unique('notification');
         });
     }
-
-    // Only brings a drifted index in line: putting the duplicate back would serve nothing. Production rolls back from a backup
-    public function down(): void {}
 };

@@ -14,11 +14,4 @@ return new class extends Migration
             $table->json('refused_emails')->nullable();
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('draws', function (Blueprint $table): void {
-            $table->dropColumn('refused_emails');
-        });
-    }
 };

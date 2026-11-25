@@ -16,11 +16,4 @@ return new class extends Migration
             $table->string('error_code', 9)->nullable()->after('delivery_status');
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('mails', function (Blueprint $table): void {
-            $table->dropColumn('error_code');
-        });
-    }
 };
