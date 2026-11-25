@@ -41,6 +41,29 @@ final class ParticipantsEditor
         $this->apply([$participant], []);
     }
 
+    // Someone else takes a participant's place, same pairs: what the previous person wrote to their santa goes,
+    // the newcomer gets their target (with what the target wrote) and the santa learns their target changed.
+    // now: send without the queue (artisan commands)
+    public function replace(Participant $participant, string $name, string $email, bool $now = false): void
+    {
+        $participant = DB::transaction(function () use ($participant, $name, $email): Participant {
+            Draw::query()->lockForUpdate()->findOrFail($this->draw->id);
+
+            $participant = $this->draw->participants()->findOrFail($participant->id);
+            $participant->dearSantas()->lazy()->each->delete();
+            $participant->name = $name;
+            $participant->email = $email;
+            $participant->save();
+
+            return $participant;
+        });
+
+        $santa = $participant->santa ?? throw new LogicException('Participant without a santa');
+        $now ? $participant->notifyNow(new TargetDrawn) : $participant->notify(new TargetDrawn);
+        $now ? $santa->notifyNow(new TargetWithdrawn) : $santa->notify(new TargetWithdrawn);
+        event(new ParticipantUpdated($santa)); // an open page shows the new target's name
+    }
+
     /**
      * @param  array<Participant>  $remove
      * @param  list<array{name: string, email: string}>  $add
