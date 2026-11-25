@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('gift_suggestions', function (Blueprint $table): void {
             $table->id();
-            // Kept without its sender when they leave the draw: still useful to the santa, no longer signed
+            // Never shown: only keeps their own ideas from them. Kept without it when they leave the draw
             $table->foreignId('sender_id')->nullable()->constrained('participants')->nullOnDelete();
             $table->foreignId('recipient_id')->constrained('participants')->cascadeOnDelete();
             $table->longText('mail_body');
-            $table->boolean('signed')->default(false);
         });
     }
 

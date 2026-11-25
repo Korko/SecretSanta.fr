@@ -347,13 +347,13 @@ it('lets a participant suggest a gift idea to the santa of someone else than the
     ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), [
         'recipient' => $recipient->hash,
         'content' => 'A board game',
-        'signed' => 1,
     ])->assertSuccessful()->assertJsonPath('suggestion.recipient', $recipient->name);
 
     Notification::assertSentTo($recipient->santa, GiftSuggestion::class, function (GiftSuggestion $notification) use ($recipient, $sender): bool {
         $data = $notification->toMail($recipient->santa)->viewData;
 
-        return $data['content'] === 'A board game' && $data['targetName'] === $recipient->name && $data['senderName'] === $sender->name;
+        return $data['content'] === 'A board game' && $data['targetName'] === $recipient->name
+            && ! str_contains((string) $notification->toMail($recipient->santa)->render(), $sender->name);
     });
 
     expect(ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $sender]))->json('suggestions'))->toHaveCount(1);
@@ -361,10 +361,11 @@ it('lets a participant suggest a gift idea to the santa of someone else than the
     // Also on the santa's page, as a recap
     $received = ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $recipient->santa]))->json('receivedSuggestions');
     expect($received)->toHaveCount(1)
-        ->and($received[0])->toMatchArray(['mail_body' => 'A board game', 'sender' => $sender->name]);
+        ->and($received[0])->toMatchArray(['mail_body' => 'A board game'])
+        ->and($received[0])->not->toHaveKey('sender');
 });
 
-it("keeps a gift idea anonymous unless signed, and refuses one for oneself or one's own target", function (): void {
+it("refuses a gift idea for oneself or one's own target", function (): void {
     Notification::fake();
 
     $draw = Draw::factory()->hasParticipants(4)->create();
@@ -377,8 +378,6 @@ it("keeps a gift idea anonymous unless signed, and refuses one for oneself or on
     ajaxPost($suggest, ['recipient' => $recipient->hash, 'content' => ''])->assertStatus(422);
 
     ajaxPost($suggest, ['recipient' => $recipient->hash, 'content' => 'Socks'])->assertSuccessful();
-    Notification::assertSentTo($recipient->santa, GiftSuggestion::class, fn (GiftSuggestion $notification): bool => $notification->toMail($recipient->santa)->viewData['senderName'] === null);
-    expect(ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $recipient->santa]))->json('receivedSuggestions.0.sender'))->toBeNull();
 });
 
 it('forwards gift ideas to the new santa when the recipient changes santa', function (): void {
@@ -460,18 +459,18 @@ it('only tells a gift idea sender whether it was sent, not when it was read', fu
     expect(array_values($suggestions)[0]['mail']['delivery_status'])->toBe('sent');
 });
 
-it('keeps the gift ideas of a participant who withdraws, unsigned', function (): void {
+it('keeps the gift ideas of a participant who withdraws', function (): void {
     Notification::fake();
 
     $draw = Draw::factory()->hasParticipants(5)->create();
     $sender = $draw->participants->first();
     $recipient = $draw->participants->first(fn ($p): bool => ! $p->is($sender) && ! $p->is($sender->target) && ! $p->santa->is($sender));
-    ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), ['recipient' => $recipient->hash, 'content' => 'A plant', 'signed' => 1])
+    ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), ['recipient' => $recipient->hash, 'content' => 'A plant'])
         ->assertSuccessful();
 
     ajaxPost(URL::signedRoute('dearSanta.withdraw', ['participant' => $sender]))->assertSuccessful();
 
     $received = ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $recipient->fresh()->santa]))->json('receivedSuggestions');
     expect($received)->toHaveCount(1)
-        ->and($received[0])->toMatchArray(['mail_body' => 'A plant', 'sender' => null]);
+        ->and($received[0])->toMatchArray(['mail_body' => 'A plant']);
 });

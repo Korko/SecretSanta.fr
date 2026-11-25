@@ -63,18 +63,15 @@ return [
     ],
     'suggestion' => [
         'open' => 'Eine Geschenkidee für jemand anderen vorschlagen',
-        'help' => 'Ihre Idee wird per E-Mail an den geheimen Weihnachtsmann der gewählten Person gesendet, ohne dass Sie erfahren, wer das ist.',
+        'help' => 'Ihre Idee wird per E-Mail an den geheimen Weihnachtsmann der gewählten Person gesendet, ohne dass Sie erfahren, wer das ist. Sie bleibt anonym: Unterschreiben Sie sie im Text, wenn Sie möchten.',
         'recipient' => 'Für wen?',
         'choose' => 'Einen Teilnehmer wählen',
         'content' => 'Ihre Idee',
         'placeholder' => 'Sie liebt Brettspiele...',
-        'signed' => 'Mit meinem Namen unterschreiben (sonst bleibt die Idee anonym)',
-        'signed_short' => 'unterschrieben',
         'send' => 'Idee senden',
         'list' => 'Gesendete Ideen',
         'received' => [
             'title' => 'Erhaltene Geschenkideen für Ihren Empfänger',
-            'anonymous' => 'Anonym',
         ],
     ],
 ];
