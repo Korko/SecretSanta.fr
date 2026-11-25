@@ -36,13 +36,13 @@ final class Mail extends Model
      */
     public $incrementing = true;
 
-    // updated_at before claimResend(), for releaseResend()
-    private ?CarbonImmutable $claimedFrom = null;
-
     /** @var array<string, mixed> */
     protected $attributes = [
         'delivery_status' => DeliveryStatus::Created,
     ];
+
+    // updated_at before claimResend(), for releaseResend()
+    private ?CarbonImmutable $claimedFrom = null;
 
     public static function boot(): void
     {
