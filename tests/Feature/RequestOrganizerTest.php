@@ -214,7 +214,7 @@ test('the organizer can add and remove several participants, each santa gets one
 
     $draw = $draw->fresh();
     assertEquals(7, $draw->participants->count());
-    assertEquals(7, $draw->participants->pluck('target_id')->filter()->unique()->count());
+    assertEquals(7, $draw->participants->pluck('santa_id')->filter()->unique()->count());
     Notification::assertSentTimes(TargetDrawn::class, 3);
     foreach ($draw->participants as $participant) {
         // At most one email per santa, whatever the number of changes: their new target's messages and ideas included

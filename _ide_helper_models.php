@@ -130,7 +130,7 @@ namespace App\Models{use App\Collections\ParticipantsCollection;use Database\Fac
  * @property int $draw_id
  * @property array $name
  * @property array $email
- * @property int|null $target_id
+ * @property int|null $santa_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection|DearSanta[] $dearSantas

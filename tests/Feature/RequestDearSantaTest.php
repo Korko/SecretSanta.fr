@@ -215,7 +215,7 @@ it('lets a participant withdraw: their santa gets a new target and the organizer
 
     // Kept aside, for the organizer to bring them back: out of the draw, their page gone
     expect($participant->fresh()->withdrawn_at)->not->toBeNull()
-        ->and($participant->fresh()->target_id)->toBeNull()
+        ->and($participant->fresh()->santa_id)->toBeNull()
         ->and($draw->participants()->count())->toBe(3)
         ->and($draw->withdrawnParticipants()->count())->toBe(1)
         ->and($santa->fresh()->target->is($participant))->toBeFalse();

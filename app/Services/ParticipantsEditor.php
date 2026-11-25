@@ -60,8 +60,8 @@ final class ParticipantsEditor
 
             $this->targets = [];
             foreach ($participants as $participant) {
-                // target_id holds the santa, set for everyone once drawn
-                $this->targets[$participant->target_id ?? throw new LogicException('Participant without a santa')] = $participant->id;
+                // santa_id is set for everyone once drawn
+                $this->targets[$participant->santa_id ?? throw new LogicException('Participant without a santa')] = $participant->id;
             }
 
             $before = $this->targets;
@@ -98,7 +98,7 @@ final class ParticipantsEditor
             foreach ($remove as $participant) {
                 if ($this->keepRemoved) {
                     $participant->withdrawn_at = CarbonImmutable::now();
-                    $participant->target_id = null; // no santa anymore
+                    $participant->santa_id = null; // no santa anymore
                     $participant->save();
                 } else {
                     $participant->delete();
