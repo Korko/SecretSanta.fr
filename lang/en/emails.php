@@ -10,7 +10,6 @@ return [
     'target_messages.heading' => 'Messages and gift ideas',
     'target_messages.intro' => 'Here are all the messages :name wrote to their secret santa, that is to you.',
     'target_messages.suggestions' => 'Here are the gift ideas other participants suggested for :name:',
-    'target_messages.suggestion_from' => ':date, suggested by :sender',
     'target_messages.suggestions_secret' => 'The people who suggested them do not know you are the secret santa of :name.',
     'target_withdrawn.title' => 'SecretSanta #:draw - Your gift recipient withdrew',
     'target_changed.title' => 'SecretSanta #:draw - Your gift recipient has changed',
@@ -63,7 +62,6 @@ return [
     'participant_reported.not_participating_action' => 'You can remove them from your organizer panel: :link',
     'gift_suggestion.title' => 'SecretSanta #:draw - A gift idea for :name',
     'gift_suggestion.heading' => 'A gift idea for :name',
-    'gift_suggestion.from' => ':sender suggests a gift idea for :name:',
     'gift_suggestion.from_anonymous' => 'Another participant suggests a gift idea for :name:',
     'gift_suggestion.secret' => 'This person does not know you are the secret santa of :name. Your participant page: :link',
 ];

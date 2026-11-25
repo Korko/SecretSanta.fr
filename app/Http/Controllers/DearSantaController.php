@@ -140,7 +140,6 @@ final class DearSantaController extends Controller
         $request->validate([
             'recipient' => ['required', Rule::in($recipients->pluck('hash')->all())],
             'content' => ['required', 'string', 'max:2000'],
-            'signed' => ['boolean'],
         ], [
             'recipient.required' => __('validation.custom.dearSanta.recipient.required'),
             'recipient.in' => __('validation.custom.dearSanta.recipient.required'),
@@ -152,13 +151,12 @@ final class DearSantaController extends Controller
 
         $suggestion = new GiftSuggestion([
             'mail_body' => $request->string('content')->toString(),
-            'signed' => $request->boolean('signed'),
         ]);
         $suggestion->sender()->associate($participant);
         $suggestion->recipient()->associate($recipient);
         $suggestion->save();
 
-        $participant->createMetric('gift_suggestion')->addTag('signed', $suggestion->signed ? 'yes' : 'no');
+        $participant->createMetric('gift_suggestion');
 
         $recipient->santa->notify(new GiftSuggestionNotification($suggestion));
         event(new ParticipantUpdated($recipient->santa));
@@ -364,7 +362,7 @@ final class DearSantaController extends Controller
             ->values();
     }
 
-    /** @return SupportCollection<int, array{mail_body: string, signed: bool, recipient: string, mail: array{id: int, delivery_status: DeliveryStatus, created_at: mixed, updated_at: mixed}}> */
+    /** @return SupportCollection<int, array{mail_body: string, recipient: string, mail: array{id: int, delivery_status: DeliveryStatus, created_at: mixed, updated_at: mixed}}> */
     private function sentSuggestions(Participant $participant): SupportCollection
     {
         return $participant->sentSuggestions()->with('recipient')->get()
@@ -372,21 +370,20 @@ final class DearSantaController extends Controller
     }
 
     // Ideas others gave for their target, like the target's own messages (they follow a change of target)
-    /** @return SupportCollection<int, array{id: int, mail_body: string, sender: string|null, created_at: mixed}> */
+    /** @return SupportCollection<int, array{id: int, mail_body: string, created_at: mixed}> */
     private function receivedSuggestions(Participant $participant): SupportCollection
     {
-        return $participant->target->receivedSuggestions()->with('sender')->get()
+        return $participant->target->receivedSuggestions()->get()
             ->reject(fn (GiftSuggestion $suggestion): bool => $suggestion->sender_id === $participant->id)
             ->map(fn (GiftSuggestion $suggestion): array => [
                 'id' => $suggestion->mail->id,
                 'mail_body' => $suggestion->mail_body,
-                'sender' => $suggestion->signature(),
                 'created_at' => $suggestion->mail->created_at,
             ])->values();
     }
 
     // Sent or not, never when it was read: seeing someone else's santa open their email would tell who they are
-    /** @return array{mail_body: string, signed: bool, recipient: string, mail: array{id: int, delivery_status: DeliveryStatus, created_at: mixed, updated_at: mixed}} */
+    /** @return array{mail_body: string, recipient: string, mail: array{id: int, delivery_status: DeliveryStatus, created_at: mixed, updated_at: mixed}} */
     private function publicSuggestion(GiftSuggestion $suggestion): array
     {
         $mail = $suggestion->mail;
@@ -394,7 +391,6 @@ final class DearSantaController extends Controller
 
         return [
             'mail_body' => $suggestion->mail_body,
-            'signed' => $suggestion->signed,
             'recipient' => $suggestion->recipient->name,
             'mail' => [
                 'id' => $mail->id,

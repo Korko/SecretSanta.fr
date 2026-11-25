@@ -10,7 +10,6 @@ return [
     'target_messages.heading' => 'Nachrichten und Geschenkideen',
     'target_messages.intro' => 'Hier sind alle Nachrichten, die :name an den geheimen Weihnachtsmann geschrieben hat, also an Sie.',
     'target_messages.suggestions' => 'Hier sind die Geschenkideen, die andere Teilnehmer für :name vorgeschlagen haben:',
-    'target_messages.suggestion_from' => ':date, vorgeschlagen von :sender',
     'target_messages.suggestions_secret' => 'Die Personen, die sie vorgeschlagen haben, wissen nicht, dass Sie der geheime Weihnachtsmann von :name sind.',
     'target_withdrawn.title' => 'SecretSanta #:draw - Rücktritt des Empfängers von Ihrem Geschenk',
     'target_changed.title' => 'SecretSanta #:draw - Änderung des Empfängers Ihres Geschenks',
@@ -63,7 +62,6 @@ return [
     'participant_reported.not_participating_action' => 'Sie können diese Person auf Ihrer Organisationsseite entfernen: :link',
     'gift_suggestion.title' => 'SecretSanta #:draw - Eine Geschenkidee für :name',
     'gift_suggestion.heading' => 'Eine Geschenkidee für :name',
-    'gift_suggestion.from' => ':sender schlägt Ihnen eine Geschenkidee für :name vor:',
     'gift_suggestion.from_anonymous' => 'Ein anderer Teilnehmer schlägt Ihnen eine Geschenkidee für :name vor:',
     'gift_suggestion.secret' => 'Diese Person weiß nicht, dass Sie der geheime Weihnachtsmann von :name sind. Ihre Teilnehmerseite: :link',
 ];

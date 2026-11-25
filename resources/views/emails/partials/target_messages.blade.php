@@ -12,7 +12,7 @@
     <p style="padding-bottom:10px !important">{{ __('emails.target_messages.suggestions', ['name' => $targetName]) }}</p>
 
     @foreach ($giftSuggestions as $giftSuggestion)
-        <p style="padding-bottom:5px !important"><em>{{ $giftSuggestion['sender'] ? __('emails.target_messages.suggestion_from', ['date' => $giftSuggestion['date'], 'sender' => $giftSuggestion['sender']]) : $giftSuggestion['date'] }}</em></p>
+        <p style="padding-bottom:5px !important"><em>{{ $giftSuggestion['date'] }}</em></p>
         <blockquote>{!! nl2br(e($giftSuggestion['content'])) !!}</blockquote>
     @endforeach
 

@@ -29,7 +29,7 @@ final class TargetMessages extends Notification implements ShouldBeEncrypted, Sh
     /**
      * Also used by TargetDrawn, TargetChanged and TargetWithdrawn: the recap comes with the target, in one email
      *
-     * @return array{targetName: string, targetMessages: list<array{date: string, content: string}>, giftSuggestions: list<array{date: string, content: string, sender: string|null}>}
+     * @return array{targetName: string, targetMessages: list<array{date: string, content: string}>, giftSuggestions: list<array{date: string, content: string}>}
      */
     public static function viewData(Participant $santa): array
     {
@@ -43,12 +43,11 @@ final class TargetMessages extends Notification implements ShouldBeEncrypted, Sh
                 'content' => $dearSanta->mail_body,
             ])->all()),
             // But their own ideas, which they know already
-            'giftSuggestions' => array_values($target->receivedSuggestions()->with('sender')->get()
+            'giftSuggestions' => array_values($target->receivedSuggestions()->get()
                 ->reject(fn (GiftSuggestionModel $suggestion): bool => $suggestion->sender_id === $santa->id)
                 ->map(fn (GiftSuggestionModel $suggestion): array => [
                     'date' => $suggestion->mail->created_at?->isoFormat('LLL') ?? '',
                     'content' => $suggestion->mail_body,
-                    'sender' => $suggestion->signed ? $suggestion->sender?->name : null,
                 ])->all()),
         ];
     }
