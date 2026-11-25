@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Lang;
 #[Backoff(30)]
 #[MaxExceptions(10)]
 #[Tries(10)]
-final class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret, TrackedNotification
+final class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification, WithDrawSecret
 {
     use Queueable;
     use TracksSantaMail;

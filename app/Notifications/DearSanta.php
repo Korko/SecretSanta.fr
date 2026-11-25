@@ -21,7 +21,7 @@ use Illuminate\Queue\SerializesModels;
 
 #[Backoff(30)]
 #[Tries(10)]
-final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret, TrackedNotification
+final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification, WithDrawSecret
 {
     use Queueable;
     use SerializesModels;

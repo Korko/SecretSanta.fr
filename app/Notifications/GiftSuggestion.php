@@ -22,7 +22,7 @@ use Illuminate\Queue\SerializesModels;
 // To the santa of the person the idea is for (see GiftSuggestionModel)
 #[Backoff(30)]
 #[Tries(10)]
-final class GiftSuggestion extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret, TrackedNotification
+final class GiftSuggestion extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification, WithDrawSecret
 {
     use Queueable;
     use SerializesModels;

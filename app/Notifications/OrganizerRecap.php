@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\URL;
 #[Backoff(30)]
 #[MaxExceptions(10)]
 #[Tries(20)]
-final class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret, TrackedNotification
+final class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification, WithDrawSecret
 {
     use Queueable;
     use SerializesModels;
