@@ -487,3 +487,25 @@ it('keeps the gift ideas of a participant who withdraws', function (): void {
     expect($received)->toHaveCount(1)
         ->and($received[0])->toMatchArray(['mail_body' => 'A plant']);
 });
+
+it('shows the organizer who wrote to their santa, never to whom', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()
+        ->hasParticipants(3)
+        ->create();
+
+    [$writer, $silent] = [$draw->participants[0], $draw->participants[1]];
+
+    ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $writer]), [
+        'content' => 'test dearSanta mail content',
+    ])->assertSuccessful();
+
+    $panel = ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))
+        ->assertSuccessful()
+        ->assertJsonPath("participants.{$writer->hash}.wrote_to_santa", true)
+        ->assertJsonPath("participants.{$silent->hash}.wrote_to_santa", false);
+
+    // Nothing about the santa it went to
+    expect($panel->json("participants.{$writer->hash}"))->not->toHaveKeys(['santa', 'target', 'dear_santas']);
+});
