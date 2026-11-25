@@ -15,7 +15,7 @@ use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use LogicException;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Throwable;
 use Symfony\Component\Mime\Email;
 
 final class TrackedMailChannel extends MailChannel
@@ -37,9 +37,10 @@ final class TrackedMailChannel extends MailChannel
             $mail->markAsSent();
 
             return $sent;
-        } catch (TransportExceptionInterface $transportException) {
+        } catch (Throwable $throwable) {
+            // Not only the SMTP session: rendering, DKIM key, decryption, database… anything left it "sending" for good
             $mail->markAsError();
-            throw $transportException;
+            throw $throwable;
         }
     }
 
