@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Collections\ParticipantsCollection;
 use App\Exceptions\SolverException;
+use App\Jobs\ComputeNextSolvable;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\TargetDrawn;
@@ -23,8 +24,10 @@ final class DrawHandler
             $santa->target()->save($participants->get($targetIdx) ?? throw new SolverException('Unknown target'));
         }
 
-        $draw->next_solvable = self::canRedraw($draw->participants->fresh());
+        // The final CSV availability: after the commit, out of the request
+        $draw->next_solvable = null;
         $draw->save();
+        dispatch(new ComputeNextSolvable($draw));
 
         $draw->participants->each(function (Participant $participant): void {
             $participant->notify(new TargetDrawn);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Contracts\WithDrawSecret;
 use App\Enums\ReportReason;
 use App\Models\Draw;
 use DrawCrypt;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\URL;
 // right away, before the right person thinks they were forgotten
 #[Backoff(30)]
 #[Tries(10)]
-final class ParticipantReported extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit
+final class ParticipantReported extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret
 {
     use Queueable;
 

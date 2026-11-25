@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Channels\TrackedMailChannel;
+use App\Contracts\WithDrawSecret;
 use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Lang;
 #[Backoff(30)]
 #[MaxExceptions(10)]
 #[Tries(10)]
-final class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
+final class TargetDrawn extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret, TrackedNotification
 {
     use Queueable;
     use TracksSantaMail;

@@ -128,6 +128,7 @@ final class OrganizerController extends Controller
     {
         return response()->json([
             'expired' => $draw->expired,
+            'finalCsvAvailable' => $draw->next_solvable,
             'targets' => $draw->targetsVisible() ? $this->targets($draw) : null,
             'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [$participant->hash => $participant->only(['hash', 'mail'])]),
         ]);
@@ -290,6 +291,7 @@ final class OrganizerController extends Controller
     public function csvFinal(Draw $draw): Response
     {
         abort_unless($draw->targetsVisible(), 403, Lang::get('error.expired'));
+        // Not computed yet (null): left to the background job, the panel offers the button once it is known
         abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
 
         $draw->createMetric('csv_final_download');

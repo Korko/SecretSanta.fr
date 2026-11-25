@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Contracts\WithDrawSecret;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\GiftSuggestion as GiftSuggestionModel;
 use App\Models\Participant;
@@ -22,7 +23,7 @@ use Illuminate\Queue\Attributes\Tries;
 // senders' pages (a status starting over would tell them when that santa changed, or asked for their recap)
 #[Backoff(30)]
 #[Tries(10)]
-final class TargetMessages extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit
+final class TargetMessages extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret
 {
     use Queueable;
 

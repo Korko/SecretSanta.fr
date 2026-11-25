@@ -65,6 +65,8 @@ return [
             'title' => 'Récapitulatif initial',
             'content' => 'Ce sont les données telles que vous les avez remplies à la génération de l\'évènement. Seules les adresses e-mail peuvent avoir changé, pour refléter les modifications que vous avez pu faire ici.',
         ],
+        // The final CSV availability is computed in the background (ComputeNextSolvable)
+        'computing' => 'Calcul en cours : le récapitulatif complété sera proposé ici s\'il est possible.',
         'button_final' => 'Télécharger le récapitulatif complété',
         'button_final-tooltip' => [
             'title' => 'Récapitulatif complété',

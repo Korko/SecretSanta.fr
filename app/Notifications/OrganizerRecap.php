@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Channels\TrackedMailChannel;
+use App\Contracts\WithDrawSecret;
 use App\Models\Draw;
 use App\Models\Mail;
 use App\Models\Participant;
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\URL;
 #[Backoff(30)]
 #[MaxExceptions(10)]
 #[Tries(20)]
-final class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
+final class OrganizerRecap extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret, TrackedNotification
 {
     use Queueable;
     use SerializesModels;
@@ -41,7 +42,6 @@ final class OrganizerRecap extends Notification implements ShouldBeEncrypted, Sh
             'organizerName' => $draw->organizer_name,
             'expirationDate' => $draw->expires_at->isoFormat('LL'),
             'deletionDate' => $draw->deleted_at->isoFormat('LL'),
-            'nextSolvable' => $draw->next_solvable,
             'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getSecret()),
         ];
     }
