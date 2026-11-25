@@ -35,7 +35,7 @@ Route::middleware('signed')->group(function (): void {
         ->name('dearSanta')
         ->missing(fn () => response()->view('missingDraw', [], 404));
 
-    Route::middleware('decrypt.iv:participant,name')->group(function (): void {
+    Route::middleware('decrypt.secret:participant,name')->group(function (): void {
         Route::get('/participant/{participant}', [DearSantaController::class, 'fetch'])
             ->name('dearSanta.fetch');
         Route::post('/dearSanta/{participant}', [DearSantaController::class, 'handle'])
@@ -63,7 +63,7 @@ Route::middleware('signed')->group(function (): void {
     Route::get('/org/{draw}', [OrganizerController::class, 'view'])->name('organizerPanel')
         ->missing(fn () => response()->view('missingDraw', [], 404));
 
-    Route::middleware('decrypt.iv:draw,mail_title')->group(function (): void {
+    Route::middleware('decrypt.secret:draw,mail_title')->group(function (): void {
         Route::get('/draw/{draw}', [OrganizerController::class, 'fetch'])
             ->name('organizerPanel.fetch');
         Route::delete('/draw/{draw}', [OrganizerController::class, 'delete'])
@@ -84,7 +84,7 @@ Route::middleware('signed')->group(function (): void {
             ->name('organizerPanel.fetchState');
     });
     // Participants of an ended draw can't be bound: say it is over rather than not found
-    Route::middleware('decrypt.iv:participant,name')->missing(function (): never {
+    Route::middleware('decrypt.secret:participant,name')->missing(function (): never {
         $draw = request()->route('draw');
         if ($draw instanceof Draw) {
             $draw->abortIfExpired();

@@ -1,0 +1,1 @@
+import{t as e}from"./ajaxForm-CtWxD79i.js";import{P as t,R as n,S as r,i}from"./app-D9i14pw1.js";var a={components:{AjaxForm:e}};function o(e,i,a,o,s,c){let l=n(`ajax-form`);return t(),r(l)}var s=i(a,[[`render`,o]]);export{s as t};

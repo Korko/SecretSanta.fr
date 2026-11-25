@@ -48,7 +48,7 @@ final class ListDraw extends Command
 
         info('Draw #'.$draw->id.' - '.$draw->mail_title.' ('.$draw->expires_at.')');
         info('Organizer: '.$draw->organizer_name.' <'.$draw->organizer_email.'>');
-        note(URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV()));
+        note(URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getSecret()));
         $this->newLine();
 
         table(

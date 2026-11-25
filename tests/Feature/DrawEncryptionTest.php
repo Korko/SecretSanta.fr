@@ -17,7 +17,7 @@ function drawTestAppKey(): string
 test('the draw data cannot be decrypted with APP_KEY alone', function (): void {
     $secret = random_bytes(16);
     $encrypter = new DrawEncrypter(drawTestAppKey());
-    $encrypter->setIV($secret);
+    $encrypter->setSecret($secret);
 
     $payload = $encrypter->encrypt('a long enough secret santa message to span several AES blocks');
 
@@ -27,12 +27,12 @@ test('the draw data cannot be decrypted with APP_KEY alone', function (): void {
     expect($raw === false || ! str_contains($raw, 'santa message'))->toBeTrue();
 
     $wrongSecret = new DrawEncrypter(drawTestAppKey());
-    $wrongSecret->setIV(random_bytes(16));
+    $wrongSecret->setSecret(random_bytes(16));
 
     expect(fn (): mixed => $wrongSecret->decrypt($payload))->toThrow(DecryptException::class);
 
     $rightSecret = new DrawEncrypter(drawTestAppKey());
-    $rightSecret->setIV($secret);
+    $rightSecret->setSecret($secret);
 
     expect($rightSecret->decrypt($payload))->toBe('a long enough secret santa message to span several AES blocks');
 });
@@ -44,8 +44,8 @@ test('the same value is encrypted differently each time', function (): void {
 });
 
 test('the draw secret keeps its length so existing links stay valid', function (): void {
-    expect(mb_strlen(new DrawEncrypter(drawTestAppKey())->getIV(), '8bit'))->toBe(16)
-        ->and(fn () => new DrawEncrypter(drawTestAppKey())->setIV(random_bytes(32)))->toThrow(RuntimeException::class);
+    expect(mb_strlen(new DrawEncrypter(drawTestAppKey())->getSecret(), '8bit'))->toBe(16)
+        ->and(fn () => new DrawEncrypter(drawTestAppKey())->setSecret(random_bytes(32)))->toThrow(RuntimeException::class);
 });
 
 test('data written by the previous scheme is still readable and upgraded on save', function (): void {
@@ -54,7 +54,7 @@ test('data written by the previous scheme is still readable and upgraded on save
     $name = $participant->name;
 
     $legacy = new LegacyDrawEncrypter(drawTestAppKey(), config()->string('app.cipher'));
-    $legacy->setIV(DrawCrypt::getIV());
+    $legacy->setIV(DrawCrypt::getSecret());
     DB::table('participants')->where('id', $participant->id)->update(['name' => $legacy->encrypt($name)]);
 
     $participant = Participant::query()->find($participant->id);

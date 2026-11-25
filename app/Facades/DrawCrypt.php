@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Facade;
  * @method static string encrypt(mixed $value, bool $serialize = true)
  * @method static string encryptString(string $value)
  * @method static string getKey()
- * @method static void setIV(string $secret)
- * @method static string getIV()
- * @method static string generateIV()
+ * @method static void setSecret(string $secret)
+ * @method static string getSecret()
+ * @method static string generateSecret()
  *
  * @see \App\Services\DrawEncrypter
  */

@@ -37,7 +37,7 @@ use STS\Metrics\Metric;
  * @property ReportReason|null $report
  * @property string $name
  * @property string $email
- * @property int|null $target_id
+ * @property int|null $santa_id
  * @property string|null $pending_email address waiting for its code (see DearSantaController::changeEmail)
  * @property string|null $pending_email_code
  * @property CarbonImmutable|null $pending_email_at
@@ -101,7 +101,7 @@ final class Participant extends Model
             ? URL::signedRoute('organizerPanel', ['draw' => $this->draw->hash])
             : URL::signedRoute('dearSanta', ['participant' => $this->hash]);
 
-        return $url.'#'.base64_encode(DrawCrypt::getIV());
+        return $url.'#'.base64_encode(DrawCrypt::getSecret());
     }
 
     // Public channel named after a secret (only given by the signed fetch route), not the hash participants can see
@@ -119,13 +119,13 @@ final class Participant extends Model
     /** @return HasOne<self, $this> */
     public function target(): HasOne
     {
-        return $this->hasOne(self::class, 'target_id');
+        return $this->hasOne(self::class, 'santa_id');
     }
 
     /** @return BelongsTo<self, $this> */
     public function santa(): BelongsTo
     {
-        return $this->belongsTo(self::class, 'target_id');
+        return $this->belongsTo(self::class, 'santa_id');
     }
 
     /** @return HasMany<DearSanta, $this> */

@@ -78,9 +78,18 @@ it('answers an altered link with a client error, not a server one', function ():
     $this->get($panel.'x')->assertForbidden()->assertViewIs('missingDraw');
     ajaxGet($fetch.'x')->assertForbidden()->assertJsonPath('message', trans('error.signature'));
 
-    // The IV is the URL hash: truncated or altered
-    ajaxGet($fetch, ['X-HASH-IV' => base64_encode('short')])->assertForbidden();
-    ajaxGet($fetch, ['X-HASH-IV' => base64_encode(random_bytes(mb_strlen(DrawCrypt::getIV(), '8bit')))])->assertForbidden();
+    // The secret is the URL hash: truncated or altered
+    ajaxGet($fetch, ['X-DRAW-SECRET' => base64_encode('short')])->assertForbidden();
+    ajaxGet($fetch, ['X-DRAW-SECRET' => base64_encode(random_bytes(mb_strlen(DrawCrypt::getSecret(), '8bit')))])->assertForbidden();
+});
+
+it('still reads the draw secret from X-HASH-IV, sent by pages loaded before the rename', function (): void {
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $fetch = URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]);
+    $secret = base64_encode(DrawCrypt::getSecret());
+
+    DrawCrypt::setSecret(DrawCrypt::generateSecret());
+    ajaxGet($fetch, ['X-DRAW-SECRET' => '', 'X-HASH-IV' => $secret])->assertSuccessful();
 });
 
 it('keeps security.txt valid: its Expires field is due for renewal a month ahead', function (): void {

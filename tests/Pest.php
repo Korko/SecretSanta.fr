@@ -75,7 +75,7 @@ function prepareAjax($headers = []): TestCase
     $headers += [
         'Accept' => 'application/json',
         'X-Requested-With' => 'XMLHttpRequest',
-        'X-HASH-IV' => base64_encode(DrawCrypt::getIV()),
+        'X-DRAW-SECRET' => base64_encode(DrawCrypt::getSecret()),
     ];
 
     return test()->withHeaders($headers);

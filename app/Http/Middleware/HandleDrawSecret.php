@@ -14,19 +14,20 @@ use Illuminate\Support\Facades\Lang;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 
-final class HandleEncryptionIV
+final class HandleDrawSecret
 {
     /** @param Closure(Request): Response $next */
     public function handle(Request $request, Closure $next, string $parameterToCheck, string $fieldToCheck): Response
     {
         // Only from the header: the secret is the URL hash, never sent to the server, and must not end up
-        // in a query string (web server logs, history) through an ?iv= parameter
-        $iv = base64_decode((string) $request->header('X-HASH-IV'));
-        if (! empty($iv)) {
+        // in a query string (web server logs, history) through a ?secret= parameter.
+        // X-HASH-IV: its former name, still sent by pages loaded before the rename
+        $secret = base64_decode((string) ($request->header('X-DRAW-SECRET') ?: $request->header('X-HASH-IV')));
+        if (! empty($secret)) {
             try {
-                DrawCrypt::setIV($iv);
+                DrawCrypt::setSecret($secret);
             } catch (RuntimeException) {
-                // Truncated link (the IV is the URL hash)
+                // Truncated link (the secret is the URL hash)
                 abort(403, Lang::get('error.signature'));
             }
         }
@@ -38,7 +39,7 @@ final class HandleEncryptionIV
                 $model->getAttribute($fieldToCheck);
             }
         } catch (DecryptException) {
-            // Wrong IV: the link was altered, nothing the server can fix
+            // Wrong secret: the link was altered, nothing the server can fix
             abort(403, Lang::get('error.signature'));
         } catch (Exception) {
             // Something may be wrong with the Controller parameters (missing the parameter to check?)

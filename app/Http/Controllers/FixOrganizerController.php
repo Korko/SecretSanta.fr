@@ -36,7 +36,7 @@ final class FixOrganizerController extends Controller
         $notFound = ValidationException::withMessages(['url' => trans('error.fixOrganizer.drawNotFoundOrExpired')]);
 
         // A link without its secret (after #), unknown, removed, or of a draw that ended
-        throw_unless($parser->setIVFromUrl($url), $notFound);
+        throw_unless($parser->setSecretFromUrl($url), $notFound);
         $draw = $parser->participant($url)->draw ?? throw $notFound;
 
         try {

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Exceptions\DrawEnded;
-use App\Http\Middleware\HandleEncryptionIV;
+use App\Http\Middleware\HandleDrawSecret;
 use App\Http\Middleware\Language;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -37,7 +37,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->throttleApi();
 
         $middleware->alias([
-            'decrypt.iv' => HandleEncryptionIV::class,
+            'decrypt.secret' => HandleDrawSecret::class,
         ]);
 
         $middleware->web(remove: [
@@ -51,7 +51,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->priority([
             SubstituteBindings::class,
-            HandleEncryptionIV::class,
+            HandleDrawSecret::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

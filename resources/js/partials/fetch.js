@@ -12,8 +12,8 @@ export default function(url, method, data, headers) {
     return window.fetch(new Request(url, {
         method: method || 'GET',
         headers: {
-            // Transmit Hash IV via request headers
-            'X-HASH-IV': window.location.hash.substr(1),
+            // Transmit the draw secret (URL hash) via request headers
+            'X-DRAW-SECRET': window.location.hash.substr(1),
             'X-Requested-With': 'XMLHttpRequest',
             ...(headers || {})
         },

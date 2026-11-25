@@ -19,10 +19,10 @@ final readonly class URLParser
     public function __construct(private Router $router, private Request $request) {}
 
     // The draw secret is the fragment of the link (after #): false when it is missing or truncated
-    public function setIVFromUrl(string $url): bool
+    public function setSecretFromUrl(string $url): bool
     {
         try {
-            DrawCrypt::setIV(base64_decode(explode('#', $url, 2)[1] ?? ''));
+            DrawCrypt::setSecret(base64_decode(explode('#', $url, 2)[1] ?? ''));
         } catch (RuntimeException) {
             return false;
         }

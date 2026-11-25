@@ -21,7 +21,7 @@ final class ParticipantFactory extends Factory
             'draw_id' => Draw::factory(),
             'name' => fake()->name(),
             'email' => fake()->email(),
-            'target_id' => null,
+            'santa_id' => null,
         ];
     }
 }

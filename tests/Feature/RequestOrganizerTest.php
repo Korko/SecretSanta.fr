@@ -214,7 +214,7 @@ test('the organizer can add and remove several participants, each santa gets one
 
     $draw = $draw->fresh();
     assertEquals(7, $draw->participants->count());
-    assertEquals(7, $draw->participants->pluck('target_id')->filter()->unique()->count());
+    assertEquals(7, $draw->participants->pluck('santa_id')->filter()->unique()->count());
     Notification::assertSentTimes(TargetDrawn::class, 3);
     foreach ($draw->participants as $participant) {
         // At most one email per santa, whatever the number of changes: their new target's messages and ideas included
@@ -554,7 +554,7 @@ test('the organizer taking part whose target email was received is backfilled as
     // The backfill only concerns draws written before DrawEncrypter, when a fixed IV per draw made equal emails
     // give equal ciphertexts: store them in that legacy format
     $legacy = new LegacyDrawEncrypter(base64_decode(mb_substr(config()->string('app.key'), 7)), config()->string('app.cipher'));
-    $legacy->setIV(DrawCrypt::getIV());
+    $legacy->setIV(DrawCrypt::getSecret());
     DB::table('participants')->where('id', $organizer->id)->update(['email' => $legacy->encrypt($organizer->email)]);
     DB::table('draws')->where('id', $draw->id)->update(['organizer_email' => $legacy->encrypt($draw->fresh()->organizer_email)]);
 
@@ -566,15 +566,15 @@ test('the organizer taking part whose target email was received is backfilled as
 test('the draw secret is only read from the header, never from the request input', function (): void {
     $draw = Draw::factory()->hasParticipants(3)->create();
     $url = URL::signedRoute('organizerPanel.revealTargets', ['draw' => $draw]);
-    $iv = base64_encode(DrawCrypt::getIV());
+    $secret = base64_encode(DrawCrypt::getSecret());
 
-    // The right secret as a parameter (it would end up in logs as ?iv=), a wrong one in the header: refused
-    $response = ajaxPost($url, ['iv' => $iv], ['X-HASH-IV' => base64_encode(random_bytes(16))]);
+    // The right secret as a parameter (it would end up in logs as ?secret=), a wrong one in the header: refused
+    $response = ajaxPost($url, ['secret' => $secret], ['X-DRAW-SECRET' => base64_encode(random_bytes(16))]);
     expect($response->isSuccessful())->toBeFalse()
         ->and($draw->fresh()->targets_revealed_at)->toBeNull();
 
-    DrawCrypt::setIV(base64_decode($iv));
-    ajaxPost($url, [], ['X-HASH-IV' => $iv])->assertSuccessful();
+    DrawCrypt::setSecret(base64_decode($secret));
+    ajaxPost($url, [], ['X-DRAW-SECRET' => $secret])->assertSuccessful();
     expect($draw->fresh()->targets_revealed_at)->not->toBeNull();
 });
 
@@ -606,7 +606,7 @@ test('the administrator can raise the participants limit of an existing draw', f
     config(['app.max_participants' => 4]);
     $draw = Draw::factory()->hasParticipants(4)->create();
     Notification::fake();
-    $url = URL::signedRoute('organizerPanel', ['draw' => $draw]).'#'.base64_encode(DrawCrypt::getIV());
+    $url = URL::signedRoute('organizerPanel', ['draw' => $draw]).'#'.base64_encode(DrawCrypt::getSecret());
 
     // The panel greys "add" out at the limit
     expect(ajaxGet(URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]))->json('maxParticipants'))->toBe(4);

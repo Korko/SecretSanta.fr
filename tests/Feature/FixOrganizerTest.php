@@ -27,7 +27,7 @@ function createOrganizedDraw(string $organizerEmail): Draw
 
 function fixOrganizer(Draw $draw, string $email): TestResponse
 {
-    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getIV());
+    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getSecret());
 
     return ajaxPost(URL::route('fixOrganizer.handle'), ['url' => $url, 'email' => $email]);
 }
@@ -188,7 +188,7 @@ test('an unconfirmed address entered again as is is sent again, without the chan
 test('the fix-organizer command asks for the organizer email when not given', function (): void {
     Notification::fake();
     $draw = createOrganizedDraw('orga@exampel.com');
-    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getIV());
+    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getSecret());
 
     $this->artisan('secretsanta:fix-organizer', ['url' => $url])
         ->expectsQuestion('What is the correct email of the organizer?', 'orga@example.com')
@@ -202,7 +202,7 @@ test('the fix-organizer command asks for the organizer email when not given', fu
 test('the fix-organizer command changes nothing and sends nothing when not confirmed', function (): void {
     Notification::fake();
     $draw = createOrganizedDraw('orga@exampel.com');
-    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getIV());
+    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getSecret());
     Notification::fake(); // Only what the command sends from here
 
     $this->artisan('secretsanta:fix-organizer', ['url' => $url, 'email' => 'orga@example.com'])
@@ -223,7 +223,7 @@ test('keeping the current address in the fix-organizer command only sends the em
     $draw->update(['organizer_name' => $organizer->name, 'organizer_email' => $organizer->email, 'organizer_participant_id' => $organizer->id]);
     // The participant changed their own address since: the organizer address isn't theirs to overwrite it
     $organizer->update(['email' => 'new-'.$organizer->email]);
-    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getIV());
+    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getSecret());
 
     $this->artisan('secretsanta:fix-organizer', ['url' => $url, 'email' => $draw->organizer_email, '--force' => true])->assertSuccessful();
 
@@ -239,7 +239,7 @@ test('a link without its secret, of a removed participant or of a draw that ende
     $draw->update(['organizer_name' => 'Orga', 'organizer_email' => 'orga@exampel.com']);
     $this->travel(10)->minutes();
 
-    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getIV());
+    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getSecret());
     $fix = fn (string $url): TestResponse => ajaxPost(URL::route('fixOrganizer.handle'), ['url' => $url, 'email' => 'orga@example.com']);
 
     // The part after # is the draw secret

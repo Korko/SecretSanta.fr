@@ -42,7 +42,7 @@ final class ParticipantReported extends Notification implements ShouldBeEncrypte
                 'name' => $this->name,
                 'email' => $this->email,
                 'reason' => $this->reason->value,
-                'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
+                'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getSecret()),
             ]);
     }
 }

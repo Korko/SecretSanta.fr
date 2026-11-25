@@ -127,9 +127,9 @@ test('the full flow: draw, dearSanta report, organizer panel with their particip
 
     $draw = Draw::query()->latest('id')->firstOrFail();
     [$alice, $bob] = $draw->participants;
-    $iv = '#'.base64_encode(DrawCrypt::getIV());
-    $dearSanta = URL::signedRoute('dearSanta', ['participant' => $bob->hash]).$iv;
-    $aliceDearSanta = URL::signedRoute('dearSanta', ['participant' => $alice->hash]).$iv;
+    $secret = '#'.base64_encode(DrawCrypt::getSecret());
+    $dearSanta = URL::signedRoute('dearSanta', ['participant' => $bob->hash]).$secret;
+    $aliceDearSanta = URL::signedRoute('dearSanta', ['participant' => $alice->hash]).$secret;
 
     $santa = visit($dearSanta)
         ->assertSeeIn('.targets-revealed', 'pas été consultée')
@@ -252,9 +252,9 @@ test('withdrawing takes saying who you are, then typing your own name, and the o
     // No exclusions: nothing keeps them from leaving
     $draw = createServiceDraw(generateParticipants(4, withExclusions: false));
     $participant = $draw->participants->last();
-    $iv = '#'.base64_encode(DrawCrypt::getIV());
+    $secret = '#'.base64_encode(DrawCrypt::getSecret());
 
-    $page = visit(URL::signedRoute('dearSanta', ['participant' => $participant->hash]).$iv)
+    $page = visit(URL::signedRoute('dearSanta', ['participant' => $participant->hash]).$secret)
         ->click('.report-open')
         ->click('.report-its-me')
         ->click('.withdraw')
@@ -273,7 +273,7 @@ test('withdrawing takes saying who you are, then typing your own name, and the o
     expect($participant->fresh()->withdrawn_at)->not->toBeNull();
 
     // Someone else had got the email: the organizer brings them back, at the right address
-    visit(URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).$iv)
+    visit(URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).$secret)
         ->assertCount('tbody tr:not(.organizer-participation *)', 3)
         ->assertSeeIn('.withdrawn-participant', $participant->name)
         ->click('.participant-restore')

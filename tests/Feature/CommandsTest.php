@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\URL;
 // The link a participant got, as an administrator would paste it
 function participantLink(Draw $draw): string
 {
-    return URL::signedRoute('dearSanta', ['participant' => $draw->participants->first()->hash]).'#'.base64_encode(DrawCrypt::getIV());
+    return URL::signedRoute('dearSanta', ['participant' => $draw->participants->first()->hash]).'#'.base64_encode(DrawCrypt::getSecret());
 }
 
 it('withdraws a participant like the organizer panel does', function (): void {
