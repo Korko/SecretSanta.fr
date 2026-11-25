@@ -60,7 +60,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "librenms/laravel-vue-i18n-generator"
+            ]
         }
     },
     "autoload": {

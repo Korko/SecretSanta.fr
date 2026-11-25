@@ -36,6 +36,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Translation keys (App\Console\Commands\GenerateVueI18n)
+    |--------------------------------------------------------------------------
+    |
+    | Only keep these top-level keys of the given files: the FAQ questions come
+    | from the server and Laravel's default validation messages are not used
+    | by the front.
+    |
+    */
+    'langKeys' => [
+        'faq' => ['categories'],
+        'validation' => ['custom'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Excluded files & folders
     |--------------------------------------------------------------------------
     |

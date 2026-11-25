@@ -114,38 +114,9 @@ export default {
             }
         },
         "faq": {
-            "nav": {
-                "go": "Los geht's!",
-                "contact": "Ich habe noch eine Frage"
-            },
             "categories": {
                 "general": "Allgemein",
                 "technical": "Technisch"
-            },
-            "questions": {
-                "general": {
-                    "Warum wurde SecretSanta.fr entwickelt?": "Der Entwickler organisierte regelmäßig Secret Santa-Abende mit Freunden oder Kollegen, bei denen jeder seinen Namen in einen Hut warf. Jeder zog ein Zettel und es kam mehrmals vor, dass jemand seinen eigenen Namen zog. Manchmal wurde die Ziehung wiederholt, manchmal sagte die Person nichts, und der Entwickler fand das schade. Daher kam ihm die Idee, ein Tool zu entwickeln. Das Ziel war es, alles automatisch zu machen, damit niemand seinen eigenen Namen zieht. Selbst der Organisator nahm wie alle anderen teil, da er nicht wissen konnte, wer wen gezogen hatte. Später kamen Ausschlüsse und andere Funktionen dazu.",
-                    "Wie kann diese Seite kostenlos betrieben werden?": "SecretSanta.fr ist für die Nutzer vollkommen kostenlos, nicht aber für den Entwickler, der die verschiedenen Kosten trägt. Es gibt keine Werbung und keine Weitergabe von Informationen.",
-                    "Wir sind eine ungerade Zahl an Teilnehmern, ist das ein Problem?": "Es gibt absolut kein Problem, ob Sie eine gerade oder ungerade Zahl an Teilnehmern haben. Ein Beispiel mit 3 Teilnehmern: Anaïs, Béatrice und Cédric, könnte Anaïs an Béatrice verschenken, Béatrice an Cédric und Cédric an Anaïs. Jeder hat ein Geschenk und niemand zieht sich selbst.",
-                    "Ich habe mich bei meiner E-Mail-Adresse vertan, als ich mein Secret Santa organisiert habe, was kann ich tun?": "Um dieses Problem zu beheben, können Sie entweder eine neue Ziehung organisieren oder einen Teilnehmer bitten, Ihnen den Link zu schicken, der es ihm ermöglicht, seinem/ihrem Secret Santa zu schreiben. Gehen Sie dann auf die Seite https://secretsanta.fr/fix. Wenn Sie es dennoch nicht ändern können, senden Sie den Link des Teilnehmers per E-Mail an: webmaster@secretsanta.fr. Nach Überprüfung und in seiner Freizeit kann der Entwickler Ihnen möglicherweise weiterhelfen.",
-                    "Ich habe meine Zugangsmail zum Organisatorbereich gelöscht, was kann ich tun?": "Um dieses Problem zu beheben, können Sie entweder eine neue Ziehung organisieren oder einen Teilnehmer bitten, Ihnen den Link zu schicken, der es ihm ermöglicht, seinem/ihrem Secret Santa zu schreiben, und dann auf die Seite https://secretsanta.fr/fix gehen.",
-                    "Ich habe mich bei der Adresse eines Teilnehmers vertan": "Wenn Sie Ihr Secret Santa organisiert haben, sollten Sie eine E-Mail mit einem Link zum Organisatorbereich erhalten haben. Von dort aus können Sie die E-Mail-Adresse jedes Teilnehmers ändern.",
-                    "Ein Teilnehmer hat die E-Mail nicht erhalten, was tun?": "Auch wenn die angegebene Adresse korrekt ist, kann es passieren, dass die E-Mail verloren geht, im Spam-Ordner landet oder ein anderes Problem auftritt. Im Organisatorbereich können Sie einen Button neben dem Status der E-Mail-Zustellung finden, um die E-Mail erneut zu senden. So kann der Teilnehmer erfahren, wer sein Ziel ist und wie er mit seinem Santa kommuniziert.",
-                    "Ist es möglich, mit seinem Ziel zu sprechen?": "Momentan ist das nicht möglich, aus Gründen der Anonymität. Nur das Ziel kann seinem/ihrem Secret Santa schreiben. Aber das ist in Planung.",
-                    "Wann werden meine persönlichen Daten gelöscht?": "Alle Ihre Daten aus einer Ziehung werden 3 Wochen nach dem Datum des Ereignisses gelöscht. Diese Frist ermöglicht es dem Organisator, die Liste der Teilnehmer mit ihren gezogenen Zielen über sein Organisator-Panel herunterzuladen, um bei einer späteren Secret Santa-Veranstaltung mit denselben Personen zu verhindern, dass dieselben Ziele wiederholt werden.",
-                    "Ich habe einen Teilnehmer vergessen, wie kann ich ihn hinzufügen?": "Über Ihr Organisator-Panel können Sie einen Teilnehmer hinzufügen (oder entfernen). Der neue Teilnehmer erhält sein Ziel per E-Mail. Um Platz für ihn zu schaffen, bekommt eine andere Person ein neues Ziel, zufällig gewählt, damit niemand erraten kann, wer wen beschenkt, und sie wird per E-Mail benachrichtigt. Um das Hinzufügen einfach zu halten, hat der neue Teilnehmer keine Ausschlüsse: Er kann jeden ziehen und von jedem gezogen werden.",
-                    "Warum beschenken sich Alice und Bob nie gegenseitig?": "Ab 3 Teilnehmern bildet die Auslosung eine einzige große Schleife: jeder beschenkt den Nächsten, bis zurück zum Ersten. Es gibt also keine gegenseitigen Paare mehr (A beschenkt B und B beschenkt A) und keine kleinen Gruppen, die sich untereinander beschenken. Jede mögliche Schleife wird mit der gleichen Wahrscheinlichkeit gezogen.",
-                    "Wer kann die Liste der Ziele einsehen?": "Kurz gesagt: Niemand. Lang gesagt: Nur der Entwickler kann diese Information mit dem Link des Organisators einsehen. Aber es ist besser, dieses Geheimnis so gut wie möglich zu wahren."
-                },
-                "technical": {
-                    "Welche Daten werden gespeichert und warum?": "Für jeden Teilnehmer werden der Name und die E-Mail-Adresse gespeichert, sowie für jede Organisation der Titel und Inhalt der gesendeten E-Mail und jede Nachricht, die zwischen den Teilnehmern über den per E-Mail erhaltenen Link (genannt 'Lieber Weihnachtsmann') gesendet wurde. Sie werden aus zwei Gründen gespeichert: Erstens, um diese Funktion zu ermöglichen, mit der man seinem/ihrem Secret Santa schreiben kann. Zweitens, um E-Mails im Falle eines Adressfehlers erneut zu versenden.",
-                    "Wie werden die Daten gespeichert?": "Jedes Element wird mit AES-256 verschlüsselt, mit einem Schlüssel, der aus einem Serverschlüssel und einem einzigartigen Geheimnis pro Organisation berechnet wird. Dieses Geheimnis wird nicht gespeichert und wird jedem Teilnehmer in seinem Link gesendet. Ohne es sind die gespeicherten Daten selbst bei vollem Zugriff auf den Server unlesbar: Der Administrator kann also nicht darauf zugreifen, ohne dass Sie aktiv handeln. Eine Ausnahme: Während die E-Mails versendet werden, wird das Geheimnis mit jeder ausstehenden E-Mail einige Minuten lang aufbewahrt, erneute Versuche inbegriffen. Schlägt der Versand endgültig fehl, wird das Geheimnis vergessen: Der Organisator kann die fehlgeschlagenen E-Mails über sein Organisator-Panel erneut senden. Ebenso wird eine unzustellbare E-Mail (ungültige Adresse), die den Link enthält, bis zu 7 Tage aufbewahrt. Jedes Mal, wenn Sie eine Aktion durchführen, verwenden Sie automatisch dieses Geheimnis, das SecretSanta nur für die angeforderte Aktion überlassen wird.",
-                    "Was ist Ende-zu-Ende-Verschlüsselung (E2E)?": "Ende-zu-Ende-Verschlüsselung (E2E) bezeichnet eine Verschlüsselung zwischen zwei Nutzern eines Dienstes: Die Nachricht wird auf dem Gerät des Absenders verschlüsselt und kann nur auf dem Gerät des Empfängers entschlüsselt werden. Der Dienst, der die Nachricht überträgt, sieht ihren Inhalt zu keinem Zeitpunkt im Klartext. Signal ist ein Beispiel dafür. Leider wird der Begriff oft missbraucht, um eine einfache Verschlüsselung zwischen dem Client (Ihrem Browser) und dem Server zu bezeichnen, was eigentlich das ist, was HTTPS auf jeder Website tut: In diesem Fall sieht der Server die Daten sehr wohl im Klartext.",
-                    "Was ist „Zero Access“-Verschlüsselung?": "„Zero Access“-Verschlüsselung bedeutet, dass die Daten verschlüsselt werden, sobald sie auf dem Server ankommen, mit einem Schlüssel, den der Dienst nicht aufbewahrt. Einmal gespeichert, kann der Dienst sie nicht mehr selbst lesen. Der Unterschied zur Ende-zu-Ende-Verschlüsselung: Der Server sieht die Daten kurz im Klartext, wenn er sie empfängt oder verarbeitet, während er sie bei E2E nie sieht. Dieses Modell nutzen zum Beispiel einige E-Mail-Anbieter für von außen empfangene E-Mails.",
-                    "Verwendet SecretSanta.fr Ende-zu-Ende-Verschlüsselung?": "Nein, und wir möchten lieber ehrlich sein, als den Begriff falsch zu verwenden. SecretSanta.fr muss Ihre Daten zu bestimmten Zeitpunkten lesen können, zum Beispiel um jedem Teilnehmer die E-Mail mit seinem Ziel zu senden, was mit echter Ende-zu-Ende-Verschlüsselung unvereinbar ist. Tatsächlich passiert Folgendes: Ihre Daten werden zunächst dank HTTPS zwischen Ihrem Browser und SecretSanta.fr verschlüsselt. Der Server verschlüsselt sie dann sofort mit einem Geheimnis, das Ihrer Organisation eigen ist und das er nicht aufbewahrt, sodass keine Spur der Daten im Klartext bleibt. Sie werden nur entschlüsselt, wenn ein Nutzer eine Aktion durchführt (seine Seite öffnen, seinem Secret Santa schreiben, eine E-Mail erneut senden...), mithilfe des Geheimnisses in seinem Link, und das Geheimnis wird danach vergessen. Diese Funktionsweise kommt der „Zero Access“-Verschlüsselung nahe.",
-                    "Ich möchte meine Daten löschen, wie kann ich das tun?": "Wegen der Art, wie die Daten gespeichert sind, kann der Administrator nicht wissen, welche Daten zu wem gehören. Nur der Organisator kann die Daten aller Teilnehmer auf einmal löschen. Andernfalls werden diese Daten automatisch kurz nach dem Ende der Veranstaltung gelöscht.",
-                    "Ich möchte den Quellcode selbst überprüfen, wo finde ich ihn?": "Sehr gerne! Der Quellcode ist unter folgender Adresse zu finden: https://framagit.org/Korko/SecretSanta. Den Link finden Sie auch unten auf jeder Seite."
-                }
             }
         },
         "form": {
@@ -409,70 +380,6 @@ export default {
             }
         },
         "validation": {
-            "accepted": "Das Feld {attribute} muss akzeptiert werden.",
-            "active_url": "Das Feld {attribute} ist keine gültige URL.",
-            "after": "Das Feld {attribute} muss ein Datum nach dem {date} sein.",
-            "alpha": "Das Feld {attribute} darf nur Buchstaben enthalten.",
-            "alpha_dash": "Das Feld {attribute} darf nur Buchstaben, Zahlen und Bindestriche enthalten.",
-            "alpha_num": "Das Feld {attribute} darf nur Zahlen und Buchstaben enthalten.",
-            "array": "Das Feld {attribute} muss ein Array sein.",
-            "before": "Das Feld {attribute} muss ein Datum vor dem {date} sein.",
-            "between": {
-                "numeric": "Der Wert von {attribute} muss zwischen {min} und {max} liegen.",
-                "file": "Die Datei {attribute} muss zwischen {min} und {max} Kilobyte groß sein.",
-                "string": "Der Text {attribute} muss zwischen {min} und {max} Zeichen lang sein.",
-                "array": "Das Array {attribute} muss zwischen {min} und {max} Elemente enthalten."
-            },
-            "boolean": "Das Feld {attribute} muss wahr oder falsch sein.",
-            "confirmed": "Das Bestätigungsfeld {attribute} stimmt nicht überein.",
-            "date": "Das Feld {attribute} ist kein gültiges Datum.",
-            "date_format": "Das Feld {attribute} entspricht nicht dem Format {format}.",
-            "different": "Die Felder {attribute} und {other} müssen unterschiedlich sein.",
-            "digits": "Das Feld {attribute} muss {digits} Ziffern enthalten.",
-            "digits_between": "Das Feld {attribute} muss zwischen {min} und {max} Ziffern enthalten.",
-            "email": "Das Feld {attribute} muss eine gültige E-Mail-Adresse sein.",
-            "exists": "Das ausgewählte Feld {attribute} ist ungültig.",
-            "filled": "Das Feld {attribute} ist erforderlich.",
-            "image": "Das Feld {attribute} muss ein Bild sein.",
-            "in": "Das Feld {attribute} ist ungültig.",
-            "integer": "Das Feld {attribute} muss eine ganze Zahl sein.",
-            "ip": "Das Feld {attribute} muss eine gültige IP-Adresse sein.",
-            "json": "Das Feld {attribute} muss ein gültiges JSON-Dokument sein.",
-            "max": {
-                "numeric": "Der Wert von {attribute} darf nicht größer als {max} sein.",
-                "file": "Die Datei {attribute} darf nicht größer als {max} Kilobyte sein.",
-                "string": "Der Text von {attribute} darf nicht mehr als {max} Zeichen enthalten.",
-                "array": "Das Array {attribute} darf nicht mehr als {max} Elemente enthalten."
-            },
-            "mimes": "Das Feld {attribute} muss eine Datei vom Typ : {values} sein.",
-            "min": {
-                "numeric": "Der Wert von {attribute} muss größer als {min} sein.",
-                "file": "Die Datei {attribute} muss größer als {min} Kilobyte sein.",
-                "string": "Der Text von {attribute} muss mindestens {min} Zeichen enthalten.",
-                "array": "Das Array {attribute} muss mindestens {min} Elemente enthalten."
-            },
-            "not_in": "Das ausgewählte Feld {attribute} ist ungültig.",
-            "numeric": "Das Feld {attribute} muss eine Zahl sein.",
-            "regex": "Das Format des Feldes {attribute} ist ungültig.",
-            "required": "Das Feld {attribute} ist erforderlich.",
-            "required_if": "Das Feld {attribute} ist erforderlich, wenn {other} den Wert {value} hat.",
-            "required_unless": "Das Feld {attribute} ist erforderlich, es sei denn, {other} ist in {values} enthalten.",
-            "required_with": "Das Feld {attribute} ist erforderlich, wenn {values} vorhanden ist.",
-            "required_with_all": "Das Feld {attribute} ist erforderlich, wenn {values} vorhanden sind.",
-            "required_without": "Das Feld {attribute} ist erforderlich, wenn {values} nicht vorhanden ist.",
-            "required_without_all": "Das Feld {attribute} ist erforderlich, wenn keines der Felder {values} vorhanden ist.",
-            "same": "Die Felder {attribute} und {other} müssen übereinstimmen.",
-            "size": {
-                "numeric": "Der Wert von {attribute} muss {size} sein.",
-                "file": "Die Datei von {attribute} muss {size} Kilobyte groß sein.",
-                "string": "Der Text von {attribute} muss {size} Zeichen lang sein.",
-                "array": "Das Array {attribute} muss {size} Elemente enthalten."
-            },
-            "string": "Das Feld {attribute} muss eine Zeichenkette sein.",
-            "timezone": "Das Feld {attribute} muss eine gültige Zeitzone sein.",
-            "unique": "Der Wert des Feldes {attribute} wird bereits verwendet.",
-            "url": "Das Format der URL von {attribute} ist ungültig.",
-            "recaptcha": "Das Captcha konnte nicht validiert werden.",
             "custom": {
                 "g-recaptcha-response": {
                     "required": "Das Captcha ist erforderlich.",
@@ -550,38 +457,6 @@ export default {
                         "format": "Das Format der Adresse ist ungültig."
                     }
                 }
-            },
-            "attributes": {
-                "name": "Name",
-                "username": "Benutzername",
-                "email": "E-Mail",
-                "first_name": "Vorname",
-                "last_name": "Nachname",
-                "password": "Passwort",
-                "password_confirmation": "Passwort bestätigung",
-                "city": "Stadt",
-                "country": "Land",
-                "address": "Adresse",
-                "phone": "Telefon",
-                "mobile": "Mobiltelefon",
-                "age": "Alter",
-                "sex": "Geschlecht",
-                "gender": "Geschlecht",
-                "day": "Tag",
-                "month": "Monat",
-                "year": "Jahr",
-                "hour": "Stunde",
-                "minute": "Minute",
-                "second": "Sekunde",
-                "title": "Titel",
-                "content": "Inhalt",
-                "description": "Beschreibung",
-                "excerpt": "Auszug",
-                "date": "Datum",
-                "time": "Uhrzeit",
-                "available": "Verfügbar",
-                "size": "Größe",
-                "g-recaptcha-response": "Recaptcha"
             }
         }
     }
