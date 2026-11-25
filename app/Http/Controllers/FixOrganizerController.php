@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FixOrganizerRequest;
+use App\Models\Draw;
 use App\Notifications\OrganizerEmailChanged;
 use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 final class FixOrganizerController extends Controller
 {
@@ -70,6 +72,22 @@ final class FixOrganizerController extends Controller
         ]));
 
         // All or nothing: the emails only go once everything is saved (queued after the commit)
+        try {
+            $this->fix($draw, $organizerEmail, $email, $sameEmail);
+        } catch (Throwable $throwable) {
+            // Nothing went out: the organizer may try again right away
+            $organizerMail->releaseResend();
+
+            throw $throwable;
+        }
+
+        return response()->json([
+            'message' => trans($sameEmail ? 'message.resentOrganizer' : 'message.fixedOrganizer'),
+        ]);
+    }
+
+    private function fix(Draw $draw, string $organizerEmail, string $email, bool $sameEmail): void
+    {
         DB::transaction(function () use ($draw, $organizerEmail, $email, $sameEmail): void {
             $organizer = $draw->organizer;
 
@@ -102,9 +120,5 @@ final class FixOrganizerController extends Controller
                 $draw->notify(new OrganizerRecap($draw));
             }
         });
-
-        return response()->json([
-            'message' => trans($sameEmail ? 'message.resentOrganizer' : 'message.fixedOrganizer'),
-        ]);
     }
 }

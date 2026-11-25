@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 final class DearSantaController extends Controller
 {
@@ -220,7 +221,15 @@ final class DearSantaController extends Controller
         abort_if($claimed === 0, 403, Lang::get('error.resend'));
 
         $code = $participant->requestEmailChange($email);
-        Notification::route('mail', [$email => $participant->name])->notify(new ParticipantEmailCode($participant->name, $code));
+        try {
+            Notification::route('mail', [$email => $participant->name])->notify(new ParticipantEmailCode($participant->name, $code));
+        } catch (Throwable $throwable) {
+            // No code went out: nothing to wait for before asking again
+            $participant->clearPendingEmail();
+            $participant->save();
+
+            throw $throwable;
+        }
 
         $participant->createMetric('email_change_requested');
 
@@ -316,6 +325,9 @@ final class DearSantaController extends Controller
                 'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
             ]);
         } catch (Exception) {
+            // Nothing went out: the santa may try again right away
+            $dearSanta->mail->releaseResend();
+
             return response()->json([
                 'error' => trans('error.email'),
                 'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),

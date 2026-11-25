@@ -36,6 +36,9 @@ final class Mail extends Model
      */
     public $incrementing = true;
 
+    // updated_at before claimResend(), for releaseResend()
+    private ?CarbonImmutable $claimedFrom = null;
+
     /** @var array<string, mixed> */
     protected $attributes = [
         'delivery_status' => DeliveryStatus::Created,
@@ -63,10 +66,19 @@ final class Mail extends Model
             return false;
         }
 
+        $this->claimedFrom = $this->updated_at;
         $this->updated_at = $now;
         $this->syncOriginalAttribute('updated_at');
 
         return true;
+    }
+
+    // The email could not go out after all: the slot taken by claimResend() is given back, a new try needn't wait
+    public function releaseResend(): void
+    {
+        self::query()->whereKey($this->id)->update(['updated_at' => $this->claimedFrom]);
+        $this->updated_at = $this->claimedFrom;
+        $this->syncOriginalAttribute('updated_at');
     }
 
     public function markAsCreated(): void

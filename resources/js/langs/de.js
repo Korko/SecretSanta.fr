@@ -321,6 +321,7 @@ export default {
             },
             "cannot_withdraw": "{name} kann nicht entfernt werden, ohne jemandem eine ausgeschlossene Person zuzuteilen",
             "cannot_restore": "{name} kann nicht wieder aufgenommen werden, ohne jemandem eine ausgeschlossene Person zuzuteilen",
+            "already_removed": "{name} ist bereits nicht mehr Teil der Auslosung",
             "withdrawn": {
                 "title": "Abmeldungen",
                 "help": "Diese Personen haben sich über ihre Seite abgemeldet. Falls jemand anderes ihre E-Mail erhalten hatte, nehmen Sie sie mit der richtigen Adresse wieder auf: Sie erhalten ihren Empfänger.",

@@ -76,3 +76,17 @@ it('keeps a single recap mail per draw', function (): void {
     expect($first->recapMail()->id)->toBe($second->recapMail()->id)
         ->and(Mail::query()->whereMorphedTo('mailable', $draw)->count())->toBe(1);
 });
+
+it('gives the resend slot back when the email could not go out', function (): void {
+    Notification::fake();
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $mail = $draw->participants->first()->mail;
+    $mail->updated_at = $mail->updated_at->subSeconds(config()->integer('mail.resend_delay'));
+    $mail->save();
+
+    expect($mail->claimResend(config()->integer('mail.resend_delay')))->toBeTrue();
+    $mail->releaseResend();
+
+    expect(Mail::query()->findOrFail($mail->id)->claimResend(config()->integer('mail.resend_delay')))->toBeTrue();
+});

@@ -321,6 +321,7 @@ export default {
             },
             "cannot_withdraw": "Unable to remove {name} without giving someone a person they excluded",
             "cannot_restore": "Unable to bring {name} back without giving someone a person they excluded",
+            "already_removed": "{name} is already out of the draw",
             "withdrawn": {
                 "title": "Withdrawals",
                 "help": "These people withdrew from their page. If someone else had got their email, bring them back with the right address: they will get their target.",

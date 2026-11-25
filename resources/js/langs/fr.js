@@ -321,6 +321,7 @@ export default {
             },
             "cannot_withdraw": "Impossible de retirer {name} sans donner à quelqu'un une personne qu'il ou elle a exclue",
             "cannot_restore": "Impossible de réintégrer {name} sans donner à quelqu'un une personne qu'il ou elle a exclue",
+            "already_removed": "{name} ne fait déjà plus partie du tirage",
             "withdrawn": {
                 "title": "Désistements",
                 "help": "Ces personnes se sont désistées depuis leur page. Si quelqu'un d'autre avait reçu leur email, réintégrez-les avec la bonne adresse : elles recevront leur cible.",
