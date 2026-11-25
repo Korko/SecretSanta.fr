@@ -54,14 +54,16 @@ final class Mail extends Model
         $this->updateDeliveryStatus(DeliveryStatus::Created);
     }
 
+    // Not over a reception: a retried job whose first attempt got through after all, the recipient having opened their page since
     public function markAsSending(): void
     {
-        $this->updateDeliveryStatus(DeliveryStatus::Sending);
+        $this->transition(DeliveryStatus::Sending, except: [DeliveryStatus::Received]);
     }
 
+    // Only the attempt still under way: a reception or a bounce written meanwhile stays
     public function markAsSent(): void
     {
-        $this->updateDeliveryStatus(DeliveryStatus::Sent);
+        $this->transition(DeliveryStatus::Sent, only: [DeliveryStatus::Sending]);
     }
 
     public function markAsError(?string $code = null): void
@@ -73,17 +75,13 @@ final class Mail extends Model
     // Only news for a mail on its way: a later delay report neither cancels a reception nor an actual bounce
     public function markAsDelayed(): void
     {
-        if (! in_array($this->delivery_status, [DeliveryStatus::Received, DeliveryStatus::Error], true)) {
-            $this->updateDeliveryStatus(DeliveryStatus::Delayed);
-        }
+        $this->transition(DeliveryStatus::Delayed, except: [DeliveryStatus::Received, DeliveryStatus::Error]);
     }
 
     // Already confirmed (a participant reloading their page, the organizer opening the panel): no write, no broadcast
     public function markAsReceived(): void
     {
-        if ($this->delivery_status !== DeliveryStatus::Received) {
-            $this->updateDeliveryStatus(DeliveryStatus::Received);
-        }
+        $this->transition(DeliveryStatus::Received, except: [DeliveryStatus::Received]);
     }
 
     public function updateDeliveryStatus(DeliveryStatus $status): void
@@ -96,11 +94,7 @@ final class Mail extends Model
 
         $this->save();
 
-        try {
-            event(new MailStatusUpdated($this));
-        } catch (BroadcastException) {
-            // Ignore exception
-        }
+        $this->broadcastStatus();
     }
 
     /** @return MorphTo<\Illuminate\Database\Eloquent\Model, $this> dearSanta or participant */
@@ -119,5 +113,45 @@ final class Mail extends Model
     protected function casts(): array
     {
         return ['delivery_status' => DeliveryStatus::class];
+    }
+
+    /**
+     * Checked by the database, not on this instance: the worker keeps its own during the whole SMTP session,
+     * while the bounce job or the recipient opening their page may have written meanwhile.
+     *
+     * @param  list<DeliveryStatus>|null  $only  statuses it may move from
+     * @param  list<DeliveryStatus>  $except  statuses it may not move from
+     */
+    private function transition(DeliveryStatus $status, ?array $only = null, array $except = []): void
+    {
+        $query = self::query()->whereKey($this->getKey());
+        if ($only !== null) {
+            $query->whereIn('delivery_status', array_map(fn (DeliveryStatus $from): string => $from->value, $only));
+        }
+
+        if ($except !== []) {
+            $query->whereNotIn('delivery_status', array_map(fn (DeliveryStatus $from): string => $from->value, $except));
+        }
+
+        $changed = $query->update(['delivery_status' => $status->value, 'error_code' => null]) > 0;
+
+        // Whether it moved or not, this instance now tells what the database holds
+        $fresh = self::query()->whereKey($this->getKey())->first();
+        if ($fresh !== null) {
+            $this->setRawAttributes($fresh->getAttributes(), true);
+        }
+
+        if ($changed) {
+            $this->broadcastStatus();
+        }
+    }
+
+    private function broadcastStatus(): void
+    {
+        try {
+            event(new MailStatusUpdated($this));
+        } catch (BroadcastException) {
+            // Ignore exception
+        }
     }
 }
