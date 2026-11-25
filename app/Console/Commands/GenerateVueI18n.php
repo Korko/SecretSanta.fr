@@ -13,7 +13,7 @@ use MartinLindhe\VueInternationalizationGenerator\Commands\GenerateInclude;
  * the package can only pick whole files, so they are filtered into a temporary
  * lang directory that the package then reads.
  */
-class GenerateVueI18n extends GenerateInclude
+final class GenerateVueI18n extends GenerateInclude
 {
     private const string FILTERED_PATH = '/storage/framework/vue-i18n-lang';
 
