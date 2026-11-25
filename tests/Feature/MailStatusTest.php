@@ -57,7 +57,8 @@ it('broadcasts a status change only once its transaction is committed', function
     Event::fake([MailStatusUpdated::class]);
 
     DB::transaction(function () use ($participant): void {
-        $participant->mail->markAsCreated();
+        // A change: an unchanged status is not broadcast at all
+        $participant->mail->markAsError();
         Event::assertNotDispatched(MailStatusUpdated::class);
     });
 
