@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Notifications\TargetDrawn;
-use App\Notifications\TargetWithdrawn;
+use App\Services\ParticipantsEditor;
 use Exception;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
@@ -42,16 +41,7 @@ final class ChangeParticipant extends Command
             return;
         }
 
-        $participant->dearSantas()->lazy()->each->delete();
-
-        $participant->name = $name;
-        $participant->email = $email;
-        $participant->save();
-
-        $participant->notifyNow(new TargetDrawn);
-        $this->info('Participant mail sent, with their target messages');
-
-        $participant->santa->notify(new TargetWithdrawn);
-        $this->info('Santa informed');
+        new ParticipantsEditor($draw)->replace($participant, $name, $email, now: true);
+        $this->info('Participant mail sent, with their target messages, and santa informed');
     }
 }

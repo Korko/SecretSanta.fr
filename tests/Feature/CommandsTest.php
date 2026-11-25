@@ -7,6 +7,7 @@ use App\Models\ParticipantLimit;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
 use App\Services\EmailClient;
+use App\Services\ParticipantsEditor;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -111,6 +112,21 @@ it('asks before replacing a participant', function (): void {
         ->and($participant->dearSantas()->count())->toBe(0);
     Notification::assertSentTo($participant, TargetDrawn::class);
     Notification::assertSentTo($participant->santa, TargetWithdrawn::class);
+});
+
+it('replaces a participant without touching the pairs', function (): void {
+    $draw = Draw::factory()->hasParticipants(4)->create();
+    $pairs = $draw->participants->pluck('target_id', 'id')->all();
+    $participant = $draw->participants->last();
+    Notification::fake();
+
+    new ParticipantsEditor($draw)->replace($participant, 'Someone else', 'else@example.com');
+
+    expect($draw->participants()->pluck('target_id', 'id')->all())->toBe($pairs)
+        ->and($participant->fresh())->name->toBe('Someone else');
+    Notification::assertSentTo($participant, TargetDrawn::class);
+    Notification::assertSentTo($participant->santa, TargetWithdrawn::class);
+    Notification::assertCount(2);
 });
 
 it('asks before sending a whole draw again', function (): void {
