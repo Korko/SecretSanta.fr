@@ -17,7 +17,7 @@ final class FailingJobWithDrawSecret implements ShouldQueue, WithDrawSecret
 {
     use Queueable;
 
-    public function handle(): void
+    public function handle(): never
     {
         throw new RuntimeException('Mail server down');
     }
