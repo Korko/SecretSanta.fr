@@ -292,7 +292,7 @@ final class OrganizerController extends Controller
     {
         abort_unless($draw->targetsVisible(), 403, Lang::get('error.expired'));
         // Not computed yet (null): left to the background job, the panel offers the button once it is known
-        abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
+        abort_unless($draw->next_solvable === true, 404, Lang::get('error.solvable'));
 
         $draw->createMetric('csv_final_download');
 
