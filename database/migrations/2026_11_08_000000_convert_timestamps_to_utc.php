@@ -44,4 +44,7 @@ return new class extends Migration
 
         DB::statement('SET time_zone = ?', [date('P')]);
     }
+
+    // Data migration: the previous data is gone, there is nothing to undo. Production rolls back from a backup
+    public function down(): void {}
 };

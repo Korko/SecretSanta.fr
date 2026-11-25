@@ -14,4 +14,11 @@ return new class extends Migration
             $table->timestamp('targets_revealed_at')->nullable();
         });
     }
+
+    public function down(): void
+    {
+        Schema::table('draws', function (Blueprint $table): void {
+            $table->dropColumn('targets_revealed_at');
+        });
+    }
 };
