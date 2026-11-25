@@ -6,7 +6,6 @@ use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
-use App\Notifications\TargetMessages;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Testing\TestResponse;
@@ -111,29 +110,4 @@ test('who withdrew is left out of the recap and its exclusions, and deleted with
 
     $draw->fresh()->delete();
     expect(Participant::query()->whereKey($participant->id)->exists())->toBeFalse();
-});
-
-test('the recap of the santa no longer signs the ideas of who withdrew, until they are brought back', function (): void {
-    Notification::fake();
-    $draw = Draw::factory()->hasParticipants(5)->create();
-    $sender = $draw->participants->first();
-    $recipient = $draw->participants->first(fn (Participant $p): bool => ! $p->is($sender) && ! $p->is($sender->target));
-
-    ajaxPost(URL::signedRoute('dearSanta.suggest', ['participant' => $sender]), [
-        'recipient' => $recipient->hash,
-        'content' => 'A board game',
-        'signed' => 1,
-    ])->assertSuccessful();
-
-    $senders = fn (): array => array_column(TargetMessages::viewData($recipient->fresh()->santa)['giftSuggestions'], 'sender');
-    expect($senders())->toBe([$sender->name]);
-
-    withdraw($sender);
-    expect($senders())->toBe([null]);
-
-    restore($draw, $sender, $sender->email, force: true)->assertSuccessful();
-    // Back in the draw they may have become that santa, who is not told their own ideas
-    $santa = $recipient->fresh()->santa;
-    expect($senders())->toBe($santa->is($sender) ? [] : [$sender->name])
-        ->and($recipient->receivedSuggestions()->sole()->signature())->toBe($sender->name);
 });

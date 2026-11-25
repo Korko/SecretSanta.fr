@@ -24,7 +24,7 @@ it('renders the emails in the language of the request', function (string $locale
     $participant = $draw->participants->first();
     // Their target wrote to them and got a gift idea: both are part of the emails
     $participant->target->dearSantas()->create(['mail_body' => 'Hello']);
-    $suggestion = new GiftSuggestion(['mail_body' => 'A book', 'signed' => true]);
+    $suggestion = new GiftSuggestion(['mail_body' => 'A book']);
     $suggestion->sender()->associate($participant->santa);
     $suggestion->recipient()->associate($participant->target)->save();
 

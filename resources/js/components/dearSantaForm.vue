@@ -47,7 +47,7 @@
                 // "A problem?": who they are first ('identity'), then what is wrong when it is them ('self')
                 problem: null,
                 showSuggestion: false,
-                suggestion: { recipient: '', content: '', signed: false },
+                suggestion: { recipient: '', content: '' },
                 newEmail: '',
                 emailCode: ''
             };
@@ -160,11 +160,11 @@
                     .catch(this.alertError);
             },
             sendSuggestion() {
-                const { recipient, content, signed } = this.suggestion;
-                return fetch(this.routes.suggestUrl, 'POST', { recipient, content, signed: signed ? 1 : 0 })
+                const { recipient, content } = this.suggestion;
+                return fetch(this.routes.suggestUrl, 'POST', { recipient, content })
                     .then(data => {
                         this.suggestions = { ...this.suggestions, [data.suggestion.mail.id]: data.suggestion };
-                        this.suggestion = { recipient: '', content: '', signed: false };
+                        this.suggestion = { recipient: '', content: '' };
                         alertify.confirmAlert(data.message);
                     })
                     .catch(this.alertError);
@@ -288,7 +288,7 @@
             <caption>{{ $t('dearsanta.suggestion.received.title') }}</caption>
             <thead>
                 <tr class="table-active">
-                    <th scope="col" colspan="3">
+                    <th scope="col" colspan="2">
                         <i class="fas fa-lightbulb" />
                         {{ $t('dearsanta.suggestion.received.title') }}
                     </th>
@@ -297,7 +297,6 @@
             <tbody>
                 <tr v-for="idea in receivedSuggestionsList" :key="idea.id" class="suggestion-received">
                     <td>{{ idea.created_at }}</td>
-                    <td>{{ idea.sender || $t('dearsanta.suggestion.received.anonymous') }}</td>
                     <td><p v-html="nl2br(e(idea.mail_body))"></p></td>
                 </tr>
             </tbody>
@@ -323,10 +322,6 @@
                     <label for="suggestionContent">{{ $t('dearsanta.suggestion.content') }}</label>
                     <textarea id="suggestionContent" v-model="suggestion.content" required class="form-control" :placeholder="$t('dearsanta.suggestion.placeholder')" />
                 </div>
-                <div class="form-check mb-2">
-                    <input id="suggestionSigned" v-model="suggestion.signed" type="checkbox" class="form-check-input" />
-                    <label class="form-check-label" for="suggestionSigned">{{ $t('dearsanta.suggestion.signed') }}</label>
-                </div>
                 <button type="submit" class="btn btn-success suggestion-send">{{ $t('dearsanta.suggestion.send') }}</button>
             </form>
             <table v-if="suggestionsList.length" class="table table-sm mt-3 suggestions-sent">
@@ -334,7 +329,7 @@
                 <tbody>
                     <tr v-for="sent in suggestionsList" :key="sent.mail.id" class="suggestion">
                         <td>{{ sent.created_at }}</td>
-                        <td>{{ sent.recipient }}<span v-if="sent.signed" class="text-muted small"> ({{ $t('dearsanta.suggestion.signed_short') }})</span></td>
+                        <td>{{ sent.recipient }}</td>
                         <td><p v-html="nl2br(e(sent.mail_body))"></p></td>
                         <td><email-status :delivery_status="sent.mail.delivery_status" :last_update="sent.mail.updated_at" :disabled="true" /></td>
                     </tr>

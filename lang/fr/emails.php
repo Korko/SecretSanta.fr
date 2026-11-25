@@ -10,7 +10,6 @@ return [
     'target_messages.heading' => 'Messages et idées cadeaux',
     'target_messages.intro' => 'Voici tous les messages que :name a écrits à son père/mère noël secret, c\'est-à-dire à vous.',
     'target_messages.suggestions' => 'Voici les idées cadeaux que d\'autres participant(e)s ont suggérées pour :name :',
-    'target_messages.suggestion_from' => ':date, proposée par :sender',
     'target_messages.suggestions_secret' => 'Les personnes qui les ont suggérées ne savent pas que vous êtes le père/mère noël secret de :name.',
     'target_withdrawn.title' => 'SecretSanta #:draw - Désistement du bénéficiaire de votre cadeau',
     'target_changed.title' => 'SecretSanta #:draw - Changement du bénéficiaire de votre cadeau',
@@ -63,7 +62,6 @@ return [
     'participant_reported.not_participating_action' => 'Vous pouvez retirer cette personne depuis votre panneau organisateur : :link',
     'gift_suggestion.title' => 'SecretSanta #:draw - Une idée cadeau pour :name',
     'gift_suggestion.heading' => 'Une idée cadeau pour :name',
-    'gift_suggestion.from' => ':sender vous propose une idée de cadeau pour :name :',
     'gift_suggestion.from_anonymous' => 'Un(e) autre participant(e) vous propose une idée de cadeau pour :name :',
     'gift_suggestion.secret' => 'Cette personne ne sait pas que vous êtes le père/mère noël secret de :name. Votre page de participant(e) : :link',
 ];

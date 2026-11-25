@@ -78,7 +78,7 @@ test('the emails give the organizer a single link, to their panel', function ():
     expect(new TargetDrawn()->toMail($other)->data()['dearSantaLink'])->toContain('/dearSanta/'.$other->hash);
 
     // A gift idea for the organizer's target
-    $suggestion = new GiftSuggestionModel(['mail_body' => 'Un livre', 'signed' => false]);
+    $suggestion = new GiftSuggestionModel(['mail_body' => 'Un livre']);
     $suggestion->sender()->associate($other);
     $suggestion->recipient()->associate($organizer->target);
     $suggestion->save();

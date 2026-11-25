@@ -11,17 +11,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * A gift idea from a participant (sender) for another one (recipient), emailed to the recipient's santa:
- * the sender never learns who that santa is, and only shows their name if they chose to sign
+ * the sender never learns who that santa is, and the santa never learns who the sender is (unless they say so in it)
  *
- * @property-read Participant|null $sender null once they left the draw (the idea stays, unsigned)
+ * @property-read Participant|null $sender null once they left the draw (the idea stays)
  * @property-read Participant $recipient
  * @property-read Mail $mail
  * @property string $mail_body
- * @property bool $signed
  * @property int|null $sender_id
  * @property int $recipient_id
  */
-#[Fillable(['mail_body', 'signed'])]
+#[Fillable(['mail_body'])]
 #[WithoutTimestamps]
 final class GiftSuggestion extends Model
 {
@@ -31,12 +30,6 @@ final class GiftSuggestion extends Model
     public function sender(): BelongsTo
     {
         return $this->belongsTo(Participant::class, 'sender_id');
-    }
-
-    // The sender's name when they signed it and still take part: not once they left (withdrew, or were removed)
-    public function signature(): ?string
-    {
-        return $this->signed && $this->sender?->withdrawn_at === null ? $this->sender?->name : null;
     }
 
     /** @return BelongsTo<Participant, $this> */
@@ -54,7 +47,6 @@ final class GiftSuggestion extends Model
     {
         return [
             'mail_body' => EncryptedString::class,
-            'signed' => 'boolean',
         ];
     }
 }

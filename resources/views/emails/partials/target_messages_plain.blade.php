@@ -11,7 +11,7 @@
     {!! __('emails.target_messages.suggestions', ['name' => $targetName]) !!}
 @foreach ($giftSuggestions as $giftSuggestion)
 
-    {!! $giftSuggestion['sender'] ? __('emails.target_messages.suggestion_from', ['date' => $giftSuggestion['date'], 'sender' => $giftSuggestion['sender']]) : $giftSuggestion['date'] !!}
+    {!! $giftSuggestion['date'] !!}
     > {!! $giftSuggestion['content'] !!}
 @endforeach
 
