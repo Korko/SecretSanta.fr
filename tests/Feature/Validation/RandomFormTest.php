@@ -167,3 +167,20 @@ it('works if the expiration is far enough', function (): void {
         ->assertStatus(422)
         ->assertJsonValidationErrors(['organizer.name', 'organizer.email']);
 });
+
+it('bounds the names, the title and the email content', function (): void {
+    ajaxPost('/', [
+        'organizer' => ['name' => str_repeat('a', 256)],
+        'participants' => [['name' => str_repeat('b', 256)]],
+        'title' => str_repeat('c', 256),
+        'content-email' => str_repeat('d', 10001).'{TARGET}',
+    ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['organizer.name', 'participants.0.name', 'title', 'content-email']);
+});
+
+it('explains that the email content must name the target', function (): void {
+    ajaxPost('/', ['content-email' => 'no target here'])
+        ->assertStatus(422)
+        ->assertJsonPath('errors.content-email.0', __('validation.custom.randomform.content.contains_text'));
+});

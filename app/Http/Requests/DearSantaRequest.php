@@ -13,7 +13,7 @@ final class DearSantaRequest extends Request
     public function rules(): array
     {
         return parent::rules() + [
-            'content' => 'required|string',
+            'content' => 'required|string|max:2000',
         ];
     }
 

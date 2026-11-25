@@ -62,6 +62,18 @@ it('lets each participant write to their santa', function (): void {
     }
 });
 
+it('refuses a message to the santa longer than 2000 characters', function (): void {
+    Notification::fake();
+
+    $participant = Draw::factory()->hasParticipants(3)->create()->participants->first();
+
+    ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $participant]), [
+        'content' => str_repeat('a', 2001),
+    ])->assertStatus(422)->assertJsonValidationErrors('content');
+
+    Notification::assertNothingSent();
+});
+
 it('lets a participant resend the email to their santa in case of error', function (): void {
     Notification::fake();
 
