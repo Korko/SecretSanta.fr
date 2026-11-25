@@ -304,7 +304,10 @@ export default {
                 "caption": "Liste des participant(e)s",
                 "withdraw": "Retirer",
                 "resend_failed": "Renvoyer les emails en échec ({count})",
-                "received_count": "{received}/{total} participant(e)s ont bien reçu leur email (réponse, visite de leur page ou accusé de réception)"
+                "received_count": "{received}/{total} participant(e)s ont bien reçu leur email (réponse, visite de leur page ou accusé de réception)",
+                "wrote_count": "{wrote}/{total} participant(e)s ont écrit à leur Père Noël secret",
+                "wrote": "A écrit à son Père Noël",
+                "wrote_help": "Cette personne a envoyé au moins un message à son Père Noël secret depuis sa page"
             },
             "up_and_sent": "Modifié avec succès !",
             "renamed": "Nom modifié, son ou sa Santa a été prévenu(e)",

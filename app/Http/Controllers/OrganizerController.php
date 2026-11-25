@@ -39,6 +39,8 @@ final class OrganizerController extends Controller
         // Loaded at once: right after a change of participants (changeParticipants), the draw's previous
         // copies of them are gone and models are strict about lazy loading
         $draw->load('participants.mail');
+        // Whether each one wrote to their santa: never who received it (that would give the pairs away)
+        $draw->participants->loadExists('dearSantas');
 
         if ($draw->organizer_received_at === null) {
             $draw->organizer_received_at = now();
@@ -59,7 +61,7 @@ final class OrganizerController extends Controller
             'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [
                 $participant->hash => $participant->only([
                     'hash', 'name', 'email', 'mail', 'report',
-                ]),
+                ]) + ['wrote_to_santa' => (bool) $participant->dear_santas_exists],
             ]),
             'changeEmailUrls' => $draw->participants->mapWithKeys(fn ($participant): array => [
                 $participant->hash => URL::signedRoute('organizerPanel.changeEmail', [

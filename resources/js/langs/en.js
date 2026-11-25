@@ -304,7 +304,10 @@ export default {
                 "caption": "List of participants",
                 "withdraw": "Remove",
                 "resend_failed": "Resend failed emails ({count})",
-                "received_count": "{received}/{total} participants confirmed receiving their email (reply, page visit or acknowledgement)"
+                "received_count": "{received}/{total} participants confirmed receiving their email (reply, page visit or acknowledgement)",
+                "wrote_count": "{wrote}/{total} participants wrote to their Secret Santa",
+                "wrote": "Wrote to their Santa",
+                "wrote_help": "This person sent at least one message to their Secret Santa from their page"
             },
             "up_and_sent": "Successfully updated!",
             "renamed": "Name changed, their Santa was told",

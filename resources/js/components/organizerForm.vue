@@ -91,6 +91,9 @@
             receivedCount() {
                 return Object.values(this.participants).filter(p => p.mail.delivery_status === 'received').length;
             },
+            wroteCount() {
+                return Object.values(this.participants).filter(p => p.wrote_to_santa).length;
+            },
             failedKeys() {
                 return Object.keys(this.participants).filter(k => this.participants[k].mail.delivery_status === 'error' && !this.participants[k].report); // a reported address is refused, it needs fixing
             },
@@ -392,6 +395,10 @@
             <i class="fas fa-check" />
             {{ $t('organizer.list.received_count', { received: receivedCount, total: Object.keys(participants).length }) }}
         </p>
+        <p class="wrote-count">
+            <i class="fas fa-envelope" />
+            {{ $t('organizer.list.wrote_count', { wrote: wroteCount, total: Object.keys(participants).length }) }}
+        </p>
         <table class="table table-hover">
             <caption>{{ $t('organizer.list.caption') }}</caption>
             <thead>
@@ -425,6 +432,9 @@
                             :aria-label="$t('organizer.rename.button')"
                             @click="renameParticipant(k)"
                         ><i class="fas fa-pen" aria-hidden="true" /></button>
+                        <span v-if="participant.wrote_to_santa" class="badge badge-success participant-wrote" :title="$t('organizer.list.wrote_help')">
+                            <i class="fas fa-envelope" aria-hidden="true" /> {{ $t('organizer.list.wrote') }}
+                        </span>
                         <span v-if="participant.report" class="badge badge-warning participant-report" :title="$t('organizer.report.help.' + participant.report)">
                             <i class="fas fa-flag" /> {{ $t('organizer.report.' + participant.report) }}
                         </span>
