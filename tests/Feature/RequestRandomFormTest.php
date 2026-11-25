@@ -248,6 +248,34 @@ it('records the participating organizer explicitly', function (): void {
     expect($first->fresh()->isOrganizer())->toBeTrue();
 });
 
+it('keeps apart a parent organizing for children sharing their email', function (): void {
+    Notification::fake();
+
+    $participants = generateParticipants(3);
+    $participants[0]['email'] = 'parent@example.com';
+    $participants[1]['email'] = 'parent@example.com';
+
+    ajaxPost('/', [
+        'participant-organizer' => '0',
+        'organizer' => ['name' => 'Parent', 'email' => 'parent@example.com'],
+        'participants' => $participants,
+        'title' => 'this is a test',
+        'content-email' => 'test mail {SANTA} => {TARGET}',
+        'data-expiration' => date('Y-m-d', strtotime('+2 days')),
+    ])->assertSuccessful();
+
+    $draw = Draw::query()->firstOrFail();
+    expect($draw->organizer_participates)->toBeFalse()
+        ->and($draw->organizer)->toBeNull()
+        ->and($draw->participants->first()->isOrganizer())->toBeFalse();
+
+    // Draws made before the marker still fall back to the first participant with the organizer's email
+    $draw->organizer_participates = null;
+    $draw->save();
+
+    expect($draw->fresh()->organizer?->id)->toBe($draw->participants->first()->id);
+});
+
 it('limits the number of draws per hour from the same address, refused forms aside', function (): void {
     Notification::fake();
 

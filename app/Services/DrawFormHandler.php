@@ -97,6 +97,7 @@ final class DrawFormHandler
         $draw->mail_body = $this->body;
         $draw->organizer_name = $this->organizer['name'] ?? '';
         $draw->organizer_email = $this->organizer['email'] ?? '';
+        $draw->organizer_participates = $this->organizerParticipates;
         $draw->save();
 
         foreach ($this->participants as $santa) {

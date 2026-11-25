@@ -34,6 +34,7 @@ use STS\Metrics\Metric;
  * @property-read CarbonImmutable $deleted_at
  * @property CarbonImmutable|null $organizer_received_at
  * @property int|null $organizer_participant_id
+ * @property bool|null $organizer_participates null on draws made before it was added
  * @property-read Participant|null $organizer
  * @property-read Mail|null $mail organizer recap, tracked like the target emails
  * @property-read bool $expired
@@ -195,6 +196,11 @@ final class Draw extends Model
                 return $this->participants->firstWhere('id', $this->organizer_participant_id);
             }
 
+            // Newer draws record it: an organizer outside the draw, even sharing a participant's email
+            if ($this->organizer_participates !== null) {
+                return null;
+            }
+
             // Draws made before organizer_participant_id: the first participant, with the organizer's email
             // (can go once they are all pruned, a year and WEEKS_BEFORE_DELETION after the column was added)
             $first = $this->participants->first();
@@ -242,6 +248,7 @@ final class Draw extends Model
             'mail_title' => EncryptedString::class,
             'mail_body' => EncryptedString::class,
             'next_solvable' => 'boolean',
+            'organizer_participates' => 'boolean',
             'max_participants' => 'integer',
             'refused_emails' => 'array',
             'organizer_name' => EncryptedString::class,
