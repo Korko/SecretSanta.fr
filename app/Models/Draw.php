@@ -29,7 +29,7 @@ use STS\Metrics\Metric;
  * @property string $mail_body
  * @property string $organizer_name
  * @property string $organizer_email
- * @property bool $next_solvable
+ * @property bool|null $next_solvable null: not computed yet (ComputeNextSolvable)
  * @property CarbonImmutable|null $targets_revealed_at
  * @property-read CarbonImmutable $deleted_at
  * @property CarbonImmutable|null $organizer_received_at

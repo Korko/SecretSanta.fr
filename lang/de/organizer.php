@@ -62,6 +62,8 @@ return [
             'title' => 'Ursprüngliche Zusammenfassung',
             'content' => 'Dies sind die Daten, wie Sie sie bei der Erstellung der Veranstaltung eingegeben haben. Nur die E-Mail-Adressen können sich geändert haben, um Änderungen widerzuspiegeln, die Sie hier vorgenommen haben.',
         ],
+        // The final CSV availability is computed in the background (ComputeNextSolvable)
+        'computing' => 'Wird berechnet: die vervollständigte Zusammenfassung wird hier angeboten, falls möglich.',
         'button_final' => 'Vervollständigte Zusammenfassung herunterladen',
         'button_final-tooltip' => [
             'title' => 'Vervollständigte Zusammenfassung',

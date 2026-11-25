@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrganizerChangeEmailRequest;
 use App\Http\Requests\OrganizerChangeNameRequest;
+use App\Jobs\ComputeNextSolvable;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\TargetDrawn;
@@ -126,6 +127,7 @@ final class OrganizerController extends Controller
     {
         return response()->json([
             'expired' => $draw->expired,
+            'finalCsvAvailable' => $draw->next_solvable,
             'targets' => $draw->targetsVisible() ? $this->targets($draw) : null,
             'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [$participant->hash => $participant->only(['hash', 'mail'])]),
         ]);
@@ -288,7 +290,8 @@ final class OrganizerController extends Controller
     public function csvFinal(Draw $draw): Response
     {
         abort_unless($draw->targetsVisible(), 403, Lang::get('error.expired'));
-        abort_unless($draw->next_solvable, 404, Lang::get('error.solvable'));
+        // Not computed yet (the job runs every minute): quick enough to do here
+        abort_unless($draw->next_solvable ?? ComputeNextSolvable::compute($draw), 404, Lang::get('error.solvable'));
 
         $draw->createMetric('csv_final_download');
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Jobs\Contracts\WithoutDrawSecret;
 use App\Mail\DkimTransport;
 use App\Solvers\CycleSolver;
 use App\Solvers\SolverInterface;
@@ -89,19 +90,26 @@ final class AppServiceProvider extends ServiceProvider
 
     public function bootJobs(): void
     {
-        Queue::createPayloadUsing(fn (?string $connection, ?string $queue, array $payload): array => [
-            'data' => array_merge(is_array($payload['data'] ?? null) ? $payload['data'] : [], [
-                'iv' => base64_encode(DrawCrypt::getIV()),
-                // The worker renders the emails: in the language of the request (domain), not APP_LOCALE
-                'locale' => $this->app->getLocale(),
-            ]),
-        ]);
+        Queue::createPayloadUsing(function (?string $connection, ?string $queue, array $payload): array {
+            $data = is_array($payload['data'] ?? null) ? $payload['data'] : [];
+            // The worker renders the emails: in the language of the request (domain), not APP_LOCALE
+            $data['locale'] = $this->app->getLocale();
+            // One copy less of the secret in the queue for the jobs that read nothing encrypted
+            if (! ($data['commandName'] ?? null) instanceof WithoutDrawSecret) { // the job itself at this point
+                $data['iv'] = base64_encode(DrawCrypt::getIV());
+            }
+
+            return ['data' => $data];
+        });
 
         $this->app->make(Dispatcher::class)->listen(JobProcessing::class, function (JobProcessing $event): void {
             // A job without secret gets a new one, like a new draw, not the one of the previous job:
             // it would encrypt with it and send it in its links. Decrypting existing data then fails
+            // A job that reads nothing encrypted keeps the current one: run by the sync queue, it is the request's
             $iv = data_get($event->job->payload(), 'data.iv');
-            DrawCrypt::setIV(is_string($iv) ? base64_decode($iv) : DrawCrypt::generateIV());
+            if (! is_a($event->job->resolveName(), WithoutDrawSecret::class, true)) {
+                DrawCrypt::setIV(is_string($iv) ? base64_decode($iv) : DrawCrypt::generateIV());
+            }
 
             $locale = data_get($event->job->payload(), 'data.locale');
             if (is_string($locale)) {

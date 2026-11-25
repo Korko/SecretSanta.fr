@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Events\ParticipantUpdated;
+use App\Jobs\ComputeNextSolvable;
 use App\Models\Draw;
 use App\Models\Participant;
 use App\Notifications\TargetChanged;
@@ -122,10 +123,10 @@ final class ParticipantsEditor
 
         $this->draw->unsetRelation('participants');
 
-        // The final CSV (next year's exclusions) depends on the current pairs: computed on a fresh copy,
-        // canRedraw() adds each target to the loaded exclusions
-        $this->draw->next_solvable = DrawHandler::canRedraw($this->draw->participants()->with(['exclusions', 'target'])->get());
+        // The final CSV (next year's exclusions) depends on the current pairs: computed again, out of the request
+        $this->draw->next_solvable = null;
         $this->draw->save();
+        dispatch(new ComputeNextSolvable($this->draw));
 
         $removed = array_map(fn (Participant $participant): int => $participant->id, $remove);
         // What the target already wrote to their previous santa, and the ideas given for them, now belong to this one:

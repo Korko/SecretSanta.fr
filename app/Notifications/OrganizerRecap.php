@@ -41,7 +41,6 @@ final class OrganizerRecap extends Notification implements ShouldBeEncrypted, Sh
             'organizerName' => $draw->organizer_name,
             'expirationDate' => $draw->expires_at->isoFormat('LL'),
             'deletionDate' => $draw->deleted_at->isoFormat('LL'),
-            'nextSolvable' => $draw->next_solvable,
             'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV()),
         ];
     }

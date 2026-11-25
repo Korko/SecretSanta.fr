@@ -32,7 +32,7 @@ return [
     'organizer.panel' => 'Um zu prüfen, ob alle Teilnehmer ihre E-Mail erhalten haben, oder um eine Adresse zu korrigieren, besuchen Sie Ihre persönliche Seite: :link',
     'organizer.panel_same_page' => 'Auf derselben Seite können Sie auch prüfen, ob alle Teilnehmer ihre E-Mail erhalten haben, oder eine Adresse korrigieren.',
     'organizer.csv' => 'Die Zusammenfassung der Teilnehmer und der von Ihnen festgelegten Ausschlüsse ist dieser E-Mail beigefügt und kann auf derselben Seite heruntergeladen werden. Sie kann auf :app wiederverwendet werden, um bei der Organisation Ihrer nächsten Veranstaltung Zeit zu sparen.',
-    'organizer.next' => 'Sobald Sie die Empfänger aufdecken, oder am Tag nach dem :date, steht dort eine zweite Zusammenfassung bereit, in der der Empfänger jedes Teilnehmers zu seinen Ausschlüssen hinzugefügt ist. Für eine noch bessere nächste Veranstaltung.',
+    'organizer.next' => 'Wenn die Ausschlüsse es erlauben, steht dort, sobald Sie die Empfänger aufdecken oder am Tag nach dem :date, eine zweite Zusammenfassung bereit, in der der Empfänger jedes Teilnehmers zu seinen Ausschlüssen hinzugefügt ist. Für eine noch bessere nächste Veranstaltung.',
     'organizer.deletion' => 'Alle Informationen zu dieser Veranstaltung werden am :date gelöscht. Diese Seite ist dann nicht mehr verfügbar.',
     'organizer.abuse' => 'Sie haben diese Veranstaltung nicht angelegt? Sie können sie auf derselben Seite löschen („:button“) und uns den Missbrauch an :email melden.',
     'target_drawn.heading' => 'Nachricht an die Teilnehmer',

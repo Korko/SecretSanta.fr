@@ -119,6 +119,9 @@
             }
         },
         watch: {
+            finalCsvAvailable() {
+                this.pollFinalCsvAvailable();
+            },
             // A tab left open past the event: no more edits, and every target shows (nothing else on the page is lost)
             expired(now, before) {
                 if (now && !before && !this.targets) {
@@ -127,6 +130,7 @@
             }
         },
         created() {
+            this.pollFinalCsvAvailable();
             setInterval(() => this.now = Date.now(), 60e3);
 
             Echo.channel(this.channel)
@@ -325,6 +329,16 @@
                 this.changeEmailUrls = data.changeEmailUrls;
                 this.changeNameUrls = data.changeNameUrls;
                 this.targets = data.targets;
+                this.finalCsvAvailable = data.finalCsvAvailable;
+            },
+            // The final CSV availability is computed out of the request (null until then): asked again until known
+            pollFinalCsvAvailable() {
+                clearTimeout(this.finalCsvTimer);
+                if (this.finalCsvAvailable === null) {
+                    this.finalCsvTimer = setTimeout(() => fetch(this.routes.fetchStateUrl)
+                        .then(data => this.finalCsvAvailable = data.finalCsvAvailable)
+                        .finally(() => this.pollFinalCsvAvailable()), 20e3);
+                }
             },
             // Someone else may have got their email and withdrawn in their place: back, at an address to check
             confirmRestore(participant) {
@@ -532,7 +546,7 @@
             <i class="fas fa-trash" />
             {{ $t('organizer.purge.button') }}
         </button>
-        <template v-if="data.finalCsvAvailable">
+        <template v-if="finalCsvAvailable">
             <tooltip direction="right">
                 <template #tooltip>
                     <img class="media-object" src="../../images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp" />
@@ -580,6 +594,10 @@
                 </button>
             </template>
         </tooltip>
+        <p v-if="finalCsvAvailable === null" class="text-muted small">
+            <i class="fas fa-spinner fa-spin" />
+            {{ $t('organizer.download.computing') }}
+        </p>
     </div>
 </template>
 
