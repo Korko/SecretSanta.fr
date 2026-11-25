@@ -28,7 +28,9 @@ class GenerateVueI18n extends GenerateInclude
         foreach ((array) config('vue-i18n-generator.langKeys', []) as $file => $keys) {
             foreach (File::glob($target.'/*/'.$file.'.php') as $path) {
                 $filtered = Arr::only(require $path, $keys);
-                File::put($path, '<?php return '.var_export($filtered, true).';'.PHP_EOL);
+                // JSON in a single-quoted literal: var_export is a debug function (arch php preset)
+                $json = addcslashes(json_encode($filtered, JSON_THROW_ON_ERROR), "'\\");
+                File::put($path, "<?php return json_decode('".$json."', true);".PHP_EOL);
             }
         }
 
