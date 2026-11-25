@@ -114,38 +114,9 @@ export default {
             }
         },
         "faq": {
-            "nav": {
-                "go": "Let's go!",
-                "contact": "I still have a question"
-            },
             "categories": {
                 "general": "General",
                 "technical": "Technical"
-            },
-            "questions": {
-                "general": {
-                    "Why was SecretSanta developed?": "The developer often held secret santa parties with friends or colleagues, with everyone's name in a hat. Everyone drew a slip of paper and several times someone drew their own name. Sometimes the draw was redone, sometimes the person kept quiet, which was a shame. So he came up with the idea of building a tool. The goal was to make everything automatic so that nobody could draw themselves. Even the organizer could take part like everyone else since they could not know who drew whom. Exclusions and other features came later.",
-                    "How can this site work while being free?": "SecretSanta is completely free for users, but not for the developer who pays the various costs. There are no ads and no data is sold.",
-                    "We are an odd number of participants, is that a problem?": "Not at all, whether you are an even or odd number. Taking an example with 3 participants: Anna, Betty and Cedric, Anna could give to Betty, Betty to Cedric and Cedric to Anna. Everyone gets a gift and nobody drew themselves.",
-                    "I made a mistake in my email address when organizing my secret santa, what can I do?": "To fix this, either organize another draw, or ask one of the participants to send you the web address that lets them write to their secret santa, then go to https://secretsanta.io/fix. If you still cannot make the change, you can email your participant's link to webmaster@secretsanta.fr. After checking, and in their free time, the developer may be able to help you.",
-                    "I deleted the email giving access to the organizer panel, what can I do?": "To fix this, either organize another draw, or ask one of the participants to send you the web address that lets them write to their secret santa, then go to https://secretsanta.io/fix.",
-                    "I made a mistake in a participant's address": "When you organized your secret santa, you should have received an email with a link to an organizer panel. You can change each participant's email address from there.",
-                    "One of the participants did not receive the email, what can I do?": "Even when the address is correct, an email can get lost, end up in spam, or fail to arrive for some other reason. From your organizer panel, there is a button next to each participant's email delivery status to resend that email. That way the participant can finally find out who their target is and how to talk to their Santa.",
-                    "Is it possible to talk to your target?": "Not for now, for anonymity reasons. Only the target can write to their secret santa. But it is planned.",
-                    "When is my personal data deleted?": "All the data of a draw is deleted 3 weeks after the event date. This delay lets the organizer download, from their organizer panel, the list of participants with their drawn target, to help organize a future secret santa with the same people while avoiding the same targets.",
-                    "I forgot a participant, how can I add them?": "From your organizer panel, you can add a participant (or remove one). The new participant gets their target by email. To make room for them, another person gets a new target, picked at random so no one can guess who gives to whom, and they are notified by email. To keep adding simple, the new participant has no exclusions: they can draw anyone and be drawn by anyone.",
-                    "Why do Alice and Bob never give each other a gift?": "From 3 participants, the draw makes a single big loop: everyone gives to the next one, all the way back to the first. So there are no more reciprocal pairs (A gives to B and B gives to A), nor small groups giving gifts among themselves. Every possible loop is as likely to be drawn.",
-                    "Who can know the list of targets?": "By default, nobody: the list is encrypted and appears nowhere. The organizer can however reveal it from their organizer page (email delivery issue, other events to organize with the same pairs...). This is permanent, and each participant sees on their page whether the list has been revealed. Once the event day is over, the list is shown on the organizer page anyway."
-                },
-                "technical": {
-                    "What data is stored and why?": "For each participant: name and email address; for each draw: the title and content of the email sent, as well as each message sent between participants through the link received by email (called 'dear santa'). They are kept for two reasons: first to allow that last feature, which lets you write to your secret santa. Then to allow resending emails in case of a wrong address.",
-                    "How is the data stored?": "Each item is encrypted with AES-256 using a key computed from a server key and a unique secret per draw. This secret is not stored and is sent to each participant in their link. Without it, even with full access to the server, the stored data is unreadable: the administrator therefore cannot access it without action on your part. One exception: while the emails are being sent, the secret is kept with each pending email, for a few minutes, retries included. If sending fails for good, the secret is forgotten: the organizer can resend the failed emails from their panel. Likewise, a bounced email (invalid address), which contains the link, is kept for up to 7 days. Every time you perform an action, you automatically use this secret, which is only lent to SecretSanta to perform the requested action.",
-                    "What is end-to-end encryption (E2E)?": "End-to-end encryption (E2E) means encryption between two users of a service: the message is encrypted on the sender's device and can only be decrypted on the recipient's device. The service carrying the message never sees its content in clear, at any time. Signal is an example. Unfortunately, the term is often misused to describe simple encryption between the client (your browser) and the server, which is actually what HTTPS does on any website: in that case, the server does see the data in clear.",
-                    "What is \"zero access\" encryption?": "Zero access encryption means that data is encrypted as soon as it reaches the server, with a key the service does not keep. Once stored, the service can no longer read it on its own. The difference with end-to-end encryption: the server briefly sees the data in clear when it receives or processes it, whereas with E2E it never does. This is for example the model used by some email providers for emails received from outside.",
-                    "Does SecretSanta use end-to-end encryption?": "No, and we prefer to be clear rather than misuse the term. SecretSanta needs to read your data at certain times, for example to send each participant the email with their target, which is incompatible with true end-to-end encryption. Here is what actually happens: your data is first encrypted between your browser and SecretSanta thanks to HTTPS. The server then immediately encrypts it, with a secret specific to your draw that it does not keep, so that no trace of the data remains in clear. It is only decrypted when a user performs an action (opening their page, writing to their secret santa, resending an email...), using the secret contained in their link, and the secret is then forgotten. This approach is close to zero access encryption.",
-                    "I would like to delete my data, how can I do it?": "Because of the way the data is stored, the administrator cannot know which data belongs to whom. Only the organizer can delete the data of all participants at once. Otherwise, the data is automatically deleted shortly after the end of the event.",
-                    "I would like to check the source code myself, where can I find it?": "With pleasure! The source code is available at https://framagit.org/Korko/SecretSanta. You will also find the link at the bottom of every page."
-                }
             }
         },
         "form": {
@@ -409,161 +380,6 @@ export default {
             }
         },
         "validation": {
-            "accepted": "The {attribute} field must be accepted.",
-            "accepted_if": "The {attribute} field must be accepted when {other} is {value}.",
-            "active_url": "The {attribute} field must be a valid URL.",
-            "after": "The {attribute} field must be a date after {date}.",
-            "after_or_equal": "The {attribute} field must be a date after or equal to {date}.",
-            "alpha": "The {attribute} field must only contain letters.",
-            "alpha_dash": "The {attribute} field must only contain letters, numbers, dashes, and underscores.",
-            "alpha_num": "The {attribute} field must only contain letters and numbers.",
-            "any_of": "The {attribute} field is invalid.",
-            "array": "The {attribute} field must be an array.",
-            "array_keys": "The {attribute} field must only contain the following keys: {values}.",
-            "ascii": "The {attribute} field must only contain single-byte alphanumeric characters and symbols.",
-            "base64": "The {attribute} field must be a valid Base64 string.",
-            "before": "The {attribute} field must be a date before {date}.",
-            "before_or_equal": "The {attribute} field must be a date before or equal to {date}.",
-            "between": {
-                "array": "The {attribute} field must have between {min} and {max} items.",
-                "file": "The {attribute} field must be between {min} and {max} kilobytes.",
-                "numeric": "The {attribute} field must be between {min} and {max}.",
-                "string": "The {attribute} field must be between {min} and {max} characters."
-            },
-            "boolean": "The {attribute} field must be true or false.",
-            "can": "The {attribute} field contains an unauthorized value.",
-            "confirmed": "The {attribute} field confirmation does not match.",
-            "contains": "The {attribute} field is missing a required value.",
-            "current_password": "The password is incorrect.",
-            "date": "The {attribute} field must be a valid date.",
-            "date_equals": "The {attribute} field must be a date equal to {date}.",
-            "date_format": "The {attribute} field must match the format {format}.",
-            "decimal": "The {attribute} field must have {decimal} decimal places.",
-            "declined": "The {attribute} field must be declined.",
-            "declined_if": "The {attribute} field must be declined when {other} is {value}.",
-            "different": "The {attribute} field and {other} must be different.",
-            "digits": "The {attribute} field must be {digits} digits.",
-            "digits_between": "The {attribute} field must be between {min} and {max} digits.",
-            "dimensions": "The {attribute} field has invalid image dimensions.",
-            "distinct": "The {attribute} field has a duplicate value.",
-            "doesnt_contain": "The {attribute} field must not contain any of the following: {values}.",
-            "doesnt_end_with": "The {attribute} field must not end with one of the following: {values}.",
-            "doesnt_start_with": "The {attribute} field must not start with one of the following: {values}.",
-            "email": "The {attribute} field must be a valid email address.",
-            "encoding": "The {attribute} field must be encoded in {encoding}.",
-            "ends_with": "The {attribute} field must end with one of the following: {values}.",
-            "enum": "The selected {attribute} is invalid.",
-            "exists": "The selected {attribute} is invalid.",
-            "extensions": "The {attribute} field must have one of the following extensions: {values}.",
-            "file": "The {attribute} field must be a file.",
-            "filled": "The {attribute} field must have a value.",
-            "gt": {
-                "array": "The {attribute} field must have more than {value} items.",
-                "file": "The {attribute} field must be greater than {value} kilobytes.",
-                "numeric": "The {attribute} field must be greater than {value}.",
-                "string": "The {attribute} field must be greater than {value} characters."
-            },
-            "gte": {
-                "array": "The {attribute} field must have {value} items or more.",
-                "file": "The {attribute} field must be greater than or equal to {value} kilobytes.",
-                "numeric": "The {attribute} field must be greater than or equal to {value}.",
-                "string": "The {attribute} field must be greater than or equal to {value} characters."
-            },
-            "hex_color": "The {attribute} field must be a valid hexadecimal color.",
-            "image": "The {attribute} field must be an image.",
-            "in": "The selected {attribute} is invalid.",
-            "in_array": "The {attribute} field must exist in {other}.",
-            "in_array_keys": "The {attribute} field must contain at least one of the following keys: {values}.",
-            "integer": "The {attribute} field must be an integer.",
-            "ip": "The {attribute} field must be a valid IP address.",
-            "ipv4": "The {attribute} field must be a valid IPv4 address.",
-            "ipv6": "The {attribute} field must be a valid IPv6 address.",
-            "json": "The {attribute} field must be a valid JSON string.",
-            "list": "The {attribute} field must be a list.",
-            "lowercase": "The {attribute} field must be lowercase.",
-            "lt": {
-                "array": "The {attribute} field must have less than {value} items.",
-                "file": "The {attribute} field must be less than {value} kilobytes.",
-                "numeric": "The {attribute} field must be less than {value}.",
-                "string": "The {attribute} field must be less than {value} characters."
-            },
-            "lte": {
-                "array": "The {attribute} field must not have more than {value} items.",
-                "file": "The {attribute} field must be less than or equal to {value} kilobytes.",
-                "numeric": "The {attribute} field must be less than or equal to {value}.",
-                "string": "The {attribute} field must be less than or equal to {value} characters."
-            },
-            "mac_address": "The {attribute} field must be a valid MAC address.",
-            "max": {
-                "array": "The {attribute} field must not have more than {max} items.",
-                "file": "The {attribute} field must not be greater than {max} kilobytes.",
-                "numeric": "The {attribute} field must not be greater than {max}.",
-                "string": "The {attribute} field must not be greater than {max} characters."
-            },
-            "max_digits": "The {attribute} field must not have more than {max} digits.",
-            "mimes": "The {attribute} field must be a file of type: {values}.",
-            "mimetypes": "The {attribute} field must be a file of type: {values}.",
-            "min": {
-                "array": "The {attribute} field must have at least {min} items.",
-                "file": "The {attribute} field must be at least {min} kilobytes.",
-                "numeric": "The {attribute} field must be at least {min}.",
-                "string": "The {attribute} field must be at least {min} characters."
-            },
-            "min_digits": "The {attribute} field must have at least {min} digits.",
-            "missing": "The {attribute} field must be missing.",
-            "missing_if": "The {attribute} field must be missing when {other} is {value}.",
-            "missing_unless": "The {attribute} field must be missing unless {other} is {value}.",
-            "missing_with": "The {attribute} field must be missing when {values} is present.",
-            "missing_with_all": "The {attribute} field must be missing when {values} are present.",
-            "multiple_of": "The {attribute} field must be a multiple of {value}.",
-            "not_in": "The selected {attribute} is invalid.",
-            "not_regex": "The {attribute} field format is invalid.",
-            "numeric": "The {attribute} field must be a number.",
-            "password": {
-                "letters": "The {attribute} field must contain at least one letter.",
-                "mixed": "The {attribute} field must contain at least one uppercase and one lowercase letter.",
-                "numbers": "The {attribute} field must contain at least one number.",
-                "symbols": "The {attribute} field must contain at least one symbol.",
-                "uncompromised": "The given {attribute} has appeared in a data leak. Please choose a different {attribute}."
-            },
-            "present": "The {attribute} field must be present.",
-            "present_if": "The {attribute} field must be present when {other} is {value}.",
-            "present_unless": "The {attribute} field must be present unless {other} is {value}.",
-            "present_with": "The {attribute} field must be present when {values} is present.",
-            "present_with_all": "The {attribute} field must be present when {values} are present.",
-            "prohibited": "The {attribute} field is prohibited.",
-            "prohibited_if": "The {attribute} field is prohibited when {other} is {value}.",
-            "prohibited_if_accepted": "The {attribute} field is prohibited when {other} is accepted.",
-            "prohibited_if_declined": "The {attribute} field is prohibited when {other} is declined.",
-            "prohibited_unless": "The {attribute} field is prohibited unless {other} is in {values}.",
-            "prohibits": "The {attribute} field prohibits {other} from being present.",
-            "regex": "The {attribute} field format is invalid.",
-            "required": "The {attribute} field is required.",
-            "required_array_keys": "The {attribute} field must contain entries for: {values}.",
-            "required_if": "The {attribute} field is required when {other} is {value}.",
-            "required_if_accepted": "The {attribute} field is required when {other} is accepted.",
-            "required_if_declined": "The {attribute} field is required when {other} is declined.",
-            "required_unless": "The {attribute} field is required unless {other} is in {values}.",
-            "required_with": "The {attribute} field is required when {values} is present.",
-            "required_with_all": "The {attribute} field is required when {values} are present.",
-            "required_without": "The {attribute} field is required when {values} is not present.",
-            "required_without_all": "The {attribute} field is required when none of {values} are present.",
-            "same": "The {attribute} field must match {other}.",
-            "size": {
-                "array": "The {attribute} field must contain {size} items.",
-                "file": "The {attribute} field must be {size} kilobytes.",
-                "numeric": "The {attribute} field must be {size}.",
-                "string": "The {attribute} field must be {size} characters."
-            },
-            "starts_with": "The {attribute} field must start with one of the following: {values}.",
-            "string": "The {attribute} field must be a string.",
-            "timezone": "The {attribute} field must be a valid timezone.",
-            "unique": "The {attribute} has already been taken.",
-            "uploaded": "The {attribute} failed to upload.",
-            "uppercase": "The {attribute} field must be uppercase.",
-            "url": "The {attribute} field must be a valid URL.",
-            "ulid": "The {attribute} field must be a valid ULID.",
-            "uuid": "The {attribute} field must be a valid UUID.",
             "custom": {
                 "g-recaptcha-response": {
                     "required": "The captcha is required",
@@ -641,9 +457,6 @@ export default {
                         "format": "The address format is invalid."
                     }
                 }
-            },
-            "attributes": {
-                "g-recaptcha-response": "Recaptcha"
             }
         }
     }

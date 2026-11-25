@@ -114,38 +114,9 @@ export default {
             }
         },
         "faq": {
-            "nav": {
-                "go": "Allez, c'est parti !",
-                "contact": "J'ai encore une question"
-            },
             "categories": {
                 "general": "Générales",
                 "technical": "Techniques"
-            },
-            "questions": {
-                "general": {
-                    "Pourquoi avoir développé SecretSanta.fr ?": "Le développeur faisait fréquemment des soirées secret santa avec des amis ou des collègues avec les prénoms de chacun dans un chapeau. Chacun piochait un papier et c'est arrivé plusieurs fois que quelqu'un tombe sur son prénom. Parfois on relançait le tirage, parfois la personne ne le disais pas et je trouvais ça dommage. Alors il a eu l'idée d'en faire un outils. Le but était de faire en sorte que tout soit automatique et que personne ne se pioche soit même. Même l'organisateur/organisatrice participait comme tout le monde puisqu'il ne pouvait pas savoir qui avait pioché qui. Après sont venus les exclusions etc.",
-                    "Comment ce site peut fonctionner en étant gratuit ?": "SecretSanta.fr est complètement gratuit pour les utilisateurs, pas pour le développeur qui paye les différents frais. Il n'y a aucune publicité ni revente d'informations.",
-                    "Nous sommes un nombre impair de participant, cela pose-t-il un problème ?": "Il n'y a absolument aucun soucis, que vous soyez un nombre pair ou impair. En prenant un exemple avec 3 participants : Anaïs, Béatrice et Cédric, on pourrait avoir Anaïs qui offre à Béatrice, Béatrice qui offre à Cédric et Cédric qui offre à Anaïs. Tout le monde a un cadeau et personne ne s'est pioché soit même.",
-                    "Je me suis trompé dans mon adresse email quand j'ai organisé mon secret santa, comment faire ?": "Pour corriger ce problème, soit vous organizer un autre tirage, soit vous demandez à un des participant de vous transmettre l'adresse web qui lui permet d'écrire à son/sa père/mère noël secret et vous allez ensuite sur la page https://secretsanta.fr/fix. Si malgré cela, vous n'arrivez pas à faire votre modification, vous pouvez envoyez le lien de votre participant par email à l'adresse suivante : webmaster@secretsanta.fr. Après vérification et durant son temps libre, le développeur pourra peut-être vous aider.",
-                    "J'ai supprimé mon email d'accès au panneau d'organisateur/organisatrice, comment faire ?": "Pour corriger ce problème, soit vous organizer un autre tirage, soit vous demandez à un des participant de vous transmettre l'adresse web qui lui permet d'écrire à son/sa père/mère noël secret et et vous allez ensuite sur la page https://secretsanta.fr/fix.",
-                    "Je me suis trompé dans l'adresse d'un participant": "Lorsque vous avez organisé votre secret santa, vous avez dû recevoir un email avec un lien vers un panneau d'organisateur/organisatrice. Vous pourrez modifier l'adresse email de chaque participant depuis cette interface.",
-                    "Un des participants n'a pas reçu l'email, que faire ?": "Alors même que l'adresse renseignée est bonne, il arrive que l'email se perde, finisse en spam ou qu'un problème survienne faisant que l'email n'est pas arrivé. Depuis votre panneau d'organisateur/organisatrice, vous pouvez retrouver un bouton à côté du status de réception de l'email du participant pour pouvoir réenvoyer le-dit email. Comme ça, le participant pourra enfin savoir qui est sa cible et comment parler à son Santa.",
-                    "Est-il possible de parler à sa cible ?": "Pour le moment, ce n'est pas possible, pour des raisons d'anonymat. Seule la cible peut écrire à son/sa père/mère noël secret. Mais c'est en projet.",
-                    "Quand sont supprimés mes données personnelles ?": "Toutes vos données d'un tirage sont supprimées 3 semaines après la date de l'évènement. Ce délai permet à l'organisateur/organisatrice de télécharger depuis son panneau d'organisation la liste des participants avec leur cible piochée, afin d'organiser plus tard un secret santa avec les mêmes personnes en évitant de retomber sur les mêmes cibles.",
-                    "J'ai oublié un participant, comment je peux le rajouter ?": "Depuis votre panneau d'organisateur/organisatrice, vous pouvez ajouter un participant (ou en retirer un). Le nouveau participant reçoit sa cible par email. Pour lui faire une place, une autre personne change de cible, au hasard pour que personne ne puisse deviner qui offre à qui, et elle est prévenue par email. Pour simplifier l'ajout, le nouveau participant n'a aucune exclusion : il peut tirer n'importe qui et être tiré par n'importe qui.",
-                    "Pourquoi Alice et Bob ne se font-ils jamais de cadeau l'un à l'autre ?": "À partir de 3 participant(e)s, le tirage forme une seule grande boucle : chacun(e) offre au suivant, jusqu'à revenir au premier. Il n'y a donc plus de paires réciproques (A offre à B et B offre à A), ni de petits groupes qui s'offrent des cadeaux entre eux. Chaque boucle possible a autant de chances d'être tirée.",
-                    "Qui peut savoir la liste des cibles ?": "Par défaut, personne : la liste est chiffrée et n'apparaît nulle part. L'organisateur/organisatrice peut toutefois la révéler depuis sa page d'organisation (problème de réception d'un email, autres évènements à organiser avec les mêmes paires...). C'est définitif, et chaque participant(e) voit sur sa page si la liste a été révélée ou non. Une fois la journée de l'évènement terminée, la liste est de toute façon visible sur la page d'organisation."
-                },
-                "technical": {
-                    "Quelles données sont stockées et pourquoi ?": "Sont conservés pour chaque participant : nom et adresse email, pour chaque organisation, le titre et le contenu du mail envoyé ainsi que chaque message envoyé entre participant via le lien reçu par mail (appelé 'cher papa noël'). Elles sont conservées pour deux raisons : d'abord pour permettre cette dernière fonctionnalité qui permet d'écrire à son/sa père/mère noël secret. Ensuite pour permettre de réenvoyer les emails en cas d'erreur d'adresse.",
-                    "Comment sont stockées les données ?": "Chaque élément est chiffré en AES-256 avec une clef calculée à partir d'une clef du serveur et d'un secret unique par organisation. Ce secret n'est pas stocké et est envoyé à chaque participant dans son lien. Sans lui, même avec un accès complet au serveur, les données stockées sont illisibles : l'administrateur ne peut donc pas y accéder sans action de votre part. Une exception : le temps d'envoyer les emails, le secret est conservé avec chaque email en attente, quelques minutes, nouvelles tentatives comprises. Si l'envoi échoue définitivement, le secret est oublié : l'organisateur/organisatrice peut renvoyer les emails en échec depuis son panneau. De même, un email revenu en erreur (adresse invalide), qui contient le lien, est gardé jusqu'à 7 jours. Chaque fois que vous effectuez une action, vous utilisez automatiquement ce secret, qui n'est que prêté à SecretSanta pour faire l'action demandée.",
-                    "Qu'est-ce que le chiffrement de bout en bout (E2E) ?": "Le chiffrement de bout en bout (« end-to-end encryption » ou E2E) désigne un chiffrement entre deux utilisateurs d'un service : le message est chiffré sur l'appareil de l'expéditeur et ne peut être déchiffré que sur celui du destinataire. Le service qui transporte le message ne voit jamais son contenu en clair, à aucun moment. C'est par exemple le cas de Signal. Malheureusement, le terme est souvent détourné pour désigner un simple chiffrement entre le client (votre navigateur) et le serveur, ce qui correspond en réalité à ce que fait le HTTPS sur n'importe quel site : dans ce cas, le serveur, lui, voit bien les données en clair.",
-                    "Qu'est-ce que le chiffrement « zero access » ?": "Le chiffrement « zero access » (accès zéro) signifie que les données sont chiffrées dès leur arrivée sur le serveur, avec une clef que le service ne conserve pas. Une fois stockées, le service ne peut plus les lire de lui-même. La différence avec le chiffrement de bout en bout : le serveur voit passer les données en clair, brièvement, au moment où il les reçoit ou les traite, alors qu'en E2E il ne les voit jamais. C'est par exemple le modèle utilisé par certaines messageries pour les emails reçus depuis l'extérieur.",
-                    "SecretSanta.fr utilise-t-il le chiffrement de bout en bout ?": "Non, et nous préférons être clairs plutôt que d'utiliser le terme à tort. SecretSanta.fr doit pouvoir lire vos données à certains moments, par exemple pour envoyer à chaque participant l'email avec sa cible, ce qui est incompatible avec un vrai chiffrement de bout en bout. Voici ce qui se passe réellement : vos données sont d'abord chiffrées entre votre navigateur et SecretSanta.fr grâce au HTTPS. Le serveur les chiffre ensuite immédiatement, avec un secret propre à votre organisation qu'il ne conserve pas, afin de ne garder aucune trace des données en clair. Elles ne sont déchiffrées que lorsqu'un utilisateur effectue une action (ouvrir sa page, écrire à son père/mère noël secret, réenvoyer un email...), grâce au secret contenu dans son lien, puis le secret est oublié. Ce fonctionnement se rapproche du chiffrement « zero access ».",
-                    "Je voudrais supprimer mes données, comment faire ?": "De part la façon dont sont stockées les données, l'administrateur est dans l'incapacité de savoir quelle donnée appartient à qui. Seul l'organisateur/organisatrice est en capacité de supprimer les données de tous les participants d'un coup. Sinon, ces données sont automatiquement supprimées peu après la fin de l'évènement.",
-                    "J'aimerais vérifier par moi même le code source, où puis-je le trouver ?": "Avec grand plaisir ! Le code source se trouve à l'adresse suivante : https://framagit.org/Korko/SecretSanta. Vous trouverez aussi le lien en bas de chaque page."
-                }
             }
         },
         "form": {
@@ -409,70 +380,6 @@ export default {
             }
         },
         "validation": {
-            "accepted": "Le champ {attribute} doit être accepté.",
-            "active_url": "Le champ {attribute} n'est pas une URL valide.",
-            "after": "Le champ {attribute} doit être une date postérieure au {date}.",
-            "alpha": "Le champ {attribute} doit seulement contenir des lettres.",
-            "alpha_dash": "Le champ {attribute} doit seulement contenir des lettres, des chiffres et des tirets.",
-            "alpha_num": "Le champ {attribute} doit seulement contenir des chiffres et des lettres.",
-            "array": "Le champ {attribute} doit être un tableau.",
-            "before": "Le champ {attribute} doit être une date antérieure au {date}.",
-            "between": {
-                "numeric": "La valeur de {attribute} doit être comprise entre {min} et {max}.",
-                "file": "Le fichier {attribute} doit avoir une taille entre {min} et {max} kilo-octets.",
-                "string": "Le texte {attribute} doit avoir entre {min} et {max} caractères.",
-                "array": "Le tableau {attribute} doit avoir entre {min} et {max} éléments."
-            },
-            "boolean": "Le champ {attribute} doit être vrai ou faux.",
-            "confirmed": "Le champ de confirmation {attribute} ne correspond pas.",
-            "date": "Le champ {attribute} n'est pas une date valide.",
-            "date_format": "Le champ {attribute} ne correspond pas au format {format}.",
-            "different": "Les champs {attribute} et {other} doivent être différents.",
-            "digits": "Le champ {attribute} doit avoir {digits} chiffres.",
-            "digits_between": "Le champ {attribute} doit avoir entre {min} et {max} chiffres.",
-            "email": "Le champ {attribute} doit être une adresse email valide.",
-            "exists": "Le champ {attribute} sélectionné est invalide.",
-            "filled": "Le champ {attribute} est obligatoire.",
-            "image": "Le champ {attribute} doit être une image.",
-            "in": "Le champ {attribute} est invalide.",
-            "integer": "Le champ {attribute} doit être un entier.",
-            "ip": "Le champ {attribute} doit être une adresse IP valide.",
-            "json": "Le champ {attribute} doit être un document JSON valide.",
-            "max": {
-                "numeric": "La valeur de {attribute} ne peut être supérieure à {max}.",
-                "file": "Le fichier {attribute} ne peut être plus gros que {max} kilo-octets.",
-                "string": "Le texte de {attribute} ne peut contenir plus de {max} caractères.",
-                "array": "Le tableau {attribute} ne peut avoir plus de {max} éléments."
-            },
-            "mimes": "Le champ {attribute} doit être un fichier de type : {values}.",
-            "min": {
-                "numeric": "La valeur de {attribute} doit être supérieure à {min}.",
-                "file": "Le fichier {attribute} doit être plus gros que {min} kilo-octets.",
-                "string": "Le texte {attribute} doit contenir au moins {min} caractères.",
-                "array": "Le tableau {attribute} doit avoir au moins {min} éléments."
-            },
-            "not_in": "Le champ {attribute} sélectionné n'est pas valide.",
-            "numeric": "Le champ {attribute} doit contenir un nombre.",
-            "regex": "Le format du champ {attribute} est invalide.",
-            "required": "Le champ {attribute} est obligatoire.",
-            "required_if": "Le champ {attribute} est obligatoire quand la valeur de {other} est {value}.",
-            "required_unless": "Le champ {attribute} est obligatoire sauf si {other} est {values}.",
-            "required_with": "Le champ {attribute} est obligatoire quand {values} est présent.",
-            "required_with_all": "Le champ {attribute} est obligatoire quand {values} est présent.",
-            "required_without": "Le champ {attribute} est obligatoire quand {values} n'est pas présent.",
-            "required_without_all": "Le champ {attribute} est requis quand aucun de {values} n'est présent.",
-            "same": "Les champs {attribute} et {other} doivent être identiques.",
-            "size": {
-                "numeric": "La valeur de {attribute} doit être {size}.",
-                "file": "La taille du fichier de {attribute} doit être de {size} kilo-octets.",
-                "string": "Le texte de {attribute} doit contenir {size} caractères.",
-                "array": "Le tableau {attribute} doit contenir {size} éléments."
-            },
-            "string": "Le champ {attribute} doit être une chaîne de caractères.",
-            "timezone": "Le champ {attribute} doit être un fuseau horaire valide.",
-            "unique": "La valeur du champ {attribute} est déjà utilisée.",
-            "url": "Le format de l'URL de {attribute} n'est pas valide.",
-            "recaptcha": "Le captcha n'a pas pu être validé.",
             "custom": {
                 "g-recaptcha-response": {
                     "required": "Le captcha est obligatoire",
@@ -550,38 +457,6 @@ export default {
                         "format": "Le format de l'adresse n'est pas valide."
                     }
                 }
-            },
-            "attributes": {
-                "name": "Nom",
-                "username": "Pseudo",
-                "email": "E-mail",
-                "first_name": "Prénom",
-                "last_name": "Nom",
-                "password": "Mot de passe",
-                "password_confirmation": "Confirmation du mot de passe",
-                "city": "Ville",
-                "country": "Pays",
-                "address": "Adresse",
-                "phone": "Téléphone",
-                "mobile": "Portable",
-                "age": "Age",
-                "sex": "Sexe",
-                "gender": "Genre",
-                "day": "Jour",
-                "month": "Mois",
-                "year": "Année",
-                "hour": "Heure",
-                "minute": "Minute",
-                "second": "Seconde",
-                "title": "Titre",
-                "content": "Contenu",
-                "description": "Description",
-                "excerpt": "Extrait",
-                "date": "Date",
-                "time": "Heure",
-                "available": "Disponible",
-                "size": "Taille",
-                "g-recaptcha-response": "Recaptcha"
             }
         }
     }
