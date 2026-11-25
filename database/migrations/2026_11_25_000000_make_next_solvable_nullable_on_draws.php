@@ -17,13 +17,4 @@ return new class extends Migration
             $table->boolean('next_solvable')->nullable()->default(null)->change();
         });
     }
-
-    public function down(): void
-    {
-        DB::table('draws')->whereNull('next_solvable')->update(['next_solvable' => true]);
-
-        Schema::table('draws', function (Blueprint $table): void {
-            $table->boolean('next_solvable')->default(true)->change();
-        });
-    }
 };
