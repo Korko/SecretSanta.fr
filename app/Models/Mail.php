@@ -97,6 +97,24 @@ final class Mail extends Model
         $this->broadcastStatus();
     }
 
+    /** @return MorphTo<\Illuminate\Database\Eloquent\Model, $this> dearSanta or participant */
+    public function mailable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    /** @return Attribute<BounceReason|null, never> */
+    protected function bounceReason(): Attribute
+    {
+        return Attribute::make(get: fn (): ?BounceReason => $this->delivery_status === DeliveryStatus::Error ? BounceReason::fromCode($this->error_code) : null);
+    }
+
+    /** @return array<string, string> */
+    protected function casts(): array
+    {
+        return ['delivery_status' => DeliveryStatus::class];
+    }
+
     /**
      * Checked by the database, not on this instance: the worker keeps its own during the whole SMTP session,
      * while the bounce job or the recipient opening their page may have written meanwhile.
@@ -135,23 +153,5 @@ final class Mail extends Model
         } catch (BroadcastException) {
             // Ignore exception
         }
-    }
-
-    /** @return MorphTo<\Illuminate\Database\Eloquent\Model, $this> dearSanta or participant */
-    public function mailable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    /** @return Attribute<BounceReason|null, never> */
-    protected function bounceReason(): Attribute
-    {
-        return Attribute::make(get: fn (): ?BounceReason => $this->delivery_status === DeliveryStatus::Error ? BounceReason::fromCode($this->error_code) : null);
-    }
-
-    /** @return array<string, string> */
-    protected function casts(): array
-    {
-        return ['delivery_status' => DeliveryStatus::class];
     }
 }

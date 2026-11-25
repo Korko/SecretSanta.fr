@@ -15,8 +15,8 @@ use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use LogicException;
-use Throwable;
 use Symfony\Component\Mime\Email;
+use Throwable;
 
 final class TrackedMailChannel extends MailChannel
 {
