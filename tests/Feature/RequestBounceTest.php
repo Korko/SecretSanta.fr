@@ -234,7 +234,7 @@ it('tells why an email bounced to the organizer panel live and to list-draw', fu
         ->toMatchArray(['delivery_status' => DeliveryStatus::Error, 'bounce_reason' => BounceReason::Address])
         ->not->toHaveKey('error_code');
 
-    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getIV());
+    $url = URL::signedRoute('dearSanta', ['participant' => $draw->participants->last()->hash]).'#'.base64_encode(DrawCrypt::getSecret());
     $this->artisan('secretsanta:list-draw', ['url' => $url])
         ->expectsOutputToContain('error (5.1.1, address)')
         ->assertSuccessful();

@@ -24766,10 +24766,10 @@ namespace App\Facades {
          *
          * @static
          */
-        public static function setIV($secret)
+        public static function setSecret($secret)
         {
             /** @var \App\Services\DrawEncrypter $instance */
-            return $instance->setIV($secret);
+            return $instance->setSecret($secret);
         }
 
         /**
@@ -24777,10 +24777,10 @@ namespace App\Facades {
          *
          * @static
          */
-        public static function getIV()
+        public static function getSecret()
         {
             /** @var \App\Services\DrawEncrypter $instance */
-            return $instance->getIV();
+            return $instance->getSecret();
         }
 
         /**

@@ -101,7 +101,7 @@ final class Participant extends Model
             ? URL::signedRoute('organizerPanel', ['draw' => $this->draw->hash])
             : URL::signedRoute('dearSanta', ['participant' => $this->hash]);
 
-        return $url.'#'.base64_encode(DrawCrypt::getIV());
+        return $url.'#'.base64_encode(DrawCrypt::getSecret());
     }
 
     // Public channel named after a secret (only given by the signed fetch route), not the hash participants can see

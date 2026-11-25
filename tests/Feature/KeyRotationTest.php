@@ -11,12 +11,12 @@ test('rotating APP_KEY keeps live draws working with APP_PREVIOUS_KEYS', functio
     $participant = $draw->participants->first();
     $draw->refuseEmail($participant->email);
     $panel = URL::signedRoute('organizerPanel.fetch', ['draw' => $draw]);
-    $iv = DrawCrypt::getIV();
+    $secret = DrawCrypt::getSecret();
 
     config(['app.previous_keys' => [config('app.key')], 'app.key' => 'base64:'.base64_encode(random_bytes(32))]);
     app()->forgetInstance('draw-encrypter');
     DrawCrypt::clearResolvedInstance('draw-encrypter');
-    DrawCrypt::setIV($iv);
+    DrawCrypt::setSecret($secret);
 
     expect(Participant::query()->find($participant->id)->email)->toBe($participant->email)
         ->and($draw->fresh()->refusesEmail($participant->email))->toBeTrue();

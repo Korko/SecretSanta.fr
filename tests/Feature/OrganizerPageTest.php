@@ -64,7 +64,7 @@ test('the emails give the organizer a single link, to their panel', function ():
     Notification::fake();
     $draw = createServiceDraw(generateParticipants(3));
     [$organizer, $other] = $draw->participants;
-    $panel = organizerPanelUrl($draw).'#'.base64_encode(DrawCrypt::getIV());
+    $panel = organizerPanelUrl($draw).'#'.base64_encode(DrawCrypt::getSecret());
 
     // Their target email: the link to write to their santa is the panel, the organizer block doesn't repeat it
     $mail = new TargetDrawn()->toMail($organizer);

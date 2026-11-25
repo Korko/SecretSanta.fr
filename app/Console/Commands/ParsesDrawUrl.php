@@ -15,7 +15,7 @@ trait ParsesDrawUrl
 {
     protected function setCryptIVFromUrl(string $url): void
     {
-        throw_unless(resolve(URLParser::class)->setIVFromUrl($url), RuntimeException::class, 'No draw secret in this URL (the part after #)');
+        throw_unless(resolve(URLParser::class)->setSecretFromUrl($url), RuntimeException::class, 'No draw secret in this URL (the part after #)');
     }
 
     protected function findOrAskDrawFromUrl(?string $url): Draw

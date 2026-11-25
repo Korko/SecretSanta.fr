@@ -41,7 +41,7 @@ final class ParticipantWithdrew extends Notification implements ShouldBeEncrypte
             ->view(['emails.participant_withdrew', 'emails.participant_withdrew_plain'], [
                 'organizerName' => $draw?->organizer_name,
                 'name' => $this->name,
-                'panelLink' => $draw instanceof Draw ? URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getIV()) : '',
+                'panelLink' => $draw instanceof Draw ? URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getSecret()) : '',
             ]);
     }
 }

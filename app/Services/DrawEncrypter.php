@@ -44,13 +44,13 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
     ) {
         throw_unless(Encrypter::supported($appKey, $cipher), RuntimeException::class, 'Unsupported cipher or incorrect key length.');
 
-        $this->setIV($this->generateIV());
+        $this->setSecret($this->generateSecret());
     }
 
     /**
      * Generate a new secret
      */
-    public function generateIV(): string
+    public function generateSecret(): string
     {
         return random_bytes(self::SECRET_LENGTH);
     }
@@ -58,7 +58,7 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
     /**
      * Set the draw secret (taken from the link fragment).
      */
-    public function setIV(string $secret): void
+    public function setSecret(string $secret): void
     {
         throw_unless(mb_strlen($secret, '8bit') === self::SECRET_LENGTH, RuntimeException::class, "The draw secret's length does not match the expected one.");
 
@@ -70,7 +70,7 @@ final class DrawEncrypter implements EncrypterContract, StringEncrypter
     /**
      * Get the draw secret (to put in the link fragment).
      */
-    public function getIV(): string
+    public function getSecret(): string
     {
         return $this->secret;
     }
