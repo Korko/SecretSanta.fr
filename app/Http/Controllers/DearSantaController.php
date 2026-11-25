@@ -19,6 +19,7 @@ use App\Notifications\ParticipantWithdrew;
 use App\Notifications\TargetDrawn;
 use App\Services\ParticipantsEditor;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -210,8 +211,13 @@ final class DearSantaController extends Controller
 
         throw_if(mb_strtolower($email) === mb_strtolower($participant->email), ValidationException::withMessages(['email' => trans('dearsanta.email.same')]));
         throw_if($participant->draw->refusesEmail($email), ValidationException::withMessages(['email' => trans('organizer.report.refused_email')]));
-        // A typo can be fixed right away, but not one email a second to any address
-        abort_if($participant->pending_email_at !== null && $participant->pending_email_at->diffInSeconds(Date::now()) < config()->integer('mail.email_change.request_delay'), 403, Lang::get('error.resend'));
+        // A typo can be fixed right away, but not one email a second to any address. Claimed in a single query:
+        // of two simultaneous requests, only one sends a code (else only the second code would work)
+        $claimed = Participant::query()->whereKey($participant->id)
+            ->where(fn (Builder $query) => $query->whereNull('pending_email_at')
+                ->orWhere('pending_email_at', '<=', Date::now()->subSeconds(config()->integer('mail.email_change.request_delay'))))
+            ->update(['pending_email_at' => Date::now()]);
+        abort_if($claimed === 0, 403, Lang::get('error.resend'));
 
         $code = $participant->requestEmailChange($email);
         Notification::route('mail', [$email => $participant->name])->notify(new ParticipantEmailCode($participant->name, $code));
@@ -240,8 +246,12 @@ final class DearSantaController extends Controller
         throw_if($counted === 0, ValidationException::withMessages(['code' => trans('dearsanta.email.expired')]));
 
         if (! $participant->checkEmailCode(preg_replace('/\D/', '', $request->string('code')->toString()) ?? '')) {
-            // Six digits: a few tries for typos, then a new code is needed
-            $last = $participant->pending_email_attempts + 1 >= config()->integer('mail.email_change.code_attempts');
+            // Six digits: a few tries for typos, then a new code is needed. Read back after the increment: a parallel
+            // wrong code may have used the last try
+            $attempts = (int) Participant::query()->whereKey($participant->id)->value('pending_email_attempts');
+            $participant->pending_email_attempts = $attempts;
+            $participant->syncOriginalAttribute('pending_email_attempts');
+            $last = $attempts >= config()->integer('mail.email_change.code_attempts');
             if ($last) {
                 $participant->clearPendingEmail();
                 $participant->save();
@@ -291,7 +301,8 @@ final class DearSantaController extends Controller
 
     public function resend(Participant $participant, DearSanta $dearSanta): JsonResponse
     {
-        abort_unless(($dearSanta->mail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
+        // Claimed in a single query: of two simultaneous clicks, only one sends the email again
+        abort_unless($dearSanta->mail->claimResend(config()->integer('mail.resend_delay')), 403, Lang::get('error.resend'));
 
         $dearSanta->mail->markAsCreated();
 

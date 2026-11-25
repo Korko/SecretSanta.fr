@@ -11,7 +11,6 @@ use App\Notifications\TargetChanged;
 use App\Notifications\TargetDrawn;
 use App\Notifications\TargetWithdrawn;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use LogicException;
@@ -55,8 +54,23 @@ final class ParticipantsEditor
 
             $this->draw->unsetRelation('participants');
             $participants = $this->draw->participants()->with('exclusions')->get()->keyBy('id')->all();
-            // Removed by another change in the meantime: nothing left to do for them
-            $remove = array_values(array_map(fn (Participant $participant): Participant => $participants[$participant->id] ?? throw new ModelNotFoundException, $remove));
+            // Removed by another change in the meantime (two tabs, a withdrawal): the organizer reloads and sees why
+            $remove = array_values(array_map(fn (Participant $participant): Participant => $participants[$participant->id]
+                ?? throw ValidationException::withMessages(['participants' => trans('organizer.already_removed', ['name' => $participant->name])]), $remove));
+
+            // Names checked again once locked: another change may have added the same one in the meantime
+            $names = array_map(fn (Participant $participant): string => $participant->name, $participants);
+            foreach ($add as $i => $data) {
+                throw_if(in_array($data['name'], $names, true), ValidationException::withMessages([
+                    'add.'.$i.'.name' => trans('validation.custom.randomform.participant.name.distinct'),
+                ]));
+            }
+
+            foreach ($restore as $participant) {
+                throw_if(in_array($participant->name, $names, true), ValidationException::withMessages([
+                    'participant' => trans('validation.custom.randomform.participant.name.distinct'),
+                ]));
+            }
 
             $this->targets = [];
             foreach ($participants as $participant) {

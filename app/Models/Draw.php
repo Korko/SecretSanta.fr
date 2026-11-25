@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Date;
 use LogicException;
@@ -100,7 +101,12 @@ final class Draw extends Model
     public function recapMail(): Mail
     {
         if (! $this->mail instanceof Mail) {
-            $this->mail()->save(new Mail);
+            try {
+                $this->mail()->save(new Mail);
+            } catch (UniqueConstraintViolationException) {
+                // Created by a simultaneous request (one mail per mailable, see the unique index)
+            }
+
             $this->load('mail');
         }
 

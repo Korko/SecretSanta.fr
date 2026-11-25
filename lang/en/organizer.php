@@ -49,6 +49,7 @@ return [
     ],
     'cannot_withdraw' => 'Unable to remove :name without giving someone a person they excluded',
     'cannot_restore' => 'Unable to bring :name back without giving someone a person they excluded',
+    'already_removed' => ':name is already out of the draw',
     'withdrawn' => ':name no longer takes part in the event.',
     'deleted' => 'All data has been deleted',
     'download' => [

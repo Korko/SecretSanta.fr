@@ -11,6 +11,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
@@ -47,6 +48,25 @@ final class Mail extends Model
         self::creating(function (self $mail): void {
             $mail->notification = Str::uuid()->toString();
         });
+    }
+
+    // Whether no email went out in the last $delay seconds, taking the slot if so. A single query: of two
+    // simultaneous resends, only one gets true
+    public function claimResend(int $delay): bool
+    {
+        $now = CarbonImmutable::now();
+        $claimed = self::query()->whereKey($this->id)
+            ->where(fn (Builder $query) => $query->whereNull('updated_at')->orWhere('updated_at', '<=', $now->subSeconds($delay)))
+            ->update(['updated_at' => $now]);
+
+        if ($claimed === 0) {
+            return false;
+        }
+
+        $this->updated_at = $now;
+        $this->syncOriginalAttribute('updated_at');
+
+        return true;
     }
 
     public function markAsCreated(): void

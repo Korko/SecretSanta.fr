@@ -49,6 +49,7 @@ return [
     ],
     'cannot_withdraw' => ':name kann nicht entfernt werden, ohne jemandem eine ausgeschlossene Person zuzuteilen',
     'cannot_restore' => ':name kann nicht wieder aufgenommen werden, ohne jemandem eine ausgeschlossene Person zuzuteilen',
+    'already_removed' => ':name ist bereits nicht mehr Teil der Auslosung',
     'withdrawn' => ':name nimmt nicht mehr an der Veranstaltung teil.',
     'deleted' => 'Alle Daten wurden gelöscht',
     'download' => [

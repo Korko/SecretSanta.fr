@@ -64,7 +64,8 @@ final class FixOrganizerController extends Controller
 
         // The organizer's own email: their target email when taking part, else the recap
         $organizerMail = $draw->organizer->mail ?? $draw->recapMail();
-        throw_if(($organizerMail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) <= config('mail.resend_delay'), ValidationException::withMessages([
+        // Claimed in a single query: of two simultaneous submissions, only one sends the emails again
+        throw_unless($organizerMail->claimResend(config()->integer('mail.resend_delay') + 1), ValidationException::withMessages([
             'email' => trans('error.fixOrganizer.resendDelayTooShort'),
         ]));
 

@@ -171,22 +171,33 @@ final class OrganizerController extends Controller
     {
         // An ended draw never gets here: its participants can't be bound (see the route's missing())
         $name = mb_trim($request->string('name')->toString());
-        throw_if(
-            $draw->participants->contains(fn (Participant $other): bool => $other->isNot($participant) && $other->name === $name),
-            ValidationException::withMessages(['name' => trans('validation.custom.randomform.participant.name.distinct')])
-        );
 
-        $oldName = $participant->name;
-        if ($oldName !== $name) {
-            // The organizer taking part: keep the draw in sync (shown to participants, recap greeting)
-            if ($participant->isOrganizer()) {
-                $draw->organizer_name = $name;
-                $draw->save();
+        // Locked like ParticipantsEditor: names checked against the participants read once the draw is locked,
+        // not a copy another tab may have made stale
+        $oldName = DB::transaction(function () use ($draw, $participant, $name): string {
+            Draw::query()->lockForUpdate()->findOrFail($draw->id);
+
+            throw_if(
+                $draw->participants()->whereKeyNot($participant->id)->get()->contains('name', '===', $name),
+                ValidationException::withMessages(['name' => trans('validation.custom.randomform.participant.name.distinct')])
+            );
+
+            $oldName = $participant->name;
+            if ($oldName !== $name) {
+                // The organizer taking part: keep the draw in sync (shown to participants, recap greeting)
+                if ($participant->isOrganizer()) {
+                    $draw->organizer_name = $name;
+                    $draw->save();
+                }
+
+                $participant->name = $name;
+                $participant->save();
             }
 
-            $participant->name = $name;
-            $participant->save();
+            return $oldName;
+        });
 
+        if ($oldName !== $name) {
             $participant->santa->notify(new TargetRenamed($oldName, $name));
             $participant->createMetric('change_name');
         }
