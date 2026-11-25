@@ -10,6 +10,7 @@ use App\Events\ParticipantUpdated;
 use App\Http\Requests\DearSantaRequest;
 use App\Models\DearSanta;
 use App\Models\GiftSuggestion;
+use App\Models\Mail;
 use App\Models\Participant;
 use App\Notifications\DearSanta as DearSantaNotification;
 use App\Notifications\GiftSuggestion as GiftSuggestionNotification;
@@ -18,7 +19,6 @@ use App\Notifications\ParticipantReported;
 use App\Notifications\ParticipantWithdrew;
 use App\Notifications\TargetDrawn;
 use App\Services\ParticipantsEditor;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -35,10 +35,6 @@ use Illuminate\Validation\ValidationException;
 
 final class DearSantaController extends Controller
 {
-    // dear_santas has no timestamps: the dates shown come from the related mail
-    /** @var list<string> */
-    private array $dearSantaPublicFields = ['id', 'mail_body', 'mail'];
-
     // What the participant page calls, also on the organizer's panel for their own participant part
     /** @return array<string, string> */
     public static function routes(Participant $participant): array
@@ -96,12 +92,7 @@ final class DearSantaController extends Controller
             'receivedSuggestions' => $this->receivedSuggestions($participant),
             'pendingEmail' => $this->pendingEmail($participant),
             'emails' => $participant->dearSantas->mapWithKeys(fn ($email): array => [
-                $email->mail->id => $email->only($this->dearSantaPublicFields),
-            ]),
-            'resendEmailUrls' => $participant->dearSantas->mapWithKeys(fn ($dearSanta): array => [
-                $dearSanta->mail->id => URL::signedRoute('dearSanta.resend', [
-                    'participant' => $participant, 'dearSanta' => $dearSanta,
-                ]),
+                $email->mail->id => $this->publicDearSanta($email),
             ]),
             'resendTargetEmailsUrl' => URL::signedRoute('dearSanta.resend_target', [
                 'participant' => $participant,
@@ -282,32 +273,9 @@ final class DearSantaController extends Controller
             'suggestions' => $this->sentSuggestions($participant),
             'receivedSuggestions' => $this->receivedSuggestions($participant),
             'emails' => $participant->dearSantas->mapWithKeys(fn ($dearSanta): array => [
-                $dearSanta->mail->id => $dearSanta->only($this->dearSantaPublicFields),
+                $dearSanta->mail->id => $this->publicDearSanta($dearSanta),
             ]),
         ]);
-    }
-
-    public function resend(Participant $participant, DearSanta $dearSanta): JsonResponse
-    {
-        abort_unless(($dearSanta->mail->updated_at?->diffInSeconds(Date::now()) ?? PHP_INT_MAX) >= config('mail.resend_delay'), 403, Lang::get('error.resend'));
-
-        $dearSanta->mail->markAsCreated();
-
-        $participant->createMetric('resend_email')->addTag('by', 'santa');
-
-        try {
-            $participant->santa->notify(new DearSantaNotification($dearSanta));
-
-            return response()->json([
-                'message' => trans('message.sent'),
-                'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
-            ]);
-        } catch (Exception) {
-            return response()->json([
-                'error' => trans('error.email'),
-                'email' => $dearSanta->refresh()->only($this->dearSantaPublicFields),
-            ]);
-        }
     }
 
     // Their recap again, in a single email: the messages their target wrote to them and the gift ideas given for
@@ -338,7 +306,7 @@ final class DearSantaController extends Controller
 
         return response()->json([
             'message' => trans('message.sent'),
-            'email' => $dearSanta->fresh()?->only($this->dearSantaPublicFields),
+            'email' => $this->publicDearSanta($dearSanta->refresh()),
         ]);
     }
 
@@ -382,22 +350,39 @@ final class DearSantaController extends Controller
             ])->values();
     }
 
-    // Sent or not, never when it was read: seeing someone else's santa open their email would tell who they are
+    // A message to their santa, as its sender sees it (dear_santas has no timestamps: the dates come from the mail)
+    /** @return array{id: int, mail_body: string, mail: array{id: int, delivery_status: DeliveryStatus, created_at: mixed, updated_at: mixed}} */
+    private function publicDearSanta(DearSanta $dearSanta): array
+    {
+        return [
+            'id' => $dearSanta->id,
+            'mail_body' => $dearSanta->mail_body,
+            'mail' => $this->senderMail($dearSanta->mail),
+        ];
+    }
+
     /** @return array{mail_body: string, recipient: string, mail: array{id: int, delivery_status: DeliveryStatus, created_at: mixed, updated_at: mixed}} */
     private function publicSuggestion(GiftSuggestion $suggestion): array
     {
-        $mail = $suggestion->mail;
-        $received = $mail->delivery_status === DeliveryStatus::Received;
-
         return [
             'mail_body' => $suggestion->mail_body,
             'recipient' => $suggestion->recipient->name,
-            'mail' => [
-                'id' => $mail->id,
-                'delivery_status' => $received ? DeliveryStatus::Sent : $mail->delivery_status,
-                'created_at' => $mail->created_at,
-                'updated_at' => $received ? $mail->created_at : $mail->updated_at,
-            ],
+            'mail' => $this->senderMail($suggestion->mail),
+        ];
+    }
+
+    // Up to "sent", never what came after: seeing when someone's santa read their email, or that it bounced,
+    // would tell who that santa is. The sender could not fix a bounce anyway, the organizer resends
+    /** @return array{id: int, delivery_status: DeliveryStatus, created_at: mixed, updated_at: mixed} */
+    private function senderMail(Mail $mail): array
+    {
+        $hidden = ! $mail->delivery_status->isVisibleToSender();
+
+        return [
+            'id' => $mail->id,
+            'delivery_status' => $hidden ? DeliveryStatus::Sent : $mail->delivery_status,
+            'created_at' => $mail->created_at,
+            'updated_at' => $hidden ? $mail->created_at : $mail->updated_at,
         ];
     }
 }

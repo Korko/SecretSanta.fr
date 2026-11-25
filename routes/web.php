@@ -45,8 +45,6 @@ Route::middleware('signed')->group(function (): void {
             ->name('dearSanta.report')->middleware('throttle:email');
         Route::get('/dearSanta/{participant}/fetchState', [DearSantaController::class, 'fetchState'])
             ->name('dearSanta.fetchState');
-        Route::post('/dearSanta/{participant}/{dearSanta}/resend', [DearSantaController::class, 'resend'])
-            ->name('dearSanta.resend')->middleware('throttle:email');
         Route::post('/dearSanta/{participant}/resendTarget', [DearSantaController::class, 'resendTarget'])
             ->name('dearSanta.resend_target')->middleware('throttle:email');
         // A code sent to any address, then the target email again: limited like the other emails

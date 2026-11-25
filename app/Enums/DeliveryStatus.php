@@ -14,4 +14,10 @@ enum DeliveryStatus: string
     case Delayed = 'delayed';
     // Confirmed: the recipient replied, visited their page, or an auto-reply came back
     case Received = 'received';
+
+    // What the sender of a message or a gift idea may know: whether it left, not whether it was read or bounced
+    public function isVisibleToSender(): bool
+    {
+        return in_array($this, [self::Created, self::Sending, self::Sent], true);
+    }
 }

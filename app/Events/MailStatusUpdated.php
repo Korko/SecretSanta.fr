@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Events;
 
-use App\Enums\DeliveryStatus;
 use App\Models\DearSanta;
 use App\Models\Draw;
 use App\Models\GiftSuggestion;
@@ -41,13 +40,17 @@ final class MailStatusUpdated implements ShouldBroadcast, ShouldDispatchAfterCom
         ];
     }
 
-    // A gift idea's sender only learns whether it was sent (see DearSantaController::publicSuggestion)
+    // The sender of a message or a gift idea only learns whether it was sent (see DearSantaController::senderMail)
     public function broadcastWhen(): bool
     {
         $mailable = $this->mail->mailable;
 
+        if (! $mailable instanceof DearSanta && ! $mailable instanceof GiftSuggestion) {
+            return true;
+        }
+
         // Nobody to tell either once its sender left the draw
-        return ! $mailable instanceof GiftSuggestion || ($mailable->sender !== null && $this->mail->delivery_status !== DeliveryStatus::Received);
+        return $mailable->sender !== null && $this->mail->delivery_status->isVisibleToSender();
     }
 
     /**

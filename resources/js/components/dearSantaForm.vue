@@ -31,7 +31,6 @@
                 content: '',
                 channel: this.data.channel,
                 emails: this.data.emails,
-                resendEmailUrls: this.data.resendEmailUrls,
                 resendTargetEmailsUrl: this.data.resendTargetEmailsUrl,
                 targetDearSantaLastUpdate: this.data.targetDearSantaLastUpdate,
                 targetsRevealed: this.data.targetsRevealed,
@@ -116,12 +115,6 @@
             },
             reset() {
                 this.content = '';
-            },
-            resend(id) {
-                this.emails[id].mail.delivery_status = 'created';
-                this.emails[id].mail.updated_at = new Date().getTime();
-
-                return fetch(this.resendEmailUrls[id], 'POST');
             },
             sendReport(reason) {
                 return fetch(this.routes.reportUrl, 'POST', reason ? { reason } : {})
@@ -255,7 +248,7 @@
                 <tr v-for="email in emailsByDate" :key="email.mail.id" class="email">
                     <td>{{ email.created_at }}</td>
                     <td><p v-html="nl2br(e(email.mail_body))"></p></td>
-                    <td><email-status :delivery_status="email.mail.delivery_status" :last_update="email.mail.updated_at" @redo="resend(email.mail.id)"/></td>
+                    <td><email-status :delivery_status="email.mail.delivery_status" :last_update="email.mail.updated_at" :can_redo="false"/></td>
                 </tr>
                 <tr v-if="Object.keys(emails).length === 0" class="no-email">
                     <td colspan="3">
@@ -331,7 +324,7 @@
                         <td>{{ sent.created_at }}</td>
                         <td>{{ sent.recipient }}</td>
                         <td><p v-html="nl2br(e(sent.mail_body))"></p></td>
-                        <td><email-status :delivery_status="sent.mail.delivery_status" :last_update="sent.mail.updated_at" :disabled="true" /></td>
+                        <td><email-status :delivery_status="sent.mail.delivery_status" :last_update="sent.mail.updated_at" :can_redo="false" /></td>
                     </tr>
                 </tbody>
             </table>
