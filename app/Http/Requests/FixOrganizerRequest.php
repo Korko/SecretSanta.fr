@@ -14,7 +14,7 @@ final class FixOrganizerRequest extends Request
     {
         return parent::rules() + [
             'url' => 'required|string',
-            'email' => 'required|string|max:255',
+            'email' => 'required|string|max:255|email',
         ];
     }
 
@@ -26,6 +26,7 @@ final class FixOrganizerRequest extends Request
         return [
             'url.required' => __('validation.custom.fixOrganizer.url.required'),
             'email.required' => __('validation.custom.fixOrganizer.email.required'),
+            'email.email' => __('validation.custom.fixOrganizer.email.format'),
         ];
     }
 }

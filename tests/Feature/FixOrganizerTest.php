@@ -50,6 +50,18 @@ test('the organizer can fix a mistyped address until they received their email',
     expect($draw->fresh()->organizer_email)->toBe('orga@example.com');
 });
 
+test('the fix refuses a malformed address, even close to the previous one', function (): void {
+    Notification::fake();
+    $draw = createServiceDraw(generateParticipants(3));
+    $draw->update(['organizer_name' => 'Orga', 'organizer_email' => 'orga@gmail.com']);
+    $this->travel(10)->minutes();
+
+    fixOrganizer($draw, 'orga@gmail,com')
+        ->assertStatus(422)
+        ->assertJsonPath('errors.email.0', __('validation.custom.fixOrganizer.email.format'));
+    expect($draw->fresh()->organizer_email)->toBe('orga@gmail.com');
+});
+
 test('a participating organizer whose email was received cannot be fixed', function (): void {
     Notification::fake();
     $draw = createServiceDraw(generateParticipants(3));

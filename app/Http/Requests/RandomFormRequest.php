@@ -18,19 +18,19 @@ final class RandomFormRequest extends Request
             'participant-organizer' => 'sometimes|boolean',
 
             'organizer' => 'sometimes|array',
-            'organizer.name' => 'exclude_if:participant-organizer,true|required',
+            'organizer.name' => 'exclude_if:participant-organizer,true|required|string|max:255',
             'organizer.email' => 'exclude_if:participant-organizer,true|required|email',
 
             'limit' => 'sometimes|nullable|string',
             'participants' => 'required|array|min:3|max:'.$this->maxParticipants(),
 
-            'participants.*.name' => 'required|distinct',
+            'participants.*.name' => 'required|string|max:255|distinct',
             'participants.*.email' => 'required|email',
             'participants.*.exclusions' => 'sometimes|array',
             'participants.*.exclusions.*' => 'integer|in_keys:participants',
 
-            'title' => 'required|string',
-            'content-email' => 'required|string|contains_text:{TARGET}',
+            'title' => 'required|string|max:255',
+            'content-email' => 'required|string|max:10000|contains_text:{TARGET}',
 
             'data-expiration' => 'required|date_format:Y-m-d|after_or_equal:tomorrow|before:+1year',
         ];
@@ -54,7 +54,7 @@ final class RandomFormRequest extends Request
             'participants.*.email.email' => __('validation.custom.randomform.participant.email.format'),
             'title.required' => __('validation.custom.randomform.title.required'),
             'content-email.required' => __('validation.custom.randomform.content.required'),
-            'content-email.contains' => __('validation.custom.randomform.content.contains'),
+            'content-email.contains_text' => __('validation.custom.randomform.content.contains_text'),
             'data-expiration.required' => __('validation.custom.randomform.expiration.required'),
             'data-expiration.after_or_equal' => __('validation.custom.randomform.expiration.min'),
             'data-expiration.before' => __('validation.custom.randomform.expiration.max'),

@@ -209,7 +209,7 @@ final class OrganizerController extends Controller
             'remove.*' => ['distinct', Rule::in($hashes)],
             'add' => ['array'],
             'force' => ['boolean'],
-            'add.*.name' => ['required', 'string', 'distinct', Rule::notIn($names)],
+            'add.*.name' => ['required', 'string', 'max:255', 'distinct', Rule::notIn($names)],
             'add.*.email' => ['required', 'email', function (string $attribute, mixed $value, Closure $fail) use ($draw): void {
                 if (is_string($value) && $draw->refusesEmail($value)) {
                     $fail(trans('organizer.report.refused_email'));
