@@ -26,3 +26,8 @@ Some stats are stored for analytics purposes but are totally anonymized, resulti
 * Amount of draws with no records in database wanted
 * Amount of email errors linked to a participant
 * Amount of email errors not linked to a participant
+### Deployment
+
+The scheduler (`php artisan schedule:run`, every minute) runs the queue worker and the bounce parser with `withoutOverlapping(10)`. If one of them was killed abruptly (out of memory, `kill -9`, reboot), its lock blocks it for up to 10 minutes. After a deploy or a restart, clear those locks right away:
+
+    php artisan schedule:clear-cache
