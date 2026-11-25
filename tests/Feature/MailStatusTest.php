@@ -24,7 +24,7 @@ it('marks a mail as failed whatever stopped its sending, not only the SMTP sessi
     $factory = Mockery::mock(MailFactory::class);
     $factory->shouldReceive('mailer')->andReturn($mailer);
 
-    expect(fn (): mixed => (new TrackedMailChannel($factory, resolve(Markdown::class)))->send($participant, new TargetDrawn))
+    expect(fn (): mixed => new TrackedMailChannel($factory, resolve(Markdown::class))->send($participant, new TargetDrawn))
         ->toThrow(RuntimeException::class, 'DKIM key unreadable');
 
     expect($participant->mail->fresh()->delivery_status)->toBe(DeliveryStatus::Error);
