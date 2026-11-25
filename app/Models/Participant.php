@@ -42,6 +42,7 @@ use STS\Metrics\Metric;
  * @property string|null $pending_email_code
  * @property CarbonImmutable|null $pending_email_at
  * @property int $pending_email_attempts
+ * @property bool|null $dear_santas_exists loaded on demand (see OrganizerController::fetch)
  * @property CarbonImmutable|null $withdrawn_at withdrew from their page, kept aside (see ParticipantsEditor::withdraw)
  * @property-read array<int, string> $exclusionsNames
  * @property-read ParticipantsCollection $exclusions
