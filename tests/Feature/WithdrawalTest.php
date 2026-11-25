@@ -132,5 +132,8 @@ test('the recap of the santa no longer signs the ideas of who withdrew, until th
     expect($senders())->toBe([null]);
 
     restore($draw, $sender, $sender->email, force: true)->assertSuccessful();
-    expect($senders())->toBe([$sender->name]);
+    // Back in the draw they may have become that santa, who is not told their own ideas
+    $santa = $recipient->fresh()->santa;
+    expect($senders())->toBe($santa->is($sender) ? [] : [$sender->name])
+        ->and($recipient->receivedSuggestions()->sole()->signature())->toBe($sender->name);
 });
