@@ -61,6 +61,9 @@ final class Draw extends Model
     // Remove everything N months after the expiration_date
     public const int MONTHS_BEFORE_DELETION = 1;
 
+    // Currency of the budget per gift (ISO 4217), as asked by the form ("en €")
+    public const string BUDGET_CURRENCY = 'EUR';
+
     /** @param array{touch?: bool|null} $options */
     public function save(array $options = []): bool
     {

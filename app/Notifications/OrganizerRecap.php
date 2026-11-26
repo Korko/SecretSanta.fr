@@ -90,8 +90,8 @@ final class OrganizerRecap extends Notification implements ShouldBeEncrypted, Sh
     private static function euros(string $budget): string
     {
         $amount = (float) $budget;
-        $formatted = Number::currency($amount, 'EUR', app()->getLocale(), $amount === floor($amount) ? 0 : 2);
+        $formatted = Number::currency($amount, Draw::BUDGET_CURRENCY, app()->getLocale(), $amount === floor($amount) ? 0 : 2);
 
-        return $formatted === false ? $budget.' €' : $formatted;
+        return $formatted === false ? $budget.' '.Draw::BUDGET_CURRENCY : $formatted;
     }
 }
