@@ -36,3 +36,26 @@ it('cleans up everything', function (): void {
     assertEquals(0, DearSanta::query()->count());
     assertEquals(0, Mail::query()->count());
 });
+
+it('keeps the data one month after the event', function (): void {
+    $this->travelTo('2026-12-24 10:00:00');
+    $draw = Draw::factory()->create(['expires_at' => '2026-12-24']);
+
+    expect($draw->deleted_at->toDateString())->toBe('2027-01-24');
+
+    $this->travelTo('2027-01-23 23:59:00');
+    test()->artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
+    assertNotNull($draw->fresh());
+
+    $this->travelTo('2027-01-24 00:00:00');
+    test()->artisan('model:prune', ['--model' => [Draw::class]])->assertSuccessful();
+    assertNull($draw->fresh());
+});
+
+it('keeps a draw of the end of a month until the end of the next one', function (): void {
+    $this->travelTo('2027-01-31 10:00:00');
+    $draw = Draw::factory()->create(['expires_at' => '2027-01-31']);
+
+    // No overflow into March
+    expect($draw->deleted_at->toDateString())->toBe('2027-02-28');
+});

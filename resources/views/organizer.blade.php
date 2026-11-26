@@ -12,6 +12,7 @@
             'changeParticipantsUrl' => URL::signedRoute('organizerPanel.changeParticipants', ['draw' => $draw]),
             'restoreUrl' => URL::signedRoute('organizerPanel.restore', ['draw' => $draw]),
             'changeDateUrl' => URL::signedRoute('organizerPanel.changeDate', ['draw' => $draw]),
+            'changeEventDetailsUrl' => URL::signedRoute('organizerPanel.changeEventDetails', ['draw' => $draw]),
             'revealTargetsUrl' => URL::signedRoute('organizerPanel.revealTargets', ['draw' => $draw]),
             // Their own participant part, when the organizer takes part
             'participant' => $participantRoutes,

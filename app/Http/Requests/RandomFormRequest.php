@@ -33,6 +33,10 @@ final class RandomFormRequest extends Request
             'content-email' => 'required|string|max:10000|contains_text:{TARGET}',
 
             'data-expiration' => 'required|date_format:Y-m-d|after_or_equal:tomorrow|before:+1year',
+
+            // "Le jour J": optional
+            'data-location' => 'sometimes|nullable|string|max:255',
+            'data-budget' => 'sometimes|nullable|numeric|min:0|max:100000',
         ];
     }
 
@@ -59,6 +63,10 @@ final class RandomFormRequest extends Request
             'data-expiration.after_or_equal' => __('validation.custom.randomform.expiration.min'),
             'data-expiration.before' => __('validation.custom.randomform.expiration.max'),
             'data-expiration.date_format' => __('validation.custom.randomform.expiration.format'),
+            'data-location.max' => __('validation.custom.randomform.location.max'),
+            'data-budget.numeric' => __('validation.custom.randomform.budget.format'),
+            'data-budget.min' => __('validation.custom.randomform.budget.format'),
+            'data-budget.max' => __('validation.custom.randomform.budget.max'),
         ];
     }
 

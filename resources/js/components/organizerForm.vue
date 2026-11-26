@@ -45,6 +45,8 @@
                 now: Date.now(),
                 endedByServer: false,
                 deleted_at: this.data.deleted_at,
+                location: this.data.location || '',
+                budget: this.data.budget || '',
                 drawn_at: this.data.drawn_at,
                 finalCsvAvailable: this.data.finalCsvAvailable,
                 changeEmailUrls: this.data.changeEmailUrls,
@@ -235,6 +237,21 @@
                         this.checkEnded(error).catch(() => {});
                     });
             },
+            // Sent when the field is left, like the date: an empty field removes the line from the emails
+            changeEventDetail(field, event) {
+                const input = event.target;
+                return fetch(this.routes.changeEventDetailsUrl, 'POST', { [field]: input.value })
+                    .then(data => {
+                        this.location = data.location || '';
+                        this.budget = data.budget || '';
+                        alertify.success(this.$t('organizer.eventDetails.saved'), 3);
+                    })
+                    .catch(error => {
+                        input.value = this[field];
+                        alertify.alert(error.errors?.[field]?.[0] || error.message);
+                        this.checkEnded(error).catch(() => {});
+                    });
+            },
             // Any refused action may be the first sign the event is over
             checkEnded(error) {
                 if (error?.expired) {
@@ -404,6 +421,16 @@
             <label for="expires_at">{{ $t('organizer.date.label') }}</label>
             <input id="expires_at" type="date" class="form-control w-auto" :value="expirationDateShort" :min="tomorrow" @change="changeDate" />
             <small class="form-text text-muted">{{ $t('organizer.date.help', {deleted_at: deletionDateLong}) }}</small>
+        </div>
+        <div v-if="!expired" class="form-row">
+            <div class="form-group col-md-6">
+                <label for="event_location">{{ $t('organizer.eventDetails.location') }}</label>
+                <input id="event_location" type="text" maxlength="255" class="form-control" :value="location" :placeholder="$t('organizer.eventDetails.locationPlaceholder')" @change="changeEventDetail('location', $event)" />
+            </div>
+            <div class="form-group col-md-3">
+                <label for="event_budget">{{ $t('organizer.eventDetails.budget') }}</label>
+                <input id="event_budget" type="number" min="0" step="any" inputmode="decimal" class="form-control" :value="budget" @change="changeEventDetail('budget', $event)" />
+            </div>
         </div>
         <p class="received-count">
             <i class="fas fa-check" />

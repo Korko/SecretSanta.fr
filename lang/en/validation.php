@@ -198,6 +198,13 @@ return [
                 'required' => 'The email content is required.',
                 'contains_text' => 'The email content must contain the word {TARGET} to indicate the target.',
             ],
+            'location' => [
+                'max' => 'The location cannot exceed 255 characters.',
+            ],
+            'budget' => [
+                'format' => 'The budget must be an amount in euros, e.g. 20.',
+                'max' => 'The budget cannot exceed €100,000.',
+            ],
             'expiration' => [
                 'required' => 'The expiration date is required.',
                 'min' => 'The expiration date cannot be before tomorrow.',

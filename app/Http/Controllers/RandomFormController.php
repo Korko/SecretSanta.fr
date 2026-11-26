@@ -34,7 +34,7 @@ final class RandomFormController extends Controller
 
     public function handle(RandomFormRequest $request): JsonResponse
     {
-        /** @var array{participant-organizer?: bool, organizer: array{name: string, email: string}, participants: list<array{name: string, email: string, exclusions?: list<int|string>}>, title: string, content-email: string, data-expiration: string} $safe */
+        /** @var array{participant-organizer?: bool, organizer: array{name: string, email: string}, participants: list<array{name: string, email: string, exclusions?: list<int|string>}>, title: string, content-email: string, data-expiration: string, data-location?: string|null, data-budget?: string|null} $safe */
         $safe = $request->validated();
 
         try {
@@ -50,6 +50,7 @@ final class RandomFormController extends Controller
                     ->withTitle($safe['title'])
                     ->withBody($safe['content-email'])
                     ->withExpiration($safe['data-expiration'])
+                    ->withEventDetails($safe['data-location'] ?? null, isset($safe['data-budget']) ? (string) $safe['data-budget'] : null)
                     ->save();
 
                 // Single use: the draw keeps the raised limit for the participants added later

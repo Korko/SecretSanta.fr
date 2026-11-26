@@ -78,6 +78,8 @@ Route::middleware('signed')->group(function (): void {
             ->name('organizerPanel.restore')->middleware('throttle:email');
         Route::post('/draw/{draw}/changeDate', [OrganizerController::class, 'changeDate'])
             ->name('organizerPanel.changeDate');
+        Route::post('/draw/{draw}/changeEventDetails', [OrganizerController::class, 'changeEventDetails'])
+            ->name('organizerPanel.changeEventDetails');
         Route::get('/org/{draw}/fetchState', [OrganizerController::class, 'fetchState'])
             ->name('organizerPanel.fetchState');
     });

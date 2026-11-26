@@ -64,4 +64,8 @@ return [
     'gift_suggestion.heading' => 'Eine Geschenkidee für :name',
     'gift_suggestion.from_anonymous' => 'Ein anderer Teilnehmer schlägt Ihnen eine Geschenkidee für :name vor:',
     'gift_suggestion.secret' => 'Diese Person weiß nicht, dass Sie der geheime Weihnachtsmann von :name sind. Ihre Teilnehmerseite: :link',
+    'event.heading' => 'Der große Tag',
+    'event.date' => 'Datum: :date',
+    'event.location' => 'Ort: :location',
+    'event.budget' => 'Budget pro Geschenk: :budget',
 ];

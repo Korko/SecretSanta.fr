@@ -30,6 +30,8 @@ use STS\Metrics\Metric;
  * @property string $organizer_name
  * @property string $organizer_email
  * @property bool|null $next_solvable null: not computed yet (ComputeNextSolvable)
+ * @property string|null $location where the gifts are exchanged, optional
+ * @property string|null $budget per gift, in euros, optional
  * @property CarbonImmutable|null $targets_revealed_at
  * @property-read CarbonImmutable $deleted_at
  * @property CarbonImmutable|null $organizer_received_at
@@ -45,7 +47,7 @@ use STS\Metrics\Metric;
  * @property list<string>|null $refused_emails
  * @property int|null $max_participants
  */
-#[Fillable(['mail_title', 'mail_body', 'expires_at', 'next_solvable', 'organizer_name', 'organizer_email', 'organizer_participant_id'])]
+#[Fillable(['mail_title', 'mail_body', 'expires_at', 'next_solvable', 'organizer_name', 'organizer_email', 'organizer_participant_id', 'location', 'budget'])]
 final class Draw extends Model
 {
     /** @use HasFactory<DrawFactory> */
@@ -56,8 +58,11 @@ final class Draw extends Model
     use Notifiable;
     use Prunable;
 
-    // Remove everything N weeks after the expiration_date
-    public const int WEEKS_BEFORE_DELETION = 3;
+    // Remove everything N months after the expiration_date
+    public const int MONTHS_BEFORE_DELETION = 1;
+
+    // Currency of the budget per gift (ISO 4217), as asked by the form ("en €")
+    public const string BUDGET_CURRENCY = 'EUR';
 
     /** @param array{touch?: bool|null} $options */
     public function save(array $options = []): bool
@@ -73,7 +78,7 @@ final class Draw extends Model
     /** @return Builder<self> */
     public function prunable(): Builder
     {
-        return self::query()->where('expires_at', '<=', Date::now()->subWeeks(self::WEEKS_BEFORE_DELETION));
+        return self::query()->where('expires_at', '<=', Date::now()->subMonthsNoOverflow(self::MONTHS_BEFORE_DELETION));
     }
 
     // Those taking part: the ones who withdrew are kept aside (withdrawnParticipants)
@@ -202,7 +207,7 @@ final class Draw extends Model
             }
 
             // Draws made before organizer_participant_id: the first participant, with the organizer's email
-            // (can go once they are all pruned, a year and WEEKS_BEFORE_DELETION after the column was added)
+            // (can go once they are all pruned, a year and MONTHS_BEFORE_DELETION after the column was added)
             $first = $this->participants->first();
 
             return $first !== null && $first->email === $this->organizer_email ? $first : null;
@@ -225,7 +230,7 @@ final class Draw extends Model
     /** @return Attribute<CarbonImmutable, never> */
     protected function deletedAt(): Attribute
     {
-        return Attribute::make(get: fn (): CarbonImmutable => $this->expires_at->addWeeks(self::WEEKS_BEFORE_DELETION));
+        return Attribute::make(get: fn (): CarbonImmutable => $this->expires_at->addMonthsNoOverflow(self::MONTHS_BEFORE_DELETION));
     }
 
     /** @return Attribute<string, never> */
@@ -253,6 +258,8 @@ final class Draw extends Model
             'refused_emails' => 'array',
             'organizer_name' => EncryptedString::class,
             'organizer_email' => EncryptedString::class,
+            'location' => EncryptedString::class,
+            'budget' => EncryptedString::class,
         ];
     }
 
