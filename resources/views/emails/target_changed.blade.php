@@ -1,19 +1,18 @@
 @extends('emails/layout')
 
-@section('title')
-    {{ __('emails.target_changed.heading') }}
-@endsection
+@section('title', __('emails.target_changed.heading'))
 
 @section('content')
-    <p style="padding-bottom:10px !important">{{ __('emails.hello', ['name' => $santaName]) }}</p>
-
-    <p style="padding-bottom:10px !important">{{ __('emails.target_changed.body') }}</p>
-
-    <p style="padding-bottom:10px !important">{{ __('emails.target.new', ['name' => $targetName]) }}</p>
+    <x-mail.p>{{ __('emails.hello', ['name' => $santaName]) }}</x-mail.p>
+    <x-mail.p :top="8">{{ __('emails.target_changed.body') }}</x-mail.p>
+    <x-mail.gift :label="__('emails.gift.for')" :name="$targetName" />
+@if($targetMessages || $giftSuggestions)
+    <x-mail.p>{{ __('emails.target_changed.recap', ['name' => $targetName]) }}</x-mail.p>
+@endif
+    <x-mail.p>{{ __('emails.target_changed.old') }}</x-mail.p>
 @if($targetMessages || $giftSuggestions)
 
-    <hr/>
-
+    <x-mail.hr />
     @include('emails/partials/target_messages')
 @endif
 @endsection

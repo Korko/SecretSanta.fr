@@ -1,4 +1,4 @@
-@extends('templates/layout')
+@extends('templates/kraft')
 
 @section('header')
     @parent
@@ -11,119 +11,93 @@
     ])
 @stop
 
-@section('navbar')
-    <ul class="nav navbar-nav navbar-nav-left">
-        <li><a href="#what">@lang('form.nav.what')</a></li>
-        <li><a href="#how">@lang('form.nav.how')</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-nav-right">
-        <li><a href="#form">@lang('form.nav.go')</a></li>
-        <li><a class="d-md-none" href="{{ route('faq') }}" target="_blank">@lang('form.nav.faq')</a></li>
-    </ul>
-@stop
-
 @section('body')
-    <div id="header">
-        <div class="bg-overlay"></div>
-        <div class="center text-center">
-            <div class="banner">
-                <h1>@lang('form.title')</h1>
-            </div>
-            <div class="subtitle">
-                <h4>@lang('form.subtitle')</h4>
-            </div>
-        </div>
-        <div class="bottom text-center">
-            <a id="scrollDownArrow" href="#what"><i class="fa fa-chevron-down"></i></a>
-        </div>
-    </div>
-
-    <div id="what" class="light-wrapper">
-        <section class="ss-style-top"></section>
-        <div class="container inner">
-            <h2 class="section-title text-center">@lang('form.section.what.title')</h2>
-            <p class="lead main text-center">@lang('form.section.what.subtitle')</p>
-            <div class="row text-center what">
-                <ul class="media-list w-100">
-                    <li class="media media-icon-left media-calendar-icon">
-                        <div class="media-body">
-                            <h4 class="media-heading">@lang('form.section.what.heading1')</h4>
-                            <p>{!! nl2br(trans('form.section.what.content1')) !!}</p>
+    {{-- Haut de page : sur ordinateur la photo en fond sous un voile ; sur mobile le texte, la carte, puis la photo --}}
+    <section class="hero">
+        <div class="kt-veil" aria-hidden="true"></div>
+        <div class="hero__inner">
+            <div class="hero__col">
+                <p class="mentions">
+                    @foreach (__('home.hero.mentions') as $mention)
+                        @unless ($loop->first)<span aria-hidden="true">·</span>@endunless
+                        <span>{{ $mention }}</span>
+                    @endforeach
+                </p>
+                <h1 class="hero__titre">
+                    <span class="insecable">{{ __('home.hero.title_1') }}@if (__('home.hero.title_join') === '-')<span class="tiret-offrez">-</span>@else{{ ' ' }}@endif{{ __('home.hero.title_2') }}</span>
+                    {{ __('home.hero.title_3') }}
+                    <span class="hero__accent">{{ __('home.hero.title_accent') }}</span>
+                </h1>
+                <p class="hero__intro">{{ __('home.hero.intro') }}</p>
+                <div class="carte-etiquette-wrap">
+                    <div class="kt-card carte-etiquette">
+                        <span class="kt-hole" aria-hidden="true"></span>
+                        @include('partials/illustrations/ficelle-boucle')
+                        <label class="carte-etiquette__label" for="hero-title">@lang('home.hero.event_label')</label>
+                        <div class="carte-etiquette__ligne">
+                            <input id="hero-title" class="field field--haut" type="text" autocomplete="off" placeholder="@lang('home.hero.event_placeholder')">
+                            <span class="tag-wrap"><a class="tag-action" href="#form" data-focus-form>@lang('home.hero.go')</a></span>
                         </div>
-                    </li>
-                </ul>
-                <div class="card w-100">
-                    <div class="bg-light card-body">
-                        <h6 class="card-title">@lang('form.fyi')</h6>
-                        <p class="card-text">{!! nl2br(trans('form.section.what.notice', ['button' => str_replace("\n", '', view('partials.bmcButton'))])) !!}</p>
+                        <p class="carte-etiquette__note">@lang('home.hero.no_account')</p>
                     </div>
                 </div>
             </div>
-        </div><!-- /.container -->
-        <section class="ss-style-bottom"></section>
-    </div><!-- #what -->
+        </div>
+        <div class="hero__photo" role="img" aria-label="@lang('home.hero.photo_alt')"></div>
+    </section>
 
-    <div class="parallax">
-        <div class="container inner"></div>
-    </div>
+    <div class="ruban ruban--noeud" aria-hidden="true"><div class="noeud">@include('partials/illustrations/noeud-ruban')</div></div>
 
-    <div id="how" class="light-wrapper">
-        <section class="ss-style-top"></section>
-        <div class="container inner">
-            <h2 class="section-title text-center">@lang('form.section.how.title')</h2>
-            <p class="lead main text-center">@lang('form.section.how.subtitle')</p>
-            <div class="row text-center how">
-                <ul class="media-list w-100">
-                    <li class="media media-icon-left media-user-icon">
-                        <div class="media-body">
-                            <h4 class="media-heading">@lang('form.section.how.heading1')</h4>
-                            <p>{!! nl2br(trans('form.section.how.content1')) !!}</p>
+    <section id="how" class="etapes" aria-labelledby="how-title">
+        <div class="etapes__inner">
+            <h2 id="how-title" class="titre etapes__titre">@lang('home.steps.title_before') <span class="titre-accent">@lang('home.steps.title_accent')</span>@lang('home.steps.title_after')</h2>
+            <ol class="kt-steps">
+                @foreach ([['one', 'red', 'etape-1-participants'], ['two', 'green', 'etape-2-message'], ['three', 'gold', 'etape-3-jour-j']] as [$step, $color, $art])
+                    <li class="kt-step">
+                        <div class="kt-stepart">
+                            @include('partials/illustrations/'.$art)
+                            <span class="sticker sticker--{{ $color }} sticker--48" aria-hidden="true">{{ $loop->iteration }}</span>
                         </div>
+                        <h3 class="kt-step__titre">@lang('home.steps.'.$step.'_title')</h3>
+                        <p class="kt-step__texte">@lang('home.steps.'.$step.'_text')</p>
                     </li>
-                    <li class="media media-icon-right media-paper-icon">
-                        <div class="media-body">
-                            <h4 class="media-heading">@lang('form.section.how.heading2')</h4>
-                            <p>{!! nl2br(trans('form.section.how.content2')) !!}</p>
-                        </div>
-                    </li>
-                    <li class="media media-icon-left media-mail-icon">
-                        <div class="media-body">
-                            <h4 class="media-heading">@lang('form.section.how.heading3')</h4>
-                            <p>{!! nl2br(trans('form.section.how.content3')) !!}</p>
-                        </div>
-                    </li>
-                    <li class="media media-icon-right media-clock-icon">
-                        <div class="media-body">
-                            <h4 class="media-heading">@lang('form.section.how.heading4')</h4>
-                            <p>{!! nl2br(trans('form.section.how.content4')) !!}</p>
-                        </div>
-                    </li>
-                </ul>
-                <div class="card w-100">
-                    <div class="bg-light card-body">
-                        <h6 class="card-title">@lang('form.fyi')</h6>
-                        <p class="card-text">{!! nl2br(trans('form.section.how.notice', ['link' => '<a href="https://github.com/Korko/SecretSanta">GitHub</a>'])) !!}</p>
-                    </div>
+                @endforeach
+            </ol>
+
+            <div class="secret-box">
+                <span class="secret-box__icone" aria-hidden="true"><svg focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+                <p class="secret-box__texte"><strong>@lang('home.secret.strong')</strong> @lang('home.secret.text')</p>
+            </div>
+
+            <div class="apres">
+                <div class="apres__dessin">@include('partials/illustrations/et-apres-lettre')</div>
+                <div class="apres__texte">
+                    <h3 class="titre apres__titre">@lang('home.after.title')</h3>
+                    <p>@lang('home.after.text_1')</p>
+                    <p>@lang('home.after.text_2')</p>
                 </div>
             </div>
-        </div><!-- /.container -->
-        <section class="ss-style-bottom"></section>
-    </div><!--/#how-->
+        </div>
+    </section>
 
-    <div class="parallax parallax2">
-        <div class="container inner"></div>
-    </div>
+    <section class="bandeau-photo" aria-label="@lang('home.band.label')">
+        <div class="bandeau-photo__voile">
+            {{-- L'apostrophe de Happy Kids est mal dessinée : celle-ci est composée en Aileron --}}
+            <p class="bandeau-photo__etiquette">@lang('home.band.text_before')@if (__('home.band.text_after') !== '')<span class="apos">’</span>@lang('home.band.text_after')@endif</p>
+        </div>
+    </section>
 
-    <div id="form" class="light-wrapper v-cloak">
-        <section class="ss-style-top"></section>
-        <div class="container inner">
-            <h2 class="section-title text-center">@lang('form.section.go.title')</h2>
-            <p class="lead main text-center">@lang('form.section.go.subtitle')</p>
-<!--        <div class="alert alert-warning" role="alert"></div>-->
-            <div id="random-form"></div>
-        </div><!-- /.container -->
-        <section class="ss-style-bottom"></section>
-    </div>
+    <section id="form" class="k-form kraft" aria-labelledby="form-title">
+        <div class="k-form__inner">
+            <div class="k-form__entete">
+                <h2 id="form-title" class="titre k-form__titre">@lang('home.go.title_before') <span class="titre-accent">@lang('home.go.title_accent')</span></h2>
+                <p class="k-form__intro">@lang('home.go.intro')</p>
+            </div>
+            <div id="random-form">
+                <p class="k-attente">@lang('home.go.waiting', ['email' => config()->string('app.email')])</p>
+            </div>
+        </div>
+    </section>
 @stop
 
 @section('script')

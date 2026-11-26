@@ -56,7 +56,7 @@ final class TargetDrawn extends Notification implements ShouldBeEncrypted, Shoul
                 ...OrganizerRecap::eventDetails($santa->draw),
                 // A new santa or a new address: what their target already wrote or was given comes in this same email
                 ...TargetMessages::viewData($santa),
-                // Their link above already opens their panel
+                // Their link above already opens their panel: a single link (OrganizerPageTest)
                 'organizer' => $santa->isOrganizer() ? [...OrganizerRecap::viewData($santa->draw), 'samePage' => true] : null,
             ]);
 

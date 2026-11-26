@@ -1,32 +1,37 @@
 @extends('emails/layout_plain')
 
 @section('title')
-    {!! __('emails.target_drawn.heading') !!}
+{!! __('emails.target_drawn.heading') !!}
 @endsection
 
 @section('content')
-    > {!! $content !!}
+{!! __('emails.target_drawn.intro') !!}
 
-    @include('emails/partials/event_plain')
+> {!! $content !!}
 
-    ---
+@include('emails/partials/event_plain')
 
-    {!! __('emails.target_drawn.write', ['link' => $dearSantaLink]) !!}
+---
 
+{!! __('emails.target_drawn.ask_title') !!}
+
+{!! __('emails.target_drawn.ask') !!}
+
+{!! __('emails.target_drawn.write_button') !!} : {!! $dearSantaLink !!}
+@unless($organizer)
+
+{!! __('emails.target_drawn.report') !!}
+@endunless
 @if($organizer)
 
-    ---
+---
 
-    {!! __('emails.target_drawn.as_organizer') !!} {!! __('emails.target_drawn.do_not_forward') !!}
-
-    @include('emails/partials/organizer_plain')
-@else
-    {!! __('emails.target_drawn.report') !!}
+@include('emails/partials/organizer_plain')
 @endif
 @if($targetMessages || $giftSuggestions)
 
-    ---
+---
 
-    @include('emails/partials/target_messages_plain')
+@include('emails/partials/target_messages_plain')
 @endif
 @endsection

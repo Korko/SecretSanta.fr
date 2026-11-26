@@ -1,20 +1,18 @@
+{{-- What the target wrote to their santa, and the others' gift ideas: within the target emails, or as the TargetMessages recap --}}
 @if($targetMessages)
-    <p style="padding-bottom:10px !important">{{ __('emails.target_messages.intro', ['name' => $targetName]) }}</p>
-
-    {{-- Not $message: the layout embeds its images through the mail message of that name --}}
+    <x-mail.h2>{{ __('emails.target_messages.messages') }}</x-mail.h2>
+    <x-mail.p :top="4">{{ __('emails.target_messages.intro', ['name' => $targetName]) }}</x-mail.p>
+    {{-- Not $message: the mail message of that name is a reserved view variable --}}
     @foreach ($targetMessages as $targetMessage)
-        <p style="padding-bottom:5px !important"><em>{{ $targetMessage['date'] }}</em></p>
-        <blockquote>{!! nl2br(e($targetMessage['content'])) !!}</blockquote>
+        <x-mail.letter :date="$targetMessage['date']">{!! nl2br(e($targetMessage['content'])) !!}</x-mail.letter>
     @endforeach
 @endif
 @if($giftSuggestions)
-
-    <p style="padding-bottom:10px !important">{{ __('emails.target_messages.suggestions', ['name' => $targetName]) }}</p>
-
+    <x-mail.h2>{{ __('emails.target_messages.ideas') }}</x-mail.h2>
+    <x-mail.p :top="4">{{ __('emails.target_messages.suggestions', ['name' => $targetName]) }}</x-mail.p>
     @foreach ($giftSuggestions as $giftSuggestion)
-        <p style="padding-bottom:5px !important"><em>{{ $giftSuggestion['date'] }}</em></p>
-        <blockquote>{!! nl2br(e($giftSuggestion['content'])) !!}</blockquote>
+        {{-- The sender is never told: "De : ?" --}}
+        <x-mail.gift :label="__('emails.gift.from')" :name="__('emails.gift.anonymous')" />
+        <x-mail.letter plain :date="$giftSuggestion['date']">{!! nl2br(e($giftSuggestion['content'])) !!}</x-mail.letter>
     @endforeach
-
-    <p style="padding-bottom:10px !important"><small>{{ __('emails.target_messages.suggestions_secret', ['name' => $targetName]) }}</small></p>
 @endif

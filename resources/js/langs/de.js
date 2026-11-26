@@ -120,6 +120,49 @@ export default {
             }
         },
         "form": {
+            "k": {
+                "stepsNav": "Zu einem Schritt des Formulars",
+                "stepsShort": {
+                    "one": "Teilnehmer",
+                    "two": "Nachricht",
+                    "three": "Großer Tag"
+                },
+                "steps": {
+                    "one": "Die Teilnehmer",
+                    "two": "Die Nachricht",
+                    "three": "Der große Tag"
+                },
+                "you": "Sie, der Organisator",
+                "person": "Person {n}",
+                "participate": {
+                    "label": "Ich nehme auch an der Ziehung teil",
+                    "help": "Sie werden dann wie alle anderen gezogen. Deaktivieren Sie dies, wenn Sie nur organisieren: Sie erhalten dann nur die Zusammenfassung."
+                },
+                "remove": "{name} entfernen",
+                "removeN": "Teilnehmer {n} entfernen",
+                "nameOf": "Name oder Spitzname von Teilnehmer {n}",
+                "emailOf": "E-Mail-Adresse von Teilnehmer {n}",
+                "exclusionsOf": "Ausschlüsse von Teilnehmer {n}",
+                "eventLabel": "Name Ihrer Veranstaltung",
+                "eventPlaceholder": "z. B. Weihnachten bei Martin",
+                "messageLabel": "Nachricht an die Teilnehmer",
+                "messagePlaceholder": "Hallo {SANTA}! Für Weihnachten bei Martin ist dein Ziel {TARGET}. Wir freuen uns auf eure Geschenke!",
+                "insert": "Einfügen:",
+                "insertSanta": "der Name der Person, die die E-Mail erhält",
+                "insertTarget": "der Name ihres Ziels",
+                "inserted": "{word} in die Nachricht eingefügt",
+                "date": "Datum der Veranstaltung",
+                "location": "Ort",
+                "budget": "Budget pro Geschenk, in €",
+                "optional": "(optional)",
+                "locationPlaceholder": "z. B. bei Martin",
+                "dayHelp": "Das Datum kann später geändert werden. Bis dahin bietet Ihnen eine eigene Seite die Übersicht der Teilnehmer. Alle gespeicherten Daten werden einen Monat danach gelöscht.",
+                "submit": "Ziehung starten!",
+                "sending": "Ziehung läuft…",
+                "newDraw": "Eine weitere Ziehung organisieren",
+                "seal": "Geheim gehalten von SecretSanta.fr: Ihre Daten sind verschlüsselt und werden nie weitergegeben.",
+                "success": "Los geht's! Alle Teilnehmer erhalten ihre E-Mail in den folgenden Minuten."
+            },
             "inputEdit": {
                 "update": "Ändern",
                 "updating": "Speichern läuft",

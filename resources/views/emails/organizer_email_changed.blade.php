@@ -1,15 +1,10 @@
 @extends('emails/layout')
 
-@section('title')
-    {{ __('emails.organizer_email_changed.heading') }}
-@endsection
+@section('title', __('emails.organizer_email_changed.heading'))
 
 @section('content')
-    <p style="padding-bottom:10px !important">{{ __('emails.hello', ['name' => $organizerName]) }}</p>
-
-    <p style="padding-bottom:10px !important">{{ __('emails.organizer_email_changed.body', ['app' => config('app.name'), 'email' => $newEmail]) }}</p>
-
-    <p style="padding-bottom:10px !important">{{ __('emails.organizer_email_changed.ignore') }}</p>
-
-    <p style="padding-bottom:10px !important">{{ __('emails.organizer_email_changed.otherwise') }}</p>
+    <x-mail.p>{{ __('emails.hello', ['name' => $organizerName]) }}</x-mail.p>
+    <x-mail.p :top="8">{{ __('emails.organizer_email_changed.body', ['app' => config('app.name'), 'email' => $newEmail]) }}</x-mail.p>
+    <x-mail.p>{{ __('emails.organizer_email_changed.ignore') }}</x-mail.p>
+    <x-mail.p>{{ __('emails.organizer_email_changed.otherwise') }}</x-mail.p>
 @endsection

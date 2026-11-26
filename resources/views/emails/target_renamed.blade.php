@@ -1,13 +1,10 @@
 @extends('emails/layout')
 
-@section('title')
-    {{ __('emails.target_renamed.heading') }}
-@endsection
+@section('title', __('emails.target_renamed.heading'))
 
 @section('content')
-    <p style="padding-bottom:10px !important">{{ __('emails.hello', ['name' => $santaName]) }}</p>
-
-    <p style="padding-bottom:10px !important">{{ __('emails.target_renamed.body', ['old' => $oldName, 'new' => $newName]) }}</p>
-
-    <p style="padding-bottom:10px !important">{{ __('emails.target_renamed.same') }}</p>
+    <x-mail.p>{{ __('emails.hello', ['name' => $santaName]) }}</x-mail.p>
+    <x-mail.p :top="8">{{ __('emails.target_renamed.body', ['old' => $oldName, 'new' => $newName]) }}</x-mail.p>
+    <x-mail.gift :label="__('emails.gift.for')" :name="$newName" />
+    <x-mail.p>{{ __('emails.target_renamed.same') }}</x-mail.p>
 @endsection

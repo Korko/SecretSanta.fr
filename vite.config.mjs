@@ -1,11 +1,13 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ mode }) => ({
     plugins: [
         laravel({
             input: [
+                'resources/css/home.css',
                 'resources/sass/404.scss',
                 'resources/sass/app.scss',
                 'resources/sass/vendor.scss',
@@ -18,6 +20,8 @@ export default defineConfig(({ mode }) => ({
             ],
         }),
         vue(),
+        // Only processes the CSS importing it: resources/css/home.css (the other pages stay on Bootstrap)
+        tailwindcss(),
     ],
     resolve: {
         alias: [

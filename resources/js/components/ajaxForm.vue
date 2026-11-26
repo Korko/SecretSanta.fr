@@ -163,7 +163,9 @@
         <fieldset :disabled="sending || sent">
             <slot v-bind="{ sending, sent, submit, onSubmit, onReset, fieldError }" />
         </fieldset>
-        <fieldset v-if="button">
+        <!-- A page with its own buttons (home page: the green tag); outside the disabled fieldset for "reset" to stay usable -->
+        <slot v-if="$slots.buttons" name="buttons" v-bind="{ sending, sent, onReset }" />
+        <fieldset v-else-if="button">
             <button type="submit" class="btn btn-primary btn-lg" :disabled="sent || sending">
                 <span v-if="sent"><span class="fas fa-check-circle" /> {{ buttonSent || $t('common.form.sent') }}</span>
                 <span v-else-if="sending"><span class="fas fa-spinner" /> {{ buttonSending || $t('common.form.sending') }}</span>
