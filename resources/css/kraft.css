@@ -1,5 +1,5 @@
 /*
- * Page d'accueil « cadeaux » : Tailwind 4, chargé par cette seule page (templates/kraft.blade.php).
+ * Design « cadeaux » : Tailwind 4, chargé par les pages du gabarit templates/kraft (accueil, participant, organisateur).
  * Les autres pages gardent Bootstrap (resources/sass).
  * Règle du propriétaire : des classes nommées (définies ici, en @apply), pas de suites d'utilitaires dans les gabarits.
  */
@@ -288,6 +288,176 @@
     .modal-footer .btn-primary { @apply bg-sapin text-white hover:bg-sapin-ombre hover:text-white; }
     .modal-footer .btn .fas { @apply hidden; }
 
+    /* =====================================================================
+       Pages participant et organisateur (classes pg-* des maquettes)
+       ===================================================================== */
+    .pg-page { @apply flex flex-auto flex-col bg-creme outline-none; }
+    .pg { @apply flex flex-auto flex-col; }
+    .pg-banner { @apply relative overflow-hidden bg-encre bg-cover bg-no-repeat text-creme-clair; background-image: url('../images/gifts-1.webp'); background-position: right 42%; }
+    .pg-banner .kt-veil { @apply absolute inset-0; }
+    .pg-banner-in { @apply relative mx-auto flex max-w-[1240px] flex-wrap items-end justify-between gap-x-10 gap-y-6 px-8 pb-[58px] pt-10; }
+    .pg-banner-text { @apply max-w-[720px]; }
+    .pg-eyebrow { @apply m-0 text-sm font-bold tracking-[.03em] text-dore; }
+    .pg-h1 { @apply m-0 mt-1.5 font-happy font-normal leading-[1.1] text-creme-clair; font-size: clamp(34px, 4.4vw, 50px); text-wrap: balance; }
+    .pg-meta { @apply m-0 mt-4 flex list-none flex-wrap gap-2.5 p-0; }
+    .pg-meta li { @apply inline-flex items-center gap-2 rounded-full border border-solid border-creme-clair/30 bg-creme-clair/12 px-3.5 py-[7px] text-sm font-bold text-creme-clair; }
+    .pg-meta .k-icon { @apply shrink-0 text-dore; }
+    .pg-meta .pg-meta-count { @apply hidden; }
+    .pg-count { @apply m-0 flex h-[138px] w-[138px] flex-col items-center justify-center gap-1 rounded-full bg-papier text-center text-encre; box-shadow: 0 0 0 6px rgba(246, 201, 120, .35), 0 14px 30px rgba(20, 10, 5, .35); }
+    .pg-count b { @apply pt-1.5 font-happy text-[44px] font-normal leading-[.9] text-titre-rouge; }
+    .pg-count span { @apply text-[13px] font-bold leading-tight; }
+    .pg-tracker { @apply flex w-[330px] max-w-full flex-col gap-2.5 rounded-[18px] border border-solid border-creme-clair/25 px-5 py-[18px]; background: rgba(43, 26, 17, .55); }
+    .pg-tracker-n { @apply m-0 flex items-baseline gap-2 text-creme-clair; }
+    .pg-tracker-n b { @apply whitespace-nowrap font-happy text-[38px] font-normal leading-none text-dore; }
+    .pg-tracker-n span { @apply text-[15px] font-bold; }
+    .pg-tracker-help { @apply m-0 text-[13px] leading-[1.45] text-[#F1E3CF]; }
+    .pg-progress { @apply h-3 overflow-hidden rounded-full bg-creme-clair/22; }
+    .pg-progress span { @apply block h-full rounded-full; background: repeating-linear-gradient(90deg, #F6C978 0 10px, #F2BC5C 10px 20px); }
+
+    .pg-main { @apply flex-auto bg-creme px-8 pb-[88px] pt-[60px]; }
+    .pg-grid { @apply mx-auto grid max-w-[1240px] items-start gap-8; grid-template-columns: minmax(0, 1fr) 370px; }
+    .pg-col { @apply flex min-w-0 flex-col gap-7; }
+    .pg-card { @apply relative flex flex-col gap-[18px] rounded-[22px] bg-papier px-8 py-7; box-shadow: 0 14px 30px rgba(90, 55, 25, .12); }
+    .pg-card--side { @apply gap-3.5 px-[26px] py-6; }
+    .pg-card--row { @apply flex-row items-start gap-3.5; }
+    .pg-card--alert { @apply border-2 border-solid border-[#E9B7A8] bg-[#FFF9F6]; }
+    .pg-card--danger { @apply border-2 border-dashed border-[#D9A79F] bg-transparent shadow-none; }
+    .pg-stack { @apply flex flex-col gap-2.5; }
+    .pg-h2 { @apply m-0 flex items-center gap-3 font-happy text-[28px] font-normal leading-[1.15] text-encre; }
+    .pg-h3 { @apply m-0 flex items-center gap-2.5 font-happy text-[22px] font-normal leading-[1.28] text-encre; }
+    .pg-h3--sm { @apply text-[19px]; }
+    .pg-h3--danger { @apply text-ruban-fonce; }
+    .pg-h4 { @apply m-0 text-sm font-bold text-encre; }
+    .pg-counter { @apply font-aileron; }
+    .pg-ico { @apply grid h-10 w-10 shrink-0 place-items-center rounded-full; }
+    .pg-ico--sm { @apply h-8 w-8; }
+    .pg-ico--red { @apply bg-[#F8E1DA] text-mention-rouge; }
+    .pg-ico--green { @apply bg-[#E1F0E5] text-sapin; }
+    .pg-ico--gold { @apply bg-[#FBEBC6] text-[#7A5200]; }
+    .pg-ico--kraft { @apply bg-[#F1E1CC] text-[#7A5232]; }
+    .pg-p { @apply m-0 text-[15px] leading-[1.6] text-brun; }
+    .pg-small { @apply m-0 text-[13px] leading-normal text-brun-gris; }
+    .pg-inline { @apply inline; }
+    .pg-resend { @apply flex flex-wrap items-center gap-x-2.5 gap-y-1; }
+    .pg-ink { @apply text-encre; }
+    .pg-strong { @apply font-bold; }
+    .pg-strong .pg-small, .pg-name .pg-small { @apply ml-1.5 font-normal; }
+    .pg-sep { @apply m-0 my-1 border-0 border-t-2 border-dashed border-[#E6D3BE]; }
+    .pg-self-start { @apply self-start; }
+    .pg-link { @apply inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 font-aileron text-sm font-bold text-mention-rouge underline underline-offset-[3px] disabled:cursor-not-allowed disabled:opacity-55; }
+    .pg-link--ink { @apply text-encre; }
+    .pg-btn { @apply inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xl border-2 border-solid border-[#C9A88F] bg-papier px-[18px] font-aileron text-sm font-bold text-encre no-underline hover:bg-[#F6ECE3] disabled:cursor-not-allowed disabled:opacity-55; }
+    .pg-btn--danger { @apply border-[#D9A79F] text-mention-rouge; }
+    .pg-iconbtn { @apply inline-grid h-9 w-9 cursor-pointer place-items-center rounded-[10px] border-0 bg-transparent text-brun-gris hover:bg-[#F1E1CC] hover:text-encre; }
+    .pg-tagrow { @apply flex flex-wrap items-center justify-between gap-x-5 gap-y-3; }
+
+    /* Étiquette cadeau : une information, jamais un bouton */
+    .pg-gtw { @apply inline-flex self-start; filter: drop-shadow(0 6px 8px rgba(90, 55, 25, .18)); }
+    .pg-gt { @apply inline-flex bg-[#C9A88F] p-0.5; clip-path: polygon(26px 0, 100% 0, 100% 100%, 26px 100%, 0 50%); }
+    .pg-gt-in { @apply relative inline-flex items-baseline gap-2.5 bg-papier pb-3 pl-[46px] pr-[26px] pt-2.5; clip-path: polygon(25px 0, 100% 0, 100% 100%, 25px 100%, 0 50%); }
+    .pg-gt-in::before { content: ''; @apply absolute left-[21px] top-1/2 -mt-[5px] h-2.5 w-2.5 rounded-full bg-kraft; box-shadow: inset 0 1px 2px rgba(80, 50, 20, .45); }
+    .pg-gt-k { @apply text-[15px] font-bold text-brun-gris; }
+    .pg-gt-v { @apply font-happy text-4xl leading-none text-titre-rouge; }
+    .pg-gt--sm .pg-gt-in { @apply gap-1.5 pb-1.5 pl-8 pr-3.5 pt-[5px]; }
+    .pg-gt--sm .pg-gt-in::before { @apply left-3.5 -mt-[3.5px] h-[7px] w-[7px]; }
+    .pg-gt--sm .pg-gt-k { @apply text-xs; }
+    .pg-gt--sm .pg-gt-v { @apply text-[19px]; }
+
+    /* Conversation */
+    .pg-thread { @apply m-0 flex list-none flex-col gap-3 p-0; }
+    .pg-msg { @apply max-w-[80%] rounded-[18px] px-4 pb-[13px] pt-3 text-[15px] leading-[1.55] text-encre; overflow-wrap: anywhere; }
+    .pg-msg--in { @apply self-start rounded-tl-md border-2 border-solid border-[#EADBC8] bg-white; }
+    .pg-msg--out { @apply self-end rounded-tr-md border-2 border-solid border-[#CDE3D3] bg-[#E9F3EC]; }
+    .pg-msg--org { @apply max-w-none rounded-[18px] border-2 border-solid border-[#F1DDB0] bg-[#FFF6E2]; }
+    .pg-msg-h { @apply m-0 mb-[3px] flex flex-wrap items-baseline gap-x-2.5 gap-y-1 text-[13px] text-brun-gris; }
+    .pg-msg-h strong { @apply text-sm text-encre; }
+    .pg-msg p { @apply m-0; }
+    .pg-compose { @apply flex flex-col gap-2.5 border-0 border-t-2 border-dashed border-[#E6D3BE] pt-4; }
+    .pg-compose > fieldset { @apply m-0 flex min-w-0 flex-col gap-2.5 border-0 p-0; }
+    .pg-compose--flat { @apply border-t-0 pt-0; }
+    .pg-compose label { @apply text-[15px] font-bold; }
+    .pg-compose textarea { @apply min-h-[92px] py-3 leading-normal; resize: vertical; }
+    .pg-textarea-sm { @apply min-h-[76px]!; }
+    .pg-compose-row { @apply flex flex-wrap items-center justify-between gap-x-5 gap-y-3; }
+    .pg-hint { @apply m-0 inline-flex max-w-[30em] items-start gap-2 text-[13px] leading-[1.45] text-brun-gris; }
+    .pg-hint .k-icon { @apply mt-px shrink-0 text-sapin; }
+    .pg-check { @apply flex cursor-pointer items-center gap-2.5 text-sm! font-semibold!; }
+    .pg-check .org-box { @apply h-6 w-6; }
+    .pg-code { @apply font-mono text-xl tracking-[.2em]; }
+    .tag-action--moyen { @apply min-h-[50px] text-[19px]; }
+    .tag-action--petit { @apply min-h-11 pl-10 pr-5 text-[17px]; }
+    .tag-action--petit::before { @apply left-4; }
+    .tag-action .k-icon { @apply shrink-0; }
+
+    .pg-ideas { @apply m-0 flex list-none flex-col gap-3 p-0; }
+    .pg-idea { @apply grid items-start gap-x-3.5 gap-y-1.5 rounded-[14px] bg-creme px-3.5 py-3; grid-template-columns: auto 1fr; }
+    .pg-idea p { @apply m-0 text-[15px] leading-normal; }
+    .pg-idea p.pg-small { @apply col-start-2 text-[13px]; }
+    .pg-sent { @apply m-0 flex list-none flex-col gap-3 p-0; }
+    .pg-sent li { @apply flex flex-col items-start gap-1; }
+    .pg-details summary { @apply cursor-pointer list-none; }
+    .pg-details summary::-webkit-details-marker { @apply hidden; }
+    .pg-problems { @apply m-0 mt-3 flex flex-col gap-2 pl-[26px] text-sm text-brun-doux; }
+    .pg-problems .pg-link { @apply font-semibold; }
+
+    /* Statuts d'envoi */
+    .pg-status-wrap { @apply inline-flex flex-col items-start gap-0.5; }
+    .pg-status { @apply inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-[13px] font-bold; }
+    .pg-status--ok { @apply bg-[#E1F0E5] text-[#145C33]; }
+    .pg-status--wait { @apply bg-[#F1E1CC] text-[#6B4A2C]; }
+    .pg-status--err { @apply bg-[#FBE1DD] text-ruban-fonce; }
+    .pg-status--warn { @apply bg-[#FCEBC4] text-[#6B4600]; }
+    .pg-status-detail { @apply max-w-[220px] text-xs leading-snug text-brun-gris; }
+    .pg-msg-h .pg-status { @apply px-0 py-0 text-xs; background: none; }
+
+    /* Onglets */
+    .pg-tabs { @apply mx-auto mb-7 flex w-full max-w-[1240px] flex-wrap gap-2.5; }
+    .pg-tab { @apply inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border-2 border-solid border-[#C9A88F] bg-papier px-5 font-aileron text-[15px] font-bold text-encre; }
+    .pg-tab[aria-selected='true'] { @apply border-encre bg-encre text-creme-clair; }
+    .organizer-participation .pg-grid { @apply mb-0; }
+
+    /* Tableau des participant(e)s, liste en cartes sous 900 px */
+    .pg-table { @apply w-full border-collapse text-[15px]; }
+    .pg-table th { @apply whitespace-nowrap border-0 border-b-2 border-solid border-[#E6D3BE] px-2.5 pb-2.5 text-left text-xs font-bold uppercase tracking-[.05em] text-brun-gris; }
+    .pg-table td { @apply border-0 border-b border-dashed border-[#E6D3BE] px-2.5 py-3 align-middle; }
+    .pg-table tr:last-child td { @apply border-b-0; }
+    .pg-td-num { @apply w-11; }
+    .pg-td-email { @apply whitespace-nowrap text-brun-doux; }
+    .pg-td-menu { @apply relative w-12 text-right; }
+    .pg-name { @apply flex items-center gap-2.5 font-bold; }
+    .pg-secret { @apply inline-flex items-center gap-1.5 text-sm text-[#8A715E]; }
+    .pending-remove .pg-name, .pending-remove .pg-td-email, .pending-remove .pg-strong { @apply line-through opacity-50; }
+    .pg-plist { @apply m-0 hidden list-none flex-col p-0; }
+    .pg-plist li { @apply grid items-center gap-x-3 gap-y-1 border-0 border-b border-dashed border-[#E6D3BE] py-3; grid-template-columns: auto minmax(0, 1fr) auto; }
+    .pg-plist li:last-child { @apply border-b-0; }
+    .pg-sub { @apply col-start-2 col-end-4 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[13px] text-brun-gris; overflow-wrap: anywhere; }
+    .pg-menu-wrap { @apply relative inline-block; }
+    .pg-menu { @apply absolute right-0 top-[calc(100%+4px)] z-10 m-0 min-w-[230px] list-none rounded-[14px] border border-solid border-[#E6D3BE] bg-papier p-1.5; box-shadow: 0 16px 34px rgba(60, 30, 10, .25); }
+    .pg-menu button { @apply flex w-full cursor-pointer items-center gap-2.5 rounded-[10px] border-0 bg-transparent px-3 py-2.5 text-left font-aileron text-sm font-semibold text-encre hover:bg-[#F6ECE3] focus-visible:bg-[#F6ECE3] disabled:cursor-not-allowed disabled:opacity-45; }
+    .pg-menu .pg-danger { @apply text-mention-rouge; }
+    .pg-todo { @apply m-0 flex list-none flex-col gap-2.5 p-0; }
+    .pg-todo li { @apply flex flex-wrap items-center justify-between gap-x-4 gap-y-2.5 rounded-[14px] border border-solid border-[#F0D9CE] bg-white px-3.5 py-3; }
+    .pg-todo-t { @apply flex min-w-0 flex-[1_1_320px] items-start gap-2.5 text-[15px] leading-[1.45]; }
+    .pg-todo-a { @apply flex flex-wrap gap-2; }
+    .pg-withdrawn { @apply flex flex-wrap items-center justify-between gap-2.5 rounded-[14px] bg-creme px-3.5 py-3 text-[15px]; }
+    .pg-actions { @apply flex flex-wrap items-center gap-x-5 gap-y-3; }
+    .pg-field { @apply flex flex-col gap-1.5; }
+    .pg-field label { @apply text-sm font-bold; }
+
+    /* Fenêtres de confirmation */
+    .k-dlg-mask { @apply fixed inset-0 z-[1050] grid place-items-center overflow-y-auto p-4; background: rgba(43, 26, 17, .65); }
+    .pg-dlg { @apply relative box-border flex w-[520px] max-w-full flex-col gap-4 rounded-[22px] bg-papier px-8 pb-7 pt-[30px] text-encre; box-shadow: 0 30px 60px rgba(20, 10, 5, .4); }
+    .pg-dlg h2 { @apply m-0 pr-8 font-happy text-[28px] font-normal leading-[1.15]; }
+    .pg-dlg-x { @apply absolute right-3.5 top-3.5; }
+    .k-dlg-form { @apply flex flex-col gap-4; }
+    .k-dlg-body { @apply flex flex-col gap-4; }
+    .k-dlg-warning { @apply m-0 flex items-start gap-2.5 rounded-[14px] bg-[#FBE7E1] px-4 py-3 text-sm leading-normal text-[#7A1A1D]; }
+    .k-dlg-warning .k-icon { @apply mt-0.5 shrink-0; }
+    .pg-dlg-actions { @apply mt-1.5 flex flex-wrap items-center justify-end gap-x-5 gap-y-3; }
+    .tag-wrap--danger { filter: drop-shadow(0 4px 0 #6E1518); }
+    .tag-action--danger { @apply bg-[#B5232A]; }
+    .tag-action:disabled { @apply cursor-not-allowed opacity-55; }
+
     /* ---------- Pied de page ---------- */
     .kt-foot { @apply bg-creme-clair text-encre; }
     .kt-foot__festons { @apply h-2; background: repeating-linear-gradient(90deg, var(--color-ruban) 0 12px, var(--color-creme-clair) 12px 24px); }
@@ -400,6 +570,34 @@
     .kt-foot__inner { @apply px-5 pb-7 pt-11; }
     .kt-foot__haut { @apply flex-col; }
     .kt-foot__bas { @apply flex-col; }
+}
+
+@media (max-width: 1023px) {
+    .pg-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 899px) {
+    .pg-table { @apply hidden; }
+    .pg-plist { @apply flex; }
+}
+
+@media (max-width: 767px) {
+    .pg-banner { background-position: 70% 40%; }
+    /* L'accueil montre sa photo à part sur mobile ; ici le texte reste sur la photo, sous un voile uniforme */
+    .pg-banner .kt-veil { @apply block; background: rgba(43, 26, 17, .8); }
+    .pg-banner-in { @apply px-5 pb-12 pt-8; }
+    .pg-count { @apply hidden; }
+    .pg-meta .pg-meta-count { @apply inline-flex; }
+    .pg-tracker { @apply w-full; }
+    .pg-main { @apply px-4 pb-16 pt-10; }
+    .pg-card { @apply gap-4 rounded-[18px] px-5 py-[22px]; }
+    .pg-h2 { @apply text-[25px]; }
+    .pg-msg { @apply max-w-[88%]; }
+    .pg-gt-v { @apply text-[30px]; }
+    .pg-idea { grid-template-columns: minmax(0, 1fr); }
+    .pg-idea p.pg-small { @apply col-start-1; }
+    .pg-dlg { @apply px-5 pb-6 pt-6; }
+    .pg-dlg h2 { @apply text-2xl; }
 }
 
 @media (min-width: 768px) {
