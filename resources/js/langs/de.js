@@ -15,6 +15,10 @@ export default {
                 "sent": "Gesendet",
                 "reset": "Eine neue Ziehung beginnen"
             },
+            "confirm": {
+                "type": "Zur Bestätigung „{word}“ eingeben",
+                "cancel": "Abbrechen"
+            },
             "modal": {
                 "close": "Schließen"
             },
@@ -41,7 +45,6 @@ export default {
             }
         },
         "dearsanta": {
-            "reminder": "Denken Sie daran, dass Ihr geheimer Weihnachtsmann oder Ihre geheime Weihnachtsfrau Ihnen nicht antworten kann! Geben sie ihm oder ihr so viele Informationen wie möglich zu geben.",
             "report": {
                 "question": "Ein Problem?",
                 "identity": "Sind Sie {name}?",
@@ -427,6 +430,187 @@ export default {
             "force": {
                 "title": "Entfernen erzwingen?",
                 "body": "Sie können es erzwingen: die Ausschlüsse werden für diese Änderung ignoriert, und ein geheimer Weihnachtsmann kann eine Person erhalten, die er ausgeschlossen hatte."
+            }
+        },
+        "pages": {
+            "on": "am {date}",
+            "send": "Senden",
+            "aside": "Daneben",
+            "status": {
+                "waiting": "Wartet",
+                "sent": "Gesendet",
+                "received": "Erhalten",
+                "error": "Fehlgeschlagen",
+                "error_unknown": "Adresse prüfen",
+                "not_opened": "noch nicht geöffnet"
+            },
+            "gift": {
+                "for": "Für:",
+                "from": "Von:",
+                "anonymous": "Von: anonym"
+            },
+            "event": {
+                "label": "Der große Tag",
+                "budget": "{budget} pro Geschenk",
+                "today": "Heute ist es so weit!",
+                "left": "Noch {n} Tag | Noch {n} Tage",
+                "left_long": "Noch {n} Tag bis zum großen Tag | Noch {n} Tage bis zum großen Tag",
+                "count_before": "Noch",
+                "count_after": "Tag | Tage"
+            },
+            "participant": {
+                "eyebrow": "Hallo {name}, hier ist Ihre Secret-Santa-Seite",
+                "you": "Sie",
+                "target": {
+                    "title": "Sie beschenken…",
+                    "show": "Mein Ziel anzeigen",
+                    "hide": "Ausblenden",
+                    "hidden_label": "Für: verborgenes Ziel",
+                    "text": "Sie beschenken {name}. Diese Person weiß nicht, dass Sie es sind.",
+                    "text_hidden": "Ihr Ziel ist auf diesem Gerät ausgeblendet.",
+                    "thread": "Was {name} Ihnen geschrieben hat",
+                    "thread_hidden": "Was Ihr Ziel Ihnen geschrieben hat",
+                    "someone": "Ihr Ziel",
+                    "empty": "{name} hat Ihnen noch nicht geschrieben. Die Nachrichten kommen hier und per E-Mail an.",
+                    "empty_hidden": "Ihr Ziel hat Ihnen noch nicht geschrieben. Die Nachrichten kommen hier und per E-Mail an.",
+                    "resend": "Diese Unterhaltung per E-Mail erhalten"
+                },
+                "ideas": {
+                    "title": "Ideen für {name}",
+                    "text": "Die anderen Teilnehmer geben Ihnen Ideen, ohne zu wissen, dass Sie schenken.",
+                    "unsigned": "nicht unterschriebene Idee",
+                    "empty": "Noch keine Idee der anderen Teilnehmer."
+                },
+                "santa": {
+                    "title": "Ihr Secret Santa",
+                    "tag_label": "Von: Ihr Secret Santa, anonym",
+                    "surprise": "Jemand hat Sie gezogen. Überraschung am {date}!",
+                    "text": "Geben Sie Hinweise: ein Wunsch, eine Größe, eine Allergie. Ihre Nachrichten erreichen ihn per E-Mail.",
+                    "empty": "Sie haben noch nicht geschrieben.",
+                    "write": "Ihrem Secret Santa schreiben",
+                    "placeholder": "Ein Wunsch, eine Größe, eine Allergie…",
+                    "hint": "Ihr Secret Santa sieht Ihren Namen: Er weiß schon, wen er beschenkt."
+                },
+                "suggest": {
+                    "title": "Eine Idee für jemand anderen?",
+                    "text": "Sie geht an den Secret Santa der gewählten Person, ohne dass Sie wissen, wer das ist.",
+                    "sign": "Mit meinem Namen unterschreiben",
+                    "signed": "unterschrieben",
+                    "for": "Für {name}"
+                },
+                "secret": {
+                    "secret": "Das Geheimnis ist gut gehütet",
+                    "secret_text": "{organizer}, der organisiert, hat die Liste der Ziele nicht angesehen. Sonst würden Sie es hier sehen.",
+                    "revealed": "Die Liste wurde angesehen",
+                    "revealed_text": "{organizer}, der organisiert, hat die Liste der Ziele angesehen.",
+                    "ended": "Die Veranstaltung ist vorbei",
+                    "ended_text": "Die Liste der Ziele ist jetzt für {organizer}, der organisiert, sichtbar."
+                },
+                "address": {
+                    "title": "Ihre Adresse",
+                    "current": "Ihre E-Mails kommen an {email} an."
+                },
+                "problem": {
+                    "not_me": "Diese E-Mail war nicht für mich bestimmt"
+                }
+            },
+            "withdraw": {
+                "title": "Abmelden?",
+                "body": "Sie verlassen die Ziehung: Ihr Secret Santa erhält ein neues Ziel, {organizer} wird per E-Mail informiert und diese Seite funktioniert nicht mehr.",
+                "warning": "Nur {organizer}, der organisiert, kann Sie wieder aufnehmen. Wenn diese E-Mail nicht für Sie bestimmt war, wählen Sie lieber „Diese E-Mail war nicht für mich bestimmt“.",
+                "ok": "Mich abmelden"
+            },
+            "organizer": {
+                "eyebrow": "Ihre Übersicht als Organisator",
+                "received": "hat die E-Mail erhalten | haben die E-Mail erhalten",
+                "received_label": "Erhaltene E-Mails",
+                "received_help": "Erhalten = eine Antwort, ein Besuch der Seite oder eine Empfangsbestätigung.",
+                "tabs": "Ihre zwei Rollen",
+                "tab_organization": "Organisation",
+                "tab_participation": "Meine Teilnahme (mein Ziel, meine Nachrichten)",
+                "todo": "Zu erledigen",
+                "todo_error": "Die E-Mail an {name} konnte nicht an {email} zugestellt werden: {reason}",
+                "todo_not_me": "{name}: Die Person, die die E-Mail erhalten hat, sagt, dass sie nicht für sie bestimmt war. Prüfen Sie die Adresse.",
+                "todo_not_participating": "{name} gibt an, nicht teilzunehmen. Sie können die Person aus der Ziehung entfernen.",
+                "todo_withdrawn": "{name} hat sich {date} abgemeldet. Der Secret Santa hat bereits ein neues Ziel.",
+                "participants": "Die Teilnehmer",
+                "targets_secret": "Die Ziele bleiben geheim, solange Sie sie nicht aufdecken.",
+                "targets_shown": "Die Ziele sind sichtbar: Die Liste wurde aufgedeckt oder die Veranstaltung ist vorbei.",
+                "number": "Nummer",
+                "email": "E-Mail-Adresse",
+                "reception": "Zustellung",
+                "actions": "Aktionen",
+                "actions_for": "Aktionen für {name}",
+                "you": "(Sie)",
+                "secret": "Geheim",
+                "change_help": "Jemanden hinzuzufügen, zu entfernen oder wieder aufzunehmen ändert das Ziel einer zufällig gewählten Person, die per E-Mail informiert wird. Je älter die Ziehung, desto ärgerlicher: Das Geschenk ist vielleicht schon gekauft.",
+                "multi_help": "Mehrere Änderungen auf einmal: hinzufügen und entfernen, dann bestätigen. Jede Person, deren Ziel sich ändert, erhält nur eine E-Mail.",
+                "aside": "Einstellungen der Veranstaltung"
+            },
+            "menu": {
+                "rename": "Umbenennen",
+                "resend": "E-Mail erneut senden",
+                "resent": "E-Mail erneut gesendet",
+                "remove": "Aus der Ziehung entfernen"
+            },
+            "fix": {
+                "button": "Adresse korrigieren",
+                "title": "Adresse von {name} korrigieren",
+                "body": "Die E-Mail der Ziehung geht in den folgenden Minuten an die neue Adresse.",
+                "ok": "Korrigieren und senden"
+            },
+            "add": {
+                "title": "Teilnehmer hinzufügen",
+                "body": "Diese Person erhält ihr Ziel per E-Mail, ohne Ausschluss, und eine andere Person erhält ein neues Ziel (sie wird informiert).",
+                "body_multi": "Zur Liste der Änderungen hinzugefügt, gesendet, wenn Sie bestätigen."
+            },
+            "remove": {
+                "title": "{name} aus der Ziehung entfernen?",
+                "body": "Der Secret Santa erhält ein neues, zufällig gewähltes Ziel und wird per E-Mail informiert. Das Ziel von {name} erhält einen neuen Secret Santa, der die bereits geschriebenen Nachrichten erhält.",
+                "warning": "Eine zufällig gewählte Person erhält ein neues Ziel. Die Ziehung war am {date}: Das Geschenk ist vielleicht schon gekauft.",
+                "ok": "{name} entfernen"
+            },
+            "force": {
+                "ok": "Erzwingen"
+            },
+            "reveal": {
+                "title": "Aufdecken, wer wen beschenkt?",
+                "body": "Sie sehen das Ziel jedes Teilnehmers: nützlich bei Zustellproblemen oder um weitere Veranstaltungen mit denselben Personen zu organisieren.",
+                "warning": "Das ist endgültig. Alle sehen auf ihrer Seite, dass die Liste angesehen wurde.",
+                "word": "aufdecken",
+                "ok": "Ziele aufdecken"
+            },
+            "purge": {
+                "title": "Alle Daten löschen?",
+                "body": "Die Veranstaltung, die Teilnehmer und alle Nachrichten werden sofort gelöscht, vor der automatischen Bereinigung am {deletion}.",
+                "warning": "Unwiderruflich. Sie können die Zusammenfassungen nicht mehr herunterladen und niemand kann seinem Secret Santa mehr schreiben.",
+                "warning_expired": "Unwiderruflich. Sie können die Zusammenfassungen nicht mehr herunterladen.",
+                "word": "löschen",
+                "ok": "Alles löschen",
+                "card": "Alles löschen",
+                "card_text": "Löscht die Veranstaltung und alle Daten vor der automatischen Bereinigung am {date}. Die Teilnehmer können ihrem Secret Santa nicht mehr schreiben.",
+                "card_text_expired": "Löscht die Veranstaltung und alle Daten vor der automatischen Bereinigung am {date}.",
+                "button": "Alle Daten löschen…"
+            },
+            "day": {
+                "title": "Der große Tag",
+                "location": "Ort",
+                "budget": "Budget pro Geschenk, in €",
+                "save": "Speichern",
+                "help": "Die Teilnehmer sehen diese Angaben auf ihrer Seite. Alle Daten werden am {date} gelöscht.",
+                "deletion": "Alle Daten werden am {date} gelöscht."
+            },
+            "recaps": {
+                "title": "Zusammenfassungen",
+                "init": "Liste der Teilnehmer (CSV)",
+                "init_help": "Wie beim Start ausgefüllt, mit den seitdem korrigierten Adressen.",
+                "final": "Zusammenfassung fürs nächste Jahr",
+                "final_help": "Das Ziel jedes Teilnehmers wird zu seinen Ausschlüssen hinzugefügt, damit sich dieselben Paare nicht wiederholen. Verfügbar nach dem {date} oder sobald Sie die Ziele aufdecken."
+            },
+            "secret": {
+                "title": "Das Geheimnis",
+                "text": "Niemand, nicht einmal Sie, weiß, wer wen beschenkt. Bei Bedarf können Sie die Liste aufdecken: Das ist endgültig, und alle sehen es auf ihrer Seite.",
+                "button": "Ziele aufdecken…"
             }
         },
         "validation": {
