@@ -68,8 +68,9 @@ it('shows who gave a gift idea only when they signed it', function (bool $signed
     Notification::assertSentTo($santa, GiftSuggestion::class, function (GiftSuggestion $notification) use ($santa, $expected, $sender, $signed): bool {
         $mail = $notification->toMail($santa);
 
+        // Shown in the email ("De : Inès") only when signed
         return $mail->viewData['senderName'] === $expected
-            && ($signed || ! str_contains((string) $mail->render(), $sender->name));
+            && str_contains((string) $mail->render(), e($sender->name)) === $signed;
     });
     expect(TargetMessages::viewData($santa)['giftSuggestions'][0]['sender'])->toBe($expected);
 })->with(['signed' => true, 'not signed' => false]);

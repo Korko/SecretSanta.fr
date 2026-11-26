@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => ({
     plugins: [
         laravel({
             input: [
-                'resources/css/home.css',
+                'resources/css/kraft.css',
                 'resources/sass/404.scss',
                 'resources/sass/app.scss',
                 'resources/sass/vendor.scss',
@@ -15,12 +15,13 @@ export default defineConfig(({ mode }) => ({
                 'resources/js/dearSanta.js',
                 'resources/js/faq.js',
                 'resources/js/fixOrganizer.js',
+                'resources/js/kraftMenu.js',
                 'resources/js/organizer.js',
                 'resources/js/randomForm.js',
             ],
         }),
         vue(),
-        // Only processes the CSS importing it: resources/css/home.css (the other pages stay on Bootstrap)
+        // Only processes the CSS importing it: resources/css/kraft.css (the other pages stay on Bootstrap)
         tailwindcss(),
     ],
     resolve: {
