@@ -147,6 +147,7 @@ final class OrganizerController extends Controller
                 $draw->{$field} = $value === '' ? null : $value;
             }
         }
+
         $draw->save();
 
         return response()->json([
