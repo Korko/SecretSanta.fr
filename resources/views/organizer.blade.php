@@ -1,4 +1,4 @@
-@extends('templates/fetcher', ['fetchUrl' => URL::signedRoute('organizerPanel.fetch', ['draw' => $draw])])
+@extends('templates/kraftFetcher', ['fetchUrl' => URL::signedRoute('organizerPanel.fetch', ['draw' => $draw])])
 
 @section('script')
     @parent
@@ -26,6 +26,7 @@
     ])
 
     @vite('resources/js/common.js')
+    @vite('resources/js/kraftMenu.js')
     @vite('resources/js/organizer.js')
 @stop
 
