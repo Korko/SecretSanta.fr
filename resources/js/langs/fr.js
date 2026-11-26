@@ -15,6 +15,10 @@ export default {
                 "sent": "Envoyé",
                 "reset": "Commencer un nouveau tirage"
             },
+            "confirm": {
+                "type": "Pour confirmer, tapez « {word} »",
+                "cancel": "Annuler"
+            },
             "modal": {
                 "close": "Fermer"
             },
@@ -41,7 +45,6 @@ export default {
             }
         },
         "dearsanta": {
-            "reminder": "Rappelez vous que votre Père/Mère Noël secrêt ne pourra pas vous répondre ! Pensez bien à lui donner le maximum d'informations possibles.",
             "report": {
                 "question": "Un problème ?",
                 "identity": "Êtes-vous bien {name} ?",
@@ -427,6 +430,187 @@ export default {
             "force": {
                 "title": "Forcer le retrait ?",
                 "body": "Vous pouvez le forcer : les exclusions seront ignorées pour ce changement, et un(e) père/mère noël pourra recevoir une personne qu'il ou elle avait exclue."
+            }
+        },
+        "pages": {
+            "on": "le {date}",
+            "send": "Envoyer",
+            "aside": "À côté",
+            "status": {
+                "waiting": "En attente",
+                "sent": "Envoyé",
+                "received": "Reçu",
+                "error": "En échec",
+                "error_unknown": "Adresse à vérifier",
+                "not_opened": "pas encore ouvert"
+            },
+            "gift": {
+                "for": "Pour :",
+                "from": "De :",
+                "anonymous": "De : anonyme"
+            },
+            "event": {
+                "label": "Le jour J",
+                "budget": "{budget} par cadeau",
+                "today": "C'est aujourd'hui !",
+                "left": "Plus que {n} jour | Plus que {n} jours",
+                "left_long": "Plus que {n} jour avant le jour J | Plus que {n} jours avant le jour J",
+                "count_before": "Plus que",
+                "count_after": "jour | jours"
+            },
+            "participant": {
+                "eyebrow": "Bonjour {name}, voici votre page Secret Santa",
+                "you": "Vous",
+                "target": {
+                    "title": "Vous offrez un cadeau à…",
+                    "show": "Afficher ma cible",
+                    "hide": "Masquer",
+                    "hidden_label": "Pour : cible masquée",
+                    "text": "C'est à {name} que vous offrez un cadeau. Cette personne ne sait pas que c'est vous.",
+                    "text_hidden": "Votre cible est masquée sur cet appareil.",
+                    "thread": "Ce que {name} vous a écrit",
+                    "thread_hidden": "Ce que votre cible vous a écrit",
+                    "someone": "Votre cible",
+                    "empty": "{name} ne vous a pas encore écrit. Ses messages arrivent ici et par e-mail.",
+                    "empty_hidden": "Votre cible ne vous a pas encore écrit. Ses messages arrivent ici et par e-mail.",
+                    "resend": "Recevoir cette conversation par e-mail"
+                },
+                "ideas": {
+                    "title": "Des idées pour {name}",
+                    "text": "Les autres participant(e)s vous soufflent des idées, sans savoir que c'est vous qui offrez.",
+                    "unsigned": "idée non signée",
+                    "empty": "Pas encore d'idée des autres participant(e)s."
+                },
+                "santa": {
+                    "title": "Votre Secret Santa",
+                    "tag_label": "De : votre Secret Santa, anonyme",
+                    "surprise": "Quelqu'un vous a tiré(e) au sort. Surprise le {date} !",
+                    "text": "Donnez-lui des pistes : une envie, une taille, une allergie. Vos messages lui arrivent par e-mail.",
+                    "empty": "Vous ne lui avez pas encore écrit.",
+                    "write": "Écrire à votre Secret Santa",
+                    "placeholder": "Une envie, une taille, une allergie…",
+                    "hint": "Votre Secret Santa voit votre nom : il ou elle sait déjà à qui offrir."
+                },
+                "suggest": {
+                    "title": "Une idée pour quelqu'un d'autre ?",
+                    "text": "Elle part au Secret Santa de la personne choisie, sans que vous sachiez qui c'est.",
+                    "sign": "Signer avec mon nom",
+                    "signed": "signée",
+                    "for": "Pour {name}"
+                },
+                "secret": {
+                    "secret": "Le secret est bien gardé",
+                    "secret_text": "{organizer}, qui organise, n'a pas consulté la liste des cibles. Si c'était le cas, vous le verriez ici.",
+                    "revealed": "La liste a été consultée",
+                    "revealed_text": "{organizer}, qui organise, a consulté la liste des cibles.",
+                    "ended": "L'évènement est terminé",
+                    "ended_text": "La liste des cibles est maintenant visible par {organizer}, qui organise."
+                },
+                "address": {
+                    "title": "Votre adresse",
+                    "current": "Vos e-mails arrivent à {email}."
+                },
+                "problem": {
+                    "not_me": "Cet e-mail ne m'était pas destiné"
+                }
+            },
+            "withdraw": {
+                "title": "Vous désister ?",
+                "body": "Vous quitterez le tirage : votre Secret Santa recevra une nouvelle cible, {organizer} sera prévenu(e) par e-mail et cette page ne fonctionnera plus.",
+                "warning": "Seul(e) {organizer}, qui organise, pourra vous réintégrer. Si cet e-mail ne vous était pas destiné, choisissez plutôt « Cet e-mail ne m'était pas destiné ».",
+                "ok": "Me désister"
+            },
+            "organizer": {
+                "eyebrow": "Votre tableau de bord d'organisateur·rice",
+                "received": "a bien reçu son e-mail | ont bien reçu leur e-mail",
+                "received_label": "E-mails bien reçus",
+                "received_help": "Reçu = une réponse, une visite de sa page ou un accusé de réception.",
+                "tabs": "Vos deux rôles",
+                "tab_organization": "Organisation",
+                "tab_participation": "Ma participation (ma cible, mes messages)",
+                "todo": "À traiter",
+                "todo_error": "L'e-mail de {name} n'a pas pu être remis à {email} : {reason}",
+                "todo_not_me": "{name} : la personne qui a reçu l'e-mail indique qu'il ne lui était pas destiné. Vérifiez son adresse.",
+                "todo_not_participating": "{name} indique ne pas participer. Vous pouvez la retirer du tirage.",
+                "todo_withdrawn": "{name} s'est désisté(e) {date}. Son Secret Santa a déjà reçu une nouvelle cible.",
+                "participants": "Les participant(e)s",
+                "targets_secret": "Les cibles restent secrètes tant que vous ne les révélez pas.",
+                "targets_shown": "Les cibles sont visibles : la liste a été révélée, ou l'évènement est passé.",
+                "number": "Numéro",
+                "email": "Adresse e-mail",
+                "reception": "Réception",
+                "actions": "Actions",
+                "actions_for": "Actions pour {name}",
+                "you": "(vous)",
+                "secret": "Secret",
+                "change_help": "Ajouter, retirer ou réintégrer quelqu'un change la cible d'une personne tirée au hasard, prévenue par e-mail. Plus le tirage est ancien, plus c'est gênant : son cadeau est peut-être déjà acheté.",
+                "multi_help": "Plusieurs modifications à la fois : ajoutez et retirez, puis validez. Chaque personne dont la cible change ne reçoit qu'un e-mail.",
+                "aside": "Réglages de l'évènement"
+            },
+            "menu": {
+                "rename": "Renommer",
+                "resend": "Renvoyer l'e-mail",
+                "resent": "E-mail renvoyé",
+                "remove": "Retirer du tirage"
+            },
+            "fix": {
+                "button": "Corriger l'adresse",
+                "title": "Corriger l'adresse de {name}",
+                "body": "L'e-mail du tirage repart vers la nouvelle adresse dans les minutes qui suivent.",
+                "ok": "Corriger et renvoyer"
+            },
+            "add": {
+                "title": "Ajouter un(e) participant(e)",
+                "body": "Cette personne recevra sa cible par e-mail, sans exclusion, et une autre personne changera de cible (elle sera prévenue).",
+                "body_multi": "Ajouté à la liste des modifications, envoyées quand vous validez."
+            },
+            "remove": {
+                "title": "Retirer {name} du tirage ?",
+                "body": "Son Secret Santa recevra une nouvelle cible, choisie au hasard, et sera prévenu par e-mail. La cible de {name} aura un nouveau Secret Santa, qui recevra les messages déjà écrits.",
+                "warning": "Une personne tirée au hasard change de cible. Le tirage date du {date} : son cadeau est peut-être déjà acheté.",
+                "ok": "Retirer {name}"
+            },
+            "force": {
+                "ok": "Forcer"
+            },
+            "reveal": {
+                "title": "Révéler qui offre à qui ?",
+                "body": "Vous verrez la cible de chaque participant(e) : utile en cas de souci de réception, ou pour organiser d'autres évènements avec les mêmes personnes.",
+                "warning": "C'est définitif. Chacun verra sur sa page que la liste a été consultée.",
+                "word": "révéler",
+                "ok": "Révéler les cibles"
+            },
+            "purge": {
+                "title": "Supprimer toutes les données ?",
+                "body": "L'évènement, les participant(e)s et tous les messages seront effacés tout de suite, avant le nettoyage automatique du {deletion}.",
+                "warning": "Irréversible. Vous ne pourrez plus télécharger les récapitulatifs et personne ne pourra plus écrire à son Secret Santa.",
+                "warning_expired": "Irréversible. Vous ne pourrez plus télécharger les récapitulatifs.",
+                "word": "supprimer",
+                "ok": "Tout supprimer",
+                "card": "Tout supprimer",
+                "card_text": "Efface l'évènement et toutes ses données avant le nettoyage automatique du {date}. Les participant(e)s ne pourront plus écrire à leur Secret Santa.",
+                "card_text_expired": "Efface l'évènement et toutes ses données avant le nettoyage automatique du {date}.",
+                "button": "Supprimer toutes les données…"
+            },
+            "day": {
+                "title": "Le jour J",
+                "location": "Lieu",
+                "budget": "Budget par cadeau, en €",
+                "save": "Enregistrer",
+                "help": "Les participant(e)s voient ces informations sur leur page. Toutes les données seront supprimées le {date}.",
+                "deletion": "Toutes les données seront supprimées le {date}."
+            },
+            "recaps": {
+                "title": "Récapitulatifs",
+                "init": "Liste des participant(e)s (CSV)",
+                "init_help": "Telle que remplie au lancement, avec les adresses corrigées depuis.",
+                "final": "Récapitulatif pour l'an prochain",
+                "final_help": "La cible de chacun y est ajoutée à ses exclusions, pour ne pas retomber sur les mêmes duos. Disponible après le {date}, ou dès que vous révélez les cibles."
+            },
+            "secret": {
+                "title": "Le secret",
+                "text": "Personne, pas même vous, ne sait qui offre à qui. En cas de souci, vous pouvez révéler la liste : c'est définitif, et chacun le verra sur sa page.",
+                "button": "Révéler les cibles…"
             }
         },
         "validation": {

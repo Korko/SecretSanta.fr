@@ -15,6 +15,10 @@ export default {
                 "sent": "Sent",
                 "reset": "Start a new draw"
             },
+            "confirm": {
+                "type": "To confirm, type “{word}”",
+                "cancel": "Cancel"
+            },
             "modal": {
                 "close": "Close"
             },
@@ -41,7 +45,6 @@ export default {
             }
         },
         "dearsanta": {
-            "reminder": "Remember that your Secret Santa cannot reply to you! Make sure to give them as much information as possible.",
             "report": {
                 "question": "A problem?",
                 "identity": "Are you {name}?",
@@ -427,6 +430,187 @@ export default {
             "force": {
                 "title": "Force the removal?",
                 "body": "You can force it: the exclusions will be ignored for this change, and a secret santa may get a person they had excluded."
+            }
+        },
+        "pages": {
+            "on": "on {date}",
+            "send": "Send",
+            "aside": "Alongside",
+            "status": {
+                "waiting": "Waiting",
+                "sent": "Sent",
+                "received": "Received",
+                "error": "Failed",
+                "error_unknown": "Address to check",
+                "not_opened": "not opened yet"
+            },
+            "gift": {
+                "for": "For:",
+                "from": "From:",
+                "anonymous": "From: anonymous"
+            },
+            "event": {
+                "label": "The big day",
+                "budget": "{budget} per gift",
+                "today": "It's today!",
+                "left": "{n} day left | {n} days left",
+                "left_long": "{n} day left before the big day | {n} days left before the big day",
+                "count_before": "Only",
+                "count_after": "day left | days left"
+            },
+            "participant": {
+                "eyebrow": "Hello {name}, here is your Secret Santa page",
+                "you": "You",
+                "target": {
+                    "title": "You are giving a gift to…",
+                    "show": "Show my target",
+                    "hide": "Hide",
+                    "hidden_label": "For: hidden target",
+                    "text": "You are giving a gift to {name}. They do not know it is you.",
+                    "text_hidden": "Your target is hidden on this device.",
+                    "thread": "What {name} wrote to you",
+                    "thread_hidden": "What your target wrote to you",
+                    "someone": "Your target",
+                    "empty": "{name} has not written to you yet. Their messages arrive here and by email.",
+                    "empty_hidden": "Your target has not written to you yet. Their messages arrive here and by email.",
+                    "resend": "Get this conversation by email"
+                },
+                "ideas": {
+                    "title": "Ideas for {name}",
+                    "text": "The other participants give you ideas, without knowing you are the one giving.",
+                    "unsigned": "unsigned idea",
+                    "empty": "No idea from the other participants yet."
+                },
+                "santa": {
+                    "title": "Your Secret Santa",
+                    "tag_label": "From: your Secret Santa, anonymous",
+                    "surprise": "Someone drew you. Surprise on {date}!",
+                    "text": "Give them hints: a wish, a size, an allergy. Your messages reach them by email.",
+                    "empty": "You have not written to them yet.",
+                    "write": "Write to your Secret Santa",
+                    "placeholder": "A wish, a size, an allergy…",
+                    "hint": "Your Secret Santa sees your name: they already know who to give to."
+                },
+                "suggest": {
+                    "title": "An idea for someone else?",
+                    "text": "It goes to the Secret Santa of the chosen person, without you knowing who that is.",
+                    "sign": "Sign with my name",
+                    "signed": "signed",
+                    "for": "For {name}"
+                },
+                "secret": {
+                    "secret": "The secret is well kept",
+                    "secret_text": "{organizer}, the organizer, has not looked at the list of targets. If they had, you would see it here.",
+                    "revealed": "The list was looked at",
+                    "revealed_text": "{organizer}, the organizer, looked at the list of targets.",
+                    "ended": "The event is over",
+                    "ended_text": "The list of targets is now visible to {organizer}, the organizer."
+                },
+                "address": {
+                    "title": "Your address",
+                    "current": "Your emails arrive at {email}."
+                },
+                "problem": {
+                    "not_me": "This email was not meant for me"
+                }
+            },
+            "withdraw": {
+                "title": "Withdraw?",
+                "body": "You will leave the draw: your Secret Santa will get a new target, {organizer} will be told by email and this page will stop working.",
+                "warning": "Only {organizer}, the organizer, can bring you back. If this email was not meant for you, choose “This email was not meant for me” instead.",
+                "ok": "Withdraw"
+            },
+            "organizer": {
+                "eyebrow": "Your organizer dashboard",
+                "received": "received their email | received their email",
+                "received_label": "Emails received",
+                "received_help": "Received = a reply, a visit to their page or a delivery receipt.",
+                "tabs": "Your two roles",
+                "tab_organization": "Organization",
+                "tab_participation": "My participation (my target, my messages)",
+                "todo": "To do",
+                "todo_error": "The email to {name} could not be delivered to {email}: {reason}",
+                "todo_not_me": "{name}: the person who got the email says it was not meant for them. Check the address.",
+                "todo_not_participating": "{name} says they are not taking part. You can remove them from the draw.",
+                "todo_withdrawn": "{name} withdrew {date}. Their Secret Santa already got a new target.",
+                "participants": "The participants",
+                "targets_secret": "The targets stay secret as long as you do not reveal them.",
+                "targets_shown": "The targets are visible: the list was revealed, or the event is over.",
+                "number": "Number",
+                "email": "Email address",
+                "reception": "Delivery",
+                "actions": "Actions",
+                "actions_for": "Actions for {name}",
+                "you": "(you)",
+                "secret": "Secret",
+                "change_help": "Adding, removing or bringing someone back changes the target of a randomly drawn person, told by email. The older the draw, the more awkward: their gift may already be bought.",
+                "multi_help": "Several changes at once: add and remove, then validate. Each person whose target changes gets a single email.",
+                "aside": "Event settings"
+            },
+            "menu": {
+                "rename": "Rename",
+                "resend": "Send the email again",
+                "resent": "Email sent again",
+                "remove": "Remove from the draw"
+            },
+            "fix": {
+                "button": "Fix the address",
+                "title": "Fix the address of {name}",
+                "body": "The draw email goes to the new address within the next few minutes.",
+                "ok": "Fix and send again"
+            },
+            "add": {
+                "title": "Add a participant",
+                "body": "This person will get their target by email, with no exclusion, and someone else will get a new target (they will be told).",
+                "body_multi": "Added to the list of changes, sent when you validate."
+            },
+            "remove": {
+                "title": "Remove {name} from the draw?",
+                "body": "Their Secret Santa will get a new target, drawn at random, and will be told by email. The target of {name} will get a new Secret Santa, who will receive the messages already written.",
+                "warning": "A randomly drawn person changes target. The draw dates from {date}: their gift may already be bought.",
+                "ok": "Remove {name}"
+            },
+            "force": {
+                "ok": "Force it"
+            },
+            "reveal": {
+                "title": "Reveal who gives to whom?",
+                "body": "You will see the target of each participant: useful for a delivery problem, or to organize other events with the same people.",
+                "warning": "This is final. Everyone will see on their page that the list was looked at.",
+                "word": "reveal",
+                "ok": "Reveal the targets"
+            },
+            "purge": {
+                "title": "Delete all the data?",
+                "body": "The event, the participants and all the messages will be erased right now, before the automatic cleanup on {deletion}.",
+                "warning": "Irreversible. You will no longer be able to download the summaries and nobody will be able to write to their Secret Santa.",
+                "warning_expired": "Irreversible. You will no longer be able to download the summaries.",
+                "word": "delete",
+                "ok": "Delete everything",
+                "card": "Delete everything",
+                "card_text": "Erases the event and all its data before the automatic cleanup on {date}. The participants will no longer be able to write to their Secret Santa.",
+                "card_text_expired": "Erases the event and all its data before the automatic cleanup on {date}.",
+                "button": "Delete all the data…"
+            },
+            "day": {
+                "title": "The big day",
+                "location": "Location",
+                "budget": "Budget per gift, in €",
+                "save": "Save",
+                "help": "The participants see this information on their page. All the data will be deleted on {date}.",
+                "deletion": "All the data will be deleted on {date}."
+            },
+            "recaps": {
+                "title": "Summaries",
+                "init": "List of participants (CSV)",
+                "init_help": "As filled in at the start, with the addresses fixed since.",
+                "final": "Summary for next year",
+                "final_help": "Everyone's target is added to their exclusions, so as not to get the same pairs again. Available after {date}, or as soon as you reveal the targets."
+            },
+            "secret": {
+                "title": "The secret",
+                "text": "Nobody, not even you, knows who gives to whom. If needed, you can reveal the list: it is final, and everyone will see it on their page.",
+                "button": "Reveal the targets…"
             }
         },
         "validation": {
