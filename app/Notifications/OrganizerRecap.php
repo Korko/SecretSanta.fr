@@ -20,6 +20,7 @@ use Illuminate\Queue\Attributes\MaxExceptions;
 use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Number;
 
 #[Backoff(30)]
 #[MaxExceptions(10)]
@@ -42,7 +43,22 @@ final class OrganizerRecap extends Notification implements ShouldBeEncrypted, Sh
             'organizerName' => $draw->organizer_name,
             'expirationDate' => $draw->expires_at->isoFormat('LL'),
             'deletionDate' => $draw->deleted_at->isoFormat('LL'),
+            ...self::eventDetails($draw),
             'panelLink' => URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).'#'.base64_encode(DrawCrypt::getSecret()),
+        ];
+    }
+
+    /**
+     * "Le jour J" panel of the draw emails: each optional line only shows when given
+     *
+     * @return array{eventDate: string, location: string|null, budget: string|null}
+     */
+    public static function eventDetails(Draw $draw): array
+    {
+        return [
+            'eventDate' => $draw->expires_at->isoFormat('dddd LL'),
+            'location' => $draw->location,
+            'budget' => $draw->budget === null ? null : self::euros($draw->budget),
         ];
     }
 
@@ -68,5 +84,14 @@ final class OrganizerRecap extends Notification implements ShouldBeEncrypted, Sh
             ->subject(__('emails.organizer_recap_title', ['draw' => $this->draw->id]))
             ->view(['emails.organizer_recap', 'emails.organizer_recap_plain'], self::viewData($this->draw))
             ->attachData($this->draw->initialCsv(), $this->draw->initialCsvName(), ['mime' => 'text/csv']);
+    }
+
+    // "20 €", "15,50 €": no cents for a round amount
+    private static function euros(string $budget): string
+    {
+        $amount = (float) $budget;
+        $formatted = Number::currency($amount, 'EUR', app()->getLocale(), $amount === floor($amount) ? 0 : 2);
+
+        return $formatted === false ? $budget.' €' : $formatted;
     }
 }

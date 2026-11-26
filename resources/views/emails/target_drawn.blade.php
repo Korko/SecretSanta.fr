@@ -7,6 +7,8 @@
 @section('content')
     <blockquote>{!! nl2br(htmlentities($content)) !!}</blockquote>
 
+    @include('emails/partials/event')
+
     <hr/>
 
     <p style="padding-bottom:10px !important">{!! __('emails.target_drawn.write', ['link' => '<a href="'.e($dearSantaLink).'">'.e($dearSantaLink).'</a>']) !!}</p>

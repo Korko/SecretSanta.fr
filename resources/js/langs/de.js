@@ -250,6 +250,12 @@ export default {
                 "participation": "Ihre Teilnahme",
                 "organization": "Organisation der Veranstaltung"
             },
+            "eventDetails": {
+                "location": "Ort (optional)",
+                "locationPlaceholder": "Z. B. bei Oma",
+                "budget": "Budget pro Geschenk, in € (optional)",
+                "saved": "Gespeichert"
+            },
             "date": {
                 "label": "Datum der Veranstaltung",
                 "help": "Die Daten der Veranstaltung werden am {deleted_at} gelöscht."
@@ -396,6 +402,13 @@ export default {
                     "content": {
                         "required": "Der Inhalt der E-Mail ist erforderlich.",
                         "contains_text": "Der Inhalt der E-Mail muss das Wort {TARGET} enthalten, um das Ziel anzugeben."
+                    },
+                    "location": {
+                        "max": "Der Ort darf höchstens 255 Zeichen lang sein."
+                    },
+                    "budget": {
+                        "format": "Das Budget muss ein Betrag in Euro sein, z. B. 20.",
+                        "max": "Das Budget darf 100.000 € nicht überschreiten."
                     },
                     "expiration": {
                         "required": "Das Ablaufdatum ist erforderlich.",

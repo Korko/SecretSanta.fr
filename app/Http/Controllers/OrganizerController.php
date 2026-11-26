@@ -57,6 +57,8 @@ final class OrganizerController extends Controller
             'expires_at' => $draw->expires_at->toDateString(), // event day, whatever the browser timezone
             'ends_at' => $draw->ends_at, // the instant it expires, so the browser agrees with the server
             'deleted_at' => $draw->deleted_at->toDateString(),
+            'location' => $draw->location,
+            'budget' => $draw->budget,
             'drawn_at' => $draw->created_at,
             'participants' => $draw->participants->load('mail')->mapWithKeys(fn ($participant): array => [
                 $participant->hash => $participant->only([
@@ -121,6 +123,35 @@ final class OrganizerController extends Controller
             'expires_at' => $draw->expires_at->toDateString(), // event day, whatever the browser timezone
             'ends_at' => $draw->ends_at,
             'deleted_at' => $draw->deleted_at->toDateString(),
+        ]);
+    }
+
+    // "Le jour J": like the date, the place or the budget may change after the draw. Not sent again to the participants
+    public function changeEventDetails(Request $request, Draw $draw): JsonResponse
+    {
+        $draw->abortIfExpired();
+
+        $request->validate([
+            'location' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'budget' => ['sometimes', 'nullable', 'numeric', 'min:0', 'max:100000'],
+        ], [
+            'location.max' => __('validation.custom.randomform.location.max'),
+            'budget.numeric' => __('validation.custom.randomform.budget.format'),
+            'budget.min' => __('validation.custom.randomform.budget.format'),
+            'budget.max' => __('validation.custom.randomform.budget.max'),
+        ]);
+
+        foreach (['location', 'budget'] as $field) {
+            if ($request->has($field)) {
+                $value = mb_trim($request->string($field)->value());
+                $draw->{$field} = $value === '' ? null : $value;
+            }
+        }
+        $draw->save();
+
+        return response()->json([
+            'location' => $draw->location,
+            'budget' => $draw->budget,
         ]);
     }
 

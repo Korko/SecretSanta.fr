@@ -250,6 +250,12 @@ export default {
                 "participation": "Your participation",
                 "organization": "Organizing the event"
             },
+            "eventDetails": {
+                "location": "Location (optional)",
+                "locationPlaceholder": "E.g. at Grandma's",
+                "budget": "Budget per gift, in € (optional)",
+                "saved": "Saved"
+            },
             "date": {
                 "label": "Event date",
                 "help": "The event data will be deleted on {deleted_at}."
@@ -396,6 +402,13 @@ export default {
                     "content": {
                         "required": "The email content is required.",
                         "contains_text": "The email content must contain the word {TARGET} to indicate the target."
+                    },
+                    "location": {
+                        "max": "The location cannot exceed 255 characters."
+                    },
+                    "budget": {
+                        "format": "The budget must be an amount in euros, e.g. 20.",
+                        "max": "The budget cannot exceed €100,000."
                     },
                     "expiration": {
                         "required": "The expiration date is required.",

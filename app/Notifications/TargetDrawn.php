@@ -53,6 +53,7 @@ final class TargetDrawn extends Notification implements ShouldBeEncrypted, Shoul
             ->view(['emails.target_drawn', 'emails.target_drawn_plain'], [
                 'content' => $content,
                 'dearSantaLink' => $url,
+                ...OrganizerRecap::eventDetails($santa->draw),
                 // A new santa or a new address: what their target already wrote or was given comes in this same email
                 ...TargetMessages::viewData($santa),
                 // Their link above already opens their panel

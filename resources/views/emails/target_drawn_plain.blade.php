@@ -7,6 +7,8 @@
 @section('content')
     > {!! $content !!}
 
+    @include('emails/partials/event_plain')
+
     ---
 
     {!! __('emails.target_drawn.write', ['link' => $dearSantaLink]) !!}

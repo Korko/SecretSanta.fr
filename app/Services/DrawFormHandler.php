@@ -31,6 +31,10 @@ final class DrawFormHandler
     /** @var list<Participant> */
     private array $models = [];
 
+    private ?string $location = null;
+
+    private ?string $budget = null;
+
     // Draw::save() sets the default one when none is given
     private ?string $expirationDate = null;
 
@@ -73,6 +77,15 @@ final class DrawFormHandler
         return $this;
     }
 
+    // "Le jour J", both optional: empty means not given
+    public function withEventDetails(?string $location, ?string $budget): self
+    {
+        $this->location = $location === null || mb_trim($location) === '' ? null : mb_trim($location);
+        $this->budget = $budget === null || mb_trim($budget) === '' ? null : mb_trim($budget);
+
+        return $this;
+    }
+
     // All or nothing: a draw without a solution (or failing anywhere) leaves nothing behind
     public function save(): Draw
     {
@@ -98,6 +111,8 @@ final class DrawFormHandler
         $draw->organizer_name = $this->organizer['name'] ?? '';
         $draw->organizer_email = $this->organizer['email'] ?? '';
         $draw->organizer_participates = $this->organizerParticipates;
+        $draw->location = $this->location;
+        $draw->budget = $this->budget;
         $draw->save();
 
         foreach ($this->participants as $santa) {
