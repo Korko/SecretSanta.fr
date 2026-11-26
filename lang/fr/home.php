@@ -5,6 +5,8 @@ declare(strict_types=1);
 // Page d'accueil « cadeaux ». Espaces insécables (U+00A0) avant ! ? : ;
 return [
     'skip' => 'Aller au formulaire',
+    'skip_content' => 'Aller au contenu',
+    'loading' => 'Chargement de votre page…',
     'logo_alt' => 'SecretSanta.fr, accueil',
     'logo_alt_top' => 'SecretSanta.fr, retour en haut',
     'nav' => [
@@ -12,6 +14,7 @@ return [
         'how' => 'Comment ça marche ?',
         'faq' => 'Questions fréquentes',
         'go' => 'Organiser mon tirage',
+        'another' => 'Organiser un autre tirage',
         'open' => 'Ouvrir le menu',
         'close' => 'Fermer le menu',
     ],

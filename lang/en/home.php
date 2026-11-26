@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 return [
     'skip' => 'Skip to the form',
+    'skip_content' => 'Skip to the content',
+    'loading' => 'Loading your page…',
     'logo_alt' => 'SecretSanta.fr, home',
     'logo_alt_top' => 'SecretSanta.fr, back to top',
     'nav' => [
@@ -11,6 +13,7 @@ return [
         'how' => 'How does it work?',
         'faq' => 'Frequently asked questions',
         'go' => 'Organize my draw',
+        'another' => 'Organize another draw',
         'open' => 'Open the menu',
         'close' => 'Close the menu',
     ],
