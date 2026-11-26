@@ -100,6 +100,7 @@ final class DearSantaController extends Controller
             'suggestionRecipients' => $this->suggestionRecipients($participant)->mapWithKeys(fn (Participant $recipient): array => [$recipient->hash => $recipient->name]),
             'suggestions' => $this->sentSuggestions($participant),
             'receivedSuggestions' => $this->receivedSuggestions($participant),
+            'targetMessages' => $this->targetMessages($participant),
             'pendingEmail' => $this->pendingEmail($participant),
             'emails' => $participant->dearSantas->mapWithKeys(fn ($email): array => [
                 $email->mail->id => $this->publicDearSanta($email),
@@ -284,6 +285,7 @@ final class DearSantaController extends Controller
         return response()->json([
             'suggestions' => $this->sentSuggestions($participant),
             'receivedSuggestions' => $this->receivedSuggestions($participant),
+            'targetMessages' => $this->targetMessages($participant),
             'emails' => $participant->dearSantas->mapWithKeys(fn ($dearSanta): array => [
                 $dearSanta->mail->id => $this->publicDearSanta($dearSanta),
             ]),
@@ -313,6 +315,7 @@ final class DearSantaController extends Controller
 
         $participant->createMetric('dearSanta');
         event(new ParticipantUpdated($participant)); // their other open tabs
+        event(new ParticipantUpdated($participant->santa)); // their santa's page shows it too (no content in the event)
 
         $participant->santa->notify(new DearSantaNotification($dearSanta));
 
@@ -347,6 +350,19 @@ final class DearSantaController extends Controller
     {
         return $participant->sentSuggestions()->with('recipient')->get()
             ->mapWithKeys(fn (GiftSuggestion $suggestion): array => [$suggestion->mail->id => $this->publicSuggestion($suggestion)]);
+    }
+
+    // What their target wrote to them, their santa: already emailed to them (TargetMessages), shown on their page as
+    // the conversation with their target. Nothing about the delivery: that is the target's to see
+    /** @return SupportCollection<int, array{id: int, mail_body: string, created_at: mixed}> */
+    private function targetMessages(Participant $participant): SupportCollection
+    {
+        return $participant->target->dearSantas()->with('mail')->get()
+            ->map(fn (DearSanta $dearSanta): array => [
+                'id' => $dearSanta->id,
+                'mail_body' => $dearSanta->mail_body,
+                'created_at' => $dearSanta->mail->created_at,
+            ])->values();
     }
 
     // Ideas others gave for their target, like the target's own messages (they follow a change of target)

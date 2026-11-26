@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Events\ParticipantUpdated;
 use App\Models\Draw;
 use App\Notifications\GiftSuggestion;
 use App\Notifications\TargetMessages;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -87,4 +89,26 @@ it('keeps the idea, without a name, once its signed sender left the draw', funct
 
     expect(ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $recipient->santa]))->json('receivedSuggestions.0'))
         ->toMatchArray(['mail_body' => 'A scarf', 'sender' => null]);
+});
+
+it('shows the santa what their target wrote, live, without telling the target anything new', function (): void {
+    Notification::fake();
+    Event::fake([ParticipantUpdated::class]);
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $target = $draw->participants->first();
+    $santa = $target->santa;
+
+    ajaxPost(URL::signedRoute('dearSanta.contact', ['participant' => $target]), ['content' => 'Du thé vert, merci !'])->assertSuccessful();
+
+    // The santa's page is told to refresh, and gets the message from its own signed link
+    Event::assertDispatched(ParticipantUpdated::class, fn (ParticipantUpdated $event): bool => $event->broadcastOn()[0]->name === $santa->broadcastChannel());
+    expect(ajaxGet(URL::signedRoute('dearSanta.fetchState', ['participant' => $santa]))->json('targetMessages'))
+        ->toHaveCount(1)
+        ->and(ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $santa]))->json('targetMessages.0'))
+        ->toHaveKeys(['id', 'mail_body', 'created_at'])
+        ->not->toHaveKey('mail');
+
+    // The target's own page: their messages, not someone else's
+    expect(ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $target]))->json('targetMessages'))->toBeEmpty();
 });
