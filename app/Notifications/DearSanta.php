@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Channels\TrackedMailChannel;
+use App\Contracts\WithDrawSecret;
 use App\Models\DearSanta as DearSantaModel;
 use App\Models\Draw;
 use App\Models\Mail;
@@ -20,7 +21,7 @@ use Illuminate\Queue\SerializesModels;
 
 #[Backoff(30)]
 #[Tries(10)]
-final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
+final class DearSanta extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification, WithDrawSecret
 {
     use Queueable;
     use SerializesModels;

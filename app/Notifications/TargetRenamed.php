@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Contracts\WithDrawSecret;
 use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Lang;
 // Same target, new name: not tracked, the santa's target email keeps its own delivery status
 #[Backoff(30)]
 #[Tries(10)]
-final class TargetRenamed extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit
+final class TargetRenamed extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret
 {
     use Queueable;
 

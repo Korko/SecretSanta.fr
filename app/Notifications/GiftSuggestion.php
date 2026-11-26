@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Channels\TrackedMailChannel;
+use App\Contracts\WithDrawSecret;
 use App\Models\Draw;
 use App\Models\GiftSuggestion as GiftSuggestionModel;
 use App\Models\Mail;
@@ -21,7 +22,7 @@ use Illuminate\Queue\SerializesModels;
 // To the santa of the person the idea is for (see GiftSuggestionModel)
 #[Backoff(30)]
 #[Tries(10)]
-final class GiftSuggestion extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification
+final class GiftSuggestion extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, TrackedNotification, WithDrawSecret
 {
     use Queueable;
     use SerializesModels;

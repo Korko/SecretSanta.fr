@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Contracts\WithDrawSecret;
 use App\Mail\DkimTransport;
 use App\Solvers\CycleSolver;
 use App\Solvers\SolverInterface;
@@ -11,6 +12,7 @@ use DrawCrypt;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\SendQueuedNotifications;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
@@ -89,20 +91,28 @@ final class AppServiceProvider extends ServiceProvider
 
     public function bootJobs(): void
     {
-        Queue::createPayloadUsing(fn (?string $connection, ?string $queue, array $payload): array => [
-            'data' => array_merge(is_array($payload['data'] ?? null) ? $payload['data'] : [], [
-                'secret' => base64_encode(DrawCrypt::getSecret()),
-                // The worker renders the emails: in the language of the request (domain), not APP_LOCALE
-                'locale' => $this->app->getLocale(),
-            ]),
-        ]);
+        Queue::createPayloadUsing(function (?string $connection, ?string $queue, array $payload): array {
+            $data = is_array($payload['data'] ?? null) ? $payload['data'] : [];
+            // The worker renders the emails: in the language of the request (domain), not APP_LOCALE
+            $data['locale'] = $this->app->getLocale();
+            // The secret only for what asks for it: the job itself at this point, or the notification it sends
+            $job = $data['commandName'] ?? null;
+            if (($job instanceof SendQueuedNotifications ? $job->notification : $job) instanceof WithDrawSecret) {
+                $data['secret'] = base64_encode(DrawCrypt::getSecret());
+            }
+
+            return ['data' => $data];
+        });
 
         $this->app->make(Dispatcher::class)->listen(JobProcessing::class, function (JobProcessing $event): void {
             // A job without secret gets a new one, like a new draw, not the one of the previous job:
             // it would encrypt with it and send it in its links. Decrypting existing data then fails
+            // The sync queue runs the job in the request: a job that did not ask for the secret keeps the request's
             // data.iv: its former name, in jobs queued before the rename
             $secret = data_get($event->job->payload(), 'data.secret', data_get($event->job->payload(), 'data.iv'));
-            DrawCrypt::setSecret(is_string($secret) ? base64_decode($secret) : DrawCrypt::generateSecret());
+            if ($event->connectionName !== 'sync' || is_a($event->job->resolveName(), WithDrawSecret::class, true)) {
+                DrawCrypt::setSecret(is_string($secret) ? base64_decode($secret) : DrawCrypt::generateSecret());
+            }
 
             $locale = data_get($event->job->payload(), 'data.locale');
             if (is_string($locale)) {

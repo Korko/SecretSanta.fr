@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Contracts\WithDrawSecret;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Lang;
 // Sent to the address a participant wants to move to: typing the code back on their page proves they own it
 #[Backoff(30)]
 #[Tries(10)]
-final class ParticipantEmailCode extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit
+final class ParticipantEmailCode extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret
 {
     use Queueable;
 

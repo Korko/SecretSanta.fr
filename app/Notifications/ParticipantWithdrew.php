@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Contracts\WithDrawSecret;
 use App\Models\Draw;
 use DrawCrypt;
 use Illuminate\Bus\Queueable;
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\URL;
 // they can bring them back from their panel, if someone else got their email and withdrew in their place
 #[Backoff(30)]
 #[Tries(10)]
-final class ParticipantWithdrew extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit
+final class ParticipantWithdrew extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret
 {
     use Queueable;
 

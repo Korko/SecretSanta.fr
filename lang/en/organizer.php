@@ -65,6 +65,8 @@ return [
             'title' => 'Initial summary',
             'content' => 'This is the data as you entered it when the event was generated. Only email addresses may have changed, to reflect the changes you made here.',
         ],
+        // The final CSV availability is computed in the background (ComputeNextSolvable)
+        'computing' => 'Computing: the completed summary will be offered here if possible.',
         'button_final' => 'Download the completed summary',
         'button_final-tooltip' => [
             'title' => 'Completed summary',

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Contracts\WithDrawSecret;
 use App\Models\Draw;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Lang;
 // Sent to the previous organizer address when /fix replaces it: if it wasn't them, their panel link still works
 #[Backoff(30)]
 #[Tries(10)]
-final class OrganizerEmailChanged extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit
+final class OrganizerEmailChanged extends Notification implements ShouldBeEncrypted, ShouldQueueAfterCommit, WithDrawSecret
 {
     use Queueable;
 
