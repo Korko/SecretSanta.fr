@@ -23,12 +23,4 @@ return new class extends Migration
             $table->unsignedInteger('created_at');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('jobs');
-    }
 };

@@ -15,11 +15,4 @@ return new class extends Migration
             $table->dropColumn('redraw');
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('participants', function (Blueprint $table): void {
-            $table->boolean('redraw')->default(false);
-        });
-    }
 };

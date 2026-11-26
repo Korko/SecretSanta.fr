@@ -19,12 +19,4 @@ return new class extends Migration
             $table->longText('mail_body');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('dear_santas');
-    }
 };

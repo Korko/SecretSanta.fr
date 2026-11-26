@@ -22,12 +22,4 @@ return new class extends Migration
             $table->nullableTimestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('websockets_statistics_entries');
-    }
 };

@@ -19,9 +19,4 @@ return new class extends Migration
             $table->longText('mail_body');
         });
     }
-
-    public function down(): void
-    {
-        Schema::dropIfExists('gift_suggestions');
-    }
 };

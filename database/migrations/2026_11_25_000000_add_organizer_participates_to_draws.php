@@ -15,11 +15,4 @@ return new class extends Migration
             $table->boolean('organizer_participates')->nullable();
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('draws', function (Blueprint $table): void {
-            $table->dropColumn('organizer_participates');
-        });
-    }
 };

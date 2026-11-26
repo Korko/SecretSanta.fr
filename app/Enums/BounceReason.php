@@ -26,7 +26,7 @@ enum BounceReason: string
             // X.1.7 and X.1.8 are about the sender's address, not the recipient's
             $subject === 1 && in_array($detail, [1, 2, 3, 6, 10], true),
             $subject === 2 && $detail === 1, // mailbox disabled
-            $subject === 4 && $detail === 4 => self::Address, // domain not found ("gmial.com")
+            $subject === 4 && $detail === 4 => self::Address, // RFC 3463 "unable to route", used by Postfix for a domain not found ("gmial.com"); only a permanent 5.4.4 marks it as an error
             $subject === 2 && $detail === 2 => self::MailboxFull,
             $subject === 7 => self::Refused,
             default => null,

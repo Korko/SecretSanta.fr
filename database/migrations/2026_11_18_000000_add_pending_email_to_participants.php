@@ -18,11 +18,4 @@ return new class extends Migration
             $table->unsignedTinyInteger('pending_email_attempts')->default(0);
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('participants', function (Blueprint $table): void {
-            $table->dropColumn(['pending_email', 'pending_email_code', 'pending_email_at', 'pending_email_attempts']);
-        });
-    }
 };

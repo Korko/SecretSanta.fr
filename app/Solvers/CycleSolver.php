@@ -9,7 +9,9 @@ use Random\Randomizer;
 
 /**
  * Draws who gives to whom, as a single loop whenever it finds one (A -> B -> C -> A): nobody draws themselves
- * or someone they excluded, and from three participants on, no two people draw each other.
+ * or someone they excluded. From three participants on, a single loop means no two people draw each other, but
+ * dense exclusions can leave several loops, pairs included (A can only give to B and B only to A), and so can the
+ * exchange of targets done by ParticipantsEditor when an exclusion blocks a removal.
  *
  * 1. Everyone is shuffled into a circle and gives to the next one, again until no exclusion is hit: every
  *    possible loop is then as likely as any other. A few shuffles are enough unless exclusions are very dense.

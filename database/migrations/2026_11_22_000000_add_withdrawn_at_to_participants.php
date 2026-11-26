@@ -16,11 +16,4 @@ return new class extends Migration
             $table->timestamp('withdrawn_at')->nullable();
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('participants', function (Blueprint $table): void {
-            $table->dropColumn('withdrawn_at');
-        });
-    }
 };
