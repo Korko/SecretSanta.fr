@@ -12,7 +12,7 @@
     <x-mail.hr />
     <x-mail.h2 :top="28">{{ __('emails.target_drawn.ask_title') }}</x-mail.h2>
     <x-mail.p :top="8">{{ __('emails.target_drawn.ask') }}</x-mail.p>
-    <x-mail.button :href="$dearSantaLink">{{ __('emails.target_drawn.write_button') }}</x-mail.button>
+    <x-mail.button :href="$dearSantaLink">{{ __(($organizer['samePage'] ?? false) ? 'emails.page_button_organizer' : 'emails.page_button') }}</x-mail.button>
 @unless($organizer)
     {{-- Not to the organizer: no one to report to, and their page has no such button --}}
     <x-mail.p muted small>{{ __('emails.target_drawn.report') }}</x-mail.p>

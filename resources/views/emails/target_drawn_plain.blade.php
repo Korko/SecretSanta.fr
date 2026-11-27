@@ -17,7 +17,7 @@
 
 {!! __('emails.target_drawn.ask') !!}
 
-{!! __('emails.target_drawn.write_button') !!} : {!! $dearSantaLink !!}
+{!! __(($organizer['samePage'] ?? false) ? 'emails.page_button_organizer' : 'emails.page_button') !!} : {!! $dearSantaLink !!}
 @unless($organizer)
 
 {!! __('emails.target_drawn.report') !!}
