@@ -396,6 +396,12 @@
     .pg-sent { @apply m-0 flex list-none flex-col gap-3 p-0; }
     .pg-sent li { @apply flex flex-col items-start gap-1; }
     .pg-details summary { @apply cursor-pointer list-none; }
+    .pg-doc { @apply mx-auto flex max-w-[880px] flex-col gap-7; }
+    .pg-qna { @apply border-0 border-t-2 border-dashed border-[#E6D3BE] pt-3.5; }
+    .pg-qna summary { @apply justify-between gap-4; }
+    .pg-qna summary::after { content: '+'; @apply shrink-0 font-aileron text-2xl font-bold text-titre-rouge; }
+    .pg-qna[open] summary::after { content: '−'; }
+    .pg-qna > .pg-p { @apply mt-2.5; }
     .pg-details summary::-webkit-details-marker { @apply hidden; }
     .pg-problems { @apply m-0 mt-3 flex flex-col gap-2 pl-[26px] text-sm text-brun-doux; }
     .pg-problems .pg-link { @apply font-semibold; }

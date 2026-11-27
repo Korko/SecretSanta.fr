@@ -1,19 +1,7 @@
 {
-  "_ajaxForm-CyyXSObO.js": {
-    "file": "assets/ajaxForm-CyyXSObO.js",
+  "_ajaxForm-BVlUuiVd.js": {
+    "file": "assets/ajaxForm-BVlUuiVd.js",
     "name": "ajaxForm",
-    "imports": [
-      "_alertify-C5GWLzOB.js",
-      "_app-CQ-0MEfl.js"
-    ]
-  },
-  "_alertify-C5GWLzOB.js": {
-    "file": "assets/alertify-C5GWLzOB.js",
-    "name": "alertify"
-  },
-  "_app-CQ-0MEfl.js": {
-    "file": "assets/app-CQ-0MEfl.js",
-    "name": "app",
     "imports": [
       "_alertify-C5GWLzOB.js"
     ],
@@ -23,22 +11,24 @@
       "resources/js/langs/fr.js"
     ]
   },
-  "_dearSantaForm-DkUZUq6d.js": {
-    "file": "assets/dearSantaForm-DkUZUq6d.js",
+  "_alertify-C5GWLzOB.js": {
+    "file": "assets/alertify-C5GWLzOB.js",
+    "name": "alertify"
+  },
+  "_dearSantaForm-CJiNHe0t.js": {
+    "file": "assets/dearSantaForm-CJiNHe0t.js",
     "name": "dearSantaForm",
     "imports": [
-      "_ajaxForm-CyyXSObO.js",
+      "_ajaxForm-BVlUuiVd.js",
       "_alertify-C5GWLzOB.js",
-      "_app-CQ-0MEfl.js",
-      "_form-C9oIt2Js.js"
+      "_form-ZAqzQgb3.js"
     ]
   },
-  "_form-C9oIt2Js.js": {
-    "file": "assets/form-C9oIt2Js.js",
+  "_form-ZAqzQgb3.js": {
+    "file": "assets/form-ZAqzQgb3.js",
     "name": "form",
     "imports": [
-      "_ajaxForm-CyyXSObO.js",
-      "_app-CQ-0MEfl.js"
+      "_ajaxForm-BVlUuiVd.js"
     ]
   },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
@@ -46,7 +36,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
   "resources/css/kraft.css": {
-    "file": "assets/kraft-Dunc_as0.css",
+    "file": "assets/kraft-dqpFz6cl.css",
     "name": "kraft",
     "names": [
       "kraft.css"
@@ -100,37 +90,24 @@
     ]
   },
   "resources/js/dearSanta.js": {
-    "file": "assets/dearSanta-VqRWSxvJ.js",
+    "file": "assets/dearSanta-tnT_ghoi.js",
     "name": "dearSanta",
     "src": "resources/js/dearSanta.js",
     "isEntry": true,
     "imports": [
-      "_app-CQ-0MEfl.js",
-      "_dearSantaForm-DkUZUq6d.js"
-    ]
-  },
-  "resources/js/faq.js": {
-    "file": "assets/faq-BRfvPjiu.js",
-    "name": "faq",
-    "src": "resources/js/faq.js",
-    "isEntry": true,
-    "imports": [
-      "_app-CQ-0MEfl.js"
-    ],
-    "css": [
-      "assets/faq-QuG1mctG.css"
+      "_ajaxForm-BVlUuiVd.js",
+      "_dearSantaForm-CJiNHe0t.js"
     ]
   },
   "resources/js/fixOrganizer.js": {
-    "file": "assets/fixOrganizer-njI93SaW.js",
+    "file": "assets/fixOrganizer-6Nzgr4Fm.js",
     "name": "fixOrganizer",
     "src": "resources/js/fixOrganizer.js",
     "isEntry": true,
     "imports": [
-      "_app-CQ-0MEfl.js",
-      "_ajaxForm-CyyXSObO.js",
+      "_ajaxForm-BVlUuiVd.js",
       "_alertify-C5GWLzOB.js",
-      "_form-C9oIt2Js.js"
+      "_form-ZAqzQgb3.js"
     ]
   },
   "resources/js/kraftMenu.js": {
@@ -158,26 +135,24 @@
     "isDynamicEntry": true
   },
   "resources/js/organizer.js": {
-    "file": "assets/organizer-BlpjGj9x.js",
+    "file": "assets/organizer-DqmxlTBr.js",
     "name": "organizer",
     "src": "resources/js/organizer.js",
     "isEntry": true,
     "imports": [
-      "_app-CQ-0MEfl.js",
-      "_ajaxForm-CyyXSObO.js",
+      "_ajaxForm-BVlUuiVd.js",
       "_alertify-C5GWLzOB.js",
-      "_dearSantaForm-DkUZUq6d.js",
-      "_form-C9oIt2Js.js"
+      "_dearSantaForm-CJiNHe0t.js",
+      "_form-ZAqzQgb3.js"
     ]
   },
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm-wqIXaWcO.js",
+    "file": "assets/randomForm-fr9PBaH3.js",
     "name": "randomForm",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
     "imports": [
-      "_app-CQ-0MEfl.js",
-      "_ajaxForm-CyyXSObO.js",
+      "_ajaxForm-BVlUuiVd.js",
       "_alertify-C5GWLzOB.js",
       "resources/js/kraftMenu.js",
       "resources/js/kraftMenu.js"
@@ -200,7 +175,7 @@
     ]
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-BtjiVelC.css",
+    "file": "assets/app-DNRzhvKg.css",
     "name": "app",
     "names": [
       "app.css"
@@ -218,7 +193,7 @@
     ]
   },
   "resources/sass/vendor.scss": {
-    "file": "assets/vendor-DaAwBNyZ.css",
+    "file": "assets/vendor-DeeFb7GS.css",
     "name": "vendor",
     "names": [
       "vendor.css"

@@ -1,21 +1,22 @@
-@extends('templates/layout')
+@extends('templates/kraftPage')
 
-@section('script')
-    @parent
-
-    @vite('resources/js/common.js')
-    @vite('resources/js/faq.js')
-@stop
-
-@section('navbar')
-    <ul class="nav navbar-nav navbar-nav-left">
-        <li><a href="/">@lang('faq.nav.go')</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-nav-right">
-        <li><a href="mailto:{{ config('app.email') }}">@lang('faq.nav.contact')</a></li>
-    </ul>
-@stop
+@section('title', __('home.nav.faq'))
 
 @section('content')
-    <div id="faq" data-questions="{{ json_encode($questions) }}"></div>
+    @foreach ($questions as $category => $qnas)
+        <section class="pg-card">
+            <h2 class="pg-h2">@lang("faq.categories.$category")</h2>
+            @foreach ($qnas as $question => $answer)
+                <details class="pg-details pg-qna">
+                    <summary @if ($loop->parent->first) id="question{{ $loop->index }}" @endif class="pg-h3 pg-h3--sm">{{ $question }}</summary>
+                    <p @if ($loop->parent->first) id="answer{{ $loop->index }}" @endif class="pg-p">{{ $answer }}</p>
+                </details>
+            @endforeach
+        </section>
+    @endforeach
+
+    <section class="pg-card pg-card--row pg-tagrow">
+        <p class="pg-p">@lang('faq.nav.contact')</p>
+        <span class="tag-wrap"><a class="tag-action tag-action--petit" href="mailto:{{ config('app.email') }}">{{ config('app.email') }}</a></span>
+    </section>
 @stop

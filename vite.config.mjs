@@ -13,7 +13,6 @@ export default defineConfig(({ mode }) => ({
                 'resources/sass/vendor.scss',
                 'resources/js/common.js',
                 'resources/js/dearSanta.js',
-                'resources/js/faq.js',
                 'resources/js/fixOrganizer.js',
                 'resources/js/kraftMenu.js',
                 'resources/js/organizer.js',
