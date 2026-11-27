@@ -1,4 +1,4 @@
-@extends('templates/fetcher', ['fetchUrl' => $routes['fetchUrl']])
+@extends('templates/kraftFetcher', ['fetchUrl' => $routes['fetchUrl']])
 
 @section('script')
     @parent
@@ -14,5 +14,6 @@
     ])
 
     @vite('resources/js/common.js')
+    @vite('resources/js/kraftMenu.js')
     @vite('resources/js/dearSanta.js')
 @stop

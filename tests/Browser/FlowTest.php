@@ -7,7 +7,6 @@ use App\Notifications\OrganizerRecap;
 use App\Notifications\TargetDrawn;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
 
 test('the draw form edits participants, imports a CSV and suggests email fixes', function (): void {
     $page = visit('/')
@@ -141,122 +140,120 @@ test('the full flow: draw, dearSanta report, organizer panel with their particip
     $aliceDearSanta = URL::signedRoute('dearSanta', ['participant' => $alice->hash]).$secret;
 
     $santa = visit($dearSanta)
-        ->assertSeeIn('.targets-revealed', 'pas été consultée')
-        ->click('button[type=submit]')
+        ->assertSeeIn('.targets-revealed', "n'a pas consulté")
+        ->click('.santa-compose button[type=submit]')
         ->assertPresent('textarea.is-invalid')
-        ->assertPresent('tr.no-email')
+        ->assertPresent('.no-email')
         ->type('#mailContent', 'Une écharpe ?')
-        ->click('button[type=submit]')
-        ->assertSeeIn('tr.email', 'Une écharpe ?')
-        ->assertMissing('tr.no-email')
-        // Who they are first: a wrong recipient reports, only the right person may withdraw
-        ->assertNotPresent('.withdraw')
+        ->click('.santa-compose button[type=submit]')
+        ->assertSeeIn('.email', 'Une écharpe ?')
+        ->assertMissing('.no-email')
+        // A wrong recipient reports (withdrawing asks for their own name, see below)
         ->click('.report-open')
-        ->assertSeeIn('.report-identity', 'Bob')
         ->click('.report-not-me')
         ->assertPresent('.report-sent')
         ->assertNoJavaScriptErrors();
     $santa->refresh()->assertPresent('.report-sent');
 
-    // Bob's address is now refused: the bulk resend only retries the other failed one. Both bounced as unknown
+    // Bob's address is now refused: only the other failed one can be sent again. Both bounced as unknown
     $draw->participants->take(-2)->each(fn ($p) => $p->mail->forceFill(['delivery_status' => 'error', 'error_code' => '5.1.1'])->save());
 
     // Alice organizes and takes part: a single page, her panel, holds her participant part too (her
-    // participant link from earlier emails leads there). Nothing there she can't use as the organizer
+    // participant link from earlier emails leads there), in its own tab. Nothing there she can't use as the organizer
     $org = visit($aliceDearSanta)
         ->assertPathBeginsWith('/org/')
-        ->assertPresent('.organizer-participation #mailContent')
-        ->assertNotPresent('.organizer-participation .targets-revealed')
-        ->assertNotPresent('.organizer-participation .email-change')
-        ->assertNotPresent('.organizer-participation .report')
+        ->click('.organizer-participation-tab')
+        ->assertPresent('#panel-participation #mailContent')
+        ->assertNotPresent('#panel-participation .targets-revealed')
+        ->assertNotPresent('#panel-participation .email-change')
+        ->assertNotPresent('#panel-participation .report')
         ->type('#mailContent', 'Des chaussettes ?')
-        ->click('.organizer-participation button[type=submit]')
-        ->assertSeeIn('.organizer-participation tr.email', 'Des chaussettes ?')
+        ->click('#panel-participation .santa-compose button[type=submit]')
+        ->assertSeeIn('#panel-participation .email', 'Des chaussettes ?')
+        ->click('#tab-organization')
         ->assertSee('Alice')
-        ->assertCount('.participant-report', 1)
-        ->assertSeeIn('.participant-report', 'Mauvais destinataire')
-        ->assertCount('.bounce-reason', 2)
-        ->assertSeeIn('.bounce-reason >> nth=0', 'Adresse inexistante')
-        ->click('button.btn-warning:has(.fa-redo)')
-        ->assertButtonDisabled('button.btn-warning:has(.fa-redo)')
-        // Sent again: no more reason for the one retried
-        ->assertCount('.bounce-reason', 1);
+        // "À traiter": the report, the bounce with its reason
+        ->assertCount('.pg-table .pg-status--warn', 1)
+        ->assertSeeIn('.pg-table .pg-status--warn', 'Mauvais destinataire')
+        ->assertCount('.pg-table .pg-status--err', 2)
+        ->assertSeeIn('.todo-error', 'Adresse inexistante');
+    $org->click('.pg-table tr.participant-row >> nth=2 >> .participant-actions')
+        ->click('.pg-table tr.participant-row >> nth=2 >> .participant-resend')
+        // Sent again: no more failure for the one retried
+        ->assertCount('.pg-table .pg-status--err', 1);
     Notification::assertSentTimes(TargetDrawn::class, 4);
 
-    // Email edit: invalid blocks the submit, valid is saved
-    $org->click('button:has(.fa-edit) >> nth=0')
-        ->type('input[name=input] >> nth=0', 'pas-un-email')
-        ->script('document.activeElement.blur()');
-    $org->assertPresent('input[name=input].is-invalid')
-        ->assertPresent('.invalid-tooltip')
-        ->assertDisabled('button:has(.fa-check-circle) >> nth=0')
-        ->click('button:has(.fa-times-circle) >> nth=0')
-        ->click('button:has(.fa-edit) >> nth=0')
-        ->type('input[name=input] >> nth=0', 'alice2@example.com')
-        ->click('button:has(.fa-check-circle) >> nth=0')
-        ->assertPresent('[data-state=viewUpdated]');
+    // Email fix: an invalid address isn't sent, a valid one is
+    $org->click('.pg-table tr.participant-row >> nth=0 >> .participant-actions')
+        ->click('.pg-table tr.participant-row >> nth=0 >> .participant-fix')
+        ->type('[role=dialog] input', 'pas-un-email')
+        ->click('.k-dlg-ok')
+        ->assertPresent('[role=dialog]')
+        ->type('[role=dialog] input', 'alice2@example.com')
+        ->click('.k-dlg-ok')
+        ->assertNotPresent('[role=dialog]')
+        ->assertSee('alice2@example.com');
 
-    // Event date: a future one is saved, a past one is refused and the input restored
+    // Event date, location, budget: saved together
     $date = now()->addDays(40)->format('Y-m-d');
     $org->type('#expires_at', $date)
-        ->wait(1)
-        ->type('#expires_at', '2020-01-01')
-        ->assertPresent('.ajs-content:visible')
-        ->click('.ajs-footer .btn-primary:visible')
-        ->assertValue('#expires_at', $date);
-    expect($draw->fresh()->expires_at->format('Y-m-d'))->toBe($date);
+        ->type('#event_location', 'Chez Alice')
+        ->click('.day-save')
+        ->assertSeeIn('.pg-meta', 'Chez Alice');
+    expect($draw->fresh())->expires_at->format('Y-m-d')->toBe($date)->location->toBe('Chez Alice');
 
     // Add one, then two added and one removed at once
-    $org->type('.participant-add-name', 'Dan')->type('.participant-add-email', 'dan@example.com')
-        ->click('button.participant-add')
-        ->assertSeeIn('.ajs-content:visible .alert-warning', 'a eu lieu aujourd')
-        ->wait(0.5)->click('.ajs-footer .btn-primary:visible >> nth=-1')
+    $org->click('button.participant-add')
+        ->assertSeeIn('[role=dialog]', 'a eu lieu aujourd')
+        ->type('[role=dialog] input >> nth=0', 'Dan')
+        ->type('[role=dialog] input >> nth=1', 'dan@example.com')
+        ->click('.k-dlg-ok')
         ->assertSee('Dan')
         ->wait(0.5)->click('.ajs-footer .btn-primary:visible >> nth=-1')
-        ->assertSeeIn('.received-count', '/4');
+        ->assertSeeIn('.received-count', '/ 4');
     $org->click('.multi-toggle');
     foreach (['eve', 'fred'] as $name) {
-        $org->type('.participant-add-name', ucfirst($name))->type('.participant-add-email', "$name@example.com")
-            ->click('button.participant-add');
+        $org->click('button.participant-add')
+            ->type('[role=dialog] input >> nth=0', ucfirst($name))
+            ->type('[role=dialog] input >> nth=1', "$name@example.com")
+            ->click('.k-dlg-ok');
     }
 
-    $org->click('tbody tr:has(td:text-is("Dan")) .participant-remove')
-        ->assertCount('tr.pending-add', 2)
-        ->assertCount('tr.pending-remove', 1)
+    $org->click('.pg-table tr:has(.participant-name:text-is("Dan")) .participant-actions')
+        ->click('.pg-table tr:has(.participant-name:text-is("Dan")) .participant-remove')
+        ->assertCount('.pg-table tr.pending-add', 2)
+        ->assertCount('.pg-table tr.pending-remove', 1)
         ->click('.multi-validate')
-        ->wait(0.5)->click('.ajs-footer .btn-primary:visible >> nth=-1')
+        ->click('.k-dlg-ok')
         ->assertSee('Fred')
         ->wait(0.5)->click('.ajs-footer .btn-primary:visible >> nth=-1')
-        ->assertCount('tbody tr:not(.pending-add):not(.organizer-participation *)', 5)
+        ->assertCount('.pg-table tr.participant-row', 5)
         ->assertDontSee('Dan');
 
     // Reveal, final CSV, participants see it
-    $org->assertNotPresent('td.target')
-        ->click('button:has-text("Révéler les cibles")')
-        // Permanent: needs the confirmation word too
-        ->click('.ajs-footer .btn-primary:visible')
-        ->assertVisible('.ajs-content:visible input')
-        ->assertNotPresent('td.target')
-        ->type('.ajs-content:visible input', 'Révéler les cibles')
-        // alertify ignores a second button click within 200 ms
-        ->wait(0.5)->click('.ajs-footer .btn-primary:visible')
-        ->assertCount('td.target', 5)
-        ->assertEnabled('button.btn-primary:has(.fa-download) >> nth=-1');
+    $org->assertNotPresent('.pg-table td.target:not(:has(.pg-secret))')
+        ->click('.reveal-open')
+        // Permanent: needs the confirmation word
+        ->assertButtonDisabled('.k-dlg-ok')
+        ->type('.k-dlg-word', 'oui')
+        ->assertButtonDisabled('.k-dlg-ok')
+        ->type('.k-dlg-word', 'révéler')
+        ->click('.k-dlg-ok')
+        ->assertCount('.pg-table td.target:not(:has(.pg-secret))', 5)
+        ->assertButtonEnabled('.csv-final');
     visit($dearSanta)->assertSeeIn('.targets-revealed', 'a consulté');
 
     // Purge needs the confirmation word
-    $org->click('button:has-text("Supprimer tout")')
-        ->type('.ajs-content:visible input', 'nope')
-        ->click('.ajs-footer .btn-primary:visible')
-        ->assertVisible('.ajs-content:visible input');
-    $word = Str::between($org->text('.ajs-content:visible'), '"', '"');
-    $org->type('.ajs-content:visible input', $word)
-        ->click('.ajs-footer .btn-primary:visible')
+    $org->click('.purge-open')
+        ->type('.k-dlg-word', 'nope')
+        ->assertButtonDisabled('.k-dlg-ok')
+        ->type('.k-dlg-word', 'supprimer')
+        ->click('.k-dlg-ok')
         ->assertPresent('.ajs-header:has(.fa-check)')
         ->assertNoJavaScriptErrors();
 });
 
-test('withdrawing takes saying who you are, then typing your own name, and the organizer can bring them back', function (): void {
+test('withdrawing takes typing your own name, and the organizer can bring them back', function (): void {
     Notification::fake();
     // No exclusions: nothing keeps them from leaving
     $draw = createServiceDraw(generateParticipants(4, withExclusions: false));
@@ -265,31 +262,29 @@ test('withdrawing takes saying who you are, then typing your own name, and the o
 
     $page = visit(URL::signedRoute('dearSanta', ['participant' => $participant->hash]).$secret)
         ->click('.report-open')
-        ->click('.report-its-me')
         ->click('.withdraw')
-        ->assertSeeIn('.ajs-content:visible', $participant->name);
+        ->assertSeeIn('[role=dialog]', $participant->name);
 
     // Another word doesn't do
-    $page->type('.ajs-content:visible input', 'Me désister')
-        ->click('.ajs-footer .btn-primary:visible')
-        ->assertVisible('.ajs-content:visible input');
+    $page->type('.k-dlg-word', 'Me désister')
+        ->assertButtonDisabled('.k-dlg-ok');
     expect($participant->fresh())->not->toBeNull();
 
-    $page->type('.ajs-content:visible input', $participant->name)
-        ->wait(0.5)->click('.ajs-footer .btn-primary:visible')
+    $page->type('.k-dlg-word', $participant->name)
+        ->click('.k-dlg-ok')
         ->assertPresent('.ajs-header:has(.fa-check)')
         ->assertNoJavaScriptErrors();
     expect($participant->fresh()->withdrawn_at)->not->toBeNull();
 
     // Someone else had got the email: the organizer brings them back, at the right address
     visit(URL::signedRoute('organizerPanel', ['draw' => $draw->hash]).$secret)
-        ->assertCount('tbody tr:not(.organizer-participation *)', 3)
+        ->assertCount('.pg-table tr.participant-row', 3)
         ->assertSeeIn('.withdrawn-participant', $participant->name)
-        ->click('.participant-restore')
-        ->type('.ajs-content:visible input', 'right@example.com')
-        ->wait(0.5)->click('.ajs-footer .btn-primary:visible')
+        ->click('.withdrawn-participant .participant-restore')
+        ->type('[role=dialog] input', 'right@example.com')
+        ->click('.k-dlg-ok')
         ->assertNotPresent('.withdrawn-participant')
-        ->assertCount('tbody tr:not(.organizer-participation *)', 4)
+        ->assertCount('.pg-table tr.participant-row', 4)
         ->assertNoJavaScriptErrors();
     expect($participant->fresh())->withdrawn_at->toBeNull()->email->toBe('right@example.com');
 });

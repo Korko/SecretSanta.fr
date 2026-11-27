@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 return [
     'skip' => 'Zum Formular springen',
+    'skip_content' => 'Zum Inhalt springen',
+    'loading' => 'Ihre Seite wird geladen…',
     'logo_alt' => 'SecretSanta.fr, Startseite',
     'logo_alt_top' => 'SecretSanta.fr, nach oben',
     'nav' => [
@@ -11,6 +13,7 @@ return [
         'how' => 'Wie funktioniert es?',
         'faq' => 'Häufige Fragen',
         'go' => 'Meine Ziehung organisieren',
+        'another' => 'Eine weitere Ziehung organisieren',
         'open' => 'Menü öffnen',
         'close' => 'Menü schließen',
     ],

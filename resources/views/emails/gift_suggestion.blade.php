@@ -4,6 +4,7 @@
 
 @section('content')
     <x-mail.p>{{ __('emails.gift_suggestion.from_anonymous', ['name' => $targetName]) }}</x-mail.p>
+    {{-- Never its author: "De : ?" --}}
     <x-mail.gift :label="__('emails.gift.from')" :name="__('emails.gift.anonymous')" />
     <x-mail.letter plain>{!! nl2br(e($content)) !!}</x-mail.letter>
     <x-mail.p>{{ __('emails.gift_suggestion.secret', ['name' => $targetName]) }}</x-mail.p>
