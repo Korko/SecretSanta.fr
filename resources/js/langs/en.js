@@ -162,6 +162,7 @@ export default {
                 "dayHelp": "The date can be changed later. Until then, a dedicated page gives you the summary of the participants. All stored data is deleted one month later.",
                 "submit": "Start the draw!",
                 "sending": "Drawing…",
+                "restart": "Start over",
                 "newDraw": "Organize another draw",
                 "seal": "Kept secret by SecretSanta.fr: your data is encrypted and never shared.",
                 "success": "Here we go! Every participant gets their email within the next few minutes."

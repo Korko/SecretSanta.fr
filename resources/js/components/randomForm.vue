@@ -17,6 +17,9 @@
 
     import { dateFromNow } from '../partials/helpers.js';
 
+    const DRAFT_KEY = 'randomFormDraft';
+    const DRAFT_TTL = 3600 * 1000;
+
     export default {
         setup: () => ({ v$: useVuelidate() }),
 
@@ -109,9 +112,15 @@
         },
 
         created: function() {
-            this.addParticipant();
-            this.addParticipant();
-            this.addParticipant();
+            if (!this.restoreDraft()) {
+                this.reset();
+            }
+            // Drafts survive a refresh for an hour; exclusions are object refs, stored as ids
+            this.$watch(
+                () => [this.participantOrganizer, this.organizer, this.participants, this.title, this.content, this.expiration, this.location, this.budget],
+                () => this.saveDraft(),
+                { deep: true }
+            );
         },
 
         // The "event name" field of the top of the page (outside Vue) fills the title, as long as it wasn't changed here
@@ -213,7 +222,8 @@
             },
 
             // The confirmation shows at the top of the form, possibly far above the submit button
-            scrollToSuccess() {
+            onSuccess() {
+                localStorage.removeItem(DRAFT_KEY);
                 this.$nextTick(() => document.getElementById('success-wrapper').focus());
             },
 
@@ -266,6 +276,48 @@
                 };
             },
 
+            saveDraft() {
+                localStorage.setItem(DRAFT_KEY, JSON.stringify({
+                    at: Date.now(),
+                    participantOrganizer: this.participantOrganizer,
+                    organizer: this.organizer,
+                    participants: this.participants.map(p => ({ ...p, exclusions: p.exclusions.map(other => other.id) })),
+                    title: this.title,
+                    content: this.content,
+                    expiration: this.expiration,
+                    location: this.location,
+                    budget: this.budget,
+                }));
+            },
+
+            restoreDraft() {
+                let draft;
+                try {
+                    draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
+                } catch {
+                    return false;
+                }
+                if (!draft || Date.now() - draft.at > DRAFT_TTL || !draft.participants?.length) {
+                    return false;
+                }
+                const { at, participants, ...fields } = draft;
+                Object.assign(this, fields);
+                this.participants = participants;
+                this.participants.forEach(p => {
+                    p.exclusions = p.exclusions.map(id => this.participants.find(other => other.id === id)).filter(Boolean);
+                });
+                return true;
+            },
+
+            // "Start over": flush the draft and every field
+            restart() {
+                this.reset();
+                this.participantOrganizer = true;
+                this.organizer = { name: '', email: '' };
+                localStorage.removeItem(DRAFT_KEY);
+                this.v$.$reset();
+            },
+
             reset() {
                 this.participants = [];
                 this.title = '';
@@ -284,7 +336,7 @@
 
 <template>
     <div>
-        <ajax-form id="randomForm" class="kt-card k-card" action="/" :validator="v$" @reset="reset" @before-submit="touchParticipants" @success="scrollToSuccess">
+        <ajax-form id="randomForm" class="kt-card k-card" action="/" :validator="v$" @reset="reset" @before-submit="touchParticipants" @success="onSuccess">
             <template #default="{ fieldError }">
                 <svg class="kt-corner" aria-hidden="true" focusable="false" viewBox="0 0 270 36" preserveAspectRatio="none"><rect width="270" height="36" fill="#C62A2F" /><rect width="270" height="18" fill="#FFFFFF" opacity=".08" /><path d="M0 6H270M0 30H270" stroke="#FFF0DE" stroke-opacity=".6" stroke-width="2" stroke-dasharray="6 5" /></svg>
                 <input v-if="limitCode" type="hidden" name="limit" :value="limitCode" />
@@ -506,7 +558,8 @@
                 <div class="k-envoi">
                     <p v-show="sent" id="success-wrapper" class="k-succes" role="status" tabindex="-1">{{ $t('form.k.success') }}</p>
                     <span v-if="sent" class="tag-wrap tag-wrap--kraft"><button type="button" class="tag-kraft" @click="onReset">{{ $t('form.k.newDraw') }}</button></span>
-                    <span v-else class="tag-wrap" style="--hole: var(--color-papier)"><button type="submit" class="tag-action tag-action--grand" :disabled="sending" :aria-busy="sending">{{ sending ? $t('form.k.sending') : $t('form.k.submit') }}</button></span>
+                    <span v-if="!sent" class="tag-wrap tag-wrap--kraft"><button type="button" class="tag-kraft" :disabled="sending" @click="restart">{{ $t('form.k.restart') }}</button></span>
+                    <span v-if="!sent" class="tag-wrap" style="--hole: var(--color-papier)"><button type="submit" class="tag-action tag-action--grand" :disabled="sending" :aria-busy="sending">{{ sending ? $t('form.k.sending') : $t('form.k.submit') }}</button></span>
                     <p class="k-sceau"><img :src="logoIcon" alt="" width="28" height="30" />{{ $t('form.k.seal') }}</p>
                 </div>
             </template>

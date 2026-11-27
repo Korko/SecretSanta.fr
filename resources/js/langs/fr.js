@@ -162,6 +162,7 @@ export default {
                 "dayHelp": "La date reste modifiable par la suite. Jusqu'à cette date, une page dédiée vous donne le récapitulatif des participant(e)s. Toutes les données stockées sont supprimées un mois après.",
                 "submit": "Lancer le tirage !",
                 "sending": "Tirage en cours…",
+                "restart": "Recommencer",
                 "newDraw": "Organiser un autre tirage",
                 "seal": "Gardé secret par SecretSanta.fr : vos données sont chiffrées et ne sont jamais partagées.",
                 "success": "C'est parti ! Chaque participant(e) reçoit son e-mail dans les minutes qui suivent."

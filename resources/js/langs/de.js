@@ -162,6 +162,7 @@ export default {
                 "dayHelp": "Das Datum kann später geändert werden. Bis dahin bietet Ihnen eine eigene Seite die Übersicht der Teilnehmer. Alle gespeicherten Daten werden einen Monat danach gelöscht.",
                 "submit": "Ziehung starten!",
                 "sending": "Ziehung läuft…",
+                "restart": "Neu beginnen",
                 "newDraw": "Eine weitere Ziehung organisieren",
                 "seal": "Geheim gehalten von SecretSanta.fr: Ihre Daten sind verschlüsselt und werden nie weitergegeben.",
                 "success": "Los geht's! Alle Teilnehmer erhalten ihre E-Mail in den folgenden Minuten."

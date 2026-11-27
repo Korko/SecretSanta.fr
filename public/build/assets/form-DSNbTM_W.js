@@ -1,0 +1,1 @@
+import{I as e,d as t,k as n,t as r,z as i}from"./ajaxForm-GJpDwCiE.js";var a={components:{AjaxForm:r}};function o(t,r,a,o,s,c){let l=i(`ajax-form`);return e(),n(l)}var s=t(a,[[`render`,o]]);export{s as t};
