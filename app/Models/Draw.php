@@ -127,6 +127,19 @@ final class Draw extends Model
             ]);
     }
 
+    // The event name, as the mail title: {SANTA} and {TARGET} are those of the participant reading it, and left out
+    // for the organizer (no participant)
+    public function title(?Participant $santa = null): string
+    {
+        if ($santa instanceof Participant) {
+            return str_ireplace(['{SANTA}', '{TARGET}'], [$santa->name, $santa->target->name], $this->mail_title);
+        }
+
+        $title = str_ireplace(['{SANTA}', '{TARGET}'], '', $this->mail_title);
+
+        return mb_trim((string) preg_replace('/\s+/u', ' ', $title), " \t\n\r\0\x0B,;:-");
+    }
+
     // Participants and exclusions, reusable to prefill the form next time (organizer panel + recap email)
     public function initialCsv(): string
     {
