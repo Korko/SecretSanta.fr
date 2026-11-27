@@ -10,6 +10,12 @@ return [
         'participation' => 'Votre participation',
         'organization' => 'Organisation de l\'évènement',
     ],
+    'eventDetails' => [
+        'location' => 'Lieu (facultatif)',
+        'locationPlaceholder' => 'Par exemple : chez Mamie',
+        'budget' => 'Budget par cadeau, en € (facultatif)',
+        'saved' => 'Enregistré',
+    ],
     'date' => [
         'label' => 'Date de l\'évènement',
         'help' => 'Les données de l\'évènement seront supprimées le {deleted_at}.',
