@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Models\Draw;
 use App\Notifications\GiftSuggestion;
 use App\Notifications\TargetMessages;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
