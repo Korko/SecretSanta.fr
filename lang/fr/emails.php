@@ -54,8 +54,6 @@ return [
     'gift_suggestion.title' => 'SecretSanta #:draw - Une idée cadeau pour :name',
     'gift_suggestion.heading' => 'Une idée cadeau pour :name',
     'gift_suggestion.from_anonymous' => 'Un(e) autre participant(e) vous propose une idée de cadeau pour :name :',
-    'gift_suggestion.from_signed' => ':sender vous propose une idée de cadeau pour :name :',
-    'gift_suggestion.secret_signed' => 'Cette personne a signé son idée, mais ne sait pas que vous êtes le Secret Santa de :name.',
     'gift_suggestion.secret' => 'Cette personne ne sait pas que vous êtes le Secret Santa de :name.',
     'event.heading' => 'Le jour J',
     'event.location' => 'Lieu',
