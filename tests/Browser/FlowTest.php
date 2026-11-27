@@ -111,7 +111,7 @@ function submitDraw($page, array $names, string $title = 'Noel'): void
         ->type('#mailContent', 'Salut {SANTA}, offre a {TARGET}')
         ->type('[name=data-expiration]', now()->addDays(5)->format('Y-m-d'))
         ->click('#randomForm button[type=submit]')
-        ->assertSee('envoy');
+        ->assertVisible('#success-wrapper');
 }
 
 test('a non participating organizer gets a separate recap', function (): void {
@@ -175,12 +175,13 @@ test('the full flow: draw, dearSanta report, organizer panel with their particip
         // "À traiter": the report, the bounce with its reason
         ->assertCount('.pg-table .pg-status--warn', 1)
         ->assertSeeIn('.pg-table .pg-status--warn', 'Mauvais destinataire')
-        ->assertCount('.pg-table .pg-status--err', 2)
+        // Bob's report comes before his bounce: only Chloe shows the failure
+        ->assertCount('.pg-table .pg-status--err', 1)
         ->assertSeeIn('.todo-error', 'Adresse inexistante');
     $org->click('.pg-table tr.participant-row >> nth=2 >> .participant-actions')
         ->click('.pg-table tr.participant-row >> nth=2 >> .participant-resend')
         // Sent again: no more failure for the one retried
-        ->assertCount('.pg-table .pg-status--err', 1);
+        ->assertCount('.pg-table .pg-status--err', 0);
     Notification::assertSentTimes(TargetDrawn::class, 4);
 
     // Email fix: an invalid address isn't sent, a valid one is
@@ -294,7 +295,7 @@ test('static pages and the fix form', function (): void {
 
     // Nothing covers the footer: its links get the clicks
     foreach (['/', '/faq'] as $url) {
-        expect(visit($url)->script("(() => { const a = document.querySelector('footer a'); a.scrollIntoView({ behavior: 'instant' }); const r = a.getBoundingClientRect(); return document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2) === a; })()"))->toBeTrue();
+        expect(visit($url)->script("(() => { const a = document.querySelector('footer a'); a.scrollIntoView({ behavior: 'instant' }); const r = a.getBoundingClientRect(); return a.contains(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)); })()"))->toBeTrue();
     }
 
     visit('/faq')->click('#question0')->assertVisible('#answer0')->assertNoJavaScriptErrors();
@@ -311,7 +312,7 @@ test('removing a row keeps the other rows validation state', function (): void {
         ->assertPresent('[name="participants[1][email]"].is-invalid');
 
     // Chloe moves up a row: she must not inherit Bruno's invalid email
-    $page->click('[dusk=participant1] .participant-remove')
+    $page->click('[dusk=participant1] .participant-remove:visible')
         ->wait(1.5)
         ->assertValue('[name="participants[1][name]"]', 'Chloe')
         ->assertNotPresent('[name="participants[1][email]"].is-invalid')
