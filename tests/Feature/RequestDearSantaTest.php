@@ -366,8 +366,7 @@ it('lets a participant suggest a gift idea to the santa of someone else than the
     $received = ajaxGet(URL::signedRoute('dearSanta.fetch', ['participant' => $recipient->santa]))->json('receivedSuggestions');
     expect($received)->toHaveCount(1)
         ->and($received[0])->toMatchArray(['mail_body' => 'A board game'])
-        // Not signed: nothing tells who gave it
-        ->and($received[0]['sender'])->toBeNull();
+        ->and($received[0])->not->toHaveKey('sender');
 });
 
 it("refuses a gift idea for oneself or one's own target", function (): void {

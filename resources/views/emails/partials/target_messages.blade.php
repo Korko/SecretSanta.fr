@@ -11,8 +11,8 @@
     <x-mail.h2>{{ __('emails.target_messages.ideas') }}</x-mail.h2>
     <x-mail.p :top="4">{{ __('emails.target_messages.suggestions', ['name' => $targetName]) }}</x-mail.p>
     @foreach ($giftSuggestions as $giftSuggestion)
-        {{-- Its author only when they signed it: "De : ?" otherwise --}}
-        <x-mail.gift :label="__('emails.gift.from')" :name="($giftSuggestion['sender'] ?? null) ?: __('emails.gift.anonymous')" />
+        {{-- Never its author: "De : ?" --}}
+        <x-mail.gift :label="__('emails.gift.from')" :name="__('emails.gift.anonymous')" />
         <x-mail.letter plain :date="$giftSuggestion['date']">{!! nl2br(e($giftSuggestion['content'])) !!}</x-mail.letter>
     @endforeach
 @endif
