@@ -33,4 +33,7 @@ return [
     // Bigger draws (and more emails sent at once) go through the administrator: keeps the site from being a spam relay
     'max_participants' => (int) env('MAX_PARTICIPANTS', 50),
 
+    // Seconds the job solving a draw (SolveDraw) may run: keep it under the queue retry_after
+    'solve_timeout' => (int) env('SOLVE_TIMEOUT', 60),
+
 ];

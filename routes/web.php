@@ -24,6 +24,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [RandomFormController::class, 'view']);
 Route::post('/', [RandomFormController::class, 'handle'])->middleware('throttle:draw');
 
+// Following a draw from the browser that sent its form (#117): by its random UUID, never its id
+Route::middleware('throttle:tracking')->group(function (): void {
+    Route::get('/tracking/{tracking:uuid}', [RandomFormController::class, 'tracking'])->name('tracking');
+    Route::post('/tracking/{tracking:uuid}/broadcasting/auth', [BroadcastAuthController::class, 'tracking'])
+        ->name('tracking.broadcastAuth');
+});
+
 Route::get('/faq', [RandomFormController::class, 'faq'])->name('faq');
 Route::view('/legal', 'legal')->name('legal');
 

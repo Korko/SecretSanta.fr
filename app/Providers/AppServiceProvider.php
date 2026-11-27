@@ -67,6 +67,8 @@ final class AppServiceProvider extends ServiceProvider
         // Only the requests that went through count: a refused form (no solution, typo) sends nothing
         RateLimiter::for('draw', fn (Request $request): Limit => Limit::perHour(20)->by((string) $request->ip())
             ->after(fn (Response $response): bool => $response->isSuccessful()));
+        // The tracking of a draw is followed by websocket, polled only without one
+        RateLimiter::for('tracking', fn (Request $request): Limit => Limit::perMinute(30)->by((string) $request->ip()));
         RateLimiter::for('email', fn (Request $request): Limit => Limit::perHour(60)->by((string) $request->ip())
             ->after(fn (Response $response): bool => $response->isSuccessful()));
     }

@@ -162,6 +162,12 @@ export default {
                 "dayHelp": "Das Datum kann später geändert werden. Bis dahin bietet Ihnen eine eigene Seite die Übersicht der Teilnehmer. Alle gespeicherten Daten werden einen Monat danach gelöscht.",
                 "submit": "Ziehung starten!",
                 "sending": "Ziehung läuft…",
+                "solving": "Ziehung läuft: Sie werden hier benachrichtigt, sobald sie fertig ist.",
+                "failed": {
+                    "no_solution": "Mit den gewählten Ausschlüssen kann nicht jedem Teilnehmer ein Ziel zugewiesen werden. Ändern Sie sie und starten Sie die Ziehung erneut.",
+                    "limit": "Dieser Administrator-Link wurde bereits für eine andere Ziehung verwendet.",
+                    "error": "Die Ziehung konnte nicht durchgeführt werden. Versuchen Sie es in einigen Minuten erneut."
+                },
                 "newDraw": "Eine weitere Ziehung organisieren",
                 "seal": "Geheim gehalten von SecretSanta.fr: Ihre Daten sind verschlüsselt und werden nie weitergegeben.",
                 "success": "Los geht's! Alle Teilnehmer erhalten ihre E-Mail in den folgenden Minuten."

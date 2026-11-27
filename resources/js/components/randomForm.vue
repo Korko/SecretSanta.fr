@@ -16,6 +16,8 @@
     import Participant from './participant.vue';
 
     import { dateFromNow } from '../partials/helpers.js';
+    import fetch from '../partials/fetch.js';
+    import { follow } from '../partials/echo.js';
 
     export default {
         setup: () => ({ v$: useVuelidate() }),
@@ -64,6 +66,8 @@
                 limitCode: window.global.limitCode || null,
                 showModal: false,
                 importing: false,
+                // The draw is solved by the server afterwards (#117): pending, drawn or failed
+                drawState: null,
             };
         },
 
@@ -217,6 +221,36 @@
                 this.$nextTick(() => document.getElementById('success-wrapper').focus());
             },
 
+            // The form is accepted, the draw solved in the background: followed by its private channel,
+            // fetched once subscribed (and polled without websockets) not to miss its end
+            onSent(response) {
+                const tracking = response.tracking;
+                this.drawState = tracking.state;
+                this.scrollToSuccess();
+                if (tracking.state !== 'pending') {
+                    return this.onTracking(tracking);
+                }
+
+                const headers = { 'X-TRACKING-TOKEN': tracking.token };
+                const channel = tracking.channel;
+                follow(channel, tracking.authUrl, {
+                    '.tracking.update': data => this.onTracking(data),
+                }, () => fetch('/tracking/'+tracking.id, 'GET', null, headers).then(data => this.onTracking(data)), () => this.drawState === 'pending', headers);
+            },
+
+            onTracking(data) {
+                if (this.drawState !== 'pending' && this.drawState !== data.state) {
+                    return;
+                }
+                this.drawState = data.state;
+
+                // Nothing was kept: the form is still filled in, to fix and send again
+                if (data.state === 'failed') {
+                    this.$refs.form.sent = false;
+                    alertify.errorAlert(this.$t('form.k.failed.'+(data.reason || 'error')));
+                }
+            },
+
             // {SANTA} / {TARGET} go where the cursor is in the message (at its end otherwise)
             insert(word) {
                 const textarea = this.$refs.content;
@@ -258,6 +292,7 @@
             },
 
             reset() {
+                this.drawState = null;
                 this.participants = [];
                 this.title = '';
                 this.content = '';
@@ -275,7 +310,7 @@
 
 <template>
     <div>
-        <ajax-form id="randomForm" class="kt-card k-card" action="/" :validator="v$" @reset="reset" @before-submit="touchParticipants" @success="scrollToSuccess">
+        <ajax-form id="randomForm" class="kt-card k-card" action="/" :validator="v$" @reset="reset" @before-submit="touchParticipants" ref="form" @success="onSent">
             <template #default="{ fieldError }">
                 <svg class="kt-corner" aria-hidden="true" focusable="false" viewBox="0 0 270 36" preserveAspectRatio="none"><rect width="270" height="36" fill="#C62A2F" /><rect width="270" height="18" fill="#FFFFFF" opacity=".08" /><path d="M0 6H270M0 30H270" stroke="#FFF0DE" stroke-opacity=".6" stroke-width="2" stroke-dasharray="6 5" /></svg>
                 <input v-if="limitCode" type="hidden" name="limit" :value="limitCode" />
@@ -495,9 +530,9 @@
 
             <template #buttons="{ sending, sent, onReset }">
                 <div class="k-envoi">
-                    <p v-show="sent" id="success-wrapper" class="k-succes" role="status" tabindex="-1">{{ $t('form.k.success') }}</p>
-                    <span v-if="sent" class="tag-wrap tag-wrap--kraft"><button type="button" class="tag-kraft" @click="onReset">{{ $t('form.k.newDraw') }}</button></span>
-                    <span v-else class="tag-wrap" style="--hole: var(--color-papier)"><button type="submit" class="tag-action tag-action--grand" :disabled="sending" :aria-busy="sending">{{ sending ? $t('form.k.sending') : $t('form.k.submit') }}</button></span>
+                    <p v-show="sent" id="success-wrapper" class="k-succes" role="status" tabindex="-1">{{ drawState === 'pending' ? $t('form.k.solving') : $t('form.k.success') }}</p>
+                    <span v-if="sent && drawState !== 'pending'" class="tag-wrap tag-wrap--kraft"><button type="button" class="tag-kraft" @click="onReset">{{ $t('form.k.newDraw') }}</button></span>
+                    <span v-else-if="!sent" class="tag-wrap" style="--hole: var(--color-papier)"><button type="submit" class="tag-action tag-action--grand" :disabled="sending || sent" :aria-busy="sending || sent">{{ sending ? $t('form.k.sending') : $t('form.k.submit') }}</button></span>
                     <p class="k-sceau"><img :src="logoIcon" alt="" width="28" height="30" />{{ $t('form.k.seal') }}</p>
                 </div>
             </template>

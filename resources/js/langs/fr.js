@@ -162,6 +162,12 @@ export default {
                 "dayHelp": "La date reste modifiable par la suite. Jusqu'à cette date, une page dédiée vous donne le récapitulatif des participant(e)s. Toutes les données stockées sont supprimées un mois après.",
                 "submit": "Lancer le tirage !",
                 "sending": "Tirage en cours…",
+                "solving": "Tirage en cours : vous serez prévenu(e) ici dès qu'il est fait.",
+                "failed": {
+                    "no_solution": "Les exclusions que vous avez choisies ne permettent pas d'attribuer une cible par participant(e). Modifiez-les puis relancez le tirage.",
+                    "limit": "Ce lien d'administration a déjà servi pour un autre tirage.",
+                    "error": "Le tirage n'a pas pu être fait. Réessayez dans quelques minutes."
+                },
                 "newDraw": "Organiser un autre tirage",
                 "seal": "Gardé secret par SecretSanta.fr : vos données sont chiffrées et ne sont jamais partagées.",
                 "success": "C'est parti ! Chaque participant(e) reçoit son e-mail dans les minutes qui suivent."

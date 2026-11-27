@@ -28,8 +28,10 @@ it('sends no notifications in case of error', function ($participants): void {
         'content-email' => 'test mail {SANTA} => {TARGET}',
         'data-expiration' => date('Y-m-d', strtotime('+2 days')),
     ])
-        ->assertStatus(422)
-        ->assertJsonStructure(['message']);
+        // Solved by a job (sync here): nothing kept but the failed tracking, the browser still has the form
+        ->assertStatus(202)
+        ->assertJsonPath('tracking.state', 'failed')
+        ->assertJsonPath('tracking.reason', 'no_solution');
 
     assertEquals(0, Draw::query()->count());
     assertEquals(0, Participant::query()->count());

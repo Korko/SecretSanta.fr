@@ -162,6 +162,12 @@ export default {
                 "dayHelp": "The date can be changed later. Until then, a dedicated page gives you the summary of the participants. All stored data is deleted one month later.",
                 "submit": "Start the draw!",
                 "sending": "Drawing…",
+                "solving": "Drawing: you will be told here as soon as it is done.",
+                "failed": {
+                    "no_solution": "The exclusions you chose don't allow a target for each participant. Change them and start the draw again.",
+                    "limit": "This administrator link was already used for another draw.",
+                    "error": "The draw could not be made. Try again in a few minutes."
+                },
                 "newDraw": "Organize another draw",
                 "seal": "Kept secret by SecretSanta.fr: your data is encrypted and never shared.",
                 "success": "Here we go! Every participant gets their email within the next few minutes."

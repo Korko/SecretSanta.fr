@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\SolverException;
 use App\Http\Requests\RandomFormRequest;
-use App\Models\Draw;
+use App\Jobs\SolveDraw;
+use App\Models\DrawTracking;
 use App\Models\ParticipantLimit;
-use App\Notifications\OrganizerRecap;
-use App\Services\DrawFormHandler;
+use DrawCrypt;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
-use STS\Metrics\Facades\Metrics;
 
 final class RandomFormController extends Controller
 {
@@ -32,57 +28,40 @@ final class RandomFormController extends Controller
         ]);
     }
 
+    // Answers at once: the draw is solved by a job (SolveDraw), the browser follows it with the tracking (#117)
     public function handle(RandomFormRequest $request): JsonResponse
     {
         /** @var array{participant-organizer?: bool, organizer: array{name: string, email: string}, participants: list<array{name: string, email: string, exclusions?: list<int|string>}>, title: string, content-email: string, data-expiration: string, data-location?: string|null, data-budget?: string|null} $safe */
         $safe = $request->validated();
 
-        try {
-            $drawForm = (new DrawFormHandler);
+        [$tracking, $token] = DrawTracking::start();
 
-            if (! ($safe['participant-organizer'] ?? false)) {
-                $drawForm->withOrganizer($safe['organizer']);
-            }
+        dispatch(new SolveDraw($tracking->id, $safe, $request->participantLimit()?->id));
 
-            $draw = DB::transaction(function () use ($drawForm, $safe, $request): Draw {
-                $draw = $drawForm
-                    ->withParticipants($safe['participants'])
-                    ->withTitle($safe['title'])
-                    ->withBody($safe['content-email'])
-                    ->withExpiration($safe['data-expiration'])
-                    ->withEventDetails($safe['data-location'] ?? null, isset($safe['data-budget']) ? (string) $safe['data-budget'] : null)
-                    ->save();
+        // Refreshed: with a sync queue (tests, no worker), the draw is already solved
+        $tracking->refresh();
 
-                // Single use: the draw keeps the raised limit for the participants added later
-                $limit = $request->participantLimit();
-                if ($limit instanceof ParticipantLimit) {
-                    throw_unless($limit->consume($draw), ValidationException::withMessages(['limit' => trans('error.participantLimit')]));
-                    $draw->max_participants = $limit->max;
-                    $draw->save();
-                }
+        return response()->json([
+            'message' => trans('message.sent'),
+            'tracking' => [
+                'id' => $tracking->uuid,
+                // Only kept in this browser, never in a URL: gives the details and the private channel
+                'token' => $token,
+                // The draw secret, for the calls needing it later (as X-DRAW-SECRET)
+                'secret' => base64_encode(DrawCrypt::getSecret()),
+                'channel' => $tracking->broadcastChannel(),
+                'authUrl' => route('tracking.broadcastAuth', ['tracking' => $tracking->uuid]),
+                ...$tracking->details(),
+            ],
+        ], 202);
+    }
 
-                return $draw;
-            });
-
-            // Taking part, the organizer gets the recap within their own target email (TargetDrawn)
-            if (! ($safe['participant-organizer'] ?? false)) {
-                $draw->notify(new OrganizerRecap($draw));
-            }
-
-            $draw->createMetric('new_draw')
-                ->addExtra('participants', count($draw->participants));
-
-            return response()->json([
-                'message' => trans('message.sent'),
-            ]);
-        } catch (SolverException) {
-            Metrics::create('solver_failed')
-                ->addExtra('participants', count($safe['participants']));
-
-            return response()->json([
-                'message' => trans('error.solution'),
-            ], 422);
-        }
+    // Without the token, only whether the draw went through: the UUID may be shared
+    public function tracking(Request $request, DrawTracking $tracking): JsonResponse
+    {
+        return response()->json($tracking->checkToken($request->header('X-TRACKING-TOKEN'))
+            ? $tracking->details()
+            : ['state' => $tracking->state->value]);
     }
 
     public function faq(): Response

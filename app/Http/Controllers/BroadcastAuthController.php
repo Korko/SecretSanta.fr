@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Draw;
+use App\Models\DrawTracking;
 use App\Models\Participant;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,6 +23,14 @@ final class BroadcastAuthController extends Controller
     public function participant(Request $request, Participant $participant): JsonResponse
     {
         return $this->authorize($request, $participant->broadcastChannel());
+    }
+
+    // No signed URL before the draw exists: the token kept by the browser that sent the form
+    public function tracking(Request $request, DrawTracking $tracking): JsonResponse
+    {
+        abort_unless($tracking->checkToken($request->header('X-TRACKING-TOKEN')), 403);
+
+        return $this->authorize($request, $tracking->broadcastChannel());
     }
 
     private function authorize(Request $request, string $channel): JsonResponse
