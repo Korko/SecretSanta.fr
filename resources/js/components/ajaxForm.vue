@@ -147,8 +147,10 @@
                 this.sending = false;
                 this.sent = false;
             },
-            submit(postData, options) {
+            // async: lets beforeSubmit listeners change the form (e.g. drop rows) before it is read
+            async submit(postData, options) {
                 this.$emit('beforeSubmit');
+                await this.$nextTick();
                 postData = postData || new URLSearchParams(new FormData(this.$el)).toString();
                 var ajax = this.call(this.action, Object.assign({ data: postData }, options));
                 this.$emit('afterSubmit');

@@ -239,7 +239,16 @@
 
             // vuelidate 2 doesn't $touch child components: show participant errors on submit
             touchParticipants() {
-                [this.$refs.orgaRow, ...(this.$refs.participants || [])].filter(Boolean).forEach(participant => participant.v$.$touch());
+                // Blank extra rows (beyond the 3 required ones) are ignored rather than reported
+                for (let idx = this.participants.length - 1; idx >= 0 && this.participants.length > 3; idx--) {
+                    const participant = this.participants[idx];
+                    if (!participant.name?.trim() && !participant.email?.trim() && !(this.participantOrganizer && idx === 0)) {
+                        this.participants.splice(idx, 1);
+                    }
+                }
+                this.$nextTick(() =>
+                    [this.$refs.orgaRow, ...(this.$refs.participants || [])].filter(Boolean).forEach(participant => participant.v$.$touch())
+                );
             },
 
             // Props shared by the organizer's row and the others
