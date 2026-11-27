@@ -15,10 +15,6 @@ export default {
                 "sent": "Sent",
                 "reset": "Start a new draw"
             },
-            "confirm": {
-                "type": "To confirm, type “{word}”",
-                "cancel": "Cancel"
-            },
             "modal": {
                 "close": "Close"
             },
@@ -42,6 +38,10 @@ export default {
             "csv": {
                 "generated": "File generated on {date} on {app} ({url})",
                 "usage": "This file can be used to prefill the participants and their exclusions"
+            },
+            "confirm": {
+                "type": "To confirm, type “{word}”",
+                "cancel": "Cancel"
             }
         },
         "dearsanta": {
@@ -123,49 +123,6 @@ export default {
             }
         },
         "form": {
-            "k": {
-                "stepsNav": "Go to a step of the form",
-                "stepsShort": {
-                    "one": "Participants",
-                    "two": "Message",
-                    "three": "Big day"
-                },
-                "steps": {
-                    "one": "The participants",
-                    "two": "The message",
-                    "three": "The big day"
-                },
-                "you": "You, the organizer",
-                "person": "Person {n}",
-                "participate": {
-                    "label": "I take part in the draw too",
-                    "help": "You are then drawn like everyone else. Uncheck if you organize without taking part: you will only get the summary."
-                },
-                "remove": "Remove {name}",
-                "removeN": "Remove participant {n}",
-                "nameOf": "Name or nickname of participant {n}",
-                "emailOf": "Email address of participant {n}",
-                "exclusionsOf": "Exclusions of participant {n}",
-                "eventLabel": "Name of your event",
-                "eventPlaceholder": "e.g. Family Christmas at Martin's",
-                "messageLabel": "Message to the participants",
-                "messagePlaceholder": "Hi {SANTA}! For Christmas at Martin's, your target is {TARGET}. Can't wait to see your gifts!",
-                "insert": "Insert:",
-                "insertSanta": "the name of the person receiving the email",
-                "insertTarget": "the name of their target",
-                "inserted": "{word} inserted in the message",
-                "date": "Date of the event",
-                "location": "Location",
-                "budget": "Budget per gift, in €",
-                "optional": "(optional)",
-                "locationPlaceholder": "e.g. at Martin's",
-                "dayHelp": "The date can be changed later. Until then, a dedicated page gives you the summary of the participants. All stored data is deleted one month later.",
-                "submit": "Start the draw!",
-                "sending": "Drawing…",
-                "newDraw": "Organize another draw",
-                "seal": "Kept secret by SecretSanta.fr: your data is encrypted and never shared.",
-                "success": "Here we go! Every participant gets their email within the next few minutes."
-            },
             "inputEdit": {
                 "update": "Edit",
                 "updating": "Saving",
@@ -287,7 +244,50 @@ export default {
             "paypal": {
                 "alt": "PayPal, the safer way to pay online"
             },
-            "internalError": "Internal error"
+            "internalError": "Internal error",
+            "k": {
+                "stepsNav": "Go to a step of the form",
+                "stepsShort": {
+                    "one": "Participants",
+                    "two": "Message",
+                    "three": "Big day"
+                },
+                "steps": {
+                    "one": "The participants",
+                    "two": "The message",
+                    "three": "The big day"
+                },
+                "you": "You, the organizer",
+                "person": "Person {n}",
+                "participate": {
+                    "label": "I take part in the draw too",
+                    "help": "You are then drawn like everyone else. Uncheck if you organize without taking part: you will only get the summary."
+                },
+                "remove": "Remove {name}",
+                "removeN": "Remove participant {n}",
+                "nameOf": "Name or nickname of participant {n}",
+                "emailOf": "Email address of participant {n}",
+                "exclusionsOf": "Exclusions of participant {n}",
+                "eventLabel": "Name of your event",
+                "eventPlaceholder": "e.g. Family Christmas at Martin's",
+                "messageLabel": "Message to the participants",
+                "messagePlaceholder": "Hi {SANTA}! For Christmas at Martin's, your target is {TARGET}. Can't wait to see your gifts!",
+                "insert": "Insert:",
+                "insertSanta": "the name of the person receiving the email",
+                "insertTarget": "the name of their target",
+                "inserted": "{word} inserted in the message",
+                "date": "Date of the event",
+                "location": "Location",
+                "budget": "Budget per gift, in €",
+                "optional": "(optional)",
+                "locationPlaceholder": "e.g. at Martin's",
+                "dayHelp": "The date can be changed later. Until then, a dedicated page gives you the summary of the participants. All stored data is deleted one month later.",
+                "submit": "Start the draw!",
+                "sending": "Drawing…",
+                "newDraw": "Organize another draw",
+                "seal": "Kept secret by SecretSanta.fr: your data is encrypted and never shared.",
+                "success": "Here we go! Every participant gets their email within the next few minutes."
+            }
         },
         "organizer": {
             "url": "Link received by a participant by email",
