@@ -49,6 +49,7 @@ final class DearSantaController extends Controller
             'changeEmailUrl' => 'dearSanta.change_email',
             'withdrawUrl' => 'dearSanta.withdraw',
             'suggestUrl' => 'dearSanta.suggest',
+            'broadcastAuthUrl' => 'dearSanta.broadcastAuth',
         ])->map(fn (string $route): string => URL::signedRoute($route, ['participant' => $participant]));
 
         return ['hash' => $participant->hash, ...$routes->all()];

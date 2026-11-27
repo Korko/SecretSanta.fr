@@ -56,6 +56,7 @@ final class OrganizerController extends Controller
             'title' => $draw->title(),
             'organizerName' => $draw->organizer_name,
             'channel' => $draw->broadcastChannel(),
+            'channelAuthUrl' => URL::signedRoute('organizerPanel.broadcastAuth', ['draw' => $draw]),
             'expires_at' => $draw->expires_at->toDateString(), // event day, whatever the browser timezone
             'ends_at' => $draw->ends_at, // the instant it expires, so the browser agrees with the server
             'deleted_at' => $draw->deleted_at->toDateString(),

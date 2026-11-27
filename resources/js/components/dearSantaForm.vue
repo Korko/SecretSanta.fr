@@ -118,7 +118,7 @@
         created() {
             setInterval(() => this.now = Date.now(), 60e3);
 
-            follow(this.channel, {
+            follow(this.channel, this.routes.broadcastAuthUrl, {
                 '.mail.update': data => {
                     const tracked = this.emails[data.id] || this.suggestions[data.id];
                     if(tracked) {

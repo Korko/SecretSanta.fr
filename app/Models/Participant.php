@@ -104,7 +104,7 @@ final class Participant extends Model
         return $url.'#'.base64_encode(DrawCrypt::getSecret());
     }
 
-    // Public channel named after a secret (only given by the signed fetch route), not the hash participants can see
+    // Private channel (see BroadcastAuthController), named after a secret so it isn't guessable from the hash either
     public function broadcastChannel(): string
     {
         return 'participant.'.hash_hmac('sha256', 'participant.'.$this->id, config()->string('app.key'));

@@ -168,7 +168,7 @@
             this.pollFinalCsvAvailable();
             setInterval(() => this.now = Date.now(), 60e3);
 
-            follow(this.channel, {
+            follow(this.channel, this.data.channelAuthUrl, {
                 '.mail.update': data => {
                     var key = Object.keys(this.participants).find(key => this.participants[key].mail.id === data.id);
 

@@ -8,6 +8,7 @@ use App\Models\Draw;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Broadcast;
 
 test('mail statuses are broadcast on channels the URL hashes do not give away', function (): void {
     Notification::fake();
@@ -52,4 +53,31 @@ test('a gift idea pushes a content-free update to the sender and the santa, who 
 
     expect(ajaxGet(URL::signedRoute('dearSanta.fetchState', ['participant' => $recipient->santa]))->json('receivedSuggestions.0.mail_body'))->toBe('A scarf')
         ->and(ajaxGet(URL::signedRoute('dearSanta.fetchState', ['participant' => $sender]))->json('suggestions'))->toHaveCount(1);
+});
+
+test('channels are private, authorized only through the signed links and only for their own channel', function (): void {
+    Notification::fake();
+    config([
+        'broadcasting.default' => 'reverb',
+        'broadcasting.connections.reverb.key' => 'key',
+        'broadcasting.connections.reverb.secret' => 'secret',
+        'broadcasting.connections.reverb.app_id' => 'app',
+    ]);
+    Broadcast::purge('reverb');
+
+    $draw = Draw::factory()->hasParticipants(3)->create();
+    $participant = $draw->participants->first();
+    expect(new MailStatusUpdated($participant->mail)->broadcastOn()[0]->name)->toBe('private-'.$draw->broadcastChannel());
+
+    $sign = fn (string $channel): string => 'key:'.hash_hmac('sha256', '1234.5678:private-'.$channel, 'secret');
+
+    // Whatever channel is asked for, the link only signs its own
+    ajaxPost(URL::signedRoute('organizerPanel.broadcastAuth', ['draw' => $draw]), ['socket_id' => '1234.5678', 'channel_name' => 'private-'.$participant->broadcastChannel()])
+        ->assertOk()->assertJsonPath('auth', $sign($draw->broadcastChannel()));
+    ajaxPost(URL::signedRoute('dearSanta.broadcastAuth', ['participant' => $participant]), ['socket_id' => '1234.5678'])
+        ->assertOk()->assertJsonPath('auth', $sign($participant->broadcastChannel()));
+
+    // No signature, no channel; nor through Laravel's default endpoint
+    ajaxPost(route('dearSanta.broadcastAuth', ['participant' => $participant]), ['socket_id' => '1234.5678'])->assertForbidden();
+    ajaxPost('/broadcasting/auth', ['socket_id' => '1234.5678', 'channel_name' => 'private-'.$participant->broadcastChannel()])->assertForbidden();
 });

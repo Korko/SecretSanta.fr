@@ -11,6 +11,7 @@ use App\Models\Mail as MailModel;
 use App\Models\Participant;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -71,7 +72,7 @@ final class MailStatusUpdated implements ShouldBroadcast, ShouldDispatchAfterCom
         $mailable = $this->mail->mailable;
 
         return [
-            new Channel(match (true) {
+            new PrivateChannel(match (true) {
                 // The organizer panel follows the target emails
                 $mailable instanceof Participant => $mailable->draw->broadcastChannel(),
                 // The organizer panel follows the recap too, for an organizer who doesn't take part

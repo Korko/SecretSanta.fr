@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\BroadcastAuthController;
 use App\Http\Controllers\DearSantaController;
 use App\Http\Controllers\FixOrganizerController;
 use App\Http\Controllers\OrganizerController;
@@ -34,6 +35,12 @@ Route::middleware('signed')->group(function (): void {
     Route::get('/dearSanta/{participant}', [DearSantaController::class, 'view'])
         ->name('dearSanta')
         ->missing(fn () => response()->view('missingDraw', [], 404));
+
+    // Private channels: the signed URL stands in for an account
+    Route::post('/dearSanta/{participant}/broadcasting/auth', [BroadcastAuthController::class, 'participant'])
+        ->name('dearSanta.broadcastAuth');
+    Route::post('/draw/{draw}/broadcasting/auth', [BroadcastAuthController::class, 'draw'])
+        ->name('organizerPanel.broadcastAuth');
 
     Route::middleware('decrypt.secret:participant,name')->group(function (): void {
         Route::get('/participant/{participant}', [DearSantaController::class, 'fetch'])

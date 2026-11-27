@@ -6,6 +6,7 @@ namespace App\Events;
 
 use App\Models\Participant;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -38,6 +39,6 @@ final readonly class ParticipantUpdated implements ShouldBroadcast, ShouldDispat
     /** @return list<Channel> */
     public function broadcastOn(): array
     {
-        return [new Channel($this->channel)];
+        return [new PrivateChannel($this->channel)];
     }
 }
