@@ -494,12 +494,14 @@
 
         <div class="pg-main">
             <!-- Taking part, the organizer's participant page is in their panel: two roles, two tabs -->
-            <div v-if="participation" class="pg-tabs" role="tablist" :aria-label="$t('pages.organizer.tabs')" @keydown.right.prevent="switchTab" @keydown.left.prevent="switchTab">
+            <div v-if="participation" class="pg-tabs pg-tabs-cards" role="tablist" :aria-label="$t('pages.organizer.tabs')" @keydown.right.prevent="switchTab" @keydown.left.prevent="switchTab">
                 <button id="tab-organization" type="button" role="tab" class="pg-tab" :aria-selected="tab === 'organization' ? 'true' : 'false'" :tabindex="tab === 'organization' ? 0 : -1" aria-controls="panel-organization" @click="tab = 'organization'">
-                    <icon name="user" :size="16" />{{ $t('pages.organizer.tab_organization') }}
+                    <icon name="user" :size="28" />
+                    <span class="pg-tab-text"><b>{{ $t('pages.organizer.tab_organization') }}</b><span>{{ $t('pages.organizer.tab_organization_sub', { received: receivedCount, total }) }}</span></span>
                 </button>
                 <button id="tab-participation" type="button" role="tab" class="pg-tab organizer-participation-tab" :aria-selected="tab === 'participation' ? 'true' : 'false'" :tabindex="tab === 'participation' ? 0 : -1" aria-controls="panel-participation" @click="tab = 'participation'">
-                    <icon name="gift" :size="16" />{{ $t('pages.organizer.tab_participation') }}
+                    <icon name="gift" :size="28" />
+                    <span class="pg-tab-text"><b>{{ $t('pages.organizer.tab_participation') }}</b><span>{{ $t('pages.organizer.tab_participation_sub') }}</span></span>
                 </button>
             </div>
 

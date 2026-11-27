@@ -421,6 +421,13 @@
     .pg-tab { @apply inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border-2 border-solid border-[#C9A88F] bg-papier px-5 font-aileron text-[15px] font-bold text-encre; }
     .pg-tab[aria-selected='true'] { @apply border-encre bg-encre text-creme-clair; }
     .organizer-participation .pg-grid { @apply mb-0; }
+    /* Organizer taking part: two roles, two big cards so the switch can't be missed */
+    .pg-tabs-cards { @apply grid grid-cols-2 gap-4; }
+    .pg-tabs-cards .pg-tab { @apply min-h-24 gap-4 rounded-[18px] px-6 py-4 text-left; }
+    .pg-tabs-cards .pg-tab:not([aria-selected='true']):hover { @apply border-encre; }
+    .pg-tab-text { @apply flex flex-col gap-1; }
+    .pg-tab-text b { @apply text-[18px]; }
+    .pg-tab-text span { @apply text-sm font-normal opacity-80; }
 
     /* Tableau des participant(e)s, liste en cartes sous 900 px */
     .pg-table { @apply w-full border-collapse text-[15px]; }
@@ -596,6 +603,7 @@
     .pg-meta .pg-meta-count { @apply inline-flex; }
     .pg-tracker { @apply w-full; }
     .pg-main { @apply px-4 pb-16 pt-10; }
+    .pg-tabs-cards { @apply grid-cols-1; }
     .pg-card { @apply gap-4 rounded-[18px] px-5 py-[22px]; }
     .pg-h2 { @apply text-[25px]; }
     .pg-msg { @apply max-w-[88%]; }

@@ -1,6 +1,6 @@
 {
-  "_ajaxForm-GJpDwCiE.js": {
-    "file": "assets/ajaxForm-GJpDwCiE.js",
+  "_ajaxForm-lfNlD4nj.js": {
+    "file": "assets/ajaxForm-lfNlD4nj.js",
     "name": "ajaxForm",
     "imports": [
       "_alertify-C5GWLzOB.js"
@@ -15,20 +15,20 @@
     "file": "assets/alertify-C5GWLzOB.js",
     "name": "alertify"
   },
-  "_dearSantaForm-2XH37IXn.js": {
-    "file": "assets/dearSantaForm-2XH37IXn.js",
+  "_dearSantaForm-CXfuKnFF.js": {
+    "file": "assets/dearSantaForm-CXfuKnFF.js",
     "name": "dearSantaForm",
     "imports": [
-      "_ajaxForm-GJpDwCiE.js",
+      "_ajaxForm-lfNlD4nj.js",
       "_alertify-C5GWLzOB.js",
-      "_form-DSNbTM_W.js"
+      "_form-DnLrvzaF.js"
     ]
   },
-  "_form-DSNbTM_W.js": {
-    "file": "assets/form-DSNbTM_W.js",
+  "_form-DnLrvzaF.js": {
+    "file": "assets/form-DnLrvzaF.js",
     "name": "form",
     "imports": [
-      "_ajaxForm-GJpDwCiE.js"
+      "_ajaxForm-lfNlD4nj.js"
     ]
   },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
@@ -36,7 +36,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
   "resources/css/kraft.css": {
-    "file": "assets/kraft-dqpFz6cl.css",
+    "file": "assets/kraft-Dj022idh.css",
     "name": "kraft",
     "names": [
       "kraft.css"
@@ -90,24 +90,24 @@
     ]
   },
   "resources/js/dearSanta.js": {
-    "file": "assets/dearSanta-BXb0bQ1S.js",
+    "file": "assets/dearSanta-dLbmtynj.js",
     "name": "dearSanta",
     "src": "resources/js/dearSanta.js",
     "isEntry": true,
     "imports": [
-      "_ajaxForm-GJpDwCiE.js",
-      "_dearSantaForm-2XH37IXn.js"
+      "_ajaxForm-lfNlD4nj.js",
+      "_dearSantaForm-CXfuKnFF.js"
     ]
   },
   "resources/js/fixOrganizer.js": {
-    "file": "assets/fixOrganizer-CG5WRxip.js",
+    "file": "assets/fixOrganizer-DJBiVqur.js",
     "name": "fixOrganizer",
     "src": "resources/js/fixOrganizer.js",
     "isEntry": true,
     "imports": [
-      "_ajaxForm-GJpDwCiE.js",
+      "_ajaxForm-lfNlD4nj.js",
       "_alertify-C5GWLzOB.js",
-      "_form-DSNbTM_W.js"
+      "_form-DnLrvzaF.js"
     ]
   },
   "resources/js/kraftMenu.js": {
@@ -117,42 +117,42 @@
     "isEntry": true
   },
   "resources/js/langs/de.js": {
-    "file": "assets/de-C6PuD9OV.js",
+    "file": "assets/de-Dq6zWxy2.js",
     "name": "de",
     "src": "resources/js/langs/de.js",
     "isDynamicEntry": true
   },
   "resources/js/langs/en.js": {
-    "file": "assets/en-CRWiFxnH.js",
+    "file": "assets/en-Ba1rZp9n.js",
     "name": "en",
     "src": "resources/js/langs/en.js",
     "isDynamicEntry": true
   },
   "resources/js/langs/fr.js": {
-    "file": "assets/fr-DvX9UCaH.js",
+    "file": "assets/fr-CCuWZ4ox.js",
     "name": "fr",
     "src": "resources/js/langs/fr.js",
     "isDynamicEntry": true
   },
   "resources/js/organizer.js": {
-    "file": "assets/organizer-BsptrvBK.js",
+    "file": "assets/organizer-cBcce3Zt.js",
     "name": "organizer",
     "src": "resources/js/organizer.js",
     "isEntry": true,
     "imports": [
-      "_ajaxForm-GJpDwCiE.js",
+      "_ajaxForm-lfNlD4nj.js",
       "_alertify-C5GWLzOB.js",
-      "_dearSantaForm-2XH37IXn.js",
-      "_form-DSNbTM_W.js"
+      "_dearSantaForm-CXfuKnFF.js",
+      "_form-DnLrvzaF.js"
     ]
   },
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm-QRD_2yhU.js",
+    "file": "assets/randomForm-vmmzR_Q6.js",
     "name": "randomForm",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
     "imports": [
-      "_ajaxForm-GJpDwCiE.js",
+      "_ajaxForm-lfNlD4nj.js",
       "_alertify-C5GWLzOB.js",
       "resources/js/kraftMenu.js",
       "resources/js/kraftMenu.js"
