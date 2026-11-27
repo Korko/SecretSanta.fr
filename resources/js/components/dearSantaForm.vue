@@ -54,7 +54,7 @@
                 // Hidden on this device only: someone may read over their shoulder
                 targetHidden: this.readTargetHidden(),
                 showSuggestion: false,
-                suggestion: { recipient: '', content: '', signed: false },
+                suggestion: { recipient: '', content: '' },
                 newEmail: '',
                 emailCode: ''
             };
@@ -182,11 +182,11 @@
                     .catch(this.alertError);
             },
             sendSuggestion() {
-                const { recipient, content, signed } = this.suggestion;
-                return fetch(this.routes.suggestUrl, 'POST', { recipient, content, signed: signed ? 1 : 0 })
+                const { recipient, content } = this.suggestion;
+                return fetch(this.routes.suggestUrl, 'POST', { recipient, content })
                     .then(data => {
                         this.suggestions = { ...this.suggestions, [data.suggestion.mail.id]: data.suggestion };
-                        this.suggestion = { recipient: '', content: '', signed: false };
+                        this.suggestion = { recipient: '', content: '' };
                         alertify.confirmAlert(data.message);
                     })
                     .catch(this.alertError);
@@ -311,9 +311,9 @@
                         <p class="pg-p">{{ $t('pages.participant.ideas.text') }}</p>
                         <ul v-if="receivedSuggestionsList.length" class="pg-ideas">
                             <li v-for="idea in receivedSuggestionsList" :key="idea.id" class="pg-idea suggestion-received">
-                                <gift-tag small :label="$t('pages.gift.from')" :value="idea.sender || '?'" :aria-label="idea.sender ? null : $t('pages.gift.anonymous')" />
+                                <gift-tag small :label="$t('pages.gift.from')" value="?" :aria-label="$t('pages.gift.anonymous')" />
                                 <p v-html="nl2br(e(idea.mail_body))" />
-                                <p class="pg-small">{{ $t('pages.on', { date: idea.created_at }) }}<template v-if="!idea.sender"> · {{ $t('pages.participant.ideas.unsigned') }}</template></p>
+                                <p class="pg-small">{{ $t('pages.on', { date: idea.created_at }) }}</p>
                             </li>
                         </ul>
                         <p v-else class="pg-small">{{ $t('pages.participant.ideas.empty') }}</p>
@@ -373,7 +373,6 @@
                                 <label for="suggestionContent">{{ $t('dearsanta.suggestion.content') }}</label>
                                 <textarea id="suggestionContent" v-model="suggestion.content" required class="field pg-textarea-sm" :placeholder="$t('dearsanta.suggestion.placeholder')" />
                             </div>
-                            <label class="pg-check"><input v-model="suggestion.signed" type="checkbox" class="org-box suggestion-signed" /> {{ $t('pages.participant.suggest.sign') }}</label>
                             <span class="tag-wrap tag-wrap--kraft pg-self-start"><button type="submit" class="tag-kraft suggestion-send">{{ $t('dearsanta.suggestion.send') }}</button></span>
                         </form>
                         <template v-if="suggestionsList.length">
@@ -381,7 +380,7 @@
                             <h3 class="pg-h4">{{ $t('dearsanta.suggestion.list') }}</h3>
                             <ul class="pg-sent suggestions-sent">
                                 <li v-for="sent in suggestionsList" :key="sent.mail.id" class="suggestion">
-                                    <p class="pg-small"><strong>{{ $t('pages.participant.suggest.for', { name: sent.recipient }) }}</strong> · {{ sent.created_at }}<template v-if="sent.signed"> · {{ $t('pages.participant.suggest.signed') }}</template></p>
+                                    <p class="pg-small"><strong>{{ $t('pages.participant.suggest.for', { name: sent.recipient }) }}</strong> · {{ sent.created_at }}</p>
                                     <p class="pg-p" v-html="nl2br(e(sent.mail_body))" />
                                     <status :mail="sent.mail" />
                                 </li>

@@ -478,7 +478,6 @@ export default {
                 "ideas": {
                     "title": "Des idées pour {name}",
                     "text": "Les autres participant(e)s vous soufflent des idées, sans savoir que c'est vous qui offrez.",
-                    "unsigned": "idée non signée",
                     "empty": "Pas encore d'idée des autres participant(e)s."
                 },
                 "santa": {
@@ -494,8 +493,6 @@ export default {
                 "suggest": {
                     "title": "Une idée pour quelqu'un d'autre ?",
                     "text": "Elle part au Secret Santa de la personne choisie, sans que vous sachiez qui c'est.",
-                    "sign": "Signer avec mon nom",
-                    "signed": "signée",
                     "for": "Pour {name}"
                 },
                 "secret": {
