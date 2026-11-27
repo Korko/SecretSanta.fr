@@ -5,7 +5,7 @@
 
     import alertify from '../partials/alertify.js';
     import fetch from '../partials/fetch.js';
-    import Echo from '../partials/echo.js';
+    import { follow } from '../partials/echo.js';
 
     import DefaultForm from './form.vue';
     import Icon from './kraft/icon.vue';
@@ -118,17 +118,22 @@
         created() {
             setInterval(() => this.now = Date.now(), 60e3);
 
-            Echo.channel(this.channel)
-                .listen('.mail.update', data => {
+            follow(this.channel, {
+                '.mail.update': data => {
                     const tracked = this.emails[data.id] || this.suggestions[data.id];
                     if(tracked) {
                         tracked.mail.delivery_status = data.delivery_status;
                         tracked.mail.updated_at = data.updated_at;
                     }
-                })
+                },
                 // Something new (sent from another tab, an idea received for the target): the event carries
                 // no content, it is fetched through this page's own secret link
-                .listen('.participant.update', () => this.refresh());
+                '.participant.update': () => this.refresh()
+            }, () => this.refresh(), () =>
+                Object.values(this.emails).some(email => email.mail.delivery_status !== 'received')
+                // A gift idea's sender never sees it received: sent is as far as it goes
+                || Object.values(this.suggestions).some(sent => !['sent', 'received'].includes(sent.mail.delivery_status))
+            );
         },
         validations: {
             content: {

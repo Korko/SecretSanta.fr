@@ -9,7 +9,7 @@
 
     import alertify from '../partials/alertify.js';
     import fetch from '../partials/fetch.js';
-    import Echo from '../partials/echo.js';
+    import { follow } from '../partials/echo.js';
 
     import { markRaw } from 'vue';
 
@@ -168,8 +168,8 @@
             this.pollFinalCsvAvailable();
             setInterval(() => this.now = Date.now(), 60e3);
 
-            Echo.channel(this.channel)
-                .listen('.mail.update', data => {
+            follow(this.channel, {
+                '.mail.update': data => {
                     var key = Object.keys(this.participants).find(key => this.participants[key].mail.id === data.id);
 
                     if(key) {
@@ -177,9 +177,20 @@
                         this.participants[key].mail.bounce_reason = data.bounce_reason;
                         this.participants[key].mail.updated_at = data.updated_at;
                     }
-                });
+                }
+            }, () => this.refreshMails(), () => Object.values(this.participants).some(p => p.mail.delivery_status !== 'received'));
         },
         methods: {
+            // Missed or unpushed status changes (see follow()): only the mails, the rest has its own updates
+            refreshMails() {
+                return fetch(this.routes.fetchStateUrl).then(data => {
+                    Object.entries(data.participants).forEach(([key, { mail }]) => {
+                        if(this.participants[key]) {
+                            this.participants[key].mail = mail;
+                        }
+                    });
+                });
+            },
             confirmPurge() {
                 this.$refs.dialog.open({
                     title: this.$t('pages.purge.title'),
