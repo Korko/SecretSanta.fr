@@ -1,19 +1,22 @@
 @if($targetMessages)
-    {!! __('emails.target_messages.intro', ['name' => $targetName]) !!}
-@foreach ($targetMessages as $targetMessage)
+{!! __('emails.target_messages.messages') !!}
 
-    {!! $targetMessage['date'] !!}
-    > {!! $targetMessage['content'] !!}
+{!! __('emails.target_messages.intro', ['name' => $targetName]) !!}
+
+@foreach ($targetMessages as $targetMessage)
+{!! $targetMessage['date'] !!}
+> {!! $targetMessage['content'] !!}
+
 @endforeach
 @endif
 @if($giftSuggestions)
+{!! __('emails.target_messages.ideas') !!}
 
-    {!! __('emails.target_messages.suggestions', ['name' => $targetName]) !!}
+{!! __('emails.target_messages.suggestions', ['name' => $targetName]) !!}
+
 @foreach ($giftSuggestions as $giftSuggestion)
+{!! __('emails.gift.from') !!} : {!! __('emails.gift.anonymous') !!} - {!! $giftSuggestion['date'] !!}
+> {!! $giftSuggestion['content'] !!}
 
-    {!! $giftSuggestion['date'] !!}
-    > {!! $giftSuggestion['content'] !!}
 @endforeach
-
-    {!! __('emails.target_messages.suggestions_secret', ['name' => $targetName]) !!}
 @endif

@@ -14,8 +14,6 @@
     import Csv from './csv.vue';
     import AjaxForm from './ajaxForm.vue';
     import Participant from './participant.vue';
-    import Tooltip from './tooltip.vue';
-    import Toggle from './toggle.vue';
 
     import { dateFromNow } from '../partials/helpers.js';
 
@@ -40,9 +38,7 @@
         components: {
             AjaxForm,
             Csv,
-            Participant,
-            Tooltip,
-            Toggle
+            Participant
         },
 
         data: function() {
@@ -56,6 +52,12 @@
                 title: '',
                 content: '',
                 expiration: null,
+                location: '',
+                budget: '',
+                // Last value copied from the "event name" field of the top of the page (see mounted)
+                heroTitle: '',
+                inserted: '',
+                logoIcon: '/images/logo-icon.svg',
                 now: window.now,
                 maxParticipants: window.global.maxParticipants || 50,
                 contact: window.global.contact,
@@ -94,6 +96,14 @@
                     format: value => /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(value),
                     minValue: value => value >= dateFromNow(1, 'day'),
                     maxValue: value => value <= dateFromNow(1, 'year')
+                },
+                // "Le jour J": both optional
+                location: {
+                    maxLength: maxLength(255)
+                },
+                budget: {
+                    format: value => value === '' || value === null || (!isNaN(Number(value)) && Number(value) >= 0),
+                    max: value => value === '' || value === null || Number(value) <= 100000
                 }
             };
         },
@@ -102,6 +112,28 @@
             this.addParticipant();
             this.addParticipant();
             this.addParticipant();
+        },
+
+        // The "event name" field of the top of the page (outside Vue) fills the title, as long as it wasn't changed here
+        mounted() {
+            const hero = document.getElementById('hero-title');
+            if (!hero) {
+                return;
+            }
+            const sync = () => {
+                if (this.title === '' || this.title === this.heroTitle) {
+                    this.title = hero.value;
+                }
+                this.heroTitle = hero.value;
+            };
+            hero.addEventListener('input', sync);
+            hero.addEventListener('keydown', event => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    document.querySelector('[data-focus-form]')?.click();
+                }
+            });
+            sync();
         },
 
         methods: {
@@ -182,28 +214,47 @@
 
             // The confirmation shows at the top of the form, possibly far above the submit button
             scrollToSuccess() {
-                this.$nextTick(() => document.getElementById('success-wrapper').scrollIntoView());
+                this.$nextTick(() => document.getElementById('success-wrapper').focus());
             },
 
-            // "Copied" only once it is: the browser may refuse (permission, focus, no clipboard API outside https)
-            copy(text) {
-                return Promise.resolve()
-                    .then(() => navigator.clipboard.writeText(text))
-                    .then(() => alertify.success(this.$t('common.copied'), 3))
-                    .catch(() => alertify.error(this.$t('common.copy_failed', { text }), 6));
+            // {SANTA} / {TARGET} go where the cursor is in the message (at its end otherwise)
+            insert(word) {
+                const textarea = this.$refs.content;
+                const start = textarea && document.activeElement === textarea ? textarea.selectionStart : this.content.length;
+                const end = textarea && document.activeElement === textarea ? textarea.selectionEnd : this.content.length;
+                this.content = this.content.slice(0, start) + word + this.content.slice(end);
+                this.inserted = this.$t('form.k.inserted', { word });
+                this.$nextTick(() => {
+                    textarea?.focus();
+                    textarea?.setSelectionRange(start + word.length, start + word.length);
+                });
             },
 
-            appendSanta() {
-                return this.copy('{SANTA}');
-            },
-
-            appendTarget() {
-                return this.copy('{TARGET}');
+            // Keeps the caret: a click on a chip would otherwise blur the message first
+            keepCaret(event) {
+                if (document.activeElement === this.$refs.content) {
+                    event.preventDefault();
+                }
             },
 
             // vuelidate 2 doesn't $touch child components: show participant errors on submit
             touchParticipants() {
-                (this.$refs.participants || []).forEach(participant => participant.v$.$touch());
+                [this.$refs.orgaRow, ...(this.$refs.participants || [])].filter(Boolean).forEach(participant => participant.v$.$touch());
+            },
+
+            // Props shared by the organizer's row and the others
+            rowProps(participant, idx) {
+                return {
+                    id: participant.id,
+                    idx,
+                    name: participant.name,
+                    email: participant.email,
+                    exclusions: participant.exclusions,
+                    oneWay: participant.oneWay,
+                    uid: participant.id,
+                    all: this.participants,
+                    required: idx < 3 && this.participants.length <= 3,
+                };
             },
 
             reset() {
@@ -211,6 +262,8 @@
                 this.title = '';
                 this.content = '';
                 this.expiration = null;
+                this.location = '';
+                this.budget = '';
 
                 this.addParticipant();
                 this.addParticipant();
@@ -222,234 +275,173 @@
 
 <template>
     <div>
-        <div v-cloak class="row text-center form">
-            <ajax-form id="randomForm" action="/" :button-send="$t('form.submit')" :validator="v$" @reset="reset" @before-submit="touchParticipants" @success="scrollToSuccess" send-icon="dice">
-                <template #default="{ sending, sent, fieldError }">
-                    <input v-if="limitCode" type="hidden" name="limit" :value="limitCode" />
-                    <div v-show="sent" id="success-wrapper" class="alert alert-success" role="status">
-                        {{ $t('form.success') }}
+        <ajax-form id="randomForm" class="kt-card k-card" action="/" :validator="v$" @reset="reset" @before-submit="touchParticipants" @success="scrollToSuccess">
+            <template #default="{ fieldError }">
+                <svg class="kt-corner" aria-hidden="true" focusable="false" viewBox="0 0 270 36" preserveAspectRatio="none"><rect width="270" height="36" fill="#C62A2F" /><rect width="270" height="18" fill="#FFFFFF" opacity=".08" /><path d="M0 6H270M0 30H270" stroke="#FFF0DE" stroke-opacity=".6" stroke-width="2" stroke-dasharray="6 5" /></svg>
+                <input v-if="limitCode" type="hidden" name="limit" :value="limitCode" />
+
+                <nav class="k-etapes-nav" :aria-label="$t('form.k.stepsNav')">
+                    <a href="#k-step-1"><span class="sticker sticker--red sticker--28" aria-hidden="true">1</span>{{ $t('form.k.stepsShort.one') }}</a>
+                    <a href="#k-step-2"><span class="sticker sticker--green sticker--28" aria-hidden="true">2</span>{{ $t('form.k.stepsShort.two') }}</a>
+                    <a href="#k-step-3"><span class="sticker sticker--gold sticker--28" aria-hidden="true">3</span>{{ $t('form.k.stepsShort.three') }}</a>
+                </nav>
+
+                <fieldset id="k-step-1" class="k-fieldset">
+                    <legend class="k-legend"><span class="sticker sticker--red sticker--40" aria-hidden="true">1</span>{{ $t('form.k.steps.one') }}</legend>
+                    <div class="kt-phead" aria-hidden="true">
+                        <span /><span>{{ $t('form.participant.name.label') }}</span><span>{{ $t('form.participant.email.label') }}</span><span>{{ $t('form.participant.exclusions.label') }}</span><span />
                     </div>
 
-                    <toggle
-                        class="organizerToggle"
-                        name="participant-organizer"
-                        v-model="participantOrganizer"
-                        :labelYes="$t('form.organizerIn')"
-                        :labelNo="$t('form.organizerOut')"
-                        backgroundYes="#0069D9"
-                        backgroundNo="#B50119"
-                    />
-
-                    <fieldset v-if="!participantOrganizer" id="organizer">
-                        <legend>{{ $t('form.organizer.title') }}</legend>
-                        <div class="table-responsive form-group">
-                            <table class="table table-hover table-numbered">
-                                <caption>{{ $t('form.organizer.title') }}</caption>
-                                <tbody>
-                                    <tr>
-                                        <th style="width: 33%" scope="col">
-                                            {{ $t('form.organizer.name') }}
-                                        </th>
-                                        <td>
-                                            <div class="input-group">
-                                                <input
-                                                    type="text"
-                                                    name="organizer[name]"
-                                                    :placeholder="$t('form.participant.name.placeholder')"
-                                                    v-model="organizer.name"
-                                                    class="form-control participant-name"
-                                                    :class="{ 'is-invalid': v$.organizer.name.$error || fieldError(`organizer.name`)}"
-                                                    :aria-invalid="v$.organizer.name.$error || fieldError(`organizer.name`)"
-                                                    @blur="v$.organizer.name.$touch()"
-                                                />
-                                                <div v-if="v$.organizer.name.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.name.required') }}</div>
-                                                <div v-else-if="fieldError(`organizer.name`)" class="invalid-tooltip">{{ fieldError(`organizer.name`) }}</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th style="width: 33%" scope="col">
-                                            {{ $t('form.organizer.email') }}
-                                        </th>
-                                        <td>
-                                            <div class="input-group">
-                                                <input
-                                                    type="email"
-                                                    name="organizer[email]"
-                                                    :placeholder="$t('form.participant.email.placeholder')"
-                                                    v-model="organizer.email"
-                                                    class="form-control participant-email"
-                                                    :class="{ 'is-invalid': v$.organizer.email.$error || fieldError(`organizer.email`)}"
-                                                    :aria-invalid="v$.organizer.email.$error || fieldError(`organizer.email`)"
-                                                    @blur="v$.organizer.email.$touch()"
-                                                />
-                                                <div v-if="v$.organizer.email.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.required') }}</div>
-                                                <div v-else-if="v$.organizer.email.format.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.format') }}</div>
-                                                <div v-else-if="fieldError(`organizer.email`)" class="invalid-tooltip">{{ fieldError(`organizer.email`) }}</div>
-                                            </div>
-                                            <i18n-t v-if="suggestEmail(organizer.email)" keypath="form.participant.email.suggest" tag="small" class="form-text text-muted email-suggest">
-                                                <template #email><a href="#" @click.prevent="organizer.email = suggestEmail(organizer.email)">{{ suggestEmail(organizer.email) }}</a></template>
-                                            </i18n-t>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
-
-                    <fieldset id="participants">
-                        <legend>{{ $t('form.participants.title') }}</legend>
-                        <div class="table-responsive form-group">
-                            <table class="table table-hover table-numbered">
-                                <caption>{{ $t('form.participants.caption') }}</caption>
-                                <thead>
-                                    <tr>
-                                        <th style="width: 33%" scope="col">
-                                            {{ $t('form.participant.name.label') }}
-                                        </th>
-                                        <th style="width: 33%" scope="col">
-                                            {{ $t('form.participant.email.label') }}
-                                        </th>
-                                        <th style="width: 30%" scope="col">
-                                            {{ $t('form.participant.exclusions.label') }}
-                                        </th>
-                                        <th style="width: 3%" scope="col" />
-                                    </tr>
-                                </thead>
-                                <transition-group tag="tbody" name="fade">
-                                    <!-- Default is three empty rows to have three entries at any time -->
-                                    <participant
-                                        ref="participants"
-                                        v-for="(participant, idx) in participants"
-                                        :key="participant.id"
-                                        :id="participant.id"
-                                        :idx="idx"
-                                        :name="participant.name"
-                                        :email="participant.email"
-                                        :exclusions="participant.exclusions"
-                                        :one-way="participant.oneWay"
-                                        :uid="participant.id"
-                                        :all="participants"
-                                        :required="idx < 3 && participants.length <= 3"
-                                        :field-error="fieldError"
-                                        :participantOrganizer="participantOrganizer"
-                                        @input:name="participant.name = $event"
-                                        @input:email="participant.email = $event"
-                                        @input:exclusions="participant.exclusions = $event"
-                                        @removeExclusion="removeExclusion(participant, $event)"
-                                        @addExclusion="addExclusion(participant, $event)"
-                                        @toggleDirection="toggleDirection(participant, $event)"
-                                        @delete="participants.splice(idx, 1)"
-                                    />
-                                </transition-group>
-                            </table>
-                            <p class="form-text text-muted exclusions-help">{{ $t('form.participant.exclusions.help') }}</p>
-                            <div v-if="participants.length >= maxParticipants" class="alert alert-warning participants-max" role="status">
-                                {{ $t('validation.custom.randomform.participants.max', { max: maxParticipants, email: contact }) }}
-                            </div>
-                            <button type="button" class="btn btn-outline-success participant-add" :disabled="participants.length >= maxParticipants" @click="addParticipant()">
-                                <i class="fas fa-plus" />
-                                {{ $t('form.participant.add') }}
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-outline-warning participants-import"
-                                :disabled="importing"
-                                @click="showModal = true"
-                            >
-                                <span v-if="importing"
-                                    ><i class="fas fa-spinner fa-spin" />
-                                    {{ $t('form.participants.importing') }}</span
-                                >
-                                <span v-else
-                                    ><i class="fas fa-list-alt" /> {{ $t('form.participants.import') }}</span
-                                >
-                            </button>
-                        </div>
-                    </fieldset>
-
-                    <fieldset>
-                        <legend>Messages</legend>
-                        <div id="contact">
-                            <fieldset id="form-mail-group">
-                                <div class="form-group">
-                                    <label for="mailTitle">{{ $t('form.mail.title.label') }}</label>
-                                    <div class="input-group">
-                                        <input
-                                            id="mailTitle"
-                                            type="text"
-                                            name="title"
-                                            v-model="title"
-                                            :placeholder="$t('form.mail.title.placeholder')"
-                                            class="form-control"
-                                            :class="{ 'is-invalid': v$.title.$error || fieldError('title') }"
-                                            :aria-invalid="v$.title.$error || fieldError('title')"
-                                        />
-                                        <div class="invalid-tooltip">{{ $t('validation.custom.randomform.title.required') }}</div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="mailContent">{{ $t('form.mail.content.label') }}</label>
-                                    <div class="input-group">
-                                        <textarea
-                                            id="mailContent"
-                                            v-autosize
-                                            name="content-email"
-                                            v-model="content"
-                                            :placeholder="$t('form.mail.content.placeholder')"
-                                            rows="3"
-                                            class="form-control"
-                                            :class="{ 'is-invalid': v$.content.$error || fieldError('content-email') }"
-                                            :aria-invalid="v$.content.$error || fieldError('content-email')"
-                                        />
-                                        <div v-if="v$.content.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.required') }}</div>
-                                        <div v-else-if="v$.content.contains.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.contains_text') }}</div>
-                                        <div v-else-if="fieldError('content-email')" class="invalid-tooltip">{{ fieldError('content-email') }}</div>
-                                    </div>
-                                    <textarea
-                                        id="mailPost"
-                                        class="form-control extended"
-                                        read-only
-                                        disabled
-                                        :value="$t('form.mail.post', { link: '{link}' })"
-                                    />
-
-                                    <blockquote class="tips">
-                                        <i18n-t keypath="form.mail.content.tip1" tag="p">
-                                            <template #santa><a class="link" href="#" @click.prevent="appendSanta">&#123;SANTA&#125;</a></template>
-                                            <template #target><a class="link" href="#" @click.prevent="appendTarget">&#123;TARGET&#125;</a></template>
-                                        </i18n-t>
-                                        <p>{{ $t('form.mail.content.tip2') }}</p>
-                                    </blockquote>
-                                </div>
-                            </fieldset>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <div id="form-options" class="form-group">
-                            <div class="input-inline-group">
-                                <tooltip direction="top">
-                                    <template #tooltip>
-                                        <img class="media-object" src="../../images/srikanta-h-u-TrGVhbsUf40-unsplash.webp" />
-                                        <div class="text-content">
-                                            <h3>{{ $t('form.data-expiration-tooltip.title') }}</h3>
-                                            <ul>
-                                                <li>{{ $t('form.data-expiration-tooltip.interface') }}</li>
-                                                <li>{{ $t('form.data-expiration-tooltip.deletion') }}</li>
-                                            </ul>
-                                        </div>
-                                    </template>
-                                    <template #default>
-                                        <label for="expiration">{{ $t('form.data-expiration') }}</label>
-                                    </template>
-                                </tooltip>
+                    <div id="organizer" class="orga-bloc">
+                        <span class="orga-bloc__titre" :class="{ 'orga-bloc__titre--bureau': participantOrganizer }">{{ $t('form.k.you') }}</span>
+                        <participant
+                            v-if="participantOrganizer && participants.length"
+                            ref="orgaRow"
+                            orga
+                            v-bind="rowProps(participants[0], 0)"
+                            :field-error="fieldError"
+                            @input:name="participants[0].name = $event"
+                            @input:email="participants[0].email = $event"
+                            @removeExclusion="removeExclusion(participants[0], $event)"
+                            @addExclusion="addExclusion(participants[0], $event)"
+                            @toggleDirection="toggleDirection(participants[0], $event)"
+                        />
+                        <div v-else class="orga-bloc__champs">
+                            <div class="participant__champ">
+                                <label class="champ__label" for="organizer-name">{{ $t('form.participant.name.label') }}</label>
                                 <input
+                                    id="organizer-name"
+                                    type="text"
+                                    name="organizer[name]"
+                                    :placeholder="$t('form.participant.name.placeholder')"
+                                    v-model="organizer.name"
+                                    class="field participant-name"
+                                    :class="{ 'is-invalid': v$.organizer.name.$error || fieldError(`organizer.name`)}"
+                                    :aria-invalid="v$.organizer.name.$error || !!fieldError(`organizer.name`)"
+                                    @blur="v$.organizer.name.$touch()"
+                                />
+                                <div v-if="v$.organizer.name.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.name.required') }}</div>
+                                <div v-else-if="fieldError(`organizer.name`)" class="invalid-tooltip">{{ fieldError(`organizer.name`) }}</div>
+                            </div>
+                            <div class="participant__champ">
+                                <label class="champ__label" for="organizer-email">{{ $t('form.participant.email.label') }}</label>
+                                <input
+                                    id="organizer-email"
+                                    type="email"
+                                    name="organizer[email]"
+                                    :placeholder="$t('form.participant.email.placeholder')"
+                                    v-model="organizer.email"
+                                    class="field participant-email"
+                                    :class="{ 'is-invalid': v$.organizer.email.$error || fieldError(`organizer.email`)}"
+                                    :aria-invalid="v$.organizer.email.$error || !!fieldError(`organizer.email`)"
+                                    @blur="v$.organizer.email.$touch()"
+                                />
+                                <div v-if="v$.organizer.email.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.required') }}</div>
+                                <div v-else-if="v$.organizer.email.format.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.organizer.email.format') }}</div>
+                                <div v-else-if="fieldError(`organizer.email`)" class="invalid-tooltip">{{ fieldError(`organizer.email`) }}</div>
+                                <i18n-t v-if="suggestEmail(organizer.email)" keypath="form.participant.email.suggest" tag="span" class="email-suggest" role="status">
+                                    <template #email><a href="#" @click.prevent="organizer.email = suggestEmail(organizer.email)">{{ suggestEmail(organizer.email) }}</a></template>
+                                </i18n-t>
+                            </div>
+                        </div>
+                        <label class="org-check">
+                            <input v-model="participantOrganizer" type="checkbox" name="participant-organizer" value="1" class="org-box organizer-participates" aria-describedby="org-hint" />
+                            <span class="org-check__texte">
+                                <span class="org-check__titre">{{ $t('form.k.participate.label') }}</span>
+                                <span id="org-hint" class="org-check__aide">{{ $t('form.k.participate.help') }}</span>
+                            </span>
+                        </label>
+                    </div>
+
+                    <transition-group tag="div" name="fade" class="k-lignes" id="participants">
+                        <template v-for="(participant, idx) in participants" :key="participant.id">
+                            <participant
+                                v-if="!(participantOrganizer && idx === 0)"
+                                ref="participants"
+                                v-bind="rowProps(participant, idx)"
+                                :field-error="fieldError"
+                                @input:name="participant.name = $event"
+                                @input:email="participant.email = $event"
+                                @removeExclusion="removeExclusion(participant, $event)"
+                                @addExclusion="addExclusion(participant, $event)"
+                                @toggleDirection="toggleDirection(participant, $event)"
+                                @delete="participants.splice(idx, 1)"
+                            />
+                        </template>
+                    </transition-group>
+
+                    <p class="k-aide exclusions-help">{{ $t('form.participant.exclusions.help') }}</p>
+                    <p v-if="participants.length >= maxParticipants" class="k-alerte participants-max" role="status">
+                        {{ $t('validation.custom.randomform.participants.max', { max: maxParticipants, email: contact }) }}
+                    </p>
+                    <div class="k-actions">
+                        <span class="tag-wrap tag-wrap--kraft"><button type="button" class="tag-kraft participant-add" :disabled="participants.length >= maxParticipants" @click="addParticipant()"><svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14" /></svg>{{ $t('form.participant.add') }}</button></span>
+                        <span class="tag-wrap tag-wrap--kraft"><button type="button" class="tag-kraft participants-import" :disabled="importing" @click="showModal = true"><svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7 9l5-5 5 5M5 15v4h14v-4" /></svg>{{ importing ? $t('form.participants.importing') : $t('form.participants.import') }}</button></span>
+                    </div>
+                </fieldset>
+
+                <fieldset id="k-step-2" class="k-fieldset">
+                    <legend class="k-legend"><span class="sticker sticker--green sticker--40" aria-hidden="true">2</span>{{ $t('form.k.steps.two') }}</legend>
+                    <div class="k-bloc-mobile">
+                        <div class="champ">
+                            <label class="champ__label" for="mailTitle">{{ $t('form.k.eventLabel') }}</label>
+                            <input
+                                id="mailTitle"
+                                type="text"
+                                name="title"
+                                v-model="title"
+                                :placeholder="$t('form.k.eventPlaceholder')"
+                                class="field"
+                                :class="{ 'is-invalid': v$.title.$error || fieldError('title') }"
+                                :aria-invalid="v$.title.$error || !!fieldError('title')"
+                                @blur="v$.title.$touch()"
+                            />
+                            <div class="invalid-tooltip">{{ fieldError('title') || $t('validation.custom.randomform.title.required') }}</div>
+                        </div>
+                        <div class="champ">
+                            <label class="champ__label" for="mailContent">{{ $t('form.k.messageLabel') }}</label>
+                            <textarea
+                                id="mailContent"
+                                ref="content"
+                                v-autosize
+                                name="content-email"
+                                v-model="content"
+                                :placeholder="$t('form.k.messagePlaceholder')"
+                                rows="4"
+                                class="field field--texte"
+                                :class="{ 'is-invalid': v$.content.$error || fieldError('content-email') }"
+                                :aria-invalid="v$.content.$error || !!fieldError('content-email')"
+                                @blur="v$.content.$touch()"
+                            />
+                            <div v-if="v$.content.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.required') }}</div>
+                            <div v-else-if="v$.content.contains.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.content.contains_text') }}</div>
+                            <div v-else-if="fieldError('content-email')" class="invalid-tooltip">{{ fieldError('content-email') }}</div>
+                            <div class="k-inserer">
+                                <span class="k-inserer__label">{{ $t('form.k.insert') }}</span>
+                                <span class="tag-wrap tag-wrap--kraft"><button type="button" class="chip chip--santa" aria-describedby="insert-santa" @mousedown="keepCaret" @click="insert('{SANTA}')">&#123;SANTA&#125;</button></span>
+                                <span id="insert-santa">{{ $t('form.k.insertSanta') }}</span>
+                                <span class="tag-wrap tag-wrap--kraft"><button type="button" class="chip chip--target" aria-describedby="insert-target" @mousedown="keepCaret" @click="insert('{TARGET}')">&#123;TARGET&#125;</button></span>
+                                <span id="insert-target">{{ $t('form.k.insertTarget') }}</span>
+                                <span class="sr-only" role="status">{{ inserted }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset id="k-step-3" class="k-fieldset">
+                    <legend class="k-legend"><span class="sticker sticker--gold sticker--40" aria-hidden="true">3</span>{{ $t('form.k.steps.three') }}</legend>
+                    <div class="k-bloc-mobile">
+                        <div class="k-jour">
+                            <div class="champ">
+                                <label class="champ__label" for="expiration">{{ $t('form.k.date') }}</label>
+                                <input
+                                    id="expiration"
                                     type="date"
                                     name="data-expiration"
-                                    id="expiration"
                                     v-model="expiration"
+                                    class="field"
                                     :class="{ 'is-invalid': v$.expiration.$error || fieldError('data-expiration') }"
-                                    :aria-invalid="v$.expiration.$error || fieldError('data-expiration')"
+                                    :aria-invalid="v$.expiration.$error || !!fieldError('data-expiration')"
                                     @blur="v$.expiration.$touch()"
                                     :min="moment(1, 'day')"
                                     :max="moment(1, 'year')"
@@ -460,179 +452,72 @@
                                 <div class="invalid-tooltip" v-else-if="v$.expiration.maxValue.$invalid">{{ $t('validation.custom.randomform.expiration.max') }}</div>
                                 <div class="invalid-tooltip" v-else-if="fieldError('data-expiration')">{{ fieldError('data-expiration') }}</div>
                             </div>
+                            <div class="champ">
+                                <label class="champ__label" for="location">{{ $t('form.k.location') }} <span class="champ__facultatif">{{ $t('form.k.optional') }}</span></label>
+                                <input
+                                    id="location"
+                                    type="text"
+                                    name="data-location"
+                                    maxlength="255"
+                                    v-model="location"
+                                    :placeholder="$t('form.k.locationPlaceholder')"
+                                    class="field"
+                                    :class="{ 'is-invalid': v$.location.$error || fieldError('data-location') }"
+                                    :aria-invalid="v$.location.$error || !!fieldError('data-location')"
+                                    @blur="v$.location.$touch()"
+                                />
+                                <div class="invalid-tooltip">{{ fieldError('data-location') || $t('validation.custom.randomform.location.max') }}</div>
+                            </div>
+                            <div class="champ">
+                                <label class="champ__label" for="budget">{{ $t('form.k.budget') }} <span class="champ__facultatif">{{ $t('form.k.optional') }}</span></label>
+                                <input
+                                    id="budget"
+                                    type="number"
+                                    name="data-budget"
+                                    min="0"
+                                    max="100000"
+                                    step="any"
+                                    inputmode="decimal"
+                                    v-model="budget"
+                                    class="field"
+                                    :class="{ 'is-invalid': v$.budget.$error || fieldError('data-budget') }"
+                                    :aria-invalid="v$.budget.$error || !!fieldError('data-budget')"
+                                    @blur="v$.budget.$touch()"
+                                />
+                                <div v-if="v$.budget.max.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.budget.max') }}</div>
+                                <div v-else class="invalid-tooltip">{{ fieldError('data-budget') || $t('validation.custom.randomform.budget.format') }}</div>
+                            </div>
                         </div>
-                    </fieldset>
-                </template>
-            </ajax-form>
-        </div>
-        <div id="errors-wrapper" class="alert alert-danger v-rcloak">
-            {{ $t('form.waiting') }}
-        </div>
+                        <p class="champ__aide">{{ $t('form.k.dayHelp') }}</p>
+                    </div>
+                </fieldset>
+            </template>
+
+            <template #buttons="{ sending, sent, onReset }">
+                <div class="k-envoi">
+                    <p v-show="sent" id="success-wrapper" class="k-succes" role="status" tabindex="-1">{{ $t('form.k.success') }}</p>
+                    <span v-if="sent" class="tag-wrap tag-wrap--kraft"><button type="button" class="tag-kraft" @click="onReset">{{ $t('form.k.newDraw') }}</button></span>
+                    <span v-else class="tag-wrap" style="--hole: var(--color-papier)"><button type="submit" class="tag-action tag-action--grand" :disabled="sending" :aria-busy="sending">{{ sending ? $t('form.k.sending') : $t('form.k.submit') }}</button></span>
+                    <p class="k-sceau"><img :src="logoIcon" alt="" width="28" height="30" />{{ $t('form.k.seal') }}</p>
+                </div>
+            </template>
+        </ajax-form>
         <csv v-if="showModal" @import="importParticipants" @close="showModal = false" />
     </div>
 </template>
 
 <style scoped>
-    .organizerToggle {
-        display: inline-block;
-    }
-    #participants {
-        margin-top: 80px;
-    }
-
-    /* Fix tiny style glitches */
-    .multiselect--active .multiselect__tags {
-        min-height: 41px;
-    }
-
-    .multiselect__input, .multiselect__single {
-        padding: 0 !important;
-        line-height: 1.5 !important;
-    }
-
-    .multiselect, .multiselect__input, .multiselect__single {
-        font-size: 14px !important;
-    }
-
-    .multiselect__placeholder {
-        padding-top: 0 !important;
-    }
-
-    /* ==========================================================================
-        06. Form
-    ========================================================================== */
-    fieldset > div.form-group {
-        overflow: visible;
-    }
-
-    table caption {
-        display: none;
-    }
-
-    .participant .participant-exclusions-wrapper {
-        padding-top: 11px;
-    }
-
-    .participant .participant-remove-wrapper {
-        width: 179px;
-        white-space: nowrap;
-    }
-
-    #mailContent,
-    #mailPost {
-        max-width: 100%;
-        resize: none;
-    }
-
-    #mailContent {
-        field-sizing: content;
-        min-height: 5em;
-        border-bottom: 0;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    #mailPost {
-        border-top: 0;
-        border-top-right-radius: 0;
-        border-top-left-radius: 0;
-        height: 55px;
-    }
-
-    #mailPost.extended {
-        height: 75px;
-    }
-
-    #form {
-        padding-bottom: 20px;
-    }
-
-    #form .container {
-        transition: all 0.4s;
-        position: relative;
-    }
-
-    #form.success .success-wrapper {
-        display: block;
-    }
-
-    .col-xs-0 {
-        width: 1%;
-    }
-
-    .border-left {
-        border-left: 1px solid #ddd;
-    }
-
-    .border-right {
-        border-right: 1px solid #ddd;
-    }
-
-    .row.text-only {
-        line-height: 34px;
-    }
-
-    .input-inline-group {
-        position: relative;
-        display: inline-block;
-    }
-
-    .table-bordered.heavy-borders,
-    .table-bordered.heavy-borders > tbody > tr > td,
-    .table-bordered.heavy-borders > tbody > tr > th,
-    .table-bordered.heavy-borders > tfoot > tr > td,
-    .table-bordered.heavy-borders > tfoot > tr > th,
-    .table-bordered.heavy-borders > thead > tr > td,
-    .table-bordered.heavy-borders > thead > tr > th {
-        border-width: 3px;
-    }
-
-    .tips {
-        font-size: 12px;
-        font-style: italic;
-        box-shadow: 3px 3px 6px 0 #bbb;
-        margin: 10px auto 0 auto;
-        display: inline-block;
-        border: 1px solid #c0c0c0;
-        background-color: #ddd;
-        padding: 10px;
-    }
-
-    .tips p {
-        margin: 0;
-    }
-
     .fade-enter-active, .fade-leave-active, .fade-move {
-        transition: all 1s;
+        transition: all .4s;
     }
 
-    .fade-enter, .fade-leave-to {
+    .fade-enter-from, .fade-leave-to {
         opacity: 0;
     }
 
-    /* ==========================================================================
-        08. Responsive styles
-    ========================================================================== */
-    @media (max-width: 1199px) {
-        .participant-remove span {
-            display: none;
+    @media (prefers-reduced-motion: reduce) {
+        .fade-enter-active, .fade-leave-active, .fade-move {
+            transition: none;
         }
-    }
-
-    @media (max-width: 767px) {
-        #header .banner h1 {
-            font-size: 60px;
-        }
-
-        #header .subtitle h4 {
-            font-size: 22px;
-        }
-    }
-
-    /* ==========================================================================
-        12. Widgets
-    ========================================================================== */
-    .participants-import button .fa-spinner {
-        margin-right: 10px;
     }
 </style>

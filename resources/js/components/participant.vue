@@ -47,9 +47,10 @@
                 type: Function,
                 required: true
             },
-            participantOrganizer: {
+            // The organizer's own row, in the "you" block: no remove button
+            orga: {
                 type: Boolean,
-                default: true
+                default: false
             }
         },
         validations() {
@@ -108,53 +109,64 @@
 </script>
 
 <template>
-    <tr class="participant" :dusk="'participant'+idx">
-        <td class="align-middle">
-            <div class="input-group">
-                <span class="input-group-prepend counter">
-                    <span class="input-group-text"
-                        >{{ idx + 1 }}<template v-if="idx === 0 && participantOrganizer"> - {{ $t('form.participant.organizer') }}</template></span
-                    >
-                </span>
-                <input
-                    type="text"
-                    :name="'participants[' + idx + '][name]'"
-                    :placeholder="$t('form.participant.name.placeholder')"
-                    :value="name"
-                    class="form-control participant-name"
-                    :class="{ 'is-invalid': v$.name.$error || fieldError(`participants.${idx}.name`) }"
-                    :aria-invalid="v$.name.$error || fieldError(`participants.${idx}.name`)"
-                    @input="changeName($event.target.value)"
-                    @blur="v$.name.$touch()"
-                />
-                <div v-if="v$.name.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.required') }}</div>
-                <div v-else-if="v$.name.unique.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.distinct') }}</div>
-                <div v-else-if="fieldError(`participants.${idx}.name`)" class="invalid-tooltip">{{ fieldError(`participants.${idx}.name`) }}</div>
-            </div>
-        </td>
-        <td class="border-left align-middle">
-            <div class="input-group">
-                <input
-                    type="email"
-                    :name="'participants[' + idx + '][email]'"
-                    :placeholder="$t('form.participant.email.placeholder')"
-                    :value="email"
-                    class="form-control participant-email"
-                    :class="{ 'is-invalid': v$.email.$error || fieldError(`participants.${idx}.email`)}"
-                    :aria-invalid="v$.email.$error || fieldError(`participants.${idx}.email`)"
-                    @input="changeEmail($event.target.value)"
-                    @blur="v$.email.$touch()"
-                />
-                <div v-if="v$.email.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.email.required') }}</div>
-                <div v-else-if="v$.email.format.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.email.format') }}</div>
-                <div v-else-if="fieldError(`participants.${idx}.email`)" class="invalid-tooltip">{{ fieldError(`participants.${idx}.email`) }}</div>
-            </div>
-            <i18n-t v-if="suggestEmail(email)" keypath="form.participant.email.suggest" tag="small" class="form-text text-muted email-suggest">
+    <!-- Desktop: one grid row under the column headers; mobile: one card, its labels visible -->
+    <div class="participant" :class="{ 'participant--orga': orga, 'participant--vide': !name && !email }" :dusk="'participant'+idx">
+        <span class="kt-num" :class="{ 'kt-num--empty': !name }" aria-hidden="true">{{ idx + 1 }}</span>
+        <div class="participant__entete">
+            <span class="kt-num" :class="{ 'kt-num--empty': !name }" aria-hidden="true">{{ idx + 1 }}</span>
+            <span class="participant__titre">{{ orga ? $t('form.k.you') : $t('form.k.person', { n: idx + 1 }) }}</span>
+            <button
+                v-if="!orga"
+                type="button"
+                class="participant__retirer participant-remove"
+                :disabled="required"
+                :aria-label="name ? $t('form.k.remove', { name }) : $t('form.k.removeN', { n: idx + 1 })"
+                @click="$emit('delete')"
+            ><svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" /></svg></button>
+        </div>
+        <div class="participant__champ">
+            <label :for="uid + '-name'">{{ $t('form.participant.name.label') }}<span class="sr-only"> ({{ idx + 1 }})</span></label>
+            <input
+                :id="uid + '-name'"
+                type="text"
+                :name="'participants[' + idx + '][name]'"
+                :placeholder="$t('form.participant.name.placeholder')"
+                :value="name"
+                class="field participant-name"
+                :class="{ 'is-invalid': v$.name.$error || fieldError(`participants.${idx}.name`) }"
+                :aria-invalid="v$.name.$error || !!fieldError(`participants.${idx}.name`)"
+                @input="changeName($event.target.value)"
+                @blur="v$.name.$touch()"
+            />
+            <div v-if="v$.name.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.required') }}</div>
+            <div v-else-if="v$.name.unique.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.name.distinct') }}</div>
+            <div v-else-if="fieldError(`participants.${idx}.name`)" class="invalid-tooltip">{{ fieldError(`participants.${idx}.name`) }}</div>
+        </div>
+        <div class="participant__champ">
+            <label :for="uid + '-email'">{{ $t('form.participant.email.label') }}<span class="sr-only"> ({{ idx + 1 }})</span></label>
+            <input
+                :id="uid + '-email'"
+                type="email"
+                :name="'participants[' + idx + '][email]'"
+                :placeholder="$t('form.participant.email.placeholder')"
+                :value="email"
+                class="field participant-email"
+                :class="{ 'is-invalid': v$.email.$error || fieldError(`participants.${idx}.email`)}"
+                :aria-invalid="v$.email.$error || !!fieldError(`participants.${idx}.email`)"
+                @input="changeEmail($event.target.value)"
+                @blur="v$.email.$touch()"
+            />
+            <div v-if="v$.email.required.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.email.required') }}</div>
+            <div v-else-if="v$.email.format.$invalid" class="invalid-tooltip">{{ $t('validation.custom.randomform.participant.email.format') }}</div>
+            <div v-else-if="fieldError(`participants.${idx}.email`)" class="invalid-tooltip">{{ fieldError(`participants.${idx}.email`) }}</div>
+            <i18n-t v-if="suggestEmail(email)" keypath="form.participant.email.suggest" tag="span" class="email-suggest" role="status">
                 <template #email><a href="#" @click.prevent="changeEmail(suggestEmail(email))">{{ suggestEmail(email) }}</a></template>
             </i18n-t>
-        </td>
-        <td class="border-right text-left participant-exclusions-wrapper align-middle">
+        </div>
+        <div class="participant__champ k-exclusions participant-exclusions-wrapper">
+            <label :for="uid + '-exclusions'">{{ $t('form.participant.exclusions.label') }}<span class="sr-only"> ({{ idx + 1 }})</span></label>
             <multiselect
+                :id="uid + '-exclusions'"
                 :options="otherParticipants"
                 label="name"
                 track-by="idx"
@@ -164,6 +176,7 @@
                 :hide-selected="true"
                 :preserve-search="true"
                 :close-on-select="false"
+                :show-labels="false"
                 @select="$emit('addExclusion', $event)"
                 @remove="$emit('removeExclusion', $event)"
             >
@@ -205,7 +218,7 @@
                                 :aria-label="$t('form.participant.exclusions.remove', { name: option.name })"
                                 @mousedown.prevent.stop
                                 @click.stop="remove(option)"
-                            >&times;</button>
+                            ><svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg></button>
                         </span>
                     </div>
                 </template>
@@ -216,7 +229,7 @@
                     {{ $t('form.participant.exclusions.noResult') }}
                 </template>
             </multiselect>
-            <select style="display:none" :name="'participants[' + idx + '][exclusions][]'" multiple>
+            <select hidden :name="'participants[' + idx + '][exclusions][]'" multiple>
                 <option
                     v-for="exclusionIdx in sentExclusions"
                     :key="exclusionIdx"
@@ -224,70 +237,15 @@
                     selected
                 >{{ exclusionIdx }}</option>
             </select>
-        </td>
-        <td class="participant-remove-wrapper align-middle">
-            <button
-                type="button"
-                class="btn btn-outline-danger participant-remove"
-                :disabled="required"
-                @click="$emit('delete')"
-            >
-                <i class="fas fa-minus" /><span> {{ $t('form.participant.remove') }}</span>
-            </button>
-        </td>
-    </tr>
+        </div>
+        <button
+            v-if="!orga"
+            type="button"
+            class="participant__retirer participant-remove"
+            :disabled="required"
+            :aria-label="name ? $t('form.k.remove', { name }) : $t('form.k.removeN', { n: idx + 1 })"
+            @click="$emit('delete')"
+        ><svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" /></svg></button>
+        <span v-else aria-hidden="true" />
+    </div>
 </template>
-
-<style lang="scss">
-    .exclusion-tag {
-        display: inline-flex;
-        align-items: center;
-        margin: 0 6px 4px 0;
-        border-radius: 4px;
-        font-size: 13px;
-        font-weight: 600;
-        line-height: 1.4;
-        vertical-align: middle;
-
-        button {
-            background: transparent;
-            border: 0;
-            color: inherit;
-            cursor: pointer;
-            padding: 3px 6px;
-            line-height: 1;
-        }
-
-        &.exclusion-tag-both {
-            background: #276749;
-            color: #fff;
-        }
-
-        &.exclusion-tag-oneway {
-            background: #fff;
-            color: #276749;
-            border: 1px solid #276749;
-        }
-
-        &.exclusion-tag-derived {
-            background: #eef7f1;
-            color: #276749;
-            border: 1px dashed #4f8a63;
-            padding: 2px 8px;
-            gap: 4px;
-            cursor: default;
-        }
-
-        .exclusion-icon {
-            width: 14px;
-            height: 14px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2.2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            vertical-align: -2px;
-        }
-    }
-</style>
-

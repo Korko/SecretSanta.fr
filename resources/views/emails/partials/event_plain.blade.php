@@ -1,8 +1,7 @@
-{!! __('emails.event.heading') !!}
-    {!! __('emails.event.date', ['date' => $eventDate]) !!}
+{!! __('emails.event.heading') !!} : {!! $eventDate !!}
 @if($location)
-    {!! __('emails.event.location', ['location' => $location]) !!}
+{!! __('emails.event.location') !!} : {!! $location !!}
 @endif
 @if($budget)
-    {!! __('emails.event.budget', ['budget' => $budget]) !!}
+{!! __('emails.event.budget') !!} : {!! $budget !!}
 @endif

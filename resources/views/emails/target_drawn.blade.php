@@ -1,33 +1,29 @@
 @extends('emails/layout')
 
-@section('title')
-    {{ __('emails.target_drawn.heading') }}
-@endsection
+@section('title', __('emails.target_drawn.heading'))
+@section('preheader', __('emails.target_drawn.preheader'))
 
 @section('content')
-    <blockquote>{!! nl2br(htmlentities($content)) !!}</blockquote>
+    <x-mail.p>{{ __('emails.target_drawn.intro') }}</x-mail.p>
+    <x-mail.letter>{!! nl2br(e($content)) !!}</x-mail.letter>
 
     @include('emails/partials/event')
 
-    <hr/>
-
-    <p style="padding-bottom:10px !important">{!! __('emails.target_drawn.write', ['link' => '<a href="'.e($dearSantaLink).'">'.e($dearSantaLink).'</a>']) !!}</p>
-
+    <x-mail.hr />
+    <x-mail.h2 :top="28">{{ __('emails.target_drawn.ask_title') }}</x-mail.h2>
+    <x-mail.p :top="8">{{ __('emails.target_drawn.ask') }}</x-mail.p>
+    <x-mail.button :href="$dearSantaLink">{{ __('emails.target_drawn.write_button') }}</x-mail.button>
+@unless($organizer)
+    {{-- Not to the organizer: no one to report to, and their page has no such button --}}
+    <x-mail.p muted small>{{ __('emails.target_drawn.report') }}</x-mail.p>
+@endunless
 @if($organizer)
 
-    <hr/>
-
-    <p style="padding-bottom:10px !important"><strong>{{ __('emails.target_drawn.as_organizer') }}</strong> {{ __('emails.target_drawn.do_not_forward') }}</p>
-
     @include('emails/partials/organizer')
-@else
-    {{-- Not to the organizer: no one to report to, and their page has no such button --}}
-    <p style="padding-bottom:10px !important"><small>{{ __('emails.target_drawn.report') }}</small></p>
 @endif
 @if($targetMessages || $giftSuggestions)
 
-    <hr/>
-
+    <x-mail.hr />
     @include('emails/partials/target_messages')
 @endif
 @endsection

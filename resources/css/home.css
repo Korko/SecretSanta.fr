@@ -1,0 +1,418 @@
+/*
+ * Page d'accueil « cadeaux » : Tailwind 4, chargé par cette seule page (templates/kraft.blade.php).
+ * Les autres pages gardent Bootstrap (resources/sass).
+ * Règle du propriétaire : des classes nommées (définies ici, en @apply), pas de suites d'utilitaires dans les gabarits.
+ */
+@import 'alertifyjs/build/css/alertify.min.css';
+@import 'alertifyjs/build/css/themes/default.min.css';
+@import 'tailwindcss';
+
+@theme {
+    --color-kraft: #E4C7A0;
+    --color-kraft-fonce: #D8B69C;
+    --color-creme: #FBF4EC;
+    --color-creme-clair: #FFF8EF;
+    --color-papier: #FFFDF9;
+    --color-encre: #3B2418;
+    --color-brun: #4A3426;
+    --color-brun-doux: #5A4232;
+    --color-brun-gris: #7A6252;
+    --color-trou: #2B1A11;
+    --color-ruban: #C62A2F;
+    --color-ruban-clair: #D3363B;
+    --color-ruban-sombre: #AE2328;
+    --color-ruban-fonce: #8E1B1E;
+    --color-titre-rouge: #B12328;
+    --color-mention-rouge: #9E1F24;
+    --color-dore: #F6C978;
+    --color-sapin: #1A7A43;
+    --color-sapin-ombre: #0F5A30;
+    --color-tirets-champ: #9C7A60;
+    --color-tirets-cadre: #A57A4D;
+    --color-focus: #D03133;
+    --color-indicatif: #66757D;
+    --color-rose: #F9AFAA;
+    --color-bordeaux: #5E1618;
+
+    --font-happy: 'Happy Kids', 'Aileron', 'Segoe UI', Arial, sans-serif;
+    --font-aileron: 'Aileron', 'Segoe UI', Arial, sans-serif;
+}
+
+@font-face { font-family: Aileron; font-weight: 400; font-style: normal; font-display: swap; src: url('/fonts/aileron-400.woff2') format('woff2'); }
+@font-face { font-family: Aileron; font-weight: 600; font-style: normal; font-display: swap; src: url('/fonts/aileron-600.woff2') format('woff2'); }
+@font-face { font-family: Aileron; font-weight: 700; font-style: normal; font-display: swap; src: url('/fonts/aileron-700.woff2') format('woff2'); }
+@font-face { font-family: 'Happy Kids'; font-weight: 400; font-style: normal; font-display: swap; src: url('/fonts/happy-kids.woff2') format('woff2'); }
+/* Happy Kids dessine mal l'apostrophe, les tirets, les parenthèses, les guillemets et le point médian : ceux-là viennent d'Aileron */
+@font-face { font-family: 'Happy Kids'; font-weight: 400; font-style: normal; font-display: swap; src: url('/fonts/aileron-700.woff2') format('woff2'); unicode-range: U+0027, U+002D, U+0028-0029, U+2019, U+00AB, U+00BB, U+00B7, U+0152-0153, U+2013-2014; }
+
+@layer base {
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body { @apply m-0 bg-kraft font-aileron text-encre; font-synthesis: none; }
+    [id] { scroll-margin-top: 16px; }
+    input::placeholder, textarea::placeholder { color: var(--color-indicatif); opacity: 1; }
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid var(--color-encre); outline-offset: 2px; }
+}
+
+@layer components {
+    /* ---------- Repères communs ---------- */
+    .kt { @apply flex min-h-screen flex-col overflow-x-clip; }
+    .kt-main { @apply flex flex-auto flex-col; }
+    .kt-wrap { @apply mx-auto w-full max-w-[1240px]; }
+    .titre { @apply m-0 font-happy font-normal leading-[1.16] text-encre; }
+    .titre-accent { @apply text-titre-rouge; }
+    .apos { @apply font-aileron; }
+    .tiret-offrez { margin: 0 -0.01em 0 -0.17em; }
+    .insecable { @apply whitespace-nowrap; }
+    .lien-evitement { @apply absolute left-4 top-4 z-50 -translate-y-[200%] rounded-lg bg-papier px-4 py-3 font-bold text-encre; }
+    .lien-evitement:focus { @apply translate-y-0; }
+
+    /* ---------- En-tête ---------- */
+    .kt-head { @apply relative bg-creme-clair; }
+    .kt-head__inner { @apply mx-auto flex max-w-[1240px] items-center justify-between gap-6 px-8 py-4; }
+    .kt-logo { @apply block no-underline; }
+    .kt-logo img { @apply block h-[70px] w-[190px]; }
+    .kt-nav { @apply flex items-center gap-[30px] text-[15px] font-bold; }
+    .kt-navtext { @apply text-encre no-underline hover:underline; }
+    .kt-burger { @apply hidden h-12 w-12 cursor-pointer place-items-center rounded-xl border-0 bg-ruban text-creme-clair; }
+    .kt-menu { @apply hidden; }
+
+    /* ---------- Ruban et nœud ---------- */
+    .ruban { @apply relative; background: linear-gradient(180deg, #D3363B 0%, #C62A2F 48%, #AE2328 100%); box-shadow: 0 3px 0 rgba(90, 40, 20, .18); }
+    .ruban::before, .ruban::after { content: ''; @apply pointer-events-none absolute inset-x-0 z-[1] h-0; border-top: 2px dashed rgba(255, 240, 222, .6); }
+    .ruban::before { top: 7px; }
+    .ruban::after { bottom: 7px; }
+    .ruban--fin { @apply h-6; }
+    .ruban--fin::before { top: 5px; }
+    .ruban--fin::after { bottom: 5px; }
+    .ruban--noeud { @apply z-[2] h-9; }
+    /* Les coutures passent derrière le nœud : z-index 1 contre 2 */
+    .noeud { @apply pointer-events-none absolute left-1/2 top-[-33px] z-[2] w-[150px] -translate-x-1/2; }
+    .noeud svg { @apply block w-full; }
+
+    /* ---------- Étiquette d'action : seul style de bouton d'action ---------- */
+    .tag-wrap { @apply inline-flex max-w-full; filter: drop-shadow(0 4px 0 var(--color-sapin-ombre)); transform-origin: 12px 50%; transition: transform .25s cubic-bezier(.3, 1.6, .5, 1); }
+    .tag-wrap:hover { transform: rotate(-4deg); }
+    .tag-wrap:active { transform: translateY(3px); }
+    /* Le clip-path couperait un contour posé sur le lien : il va sur l'enveloppe */
+    .tag-wrap:has(:focus-visible) { @apply rounded-md; outline: 3px solid var(--ring, var(--color-encre)); outline-offset: 5px; }
+    .tag-wrap--bloc { @apply flex; }
+    .tag-wrap--bloc > * { @apply flex-auto; }
+    .tag-action { @apply relative inline-flex min-h-[54px] cursor-pointer items-center justify-center gap-2.5 whitespace-nowrap border-0 bg-sapin pl-[46px] pr-7 font-happy text-[21px] text-white no-underline; clip-path: polygon(13px 0, calc(100% - 13px) 0, 100% 13px, 100% calc(100% - 13px), calc(100% - 13px) 100%, 13px 100%, 0 calc(100% - 13px), 0 13px); }
+    .tag-action:hover { @apply text-white; }
+    .tag-action:focus-visible { outline: none; }
+    .tag-action::before { content: ''; @apply absolute left-[18px] top-1/2 -mt-[5px] h-2.5 w-2.5 rounded-full; background: var(--hole, var(--color-papier)); }
+    .tag-action:disabled { @apply cursor-wait opacity-80; }
+    .tag-action--grand { @apply min-h-16 pl-14 pr-9 text-[25px]; }
+    .tag-action--grand::before { left: 22px; }
+
+    /* Variante secondaire kraft (en-tête, ajouter, importer, café) */
+    .tag-wrap--kraft { filter: drop-shadow(0 4px 0 #C9A88F); }
+    .tag-wrap--kraft:active { filter: drop-shadow(0 1px 0 #C9A88F); }
+    .tag-kraft, .modal-footer .btn { @apply relative inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 whitespace-nowrap border-0 bg-[#E4C8B3] pl-10 pr-5 font-aileron text-base font-bold text-[#34454F] no-underline transition-colors; clip-path: polygon(11px 0, calc(100% - 11px) 0, 100% 11px, 100% calc(100% - 11px), calc(100% - 11px) 100%, 11px 100%, 0 calc(100% - 11px), 0 11px); }
+    .tag-kraft:hover, .tag-kraft:focus-visible, .modal-footer .btn:hover, .modal-footer .btn:focus-visible { @apply bg-kraft-fonce text-[#34454F]; outline: none; }
+    .tag-kraft:active { transform: translateY(2px); }
+    .tag-kraft::before, .modal-footer .btn::before { content: ''; @apply absolute left-[15px] top-1/2 -mt-1 h-2 w-2 rounded-full; background: var(--hole, var(--color-papier)); }
+    .tag-kraft:disabled { @apply cursor-not-allowed opacity-60; }
+    .tag-kraft svg { @apply shrink-0; }
+
+    /* Puces d'insertion {SANTA} / {TARGET} */
+    .chip { @apply relative inline-flex min-h-10 cursor-pointer items-center whitespace-nowrap border-0 pl-[30px] pr-3.5 font-mono text-sm font-bold text-bordeaux; clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 9px, 100% calc(100% - 9px), calc(100% - 9px) 100%, 9px 100%, 0 calc(100% - 9px), 0 9px); }
+    .chip::before { content: ''; @apply absolute left-[11px] top-1/2 -mt-[3.5px] h-[7px] w-[7px] rounded-full bg-papier; }
+    .chip:focus-visible { outline: none; }
+    .chip--santa { @apply bg-rose; }
+    .chip--target { @apply bg-dore; }
+
+    /* ---------- Champs ---------- */
+    .field { @apply box-border min-h-12 w-full rounded-xl border-2 border-dashed border-tirets-champ bg-white px-3.5 font-aileron text-base text-[#2F3E46]; }
+    .field:focus, .field:focus-visible, .field:focus-within { @apply border-solid border-focus; outline: none; }
+    .field--haut { @apply min-h-[52px] rounded-[10px] px-4; }
+    .field--texte { @apply py-3.5 leading-[1.55]; resize: vertical; field-sizing: content; min-height: 7.5em; }
+    .field.is-invalid { @apply border-solid border-focus bg-[#FFF5F4]; }
+    .champ { @apply flex flex-col gap-2; }
+    .champ__label { @apply text-[15px] font-bold text-encre; }
+    .champ__facultatif { @apply font-normal; }
+    .champ__aide { @apply m-0 text-[15px] leading-[1.55] text-brun-doux; }
+    .invalid-tooltip { @apply mt-1.5 hidden text-sm font-bold text-ruban-fonce; }
+    .is-invalid ~ .invalid-tooltip { @apply block; }
+    .email-suggest { @apply mt-1.5 block text-sm text-brun-doux; }
+    .email-suggest a { @apply font-bold text-titre-rouge; }
+
+    /* ---------- Repères : une forme par rôle ---------- */
+    /* Étapes : pastille ronde */
+    .sticker { @apply relative grid shrink-0 place-items-center rounded-full font-happy leading-none text-white; box-shadow: 0 0 0 3px #fff, 0 4px 0 3px rgba(90, 50, 20, .16); }
+    .sticker--red { @apply bg-ruban; }
+    .sticker--green { @apply bg-sapin; }
+    .sticker--gold { @apply bg-dore text-encre; }
+    .sticker--48 { @apply h-12 w-12 text-[26px]; }
+    .sticker--40 { @apply h-10 w-10 text-[22px]; }
+    .sticker--28 { @apply h-7 w-7 text-base; }
+    /* Participants : carré arrondi numéroté */
+    .kt-num { @apply box-border grid h-[30px] w-[30px] place-items-center justify-self-center rounded-lg border-2 border-kraft-fonce bg-[#F1E1CC] text-sm font-bold leading-none text-brun-doux; }
+    .kt-num--empty { @apply border-dashed bg-transparent text-[#8A715E]; }
+    /* Libellés : pastille */
+    .token, .exclusion-tag { @apply inline-flex min-h-8 items-center gap-0.5 rounded-full bg-rose pl-3 pr-0.5 text-sm font-bold text-bordeaux; }
+    .token-x, .exclusion-tag-direction, .exclusion-tag-remove { @apply grid h-7 w-7 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-bordeaux hover:bg-bordeaux/12; }
+    .token-x:focus-visible, .exclusion-tag button:focus-visible { outline: 2px solid var(--color-bordeaux); outline-offset: 1px; }
+
+    /* ---------- Cartes ---------- */
+    .kt-card { @apply relative rounded-2xl bg-papier; box-shadow: 0 16px 34px rgba(90, 55, 25, .25); }
+    .kt-hole { @apply absolute left-[18px] top-[18px] h-3.5 w-3.5 rounded-full bg-trou; box-shadow: inset 0 2px 3px rgba(80, 50, 20, .35); }
+    /* Boucle de ficelle : sa géométrie suppose une carte de rayon 16 px */
+    .kt-twine { @apply pointer-events-none absolute left-[-10px] top-[-32px] overflow-visible; }
+
+    /* ---------- Haut de page ---------- */
+    .hero { @apply relative overflow-hidden bg-encre bg-cover bg-no-repeat; background-image: url('../images/gifts-1.webp'); background-position: right center; }
+    .kt-veil { @apply absolute inset-0; background: linear-gradient(90deg, rgba(43, 26, 17, .94) 0%, rgba(43, 26, 17, .82) 36%, rgba(43, 26, 17, .15) 66%, rgba(43, 26, 17, 0) 100%); }
+    .hero__inner { @apply relative mx-auto max-w-[1240px] px-8 pb-24 pt-[88px]; }
+    .hero__col { @apply flex max-w-[600px] flex-col gap-[22px]; }
+    .mentions { @apply m-0 flex flex-wrap gap-x-3 gap-y-1 text-[15px] font-bold text-dore; }
+    .hero__titre { @apply m-0 font-happy font-normal leading-[1.16] text-creme-clair; font-size: clamp(38px, 6.5vw, 64px); text-wrap: balance; }
+    .hero__accent { @apply mt-[0.14em] block text-dore; }
+    .hero__intro { @apply m-0 text-[19px] leading-[1.55] text-[#F1E3CF]; }
+    .hero__photo { @apply hidden; }
+    .carte-etiquette-wrap { @apply pt-[26px] max-md:pt-[22px]; }
+    .carte-etiquette { @apply flex flex-col gap-3 px-6 pb-6 pt-5; }
+    .carte-etiquette__label { @apply whitespace-nowrap pl-[26px] font-happy text-[19px] text-encre; }
+    .carte-etiquette__ligne { @apply flex flex-wrap items-center gap-x-4 gap-y-3.5; }
+    .carte-etiquette__ligne .field { @apply min-w-0 flex-[1_1_220px]; }
+    .carte-etiquette__note { @apply m-0 text-sm text-brun-doux; }
+
+    /* ---------- Étapes ---------- */
+    .etapes { @apply bg-creme px-8 pb-[88px] pt-20; }
+    .etapes__inner { @apply mx-auto flex max-w-[1240px] flex-col gap-12; }
+    .etapes__titre { @apply text-center; font-size: clamp(32px, 4.5vw, 50px); }
+    .kt-steps { @apply m-0 grid list-none gap-x-10 gap-y-12 p-0 pt-3; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); }
+    .kt-step { @apply flex flex-col items-center gap-3 text-center; }
+    .kt-stepart { @apply relative h-[140px] w-[200px]; }
+    .kt-stepart > svg { @apply block h-full w-full; }
+    .kt-stepart .sticker { @apply absolute left-[-8px] top-[-6px]; }
+    .kt-step__titre { @apply m-0 font-happy text-[25px] font-normal text-encre; }
+    .kt-step__texte { @apply m-0 max-w-[30em] text-base leading-[1.6] text-brun-doux; }
+
+    .secret-box { @apply flex items-center gap-3.5 rounded-[22px] border-2 border-dashed border-tirets-cadre bg-white px-7 py-[18px]; }
+    .secret-box__icone { @apply grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#F8E1DA] text-mention-rouge; }
+    .secret-box__texte { @apply m-0 text-[15px] leading-[1.55] text-brun; }
+    .secret-box__texte strong { @apply text-encre; }
+
+    .apres { @apply grid items-center gap-x-14 gap-y-6 rounded-[28px] bg-white px-12 py-9; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
+    .apres__dessin { @apply w-full max-w-[300px] justify-self-center; }
+    .apres__dessin svg { @apply block h-auto w-full; }
+    .apres__texte { @apply flex max-w-[34em] flex-col gap-3; }
+    .apres__titre { @apply text-4xl; }
+    .apres__texte p { @apply m-0 text-[17px] leading-[1.6] text-brun; }
+
+    /* ---------- Bandeau photo ---------- */
+    .bandeau-photo { @apply relative h-[360px] bg-cover bg-no-repeat; background-image: url('../images/gifts-3.webp'); background-position: center 40%; }
+    .bandeau-photo__voile { @apply absolute inset-0 grid place-items-center px-5; background: rgba(43, 26, 17, .35); }
+    .bandeau-photo__etiquette { @apply m-0 rounded-[14px] bg-papier px-7 py-3.5 text-center font-happy text-[30px] text-encre; box-shadow: 0 14px 30px rgba(43, 26, 17, .35); }
+
+    /* ---------- Kraft ---------- */
+    .kraft { @apply bg-kraft; background-image: repeating-linear-gradient(90deg, rgba(110, 70, 30, .05) 0 2px, transparent 2px 7px); }
+
+    /* ---------- Formulaire ---------- */
+    .k-form { @apply relative px-8 pb-[110px] pt-[84px]; }
+    .k-form__inner { @apply relative mx-auto flex max-w-[1120px] flex-col gap-10; }
+    .k-form__entete { @apply flex flex-col items-center gap-3 text-center; }
+    .k-form__titre { font-size: clamp(36px, 5vw, 56px); }
+    .k-form__intro { @apply m-0 max-w-[34em] text-lg leading-[1.55] text-brun; }
+    .k-form__mobile-cta { @apply hidden; }
+    .k-card { @apply flex flex-col gap-11 overflow-hidden rounded-[28px] px-12 py-11; box-shadow: 0 30px 60px rgba(90, 55, 25, .28); }
+    /* ajaxForm enveloppe les étapes dans un fieldset (désactivé pendant l'envoi) */
+    .k-card > fieldset { @apply m-0 flex min-w-0 flex-col gap-11 border-0 p-0; }
+    .kt-corner { @apply pointer-events-none absolute right-[-70px] top-[38px] h-9 w-[270px] rotate-45; }
+    .k-etapes-nav { @apply hidden; }
+    .k-fieldset { @apply m-0 flex min-w-0 flex-col gap-3.5 border-0 p-0; }
+    .k-legend { @apply m-0 mb-[18px] flex items-center gap-3.5 p-0 font-happy text-[28px] font-normal text-encre; }
+    .kt-phead { @apply grid gap-3 px-3 text-[13px] font-bold uppercase tracking-[0.06em] text-brun-gris; grid-template-columns: 44px minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.1fr) 44px; }
+    .participant { @apply grid items-start gap-3 rounded-[18px] bg-[#FBF1E8] px-3 py-2.5; grid-template-columns: 44px minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.1fr) 44px; }
+    .participant > .kt-num { @apply mt-[9px]; }
+    .participant__entete { @apply contents; }
+    .participant__titre { @apply hidden; }
+    .participant__champ > label { @apply sr-only; }
+    .participant__retirer { @apply grid h-11 w-11 cursor-pointer place-items-center rounded-xl border-0 bg-transparent text-[#8A715E] hover:bg-kraft/40 disabled:cursor-not-allowed disabled:opacity-35; }
+    .participant--orga { @apply bg-transparent p-0; }
+    .orga-bloc { @apply flex flex-col gap-3 rounded-[18px] border-2 border-[#EAD7C4] bg-white px-3 pb-4 pt-3.5; }
+    .orga-bloc__titre { @apply ml-14 text-[13px] font-bold uppercase tracking-[0.06em] text-[#A62729]; }
+    .orga-bloc__champs { @apply grid gap-3; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .k-lignes { @apply flex flex-col gap-3; }
+    .org-check { @apply ml-14 flex cursor-pointer items-start gap-3.5 pt-0.5; }
+    .org-box { @apply m-0 grid h-7 w-7 shrink-0 cursor-pointer appearance-none place-items-center rounded-[7px] border-2 border-encre bg-white; }
+    .org-box:checked { @apply border-sapin bg-sapin; }
+    .org-box:checked::after { content: ''; @apply h-[13px] w-[7px] border-solid border-white; border-width: 0 3px 3px 0; transform: translateY(-2px) rotate(45deg); }
+    .org-box:focus-visible { outline: 3px solid var(--color-encre); outline-offset: 3px; }
+    .org-check__texte { @apply flex flex-col gap-[3px] pt-0.5; }
+    .org-check__titre { @apply text-base font-bold leading-[1.35] text-encre; }
+    .org-check__aide { @apply text-sm leading-[1.45] text-brun-doux; }
+    .k-actions { @apply flex flex-wrap gap-3 pt-1.5; }
+    .k-aide { @apply m-0 text-sm leading-normal text-brun-doux; }
+    .k-alerte { @apply m-0 rounded-xl border-2 border-dashed border-ruban bg-[#FFF5F4] px-4 py-3 text-[15px] font-bold text-ruban-fonce; }
+    .k-succes { @apply m-0 rounded-xl border-2 border-solid border-sapin bg-[#EEF7F1] px-4 py-3 text-base font-bold text-sapin-ombre; }
+    .k-inserer { @apply flex flex-wrap items-center gap-x-2.5 gap-y-2 text-sm text-brun-doux; }
+    .k-inserer__label { @apply font-semibold; }
+    .k-jour { @apply grid items-start gap-x-5 gap-y-4; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); }
+    .k-envoi { @apply flex flex-col items-center gap-3.5 pt-1.5; }
+    .k-sceau { @apply m-0 flex items-center gap-2 text-center text-sm text-brun-doux; }
+    .k-sceau img { @apply h-[30px] w-7 shrink-0; }
+    .k-attente { @apply m-0 rounded-xl bg-papier p-6 text-center text-brun; }
+
+    /* Exclusions : vue-multiselect habillé en champ, pastilles pour les libellés */
+    .k-exclusions .multiselect { @apply min-h-12 text-sm text-[#2F3E46]; }
+    .k-exclusions .multiselect__tags { @apply min-h-12 rounded-xl border-2 border-dashed border-tirets-champ bg-white pb-0 pl-2 pr-10 pt-2; }
+    .k-exclusions .multiselect--active .multiselect__tags { @apply border-solid border-focus; }
+    .k-exclusions .multiselect__placeholder { @apply mb-2 pl-1.5 pt-1 text-base text-brun-gris; }
+    .k-exclusions .multiselect__input { @apply mb-2 text-base; }
+    .k-exclusions .multiselect__select { @apply h-11; }
+    .k-exclusions .multiselect__select::before { border-color: var(--color-brun-gris) transparent transparent; }
+    .k-exclusions .multiselect__content-wrapper { @apply rounded-b-xl border-2 border-solid border-focus; }
+    .k-exclusions .multiselect__option--highlight, .k-exclusions .multiselect__option--highlight::after { @apply bg-sapin; }
+    .k-exclusions .multiselect__tags-wrap { @apply inline-flex flex-wrap gap-1.5 pb-2; }
+    .exclusion-tag-oneway { @apply bg-white text-bordeaux; box-shadow: inset 0 0 0 2px var(--color-rose); }
+    .exclusion-tag-derived { @apply cursor-default gap-1 bg-[#F8E1DA] pr-3; box-shadow: inset 0 0 0 2px var(--color-rose); border: 2px dashed transparent; }
+    .exclusion-tag-direction { @apply -ml-2; }
+    .exclusion-icon { @apply h-3.5 w-3.5; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Fenêtre d'import CSV */
+    .modal-mask { @apply fixed inset-0 z-[1050] grid place-items-center overflow-y-auto p-4; background: rgba(43, 26, 17, .6); }
+    .modal-container { @apply w-full max-w-[640px] rounded-[20px] bg-papier p-6 text-brun; box-shadow: 0 30px 60px rgba(43, 26, 17, .4); }
+    .modal-header h3 { @apply m-0 mb-4 font-happy text-2xl font-normal text-encre; }
+    .modal-body { @apply flex flex-col gap-3 text-[15px] leading-normal; }
+    .modal-body .alert { @apply m-0 rounded-xl px-4 py-3; }
+    .modal-body .alert-info { @apply bg-creme; }
+    .modal-body .alert-danger { @apply bg-[#FFF5F4] font-bold text-ruban-fonce; }
+    .modal-body .alert-link { @apply font-bold text-titre-rouge underline; }
+    .modal-body table { @apply w-full border-collapse; }
+    .modal-body td { @apply border-2 border-solid border-kraft-fonce p-2; }
+    .modal-body .hidden { @apply hidden; }
+    .modal-footer { @apply mt-5 flex flex-wrap justify-end gap-3; }
+    .modal-footer .btn-primary { @apply bg-sapin text-white hover:bg-sapin-ombre hover:text-white; }
+    .modal-footer .btn .fas { @apply hidden; }
+
+    /* ---------- Pied de page ---------- */
+    .kt-foot { @apply bg-creme-clair text-encre; }
+    .kt-foot__festons { @apply h-2; background: repeating-linear-gradient(90deg, var(--color-ruban) 0 12px, var(--color-creme-clair) 12px 24px); }
+    .kt-foot__inner { @apply mx-auto flex max-w-[1240px] flex-col gap-8 px-8 pb-9 pt-14; }
+    .kt-foot__haut { @apply flex flex-wrap items-start justify-between gap-x-12 gap-y-7; }
+    .kt-foot__liens { @apply flex flex-col gap-3 text-[15px] font-semibold; }
+    .kt-foot__liens a { @apply text-mention-rouge no-underline hover:underline; }
+    .kt-foot__don { @apply flex max-w-[380px] flex-col gap-3.5; }
+    .kt-foot__don p { @apply m-0 text-[15px] leading-[1.6] text-brun; }
+    .kt-foot__don .tag-wrap { @apply self-start; }
+    .kt-foot__bas { @apply flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-solid border-kraft pt-[18px] text-sm text-brun-doux; }
+    .kt-foot__bas a { @apply text-brun-doux; }
+
+    /* Alertify sur la palette du site */
+    .alertify .ajs-dialog { @apply rounded-2xl bg-papier font-aileron text-brun; }
+    .alertify .ajs-footer .ajs-buttons .ajs-button { @apply rounded-lg bg-sapin px-4 font-bold text-white; }
+    .alertify-notifier .ajs-message.ajs-success { @apply bg-sapin text-white; }
+    .alertify-notifier .ajs-message.ajs-error { @apply bg-ruban text-white; }
+}
+
+/* ---------- Points de rupture : 1023, 767/760, 480 ---------- */
+@media (max-width: 1023px) {
+    .kt-navtext { @apply hidden; }
+}
+
+@media (max-width: 767px) {
+    .kt-head__inner { @apply px-4 py-3; }
+    .kt-logo img { @apply h-[55px] w-[150px]; }
+    .kt-nav { @apply hidden; }
+    .kt-burger { @apply grid; }
+    .kt-menu:not([hidden]) { @apply flex flex-col gap-1 border-t-2 border-dashed border-kraft bg-creme-clair px-4 pb-4 pt-2 text-base font-bold; }
+    .kt-menu a { @apply flex min-h-12 items-center text-encre no-underline; }
+
+    /* Mobile : le texte et la carte sur le brun, puis la photo */
+    .hero { @apply bg-none; }
+    .kt-veil { @apply hidden; }
+    .hero__inner { @apply px-5 pb-[30px] pt-11; }
+    .hero__col { @apply gap-[18px]; }
+    .mentions { @apply text-sm; }
+    .hero__titre { font-size: clamp(32px, 10vw, 40px); }
+    .hero__intro { @apply text-base; }
+    .hero__photo { @apply relative block h-[280px] bg-encre bg-cover bg-no-repeat; background-image: url('../images/gifts-1.webp'); background-position: 45% 60%; }
+    .hero__photo::after { content: ''; @apply absolute inset-0; background: linear-gradient(180deg, #3B2418 0%, rgba(59, 36, 24, .55) 22%, rgba(59, 36, 24, 0) 48%); }
+    .carte-etiquette { @apply px-[18px] pb-5 pt-[18px]; }
+    .carte-etiquette__label { @apply pl-5 text-lg; }
+    .carte-etiquette__note { @apply text-[13px]; }
+    .carte-etiquette .tag-wrap { @apply flex flex-auto; }
+    .carte-etiquette .tag-action { @apply flex-auto; }
+
+    .noeud { @apply top-[-13px] w-[90px]; }
+
+    .etapes { @apply px-5 pb-14 pt-12; }
+    .etapes__inner { @apply gap-7; }
+    .etapes__titre { @apply text-[32px]; }
+    /* Étapes en lignes compactes : le bloc tient à peu près dans un écran */
+    .kt-steps { @apply flex flex-col gap-6 pt-2; }
+    .kt-step { @apply grid items-start gap-x-3.5 gap-y-1 text-left; grid-template-columns: 108px 1fr; }
+    .kt-stepart { @apply row-span-2 h-[76px] w-[108px]; }
+    .kt-stepart .sticker { @apply left-[-6px] top-[-8px] h-[34px] w-[34px] text-[19px]; }
+    .kt-step__titre { @apply text-[21px] leading-[1.15]; }
+    .kt-step__texte { @apply text-[14.5px] leading-normal; }
+    .secret-box { @apply px-[18px] py-4; }
+    .secret-box__texte { @apply text-sm; }
+    .apres { @apply flex flex-col items-center gap-4 rounded-3xl px-5 pb-[26px] pt-6 text-center; }
+    .apres__dessin { @apply w-[220px]; }
+    .apres__titre { @apply text-[28px]; }
+    .apres__texte p { @apply text-[15px]; }
+
+    .bandeau-photo { @apply h-[300px]; background-position: 30% 18%; }
+    .bandeau-photo__voile { @apply flex items-end justify-center pb-[22px]; background: linear-gradient(180deg, rgba(43, 26, 17, 0) 45%, rgba(43, 26, 17, .45) 100%); }
+    .bandeau-photo__etiquette { @apply px-5 py-3 text-[22px] leading-[1.25]; }
+
+    .k-form { @apply px-4 pb-14 pt-12; }
+    .k-form__inner { @apply gap-7; }
+    .k-form__titre { @apply text-[38px]; }
+    .k-form__intro { @apply text-base; }
+    .k-card > fieldset { @apply gap-8; }
+    .k-card { @apply gap-8 rounded-3xl bg-transparent p-0; box-shadow: none; }
+    .kt-corner { @apply hidden; }
+    /* Navigation par étapes, comme le formulaire mobile de référence */
+    .k-etapes-nav { @apply flex justify-between gap-2 rounded-2xl bg-papier p-2; }
+    .k-etapes-nav a { @apply flex min-h-11 flex-auto items-center justify-center gap-2 rounded-xl text-[15px] font-bold text-encre underline underline-offset-4; }
+    .k-legend { @apply mb-3.5 gap-3 text-2xl; }
+    .kt-phead { @apply hidden; }
+    /* Une carte par participant */
+    .participant { @apply flex flex-col items-stretch gap-3 rounded-[20px] bg-papier p-4; box-shadow: 0 6px 18px rgba(94, 22, 24, .08); }
+    .participant--vide { @apply border-2 border-dashed border-kraft-fonce shadow-none; }
+    .participant > .kt-num { @apply hidden; }
+    .participant__entete { @apply flex items-center gap-2.5; }
+    .participant__entete .kt-num { @apply flex; }
+    .participant__titre { @apply block text-[15px] font-bold text-encre; }
+    .participant__entete .participant__retirer { @apply ml-auto; }
+    .participant > .participant__retirer { @apply hidden; }
+    .participant__champ > label { @apply not-sr-only text-sm font-semibold text-brun-doux; }
+    .participant__champ { @apply flex flex-col gap-1.5; }
+    .orga-bloc { @apply rounded-[20px] border-0 bg-papier p-4; box-shadow: 0 6px 18px rgba(94, 22, 24, .08); }
+    .orga-bloc__titre { @apply ml-0; }
+    .orga-bloc__titre--bureau { @apply hidden; }
+    .orga-bloc__champs { @apply flex flex-col; }
+    .org-check { @apply ml-0 border-t-2 border-dashed border-[#E4C8B3] pt-3; }
+    .participant--orga { @apply shadow-none; }
+    .k-actions { @apply flex-col; }
+    .k-actions .tag-wrap { @apply flex; }
+    .k-actions .tag-kraft { @apply flex-auto; }
+    .k-bloc-mobile { @apply flex flex-col gap-4 rounded-[20px] bg-papier p-4; box-shadow: 0 6px 18px rgba(94, 22, 24, .08); }
+    .k-envoi .tag-wrap { @apply flex w-full; }
+    .k-envoi .tag-action { @apply flex-auto text-[23px]; }
+    .k-sceau { @apply text-[13px]; }
+
+    .kt-foot__inner { @apply px-5 pb-7 pt-11; }
+    .kt-foot__haut { @apply flex-col; }
+    .kt-foot__bas { @apply flex-col; }
+}
+
+@media (min-width: 768px) {
+    .participant__entete .kt-num, .participant__entete .participant__retirer { @apply hidden; }
+    .k-bloc-mobile { @apply contents; }
+}
+
+@media (max-width: 480px) {
+    .tag-action { @apply whitespace-normal py-2 pl-[42px] pr-5 text-center text-[19px] leading-[1.15]; }
+    .tag-kraft, .modal-footer .btn { @apply whitespace-normal py-2 text-center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tag-wrap, .tag-kraft { transition: none; }
+    .tag-wrap:hover, .tag-wrap:active, .tag-kraft:active { transform: none; }
+}

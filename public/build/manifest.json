@@ -1,18 +1,18 @@
 {
-  "_ajaxForm-BC4zb64s.js": {
-    "file": "assets/ajaxForm-BC4zb64s.js",
+  "_ajaxForm-K0gBJVV2.js": {
+    "file": "assets/ajaxForm-K0gBJVV2.js",
     "name": "ajaxForm",
     "imports": [
       "_alertify-CANg_1jz.js",
-      "_app-GxF9CHvD.js"
+      "_app-wDG7Ydjx.js"
     ]
   },
   "_alertify-CANg_1jz.js": {
     "file": "assets/alertify-CANg_1jz.js",
     "name": "alertify"
   },
-  "_app-GxF9CHvD.js": {
-    "file": "assets/app-GxF9CHvD.js",
+  "_app-wDG7Ydjx.js": {
+    "file": "assets/app-wDG7Ydjx.js",
     "name": "app",
     "imports": [
       "_alertify-CANg_1jz.js"
@@ -23,49 +23,47 @@
       "resources/js/langs/fr.js"
     ]
   },
-  "_dearSantaForm-B2w52ytw.js": {
-    "file": "assets/dearSantaForm-B2w52ytw.js",
+  "_dearSantaForm-Dy_plDjq.css": {
+    "file": "assets/dearSantaForm-Dy_plDjq.css",
+    "src": "_dearSantaForm-Dy_plDjq.css"
+  },
+  "_dearSantaForm-XVue_h15.js": {
+    "file": "assets/dearSantaForm-XVue_h15.js",
     "name": "dearSantaForm",
     "imports": [
-      "_ajaxForm-BC4zb64s.js",
+      "_ajaxForm-K0gBJVV2.js",
       "_alertify-CANg_1jz.js",
-      "_app-GxF9CHvD.js",
-      "_tooltip-BC2CBINQ.js",
-      "_form-pXu-dZBx.js"
+      "_app-wDG7Ydjx.js",
+      "_form-RUxA5gBZ.js"
     ],
     "css": [
-      "assets/dearSantaForm-DpM1CPlo.css"
+      "assets/dearSantaForm-Dy_plDjq.css"
     ]
   },
-  "_dearSantaForm-DpM1CPlo.css": {
-    "file": "assets/dearSantaForm-DpM1CPlo.css",
-    "src": "_dearSantaForm-DpM1CPlo.css"
-  },
-  "_form-pXu-dZBx.js": {
-    "file": "assets/form-pXu-dZBx.js",
+  "_form-RUxA5gBZ.js": {
+    "file": "assets/form-RUxA5gBZ.js",
     "name": "form",
     "imports": [
-      "_ajaxForm-BC4zb64s.js",
-      "_app-GxF9CHvD.js"
+      "_ajaxForm-K0gBJVV2.js",
+      "_app-wDG7Ydjx.js"
     ]
-  },
-  "_tooltip-BC2CBINQ.js": {
-    "file": "assets/tooltip-BC2CBINQ.js",
-    "name": "tooltip",
-    "imports": [
-      "_app-GxF9CHvD.js"
-    ],
-    "css": [
-      "assets/tooltip-CknrHklv.css"
-    ]
-  },
-  "_tooltip-CknrHklv.css": {
-    "file": "assets/tooltip-CknrHklv.css",
-    "src": "_tooltip-CknrHklv.css"
   },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
     "file": "assets/fa-solid-900-BUswJgRo.woff2",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
+  },
+  "resources/css/home.css": {
+    "file": "assets/home-BIUjzq59.css",
+    "name": "home",
+    "names": [
+      "home.css"
+    ],
+    "src": "resources/css/home.css",
+    "isEntry": true,
+    "assets": [
+      "assets/gifts-1-BjyNA4Fc.webp",
+      "assets/gifts-3-BoLO03El.webp"
+    ]
   },
   "resources/fonts/Cookie-Regular.ttf": {
     "file": "assets/Cookie-Regular-DbKmepVV.ttf",
@@ -87,21 +85,9 @@
     "file": "assets/BMC Logo - Black-D0iseT07.webp",
     "src": "resources/images/BMC Logo - Black.webp"
   },
-  "resources/images/calendar-icon.webp": {
-    "file": "assets/calendar-icon-CrngGSZj.webp",
-    "src": "resources/images/calendar-icon.webp"
-  },
-  "resources/images/clock-icon.webp": {
-    "file": "assets/clock-icon-qGJSK2to.webp",
-    "src": "resources/images/clock-icon.webp"
-  },
   "resources/images/gifts-1.webp": {
     "file": "assets/gifts-1-BjyNA4Fc.webp",
     "src": "resources/images/gifts-1.webp"
-  },
-  "resources/images/gifts-2.webp": {
-    "file": "assets/gifts-2-CJCtCWac.webp",
-    "src": "resources/images/gifts-2.webp"
   },
   "resources/images/gifts-3.webp": {
     "file": "assets/gifts-3-BoLO03El.webp",
@@ -111,29 +97,13 @@
     "file": "assets/logo-BYoL4Cfi.webp",
     "src": "resources/images/logo.webp"
   },
-  "resources/images/mail-icon.webp": {
-    "file": "assets/mail-icon-DmsWdb5J.webp",
-    "src": "resources/images/mail-icon.webp"
-  },
   "resources/images/mike-arney-9r-_2gzP37k-unsplash.webp": {
     "file": "assets/mike-arney-9r-_2gzP37k-unsplash-DPKQlmIh.webp",
     "src": "resources/images/mike-arney-9r-_2gzP37k-unsplash.webp"
   },
-  "resources/images/paper-icon.webp": {
-    "file": "assets/paper-icon-COzGnr4k.webp",
-    "src": "resources/images/paper-icon.webp"
-  },
   "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp": {
     "file": "assets/rune-haugseng-UCzjZPCGV1Y-unsplash-NdXp0FSx.webp",
     "src": "resources/images/rune-haugseng-UCzjZPCGV1Y-unsplash.webp"
-  },
-  "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.webp": {
-    "file": "assets/srikanta-h-u-TrGVhbsUf40-unsplash-BLvCjRi5.webp",
-    "src": "resources/images/srikanta-h-u-TrGVhbsUf40-unsplash.webp"
-  },
-  "resources/images/user-icon.webp": {
-    "file": "assets/user-icon-E39mYMdb.webp",
-    "src": "resources/images/user-icon.webp"
   },
   "resources/js/common.js": {
     "file": "assets/common-C4kCtbCn.js",
@@ -145,69 +115,68 @@
     ]
   },
   "resources/js/dearSanta.js": {
-    "file": "assets/dearSanta-v_ynA8O3.js",
+    "file": "assets/dearSanta-ILpBHz-f.js",
     "name": "dearSanta",
     "src": "resources/js/dearSanta.js",
     "isEntry": true,
     "imports": [
-      "_app-GxF9CHvD.js",
-      "_dearSantaForm-B2w52ytw.js"
+      "_app-wDG7Ydjx.js",
+      "_dearSantaForm-XVue_h15.js"
     ]
   },
   "resources/js/faq.js": {
-    "file": "assets/faq-Bhshh-0h.js",
+    "file": "assets/faq-BZQ5zhAn.js",
     "name": "faq",
     "src": "resources/js/faq.js",
     "isEntry": true,
     "imports": [
-      "_app-GxF9CHvD.js"
+      "_app-wDG7Ydjx.js"
     ],
     "css": [
       "assets/faq-QuG1mctG.css"
     ]
   },
   "resources/js/fixOrganizer.js": {
-    "file": "assets/fixOrganizer-DsMJlpr2.js",
+    "file": "assets/fixOrganizer-jMAy3IPm.js",
     "name": "fixOrganizer",
     "src": "resources/js/fixOrganizer.js",
     "isEntry": true,
     "imports": [
-      "_app-GxF9CHvD.js",
-      "_ajaxForm-BC4zb64s.js",
+      "_app-wDG7Ydjx.js",
+      "_ajaxForm-K0gBJVV2.js",
       "_alertify-CANg_1jz.js",
-      "_form-pXu-dZBx.js"
+      "_form-RUxA5gBZ.js"
     ]
   },
   "resources/js/langs/de.js": {
-    "file": "assets/de-DL76qx1k.js",
+    "file": "assets/de-Bh0twZWe.js",
     "name": "de",
     "src": "resources/js/langs/de.js",
     "isDynamicEntry": true
   },
   "resources/js/langs/en.js": {
-    "file": "assets/en-CZarJ3AQ.js",
+    "file": "assets/en-DdYHbxeR.js",
     "name": "en",
     "src": "resources/js/langs/en.js",
     "isDynamicEntry": true
   },
   "resources/js/langs/fr.js": {
-    "file": "assets/fr-y1UoiZbr.js",
+    "file": "assets/fr-Bxu00tcz.js",
     "name": "fr",
     "src": "resources/js/langs/fr.js",
     "isDynamicEntry": true
   },
   "resources/js/organizer.js": {
-    "file": "assets/organizer-VEMtHMoz.js",
+    "file": "assets/organizer-Bt5LiOEz.js",
     "name": "organizer",
     "src": "resources/js/organizer.js",
     "isEntry": true,
     "imports": [
-      "_app-GxF9CHvD.js",
-      "_ajaxForm-BC4zb64s.js",
+      "_app-wDG7Ydjx.js",
+      "_ajaxForm-K0gBJVV2.js",
       "_alertify-CANg_1jz.js",
-      "_dearSantaForm-B2w52ytw.js",
-      "_tooltip-BC2CBINQ.js",
-      "_form-pXu-dZBx.js"
+      "_dearSantaForm-XVue_h15.js",
+      "_form-RUxA5gBZ.js"
     ],
     "css": [
       "assets/organizer-5gvzAUF8.css"
@@ -218,21 +187,17 @@
     ]
   },
   "resources/js/randomForm.js": {
-    "file": "assets/randomForm-e2l3cP9s.js",
+    "file": "assets/randomForm-BQecRRnj.js",
     "name": "randomForm",
     "src": "resources/js/randomForm.js",
     "isEntry": true,
     "imports": [
-      "_app-GxF9CHvD.js",
-      "_ajaxForm-BC4zb64s.js",
-      "_alertify-CANg_1jz.js",
-      "_tooltip-BC2CBINQ.js"
+      "_app-wDG7Ydjx.js",
+      "_ajaxForm-K0gBJVV2.js",
+      "_alertify-CANg_1jz.js"
     ],
     "css": [
-      "assets/randomForm-AXgegaw_.css"
-    ],
-    "assets": [
-      "assets/srikanta-h-u-TrGVhbsUf40-unsplash-BLvCjRi5.webp"
+      "assets/randomForm-CUTBfnCj.css"
     ]
   },
   "resources/sass/404.scss": {
@@ -249,7 +214,7 @@
     ]
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-CzgezTJK.css",
+    "file": "assets/app-BQS-ByN-.css",
     "name": "app",
     "names": [
       "app.css"
@@ -263,18 +228,11 @@
       "assets/BMC Logo - Black-D0iseT07.webp",
       "assets/pricedownbl-DBgWJu69.ttf",
       "assets/404-1-Bd6IHWzP.webp",
-      "assets/gifts-1-BjyNA4Fc.webp",
-      "assets/gifts-2-CJCtCWac.webp",
-      "assets/gifts-3-BoLO03El.webp",
-      "assets/calendar-icon-CrngGSZj.webp",
-      "assets/user-icon-E39mYMdb.webp",
-      "assets/paper-icon-COzGnr4k.webp",
-      "assets/mail-icon-DmsWdb5J.webp",
-      "assets/clock-icon-qGJSK2to.webp"
+      "assets/gifts-1-BjyNA4Fc.webp"
     ]
   },
   "resources/sass/vendor.scss": {
-    "file": "assets/vendor-B4MMDgAP.css",
+    "file": "assets/vendor-CQFXmnT5.css",
     "name": "vendor",
     "names": [
       "vendor.css"

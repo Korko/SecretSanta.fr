@@ -11,14 +11,14 @@ use Illuminate\Support\Str;
 
 test('the draw form edits participants, imports a CSV and suggests email fixes', function (): void {
     $page = visit('/')
-        ->assertCount('tr.participant', 3)
+        ->assertCount('.participant', 3)
         ->click('#randomForm button[type=submit]')
-        ->assertPresent('tr.participant:nth-child(3) .is-invalid')
+        ->assertPresent('[dusk=participant2] .is-invalid')
         ->click('.participant-add')
-        ->assertCount('tr.participant', 4)
+        ->assertCount('.participant', 4)
         ->click('.participant-remove >> nth=-1')
         ->wait(1.5)
-        ->assertCount('tr.participant', 3);
+        ->assertCount('.participant', 3);
 
     // ISO-8859-15 file, the 2nd participant excludes the 1st
     $page->click('.participants-import')
@@ -28,29 +28,29 @@ test('the draw form edits participants, imports a CSV and suggests email fixes',
         ->assertValue('[name="participants[0][name]"]', 'Zoé')
         ->assertValue('[name="participants[1][name]"]', 'Cœur')
         // An imported exclusion keeps the file's direction: one way
-        ->assertSeeIn('tr.participant:nth-child(2) .exclusion-tag-oneway', 'Zoé')
-        ->assertCount('tr.participant:nth-child(1) .exclusion-tag', 0);
+        ->assertSeeIn('[dusk=participant1] .exclusion-tag-oneway', 'Zoé')
+        ->assertCount('[dusk=participant0] .exclusion-tag', 0);
 
     // A typed one applies both ways: shown and sent in the other row too
-    $page->click('tr.participant:nth-child(3) .multiselect')
-        ->click('tr.participant:nth-child(3) .multiselect__element >> nth=0')
-        ->assertCount('tr.participant:nth-child(3) select option', 1)
-        ->assertSeeIn('tr.participant:nth-child(1) .exclusion-tag-derived', 'Max')
-        ->assertCount('tr.participant:nth-child(1) select option', 1);
+    $page->click('[dusk=participant2] .multiselect')
+        ->click('[dusk=participant2] .multiselect__element >> nth=0')
+        ->assertCount('[dusk=participant2] select option', 1)
+        ->assertSeeIn('[dusk=participant0] .exclusion-tag-derived', 'Max')
+        ->assertCount('[dusk=participant0] select option', 1);
 
     // One way only: the other row neither shows it nor sends it any more
-    $page->click('tr.participant:nth-child(3) .exclusion-tag-direction')
-        ->assertCount('tr.participant:nth-child(3) .exclusion-tag-oneway', 1)
-        ->assertCount('tr.participant:nth-child(3) select option', 1)
-        ->assertCount('tr.participant:nth-child(1) .exclusion-tag-derived', 0)
-        ->assertCount('tr.participant:nth-child(1) select option', 0);
+    $page->click('[dusk=participant2] .exclusion-tag-direction')
+        ->assertCount('[dusk=participant2] .exclusion-tag-oneway', 1)
+        ->assertCount('[dusk=participant2] select option', 1)
+        ->assertCount('[dusk=participant0] .exclusion-tag-derived', 0)
+        ->assertCount('[dusk=participant0] select option', 0);
 
     // Then the other direction added in the other row: one way too, each row shows its own
-    $page->click('tr.participant:nth-child(1) .multiselect')
-        ->click('tr.participant:nth-child(1) .multiselect__element:has-text("Max")')
-        ->assertCount('tr.participant:nth-child(1) .exclusion-tag-oneway', 1)
-        ->assertCount('tr.participant:nth-child(3) .exclusion-tag-oneway', 1)
-        ->assertCount('tr.participant:nth-child(1) select option', 1);
+    $page->click('[dusk=participant0] .multiselect')
+        ->click('[dusk=participant0] .multiselect__element:has-text("Max")')
+        ->assertCount('[dusk=participant0] .exclusion-tag-oneway', 1)
+        ->assertCount('[dusk=participant2] .exclusion-tag-oneway', 1)
+        ->assertCount('[dusk=participant0] select option', 1);
 
     $page->type('[name="participants[0][email]"]', 'zoe@gmial.com')
         ->click('.email-suggest a')
@@ -66,19 +66,28 @@ test('a CSV with a single participant still leaves three rows to fill', function
         ->click('button:has-text("Importer") >> nth=-1')
         ->assertSeeIn('.ajs-message.ajs-success', 'effectué avec succès')
         ->assertValue('[name="participants[0][name]"]', 'Ana')
-        ->assertCount('tr.participant', 3)
+        ->assertCount('.participant', 3)
         ->assertNoJavaScriptErrors();
 });
 
-test('the {TARGET} tip link copies the keyword', function (): void {
+test('the {SANTA} and {TARGET} chips insert the keyword in the message', function (): void {
     $page = visit('/');
-    // Headless Chromium may refuse clipboard writes (focus, permission): record what is copied instead
-    $page->script("Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: text => { window.copied = text; return Promise.resolve(); } } })");
 
-    $page->click('a.link >> nth=-1')
-        ->assertSeeIn('.ajs-message.ajs-success', 'Copié')
+    $page->type('#mailContent', 'Salut  !')
+        // At the cursor, between the two spaces
+        ->script("const t = document.querySelector('#mailContent'); t.focus(); t.setSelectionRange(6, 6);");
+    $page->click('.chip--santa')
+        ->assertValue('#mailContent', 'Salut {SANTA} !')
+        ->click('.chip--target')
         ->assertNoJavaScriptErrors();
-    expect($page->script('window.copied'))->toBe('{TARGET}');
+    expect($page->script("document.querySelector('#mailContent').value"))->toContain('{TARGET}');
+});
+
+test('the event name of the top of the page fills the form', function (): void {
+    visit('/')
+        ->type('#hero-title', 'Noël chez Martin')
+        ->assertValue('[name=title]', 'Noël chez Martin')
+        ->assertNoJavaScriptErrors();
 });
 
 test('the mail content textarea autosizes and the organizer toggle shows their fields', function (): void {
@@ -87,9 +96,9 @@ test('the mail content textarea autosizes and the organizer toggle shows their f
     $page->type('#mailContent', str_repeat("a\n", 15));
     expect($page->script("document.querySelector('#mailContent').offsetHeight"))->toBeGreaterThan($before);
 
-    $page->assertNotPresent('#organizer')
-        ->script("document.querySelector('.organizerToggle input').click()");
-    $page->assertPresent('#organizer')->assertNoJavaScriptErrors();
+    $page->assertNotPresent('[name="organizer[name]"]')
+        ->click('.organizer-participates');
+    $page->assertPresent('[name="organizer[name]"]')->assertNoJavaScriptErrors();
 });
 
 function submitDraw($page, array $names, string $title = 'Noel'): void
@@ -109,7 +118,7 @@ function submitDraw($page, array $names, string $title = 'Noel'): void
 test('a non participating organizer gets a separate recap', function (): void {
     Notification::fake();
     $page = visit('/');
-    $page->script("document.querySelector('.organizerToggle input').click()");
+    $page->click('.organizer-participates');
     $page->type('[name="organizer[name]"]', 'Orga')->type('[name="organizer[email]"]', 'orga@example.com');
     submitDraw($page, ['gus', 'hugo', 'ines']);
 
@@ -298,16 +307,6 @@ test('static pages and the fix form', function (): void {
     visit('/fix')->click('button[type=submit]')->assertPresent('.is-invalid')->assertNoJavaScriptErrors();
 });
 
-test('a refused copy says so instead of "copied"', function (): void {
-    $page = visit('/');
-    $page->script("Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: () => Promise.reject(new DOMException('Write permission denied.', 'NotAllowedError')) } })");
-
-    $page->click('a.link >> nth=-1')
-        ->assertSeeIn('.ajs-message.ajs-error', 'Copie impossible')
-        ->assertDontSee('Copié dans le presse papier')
-        ->assertNoJavaScriptErrors();
-});
-
 test('removing a row keeps the other rows validation state', function (): void {
     $page = visit('/')->click('.participant-add');
     $page->type('[name="participants[0][name]"]', 'Alice')->type('[name="participants[0][email]"]', 'alice@example.com')
@@ -317,7 +316,7 @@ test('removing a row keeps the other rows validation state', function (): void {
         ->assertPresent('[name="participants[1][email]"].is-invalid');
 
     // Chloe moves up a row: she must not inherit Bruno's invalid email
-    $page->click('tr.participant:nth-child(2) .participant-remove')
+    $page->click('[dusk=participant1] .participant-remove')
         ->wait(1.5)
         ->assertValue('[name="participants[1][name]"]', 'Chloe')
         ->assertNotPresent('[name="participants[1][email]"].is-invalid')

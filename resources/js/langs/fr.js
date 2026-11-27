@@ -120,6 +120,49 @@ export default {
             }
         },
         "form": {
+            "k": {
+                "stepsNav": "Aller à une étape du formulaire",
+                "stepsShort": {
+                    "one": "Participants",
+                    "two": "Message",
+                    "three": "Jour J"
+                },
+                "steps": {
+                    "one": "Les participant(e)s",
+                    "two": "Le message",
+                    "three": "Le jour J"
+                },
+                "you": "Vous, l'organisateur·rice",
+                "person": "Personne {n}",
+                "participate": {
+                    "label": "Je participe moi aussi au tirage",
+                    "help": "Vous êtes alors tiré(e) au sort comme les autres. Décochez si vous organisez sans participer : vous recevrez seulement le récapitulatif."
+                },
+                "remove": "Enlever {name}",
+                "removeN": "Enlever le participant {n}",
+                "nameOf": "Nom ou pseudonyme du participant {n}",
+                "emailOf": "Adresse e-mail du participant {n}",
+                "exclusionsOf": "Exclusions du participant {n}",
+                "eventLabel": "Nom de votre événement",
+                "eventPlaceholder": "ex : Noël en famille chez Martin",
+                "messageLabel": "Message aux participant(e)s",
+                "messagePlaceholder": "Salut {SANTA} ! Pour Noël chez Martin, ta cible c'est {TARGET}. On a hâte de voir vos cadeaux !",
+                "insert": "Insérer :",
+                "insertSanta": "le nom de la personne qui reçoit le mail",
+                "insertTarget": "le nom de sa cible",
+                "inserted": "{word} inséré dans le message",
+                "date": "Date de l'évènement",
+                "location": "Lieu",
+                "budget": "Budget par cadeau, en €",
+                "optional": "(facultatif)",
+                "locationPlaceholder": "ex : chez Martin",
+                "dayHelp": "La date reste modifiable par la suite. Jusqu'à cette date, une page dédiée vous donne le récapitulatif des participant(e)s. Toutes les données stockées sont supprimées un mois après.",
+                "submit": "Lancer le tirage !",
+                "sending": "Tirage en cours…",
+                "newDraw": "Organiser un autre tirage",
+                "seal": "Gardé secret par SecretSanta.fr : vos données sont chiffrées et ne sont jamais partagées.",
+                "success": "C'est parti ! Chaque participant(e) reçoit son e-mail dans les minutes qui suivent."
+            },
             "inputEdit": {
                 "update": "Modifier",
                 "updating": "Sauvegarde en cours",
@@ -183,11 +226,11 @@ export default {
                 "organizer": "Organisateur·rice",
                 "name": {
                     "label": "Nom ou pseudonyme",
-                    "placeholder": "exemple : Paul ou Korko"
+                    "placeholder": "exemple : Paul ou Korko"
                 },
                 "email": {
                     "label": "Adresse e-mail",
-                    "placeholder": "exemple : michel@aol.com",
+                    "placeholder": "exemple : guillaume@example.fr",
                     "suggest": "Vouliez-vous dire {email} ?"
                 },
                 "exclusions": {
