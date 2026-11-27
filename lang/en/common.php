@@ -48,4 +48,8 @@ return [
         'generated' => 'File generated on :date on :app (:url)',
         'usage' => 'This file can be used to prefill the participants and their exclusions',
     ],
+    'confirm' => [
+        'type' => 'To confirm, type “{word}”',
+        'cancel' => 'Cancel',
+    ],
 ];

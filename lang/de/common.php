@@ -48,4 +48,8 @@ return [
         'generated' => 'Datei erstellt am :date auf :app (:url)',
         'usage' => 'Mit dieser Datei können die Teilnehmer und ihre Ausschlüsse vorausgefüllt werden',
     ],
+    'confirm' => [
+        'type' => 'Zur Bestätigung „{word}“ eingeben',
+        'cancel' => 'Abbrechen',
+    ],
 ];

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 return [
-    'reminder' => 'Remember that your Secret Santa cannot reply to you! Make sure to give them as much information as possible.',
     'report' => [
         'question' => 'A problem?',
         'identity' => 'Are you {name}?',

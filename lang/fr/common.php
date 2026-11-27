@@ -48,4 +48,8 @@ return [
         'generated' => 'Fichier généré le :date sur :app (:url)',
         'usage' => 'Ce fichier peut être utilisé pour préremplir les participants ainsi que les exclusions associées',
     ],
+    'confirm' => [
+        'type' => 'Pour confirmer, tapez « {word} »',
+        'cancel' => 'Annuler',
+    ],
 ];

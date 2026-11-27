@@ -31,6 +31,7 @@ return [
         'faq',
         'form',
         'organizer',
+        'pages',
         'validation',
     ],
 
