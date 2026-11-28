@@ -316,7 +316,7 @@
                         <p class="pg-p">{{ $t('pages.participant.ideas.text') }}</p>
                         <ul v-if="receivedSuggestionsList.length" class="pg-ideas">
                             <li v-for="idea in receivedSuggestionsList" :key="idea.id" class="pg-idea suggestion-received">
-                                <gift-tag small :label="$t('pages.gift.from')" value="?" :aria-label="$t('pages.gift.anonymous')" />
+                                <span class="pg-ico pg-ico--gold" role="img" :aria-label="$t('pages.gift.anonymous')"><icon name="question" :size="20" /></span>
                                 <p v-html="nl2br(e(idea.mail_body))" />
                                 <p class="pg-small">{{ $t('pages.on', { date: idea.created_at }) }}</p>
                             </li>
