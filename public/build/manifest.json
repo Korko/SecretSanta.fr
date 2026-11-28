@@ -15,8 +15,8 @@
     "file": "assets/alertify-C5GWLzOB.js",
     "name": "alertify"
   },
-  "_dearSantaForm-CXfuKnFF.js": {
-    "file": "assets/dearSantaForm-CXfuKnFF.js",
+  "_dearSantaForm-KQ89StQi.js": {
+    "file": "assets/dearSantaForm-KQ89StQi.js",
     "name": "dearSantaForm",
     "imports": [
       "_ajaxForm-lfNlD4nj.js",
@@ -90,13 +90,13 @@
     ]
   },
   "resources/js/dearSanta.js": {
-    "file": "assets/dearSanta-dLbmtynj.js",
+    "file": "assets/dearSanta-C7ErFeZb.js",
     "name": "dearSanta",
     "src": "resources/js/dearSanta.js",
     "isEntry": true,
     "imports": [
       "_ajaxForm-lfNlD4nj.js",
-      "_dearSantaForm-CXfuKnFF.js"
+      "_dearSantaForm-KQ89StQi.js"
     ]
   },
   "resources/js/fixOrganizer.js": {
@@ -135,14 +135,14 @@
     "isDynamicEntry": true
   },
   "resources/js/organizer.js": {
-    "file": "assets/organizer-cBcce3Zt.js",
+    "file": "assets/organizer-Cpq4aimB.js",
     "name": "organizer",
     "src": "resources/js/organizer.js",
     "isEntry": true,
     "imports": [
       "_ajaxForm-lfNlD4nj.js",
       "_alertify-C5GWLzOB.js",
-      "_dearSantaForm-CXfuKnFF.js",
+      "_dearSantaForm-KQ89StQi.js",
       "_form-DnLrvzaF.js"
     ]
   },
